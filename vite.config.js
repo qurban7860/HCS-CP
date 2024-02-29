@@ -14,6 +14,10 @@ export default defineConfig({
       global: path.resolve(__dirname, 'src', 'config', 'global.js'),
       root: './App.jsx',
       config: './config',
+      locale: path.resolve(__dirname, 'src', 'locale'),
+      route: path.resolve(__dirname, 'src', 'route'),
+      theme: path.resolve(__dirname, 'src', 'theme'),
+      util: path.resolve(__dirname, 'src', 'util'),
       // @pages
       dashboard: path.resolve(__dirname, 'src', 'pages', 'dashboard'),
       customer: path.resolve(__dirname, 'src', 'pages', 'customer'),
