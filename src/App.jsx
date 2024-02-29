@@ -1,10 +1,76 @@
+// i18n
+import 'locale/i18n'
+// map
+import 'util/mapboxgl'
+import 'mapbox-gl/dist/mapbox-gl.css'
+// lazy image
+import 'react-lazy-load-image-component/src/effects/blur.css'
+import 'react-quill/dist/quill.snow.css'
+// ----------------------------------------------------------------------
+import { BrowserRouter } from 'react-router-dom'
+// import { PersistGate } from 'redux-persist/lib/integration/react'
+// @mui
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+// Error Boundry
+import ErrorBoundary from 'util/error-boundary'
+// redux
+// import { store, persistor } from './redux/store'
+// routes
+import Router from 'route'
+// theme
+import ThemeProvider from 'theme'
+// locales
+import ThemeLocalization from 'locale'
+// components
+import { StyledChart } from 'component/chart'
+import SnackbarProvider from 'component/snackbar'
+import ScrollToTop from 'component/scroll-to-top'
+import { MotionLazyContainer } from 'component/animate'
+import { ThemeSettings, SettingsProvider } from '@component/settings'
+import IdleManager from 'component/idleManager'
+import Page500 from 'page/Page500'
+import { AuthProvider } from '@auth/JwtContext'
+import { WebSocketProvider } from '@auth/WebSocketContext'
 import { GLOBAL } from 'config'
 
 function App() {
   return (
     <>
-      <p className='read-the-docs'>{GLOBAL.APP_TITLE}</p>
+      <AuthProvider apiUrl={GLOBAL.API_URL} appTitle={GLOBAL.APP_TITLE} />
     </>
+    // <AuthProvider>
+    //   <WebSocketProvider>
+    //     <HelmetProvider>
+    //       <ReduxProvider store={store}>
+    //         <PersistGate loading={null} persistor={persistor}>
+    //           <LocalizationProvider dateAdapter={AdapterDateFns}>
+    //             <SettingsProvider>
+    //               <BrowserRouter>
+    //                 <MotionLazyContainer>
+    //                   <ThemeProvider>
+    //                     <ThemeSettings>
+    //                       <ErrorBoundary fallback={<Page500 />}>
+    //                         <ScrollToTop />
+    //                         <ThemeLocalization>
+    //                           <SnackbarProvider>
+    //                             <StyledChart />
+    //                             <IdleManager />
+    //                             <Router />
+    //                           </SnackbarProvider>
+    //                         </ThemeLocalization>
+    //                       </ErrorBoundary>
+    //                     </ThemeSettings>
+    //                   </ThemeProvider>
+    //                 </MotionLazyContainer>
+    //               </BrowserRouter>
+    //             </SettingsProvider>
+    //           </LocalizationProvider>
+    //         </PersistGate>
+    //       </ReduxProvider>
+    //     </HelmetProvider>
+    //   </WebSocketProvider>
+    // </AuthProvider>
   )
 }
 
