@@ -16,8 +16,5 @@ The customer portal serves as a one-stop digital hub for our customers, providin
 
 This repository is a testament to our commitment to leveraging technology to better serve our customers, providing them with a seamless, efficient, and interactive experience.
 
-## Table of Contents
-
-- [Installation](#installation)
-- [Usage](#usage)
-- [License](#license)
+<br/>
+<br/>
