@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types'
 import storage from 'redux-persist/lib/storage'
 import { createContext, useEffect, useReducer, useCallback, useMemo } from 'react'
-import { CONFIG } from '../config-global'
-// utils
-import axios from '../utils/axios'
-import localStorageAvailable from '../utils/localStorageAvailable'
-//
-import { isValidToken, setSession } from './utils'
-import { PATH_AUTH } from '../routes/paths'
+import { CONFIG } from 'global'
+import axios from 'util/axios'
+import localStorageAvailable from 'util/local-storage-space'
+import { isValidToken, setSession } from './util'
+import { PATH_AUTH } from 'route/path'
 
 // ----------------------------------------------------------------------
 
