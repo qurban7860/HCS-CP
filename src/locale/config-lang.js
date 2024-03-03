@@ -1,10 +1,10 @@
 // @mui
-import { enUS, frFR, zhCN, viVN, arSA } from '@mui/material/locale';
+import { enUS, frFR, zhCN, viVN, arSA } from '@mui/material/locale'
 
 // PLEASE REMOVE `LOCAL STORAGE` WHEN YOU CHANGE SETTINGS.
 // ----------------------------------------------------------------------
 
-export const allLangs = [
+export const allLang = [
   {
     label: 'English',
     value: 'en',
@@ -35,6 +35,6 @@ export const allLangs = [
     systemValue: arSA,
     icon: '/assets/icons/flags/ic_flag_sa.svg',
   },
-];
+]
 
-export const defaultLang = allLangs[0]; // English
+export const defaultLang = allLang[0] // English

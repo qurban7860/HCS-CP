@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 // @mui
 import { ThemeProvider, createTheme, useTheme } from '@mui/material/styles'
-import useLocales from './useLocales'
+import useLocales from './use-locale'
 
 // ----------------------------------------------------------------------
 
