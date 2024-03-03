@@ -23,9 +23,7 @@ axiosInstance.interceptors.response.use(
       // If the response status is 403 (Forbidden), clear localStorage and log out the user
       clearLocalStorageAndLogout()
     }
-    return Promise.reject(
-      (error.response && error.response.data) || 'Something went wrong'
-    )
+    return Promise.reject((error.response && error.response.data) || 'Something went wrong')
   }
 )
 
