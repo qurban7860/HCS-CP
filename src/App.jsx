@@ -6,7 +6,6 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 // lazy image
 import 'react-lazy-load-image-component/src/effects/blur.css'
 import 'react-quill/dist/quill.snow.css'
-// ----------------------------------------------------------------------
 import { BrowserRouter } from 'react-router-dom'
 // import { PersistGate } from 'redux-persist/lib/integration/react'
 // @mui
@@ -21,17 +20,17 @@ import Router from 'route'
 // theme
 import ThemeProvider from 'theme'
 // locales
-import ThemeLocalization from 'locale'
+import { ThemeLocalization } from 'locale'
 // components
-import { StyledChart } from 'component/chart'
-import SnackbarProvider from 'component/snackbar'
-import ScrollToTop from 'component/scroll-to-top'
+// import { StyledChart } from 'component/chart'
+import { SnackbarProvider } from 'component/snackbar'
+import { ScrollToTop } from 'component/scroll-to-top'
 import { MotionLazyContainer } from 'component/animate'
-import { ThemeSettings, SettingsProvider } from '@component/settings'
-import IdleManager from 'component/idleManager'
-import Page500 from 'page/Page500'
-import { AuthProvider } from '@auth/JwtContext'
-import { WebSocketProvider } from '@auth/WebSocketContext'
+import { ThemeSettings, SettingsProvider } from 'component/setting'
+import { IdleManager } from 'component/idle-manager'
+import { InternalServer } from 'page/fallback'
+import { AuthProvider } from 'auth/jwt-context'
+import { WebSocketProvider } from 'auth/web-socket-context'
 import { GLOBAL } from 'config'
 
 function App() {

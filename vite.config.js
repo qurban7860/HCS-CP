@@ -11,9 +11,12 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      global: path.resolve(__dirname, 'src', 'config', 'global.js'),
-      root: './App.jsx',
+      root: './app.jsx',
       config: './config',
+      global: path.resolve(__dirname, 'src', 'config', 'global.js'),
+      component: path.resolve(__dirname, 'src', 'component'),
+      page: path.resolve(__dirname, 'src', 'page'),
+      auth: path.resolve(__dirname, 'src', 'auth'),
       locale: path.resolve(__dirname, 'src', 'locale'),
       route: path.resolve(__dirname, 'src', 'route'),
       theme: path.resolve(__dirname, 'src', 'theme'),
