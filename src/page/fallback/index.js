@@ -1,7 +1,6 @@
 export { default as Forbidden } from './forbidden'
 export { default as NotFound } from './not-found'
 export { default as UnderDevelopment } from './under-development'
-export { default as Unauthorized } from './unauthorized'
 export { default as InternalServer } from './internal-server'
-export { default as ErrorBoundary } from './error-boundary'
+// export { default as ErrorBoundary } from './error-boundary'
 // export { default as Maintenance } from './maintenance'
