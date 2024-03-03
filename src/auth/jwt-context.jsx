@@ -1,12 +1,6 @@
 import PropTypes from 'prop-types'
 import storage from 'redux-persist/lib/storage'
-import {
-  createContext,
-  useEffect,
-  useReducer,
-  useCallback,
-  useMemo,
-} from 'react'
+import { createContext, useEffect, useReducer, useCallback, useMemo } from 'react'
 import { CONFIG } from '../config-global'
 // utils
 import axios from '../utils/axios'
@@ -82,9 +76,7 @@ export function AuthProvider({ children }) {
 
   const initialize = useCallback(async () => {
     try {
-      const accessToken = storageAvailable
-        ? localStorage.getItem('accessToken')
-        : ''
+      const accessToken = storageAvailable ? localStorage.getItem('accessToken') : ''
 
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken)
@@ -136,11 +128,7 @@ export function AuthProvider({ children }) {
     const configsResponse = await axios.get(`${CONFIG.SERVER_URL}configs`, {
       params: { isActive: true, isArchived: false },
     })
-    if (
-      configsResponse &&
-      Array.isArray(configsResponse.data) &&
-      configsResponse.data.length > 0
-    ) {
+    if (configsResponse && Array.isArray(configsResponse.data) && configsResponse.data.length > 0) {
       const configs = configsResponse.data.map((c) => ({
         name: c.name,
         type: c.type,
@@ -178,10 +166,10 @@ export function AuthProvider({ children }) {
 
   // MULTI FACTOR CODE
   const muliFactorAuthentication = useCallback(async (code, userID) => {
-    const response = await axios.post(
-      `${CONFIG.SERVER_URL}security/multifactorverifyCode`,
-      { code, userID }
-    )
+    const response = await axios.post(`${CONFIG.SERVER_URL}security/multifactorverifyCode`, {
+      code,
+      userID,
+    })
     const { accessToken, user, userId } = response.data
     const rolesArrayString = JSON.stringify(user.roles)
     localStorage.setItem('email', user.email)
@@ -230,8 +218,7 @@ export function AuthProvider({ children }) {
       window.location.href = PATH_AUTH.login
       const keys = Object.keys(localStorage)
       const reduxPersistKeys = keys.filter(
-        (key) =>
-          !(key === 'remember' || key === 'UserEmail' || key === 'UserPassword')
+        (key) => !(key === 'remember' || key === 'UserEmail' || key === 'UserPassword')
       )
       await Promise.all(reduxPersistKeys.map((key) => storage.removeItem(key)))
     } catch (error) {
@@ -278,9 +265,5 @@ export function AuthProvider({ children }) {
     ]
   )
 
-  return (
-    <AuthContext.Provider value={memoizedValue}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>
 }
