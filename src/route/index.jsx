@@ -1,14 +1,9 @@
 import { Navigate, useRoutes } from 'react-router-dom'
-// auth
-import AuthGuard from '../auth/AuthGuard'
-import GuestGuard from '../auth/GuestGuard'
-// layouts
-import SimpleLayout from '../layouts/simple'
-import CompactLayout from '../layouts/compact'
-import DashboardLayout from '../layouts/dashboard'
-// config
-import { PATH_AFTER_LOGIN } from '../config-global'
-//
+import { AuthGuard, GuestGuard } from 'auth'
+import SimpleLayout from 'layout/simple'
+import CompactLayout from 'layout/compact'
+import DashboardLayout from 'layout/dashboard'
+import { PATH_AFTER_LOGIN } from 'global'
 import {
   // Auth
   LoginPage,
@@ -240,8 +235,7 @@ import {
   CategoryGroupViewForm,
   CategoryGroupEditForm,
   CategoryGroupList,
-} from './elements'
-// ----------------------------------------------------------------------
+} from './element'
 
 export default function Router() {
   return useRoutes([
@@ -556,7 +550,7 @@ export default function Router() {
           path: 'users',
           children: [
             {
-              element: <Navigate to='/dashboard/user/profile' replace />,
+              element: <Navigate to="/dashboard/user/profile" replace />,
               index: true,
             },
             { path: 'profile', element: <SecurityUserProfile /> },
@@ -740,9 +734,7 @@ export default function Router() {
     {
       // Main Routes
       element: <DashboardLayout />,
-      children: [
-        { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
-      ],
+      children: [{ element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true }],
     },
     {
       element: <SimpleLayout />,
@@ -759,14 +751,14 @@ export default function Router() {
         { path: 'maintenance', element: <MaintenancePage /> },
         {
           path: 'invalidErrorPage',
-          element: <ErrorPage title='Invalid Code' />,
+          element: <ErrorPage title="Invalid Code" />,
         },
         {
           path: 'expiredErrorPage',
-          element: <ErrorPage title='Invitation Expired' />,
+          element: <ErrorPage title="Invitation Expired" />,
         },
       ],
     },
-    { path: '*', element: <Navigate to='/404' replace /> },
+    { path: '*', element: <Navigate to="/404" replace /> },
   ])
 }
