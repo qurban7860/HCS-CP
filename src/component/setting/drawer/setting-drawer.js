@@ -10,7 +10,7 @@ import { NAV } from '../../../config-global'
 import Iconify from '../../iconify'
 import Scrollbar from '../../scrollbar'
 //
-import { defaultSettings } from '../config-setting'
+import { defaultSettings } from '../../../theme/default-preset'
 import { useSettingsContext } from '../setting-context'
 import Block from './block'
 import BadgeDot from './badge-dot'
