@@ -1,7 +1,7 @@
-// sections
 import Login from '../../sections/auth/Login'
-// ----------------------------------------------------------------------
 
-export default function LoginPage() {
+function LoginPage() {
   return <Login />
 }
+
+export default LoginPage
