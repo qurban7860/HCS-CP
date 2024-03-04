@@ -1,12 +1,7 @@
 import { useTranslation } from 'react-i18next'
-// utils
-import localStorageAvailable from '../utils/localStorageAvailable'
-// components
-import { useSettingsContext } from '../components/settings'
-//
+import { localStorageAvailable } from 'util'
+import { useSettingsContext } from 'component/settings'
 import { allLangs, defaultLang } from './config-lang'
-
-// ----------------------------------------------------------------------
 
 export default function useLocale() {
   const { i18n, t: translate } = useTranslation()
