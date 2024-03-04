@@ -1,43 +1,43 @@
-import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import PropTypes from 'prop-types'
+import { useEffect } from 'react'
 // @mui
-import { useTheme } from '@mui/material/styles';
-import { Stack, AppBar, Toolbar, IconButton, } from '@mui/material';
+import { useTheme } from '@mui/material/styles'
+import { Stack, AppBar, Toolbar, IconButton } from '@mui/material'
 // utils
-import { bgBlur } from '../../../utils/cssStyles';
+import { bgBlur } from '../../../utils/cssStyles'
 
 // hooks
-import useOffSetTop from '../../../hooks/useOffSetTop';
-import useResponsive from '../../../hooks/useResponsive';
+import useOffSetTop from '../../../hooks/useOffSetTop'
+import useResponsive from '../../../hooks/useResponsive'
 // config
-import { HEADER, NAV } from '../../../config-global';
+import { HEADER, NAV } from '../../../config-global'
 // components
-import Logo from '../../../components/logo';
-import Iconify from '../../../components/iconify';
-import { useSettingsContext } from '../../../components/settings';
-import AccountPopover from './AccountPopover';
-import NotificationsPopover from './NotificationsPopover';
-import { useWebSocketContext } from '../../../auth/WebSocketContext';
+import Logo from '../../../components/logo'
+import Iconify from '../../../components/iconify'
+import { useSettingsContext } from '../../../components/settings'
+import AccountPopover from './account-popover'
+import NotificationsPopover from './notification-popover'
+import { useWebSocketContext } from '../../../auth/WebSocketContext'
 
 // ----------------------------------------------------------------------
 
 Header.propTypes = {
   onOpenNav: PropTypes.func,
-};
+}
 
 export default function Header({ onOpenNav }) {
-  const theme = useTheme();
-  const { themeLayout } = useSettingsContext();
-  const isNavHorizontal = themeLayout === 'horizontal';
-  const isNavMini = themeLayout === 'mini';
-  const isDesktop = useResponsive('up', 'lg');
-  const isOffset = useOffSetTop(HEADER.H_DASHBOARD_DESKTOP) && !isNavHorizontal;
-  const { sendJsonMessage } = useWebSocketContext();
-  
-  useEffect(()=>{
-    sendJsonMessage({eventName:'getNotifications'});
-  },[sendJsonMessage])
-  
+  const theme = useTheme()
+  const { themeLayout } = useSettingsContext()
+  const isNavHorizontal = themeLayout === 'horizontal'
+  const isNavMini = themeLayout === 'mini'
+  const isDesktop = useResponsive('up', 'lg')
+  const isOffset = useOffSetTop(HEADER.H_DASHBOARD_DESKTOP) && !isNavHorizontal
+  const { sendJsonMessage } = useWebSocketContext()
+
+  useEffect(() => {
+    sendJsonMessage({ eventName: 'getNotifications' })
+  }, [sendJsonMessage])
+
   const renderContent = (
     <>
       {isDesktop && isNavHorizontal && <Logo sx={{ mr: 2.5 }} />}
@@ -46,12 +46,18 @@ export default function Header({ onOpenNav }) {
           <Iconify icon="eva:menu-2-fill" />
         </IconButton>
       )}
-      <Stack flexGrow={1} direction="row" alignItems="center" justifyContent="flex-end" spacing={{ xs: 0.5, sm: 1.5 }}>
+      <Stack
+        flexGrow={1}
+        direction="row"
+        alignItems="center"
+        justifyContent="flex-end"
+        spacing={{ xs: 0.5, sm: 1.5 }}
+      >
         <NotificationsPopover />
         <AccountPopover />
       </Stack>
     </>
-  );
+  )
 
   return (
     <AppBar
@@ -62,7 +68,7 @@ export default function Header({ onOpenNav }) {
         top: 0,
         zIndex: theme.zIndex.appBar + 1,
         ...bgBlur({
-          color: "#fff",
+          color: '#fff',
         }),
         transition: theme.transitions.create(['height'], {
           duration: theme.transitions.duration.shorter,
@@ -85,7 +91,9 @@ export default function Header({ onOpenNav }) {
         }),
       }}
     >
-      <Toolbar sx={{ height: 1, px: { lg: 5 }, color: 'text.primary', position: 'sticky'}} >{renderContent}</Toolbar>
+      <Toolbar sx={{ height: 1, px: { lg: 5 }, color: 'text.primary', position: 'sticky' }}>
+        {renderContent}
+      </Toolbar>
     </AppBar>
-  );
+  )
 }

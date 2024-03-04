@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 // @mui
-import { alpha, useTheme } from '@mui/material/styles';
+import { alpha, useTheme } from '@mui/material/styles'
 import {
   Box,
   Divider,
@@ -11,50 +11,50 @@ import {
   Tooltip,
   MenuItem,
   IconButton,
-} from '@mui/material';
+} from '@mui/material'
 // routes
-import { NAV } from '../../../config-global';
+import { NAV } from '../../../config-global'
 // auth
-import { useAuthContext } from '../../../auth/useAuthContext';
+import { useAuthContext } from '../../../auth/useAuthContext'
 // components
-import { CustomAvatar } from '../../../components/custom-avatar';
-import { useSnackbar } from '../../../components/snackbar';
-import MenuPopover from '../../../components/menu-popover';
-import { IconButtonAnimate } from '../../../components/animate';
+import { CustomAvatar } from '../../../components/custom-avatar'
+import { useSnackbar } from '../../../components/snackbar'
+import MenuPopover from '../../../components/menu-popover'
+import { IconButtonAnimate } from '../../../components/animate'
 // import Drawer
-import SettingsDrawer from '../../../components/settings/drawer';
-import LayoutOptions from '../../../components/settings/drawer/LayoutOptions';
-import Block from '../../../components/settings/drawer/Block';
-import ModeOptions from '../../../components/settings/drawer/ModeOptions';
-import ContrastOptions from '../../../components/settings/drawer/ContrastOptions';
-import DirectionOptions from '../../../components/settings/drawer/DirectionOptions';
-import StretchOptions from '../../../components/settings/drawer/StretchOptions';
-import ColorPresetsOptions from '../../../components/settings/drawer/ColorPresetsOptions';
-import FullScreenOptions from '../../../components/settings/drawer/FullScreenOptions';
-import { bgBlur } from '../../../utils/cssStyles';
-import { useSettingsContext } from '../../../components/settings';
-import { defaultSettings } from '../../../components/settings/config-setting';
-import Iconify from '../../../components/iconify';
-import Scrollbar from '../../../components/scrollbar';
-import { TITLES } from '../../../constants/default-constants';
-import { OPTIONS } from './util/OptionsListItems';
+import SettingsDrawer from '../../../components/settings/drawer'
+import LayoutOptions from '../../../components/settings/drawer/LayoutOptions'
+import Block from '../../../components/settings/drawer/Block'
+import ModeOptions from '../../../components/settings/drawer/ModeOptions'
+import ContrastOptions from '../../../components/settings/drawer/ContrastOptions'
+import DirectionOptions from '../../../components/settings/drawer/DirectionOptions'
+import StretchOptions from '../../../components/settings/drawer/StretchOptions'
+import ColorPresetsOptions from '../../../components/settings/drawer/ColorPresetsOptions'
+import FullScreenOptions from '../../../components/settings/drawer/FullScreenOptions'
+import { bgBlur } from '../../../utils/cssStyles'
+import { useSettingsContext } from '../../../components/settings'
+import { defaultSettings } from '../../../components/settings/config-setting'
+import Iconify from '../../../components/iconify'
+import Scrollbar from '../../../components/scrollbar'
+import { TITLES } from '../../../constants/default-constants'
+import { OPTIONS } from './util/option-list-items'
 
 // ----------------------------------------------------------------------
-const SPACING = 2.5;
+const SPACING = 2.5
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
-  const theme = useTheme();
-  const navigate = useNavigate();
-  const { user, logout } = useAuthContext();
+  const theme = useTheme()
+  const navigate = useNavigate()
+  const { user, logout } = useAuthContext()
 
   const email = localStorage.getItem('email')
   const displayName = localStorage.getItem('name')
 
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar()
 
-  const [openPopover, setOpenPopover] = useState(null);
+  const [openPopover, setOpenPopover] = useState(null)
 
   const {
     themeMode,
@@ -64,42 +64,42 @@ export default function AccountPopover() {
     themeDirection,
     themeColorPresets,
     onResetSetting,
-  } = useSettingsContext();
-  
+  } = useSettingsContext()
+
   const handleOpenPopover = (event) => {
-    setOpenPopover(event.currentTarget);
-  };
+    setOpenPopover(event.currentTarget)
+  }
 
   const handleClosePopover = () => {
-    setOpenPopover(null);
-  };
+    setOpenPopover(null)
+  }
 
   const handleLogout = async () => {
     try {
-      logout();
-      handleClosePopover();
+      logout()
+      handleClosePopover()
     } catch (error) {
-      console.error(error);
-      enqueueSnackbar('Unable to logout!', { variant: 'error' });
+      console.error(error)
+      enqueueSnackbar('Unable to logout!', { variant: 'error' })
     }
-  };
+  }
 
   // for settings drawer
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   const handleToggle = () => {
-    setOpen(!open);
-    handleClosePopover();
-  };
+    setOpen(!open)
+    handleClosePopover()
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const handleClickItem = (path) => {
-    handleClosePopover();
-    navigate(path || setOpen(!open));
-  };
+    handleClosePopover()
+    navigate(path || setOpen(!open))
+  }
 
   const notDefault =
     themeMode !== defaultSettings.themeMode ||
@@ -107,7 +107,7 @@ export default function AccountPopover() {
     themeStretch !== defaultSettings.themeStretch ||
     themeContrast !== defaultSettings.themeContrast ||
     themeDirection !== defaultSettings.themeDirection ||
-    themeColorPresets !== defaultSettings.themeColorPresets;
+    themeColorPresets !== defaultSettings.themeColorPresets
 
   return (
     <>
@@ -137,7 +137,7 @@ export default function AccountPopover() {
             {user?.displayName || displayName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {user?.login || email }
+            {user?.login || email}
           </Typography>
         </Box>
         <Divider sx={{ borderStyle: 'solid' }} />
@@ -149,8 +149,8 @@ export default function AccountPopover() {
           ))}
           <MenuItem
             onClick={() => {
-              handleToggle();
-              SettingsDrawer();
+              handleToggle()
+              SettingsDrawer()
             }}
             onClose={handleClose}
           >
@@ -244,5 +244,5 @@ export default function AccountPopover() {
         </Drawer>
       </>
     </>
-  );
+  )
 }
