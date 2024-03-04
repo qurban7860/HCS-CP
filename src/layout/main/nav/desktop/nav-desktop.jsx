@@ -1,15 +1,15 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // @mui
-import { Stack } from '@mui/material';
+import { Stack } from '@mui/material'
 //
-import NavList from './NavList';
+import NavList from './nav-list'
 
 // ----------------------------------------------------------------------
 
 NavDesktop.propTypes = {
   data: PropTypes.array,
   isOffset: PropTypes.bool,
-};
+}
 
 export default function NavDesktop({ isOffset, data }) {
   return (
@@ -18,5 +18,5 @@ export default function NavDesktop({ isOffset, data }) {
         <NavList key={link.title} item={link} isOffset={isOffset} />
       ))}
     </Stack>
-  );
+  )
 }

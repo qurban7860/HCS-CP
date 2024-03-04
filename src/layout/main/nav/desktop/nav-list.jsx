@@ -1,46 +1,44 @@
-import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import PropTypes from 'prop-types'
+import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 // @mui
-import { Stack, Fade, Portal } from '@mui/material';
-// hooks
-import useActiveLink from '../../../../hooks/useActiveLink';
-//
-import { NavItem, NavItemDashboard } from './NavItem';
-import { StyledSubheader, StyledMenu } from './styles';
+import { Stack, Fade, Portal } from '@mui/material'
+import { useActiveLink } from 'hook'
+import { NavItem, NavItemDashboard } from './nav-item'
+import { StyledSubheader, StyledMenu } from './styles'
 
 // ----------------------------------------------------------------------
 
 NavList.propTypes = {
   item: PropTypes.object,
   isOffset: PropTypes.bool,
-};
+}
 
 export default function NavList({ item, isOffset }) {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation()
 
-  const [openMenu, setOpenMenu] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false)
 
-  const { path, children } = item;
+  const { path, children } = item
 
-  const { active, isExternalLink } = useActiveLink(path, false);
+  const { active, isExternalLink } = useActiveLink(path, false)
 
   useEffect(() => {
     if (openMenu) {
-      handleCloseMenu();
+      handleCloseMenu()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname])
 
   const handleOpenMenu = () => {
     if (children) {
-      setOpenMenu(true);
+      setOpenMenu(true)
     }
-  };
+  }
 
   const handleCloseMenu = () => {
-    setOpenMenu(false);
-  };
+    setOpenMenu(false)
+  }
 
   return (
     <>
@@ -72,7 +70,7 @@ export default function NavList({ item, isOffset }) {
         </Portal>
       )}
     </>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
@@ -82,12 +80,12 @@ NavSubList.propTypes = {
   onClose: PropTypes.func,
   isDashboard: PropTypes.bool,
   subheader: PropTypes.string,
-};
+}
 
 function NavSubList({ items, isDashboard, subheader, onClose }) {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation()
 
-  const isActive = (path) => pathname === path;
+  const isActive = (path) => pathname === path
 
   return (
     <Stack spacing={2.5} gridColumn={isDashboard ? 'span 6' : 'span 2'} alignItems="flex-start">
@@ -107,5 +105,5 @@ function NavSubList({ items, isDashboard, subheader, onClose }) {
         )
       )}
     </Stack>
-  );
+  )
 }
