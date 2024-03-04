@@ -3,9 +3,9 @@ import { createContext, useEffect, useContext, useMemo, useCallback } from 'reac
 // hooks
 import useLocalStorage from '../../hook/use-local-storage'
 // utils
-import localStorageAvailable from '../../utils/localStorageAvailable'
-import { defaultSettings } from './config-setting'
-import { defaultPreset, getPresets, presetsOption } from './presets'
+import localStorageAvailable from 'util/local-storage-space'
+import { defaultSettings } from '../../theme/default-preset'
+import { defaultPreset, getPresets, presetsOption } from '../../theme/preset'
 
 // ----------------------------------------------------------------------
 
