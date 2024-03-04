@@ -25,10 +25,10 @@ export default defineConfig({
       theme: path.resolve(__dirname, 'src', 'theme'),
       util: path.resolve(__dirname, 'src', 'util'),
       // @pages
-      dashboard: path.resolve(__dirname, 'src', 'pages', 'dashboard'),
-      customer: path.resolve(__dirname, 'src', 'pages', 'customer'),
-      machine: path.resolve(__dirname, 'src', 'pages', 'machine'),
-      document: path.resolve(__dirname, 'src', 'pages', 'document'),
+      dashboard: path.resolve(__dirname, 'src', 'page', 'dashboard'),
+      customer: path.resolve(__dirname, 'src', 'page', 'customer'),
+      machine: path.resolve(__dirname, 'src', 'page', 'machine'),
+      document: path.resolve(__dirname, 'src', 'page', 'document'),
     },
   },
 })
