@@ -1,29 +1,25 @@
-import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-// @mui
-import { Collapse } from '@mui/material';
-// hooks
-import useActiveLink from '../../../../hooks/useActiveLink';
-// components
-import { NavSectionVertical } from '../../../../components/nav-section';
-//
-import NavItem from './NavItem';
+import PropTypes from 'prop-types'
+import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import { Collapse } from '@mui/material'
+import { useActiveLink } from 'hook'
+import { NavSectionVertical } from 'component/nav-section'
+import NavItem from './nav-item'
 
 // ----------------------------------------------------------------------
 
 NavList.propTypes = {
   item: PropTypes.object,
-};
+}
 
 export default function NavList({ item }) {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation()
 
-  const { path, children } = item;
+  const { path, children } = item
 
-  const { isExternalLink } = useActiveLink(path);
+  const { isExternalLink } = useActiveLink(path)
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   return (
     <>
@@ -54,5 +50,5 @@ export default function NavList({ item }) {
         </Collapse>
       )}
     </>
-  );
+  )
 }

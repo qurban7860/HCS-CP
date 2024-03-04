@@ -1,43 +1,37 @@
-import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-// @mui
-import { List, Drawer, IconButton } from '@mui/material';
-// config
-import { NAV } from '../../../../config-global';
-// components
-import Logo from '../../../../components/logo';
-import Iconify from '../../../../components/iconify';
-import Scrollbar from '../../../../components/scrollbar';
-//
-import NavList from './NavList';
-
-// ----------------------------------------------------------------------
+import PropTypes from 'prop-types'
+import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+import { List, Drawer, IconButton } from '@mui/material'
+import { NAV } from '../../../../config-global'
+import { Logo } from 'component/logo'
+import { Iconify } from 'component/iconify'
+import { Scrollbar } from 'component/scrollbar'
+import NavList from './nav-list'
 
 NavMobile.propTypes = {
   data: PropTypes.array,
   isOffset: PropTypes.bool,
-};
+}
 
 export default function NavMobile({ isOffset, data }) {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation()
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     if (open) {
-      handleClose();
+      handleClose()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname])
 
   const handleOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <>
@@ -74,5 +68,5 @@ export default function NavMobile({ isOffset, data }) {
         </Scrollbar>
       </Drawer>
     </>
-  );
+  )
 }
