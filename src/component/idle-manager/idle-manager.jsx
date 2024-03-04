@@ -3,10 +3,7 @@ import { LoadingButton } from '@mui/lab'
 import { useIdleTimer } from 'react-idle-timer'
 import { useAuthContext } from '../../auth/useAuthContext'
 import { CONFIG } from '../../config-global'
-// import useIdleTimeout from '../../utils/useIdleTimeout';
 import ConfirmDialog from '../confirm-dialog'
-
-// ----------------------------------------------------------------------
 
 const IdleManager = () => {
   const [openModal, setOpenModal] = useState(false)
