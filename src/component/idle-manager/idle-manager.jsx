@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { LoadingButton } from '@mui/lab'
 import { useIdleTimer } from 'react-idle-timer'
-import { useAuthContext } from '../../auth/useAuthContext'
+import { useAuthContext } from 'auth'
 import { CONFIG } from '../../config-global'
 import ConfirmDialog from '../confirm-dialog'
 
