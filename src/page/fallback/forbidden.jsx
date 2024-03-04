@@ -1,8 +1,7 @@
 import { Button, Typography, Grid } from '@mui/material'
 import { useMemo } from 'react'
-// components
-import { MotionContainer } from '../components/animate'
-import Logo from '../components/logo'
+import { MotionContainer } from 'component/animate'
+import Logo from 'component/logo'
 
 // ----------------------------------------------------------------------
 

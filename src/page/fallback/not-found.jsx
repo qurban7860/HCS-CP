@@ -1,9 +1,7 @@
-// @mui
 import { Button, Typography, Grid } from '@mui/material'
 import { useMemo } from 'react'
-// components
-import { MotionContainer } from '../components/animate'
-import Logo from '../components/logo'
+import { MotionContainer } from 'component/animate'
+import Logo from 'component/logo'
 
 function NotFound() {
   const configurations = JSON.parse(localStorage.getItem('configurations'))
@@ -18,8 +16,7 @@ function NotFound() {
         content?.notes ||
         "Sorry, we couldn't find the page you're looking for. Perhaps you've mistyped the URL? Be sure to check your spelling",
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [content?.value, content?.notes]
   )
 
   return (
