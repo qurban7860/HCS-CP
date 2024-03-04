@@ -1,6 +1,5 @@
 import { Suspense, lazy } from 'react'
-// components
-import LoadingScreen from '../components/loading-screen'
+import { LoadingScreen } from 'component/loading-screen'
 
 // ----------------------------------------------------------------------
 
@@ -14,7 +13,7 @@ const Loadable = (Component) => (props) =>
 // ----------------------------------------------------------------------
 
 // AUTH
-export const LoginPage = Loadable(lazy(() => import('../pages/auth/LoginPage')))
+export const { LoginPage } = Loadable(lazy(() => import('page/auth')))
 export const RegisterPage = Loadable(lazy(() => import('../pages/auth/RegisterPage')))
 export const VerifyCodePage = Loadable(lazy(() => import('../pages/auth/VerifyCodePage')))
 export const NewPasswordPage = Loadable(lazy(() => import('../pages/auth/NewPasswordPage')))
@@ -301,73 +300,73 @@ export const ServiceRecordConfigEditForm = Loadable(
   lazy(() => import('../pages/machine/ServiceRecordConfig/ServiceRecordConfigEditForm'))
 )
 
-// Document dashboard
-export const DocumentList = Loadable(
-  lazy(() => import('../pages/document/documents/GlobalDocument'))
-)
-export const DocumentAddForm = Loadable(
-  lazy(() => import('../pages/document/documents/DocumentAddForm'))
-)
-export const DocumentEditForm = Loadable(
-  lazy(() => import('../pages/document/documents/DocumentEditForm'))
-)
-export const DocumentViewForm = Loadable(
-  lazy(() => import('../pages/document/documents/DocumentHistoryViewForm'))
-)
-export const DocumentGallery = Loadable(
-  lazy(() => import('../pages/document/documents/DocumentGallery'))
-)
+// // Document dashboard
+// export const DocumentList = Loadable(
+//   lazy(() => import('../pages/document/documents/GlobalDocument'))
+// )
+// export const DocumentAddForm = Loadable(
+//   lazy(() => import('../pages/document/documents/DocumentAddForm'))
+// )
+// export const DocumentEditForm = Loadable(
+//   lazy(() => import('../pages/document/documents/DocumentEditForm'))
+// )
+// export const DocumentViewForm = Loadable(
+//   lazy(() => import('../pages/document/documents/DocumentHistoryViewForm'))
+// )
+// export const DocumentGallery = Loadable(
+//   lazy(() => import('../pages/document/documents/DocumentGallery'))
+// )
 
-// Machine Drawings dashboard
-export const MachineDrawings = Loadable(
-  lazy(() => import('../pages/document/documents/MachineDrawings'))
-)
-export const MachineDrawingsAddForm = Loadable(
-  lazy(() => import('../pages/document/documents/MachineDrawingsAddForm'))
-)
-export const MachineDrawingsViewForm = Loadable(
-  lazy(() => import('../pages/document/documents/MachineDrawingsViewForm'))
-)
+// // Machine Drawings dashboard
+// export const MachineDrawings = Loadable(
+//   lazy(() => import('../pages/document/documents/MachineDrawings'))
+// )
+// export const MachineDrawingsAddForm = Loadable(
+//   lazy(() => import('../pages/document/documents/MachineDrawingsAddForm'))
+// )
+// export const MachineDrawingsViewForm = Loadable(
+//   lazy(() => import('../pages/document/documents/MachineDrawingsViewForm'))
+// )
 
-// Document Name
-export const DocumentNameAddForm = Loadable(
-  lazy(() => import('../pages/document/documentType/DocumentTypeAddForm'))
-)
-export const DocumentNameList = Loadable(
-  lazy(() => import('../pages/document/documentType/DocumentTypeList'))
-)
-export const DocumentNameViewForm = Loadable(
-  lazy(() => import('../pages/document/documentType/DocumentTypeView'))
-)
-export const DocumentNameEditForm = Loadable(
-  lazy(() => import('../pages/document/documentType/DocumentTypeEditForm'))
-)
+// // Document Name
+// export const DocumentNameAddForm = Loadable(
+//   lazy(() => import('../pages/document/documentType/DocumentTypeAddForm'))
+// )
+// export const DocumentNameList = Loadable(
+//   lazy(() => import('../pages/document/documentType/DocumentTypeList'))
+// )
+// export const DocumentNameViewForm = Loadable(
+//   lazy(() => import('../pages/document/documentType/DocumentTypeView'))
+// )
+// export const DocumentNameEditForm = Loadable(
+//   lazy(() => import('../pages/document/documentType/DocumentTypeEditForm'))
+// )
 
-// Fime Category
-export const DocumentCategoryAddForm = Loadable(
-  lazy(() => import('../pages/document/documentCategory/DocumentCategoryAddForm'))
-)
-export const DocumentCategoryList = Loadable(
-  lazy(() => import('../pages/document/documentCategory/DocumentCategoryList'))
-)
-export const DocumentCategoryView = Loadable(
-  lazy(() => import('../pages/document/documentCategory/DocumentCategoryView'))
-)
-export const DocumentCategoryEditForm = Loadable(
-  lazy(() => import('../pages/document/documentCategory/DocumentCategoryEditForm'))
-)
+// // Fime Category
+// export const DocumentCategoryAddForm = Loadable(
+//   lazy(() => import('../pages/document/documentCategory/DocumentCategoryAddForm'))
+// )
+// export const DocumentCategoryList = Loadable(
+//   lazy(() => import('../pages/document/documentCategory/DocumentCategoryList'))
+// )
+// export const DocumentCategoryView = Loadable(
+//   lazy(() => import('../pages/document/documentCategory/DocumentCategoryView'))
+// )
+// export const DocumentCategoryEditForm = Loadable(
+//   lazy(() => import('../pages/document/documentCategory/DocumentCategoryEditForm'))
+// )
 
-// Configs
-export const RegionAdd = Loadable(lazy(() => import('../pages/region/RegionAdd')))
-export const RegionList = Loadable(lazy(() => import('../pages/region/RegionList')))
-export const RegionEdit = Loadable(lazy(() => import('../pages/region/RegionEdit')))
-export const RegionView = Loadable(lazy(() => import('../pages/region/RegionView')))
+// // Configs
+// export const RegionAdd = Loadable(lazy(() => import('../pages/region/RegionAdd')))
+// export const RegionList = Loadable(lazy(() => import('../pages/region/RegionList')))
+// export const RegionEdit = Loadable(lazy(() => import('../pages/region/RegionEdit')))
+// export const RegionView = Loadable(lazy(() => import('../pages/region/RegionView')))
 
-// Modules
-export const ModuleAdd = Loadable(lazy(() => import('../pages/module/ModuleAdd')))
-export const ModuleList = Loadable(lazy(() => import('../pages/module/ModuleList')))
-export const ModuleEdit = Loadable(lazy(() => import('../pages/module/ModuleEdit')))
-export const ModuleView = Loadable(lazy(() => import('../pages/module/ModuleView')))
+// // Modules
+// export const ModuleAdd = Loadable(lazy(() => import('../pages/module/ModuleAdd')))
+// export const ModuleList = Loadable(lazy(() => import('../pages/module/ModuleList')))
+// export const ModuleEdit = Loadable(lazy(() => import('../pages/module/ModuleEdit')))
+// export const ModuleView = Loadable(lazy(() => import('../pages/module/ModuleView')))
 
 // Configuration
 export const ConfigurationAdd = Loadable(
@@ -385,17 +384,17 @@ export const ConfigurationView = Loadable(
 
 // Configs
 
-export const ConfigAdd = Loadable(lazy(() => import('../pages/config/ConfigAdd')))
-export const ConfigList = Loadable(lazy(() => import('../pages/config/ConfigList')))
-export const ConfigEdit = Loadable(lazy(() => import('../pages/config/ConfigEdit')))
-export const ConfigView = Loadable(lazy(() => import('../pages/config/ConfigView')))
+// export const ConfigAdd = Loadable(lazy(() => import('../pages/config/ConfigAdd')))
+// export const ConfigList = Loadable(lazy(() => import('../pages/config/ConfigList')))
+// export const ConfigEdit = Loadable(lazy(() => import('../pages/config/ConfigEdit')))
+// export const ConfigView = Loadable(lazy(() => import('../pages/config/ConfigView')))
 
 // Configs
 
-export const DepartmentAdd = Loadable(lazy(() => import('../pages/Department/DepartmentAddForm')))
-export const DepartmentList = Loadable(lazy(() => import('../pages/Department/DepartmentList')))
-export const DepartmentEdit = Loadable(lazy(() => import('../pages/Department/DepartmentEditForm')))
-export const DepartmentView = Loadable(lazy(() => import('../pages/Department/DepartmentView')))
+// export const DepartmentAdd = Loadable(lazy(() => import('../pages/Department/DepartmentAddForm')))
+// export const DepartmentList = Loadable(lazy(() => import('../pages/Department/DepartmentList')))
+// export const DepartmentEdit = Loadable(lazy(() => import('../pages/Department/DepartmentEditForm')))
+// export const DepartmentView = Loadable(lazy(() => import('../pages/Department/DepartmentView')))
 
 // DASHBOARD: SETTINGS
 export const Setting = Loadable(lazy(() => import('../pages/setting/Setting')))
@@ -412,7 +411,6 @@ export const Reports = Loadable(lazy(() => import('../pages/Reports/Reports')))
 export const PermissionDeniedPage = Loadable(
   lazy(() => import('../pages/dashboard/PermissionDeniedPage'))
 )
-
 // BLANK PAGE
 export const BlankPage = Loadable(lazy(() => import('../pages/dashboard/BlankPage')))
 
