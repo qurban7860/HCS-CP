@@ -1,38 +1,40 @@
-// import { Helmet } from 'react-helmet-async';
-import { Link as RouterLink } from 'react-router-dom';
-// @mui
-import { Link, Typography, Box} from '@mui/material';
-// routes
-import { PATH_AUTH } from '../../routes/paths';
-// components
-import Iconify from '../../components/iconify';
+import { Link as RouterLink } from 'react-router-dom'
+import { Link, Typography, Box } from '@mui/material'
+import { PATH_AUTH } from '../../routes/paths'
+import Iconify from '../../components/iconify'
 import Logo from '../../components/logo'
-// sections
-import AuthNewPasswordForm from '../../sections/auth/AuthNewPasswordForm';
-// assets
-import { SentIcon } from '../../assets/icons';
-import { MotionContainer } from '../../components/animate';
+import AuthNewPasswordForm from '../../sections/auth/AuthNewPasswordForm'
+import { SentIcon } from '../../assets/icons'
+import { MotionContainer } from 'component/animate'
 
 // ----------------------------------------------------------------------
 
 export default function NewPasswordPage() {
   return (
     <MotionContainer>
-     <Box sx={{ position: 'relative'}}>
-      <Logo
+      <Box sx={{ position: 'relative' }}>
+        <Logo
           width={450}
           sx={{
             margin: 'auto',
             filter: 'grayscale(100%) opacity(30%)',
             pointerEvents: 'none',
-            padding: '3rem 0'
+            padding: '3rem 0',
           }}
         />
-        <SentIcon sx={{ position: 'absolute', width: '10%', top: '100px', right: '100px', transform: 'rotate(20deg)'}}/>
+        <SentIcon
+          sx={{
+            position: 'absolute',
+            width: '10%',
+            top: '100px',
+            right: '100px',
+            transform: 'rotate(20deg)',
+          }}
+        />
       </Box>
 
       <Typography variant="h4" paragraph>
-         Enter New Password
+        Enter New Password
       </Typography>
 
       <AuthNewPasswordForm />
@@ -58,5 +60,5 @@ export default function NewPasswordPage() {
         Return to sign in
       </Link>
     </MotionContainer>
-  );
+  )
 }
