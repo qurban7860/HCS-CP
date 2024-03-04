@@ -5,7 +5,7 @@ import { Box } from '@mui/material'
 // hooks
 import useResponsive from '../../hook/use-responsive'
 //
-import { varContainer } from './variants'
+import { varContainer } from './variant'
 
 // ----------------------------------------------------------------------
 

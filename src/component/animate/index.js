@@ -1,4 +1,4 @@
-export * from './variants'
+export * from './variant'
 
 export { default as DialogAnimate } from './dialog-animate'
 export { default as TextAnimate } from './text-animate'
