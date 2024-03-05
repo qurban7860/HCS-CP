@@ -1,35 +1,36 @@
 // import { Helmet } from 'react-helmet-async';
-import { Link as RouterLink } from 'react-router-dom';
-// @mui
-import { Box, Link, Typography } from '@mui/material';
-// routes
-import { PATH_AUTH } from '../../routes/paths';
-// components
-import Iconify from '../../components/iconify';
-import Logo from '../../components/logo';
-// sections
-import AuthResetPasswordForm from '../../sections/auth/AuthResetPasswordForm';
-// assets
-import { PasswordIcon } from '../../assets/icons';
-import { MotionContainer } from '../../components/animate';
-import { TITLES } from '../../constants/default-constants';
+import { Link as RouterLink } from 'react-router-dom'
+import { Box, Link, Typography } from '@mui/material'
+import { PATH_AUTH } from 'route/path'
+import { Iconify } from 'component/iconify'
+import { Logo } from 'component/logo'
+import { AuthResetPasswordForm } from 'section/auth'
+import { PasswordIcon } from 'theme/asset/jsx'
+import { MotionContainer } from 'component/animate'
+import { TITLES } from 'constant/default-constants'
 
-// ----------------------------------------------------------------------
-
-export default function ResetPasswordPage() {
+function ResetPasswordPage() {
   return (
-   <MotionContainer>
-    <Box sx={{ position: 'relative'}}>
-      <Logo
+    <MotionContainer>
+      <Box sx={{ position: 'relative' }}>
+        <Logo
           width={450}
           sx={{
             margin: 'auto',
             filter: 'grayscale(100%) opacity(30%)',
             pointerEvents: 'none',
-            padding: '3rem 0'
+            padding: '3rem 0',
           }}
         />
-        <PasswordIcon sx={{ position: 'absolute', width: '10%', top: '100px', right: '100px', transform: 'rotate(30deg)'}}/>
+        <PasswordIcon
+          sx={{
+            position: 'absolute',
+            width: '10%',
+            top: '100px',
+            right: '100px',
+            transform: 'rotate(30deg)',
+          }}
+        />
       </Box>
       <Typography variant="h3" paragraph>
         {TITLES.FORGOT_PASSWORD}
@@ -54,5 +55,7 @@ export default function ResetPasswordPage() {
         {TITLES.FORGOT_RETURN}
       </Link>
     </MotionContainer>
-  );
+  )
 }
+
+export default ResetPasswordPage
