@@ -10,3 +10,4 @@ export { default as MotionViewport } from './motion-viewport'
 export { default as MotionContainer } from './motion-container'
 
 export { default as MotionLazyContainer } from './motion-lazy-container'
+export { default as domMax } from './feature'
