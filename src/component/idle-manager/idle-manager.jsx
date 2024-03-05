@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { LoadingButton } from '@mui/lab'
 import { useIdleTimer } from 'react-idle-timer'
 import { useAuthContext } from 'auth'
-import { CONFIG } from '../../config-global'
-import ConfirmDialog from '../confirm-dialog'
+import { CONFIG } from 'global'
+import { ConfirmDialog } from 'component/dialog'
 
 const IdleManager = () => {
   const [openModal, setOpenModal] = useState(false)
