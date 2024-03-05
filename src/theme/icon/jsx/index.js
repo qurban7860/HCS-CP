@@ -1,6 +1,3 @@
 export { default as SentIcon } from './sent-icon'
 export { default as PasswordIcon } from './password-icon'
-export { default as PlanFreeIcon } from './planFreeIcon'
 export { default as EmailInboxIcon } from './email-inbox-icon'
-export { default as PlanStarterIcon } from './PlanStarterIcon'
-export { default as PlanPremiumIcon } from './PlanPremiumIcon'
