@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { localStorageAvailable } from 'util'
-import { useSettingsContext } from 'component/settings'
+import { useSettingsContext } from 'component/setting'
 import { allLangs, defaultLang } from './config-lang'
 
 export default function useLocale() {
