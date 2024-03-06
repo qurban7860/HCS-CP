@@ -1,16 +1,13 @@
 import { m } from 'framer-motion'
 import { useLocation } from 'react-router-dom'
-// @mui
 import { alpha, styled } from '@mui/material/styles'
 import { Box, LinearProgress } from '@mui/material'
 import { useResponsive } from 'hook'
-import { NAV } from '../../config-global'
-import { useAuthContext } from '../../auth/useAuthContext'
-import Logo from '../logo-loading'
+import { NAV } from 'global'
+import { useAuthContext } from 'auth'
+import { Logo } from 'component/logo'
 import ProgressBar from '../progress-bar'
 import { useSettingsContext } from 'component/setting'
-
-// ----------------------------------------------------------------------
 
 const StyledRoot = styled('div')(({ theme }) => ({
   right: 0,
@@ -24,8 +21,6 @@ const StyledRoot = styled('div')(({ theme }) => ({
   justifyContent: 'center',
   backgroundColor: theme.palette.background.default,
 }))
-
-// ----------------------------------------------------------------------
 
 function LoadingScreen() {
   const { pathname } = useLocation()
