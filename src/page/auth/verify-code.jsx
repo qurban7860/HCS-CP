@@ -1,18 +1,9 @@
-// import { Helmet } from 'react-helmet-async';
-import { Link as RouterLink } from 'react-router-dom';
-// @mui
-import { Link, Typography } from '@mui/material';
-// routes
-import { PATH_AUTH } from '../../routes/paths';
-// components
-import Iconify from '../../components/iconify';
-// sections
-import AuthVerifyCodeForm from '../../sections/auth/AuthVerifyCodeForm';
-// assets
-import { EmailInboxIcon } from '../../assets/icons';
-// import { CONFIG } from '../../config-global';
-
-// ----------------------------------------------------------------------
+import { Link as RouterLink } from 'react-router-dom'
+import { Link, Typography } from '@mui/material'
+import { PATH_AUTH } from 'route/paths'
+import { Iconify } from 'component/iconify'
+import { AuthVerifyCodeForm } from 'section/auth'
+import { EmailInboxIcon } from 'theme/icon'
 
 export default function VerifyCodePage() {
   return (
@@ -54,5 +45,5 @@ export default function VerifyCodePage() {
         Return to sign in
       </Link>
     </>
-  );
+  )
 }
