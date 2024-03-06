@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react'
-import { localStorageAvailable } from 'util'
-
-// ----------------------------------------------------------------------
+import { localStorageSpace } from 'util'
 
 function useLocalStorage(key, defaultValue) {
-  const storageAvailable = localStorageAvailable()
+  const storageAvailable = localStorageSpace()
 
   const [value, setValue] = useState(() => {
     const storedValue = storageAvailable ? localStorage.getItem(key) : null
