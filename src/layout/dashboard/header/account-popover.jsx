@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-// @mui
 import { alpha, useTheme } from '@mui/material/styles'
 import {
   Box,
@@ -12,48 +11,39 @@ import {
   MenuItem,
   IconButton,
 } from '@mui/material'
-// routes
-import { NAV } from '../../../config-global'
-// auth
-import { useAuthContext } from '../../../auth/useAuthContext'
-// components
-import { CustomAvatar } from '../../../components/custom-avatar'
-import { useSnackbar } from '../../../components/snackbar'
-import MenuPopover from '../../../components/menu-popover'
-import { IconButtonAnimate } from '../../../components/animate'
-// import Drawer
-import SettingsDrawer from '../../../components/settings/drawer'
-import LayoutOptions from '../../../components/settings/drawer/LayoutOptions'
-import Block from '../../../components/settings/drawer/Block'
-import ModeOptions from '../../../components/settings/drawer/ModeOptions'
-import ContrastOptions from '../../../components/settings/drawer/ContrastOptions'
-import DirectionOptions from '../../../components/settings/drawer/DirectionOptions'
-import StretchOptions from '../../../components/settings/drawer/StretchOptions'
-import ColorPresetsOptions from '../../../components/settings/drawer/ColorPresetsOptions'
-import FullScreenOptions from '../../../components/settings/drawer/FullScreenOptions'
-import { bgBlur } from '../../../utils/cssStyles'
-import { useSettingsContext } from '../../../components/settings'
-import { defaultSettings } from '../../../components/settings/config-setting'
-import Iconify from '../../../components/iconify'
-import Scrollbar from '../../../components/scrollbar'
-import { TITLES } from '../../../constants/default-constants'
+import { NAV } from 'config'
+import { useAuthContext } from 'auth'
+import { CustomAvatar } from 'component/custom-avatar'
+import { useSnackbar } from 'component/snackbar'
+import { MenuPopover } from 'component/menu-popover'
+import { IconButtonAnimate } from 'component/animate'
+import {
+  Block,
+  ModeOptions,
+  ContrastOption,
+  DirectionOption,
+  StretchOption,
+  ColorPresetOption,
+  FullScreenOption,
+  LayoutOption,
+  SettingDrawer,
+} from 'component/setting'
+import { bgBlur } from 'theme/style'
+import { useSettingsContext } from 'component/setting'
+import { themePreset } from 'theme'
+import { Iconify, Scrollbar } from 'component/iconify'
+import { TITLES } from 'constant'
 import { OPTIONS } from './util/option-list-items'
 
-// ----------------------------------------------------------------------
 const SPACING = 2.5
-
-// ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const theme = useTheme()
   const navigate = useNavigate()
   const { user, logout } = useAuthContext()
-
   const email = localStorage.getItem('email')
   const displayName = localStorage.getItem('name')
-
   const { enqueueSnackbar } = useSnackbar()
-
   const [openPopover, setOpenPopover] = useState(null)
 
   const {
@@ -84,7 +74,6 @@ export default function AccountPopover() {
     }
   }
 
-  // for settings drawer
   const [open, setOpen] = useState(false)
 
   const handleToggle = () => {
@@ -123,7 +112,6 @@ export default function AccountPopover() {
               height: '100%',
               borderRadius: '50%',
               position: 'absolute',
-              // bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8),
             },
           }),
         }}
@@ -218,28 +206,28 @@ export default function AccountPopover() {
             </Block>
 
             <Block title={TITLES.CONTRAST}>
-              <ContrastOptions />
+              <ContrastOption />
             </Block>
 
             <Block title={TITLES.DIRECTION}>
-              <DirectionOptions />
+              <DirectionOption />
             </Block>
 
             <Block title={TITLES.LAYOUT}>
-              <LayoutOptions />
+              <LayoutOption />
             </Block>
 
             <Block title={TITLES.STRETCH.label} tooltip={TITLES.STRETCH.tooltip}>
-              <StretchOptions />
+              <StretchOption />
             </Block>
 
             <Block title={TITLES.PRESETS}>
-              <ColorPresetsOptions />
+              <ColorPresetOption />
             </Block>
           </Scrollbar>
 
           <Box sx={{ p: SPACING, pt: 0 }}>
-            <FullScreenOptions />
+            <FullScreenOption />
           </Box>
         </Drawer>
       </>

@@ -14,17 +14,13 @@ import {
   Autocomplete,
   Typography,
 } from '@mui/material'
-// utils
-import { CONFIG } from '../../../config-global'
-
-import { bgBlur } from '../../../utils/cssStyles'
-import flattenArray from '../../../utils/flattenArray'
-// components
-import Iconify from '../../../components/iconify'
-import { IconButtonAnimate } from '../../../components/animate'
-import SearchNotFound from '../../../components/search-not-found'
-//
-import NavConfig from '../nav/nav-config'
+import { CONFIG } from 'global'
+import { bgBlur } from 'theme/style'
+import { flattenArray } from 'util'
+import { Iconify } from 'component/iconify'
+import { IconButtonAnimate } from 'component/animate'
+import { SearchNotFound } from 'component/search-not-found'
+import { NavConfig } from 'layout/dashboard'
 
 // ----------------------------------------------------------------------
 

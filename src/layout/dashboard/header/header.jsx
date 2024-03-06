@@ -1,31 +1,22 @@
 import PropTypes from 'prop-types'
 import { useEffect } from 'react'
-// @mui
 import { useTheme } from '@mui/material/styles'
 import { Stack, AppBar, Toolbar, IconButton } from '@mui/material'
-// utils
-import { bgBlur } from '../../../utils/cssStyles'
-
-// hooks
-import useOffSetTop from '../../../hooks/useOffSetTop'
-import useResponsive from '../../../hooks/useResponsive'
-// config
-import { HEADER, NAV } from '../../../config-global'
-// components
-import Logo from '../../../components/logo'
-import Iconify from '../../../components/iconify'
-import { useSettingsContext } from '../../../components/settings'
+import { useOffSetTop, useResponsive } from 'hook'
+import { useWebSocketContext } from 'auth'
+import { bgBlur } from 'theme/style'
+import { HEADER, NAV } from 'config'
+import { Logo } from 'component/logo'
+import { Iconify } from 'component/iconify'
+import { useSettingsContext } from 'component/setting'
 import AccountPopover from './account-popover'
 import NotificationsPopover from './notification-popover'
-import { useWebSocketContext } from '../../../auth/WebSocketContext'
-
-// ----------------------------------------------------------------------
 
 Header.propTypes = {
   onOpenNav: PropTypes.func,
 }
 
-export default function Header({ onOpenNav }) {
+function Header({ onOpenNav }) {
   const theme = useTheme()
   const { themeLayout } = useSettingsContext()
   const isNavHorizontal = themeLayout === 'horizontal'
@@ -97,3 +88,5 @@ export default function Header({ onOpenNav }) {
     </AppBar>
   )
 }
+
+export default Header
