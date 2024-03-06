@@ -1,16 +1,12 @@
 import { Suspense, lazy } from 'react'
 import { LoadingScreen } from 'component/loading-screen'
 
-// ----------------------------------------------------------------------
-
 const Loadable = (Component) => (props) =>
   (
     <Suspense fallback={<LoadingScreen />}>
       <Component {...props} />
     </Suspense>
   )
-
-// ----------------------------------------------------------------------
 
 // AUTH
 export const { LoginPage } = Loadable(lazy(() => import('page/auth')))
@@ -21,138 +17,131 @@ export const { ResetPasswordPage } = Loadable(lazy(() => import('page/auth')))
 export const { Login } = Loadable(lazy(() => import('section/auth')))
 
 // DASHBOARD: GENERAL
-export const { GeneralAppPage } = Loadable(lazy(() => import('page/dashboard')))
+export const { GeneralApp } = Loadable(lazy(() => import('page/dashboard')))
 export const { MachineByCountriesViewForm } = Loadable(lazy(() => import('page/dashboard')))
 export const { MachineByModelsViewForm } = Loadable(lazy(() => import('page/dashboard')))
 export const { MachineByYearsViewForm } = Loadable(lazy(() => import('page/dashboard')))
 
-// --------------------------
+// // CUSTOMER
+// export const { CustomerDashboard } = Loadable(lazy(() => import('page/customer')))
+// export const { CustomerEdit } = Loadable(lazy(() => import('page/customer')))
+// export const { CustomerView } = Loadable(lazy(() => import('page/customer')))
 
-// CUSTOMER
-export const { CustomerDashboard } = Loadable(lazy(() => import('page/customer')))
-export const { CustomerEdit } = Loadable(lazy(() => import('page/customer')))
-export const { CustomerView } = Loadable(lazy(() => import('page/customer')))
+// // SITE
+// export const { SiteAdd } = Loadable(lazy(() => import('page/customer/site')))
+// export const { SiteEdit } = Loadable(lazy(() => import('page/customer/site')))
+// export const { SiteView } = Loadable(lazy(() => import('page/customer/site')))
 
-// SITE
-export const { SiteAdd } = Loadable(lazy(() => import('page/customer/site')))
-export const { SiteEdit } = Loadable(lazy(() => import('page/customer/site')))
-export const { SiteView } = Loadable(lazy(() => import('page/customer/site')))
+// // CONTACT
+// export const { ContactAdd } = Loadable(lazy(() => import('page/customer/contact')))
+// export const { ContactEdit } = Loadable(lazy(() => import('page/customer/contact')))
+// export const { ContactView } = Loadable(lazy(() => import('page/customer/contact')))
 
-// CONTACT
-export const { ContactAdd } = Loadable(lazy(() => import('page/customer/contact')))
-export const { ContactEdit } = Loadable(lazy(() => import('page/customer/contact')))
-export const { ContactView } = Loadable(lazy(() => import('page/customer/contact')))
+// // NOTE
+// export const { NoteAddForm } = Loadable(lazy(() => import('page/customer/note')))
+// export const { NoteEditForm } = Loadable(lazy(() => import('page/customer/note')))
+// export const { NoteViewForm } = Loadable(lazy(() => import('page/customer/note')))
 
-// NOTE
-export const { NoteAddForm } = Loadable(lazy(() => import('page/customer/note')))
-export const { NoteEditForm } = Loadable(lazy(() => import('page/customer/note')))
-export const { NoteViewForm } = Loadable(lazy(() => import('page/customer/note')))
+// // DASHBOARD: USER
+// export const { SecurityUserProfile } = Loadable(lazy(() => import('page/security')))
+// export const { SecurityUserProfileEditForm } = Loadable(lazy(() => import('page/security')))
+// export const { SecurityUserChangePassword } = Loadable(lazy(() => import('page/security')))
+// export const { SecurityUserChangePasswordByAdmin } = Loadable(lazy(() => import('page/security')))
+// export const { SecurityUserList } = Loadable(lazy(() => import('page/security')))
+// export const { SecurityUserAdd } = Loadable(lazy(() => import('page/security')))
+// export const { SecurityUserEdit } = Loadable(lazy(() => import('page/security')))
+// export const { SecurityUserViewForm } = Loadable(lazy(() => import('page/security')))
 
-// DASHBOARD: USER
-export const { SecurityUserProfile } = Loadable(lazy(() => import('page/user')))
-export const { SecurityUserProfileEditForm } = Loadable(lazy(() => import('page/user')))
-export const { SecurityUserChangePassword } = Loadable(lazy(() => import('page/user')))
-export const { SecurityUserChangePasswordByAdmin } = Loadable(lazy(() => import('page/user')))
-export const { SecurityUserList } = Loadable(lazy(() => import('page/user')))
-export const { SecurityUserAdd } = Loadable(lazy(() => import('page/user')))
-export const { SecurityUserEdit } = Loadable(lazy(() => import('page/user')))
-export const { SecurityUserViewForm } = Loadable(lazy(() => import('page/user')))
+// // SECURITY USERS ROLES
+// export const { RoleAdd } = Loadable(lazy(() => import('page/security/role')))
+// export const { RoleEdit } = Loadable(lazy(() => import('page/security/role')))
+// export const { RoleView } = Loadable(lazy(() => import('page/security/role')))
 
-// SECURITY USERS ROLES
-export const { RoleAdd } = Loadable(lazy(() => import('page/user/role')))
-export const { RoleEdit } = Loadable(lazy(() => import('page/user/role')))
-export const { RoleView } = Loadable(lazy(() => import('page/user/role')))
+// //----------------------------------------------------------------
 
-//----------------------------------------------------------------
+// // Machine
+// export const { MachineSetting } = Loadable(lazy(() => import('page/machine')))
+// export const { MachineAdd } = Loadable(lazy(() => import('page/machine')))
+// export const { MachineList } = Loadable(lazy(() => import('page/machine')))
+// export const { MachineView } = Loadable(lazy(() => import('page/machine')))
+// export const { MachineEdit } = Loadable(lazy(() => import('page/machine')))
 
-// Machine
-export const { MachineSetting } = Loadable(lazy(() => import('page/machine')))
-export const { MachineAdd } = Loadable(lazy(() => import('page/machine')))
-export const { MachineList } = Loadable(lazy(() => import('page/machine')))
-export const { MachineView } = Loadable(lazy(() => import('page/machine')))
-export const { MachineEdit } = Loadable(lazy(() => import('page/machine')))
-
-// // Signin Logs
-export const { SignInLogList } = Loadable(lazy(() => import('page/user')))
+// // // Signin Logs
+// export const { SignInLogList } = Loadable(lazy(() => import('page/security')))
 
 // User Invitations List
-export const { UserInvitationList } = Loadable(lazy(() => import('page/user')))
-export const { UserInvitationView } = Loadable(lazy(() => import('page/user')))
+export const { UserInvitationList } = Loadable(lazy(() => import('page/security')))
+export const { UserInvitationView } = Loadable(lazy(() => import('page/security')))
 
 // User Blocked Customers
-export const { BlockedCustomerList } = Loadable(lazy(() => import('page/security/config')))
-export const { BlockedCustomerAddForm } = Loadable(lazy(() => import('page/security/config')))
+// export const { BlockedCustomerList } = Loadable(lazy(() => import('page/security/config')))
+// export const { BlockedCustomerAddForm } = Loadable(lazy(() => import('page/security/config')))
 
-// User Blocked Users
-export const { BlockedUserList } = Loadable(lazy(() => import('../pages/security/config')))
-export const { BlockedUserAddForm } = Loadable(lazy(() => import('../pages/security/config')))
+// // User Blocked Users
+// export const { BlockedUserList } = Loadable(lazy(() => import('page/security')))
+// export const { BlockedUserAddForm } = Loadable(lazy(() => import('page/security')))
 
-// Blacklist IP
-export const { BlacklistIPList } = Loadable(lazy(() => import('page/security/config')))
-export const { BlacklistIPAddForm } = Loadable(lazy(() => import('page/security/config')))
+// // Blacklist IP
+// export const { BlacklistIPList } = Loadable(lazy(() => import('page/security')))
+// export const { BlacklistIPAddForm } = Loadable(lazy(() => import('page/security')))
 
-// Whitelist IP
-export const { WhitelistIPList } = Loadable(lazy(() => import('page/security/config')))
-export const { WhitelistIPAddForm } = Loadable(lazy(() => import('page/security/config')))
+// // Whitelist IP
+// export const { WhitelistIPList } = Loadable(lazy(() => import('page/security')))
+// export const { WhitelistIPAddForm } = Loadable(lazy(() => import('page/security')))
 
-// License
-// export const MachineLicenses = Loadable(lazy(()=> import('../pages/machine/License/MachineLicenses')));
-// export const LicenseList = Loadable(lazy(()=> import('../pages/machine/License/LicenseList')));
+// // License
+// // export const MachineLicenses = Loadable(lazy(()=> import('../pages/machine/License/MachineLicenses')));
+// // export const LicenseList = Loadable(lazy(()=> import('../pages/machine/License/LicenseList')));
 
-// Machine Category Groups
-export const { CategoryGroupAddForm } = Loadable(lazy(() => import('page/machine')))
-export const { CategoryGroupList } = Loadable(lazy(() => import('page/machine')))
-export const { CategoryGroupViewForm } = Loadable(lazy(() => import('page/machine')))
-export const { CategoryGroupEditForm } = Loadable(lazy(() => import('page/machine')))
+// // Machine Category Groups
+// export const { CategoryGroupAddForm } = Loadable(lazy(() => import('page/machine')))
+// export const { CategoryGroupList } = Loadable(lazy(() => import('page/machine')))
+// export const { CategoryGroupViewForm } = Loadable(lazy(() => import('page/machine')))
+// export const { CategoryGroupEditForm } = Loadable(lazy(() => import('page/machine')))
 
-// Machine Categories
-export const { CategoryAddForm } = Loadable(lazy(() => import('page/machine')))
-export const { CategoryList } = Loadable(lazy(() => import('page/machine/Categories')))
-export const { CategoryView } = Loadable(lazy(() => import('page/machine/Categories')))
-export const { CategoryViewForm } = Loadable(lazy(() => import('page/machine/Categories')))
-export const { CategoryEdit } = Loadable(lazy(() => import('page/machine/Categories')))
-export const { CategoryEditForm } = Loadable(lazy(() => import('page/machine/Categories')))
+// // Machine Categories
+// export const { CategoryAddForm } = Loadable(lazy(() => import('page/machine')))
+// export const { CategoryList } = Loadable(lazy(() => import('page/machine/Categories')))
+// export const { CategoryView } = Loadable(lazy(() => import('page/machine/Categories')))
+// export const { CategoryViewForm } = Loadable(lazy(() => import('page/machine/Categories')))
+// export const { CategoryEdit } = Loadable(lazy(() => import('page/machine/Categories')))
+// export const { CategoryEditForm } = Loadable(lazy(() => import('page/machine/Categories')))
 
-// Machine Tools
-export const { ToolAddForm } = Loadable(lazy(() => import('page/machine/Tool')))
-export const { ToolList } = Loadable(lazy(() => import('page/machine/Tool')))
-export const { ToolView } = Loadable(lazy(() => import('page/machine/Tool')))
-export const { ToolViewForm } = Loadable(lazy(() => import('page/machine/Tool')))
-export const { ToolEdit } = Loadable(lazy(() => import('page/machine/Tool')))
-export const { ToolEditForm } = Loadable(lazy(() => import('page/machine/Tool')))
+// // Machine Tools
+// export const { ToolAddForm } = Loadable(lazy(() => import('page/machine/Tool')))
+// export const { ToolList } = Loadable(lazy(() => import('page/machine/Tool')))
+// export const { ToolView } = Loadable(lazy(() => import('page/machine/Tool')))
+// export const { ToolViewForm } = Loadable(lazy(() => import('page/machine/Tool')))
+// export const { ToolEdit } = Loadable(lazy(() => import('page/machine/Tool')))
+// export const { ToolEditForm } = Loadable(lazy(() => import('page/machine/Tool')))
 
-// Machine Model
-export const { ModelViewForm } = Loadable(lazy(() => import('page/machine')))
-export const { ModelView } = Loadable(lazy(() => import('page/machine')))
+// // Machine Model
+// export const { ModelViewForm } = Loadable(lazy(() => import('page/machine')))
+// export const { ModelView } = Loadable(lazy(() => import('page/machine')))
 
-export const { ServiceRecordConfigList } = Loadable(lazy(() => import('page/machine')))
-export const { ServiceRecordConfigView } = Loadable(lazy(() => import('page/machine')))
-export const { ServiceRecordConfigViewForm } = Loadable(lazy(() => import('page/machine')))
+// export const { ServiceRecordConfigList } = Loadable(lazy(() => import('page/machine')))
+// export const { ServiceRecordConfigView } = Loadable(lazy(() => import('page/machine')))
+// export const { ServiceRecordConfigViewForm } = Loadable(lazy(() => import('page/machine')))
 
-// Configuration
-export const { ConfigurationView } = Loadable(lazy(() => import('page/machine')))
+// // Configuration
+// export const { ConfigurationView } = Loadable(lazy(() => import('page/machine')))
 
 // DASHBOARD: SETTINGS
 export const { Setting } = Loadable(lazy(() => import('page/setting')))
 
 // DASHBOARD: Email
-export const { Email } = Loadable(lazy(() => import('page/email')))
+// export const { Email } = Loadable(lazy(() => import('page/email')))
 
-export const { Emailviewform } = Loadable(lazy(() => import('page/email')))
+export const { HomePage } = Loadable(lazy(() => import('page/dashboard')))
 
-// DASHBOARD: REPORTS
-export const { Reports } = Loadable(lazy(() => import('page/Reports')))
+// BLANK PAGE
+export const BlankPage = Loadable(lazy(() => import('page/dashboard')))
 
 // TEST RENDER PAGE BY ROLE
-export const PermissionDeniedPage = Loadable(lazy(() => import('page/dashboard')))
-// BLANK PAGE
-export const BlankPage = Loadable(lazy(() => import('../pages/dashboard/BlankPage')))
-
-// MAIN
+export const { PermissionDenied } = Loadable(lazy(() => import('page/fallback')))
 export const { InternalServer } = Loadable(lazy(() => import('page/fallback')))
 export const { Forbidden } = Loadable(lazy(() => import('page/fallback')))
-export const { NotFound } = Loadable(lazy(() => import('page/not-found')))
-export const { HomePage } = Loadable(lazy(() => import('page/dashboard')))
+export const { NotFound } = Loadable(lazy(() => import('page/fallback')))
 export const { ComingSoon } = Loadable(lazy(() => import('page/fallback')))
 export const { Maintenance } = Loadable(lazy(() => import('page/fallback')))
 export const { UserInviteLanding } = Loadable(lazy(() => import('page/fallback')))
