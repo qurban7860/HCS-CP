@@ -1,4 +1,4 @@
-const defaultPreset = {
+const themePreset = {
   themeMode: 'light',
   themeDirection: 'ltr',
   themeContrast: 'default',
@@ -7,4 +7,4 @@ const defaultPreset = {
   themeStretch: false,
 }
 
-export default defaultPreset
+export default themePreset
