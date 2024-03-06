@@ -11,11 +11,12 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      root: './app.jsx',
-      config: './config',
+      root: path.resolve(__dirname, 'src', 'app.jsx'),
+      config: path.resolve(__dirname, 'src', 'config'),
       global: path.resolve(__dirname, 'src', 'config', 'global.js'),
       constant: path.resolve(__dirname, 'src', 'constant'),
       component: path.resolve(__dirname, 'src', 'component'),
+      section: path.resolve(__dirname, 'src', 'section'),
       page: path.resolve(__dirname, 'src', 'page'),
       auth: path.resolve(__dirname, 'src', 'auth'),
       hook: path.resolve(__dirname, 'src', 'hook'),
@@ -24,7 +25,7 @@ export default defineConfig({
       route: path.resolve(__dirname, 'src', 'route'),
       theme: path.resolve(__dirname, 'src', 'theme'),
       util: path.resolve(__dirname, 'src', 'util'),
-      // @pages
+      // @page
       dashboard: path.resolve(__dirname, 'src', 'page', 'dashboard'),
       customer: path.resolve(__dirname, 'src', 'page', 'customer'),
       machine: path.resolve(__dirname, 'src', 'page', 'machine'),
