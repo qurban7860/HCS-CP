@@ -1,9 +1,7 @@
-import PropTypes from 'prop-types'
 import { forwardRef } from 'react'
+import PropTypes from 'prop-types'
 import { Box, Link } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
-
-// ----------------------------------------------------------------------
 
 const Logo = forwardRef(
   ({ width = 150, disabledLink = false, sx, src = '/logo/logo.svg', ...other }, ref) => {
