@@ -4,10 +4,8 @@ import { SnackbarProvider as NotistackProvider } from 'notistack'
 import { alpha } from '@mui/material/styles'
 import { Box, Collapse, IconButton } from '@mui/material'
 import { useSettingsContext } from 'component/setting'
-import Iconify from '../iconify'
-import StyledNotistack from './styles'
-
-// ----------------------------------------------------------------------
+import { Iconify } from 'component/iconify'
+import StyledNotistack from './style'
 
 SnackbarProvider.propTypes = {
   children: PropTypes.node,
