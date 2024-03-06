@@ -1,16 +1,13 @@
-// @mui
-import { styled, alpha } from '@mui/material/styles';
-// utils
-import { bgGradient } from '../../utils/cssStyles';
-
-// ----------------------------------------------------------------------
+import { styled, alpha } from '@mui/material/styles'
+import { bgGradient } from 'theme/style'
 
 export const StyledRoot = styled('main')(() => ({
   height: '100%',
   display: 'flex',
-  flexDirection: 'column', justifyContent:'center'
+  flexDirection: 'column',
+  justifyContent: 'center',
   // position: 'relative',
-}));
+}))
 
 export const StyledSection = styled('div')(({ theme }) => ({
   display: 'none',
@@ -22,7 +19,7 @@ export const StyledSection = styled('div')(({ theme }) => ({
     justifyContent: 'center',
     flexDirection: 'column',
   },
-}));
+}))
 
 export const StyledSectionBg = styled('div')(({ theme }) => ({
   ...bgGradient({
@@ -36,10 +33,10 @@ export const StyledSectionBg = styled('div')(({ theme }) => ({
   height: '100%',
   // position: 'absolute',
   transform: 'scaleX(-1)',
-}));
+}))
 
 export const StyledContent = styled('div')(({ theme }) => ({
-  width: {sm:'100', md: '50%'},
+  width: { sm: '100', md: '50%' },
   margin: 'auto',
   display: 'flex',
   flexDirection: 'column',
@@ -50,4 +47,4 @@ export const StyledContent = styled('div')(({ theme }) => ({
     flexShrink: 0,
     padding: theme.spacing(20, 8, 0, 8),
   },
-}));
+}))
