@@ -5,8 +5,8 @@ import 'react-lazy-load-image-component/src/effects/blur.css'
 import 'react-quill/dist/quill.snow.css'
 import { useEffect } from 'react'
 import { BrowserRouter } from 'react-router-dom'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { LocalizationProvider } from '@mui/x-date-pickers'
+// import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+// import { LocalizationProvider } from '@mui/x-date-pickers'
 import ErrorBoundary from 'util/error-boundary'
 import Router from 'route'
 import ThemeProvider from 'theme'
@@ -27,70 +27,32 @@ function App() {
   }, [])
 
   return (
-    <AuthProvider apiUrl={GLOBAL.API_URL} appTitle={GLOBAL.APP_TITLE}>
-      <WebSocketProvider>
-        <HelmetProvider>
-          <ReduxProvider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <SettingsProvider>
-                  <BrowserRouter>
-                    <MotionLazyContainer>
-                      <ThemeProvider>
-                        <ThemeSettings>
-                          <ErrorBoundary fallback={<Page500 />}>
-                            <ScrollToTop />
-                            <ThemeLocalization>
-                              <SnackbarProvider>
-                                <StyledChart />
-                                <IdleManager />
-                                <Router />
-                              </SnackbarProvider>
-                            </ThemeLocalization>
-                          </ErrorBoundary>
-                        </ThemeSettings>
-                      </ThemeProvider>
-                    </MotionLazyContainer>
-                  </BrowserRouter>
-                </SettingsProvider>
-              </LocalizationProvider>
-            </PersistGate>
-          </ReduxProvider>
-        </HelmetProvider>
-      </WebSocketProvider>
-    </AuthProvider>
-    // <AuthProvider>
-    //   <WebSocketProvider>
-    //     <HelmetProvider>
-    //       <ReduxProvider store={store}>
-    //         <PersistGate loading={null} persistor={persistor}>
-    //           <LocalizationProvider dateAdapter={AdapterDateFns}>
-    //             <SettingsProvider>
-    //               <BrowserRouter>
-    //                 <MotionLazyContainer>
-    //                   <ThemeProvider>
-    //                     <ThemeSettings>
-    //                       <ErrorBoundary fallback={<Page500 />}>
-    //                         <ScrollToTop />
-    //                         <ThemeLocalization>
-    //                           <SnackbarProvider>
-    //                             <StyledChart />
-    //                             <IdleManager />
-    //                             <Router />
-    //                           </SnackbarProvider>
-    //                         </ThemeLocalization>
-    //                       </ErrorBoundary>
-    //                     </ThemeSettings>
-    //                   </ThemeProvider>
-    //                 </MotionLazyContainer>
-    //               </BrowserRouter>
-    //             </SettingsProvider>
-    //           </LocalizationProvider>
-    //         </PersistGate>
-    //       </ReduxProvider>
-    //     </HelmetProvider>
-    //   </WebSocketProvider>
-    // </AuthProvider>
+    // <WebSocketProvider>
+    //   <PersistGate loading={null} persistor={persistor}>
+    // <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <SettingsProvider>
+      <BrowserRouter>
+        <MotionLazyContainer>
+          <ThemeProvider>
+            <ThemeSettings>
+              <ErrorBoundary fallback={<InternalServer />}>
+                <ScrollToTop />
+                <ThemeLocalization>
+                  <SnackbarProvider>
+                    <StyledChart />
+                    {/* <IdleManager /> */}
+                    <Router />
+                  </SnackbarProvider>
+                </ThemeLocalization>
+              </ErrorBoundary>
+            </ThemeSettings>
+          </ThemeProvider>
+        </MotionLazyContainer>
+      </BrowserRouter>
+    </SettingsProvider>
+    // </LocalizationProvider>
+    //   </PersistGate>
+    // </WebSocketProvider>
   )
 }
 
