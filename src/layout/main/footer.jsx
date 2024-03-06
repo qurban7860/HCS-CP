@@ -1,13 +1,8 @@
-import { Link as RouterLink, useLocation } from 'react-router-dom';
-// @mui
-import { Box, Grid, Link, Stack, Divider, Container, Typography, IconButton } from '@mui/material';
-// routes
-import { PATH_PAGE } from '../../routes/paths';
-// _mock
-import { _socials } from '../../_mock/arrays';
-// components
-import Logo from '../../components/logo';
-import Iconify from '../../components/iconify';
+import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { Box, Grid, Link, Stack, Divider, Container, Typography, IconButton } from '@mui/material'
+import { PATH_PAGE } from 'route/path'
+import { Logo } from 'component/logo'
+import { Iconify } from 'component/iconify'
 
 // ----------------------------------------------------------------------
 
@@ -34,14 +29,14 @@ const LINKS = [
       { name: 'Los Angeles, 359  Hidden Valley Road', href: '#' },
     ],
   },
-];
+]
 
 // ----------------------------------------------------------------------
 
 export default function Footer() {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation()
 
-  const isHome = pathname === '/';
+  const isHome = pathname === '/'
 
   const simpleFooter = (
     <Box
@@ -63,7 +58,7 @@ export default function Footer() {
         </Typography>
       </Container>
     </Box>
-  );
+  )
 
   const mainFooter = (
     <Box
@@ -99,7 +94,7 @@ export default function Footer() {
               version of Material-UI ©, ready to be customized to your style.
             </Typography>
 
-            <Stack
+            {/* <Stack
               spacing={1}
               direction="row"
               justifyContent={{ xs: 'center', md: 'flex-start' }}
@@ -113,7 +108,7 @@ export default function Footer() {
                   <Iconify icon={social.icon} />
                 </IconButton>
               ))}
-            </Stack>
+            </Stack> */}
           </Grid>
 
           <Grid item xs={12} md={7}>
@@ -162,7 +157,7 @@ export default function Footer() {
         </Typography>
       </Container>
     </Box>
-  );
+  )
 
-  return isHome ? simpleFooter : mainFooter;
+  return isHome ? simpleFooter : mainFooter
 }
