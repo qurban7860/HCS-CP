@@ -1,3 +1,3 @@
-const RESPONSE = {
+const RESPONSE = {}
 
-}
+export default RESPONSE

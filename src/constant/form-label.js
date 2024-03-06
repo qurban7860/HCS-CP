@@ -1,4 +1,130 @@
 const FORM_LABEL = {
+  // Default FormLabels
+  _def: {
+    CUSTOMER: 'Customer',
+    MACHINE: 'Machine',
+    USER: 'User',
+    DOCUMENT: 'Document',
+  },
+  isACTIVE: {
+    label: 'Active',
+    name: 'isActive',
+    required: true,
+  },
+  isCUSTOMER_ACCESS: {
+    label: 'Customer Access',
+    name: 'customerAccess',
+  },
+  isCONNECTABLE: {
+    label: 'Connect as a child',
+    name: 'connections',
+  },
+  DESC: {
+    label: 'Description',
+    name: 'description',
+  },
+  COVER: {
+    NEW_CUSTOMER: 'New Customer',
+    NEW_DOCUMENT: 'New Document',
+    NEW_DOCUMENT_CATEGORY: 'New Document Category',
+    EDIT_DOCUMENT_TYPE: 'Edit Document Type',
+    EDIT_MODEL: 'Edit Model',
+    EDIT_DOCUMENT_CATEGORY: 'Edit Document Category',
+    MACHINE_PLACEHOLDER: 'Machine',
+    TOOLS: 'Tools',
+    SETTINGS: 'Settings',
+    CUSTOMERS: 'Customers',
+    DOCUMENTS: 'Documents',
+    ADD_DOCUMENTS: 'Add Documents',
+    MACHINE_DRAWINGS: 'Machine Drawings',
+    ADD_MACHINE_DRAWINGSS: 'New Machine Drawing',
+    DEPARTMENTS: 'Departments',
+    DEPARTMENTS_ADD: 'Add Department',
+    DEPARTMENTS_EDIT: 'Edit Department',
+    MACHINE_CHECK_ITEM_SERVICE_CATEGORIES: 'Check Item Categories',
+    MACHINE_CHECK_ITEM_SERVICE_CATEGORY_ADD: 'New Check Item Category',
+    MACHINE_CHECK_ITEM_SERVICE_CATEGORY_EDIT: 'Edit Check Item Category',
+    MACHINE_CHECK_ITEM_SERVICE_PARAMS: 'Check Items',
+    MACHINE_CHECK_ITEM_SERVICE_PARAMS_CONSTRCTUION: 'Check Items (Under Construction)',
+    MACHINE_CHECK_ITEM_SERVICE_PARAM_ADD: 'New Check Item',
+    MACHINE_CHECK_ITEM_SERVICE_PARAM_EDIT: 'Edit Check Item',
+    MACHINE_CHECK_ITEM_SERVICE_CONFIGS: 'Service Doc Config',
+    MACHINE_CHECK_ITEM_SERVICE_CONFIGS_ADD: 'New Service Doc Configuration',
+    MACHINE_CHECK_ITEM_SERVICE_CONFIGS_EDIT: 'Edit Service Doc Configuration',
+    MACHINE_CHECK_ITEM_SERVICE_RECORDS: 'Check Items Service Records',
+    MACHINE_CHECK_ITEM_SERVICE_RECORD_ADD: 'New Check Items Service Record',
+    MACHINE_CHECK_ITEM_SERVICE_CHECK_PARAM_RECORD_ADD: 'New Check Items Service Parameter',
+    MACHINE_CHECK_ITEM_SERVICE_RECORD_EDIT: 'Edit Check Items Service Record',
+    EDIT_DOCUMENT: 'Edit Document',
+  },
+
+  // @root FormLabels
+  HOWICK: 'Howick Resources',
+  ADDRESS: 'Address Information',
+  CUSTOMER: 'Customer Information',
+  SITE: 'Site Information',
+  SITELOC: 'Site Location',
+  KEYDETAILS: 'Key Details',
+  BILLING_CONTACT: 'Billing Contact Information',
+  TECHNICAL_CONTACT: 'Technical Contact Information',
+
+  // @root - Machine -settings
+  COMMON_SETTINGS: 'Common Settings',
+  TECHNICAL_SETTINGS: 'Technical Settings',
+  TOOLS_INFO: ' Tools Information',
+  SERVICE: ' Service Settings',
+
+  // @root - Settings
+  DOCUMENT_SETTINGS: 'Document Settings',
+  SECURITY_SETTINGS: 'Security Settings',
+  REPORTS: 'Reports',
+  CONFIG: 'Configuration',
+
+  // @root DocumentAddForm in dashboard/documents
+  SELECT_CUSTOMER: 'Select Customer',
+  SELECT_SITE: 'Select Site',
+  SELECT_MACHINE: 'Select Machine',
+  SELECT_MODEL: 'Select Model',
+  SELECT_DOCUMENT: 'Select Document',
+  SELECT_DOCUMENT_CATEGORY: 'Select Document Category',
+  SELECT_DOCUMENT_TYPE: 'Select Document Type',
+  SELECT_CATEGORY: 'Select Category',
+
+  DOCUMENT_NAME: 'Document Name',
+  DOCUMENT_DESC: 'Description',
+
+  // @root CustomerAddForm
+  NAME: {
+    label: 'Name',
+    name: 'name',
+  },
+
+  // @root - ModelEditForm - machine
+  MODEL_NAME: {
+    label: 'Name',
+    name: 'name',
+  },
+  MODEL_DESC: {
+    label: 'Description',
+    name: 'description',
+  },
+
+  // @root SettingAddForm
+  SETTING_TECHPARAM: {
+    label: 'Technical Parameter Value',
+    name: 'techParamValue',
+  },
+
+  // @root LicenseAddForm
+  LICENSE_KEY: {
+    label: 'License Key',
+    name: 'licenseKey',
+  },
+  LICENSE_DETAILS: {
+    label: 'License Details',
+    name: 'licenseDetail',
+  },
+
   SAME_AS: 'Same as billing contact',
 
   // @root - CustomerEditForm

@@ -66,4 +66,13 @@ const SNACK = {
   // preview
   UNEXPECTED: 'Unexpected error occurred',
   DOC_REQUIRED: 'File is required',
+
+  // @root - Verification - documents dashboard
+  CONFIGURATION_VERIFICATION_SUCCESS: 'Verification Success',
+  CONFIGURATION_VERIFICATION_FAILED: 'Verification Failed!',
+  CONFIGURATION_APPROVE_SUCCESS: 'Document approved Successfully!',
+  CONFIGURATION_APPROVE_FAILED: 'Document approve Failed!',
+  // auth: reset
+  PASSWORD_CHANGED: 'Password update Successful',
+  PASSWORD_CHANGE_FAILED: 'Password update Failed',
 }

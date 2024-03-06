@@ -1,3 +1,9 @@
+/**
+ * @description - country code and label are stored here
+ *
+ * used in:
+ * - src/component//.js
+ */
 const COUNTRY = [
   { code: 'AF', label: 'Afghanistan', phone: '+93' },
   { code: 'AX', label: 'Aland Islands', phone: '+358' },
