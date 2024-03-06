@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom'
 import { Stack, Fade, Portal } from '@mui/material'
 import { useActiveLink } from 'hook'
 import { NavItem, NavItemDashboard } from './nav-item'
-import { StyledSubheader, StyledMenu } from './styles'
+import { StyledSubheader, StyledMenu } from './style'
 
 // ----------------------------------------------------------------------
 

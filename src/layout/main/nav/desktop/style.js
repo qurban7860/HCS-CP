@@ -1,8 +1,5 @@
-// @mui
-import { styled, alpha } from '@mui/material/styles';
-import { Paper, ListSubheader, ListItemButton } from '@mui/material';
-
-// ----------------------------------------------------------------------
+import { styled, alpha } from '@mui/material/styles'
+import { Paper, ListSubheader, ListItemButton } from '@mui/material'
 
 export const ListItem = styled(ListItemButton, {
   shouldForwardProp: (prop) =>
@@ -17,7 +14,7 @@ export const ListItem = styled(ListItemButton, {
     left: -14,
     opacity: 0.48,
     backgroundColor: 'currentColor',
-  };
+  }
 
   return {
     ...theme.typography.subtitle2,
@@ -59,8 +56,8 @@ export const ListItem = styled(ListItemButton, {
     ...(open && {
       opacity: 0.48,
     }),
-  };
-});
+  }
+})
 
 // ----------------------------------------------------------------------
 
@@ -79,7 +76,7 @@ export const StyledMenu = styled(Paper)(({ theme }) => ({
   gridTemplateColumns: 'repeat(12, 1fr)',
   borderRadius: Number(theme.shape.borderRadius) * 2,
   border: `solid 1px ${alpha(theme.palette.grey[500], 0.16)}`,
-}));
+}))
 
 // ----------------------------------------------------------------------
 
@@ -88,4 +85,4 @@ export const StyledSubheader = styled(ListSubheader)(({ theme }) => ({
   padding: 0,
   fontSize: 11,
   color: theme.palette.text.primary,
-}));
+}))
