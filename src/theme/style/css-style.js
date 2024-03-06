@@ -1,13 +1,10 @@
-// @mui
-import { alpha } from '@mui/material/styles';
-
-// ----------------------------------------------------------------------
+import { alpha } from '@mui/material/styles'
 
 export function bgBlur(props) {
-  const color = props?.color || '#000000';
-  const blur = props?.blur || 6;
-  const opacity = props?.opacity || 0.8;
-  const imgUrl = props?.imgUrl;
+  const color = props?.color || '#000000'
+  const blur = props?.blur || 6
+  const opacity = props?.opacity || 0.8
+  const imgUrl = props?.imgUrl
 
   if (imgUrl) {
     return {
@@ -25,24 +22,24 @@ export function bgBlur(props) {
         WebkitBackdropFilter: `blur(${blur}px)`,
         backgroundColor: alpha(color, opacity),
       },
-    };
+    }
   }
 
   return {
     backdropFilter: `blur(${blur}px)`,
     WebkitBackdropFilter: `blur(${blur}px)`,
     backgroundColor: alpha(color, opacity),
-  };
+  }
 }
 
 // ----------------------------------------------------------------------
 
 export function bgGradient(props) {
-  const direction = props?.direction || 'to bottom';
-  const startColor = props?.startColor;
-  const endColor = props?.endColor;
-  const imgUrl = props?.imgUrl;
-  const color = props?.color;
+  const direction = props?.direction || 'to bottom'
+  const startColor = props?.startColor
+  const endColor = props?.endColor
+  const imgUrl = props?.imgUrl
+  const color = props?.color
 
   if (imgUrl) {
     return {
@@ -52,12 +49,12 @@ export function bgGradient(props) {
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center center',
-    };
+    }
   }
 
   return {
     background: `linear-gradient(${direction}, ${startColor}, ${endColor})`,
-  };
+  }
 }
 
 // ----------------------------------------------------------------------
@@ -67,7 +64,7 @@ export function textGradient(value) {
     background: `-webkit-linear-gradient(${value})`,
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
-  };
+  }
 }
 
 // ----------------------------------------------------------------------
@@ -77,7 +74,7 @@ export function filterStyles(value) {
     filter: value,
     WebkitFilter: value,
     MozFilter: value,
-  };
+  }
 }
 
 // ----------------------------------------------------------------------
@@ -89,7 +86,7 @@ export const hideScrollbarY = {
   '&::-webkit-scrollbar': {
     display: 'none',
   },
-};
+}
 
 // ----------------------------------------------------------------------
 
@@ -100,4 +97,4 @@ export const hideScrollbarX = {
   '&::-webkit-scrollbar': {
     display: 'none',
   },
-};
+}
