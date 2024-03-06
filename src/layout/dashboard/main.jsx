@@ -1,30 +1,24 @@
-import PropTypes from 'prop-types';
-// @mui
-import { Box } from '@mui/material';
-// hooks
-import useResponsive from '../../hooks/useResponsive';
-// config
-import { HEADER, NAV } from '../../config-global';
-// components
-import { useSettingsContext } from '../../components/settings';
+import PropTypes from 'prop-types'
+import { Box } from '@mui/material'
+import useResponsive from 'hook'
+import { HEADER, NAV } from '../../config-global'
+import { useSettingsContext } from '../../components/settings'
 
-// ----------------------------------------------------------------------
-
-const SPACING = 8;
+const SPACING = 8
 
 Main.propTypes = {
   sx: PropTypes.object,
   children: PropTypes.node,
-};
+}
 
 export default function Main({ children, sx, ...other }) {
-  const { themeLayout } = useSettingsContext();
+  const { themeLayout } = useSettingsContext()
 
-  const isNavHorizontal = themeLayout === 'horizontal';
+  const isNavHorizontal = themeLayout === 'horizontal'
 
-  const isNavMini = themeLayout === 'mini';
+  const isNavMini = themeLayout === 'mini'
 
-  const isDesktop = useResponsive('up', 'lg');
+  const isDesktop = useResponsive('up', 'lg')
 
   if (isNavHorizontal) {
     return (
@@ -42,7 +36,7 @@ export default function Main({ children, sx, ...other }) {
       >
         {children}
       </Box>
-    );
+    )
   }
 
   return (
@@ -50,7 +44,7 @@ export default function Main({ children, sx, ...other }) {
       component="main"
       sx={{
         flexGrow: 1,
-        backgroundColor:"#63738114",
+        backgroundColor: '#63738114',
         // background: (theme) => theme.palette.background.default,
         py: `${HEADER.H_MOBILE + SPACING}px`,
         // height: '100vh',
@@ -68,5 +62,5 @@ export default function Main({ children, sx, ...other }) {
     >
       {children}
     </Box>
-  );
+  )
 }
