@@ -1,13 +1,9 @@
-// @mui
 import { alpha } from '@mui/material/styles'
 import { RadioGroup } from '@mui/material'
-//
-import { useSettingsContext } from '../setting-context'
-import { StyledCard, StyledWrap, MaskControl, StyledCircleColor } from '../style'
+import { useSettingsContext } from 'component/setting/setting-context'
+import { StyledCard, StyledWrap, MaskControl, StyledCircleColor } from 'component/setting'
 
-// ----------------------------------------------------------------------
-
-export default function ColorPresetsOptions() {
+function ColorPresetOption() {
   const { themeColorPresets, onChangeColorPresets, presetsOption } = useSettingsContext()
 
   return (
@@ -40,3 +36,5 @@ export default function ColorPresetsOptions() {
     </RadioGroup>
   )
 }
+
+export default ColorPresetOption

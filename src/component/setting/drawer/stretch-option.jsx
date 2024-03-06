@@ -1,13 +1,9 @@
-// @mui
 import { Stack, Box } from '@mui/material'
-//
-import { useSettingsContext } from '../setting-context'
-import Iconify from '../../iconify'
+import { useSettingsContext } from 'component/setting-context'
+import { Iconify } from 'component/iconify'
 import { StyledCard } from '../style'
 
-// ----------------------------------------------------------------------
-
-export default function StretchOptions() {
+function StretchOptions() {
   const { themeStretch, onToggleStretch } = useSettingsContext()
 
   return (
@@ -33,3 +29,5 @@ export default function StretchOptions() {
     </StyledCard>
   )
 }
+
+export default StretchOptions

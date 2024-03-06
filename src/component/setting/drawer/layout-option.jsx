@@ -1,14 +1,10 @@
-// @mui
 import { RadioGroup } from '@mui/material'
-//
 import { useSettingsContext } from '../setting-context'
-import { StyledCard, StyledWrap, MaskControl, LayoutIcon } from '../style'
-
-// ----------------------------------------------------------------------
+import { StyledCard, StyledWrap, MaskControl, LayoutIcon } from 'component/setting'
 
 const OPTIONS = ['vertical', 'horizontal', 'mini']
 
-export default function LayoutOptions() {
+function LayoutOption() {
   const { themeLayout, onChangeLayout } = useSettingsContext()
 
   return (
@@ -25,3 +21,5 @@ export default function LayoutOptions() {
     </RadioGroup>
   )
 }
+
+export default LayoutOption

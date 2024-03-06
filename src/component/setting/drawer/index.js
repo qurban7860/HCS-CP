@@ -1,1 +1,7 @@
 export { default } from './setting-drawer'
+export { default as ModeOption } from './mode-option'
+export { default as ColorPresetOption } from './color-preset-option'
+export { default as DirectionOption } from './direction-option'
+export { default as ContrastOption } from './contrast-option'
+export { default as LayoutOption } from './layout-option'
+export { default as Block } from './block'

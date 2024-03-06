@@ -1,15 +1,11 @@
-// @mui
 import { RadioGroup } from '@mui/material'
-//
-import SvgColor from '../../svg-color'
-import { useSettingsContext } from '../setting-context'
-import { StyledCard, StyledWrap, MaskControl } from '../style'
-
-// ----------------------------------------------------------------------
+import { SvgColor } from 'component/svg-color'
+import { useSettingsContext } from 'component/setting'
+import { StyledCard, StyledWrap, MaskControl } from 'component/setting'
 
 const OPTIONS = ['ltr', 'rtl']
 
-export default function DirectionOptions() {
+function DirectionOption() {
   const { themeDirection, onChangeDirection } = useSettingsContext()
 
   return (
@@ -30,3 +26,5 @@ export default function DirectionOptions() {
     </RadioGroup>
   )
 }
+
+export default DirectionOption

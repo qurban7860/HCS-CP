@@ -1,11 +1,8 @@
 import { useState } from 'react'
-//
-import SvgColor from '../../svg-color'
-import { StyledCard } from '../style'
+import { SvgColor } from 'component/svg-color'
+import { StyledCard } from 'component/setting'
 
-// ----------------------------------------------------------------------
-
-export default function FullScreenOptions() {
+function FullScreenOptions() {
   const [fullscreen, setFullscreen] = useState(false)
 
   const onToggleFullScreen = () => {
@@ -40,3 +37,5 @@ export default function FullScreenOptions() {
     </StyledCard>
   )
 }
+
+export default FullScreenOptions

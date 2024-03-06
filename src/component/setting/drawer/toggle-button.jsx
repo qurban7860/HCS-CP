@@ -2,15 +2,10 @@ import PropTypes from 'prop-types'
 // @mui
 import { alpha, useTheme } from '@mui/material/styles'
 import { Tooltip, Box } from '@mui/material'
-// utils
-import { bgBlur } from '../../../utils/cssStyles'
-//
-import { IconButtonAnimate } from '../../animate'
+import { bgBlur } from 'theme/style'
+import { IconButtonAnimate } from 'component/animate'
 import SvgColor from '../../svg-color'
-//
 import BadgeDot from './badge-dot'
-
-// ----------------------------------------------------------------------
 
 ToggleButton.propTypes = {
   open: PropTypes.bool,

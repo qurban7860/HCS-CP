@@ -1,29 +1,21 @@
 import { useState } from 'react'
-// @mui
 import { alpha, useTheme } from '@mui/material/styles'
 import { Box, Divider, Drawer, Stack, Typography, Tooltip, IconButton } from '@mui/material'
-// utils
-import { bgBlur } from '../../../utils/cssStyles'
-// config
-import { NAV } from '../../../config-global'
-//
+import { bgBlur } from 'theme/style'
+import { NAV } from 'global'
 import Iconify from '../../iconify'
 import Scrollbar from '../../scrollbar'
-//
-import { defaultSettings } from '../../../theme/default-preset'
-import { useSettingsContext } from '../setting-context'
+import { defaultPreset } from 'theme'
+import { useSettingsContext } from 'component/setting/setting-context'
 import Block from './block'
 import BadgeDot from './badge-dot'
-// import ToggleButton from './ToggleButton';
 import ModeOptions from './mode-option'
 import LayoutOptions from './layout-option'
 import StretchOptions from './stretch-option'
 import ContrastOptions from './contrast-option'
 import DirectionOptions from './direction-option'
 import FullScreenOptions from './full-screen-option'
-import ColorPresetsOptions from './color-presets-option'
-
-// ----------------------------------------------------------------------
+import ColorPresetsOptions from './color-preset-option'
 
 const SPACING = 2.5
 
@@ -51,12 +43,12 @@ export default function SettingsDrawer() {
   }
 
   const notDefault =
-    themeMode !== defaultSettings.themeMode ||
-    themeLayout !== defaultSettings.themeLayout ||
-    themeStretch !== defaultSettings.themeStretch ||
-    themeContrast !== defaultSettings.themeContrast ||
-    themeDirection !== defaultSettings.themeDirection ||
-    themeColorPresets !== defaultSettings.themeColorPresets
+    themeMode !== defaultPreset.themeMode ||
+    themeLayout !== defaultPreset.themeLayout ||
+    themeStretch !== defaultPreset.themeStretch ||
+    themeContrast !== defaultPreset.themeContrast ||
+    themeDirection !== defaultPreset.themeDirection ||
+    themeColorPresets !== defaultPreset.themeColorPresets
 
   return (
     <>

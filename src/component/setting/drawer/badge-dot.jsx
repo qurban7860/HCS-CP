@@ -1,14 +1,11 @@
-import PropTypes from 'prop-types';
-// @mui
-import { Box } from '@mui/material';
-
-// ----------------------------------------------------------------------
+import PropTypes from 'prop-types'
+import { Box } from '@mui/material'
 
 BadgeDot.propTypes = {
   sx: PropTypes.object,
-};
+}
 
-export default function BadgeDot({ sx, ...other }) {
+function BadgeDot({ sx, ...other }) {
   return (
     <Box
       sx={{
@@ -23,5 +20,7 @@ export default function BadgeDot({ sx, ...other }) {
       }}
       {...other}
     />
-  );
+  )
 }
+
+export default BadgeDot

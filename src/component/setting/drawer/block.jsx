@@ -1,21 +1,17 @@
-import PropTypes from 'prop-types';
-// @mui
-import { Stack, Tooltip, Typography } from '@mui/material';
-//
-import Iconify from '../../iconify';
+import PropTypes from 'prop-types'
+import { Stack, Tooltip, Typography } from '@mui/material'
+import { Iconify } from 'component/iconify'
 
-// ----------------------------------------------------------------------
-
-const SPACING = 2.5;
+const SPACING = 2.5
 
 Block.propTypes = {
   sx: PropTypes.object,
   title: PropTypes.string,
   tooltip: PropTypes.string,
   children: PropTypes.node,
-};
+}
 
-export default function Block({ title, tooltip, children, sx, ...other }) {
+function Block({ title, tooltip, children, sx, ...other }) {
   return (
     <Stack spacing={1.5} sx={{ mb: SPACING, ...sx }} {...other}>
       <Stack
@@ -38,5 +34,7 @@ export default function Block({ title, tooltip, children, sx, ...other }) {
 
       {children}
     </Stack>
-  );
+  )
 }
+
+export default Block
