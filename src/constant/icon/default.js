@@ -1,4 +1,4 @@
-export const ICONS = {
+export const ICON = {
   //  defaults
   size: '30px',
   variant: 'overline',
@@ -95,9 +95,9 @@ export const ICONS = {
     heading: 'Not Verified',
   },
   SEARCHBTN: {
-      color: 'green',
-      heading: (btnName) => btnName
-    },
+    color: 'green',
+    heading: (btnName) => btnName,
+  },
   // ------------------------------------------------------------
   // isActive -Documents
   DOCUMENT_ACTIVE: {
@@ -335,4 +335,4 @@ export const ICONS = {
   MAP_MARKER: {
     url: '/logo/howick_map-marker.svg',
   },
-};
+}
