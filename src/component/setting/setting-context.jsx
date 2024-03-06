@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { createContext, useEffect, useContext, useMemo, useCallback } from 'react'
 // hooks
 import useLocalStorage from '../../hook/use-local-storage'
-import localStorageAvailable from 'util/local-storage-space'
+import localStorageSpace from 'util/local-storage-space'
 import { themePreset } from 'theme'
 import { defaultPreset, getPresets, presetsOption } from 'theme/preset'
 
@@ -47,7 +47,7 @@ SettingsProvider.propTypes = {
 
 export function SettingsProvider({ children }) {
   const [settings, setSettings] = useLocalStorage('settings', themePreset)
-  const storageAvailable = localStorageAvailable()
+  const storageAvailable = localStorageSpace()
   const langStorage = storageAvailable ? localStorage.getItem('i18nextLng') : ''
 
   const isArabic = langStorage === 'ar'
