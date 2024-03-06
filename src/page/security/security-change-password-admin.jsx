@@ -1,12 +1,9 @@
 import * as Yup from 'yup'
 import { useState } from 'react'
-// form
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-
-// @mui
 import { Stack, Card, Container, IconButton, InputAdornment, Grid } from '@mui/material'
 // TODO: redux - slices
 // import { SecurityUserPasswordUpdate } from '../../redux/slices/securityUser/securityUser';
@@ -134,9 +131,6 @@ export default function SecurityUserChangePasswordAdmin() {
                   }}
                   autoComplete="current-password"
                 />
-                {/* <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    Change Password
-                  </LoadingButton> */}
               </Stack>
               <AddFormButtons isSubmitting={isSubmitting} toggleCancel={toggleCancel} />
             </Card>
