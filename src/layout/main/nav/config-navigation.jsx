@@ -1,11 +1,6 @@
-// routes
-import { PATH_AUTH, PATH_DOCS, PATH_PAGE } from '../../../routes/paths';
-// config
-import { PATH_AFTER_LOGIN } from '../../../config-global';
-// components
-import Iconify from '../../../components/iconify';
-
-// ----------------------------------------------------------------------
+import { PATH_AUTH, PATH_DOCS, PATH_PAGE } from 'route/path'
+import { PATH_AFTER_LOGIN } from 'global'
+import { Iconify } from 'component/iconify'
 
 const navConfig = [
   {
@@ -63,6 +58,6 @@ const navConfig = [
     icon: <Iconify icon="eva:book-open-fill" />,
     path: PATH_DOCS.root,
   },
-];
+]
 
-export default navConfig;
+export default navConfig
