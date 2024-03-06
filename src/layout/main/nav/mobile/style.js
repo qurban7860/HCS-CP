@@ -1,10 +1,6 @@
-// @mui
-import { styled, alpha } from '@mui/material/styles';
-import { ListItemButton } from '@mui/material';
-// config
-import { NAV } from '../../../../config-global';
-
-// ----------------------------------------------------------------------
+import { styled, alpha } from '@mui/material/styles'
+import { ListItemButton } from '@mui/material'
+import { NAV } from 'config'
 
 export const ListItem = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== 'active',
@@ -18,4 +14,4 @@ export const ListItem = styled(ListItemButton, {
     ...theme.typography.subtitle2,
     backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
   }),
-}));
+}))

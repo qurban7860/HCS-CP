@@ -1,23 +1,18 @@
-import PropTypes from 'prop-types';
-import { Link as RouterLink } from 'react-router-dom';
-// @mui
-import { Link, ListItemText, ListItemIcon } from '@mui/material';
-// components
-import Iconify from '../../../../components/iconify';
-//
-import { ListItem } from './styles';
-
-// ----------------------------------------------------------------------
+import PropTypes from 'prop-types'
+import { Link as RouterLink } from 'react-router-dom'
+import { Link, ListItemText, ListItemIcon } from '@mui/material'
+import { Iconify } from 'component/iconify'
+import { ListItem } from './style'
 
 NavItem.propTypes = {
   open: PropTypes.bool,
   active: PropTypes.bool,
   item: PropTypes.object,
   isExternalLink: PropTypes.bool,
-};
+}
 
 export default function NavItem({ item, open, active, isExternalLink, ...other }) {
-  const { title, path, icon, children } = item;
+  const { title, path, icon, children } = item
 
   const renderContent = (
     <ListItem active={active} {...other}>
@@ -33,7 +28,7 @@ export default function NavItem({ item, open, active, isExternalLink, ...other }
         />
       )}
     </ListItem>
-  );
+  )
 
   // ExternalLink
   if (isExternalLink) {
@@ -41,12 +36,12 @@ export default function NavItem({ item, open, active, isExternalLink, ...other }
       <Link href={path} target="_blank" rel="noopener" underline="none">
         {renderContent}
       </Link>
-    );
+    )
   }
 
   // Has child
   if (children) {
-    return renderContent;
+    return renderContent
   }
 
   // Default
@@ -54,5 +49,5 @@ export default function NavItem({ item, open, active, isExternalLink, ...other }
     <Link component={RouterLink} to={path} underline="none">
       {renderContent}
     </Link>
-  );
+  )
 }
