@@ -4,11 +4,9 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Stack, IconButton, InputAdornment, Alert } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
-import { useAuthContext } from '../../auth/useAuthContext'
+import { useAuthContext } from 'auth'
 import Iconify from 'component/iconify'
 import FormProvider, { RHFTextField } from 'component/hook-form'
-
-// ----------------------------------------------------------------------
 
 function AuthRegisterForm() {
   const { register } = useAuthContext()

@@ -1,4 +1,4 @@
-import LoginLayout from '../../layouts/login'
+import { LoginLayout } from 'layout/login'
 import AuthLoginForm from './auth-login-form'
 
 export default function Login() {

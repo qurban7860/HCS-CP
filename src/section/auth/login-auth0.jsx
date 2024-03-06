@@ -1,6 +1,6 @@
 import { Alert, Tooltip, Stack, Typography, Box, Button } from '@mui/material'
-import { useAuthContext } from '../../auth/useAuthContext'
-import LoginLayout from '../../layouts/login'
+import { useAuthContext } from 'auth'
+import { LoginLayout } from 'layout/login'
 
 function LoginAuth0() {
   const { method } = useAuthContext()

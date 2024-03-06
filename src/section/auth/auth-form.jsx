@@ -6,7 +6,7 @@ import { LoadingButton } from '@mui/lab'
 import { PATH_AUTH } from 'route/path'
 import { useAuthContext } from 'auth'
 import { useSnackbar } from 'component/snackbar'
-import { TITLES } from 'constant/default-constant'
+import { TITLE } from 'constant'
 import { Iconify } from 'component/iconify'
 import FormProvider, { RHFTextField } from 'component/hook-form'
 
@@ -89,7 +89,7 @@ function AuthForm() {
           }}
         >
           <Iconify icon="eva:chevron-left-fill" width={16} />
-          {TITLES.FORGOT_RETURN}
+          {TITLE.FORGOT_RETURN}
         </Link>
       </Stack>
     </FormProvider>

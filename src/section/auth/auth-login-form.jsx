@@ -15,7 +15,7 @@ import {
 import { LoadingButton } from '@mui/lab'
 import { PATH_AUTH } from 'route/path'
 import { useAuthContext } from 'auth'
-import Iconify from '../../components/iconify'
+import { Iconify } from 'component/iconify'
 import FormProvider, { RHFTextField } from 'component/hook-form'
 
 function AuthLoginForm() {
