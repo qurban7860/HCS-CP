@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { memo } from 'react'
 import { Box } from '@mui/material'
-import { StyledRootScrollbar, StyledScrollbar } from './styles'
+import { StyledRootScrollbar, StyledScrollbar } from './style'
 
 Scrollbar.propTypes = {
   sx: PropTypes.object,
