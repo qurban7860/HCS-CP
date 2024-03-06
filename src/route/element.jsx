@@ -126,11 +126,11 @@ export const { UserInvitationView } = Loadable(lazy(() => import('page/security'
 // // Configuration
 // export const { ConfigurationView } = Loadable(lazy(() => import('page/machine')))
 
-// DASHBOARD: SETTINGS
-export const { Setting } = Loadable(lazy(() => import('page/setting')))
-
 // DASHBOARD: Email
 // export const { Email } = Loadable(lazy(() => import('page/email')))
+
+// DASHBOARD: SETTINGS
+export const { Setting } = Loadable(lazy(() => import('page/setting')))
 
 export const { HomePage } = Loadable(lazy(() => import('page/dashboard')))
 
