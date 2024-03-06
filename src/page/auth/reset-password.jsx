@@ -7,7 +7,7 @@ import { Logo } from 'component/logo'
 import { AuthResetPasswordForm } from 'section/auth'
 import { PasswordIcon } from 'theme/asset/jsx'
 import { MotionContainer } from 'component/animate'
-import { TITLES } from 'constant/default-constants'
+import { TITLES } from 'constant/default'
 
 function ResetPasswordPage() {
   return (

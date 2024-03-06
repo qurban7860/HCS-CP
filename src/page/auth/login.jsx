@@ -1,4 +1,4 @@
-import Login from '../../sections/auth/Login'
+import { Login } from 'section/auth'
 
 function LoginPage() {
   return <Login />
