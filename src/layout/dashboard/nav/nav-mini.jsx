@@ -1,18 +1,11 @@
 import { useEffect, useState } from 'react'
-// @mui
 import { Stack, Box, Typography, Grid } from '@mui/material'
-// config
-import { NAV, CONFIG } from '../../../config-global'
-// utils
-import { hideScrollbarX } from '../../../utils/cssStyles'
-// components
-import Logo from '../../../components/logo'
-import { NavSectionMini } from '../../../components/nav-section'
-//
-import NavigationConfig from './navigation-config'
+import { NAV, CONFIG } from 'global'
+import { hideScrollbarX } from 'theme/style'
+import { Logo } from 'component/logo'
+import { NavSectionMini } from 'component/nav-section'
+import NavigationConfig from './nav-config'
 import NavToggleButton from './nav-toggle-button'
-
-// ----------------------------------------------------------------------
 
 export default function NavMini() {
   const [envColor, setEnvColor] = useState('#897A69')

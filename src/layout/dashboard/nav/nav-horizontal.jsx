@@ -1,23 +1,15 @@
-import PropTypes from 'prop-types'
 import { memo } from 'react'
-// @mui
+import PropTypes from 'prop-types'
 import { useTheme } from '@mui/material/styles'
 import { AppBar, Box, Toolbar } from '@mui/material'
-// config
-import { HEADER } from '../../../config-global'
-// utils
-import { bgBlur } from '../../../utils/cssStyles'
-// components
-import { NavSectionHorizontal } from '../../../components/nav-section'
-//
-import NavigationConfig from './navigation-config'
-
-// ----------------------------------------------------------------------
+import { HEADER } from 'global'
+import { bgBlur } from 'theme/style'
+import { NavSectionHorizontal } from 'component/nav-section'
+import NavigationConfig from './nav-config'
 
 function NavHorizontal() {
   const theme = useTheme()
   const navConfig = NavigationConfig()
-  console.log('NavigationConfig : ', navConfig)
   return (
     <AppBar
       component="nav"
@@ -36,7 +28,6 @@ function NavHorizontal() {
       >
         <NavSectionHorizontal data={navConfig} />
       </Toolbar>
-
       <Shadow />
     </AppBar>
   )

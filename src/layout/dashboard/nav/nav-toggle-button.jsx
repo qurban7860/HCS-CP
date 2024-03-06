@@ -1,27 +1,21 @@
-import PropTypes from 'prop-types';
-// @mui
-import { IconButton } from '@mui/material';
-// hooks
-import useResponsive from '../../../hooks/useResponsive';
-// config
-import { NAV } from '../../../config-global';
-// components
-import Iconify from '../../../components/iconify';
-import { useSettingsContext } from '../../../components/settings';
-
-// ----------------------------------------------------------------------
+import PropTypes from 'prop-types'
+import { IconButton } from '@mui/material'
+import { useResponsive } from 'hook'
+import { NAV } from 'global'
+import { Iconify } from 'component/iconify'
+import { useSettingsContext } from 'component/setting'
 
 NavToggleButton.propTypes = {
   sx: PropTypes.object,
-};
+}
 
 export default function NavToggleButton({ sx, ...other }) {
-  const { themeLayout, onToggleLayout } = useSettingsContext();
+  const { themeLayout, onToggleLayout } = useSettingsContext()
 
-  const isDesktop = useResponsive('up', 'lg');
+  const isDesktop = useResponsive('up', 'lg')
 
   if (!isDesktop) {
-    return null;
+    return null
   }
 
   return (
@@ -49,5 +43,5 @@ export default function NavToggleButton({ sx, ...other }) {
         icon={themeLayout === 'vertical' ? 'eva:arrow-ios-back-fill' : 'eva:arrow-ios-forward-fill'}
       />
     </IconButton>
-  );
+  )
 }

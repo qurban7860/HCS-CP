@@ -1,18 +1,25 @@
-import { useEffect, useState } from 'react';
-import { PATH_CUSTOMER, PATH_DASHBOARD, PATH_MACHINE, PATH_DOCUMENT, PATH_SETTING, PATH_SITEMAP, PATH_SECURITY, PATH_EMAIL } from '../../../routes/paths';
-// components
-import Iconify from '../../../components/iconify';
-import SvgColor from '../../../components/svg-color';
-import { useAuthContext } from '../../../auth/useAuthContext';   
+import { useEffect, useState } from 'react'
+import {
+  PATH_CUSTOMER,
+  PATH_DASHBOARD,
+  PATH_MACHINE,
+  PATH_DOCUMENT,
+  PATH_SETTING,
+  PATH_SITEMAP,
+  PATH_SECURITY,
+  PATH_EMAIL,
+} from 'route/path'
+import { Iconify } from 'component/iconify'
+import { SvgColor } from 'component/svg-color'
+import { useAuthContext } from 'auth'
 
 // ----------------------------------------------------------------------
 
 function NavigationConfig() {
-
   const icon = (name) => (
     <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
-  );
-  
+  )
+
   const ICONS = {
     blog: icon('ic_blog'),
     cart: icon('ic_cart'),
@@ -37,7 +44,7 @@ function NavigationConfig() {
     analytics: icon('ic_analytics'),
     dashboard: <Iconify icon="mdi:view-dashboard" />,
     setting: <Iconify icon="ant-design:setting-filled" />,
-    email: <Iconify icon ="eva:email-fill"/>,
+    email: <Iconify icon="eva:email-fill" />,
     document: <Iconify icon="lets-icons:file-dock-fill" />,
     drawing: <Iconify icon="streamline:hand-held-tablet-drawing-solid" />,
     reports: <Iconify icon="mdi:report-box-outline" />,
@@ -45,23 +52,16 @@ function NavigationConfig() {
     machines: <Iconify icon="mdi:gate-open" />,
     users: <Iconify icon="mdi:account-group" />,
     security: <Iconify icon="mdi:security-account" />,
-  };
+  }
 
-  const { 
-    isDocumentAccessAllowed, 
-    isDrawingAccessAllowed, 
-    isSettingAccessAllowed, 
-    isSecurityUserAccessAllowed, 
-    isEmailAccessAllowed 
-  } = useAuthContext();
+  const {
+    isDocumentAccessAllowed,
+    isDrawingAccessAllowed,
+    isSettingAccessAllowed,
+    isSecurityUserAccessAllowed,
+    isEmailAccessAllowed,
+  } = useAuthContext()
 
-// console.log(
-//     "isDocumentAccessAllowed : ", isDocumentAccessAllowed, 
-//     "isDrawingAccessAllowed : ",  isDrawingAccessAllowed,
-//     "isSettingAccessAllowed : ",  isSettingAccessAllowed,
-//     "isSecurityUserAccessAllowed : ", isSecurityUserAccessAllowed,
-//     )
-    
   const [navConfig, setConfig] = useState([
     {
       subheader: 'general',
@@ -71,39 +71,68 @@ function NavigationConfig() {
         { title: 'Machines', path: PATH_MACHINE.machines.list, icon: ICONS.machines },
       ],
     },
-  ]);
+  ])
 
   useEffect(() => {
-    const updatedConfig = [...navConfig];
+    const updatedConfig = [...navConfig]
 
-    updatedConfig[0].items.splice(7, 0, { title: 'Sites Map', path: PATH_SITEMAP.app, icon: ICONS.map });
+    updatedConfig[0].items.splice(7, 0, {
+      title: 'Sites Map',
+      path: PATH_SITEMAP.app,
+      icon: ICONS.map,
+    })
 
     if (isDocumentAccessAllowed && navConfig.some((config) => config.title !== 'Documents')) {
-      updatedConfig[0].items.splice(3, 0, { title: 'Documents', path: PATH_DOCUMENT.document.list, icon: ICONS.document });
+      updatedConfig[0].items.splice(3, 0, {
+        title: 'Documents',
+        path: PATH_DOCUMENT.document.list,
+        icon: ICONS.document,
+      })
     }
 
     if (isDrawingAccessAllowed && navConfig.some((config) => config.title !== 'Machine Drawings')) {
-      updatedConfig[0].items.splice(4, 0, { title: 'Machine Drawings', path: PATH_DOCUMENT.document.machineDrawings.list, icon: ICONS.drawing });
+      updatedConfig[0].items.splice(4, 0, {
+        title: 'Machine Drawings',
+        path: PATH_DOCUMENT.document.machineDrawings.list,
+        icon: ICONS.drawing,
+      })
     }
 
     if (isSettingAccessAllowed && navConfig.some((config) => config.title !== 'Settings')) {
-      updatedConfig[0].items.splice(5, 0, { title: 'Settings', path: PATH_SETTING.app, icon: ICONS.setting });
+      updatedConfig[0].items.splice(5, 0, {
+        title: 'Settings',
+        path: PATH_SETTING.app,
+        icon: ICONS.setting,
+      })
     }
 
     if (isSecurityUserAccessAllowed && navConfig.some((config) => config.title !== 'Security')) {
-      updatedConfig[0].items.splice(6, 0, { title: 'Security', path: PATH_SECURITY.users.list, icon: ICONS.security });
+      updatedConfig[0].items.splice(6, 0, {
+        title: 'Security',
+        path: PATH_SECURITY.users.list,
+        icon: ICONS.security,
+      })
     }
 
     if (isEmailAccessAllowed && navConfig.some((config) => config.title !== 'Email')) {
-      updatedConfig[0].items.push({ title: 'Email', path: PATH_EMAIL.email.list, icon: ICONS.email });
+      updatedConfig[0].items.push({
+        title: 'Email',
+        path: PATH_EMAIL.email.list,
+        icon: ICONS.email,
+      })
     }
 
-    setConfig(updatedConfig);
+    setConfig(updatedConfig)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ isDocumentAccessAllowed, isDrawingAccessAllowed, isSettingAccessAllowed, isSecurityUserAccessAllowed, isEmailAccessAllowed ]);
+  }, [
+    isDocumentAccessAllowed,
+    isDrawingAccessAllowed,
+    isSettingAccessAllowed,
+    isSecurityUserAccessAllowed,
+    isEmailAccessAllowed,
+  ])
 
-  return navConfig;
-};
-// NavigationConfig()
-// console.log("inside NavigationConfig : ",NavigationConfig)
-export default NavigationConfig;
+  return navConfig
+}
+
+export default NavigationConfig

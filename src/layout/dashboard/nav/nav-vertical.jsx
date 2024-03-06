@@ -1,24 +1,16 @@
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-// @mui
 import { Box, Stack, Drawer, Typography, Grid } from '@mui/material'
-// hooks
-// import { useSettingsContext } from '../../../components/settings';
-import useResponsive from '../../../hooks/useResponsive'
-// config
-import { CONFIG, NAV } from '../../../config-global'
-// components
-import Logo from '../../../components/logo'
-import Scrollbar from '../../../components/scrollbar'
-import { NavSectionVertical } from '../../../components/nav-section'
-//
-import NavigationConfig from './navigation-config'
+import useResponsive from 'hook'
+import { CONFIG, NAV } from 'global'
+import { Logo } from 'component/logo'
+import { Scrollbar } from 'component/scrollbar'
+import { NavSectionVertical } from 'component/nav-section'
+import NavigationConfig from './nav-config'
 import NavDocs from './nav-doc'
 import NavAccount from './nav-account'
 import NavToggleButton from './nav-toggle-button'
-
-// ----------------------------------------------------------------------
 
 NavVertical.propTypes = {
   openNav: PropTypes.bool,
