@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { localStorageAvailable } from 'util'
+import { localStorageSpace } from 'util'
 import { useSettingsContext } from 'component/setting'
 import { allLangs, defaultLang } from './config-lang'
 
@@ -8,7 +8,7 @@ export default function useLocale() {
 
   const { onChangeDirectionByLang } = useSettingsContext()
 
-  const storageAvailable = localStorageAvailable()
+  const storageAvailable = localStorageSpace()
 
   const langStorage = storageAvailable ? localStorage.getItem('i18nextLng') : ''
 

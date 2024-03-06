@@ -1,7 +1,7 @@
 import i18n from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import { initReactI18next } from 'react-i18next'
-import { localStorageSpace } from 'util/local-storage-space'
+import { localStorageSpace } from 'util'
 import { defaultLang } from './config-lang'
 import enLocales from './lang/en'
 import frLocales from './lang/fr'
