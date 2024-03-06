@@ -1,24 +1,20 @@
-import PropTypes from 'prop-types';
-import { forwardRef } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-// @mui
-import { Tooltip, Link, ListItemText } from '@mui/material';
-// locales
-import { useLocales } from '../../../locales';
-// auth
-import RoleBasedGuard from '../../../auth/RoleBasedGuard';
-//
-import Iconify from '../../iconify';
-import { StyledItem, StyledIcon } from './styles';
+import PropTypes from 'prop-types'
+import { forwardRef } from 'react'
+import { Link as RouterLink } from 'react-router-dom'
+import { Tooltip, Link, ListItemText } from '@mui/material'
+import { useLocales } from 'locale'
+import { RoleBasedGuard } from 'auth'
+import { Iconify } from 'component/iconify'
+import { StyledItem, StyledIcon } from './style'
 
 // ----------------------------------------------------------------------
 
 const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...other }, ref) => {
-  const { translate } = useLocales();
+  const { translate } = useLocales()
 
-  const { title, path, icon, children, disabled, caption, roles } = item;
+  const { title, path, icon, children, disabled, caption, roles } = item
 
-  const subItem = depth !== 1;
+  const subItem = depth !== 1
 
   const renderContent = (
     <StyledItem ref={ref} open={open} depth={depth} active={active} disabled={disabled} {...other}>
@@ -71,7 +67,7 @@ const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...othe
         />
       )}
     </StyledItem>
-  );
+  )
 
   const renderItem = () => {
     // ExternalLink
@@ -80,18 +76,18 @@ const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...othe
         <Link href={path} target="_blank" rel="noopener" underline="none">
           {renderContent}
         </Link>
-      );
+      )
 
     // Default
     return (
       <Link component={RouterLink} to={path} underline="none">
         {renderContent}
       </Link>
-    );
-  };
+    )
+  }
 
-  return <RoleBasedGuard roles={roles}> {renderItem()} </RoleBasedGuard>;
-});
+  return <RoleBasedGuard roles={roles}> {renderItem()} </RoleBasedGuard>
+})
 
 NavItem.propTypes = {
   open: PropTypes.bool,
@@ -99,6 +95,6 @@ NavItem.propTypes = {
   item: PropTypes.object,
   depth: PropTypes.number,
   isExternalLink: PropTypes.bool,
-};
+}
 
-export default NavItem;
+export default NavItem

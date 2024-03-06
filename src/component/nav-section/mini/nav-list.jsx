@@ -1,13 +1,9 @@
 import PropTypes from 'prop-types'
 import { useState, useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
-// hooks
-import useActiveLink from '../../../hooks/useActiveLink'
-//
-import { StyledPopover } from './styles'
+import { useActiveLink } from 'hook'
+import { StyledPopover } from './style'
 import NavItem from './nav-item'
-
-// ----------------------------------------------------------------------
 
 NavList.propTypes = {
   data: PropTypes.object,
@@ -28,17 +24,14 @@ export default function NavList({ data, depth, hasChild }) {
     if (open) {
       handleClose()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
 
   useEffect(() => {
     const appBarEl = Array.from(document.querySelectorAll('.MuiAppBar-root'))
 
-    // Reset styles when hover
     const styles = () => {
       document.body.style.overflow = ''
       document.body.style.padding = ''
-      // Apply for Window
       appBarEl.forEach((elem) => {
         elem.style.padding = ''
       })
