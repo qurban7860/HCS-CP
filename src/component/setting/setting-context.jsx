@@ -2,15 +2,12 @@ import PropTypes from 'prop-types'
 import { createContext, useEffect, useContext, useMemo, useCallback } from 'react'
 // hooks
 import useLocalStorage from '../../hook/use-local-storage'
-// utils
 import localStorageAvailable from 'util/local-storage-space'
-import { defaultSettings } from '../../theme/default-preset'
-import { defaultPreset, getPresets, presetsOption } from '../../theme/preset'
-
-// ----------------------------------------------------------------------
+import { themePreset } from 'theme'
+import { defaultPreset, getPresets, presetsOption } from 'theme/preset'
 
 const initialState = {
-  ...defaultSettings,
+  ...themePreset,
   // Mode
   onToggleMode: () => {},
   onChangeMode: () => {},
@@ -34,8 +31,6 @@ const initialState = {
   onResetSetting: () => {},
 }
 
-// ----------------------------------------------------------------------
-
 export const SettingsContext = createContext(initialState)
 
 export const useSettingsContext = () => {
@@ -46,17 +41,13 @@ export const useSettingsContext = () => {
   return context
 }
 
-// ----------------------------------------------------------------------
-
 SettingsProvider.propTypes = {
   children: PropTypes.node,
 }
 
 export function SettingsProvider({ children }) {
-  const [settings, setSettings] = useLocalStorage('settings', defaultSettings)
-
+  const [settings, setSettings] = useLocalStorage('settings', themePreset)
   const storageAvailable = localStorageAvailable()
-
   const langStorage = storageAvailable ? localStorage.getItem('i18nextLng') : ''
 
   const isArabic = langStorage === 'ar'
@@ -149,7 +140,7 @@ export function SettingsProvider({ children }) {
 
   // Reset
   const onResetSetting = useCallback(() => {
-    setSettings(defaultSettings)
+    setSettings(themePreset)
   }, [setSettings])
 
   const memoizedValue = useMemo(

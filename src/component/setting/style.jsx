@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
-// @mui
-import { alpha, styled } from '@mui/material/styles';
-import { CardActionArea, Radio, FormControlLabel, Stack, Box } from '@mui/material';
+import PropTypes from 'prop-types'
+import { alpha, styled } from '@mui/material/styles'
+import { CardActionArea, Radio, FormControlLabel, Stack, Box } from '@mui/material'
 
 // ----------------------------------------------------------------------
 
@@ -9,7 +8,7 @@ export const StyledWrap = styled(Box)(() => ({
   gap: 8,
   display: 'grid',
   gridTemplateColumns: 'repeat(2, 1fr)',
-}));
+}))
 
 // ----------------------------------------------------------------------
 
@@ -32,7 +31,7 @@ export const StyledCard = styled(CardActionArea, {
     boxShadow: theme.customShadows.z12,
     borderColor: alpha(theme.palette.grey[500], 0.24),
   }),
-}));
+}))
 
 // ----------------------------------------------------------------------
 
@@ -52,13 +51,13 @@ export const StyledCircleColor = styled('div', {
     height: 24,
     boxShadow: `-2px 4px 8px 0px ${alpha(color, 0.48)}`,
   }),
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 MaskControl.propTypes = {
   value: PropTypes.string,
-};
+}
 
 export function MaskControl({ value }) {
   return (
@@ -75,34 +74,34 @@ export function MaskControl({ value }) {
         position: 'absolute',
       }}
     />
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
 
 LayoutIcon.propTypes = {
   layout: PropTypes.string,
-};
+}
 
 export function LayoutIcon({ layout }) {
-  const WIDTH = 16;
+  const WIDTH = 16
 
-  const HEIGHT = 10;
+  const HEIGHT = 10
 
-  const SPACING = 0.5;
+  const SPACING = 0.5
 
-  const RADIUS = 0.5;
+  const RADIUS = 0.5
 
-  const isNavHorizontal = layout === 'horizontal';
+  const isNavHorizontal = layout === 'horizontal'
 
-  const isNavMini = layout === 'mini';
+  const isNavMini = layout === 'mini'
 
   const styles = {
     width: 1,
     height: 1,
     borderRadius: RADIUS,
     position: 'absolute',
-  };
+  }
 
   return (
     <Stack direction={layout === 'horizontal' ? 'column' : 'row'} sx={{ width: 1, height: 1 }}>
@@ -131,5 +130,5 @@ export function LayoutIcon({ layout }) {
         <Box sx={{ ...styles, opacity: 0.48, border: `solid 1px currentColor` }} />
       </Box>
     </Stack>
-  );
+  )
 }
