@@ -1,4 +1,4 @@
-import { PATH_SECURITY } from '../../../../routes/paths';
+import { PATH_SECURITY } from 'route/path'
 
 export const OPTIONS = [
   {
@@ -13,4 +13,4 @@ export const OPTIONS = [
     label: 'Change Password',
     linkTo: PATH_SECURITY.users.password,
   },
-];
+]
