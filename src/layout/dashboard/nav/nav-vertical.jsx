@@ -2,14 +2,14 @@ import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Box, Stack, Drawer, Typography, Grid } from '@mui/material'
-import useResponsive from 'hook'
-import { CONFIG, NAV } from 'global'
+import { useResponsive } from 'hook'
+import { CONFIG, NAV } from 'config'
 import { Logo } from 'component/logo'
 import { Scrollbar } from 'component/scrollbar'
 import { NavSectionVertical } from 'component/nav-section'
 import NavigationConfig from './nav-config'
 import NavDocs from './nav-doc'
-import NavAccount from './nav-account'
+// import NavAccount from './nav-account'
 import NavToggleButton from './nav-toggle-button'
 
 NavVertical.propTypes = {
@@ -28,7 +28,6 @@ export default function NavVertical({ openNav, onCloseNav }) {
     if (openNav) {
       onCloseNav()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
 
   useEffect(() => {
@@ -79,8 +78,6 @@ export default function NavVertical({ openNav, onCloseNav }) {
             <Typography sx={{ color: '#897A69', fontSize: '10px' }}>{CONFIG.Version}</Typography>
           )}
         </Grid>
-
-        <NavAccount />
       </Stack>
       <NavSectionVertical sx={{ mt: '-50px' }} data={navConfig} />
       <Box sx={{ flexGrow: 1 }} />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Stack, Box, Typography, Grid } from '@mui/material'
-import { NAV, CONFIG } from 'global'
+import { NAV, CONFIG } from 'config'
 import { hideScrollbarX } from 'theme/style'
 import { Logo } from 'component/logo'
 import { NavSectionMini } from 'component/nav-section'

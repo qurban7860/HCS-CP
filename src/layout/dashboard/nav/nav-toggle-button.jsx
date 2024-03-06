@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { IconButton } from '@mui/material'
 import { useResponsive } from 'hook'
-import { NAV } from 'global'
+import { NAV } from 'config'
 import { Iconify } from 'component/iconify'
 import { useSettingsContext } from 'component/setting'
 

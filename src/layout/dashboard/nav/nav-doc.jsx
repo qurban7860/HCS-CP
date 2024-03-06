@@ -1,11 +1,6 @@
-// @mui
 import { Stack, Button, Typography } from '@mui/material'
-// auth
-import { useAuthContext } from '../../../auth/useAuthContext'
-// routes
-import { PATH_DOCS } from '../../../routes/paths'
-
-// ----------------------------------------------------------------------
+import { useAuthContext } from 'auth'
+import { PATH_DOCS } from 'route/path'
 
 export default function NavDocs() {
   const { user } = useAuthContext()
