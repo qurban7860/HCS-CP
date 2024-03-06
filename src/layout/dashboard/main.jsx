@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import { Box } from '@mui/material'
 import useResponsive from 'hook'
-import { HEADER, NAV } from '../../config-global'
-import { useSettingsContext } from '../../components/settings'
+import { HEADER, NAV } from 'config'
+import { useSettingsContext } from 'component/setting'
 
 const SPACING = 8
 
@@ -45,7 +45,6 @@ export default function Main({ children, sx, ...other }) {
       sx={{
         flexGrow: 1,
         backgroundColor: '#63738114',
-        // background: (theme) => theme.palette.background.default,
         py: `${HEADER.H_MOBILE + SPACING}px`,
         // height: '100vh',
         ...(isDesktop && {
