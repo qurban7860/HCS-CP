@@ -7,7 +7,7 @@ import { LoadingButton } from '@mui/lab'
 import FormProvider, { RHFTextField } from 'component/hook-form'
 import axios from 'util/axios'
 import { CONFIG } from 'global'
-import { TITLES } from 'constant/default-constants'
+import { TITLES } from 'constant/default'
 import { useSnackbar } from 'component/snackbar'
 
 function AuthResetPasswordForm() {
