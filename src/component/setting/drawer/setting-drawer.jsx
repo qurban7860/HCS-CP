@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { alpha, useTheme } from '@mui/material/styles'
 import { Box, Divider, Drawer, Stack, Typography, Tooltip, IconButton } from '@mui/material'
 import { bgBlur } from 'theme/style'
-import { NAV } from 'global'
-import Iconify from '../../iconify'
-import Scrollbar from '../../scrollbar'
-import { defaultPreset } from 'theme'
-import { useSettingsContext } from 'component/setting/setting-context'
+import { NAV } from 'config'
+import { Iconify } from 'component/iconify'
+import { Scrollbar } from 'component/scrollbar'
+import { themePreset } from 'theme'
+import { useSettingsContext } from 'component/setting'
 import Block from './block'
 import BadgeDot from './badge-dot'
 import ModeOptions from './mode-option'
@@ -19,7 +19,7 @@ import ColorPresetsOptions from './color-preset-option'
 
 const SPACING = 2.5
 
-export default function SettingsDrawer() {
+function SettingDrawer() {
   const {
     themeMode,
     themeLayout,
@@ -34,26 +34,20 @@ export default function SettingsDrawer() {
 
   const [open, setOpen] = useState(false)
 
-  // const handleToggle = () => {
-  //   setOpen(!open);
-  // };
-
   const handleClose = () => {
     setOpen(false)
   }
 
   const notDefault =
-    themeMode !== defaultPreset.themeMode ||
-    themeLayout !== defaultPreset.themeLayout ||
-    themeStretch !== defaultPreset.themeStretch ||
-    themeContrast !== defaultPreset.themeContrast ||
-    themeDirection !== defaultPreset.themeDirection ||
-    themeColorPresets !== defaultPreset.themeColorPresets
+    themeMode !== themePreset.themeMode ||
+    themeLayout !== themePreset.themeLayout ||
+    themeStretch !== themePreset.themeStretch ||
+    themeContrast !== themePreset.themeContrast ||
+    themeDirection !== themePreset.themeDirection ||
+    themeColorPresets !== themePreset.themeColorPresets
 
   return (
     <>
-      {/* {!open && <ToggleButton open={open} notDefault={notDefault} onToggle={handleToggle} />} */}
-
       <Drawer
         anchor="right"
         open={open}
@@ -129,3 +123,5 @@ export default function SettingsDrawer() {
     </>
   )
 }
+
+export default SettingDrawer

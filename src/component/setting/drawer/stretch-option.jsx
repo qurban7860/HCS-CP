@@ -1,5 +1,5 @@
 import { Stack, Box } from '@mui/material'
-import { useSettingsContext } from 'component/setting-context'
+import { useSettingsContext } from 'component/setting'
 import { Iconify } from 'component/iconify'
 import { StyledCard } from '../style'
 

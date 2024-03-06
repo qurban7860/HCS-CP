@@ -1,5 +1,5 @@
 import { RadioGroup } from '@mui/material'
-import SvgColor from '../../svg-color'
+import { SvgColor } from 'component/svg-color'
 import { useSettingsContext } from '../setting-context'
 import { StyledCard, StyledWrap, MaskControl } from '../style'
 
