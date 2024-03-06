@@ -3,7 +3,7 @@ import storage from 'redux-persist/lib/storage'
 import { createContext, useEffect, useReducer, useCallback, useMemo } from 'react'
 import { CONFIG } from 'global'
 import axios from 'util/axios'
-import localStorageAvailable from 'util/local-storage-space'
+import localStorageSpace from 'util/local-storage-space'
 import { isValidToken, setSession } from './util'
 import { PATH_AUTH } from 'route/path'
 
@@ -70,7 +70,7 @@ AuthProvider.propTypes = {
 
 export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const storageAvailable = useMemo(() => localStorageAvailable(), [])
+  const storageAvailable = useMemo(() => localStorageSpace(), [])
 
   const initialize = useCallback(async () => {
     try {
