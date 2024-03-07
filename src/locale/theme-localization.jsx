@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types'
-// @mui
 import { ThemeProvider, createTheme, useTheme } from '@mui/material/styles'
-import useLocales from './use-locale'
-
-// ----------------------------------------------------------------------
+import useLocale from './use-locale'
 
 ThemeLocalization.propTypes = {
   children: PropTypes.node,
@@ -11,9 +8,7 @@ ThemeLocalization.propTypes = {
 
 export default function ThemeLocalization({ children }) {
   const outerTheme = useTheme()
-
-  const { currentLang } = useLocales()
-
+  const { currentLang } = useLocale()
   const theme = createTheme(outerTheme, currentLang.systemValue)
 
   return <ThemeProvider theme={theme}> {children} </ThemeProvider>

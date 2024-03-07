@@ -2,7 +2,6 @@
 import { enUS, frFR, zhCN, viVN, arSA } from '@mui/material/locale'
 
 // PLEASE REMOVE `LOCAL STORAGE` WHEN YOU CHANGE SETTINGS.
-// ----------------------------------------------------------------------
 
 export const allLang = [
   {

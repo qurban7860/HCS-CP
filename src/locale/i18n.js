@@ -9,8 +9,6 @@ import vnLocales from './lang/vn'
 import cnLocales from './lang/cn'
 import arLocales from './lang/ar'
 
-// ----------------------------------------------------------------------
-
 let lng = defaultLang.value
 
 const storageAvailable = localStorageSpace()
