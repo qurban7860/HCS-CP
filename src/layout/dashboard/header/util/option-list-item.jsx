@@ -1,6 +1,6 @@
 import { PATH_SECURITY } from 'route/path'
 
-export const OPTIONS = [
+const OPTION = [
   {
     label: 'Home',
     linkTo: '/',
@@ -14,3 +14,5 @@ export const OPTIONS = [
     linkTo: PATH_SECURITY.users.password,
   },
 ]
+
+export default OPTION
