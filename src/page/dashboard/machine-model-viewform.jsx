@@ -20,8 +20,6 @@ import { Cover } from 'component/default'
 import { PATH_DASHBOARD } from '../../routes/paths'
 import { countries } from '../../assets/data'
 
-// ----------------------------------------------------------------------
-
 function MachineByModelViewForm() {
   const dispatch = useDispatch()
   const navigate = useNavigate()

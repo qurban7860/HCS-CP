@@ -1,8 +1,8 @@
 import { Container, Typography } from '@mui/material'
-import { useSettingsContext } from 'component/setting'
+import { useSettingContext } from 'component/setting'
 
 function Blank() {
-  const { themeStretch } = useSettingsContext()
+  const { themeStretch } = useSettingContext()
 
   return (
     <Container maxWidth={themeStretch ? false : 'xl'}>
