@@ -147,7 +147,7 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }))
 
-// --------------------------------------------------------------------------------------------
+ ----------------------
 
 // @root - GeneralAppPage - dashboard
 
@@ -181,7 +181,7 @@ export const StyledGlobalCard = styled(Card)(({ theme }) => ({
   backgroundSize: 'auto 90%',
 }))
 
-// --------------------------------------------------------------------------------------------
+ ----------------------
 /**
  * @styled components from minimal layout
  */
