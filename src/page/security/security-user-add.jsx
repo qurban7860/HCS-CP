@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import { Container, Card } from '@mui/material'
 import SecurityUserAddForm from './security-user-addform'
 import { Cover } from 'component/Defaults/Cover'
-// ----------------------------------------------------------------------
 
 SecurityUserAdd.propTypes = {
   isInvite: PropTypes.bool,

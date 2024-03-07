@@ -3,10 +3,8 @@ import * as Yup from 'yup'
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-// form
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-// @mui
 import { MuiTelInput } from 'mui-tel-input'
 import {
   Box,
@@ -19,23 +17,19 @@ import {
   Autocomplete,
   TextField,
 } from '@mui/material'
-// component
-import Iconify from '../../components/iconify'
-// routes
-import { PATH_SECURITY } from '../../routes/paths'
-// assets
-// components
-import { useSnackbar } from '../../components/snackbar'
-import FormProvider, { RHFSwitch, RHFTextField, RHFMultiSelect } from '../../components/hook-form'
-// slice
-import { addSecurityUser } from '../../redux/slices/securityUser/securityUser'
-import { getActiveSPCustomers, getAllCustomers } from '../../redux/slices/customer/customer'
-import { resetContacts, getActiveContacts } from '../../redux/slices/customer/contact'
-import { getRoles } from '../../redux/slices/securityUser/role'
-import { getActiveRegions } from '../../redux/slices/region/region'
-import { getAllMachines } from '../../redux/slices/products/machine'
+import { Iconify } from 'component/iconify'
+import { PATH_SECURITY } from 'route/path'
+import { useSnackbar } from 'component/snackbar'
+import FormProvider, { RHFSwitch, RHFTextField, RHFMultiSelect } from 'component/hook-form'
+// TODO: redux - slices
+// import { addSecurityUser } from '../../redux/slices/securityUser/securityUser'
+// import { getActiveSPCustomers, getAllCustomers } from '../../redux/slices/customer/customer'
+// import { resetContacts, getActiveContacts } from '../../redux/slices/customer/contact'
+// import { getRoles } from '../../redux/slices/securityUser/role'
+// import { getActiveRegions } from '../../redux/slices/region/region'
+// import { getAllMachines } from '../../redux/slices/products/machine'
 
-import AddFormButtons from '../components/DocumentForms/AddFormButtons'
+// import AddFormButtons from '../components/DocumentForms/AddFormButtons'
 
 SecurityUserAddForm.propTypes = {
   isEdit: PropTypes.bool,
@@ -68,179 +62,179 @@ export default function SecurityUserAddForm({ isEdit = false, currentUser, isInv
   const [phone, setPhone] = useState('')
 
   const ROLES = []
-  roles.map((role) => ROLES.push({ value: role?._id, label: role.name }))
+  // roles.map((role) => ROLES.push({ value: role?._id, label: role.name }))
 
-  // eslint-disable-next-line
-  const [roleVal, setRoleVal] = useState('')
+  // // eslint-disable-next-line
+  // const [roleVal, setRoleVal] = useState('')
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { enqueueSnackbar } = useSnackbar()
+  // const dispatch = useDispatch()
+  // const navigate = useNavigate()
+  // const { enqueueSnackbar } = useSnackbar()
 
-  useLayoutEffect(() => {
-    dispatch(getAllCustomers())
-    dispatch(getAllMachines())
-    dispatch(getActiveRegions())
-    // dispatch(getActiveSPCustomers());
-    dispatch(getRoles())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch])
+  // useLayoutEffect(() => {
+  //   dispatch(getAllCustomers())
+  //   dispatch(getAllMachines())
+  //   dispatch(getActiveRegions())
+  //   // dispatch(getActiveSPCustomers());
+  //   dispatch(getRoles())
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [dispatch])
 
-  useEffect(() => {
-    if (customerVal) {
-      dispatch(getActiveContacts(customerVal._id))
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    dispatch,
-    customerVal,
-    // userRoles
-  ])
+  // useEffect(() => {
+  //   if (customerVal) {
+  //     dispatch(getActiveContacts(customerVal._id))
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [
+  //   dispatch,
+  //   customerVal,
+  //   // userRoles
+  // ])
 
-  useEffect(() => {
-    const mappedRoles = roles.map((role) => ({
-      value: role?._id,
-      label: role.name,
-    }))
+  // useEffect(() => {
+  //   const mappedRoles = roles.map((role) => ({
+  //     value: role?._id,
+  //     label: role.name,
+  //   }))
 
-    const sortedRolesTemp = [...mappedRoles].sort((a, b) => {
-      const nameA = a.label.toUpperCase()
-      const nameB = b.label.toUpperCase()
-      return nameA.localeCompare(nameB)
-    })
+  //   const sortedRolesTemp = [...mappedRoles].sort((a, b) => {
+  //     const nameA = a.label.toUpperCase()
+  //     const nameB = b.label.toUpperCase()
+  //     return nameA.localeCompare(nameB)
+  //   })
 
-    setSortedRoles(sortedRolesTemp)
-  }, [roles])
+  //   setSortedRoles(sortedRolesTemp)
+  // }, [roles])
 
-  const NewUserSchema = Yup.object().shape({
-    customer: Yup.object().when({
-      is: () => customerVal === '',
-      then: Yup.object().nullable().required('Customer is required!'),
-      otherwise: Yup.object().nullable(),
-    }),
-    name:
-      !isInvite &&
-      Yup.string().required('Name is required!').max(40, 'Name must not exceed 40 characters!'),
-    email: Yup.string().email('Invalid email format').required('Email is required'),
-    password: !isInvite && Yup.string().required('Password is required').min(6),
-    passwordConfirmation:
-      !isInvite && Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
-    roles: Yup.array().required('Roles are required'),
-    isActive: Yup.boolean(),
-    multiFactorAuthentication: Yup.boolean(),
-  })
+  // const NewUserSchema = Yup.object().shape({
+  //   customer: Yup.object().when({
+  //     is: () => customerVal === '',
+  //     then: Yup.object().nullable().required('Customer is required!'),
+  //     otherwise: Yup.object().nullable(),
+  //   }),
+  //   name:
+  //     !isInvite &&
+  //     Yup.string().required('Name is required!').max(40, 'Name must not exceed 40 characters!'),
+  //   email: Yup.string().email('Invalid email format').required('Email is required'),
+  //   password: !isInvite && Yup.string().required('Password is required').min(6),
+  //   passwordConfirmation:
+  //     !isInvite && Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
+  //   roles: Yup.array().required('Roles are required'),
+  //   isActive: Yup.boolean(),
+  //   multiFactorAuthentication: Yup.boolean(),
+  // })
 
-  const defaultValues = useMemo(
-    () => ({
-      name: name || '',
-      email: '',
-      password: '',
-      passwordConfirmation: '',
-      isActive: true,
-      multiFactorAuthentication: false,
-      roles: currentUser?.roles || [],
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentUser]
-  )
+  // const defaultValues = useMemo(
+  //   () => ({
+  //     name: name || '',
+  //     email: '',
+  //     password: '',
+  //     passwordConfirmation: '',
+  //     isActive: true,
+  //     multiFactorAuthentication: false,
+  //     roles: currentUser?.roles || [],
+  //   }),
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   [currentUser]
+  // )
 
-  const methods = useForm({
-    resolver: yupResolver(NewUserSchema),
-    defaultValues,
-  })
+  // const methods = useForm({
+  //   resolver: yupResolver(NewUserSchema),
+  //   defaultValues,
+  // })
 
-  const {
-    reset,
-    setValue,
-    handleSubmit,
-    formState: { isSubmitting },
-    control,
-    trigger,
-  } = methods
+  // const {
+  //   reset,
+  //   setValue,
+  //   handleSubmit,
+  //   formState: { isSubmitting },
+  //   control,
+  //   trigger,
+  // } = methods
 
-  useEffect(() => {
-    if (isEdit && currentUser) {
-      reset(defaultValues)
-    }
-    if (!isEdit) {
-      reset(defaultValues)
-    }
+  // useEffect(() => {
+  //   if (isEdit && currentUser) {
+  //     reset(defaultValues)
+  //   }
+  //   if (!isEdit) {
+  //     reset(defaultValues)
+  //   }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEdit, currentUser])
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isEdit, currentUser])
 
-  const handleNameChange = (event) => {
-    setName(event)
-    setValue('name', event || '')
-    trigger('name')
-  }
+  // const handleNameChange = (event) => {
+  //   setName(event)
+  //   setValue('name', event || '')
+  //   trigger('name')
+  // }
 
-  // console.log(customerVal);
+  // // console.log(customerVal);
 
-  const onSubmit = async (data) => {
-    if (phone && phone.length > 4) {
-      data.phone = phone
-    }
-    if (customerVal) {
-      data.customer = customerVal._id
-    }
-    if (customersArr.length > 0) {
-      const selectedCustomerIDs = customersArr.map((customer) => customer._id)
-      data.customers = selectedCustomerIDs
-    }
-    if (machinesArr.length > 0) {
-      const selectedMachineIDs = machinesArr.map((machine) => machine._id)
-      data.machines = selectedMachineIDs
-    }
-    if (contactVal) {
-      data.contact = contactVal._id
-    }
-    if (name) {
-      data.name = name
-    } else {
-      data.name = data.email
-    }
+  // const onSubmit = async (data) => {
+  //   if (phone && phone.length > 4) {
+  //     data.phone = phone
+  //   }
+  //   if (customerVal) {
+  //     data.customer = customerVal._id
+  //   }
+  //   if (customersArr.length > 0) {
+  //     const selectedCustomerIDs = customersArr.map((customer) => customer._id)
+  //     data.customers = selectedCustomerIDs
+  //   }
+  //   if (machinesArr.length > 0) {
+  //     const selectedMachineIDs = machinesArr.map((machine) => machine._id)
+  //     data.machines = selectedMachineIDs
+  //   }
+  //   if (contactVal) {
+  //     data.contact = contactVal._id
+  //   }
+  //   if (name) {
+  //     data.name = name
+  //   } else {
+  //     data.name = data.email
+  //   }
 
-    if (roleVal) {
-      const roleId = []
-      roleVal.map((role) => roleId.push(role?._id))
-      data.roles = roleId
-    }
-    if (selectedRegions.length > 0) {
-      const selectedRegionsIDs = selectedRegions.map((region) => region._id)
-      data.selectedRegions = selectedRegionsIDs
-    }
+  //   if (roleVal) {
+  //     const roleId = []
+  //     roleVal.map((role) => roleId.push(role?._id))
+  //     data.roles = roleId
+  //   }
+  //   if (selectedRegions.length > 0) {
+  //     const selectedRegionsIDs = selectedRegions.map((region) => region._id)
+  //     data.selectedRegions = selectedRegionsIDs
+  //   }
 
-    try {
-      const message = !isInvite ? 'User Added Successfully' : 'User Invitation Sent Successfulllfy'
-      if (isInvite) {
-        data.password = 'sjhreywuidfsajchfdsgfkdfgsljhffjklgdhsg'
-        data.passwordConfirmation = 'sjhreywuidfsajchfdsgfkdfgsljhffjklgdhsg'
-        data.isActive = true
-        data.isInvite = true
-      }
+  //   try {
+  //     const message = !isInvite ? 'User Added Successfully' : 'User Invitation Sent Successfulllfy'
+  //     if (isInvite) {
+  //       data.password = 'sjhreywuidfsajchfdsgfkdfgsljhffjklgdhsg'
+  //       data.passwordConfirmation = 'sjhreywuidfsajchfdsgfkdfgsljhffjklgdhsg'
+  //       data.isActive = true
+  //       data.isInvite = true
+  //     }
 
-      const response = await dispatch(addSecurityUser(data, isInvite))
-      await dispatch(resetContacts())
-      reset()
-      navigate(PATH_SECURITY.users.view(response.data.user._id))
-      enqueueSnackbar(message)
-    } catch (error) {
-      if (error.MessageCode === 409) error.Message = "Can't send invitation user already registered"
-      if (error.Message) {
-        enqueueSnackbar(error.Message, { variant: `error` })
-      } else if (error.message) {
-        enqueueSnackbar(error.message, { variant: `error` })
-      } else {
-        enqueueSnackbar('Something went wrong!', { variant: `error` })
-      }
-      console.log('Error:', error)
-    }
-  }
+  //     const response = await dispatch(addSecurityUser(data, isInvite))
+  //     await dispatch(resetContacts())
+  //     reset()
+  //     navigate(PATH_SECURITY.users.view(response.data.user._id))
+  //     enqueueSnackbar(message)
+  //   } catch (error) {
+  //     if (error.MessageCode === 409) error.Message = "Can't send invitation user already registered"
+  //     if (error.Message) {
+  //       enqueueSnackbar(error.Message, { variant: `error` })
+  //     } else if (error.message) {
+  //       enqueueSnackbar(error.message, { variant: `error` })
+  //     } else {
+  //       enqueueSnackbar('Something went wrong!', { variant: `error` })
+  //     }
+  //     console.log('Error:', error)
+  //   }
+  // }
 
-  const toggleCancel = () => {
-    navigate(PATH_SECURITY.users.list)
-  }
+  // const toggleCancel = () => {
+  //   navigate(PATH_SECURITY.users.list)
+  // }
 
   //  -------------------------------DO NOT REMOVE------------------------------------
   // const handleRegionsChange = async (event, selectedOptions) => {

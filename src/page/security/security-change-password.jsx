@@ -1,33 +1,28 @@
-import * as Yup from 'yup';
-import { useState } from 'react';
-// form
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-
-// @mui
-import { Stack, Card, Container, IconButton, InputAdornment, Grid } from '@mui/material';
-// components
-import Iconify from '../../components/iconify';
-import { useSnackbar } from '../../components/snackbar';
-import FormProvider, { RHFTextField } from '../../components/hook-form';
-import { Cover } from '../components/Defaults/Cover';
-import { SecurityUserPasswordUpdate } from '../../redux/slices/securityUser/securityUser';
-import AddFormButtons from '../components/DocumentForms/AddFormButtons';
-import { PATH_DASHBOARD, PATH_SECURITY } from '../../routes/paths';
-
-// ----------------------------------------------------------------------
+import * as Yup from 'yup'
+import { useState } from 'react'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { Stack, Card, Container, IconButton, InputAdornment, Grid } from '@mui/material'
+// TODO: redux - slices
+// import { SecurityUserPasswordUpdate } from '../../redux/slices/securityUser/securityUser';
+import { Iconify } from 'component/iconify'
+import { useSnackbar } from 'component/snackbar'
+import FormProvider, { RHFTextField } from 'component/hook-form'
+import { Cover } from 'component/default'
+import { PATH_DASHBOARD, PATH_SECURITY } from 'route/path'
+// import AddFormButtons from 'component/DocumentForms/AddFormButtons'
 
 export default function SecurityUserChangePassword() {
-  const userId = localStorage.getItem('userId');
-  const navigate = useNavigate();
+  const userId = localStorage.getItem('userId')
+  const navigate = useNavigate()
   // console.log("userId : " , userId)
-  const [showOldPassword, setShowOldPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
-  const dispatch = useDispatch();
+  const [showOldPassword, setShowOldPassword] = useState(false)
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const { enqueueSnackbar } = useSnackbar()
+  const dispatch = useDispatch()
   const ChangePassWordSchema = Yup.object().shape({
     oldPassword: Yup.string().required('Old Password is required'),
     newPassword: Yup.string()
@@ -35,47 +30,47 @@ export default function SecurityUserChangePassword() {
       .max(18, 'Password must be less than 18 characters')
       .required('New Password is required'),
     confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword'), null], 'Passwords must match'),
-  });
+  })
 
   const defaultValues = {
     oldPassword: '',
     newPassword: '',
     confirmNewPassword: '',
-  };
+  }
 
   const methods = useForm({
     resolver: yupResolver(ChangePassWordSchema),
     defaultValues,
-  });
+  })
 
   const {
     reset,
     handleSubmit,
     formState: { isSubmitting },
-  } = methods;
+  } = methods
 
   const toggleCancel = () => {
-    navigate(PATH_DASHBOARD.general.app);
-  };
+    navigate(PATH_DASHBOARD.general.app)
+  }
   const onSubmit = async (data) => {
     if (userId) {
       try {
-        await dispatch(SecurityUserPasswordUpdate(data, userId));
-        enqueueSnackbar('Password has been updated Successfully!');
-        reset();
-        navigate(PATH_SECURITY.users.view(userId));
+        await dispatch(SecurityUserPasswordUpdate(data, userId))
+        enqueueSnackbar('Password has been updated Successfully!')
+        reset()
+        navigate(PATH_SECURITY.users.view(userId))
       } catch (error) {
         if (error.Message) {
-          enqueueSnackbar(error.Message, { variant: `error` });
+          enqueueSnackbar(error.Message, { variant: `error` })
         } else if (error.message) {
-          enqueueSnackbar(error.message, { variant: `error` });
+          enqueueSnackbar(error.message, { variant: `error` })
         } else {
-          enqueueSnackbar('Something went wrong!', { variant: `error` });
+          enqueueSnackbar('Something went wrong!', { variant: `error` })
         }
-        console.log('Error:', error);
+        console.log('Error:', error)
       }
     }
-  };
+  }
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -142,15 +137,15 @@ export default function SecurityUserChangePassword() {
                   Change Password
                 </LoadingButton> */}
               </Stack>
-              <AddFormButtons
+              {/* <AddFormButtons
                 isSubmitting={isSubmitting}
                 saveButtonName="Change"
                 toggleCancel={toggleCancel}
-              />
+              /> */}
             </Card>
           </Grid>
         </Grid>
       </Container>
     </FormProvider>
-  );
+  )
 }

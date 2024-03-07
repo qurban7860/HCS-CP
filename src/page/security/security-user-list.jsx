@@ -268,8 +268,6 @@ export default function SecurityUserList() {
   )
 }
 
-// ----------------------------------------------------------------------
-
 function applyFilter({
   inputData,
   comparator,

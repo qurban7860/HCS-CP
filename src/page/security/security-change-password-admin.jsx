@@ -7,10 +7,10 @@ import { useNavigate } from 'react-router-dom'
 import { Stack, Card, Container, IconButton, InputAdornment, Grid } from '@mui/material'
 // TODO: redux - slices
 // import { SecurityUserPasswordUpdate } from '../../redux/slices/securityUser/securityUser';
-import Iconify from 'component/iconify'
+import { Iconify } from 'component/iconify'
 import { useSnackbar } from 'component/snackbar'
 import FormProvider, { RHFTextField } from 'component/hook-form'
-import { Cover } from '../components/Defaults/Cover'
+import { Cover } from 'component/default'
 import AddFormButtons from '../components/DocumentForms/AddFormButtons'
 import { PATH_SECURITY } from '../../routes/paths'
 
