@@ -12,8 +12,6 @@ import { Iconify } from 'component/iconify'
 import { BUTTON } from 'constant'
 import { useAuthContext } from 'auth'
 
-// ----------------------------------------------------------------------
-
 Cover.propTypes = {
   name: PropTypes.string,
   icon: PropTypes.string,
@@ -24,7 +22,8 @@ Cover.propTypes = {
   customerContacts: PropTypes.bool,
   backLink: PropTypes.bool,
 }
-export function Cover({
+
+function Cover({
   name,
   icon,
   avatar,
@@ -116,3 +115,5 @@ export function Cover({
     </StyledRoot>
   )
 }
+
+export default Cover
