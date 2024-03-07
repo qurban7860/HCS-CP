@@ -15,10 +15,8 @@ module.exports = {
   plugins: ['react-refresh'],
   rules: {
     // "no-unused-vars": ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
+    'import/no-webpack-loader-syntax': 'off',
     'react/jsx-no-target-blank': 'off',
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
+    'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
   },
 }
