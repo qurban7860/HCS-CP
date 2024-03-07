@@ -125,8 +125,8 @@ export function SettingProvider({ children }) {
   // Color
   const onChangeColorPresets = useCallback(
     (event) => {
-      const themeColorPresets = event.target.value
-      setSettings({ ...settings, themeColorPresets })
+      const themeColorPreset = event.target.value
+      setSettings({ ...settings, themeColorPreset })
     },
     [setSettings, settings]
   )
@@ -163,7 +163,7 @@ export function SettingProvider({ children }) {
       // Color
       onChangeColorPresets,
       presetsOption,
-      presetsColor: getPresets(settings.themeColorPresets),
+      presetsColor: getPresets(settings.themeColorPreset),
       // Reset
       onResetSetting,
     }),
