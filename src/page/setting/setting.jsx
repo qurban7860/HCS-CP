@@ -11,10 +11,8 @@ import ListItemsHeader from '../../components/ListTableTools/ListItemsHeader'
 import ListItem from '../../components/ListTableTools/ListItem'
 // constants
 import { FORMLABELS } from '../../constants/default-constants'
-import { ICONS } from '../../constants/icons/default-icons'
+import { ICON } from '../../constants/icons/default-icons'
 import { useAuthContext } from '../../auth/useAuthContext'
-
-// ----------------------------------------------------------------------
 
 function Setting() {
   const { isSettingAccessAllowed } = useAuthContext()
@@ -86,31 +84,31 @@ function Setting() {
             >
               <ListItem
                 onClick={linkRole}
-                icon={ICONS.SECURITY_ROLES.icon}
-                content={ICONS.SECURITY_ROLES.heading}
+                icon={ICON.SECURITY_ROLES.icon}
+                content={ICON.SECURITY_ROLES.heading}
               />
               <ListItem
                 onClick={linkBlockedCustomer}
-                icon={ICONS.BLOCKED_CUSTOMER.icon}
-                content={ICONS.BLOCKED_CUSTOMER.heading}
+                icon={ICON.BLOCKED_CUSTOMER.icon}
+                content={ICON.BLOCKED_CUSTOMER.heading}
               />
 
               <ListItem
                 onClick={linkBlockedUser}
-                icon={ICONS.BLOCKED_USER.icon}
-                content={ICONS.BLOCKED_USER.heading}
+                icon={ICON.BLOCKED_USER.icon}
+                content={ICON.BLOCKED_USER.heading}
               />
 
               <ListItem
                 onClick={linkBlackListIP}
-                icon={ICONS.BLACKLIST_IP.icon}
-                content={ICONS.BLACKLIST_IP.heading}
+                icon={ICON.BLACKLIST_IP.icon}
+                content={ICON.BLACKLIST_IP.heading}
               />
 
               <ListItem
                 onClick={linkWhiteListIP}
-                icon={ICONS.WHITELIST_IP.icon}
-                content={ICONS.WHITELIST_IP.heading}
+                icon={ICON.WHITELIST_IP.icon}
+                content={ICON.WHITELIST_IP.heading}
               />
             </List>
 
@@ -121,13 +119,13 @@ function Setting() {
             >
               <ListItem
                 onClick={linkSignInLogs}
-                icon={ICONS.SIGNIN_LOGS.icon}
-                content={ICONS.SIGNIN_LOGS.heading}
+                icon={ICON.SIGNIN_LOGS.icon}
+                content={ICON.SIGNIN_LOGS.heading}
               />
               <ListItem
                 onClick={linkUserInvites}
-                icon={ICONS.USER_INVITE.icon}
-                content={ICONS.USER_INVITE.heading}
+                icon={ICON.USER_INVITE.icon}
+                content={ICON.USER_INVITE.heading}
               />
             </List>
           </StyledSettingsCardContainer>
@@ -136,25 +134,21 @@ function Setting() {
           <List
             component="nav"
             aria-labelledby="nested-list-subheader"
-            subheader={<ListItemsHeader header={FORMLABELS.CONFIG} />}
+            subheader={<ListItemsHeader header={FORMLABELS.GLOBAL} />}
           >
-            <ListItem
-              onClick={linkRegions}
-              icon={ICONS.REGION.icon}
-              content={ICONS.REGION.heading}
-            />
+            <ListItem onClick={linkRegions} icon={ICON.REGION.icon} content={ICON.REGION.heading} />
 
             {isSettingAccessAllowed && (
               <ListItem
                 onClick={linkConfigs}
-                icon={ICONS.SYSTEM_CONFIG.icon}
-                content={ICONS.SYSTEM_CONFIG.heading}
+                icon={ICON.SYSTEM_CONFIG.icon}
+                content={ICON.SYSTEM_CONFIG.heading}
               />
             )}
             <ListItem
               onClick={() => navigate(PATH_SETTING.departments.list)}
-              icon={ICONS.DEPARTMENNTS.icon}
-              content={ICONS.DEPARTMENNTS.heading}
+              icon={ICON.DEPARTMENNTS.icon}
+              content={ICON.DEPARTMENNTS.heading}
             />
           </List>
         </StyledSettingsCardContainer>
@@ -167,13 +161,13 @@ function Setting() {
           >
             <ListItem
               onClick={linkDocumentCategory}
-              icon={ICONS.DOCUMENT_CATEGORY.icon}
-              content={ICONS.DOCUMENT_CATEGORY.heading}
+              icon={ICON.DOCUMENT_CATEGORY.icon}
+              content={ICON.DOCUMENT_CATEGORY.heading}
             />
             <ListItem
               onClick={linkDocumentType}
-              icon={ICONS.DOCUMENT_TYPE.icon}
-              content={ICONS.DOCUMENT_TYPE.heading}
+              icon={ICON.DOCUMENT_TYPE.icon}
+              content={ICON.DOCUMENT_TYPE.heading}
             />
           </List>
         </StyledSettingsCardContainer>
