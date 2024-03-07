@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router-dom'
 
 import { Container, Stack } from '@mui/system'
-// ----------------------------------------------------------------------
 
 export default function SimpleLayout() {
   return (

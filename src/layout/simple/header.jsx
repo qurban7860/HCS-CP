@@ -45,8 +45,6 @@ export default function Header({ isOffset }) {
   )
 }
 
-// ----------------------------------------------------------------------
-
 Shadow.propTypes = {
   sx: PropTypes.object,
 }
@@ -64,7 +62,7 @@ function Shadow({ sx, ...other }) {
         borderRadius: '50%',
         position: 'absolute',
         width: `calc(100% - 48px)`,
-        boxShadow: (theme) => theme.customShadows.z8,
+        boxShadow: (theme) => theme.customShadow.z8,
         ...sx,
       }}
       {...other}
