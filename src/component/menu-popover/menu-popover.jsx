@@ -24,14 +24,7 @@ MenuPopover.propTypes = {
   ]),
 }
 
-export default function MenuPopover({
-  open,
-  children,
-  arrow = 'top-left',
-  disabledArrow,
-  sx,
-  ...other
-}) {
+function MenuPopover({ open, children, arrow = 'top-left', disabledArrow, sx, ...other }) {
   const { style, anchorOrigin, transformOrigin } = getPosition(arrow)
 
   return (
@@ -63,3 +56,5 @@ export default function MenuPopover({
     </Popover>
   )
 }
+
+export default MenuPopover
