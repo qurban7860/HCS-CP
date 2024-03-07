@@ -30,7 +30,7 @@ function LoginLayout({ children, illustration, title }) {
             </Stack>
             <Stack sx={{ alignItems: 'end' }}>
               <Typography variant="body2" sx={{ mb: 6, mt: -2 }}>
-                {GLOBAL.Version}
+                {GLOBAL.VERSION}
               </Typography>
             </Stack>
           </Grid>
