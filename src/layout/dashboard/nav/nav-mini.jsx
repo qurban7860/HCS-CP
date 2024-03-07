@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Stack, Box, Typography, Grid } from '@mui/material'
-import { NAV, CONFIG } from 'config'
+import { NAV, GLOBAL } from 'config'
 import { hideScrollbarX } from 'theme/style'
 import { Logo } from 'component/logo'
 import { NavSectionMini } from 'component/nav-section'
@@ -13,11 +13,11 @@ export default function NavMini() {
 
   useEffect(() => {
     if (
-      CONFIG.ENV.toLocaleLowerCase() === 'dev' ||
-      CONFIG.ENV.toLocaleLowerCase === 'development'
+      GLOBAL.ENV.toLocaleLowerCase() === 'dev' ||
+      GLOBAL.ENV.toLocaleLowerCase === 'development'
     ) {
       setEnvColor('green')
-    } else if (CONFIG.ENV.toLocaleLowerCase() === 'test') {
+    } else if (GLOBAL.ENV.toLocaleLowerCase() === 'test') {
       setEnvColor('#4082ed')
     }
   }, [])
@@ -52,7 +52,7 @@ export default function NavMini() {
           sx={{ mx: 'auto', my: 1, width: '50px', height: '50px' }}
         />
         <Grid sx={{ margin: '0 auto', mb: 2, display: 'flex', alignItems: 'baseline' }}>
-          {CONFIG.ENV.toLocaleLowerCase() !== 'live' && (
+          {GLOBAL.ENV.toLocaleLowerCase() !== 'live' && (
             <Typography
               sx={{
                 background: envColor,
@@ -61,11 +61,11 @@ export default function NavMini() {
                 padding: '2px 5px',
                 color: '#FFF',
               }}
-            >{`${CONFIG.ENV.toLocaleUpperCase()} ${CONFIG.Version}`}</Typography>
+            >{`${GLOBAL.ENV.toLocaleUpperCase()} ${GLOBAL.Version}`}</Typography>
           )}
 
-          {CONFIG.ENV.toLocaleLowerCase() === 'live' && (
-            <Typography sx={{ color: '#897A69', fontSize: '10px' }}>{CONFIG.Version}</Typography>
+          {GLOBAL.ENV.toLocaleLowerCase() === 'live' && (
+            <Typography sx={{ color: '#897A69', fontSize: '10px' }}>{GLOBAL.Version}</Typography>
           )}
         </Grid>
         <NavSectionMini data={navConfig} />

@@ -3,14 +3,14 @@ import { IconButton } from '@mui/material'
 import { useResponsive } from 'hook'
 import { NAV } from 'config'
 import { Iconify } from 'component/iconify'
-import { useSettingsContext } from 'component/setting'
+import { useSettingContext } from 'component/setting'
 
 NavToggleButton.propTypes = {
   sx: PropTypes.object,
 }
 
 export default function NavToggleButton({ sx, ...other }) {
-  const { themeLayout, onToggleLayout } = useSettingsContext()
+  const { themeLayout, onToggleLayout } = useSettingContext()
 
   const isDesktop = useResponsive('up', 'lg')
 

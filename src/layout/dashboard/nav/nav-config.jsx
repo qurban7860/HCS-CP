@@ -13,14 +13,12 @@ import { Iconify } from 'component/iconify'
 import { SvgColor } from 'component/svg-color'
 import { useAuthContext } from 'auth'
 
-// ----------------------------------------------------------------------
-
 function NavigationConfig() {
   const icon = (name) => (
     <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
   )
 
-  const ICONS = {
+  const ICON = {
     blog: icon('ic_blog'),
     cart: icon('ic_cart'),
     chat: icon('ic_chat'),
@@ -66,9 +64,9 @@ function NavigationConfig() {
     {
       subheader: 'general',
       items: [
-        { title: 'Dashboard', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
-        { title: 'Customers', path: PATH_CUSTOMER.list, icon: ICONS.users },
-        { title: 'Machines', path: PATH_MACHINE.machines.list, icon: ICONS.machines },
+        { title: 'Dashboard', path: PATH_DASHBOARD.general.app, icon: ICON.dashboard },
+        { title: 'Customers', path: PATH_CUSTOMER.list, icon: ICON.users },
+        { title: 'Machines', path: PATH_MACHINE.machines.list, icon: ICON.machines },
       ],
     },
   ])
@@ -79,14 +77,14 @@ function NavigationConfig() {
     updatedConfig[0].items.splice(7, 0, {
       title: 'Sites Map',
       path: PATH_SITEMAP.app,
-      icon: ICONS.map,
+      icon: ICON.map,
     })
 
     if (isDocumentAccessAllowed && navConfig.some((config) => config.title !== 'Documents')) {
       updatedConfig[0].items.splice(3, 0, {
         title: 'Documents',
         path: PATH_DOCUMENT.document.list,
-        icon: ICONS.document,
+        icon: ICON.document,
       })
     }
 
@@ -94,7 +92,7 @@ function NavigationConfig() {
       updatedConfig[0].items.splice(4, 0, {
         title: 'Machine Drawings',
         path: PATH_DOCUMENT.document.machineDrawings.list,
-        icon: ICONS.drawing,
+        icon: ICON.drawing,
       })
     }
 
@@ -102,7 +100,7 @@ function NavigationConfig() {
       updatedConfig[0].items.splice(5, 0, {
         title: 'Settings',
         path: PATH_SETTING.app,
-        icon: ICONS.setting,
+        icon: ICON.setting,
       })
     }
 
@@ -110,7 +108,7 @@ function NavigationConfig() {
       updatedConfig[0].items.splice(6, 0, {
         title: 'Security',
         path: PATH_SECURITY.users.list,
-        icon: ICONS.security,
+        icon: ICON.security,
       })
     }
 
@@ -118,7 +116,7 @@ function NavigationConfig() {
       updatedConfig[0].items.push({
         title: 'Email',
         path: PATH_EMAIL.email.list,
-        icon: ICONS.email,
+        icon: ICON.email,
       })
     }
 

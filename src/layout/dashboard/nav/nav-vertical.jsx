@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Box, Stack, Drawer, Typography, Grid } from '@mui/material'
 import { useResponsive } from 'hook'
-import { CONFIG, NAV } from 'config'
+import { GLOBAL, NAV } from 'config'
 import { Logo } from 'component/logo'
 import { Scrollbar } from 'component/scrollbar'
 import { NavSectionVertical } from 'component/nav-section'
@@ -21,7 +21,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
   const navConfig = NavigationConfig()
 
   const { pathname } = useLocation()
-  // const { themeLayout } = useSettingsContext();
+  // const { themeLayout } = useSettingContext();
   const isDesktop = useResponsive('up', 'lg')
   const [envColor, setEnvColor] = useState('#897A69')
   useEffect(() => {
@@ -32,11 +32,11 @@ export default function NavVertical({ openNav, onCloseNav }) {
 
   useEffect(() => {
     if (
-      CONFIG.ENV.toLocaleLowerCase() === 'dev' ||
-      CONFIG.ENV.toLocaleLowerCase === 'development'
+      GLOBAL.ENV.toLocaleLowerCase() === 'dev' ||
+      GLOBAL.ENV.toLocaleLowerCase === 'development'
     ) {
       setEnvColor('green')
-    } else if (CONFIG.ENV.toLocaleLowerCase() === 'test') {
+    } else if (GLOBAL.ENV.toLocaleLowerCase() === 'test') {
       setEnvColor('#4082ed')
     }
   }, [])
@@ -62,7 +62,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
       >
         <Logo sx={{ width: '70%', margin: '0 auto' }} />
         <Grid sx={{ margin: '0 auto', mb: 2, display: 'flex', alignItems: 'baseline' }}>
-          {CONFIG.ENV.toLocaleLowerCase() !== 'live' && (
+          {GLOBAL.ENV.toLocaleLowerCase() !== 'live' && (
             <Typography
               sx={{
                 background: envColor,
@@ -71,11 +71,11 @@ export default function NavVertical({ openNav, onCloseNav }) {
                 padding: '2px 5px',
                 color: '#FFF',
               }}
-            >{`${CONFIG.ENV.toLocaleUpperCase()} ${CONFIG.Version}`}</Typography>
+            >{`${GLOBAL.ENV.toLocaleUpperCase()} ${GLOBAL.Version}`}</Typography>
           )}
 
-          {CONFIG.ENV.toLocaleLowerCase() === 'live' && (
-            <Typography sx={{ color: '#897A69', fontSize: '10px' }}>{CONFIG.Version}</Typography>
+          {GLOBAL.ENV.toLocaleLowerCase() === 'live' && (
+            <Typography sx={{ color: '#897A69', fontSize: '10px' }}>{GLOBAL.Version}</Typography>
           )}
         </Grid>
       </Stack>

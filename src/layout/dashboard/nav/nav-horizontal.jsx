@@ -2,9 +2,9 @@ import { memo } from 'react'
 import PropTypes from 'prop-types'
 import { useTheme } from '@mui/material/styles'
 import { AppBar, Box, Toolbar } from '@mui/material'
-import { HEADER } from 'global'
+import { HEADER } from 'config'
 import { bgBlur } from 'theme/style'
-import { NavSectionHorizontal } from 'component/nav-section'
+// import { NavSectionHorizontal } from 'component/nav-section'
 import NavigationConfig from './nav-config'
 
 function NavHorizontal() {
@@ -26,7 +26,7 @@ function NavHorizontal() {
           }),
         }}
       >
-        <NavSectionHorizontal data={navConfig} />
+        {/* <NavSectionHorizontal data={navConfig} /> */}
       </Toolbar>
       <Shadow />
     </AppBar>
@@ -34,8 +34,6 @@ function NavHorizontal() {
 }
 
 export default memo(NavHorizontal)
-
-// ----------------------------------------------------------------------
 
 Shadow.propTypes = {
   sx: PropTypes.object,
@@ -54,7 +52,7 @@ function Shadow({ sx, ...other }) {
         m: 'auto',
         borderRadius: '50%',
         position: 'absolute',
-        boxShadow: (theme) => theme.customShadows.z8,
+        boxShadow: (theme) => theme.customShadow.z8,
         ...sx,
       }}
       {...other}
