@@ -9,7 +9,7 @@ export default function VerifyCodePage() {
   return (
     <>
       {/* <Helmet>
-        <title> Verify Code | {CONFIG.APP_TITLE} </title>
+        <title> Verify Code | {GLOBAL.APP_TITLE} </title>
       </Helmet> */}
 
       <EmailInboxIcon sx={{ mb: 5, height: 96 }} />

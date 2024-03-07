@@ -7,8 +7,6 @@ import AuthNewPasswordForm from '../../sections/auth/AuthNewPasswordForm'
 import { SentIcon } from '../../assets/icons'
 import { MotionContainer } from 'component/animate'
 
-// ----------------------------------------------------------------------
-
 export default function NewPasswordPage() {
   return (
     <MotionContainer>
