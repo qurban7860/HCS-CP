@@ -8,8 +8,9 @@ import Main from './main'
 import Header from './header'
 import NavMini from './nav/nav-mini'
 import NavHorizontal from './nav/nav-horizontal'
+import NavVertical from './nav/nav-vertical'
 
-export default function DashboardLayout() {
+function DashboardLayout() {
   const { themeLayout } = useSettingContext()
   const isDesktop = useResponsive('up', 'lg')
   const [open, setOpen] = useState(false)
@@ -25,7 +26,7 @@ export default function DashboardLayout() {
   }
 
   const renderNavVertical = <NavVertical openNav={open} onCloseNav={handleClose} />
-  const bgcolor = GLOBAL.Background_Color
+  const bgcolor = GLOBAL.VERSION_COLOR
   if (isNavHorizontal) {
     return (
       <>
@@ -76,3 +77,5 @@ export default function DashboardLayout() {
     </>
   )
 }
+
+export default DashboardLayout
