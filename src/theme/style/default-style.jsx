@@ -1,11 +1,9 @@
 import { styled, alpha } from '@mui/material/styles'
 import { Popover, Stack, Card, Chip, Container, TableRow } from '@mui/material'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
-import { bgBlur } from '../../../../../hp_dev-new/src/utils/cssStyles'
+import { bgBlur } from 'theme/style'
 
-/**
- * @cover :components ____________________________________________________________________________________________
- */
+// :components ____________________________________________________________________________________________
 
 export const StyledRoot = styled('div')(({ theme }) => ({
   '&:before': {
@@ -147,12 +145,10 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }))
 
- ----------------------
-
 // @root - GeneralAppPage - dashboard
 
 export const StyledContainer = styled(Container)(({ theme }) => ({
-  backgroundImage: `url(../../assets/background/Howick_elements_bg_2.svg)`,
+  backgroundImage: `url(/asset/background/howick-logo-2.svg)`,
   backgroundRepeat: 'no-repeat',
   backgroundPositionY: 'center',
   backgroundPositionX: 'left',
@@ -181,7 +177,6 @@ export const StyledGlobalCard = styled(Card)(({ theme }) => ({
   backgroundSize: 'auto 90%',
 }))
 
- ----------------------
 /**
  * @styled components from minimal layout
  */
