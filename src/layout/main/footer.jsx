@@ -4,8 +4,6 @@ import { PATH_PAGE } from 'route/path'
 import { Logo } from 'component/logo'
 import { Iconify } from 'component/iconify'
 
-// ----------------------------------------------------------------------
-
 const LINKS = [
   {
     headline: 'Machine-ERP',
@@ -30,8 +28,6 @@ const LINKS = [
     ],
   },
 ]
-
-// ----------------------------------------------------------------------
 
 export default function Footer() {
   const { pathname } = useLocation()

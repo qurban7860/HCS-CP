@@ -1,35 +1,23 @@
-import PropTypes from 'prop-types';
-import { useRef } from 'react';
-// @mui
-import { useTheme } from '@mui/material/styles';
-import { Box, Button, AppBar, Toolbar, Container, Link } from '@mui/material';
-// hooks
-import useOffSetTop from '../../hooks/useOffSetTop';
-import useResponsive from '../../hooks/useResponsive';
-// utils
-import { bgBlur } from '../../utils/cssStyles';
-// config
-import { HEADER } from '../../config-global';
-// routes
-import { PATH_DOCS, PATH_MINIMAL_ON_STORE } from '../../routes/paths';
-// components
-import Logo from '../../components/logo';
-import Label from '../../components/label';
-//
-import navConfig from './nav/config-navigation';
-import NavMobile from './nav/mobile';
-import NavDesktop from './nav/desktop';
-
-// ----------------------------------------------------------------------
+import PropTypes from 'prop-types'
+import { useRef } from 'react'
+import { useTheme } from '@mui/material/styles'
+import { Box, Button, AppBar, Toolbar, Container, Link } from '@mui/material'
+import { useResponsive, useOffSetTop } from 'hook'
+import { bgBlur } from 'util/style'
+import { HEADER } from 'config'
+import { PATH_DOCS, PATH_MINIMAL_ON_STORE } from 'route/path'
+import { Logo } from 'component/logo'
+// import Label from '../../components/label'
+import { navConfig, NavMobile, NavDesktop } from 'layout/main'
 
 export default function Header() {
-  const carouselRef = useRef(null);
+  const carouselRef = useRef(null)
 
-  const theme = useTheme();
+  const theme = useTheme()
 
-  const isDesktop = useResponsive('up', 'md');
+  const isDesktop = useResponsive('up', 'md')
 
-  const isOffset = useOffSetTop(HEADER.H_MAIN_DESKTOP);
+  const isOffset = useOffSetTop(HEADER.H_MAIN_DESKTOP)
 
   return (
     <AppBar ref={carouselRef} color="transparent" sx={{ boxShadow: 0 }}>
@@ -79,14 +67,12 @@ export default function Header() {
 
       {isOffset && <Shadow />}
     </AppBar>
-  );
+  )
 }
-
-// ----------------------------------------------------------------------
 
 Shadow.propTypes = {
   sx: PropTypes.object,
-};
+}
 
 function Shadow({ sx, ...other }) {
   return (
@@ -101,10 +87,10 @@ function Shadow({ sx, ...other }) {
         borderRadius: '50%',
         position: 'absolute',
         width: `calc(100% - 48px)`,
-        boxShadow: (theme) => theme.customShadows.z8,
+        boxShadow: (theme) => theme.customShadow.z8,
         ...sx,
       }}
       {...other}
     />
-  );
+  )
 }
