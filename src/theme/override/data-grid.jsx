@@ -27,11 +27,11 @@ export default function DataGrid(theme) {
           },
         },
         paper: {
-          boxShadow: theme.customShadows.dropdown,
+          boxShadow: theme.customShadow.dropdown,
         },
         menu: {
           '& .MuiPaper-root': {
-            boxShadow: theme.customShadows.dropdown,
+            boxShadow: theme.customShadow.dropdown,
           },
           '& .MuiMenuItem-root': {
             ...theme.typography.body2,

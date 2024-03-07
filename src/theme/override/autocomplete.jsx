@@ -16,7 +16,7 @@ export default function Autocomplete(theme) {
           },
         },
         paper: {
-          boxShadow: theme.customShadows.dropdown,
+          boxShadow: theme.customShadow.dropdown,
         },
         listbox: {
           padding: theme.spacing(0, 1),

@@ -12,7 +12,7 @@ import Badge from './badge'
 import Paper from './paper'
 import Input from './input'
 import Radio from './radio'
-import Drawer from './brawer'
+import Drawer from './drawer'
 import Dialog from './dialog'
 import Rating from './rating'
 import Slider from './slider'
@@ -40,7 +40,7 @@ import ToggleButton from './toggle-button'
 import ControlLabel from './control-label'
 import LoadingButton from './loading-button'
 
-function ComponentsOverride(theme) {
+function ComponentOverride(theme) {
   return Object.assign(
     Fab(theme),
     Tabs(theme),
@@ -86,4 +86,4 @@ function ComponentsOverride(theme) {
   )
 }
 
-export default ComponentsOverride
+export default ComponentOverride

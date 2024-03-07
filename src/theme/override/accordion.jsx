@@ -5,7 +5,7 @@ export default function Accordion(theme) {
         root: {
           backgroundColor: 'transparent',
           '&.Mui-expanded': {
-            boxShadow: theme.customShadows.z8,
+            boxShadow: theme.customShadow.z8,
             borderRadius: theme.shape.borderRadius,
             backgroundColor: theme.palette.background.paper,
           },
