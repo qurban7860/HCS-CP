@@ -11,7 +11,7 @@ function Register() {
       <Grid item xs={6}>
         <Typography
           sx={{
-            backgroundColor: GLOBAL.Background_Color,
+            backgroundColor: GLOBAL.VERSION_COLOR,
             borderRadius: '2px',
             textAlign: 'center',
             fontWeight: 'bold',
@@ -22,7 +22,7 @@ function Register() {
         >
           {GLOBAL.ENV}
           {'  '}
-          {GLOBAL.Version}
+          {GLOBAL.VERSION}
         </Typography>
       </Grid>
       <Stack
