@@ -14,8 +14,8 @@ import {
   // Authenticate,
   // Dashboard: General
   GeneralAppPage,
-  MachineByModelsViewForm,
-  MachineByYearsViewForm,
+  MachineByModelViewForm,
+  MachineByYearViewForm,
   MachineByCountriesViewForm,
   // Setting
   Setting,
@@ -42,19 +42,11 @@ export default function Router() {
       children: [
         {
           path: 'login',
-          element: (
-            <GuestGuard>
-              <LoginPage />
-            </GuestGuard>
-          ),
+          element: <GuestGuard>{/* <LoginPage /> */}</GuestGuard>,
         },
         {
           path: 'authenticate',
-          element: (
-            <GuestGuard>
-              <Authenticate />
-            </GuestGuard>
-          ),
+          element: <GuestGuard>{/* <Authenticate /> */}</GuestGuard>,
         },
         {
           path: 'register',
@@ -91,8 +83,8 @@ export default function Router() {
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         { path: 'app', element: <GeneralAppPage /> },
         { path: 'machineByCountries', element: <MachineByCountriesViewForm /> },
-        { path: 'machineByModels', element: <MachineByModelsViewForm /> },
-        { path: 'machineByYears', element: <MachineByYearsViewForm /> },
+        { path: 'machineByModels', element: <MachineByModelViewForm /> },
+        { path: 'machineByYears', element: <MachineByYearViewForm /> },
         { path: 'permission-denied', element: <PermissionDeniedPage /> },
         { path: 'blank', element: <BlankPage /> },
       ],
@@ -107,8 +99,8 @@ export default function Router() {
       ),
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
-        { path: 'list', element: <Email /> },
-        { path: ':id/view', element: <Emailviewform /> },
+        // { path: 'list', element: <Email /> },
+        // { path: ':id/view', element: <Emailviewform /> },
       ],
     },
     {
@@ -131,11 +123,11 @@ export default function Router() {
         // { path: 'maintenance', element: <MaintenancePage /> },
         {
           path: 'invalidErrorPage',
-          element: <ErrorPage title="Invalid Code" />,
+          // element: <ErrorPage title="Invalid Code" />,
         },
         {
           path: 'expiredErrorPage',
-          element: <ErrorPage title="Invitation Expired" />,
+          // element: <ErrorPage title="Invitation Expired" />,
         },
       ],
     },
