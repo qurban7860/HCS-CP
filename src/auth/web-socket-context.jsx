@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import useWebSocket from 'react-use-websocket'
 import React, { createContext, useContext, useMemo, useEffect, useState } from 'react'
-import { CONFIG } from 'global'
-import { useAuthContext } from './use-auth-context'
+import { GLOBAL } from 'global'
+import useAuthContext from './use-auth-context'
 
 const WebSocketContext = createContext()
 
@@ -17,7 +17,7 @@ WebSocketProvider.propTypes = {
 export function WebSocketProvider({ children }) {
   const { isAuthenticated, clearAllPersistedStates } = useAuthContext()
   const [token, setToken] = useState(null)
-  const WS_URL = token ? `${CONFIG.SOCKET_URL}/?accessToken=${token}` : null
+  const WS_URL = token ? `${GLOBAL.SOCKET_URL}/?accessToken=${token}` : null
   const [onlineUsers, setOnlineUsers] = useState(0)
   const [notifications, setNotifications] = useState(null)
 

@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types'
 import storage from 'redux-persist/lib/storage'
 import { createContext, useEffect, useReducer, useCallback, useMemo } from 'react'
-import { CONFIG } from 'global'
+import { GLOBAL } from 'global'
 import axios from 'util/axios'
 import localStorageSpace from 'util/local-storage-space'
 import { isValidToken, setSession } from './util'
 import { PATH_AUTH } from 'route/path'
-
-// ----------------------------------------------------------------------
 
 const initialState = {
   isInitialized: false,
@@ -58,11 +56,7 @@ const reducer = (state, action) => {
   }
 }
 
-// ----------------------------------------------------------------------
-
 export const AuthContext = createContext(null)
-
-// ----------------------------------------------------------------------
 
 AuthProvider.propTypes = {
   children: PropTypes.node,
@@ -123,7 +117,7 @@ export function AuthProvider({ children }) {
 
   // CONFIGURATIONS
   async function getConfigs() {
-    const configsResponse = await axios.get(`${CONFIG.SERVER_URL}configs`, {
+    const configsResponse = await axios.get(`${GLOBAL.SERVER_URL}configs`, {
       params: { isActive: true, isArchived: false },
     })
     if (configsResponse && Array.isArray(configsResponse.data) && configsResponse.data.length > 0) {
@@ -139,7 +133,7 @@ export function AuthProvider({ children }) {
 
   // LOGIN
   const login = useCallback(async (uEmail, uPassword) => {
-    const response = await axios.post(`${CONFIG.SERVER_URL}security/getToken`, {
+    const response = await axios.post(`${GLOBAL.SERVER_URL}security/getToken`, {
       email: uEmail,
       password: uPassword,
     })
@@ -164,7 +158,7 @@ export function AuthProvider({ children }) {
 
   // MULTI FACTOR CODE
   const muliFactorAuthentication = useCallback(async (code, userID) => {
-    const response = await axios.post(`${CONFIG.SERVER_URL}security/multifactorverifyCode`, {
+    const response = await axios.post(`${GLOBAL.SERVER_URL}security/multifactorverifyCode`, {
       code,
       userID,
     })
@@ -184,7 +178,7 @@ export function AuthProvider({ children }) {
 
   // REGISTER
   const register = useCallback(async (firstName, lastName, email, password) => {
-    const response = await axios.post(`${CONFIG.SERVER_URL}users/signup`, {
+    const response = await axios.post(`${GLOBAL.SERVER_URL}users/signup`, {
       firstName,
       lastName,
       email,
@@ -229,7 +223,7 @@ export function AuthProvider({ children }) {
     const userId = localStorage.getItem('userId')
     try {
       await dispatch(clearAllPersistedStates())
-      await axios.post(`${CONFIG.SERVER_URL}security/logout/${userId}`)
+      await axios.post(`${GLOBAL.SERVER_URL}security/logout/${userId}`)
     } catch (error) {
       console.error(error)
     }

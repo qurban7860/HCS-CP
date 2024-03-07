@@ -1,12 +1,8 @@
 import PropTypes from 'prop-types'
 import { Navigate } from 'react-router-dom'
-// routes
 import { PATH_DASHBOARD } from 'route/path'
-// components
-import LoadingScreen from 'component/loading-screen'
-import { useAuthContext } from 'auth/use-auth-context'
-
-// ----------------------------------------------------------------------
+import { LoadingScreen } from 'component/loading-screen'
+import { useAuthContext } from 'auth'
 
 GuestGuard.propTypes = {
   children: PropTypes.node,

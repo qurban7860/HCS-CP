@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
+import useAuthContext from './use-auth-context'
 // components
-import LoadingScreen from 'component/loading-screen'
+import { LoadingScreen } from 'component/loading-screen'
 import { Login } from 'page/auth'
-import { useAuthContext } from './use-auth-context'
 
 AuthGuard.propTypes = {
   children: PropTypes.node,

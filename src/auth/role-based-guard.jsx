@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
 import { Container, Typography } from '@mui/material'
 import { MotionContainer, varBounce } from 'component/animate'
-import { useAuthContext } from './use-auth-context'
+import useAuthContext from './use-auth-context'
 
 RoleBasedGuard.propTypes = {
   children: PropTypes.node,
@@ -10,7 +10,7 @@ RoleBasedGuard.propTypes = {
   roles: PropTypes.arrayOf(PropTypes.string),
 }
 
-export default function RoleBasedGuard({ hasContent, roles, children }) {
+function RoleBasedGuard({ hasContent, roles, children }) {
   const { user } = useAuthContext()
 
   const currentRole = user?.role
@@ -39,3 +39,5 @@ export default function RoleBasedGuard({ hasContent, roles, children }) {
 
   return <> {children} </>
 }
+
+export default RoleBasedGuard

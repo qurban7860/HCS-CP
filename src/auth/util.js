@@ -3,8 +3,6 @@
 // utils
 // import axios from '../utils/axios'
 
-// ----------------------------------------------------------------------
-
 function jwtDecode(token) {
   const base64Url = token.split('.')[1]
   const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
@@ -19,8 +17,6 @@ function jwtDecode(token) {
   return JSON.parse(jsonPayload)
 }
 
-// ----------------------------------------------------------------------
-
 export const isValidToken = (accessToken) => {
   if (!accessToken) {
     return false
@@ -32,8 +28,6 @@ export const isValidToken = (accessToken) => {
 
   return decoded.exp > currentTime
 }
-
-// ----------------------------------------------------------------------
 
 export const tokenExpired = (exp) => {
   // eslint-disable-next-line prefer-const
@@ -55,8 +49,6 @@ export const tokenExpired = (exp) => {
     window.location.href = PATH_AUTH.login
   }, timeLeft)
 }
-
-// ----------------------------------------------------------------------
 
 export const setSession = (accessToken) => {
   if (accessToken) {
