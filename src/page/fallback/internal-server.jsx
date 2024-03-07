@@ -4,8 +4,6 @@ import { useMemo } from 'react'
 import { MotionContainer } from 'component/animate'
 import { Logo } from 'component/logo'
 
-// ----------------------------------------------------------------------
-
 function InternalServer() {
   const configurations = JSON.parse(localStorage.getItem('configurations'))
   const content = configurations?.find(

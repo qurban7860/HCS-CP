@@ -1,5 +1,4 @@
 import { useState } from 'react'
-// @mui
 import {
   Box,
   Card,
@@ -9,16 +8,13 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from '@mui/material'
-// routes
 import { PATH_DASHBOARD } from 'route/path'
-// components
-import { useSettingsContext } from 'component/setting'
-import CustomBreadcrumbs from 'component/breadcrumb'
-// auth
-import { RoleBasedGuard } from 'auth/role-based-guard'
+import { useSettingContext } from 'component/setting'
+import { Breadcrumb } from 'component/breadcrumb'
+import { RoleBasedGuard } from 'auth'
 
 function PermissionDenied() {
-  const { themeStretch } = useSettingsContext()
+  const { themeStretch } = useSettingContext()
 
   const [role, setRole] = useState('admin')
 
@@ -30,7 +26,7 @@ function PermissionDenied() {
 
   return (
     <Container maxWidth={themeStretch ? false : 'lg'}>
-      <CustomBreadcrumbs
+      <Breadcrumb
         heading="Permission Denied"
         links={[
           {

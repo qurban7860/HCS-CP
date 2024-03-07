@@ -2,26 +2,23 @@ import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMemo, useState, useEffect, memo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-// form
 import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
-
-// @mui
+// TODO: redux slices
+// import { useDispatch, useSelector } from 'react-redux'
+// import { updateInvitedUser, verifyUserInvite } from '../redux/slices/securityUser/securityUser'
 import { LoadingButton } from '@mui/lab'
 import { Alert, Box, IconButton, InputAdornment, Stack, Typography, Grid } from '@mui/material'
 import { useSnackbar } from 'notistack'
 import { MuiTelInput } from 'mui-tel-input'
-import { StyledRoot, StyledContent } from '../layouts/login/styles'
-import FormProvider, { RHFTextField } from '../components/hook-form'
-import Iconify from '../components/iconify'
-import Logo from '../components/logo'
-//
-import { PATH_AUTH, PATH_PAGE } from '../routes/paths'
-import { updateInvitedUser, verifyUserInvite } from '../redux/slices/securityUser/securityUser'
+import { StyledRoot, StyledContent } from 'layout/login'
+import FormProvider, { RHFTextField } from 'component/hook-form'
+import { Iconify } from 'component/iconify'
+import { Logo } from 'component/logo'
+import { PATH_AUTH, PATH_PAGE } from 'route/path'
 
 function UserInviteLanding() {
   const { id, code, expiry } = useParams()
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -56,7 +53,6 @@ function UserInviteLanding() {
       password: '',
       confirmPassword: '',
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [verifiedInvite]
   )
 

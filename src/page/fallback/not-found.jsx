@@ -1,7 +1,7 @@
 import { Button, Typography, Grid } from '@mui/material'
 import { useMemo } from 'react'
 import { MotionContainer } from 'component/animate'
-import Logo from 'component/logo'
+import { Logo } from 'component/logo'
 
 function NotFound() {
   const configurations = JSON.parse(localStorage.getItem('configurations'))
