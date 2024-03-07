@@ -30,7 +30,7 @@ export default function SecurityUserProfile() {
   const { securityUser, initial } = useSelector((state) => state.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { user } = useAuthContext()
+  // const { user } = useAuthContext()
   const userId = localStorage.getItem('userId')
   const [currentTab, setCurrentTab] = useState('profile')
 
@@ -104,7 +104,8 @@ export default function SecurityUserProfile() {
         >
           <Cover
             name={defaultValues?.name}
-            photoURL={user.name === 'HOWICK LTD.' ? <LogoAvatar /> : <CustomAvatar />}
+            photoURL={<CustomAvatar />}
+            // photoURL={user.name === 'HOWICK LTD.' ? <LogoAvatar /> : <CustomAvatar />}
             icon="ph:users-light"
           />
 
