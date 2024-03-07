@@ -5,8 +5,6 @@ import { Box } from '@mui/material'
 //
 import { varContainer } from './variant'
 
-// ----------------------------------------------------------------------
-
 MotionContainer.propTypes = {
   action: PropTypes.bool,
   animate: PropTypes.bool,

@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types'
 import { LazyMotion, m } from 'framer-motion'
 
-// ----------------------------------------------------------------------
-
 // eslint-disable-next-line import/extensions
 const loadFeatures = () => import('./feature.js').then((res) => res.default)
 

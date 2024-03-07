@@ -1,13 +1,8 @@
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
-// @mui
 import { Box } from '@mui/material'
-// hooks
-import useResponsive from '../../hook/use-responsive'
-//
+import { useResponsive } from 'hook'
 import { varContainer } from './variant'
-
-// ----------------------------------------------------------------------
 
 MotionViewport.propTypes = {
   children: PropTypes.node,
