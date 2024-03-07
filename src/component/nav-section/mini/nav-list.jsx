@@ -83,8 +83,6 @@ export default function NavList({ data, depth, hasChild }) {
   )
 }
 
-// ----------------------------------------------------------------------
-
 NavSubList.propTypes = {
   data: PropTypes.array,
   depth: PropTypes.number,

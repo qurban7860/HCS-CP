@@ -1,7 +1,7 @@
 import { alpha, styled } from '@mui/material/styles'
 import { Popover, ListItemButton, ListItemIcon } from '@mui/material'
 import { bgBlur } from 'theme/style'
-import { ICON } from 'global'
+import { ICON } from 'config'
 
 export const StyledItem = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== 'active' && prop !== 'open',
@@ -66,16 +66,12 @@ export const StyledItem = styled(ListItemButton, {
   }
 })
 
-// ----------------------------------------------------------------------
-
 export const StyledIcon = styled(ListItemIcon)({
   marginRight: 0,
   marginBottom: 4,
   width: ICON.NAV_ITEM_MINI,
   height: ICON.NAV_ITEM_MINI,
 })
-
-// ----------------------------------------------------------------------
 
 export const StyledPopover = styled(Popover)(({ theme }) => ({
   pointerEvents: 'none',
@@ -84,7 +80,7 @@ export const StyledPopover = styled(Popover)(({ theme }) => ({
     pointerEvents: 'auto',
     padding: theme.spacing(1),
     marginTop: theme.spacing(0.5),
-    boxShadow: theme.customShadows.dropdown,
+    boxShadow: theme.customShadow.dropdown,
     borderRadius: Number(theme.shape.borderRadius) * 1.5,
     ...bgBlur({ color: theme.palette.background.default }),
   },

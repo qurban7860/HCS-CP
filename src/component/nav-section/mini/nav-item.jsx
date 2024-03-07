@@ -2,15 +2,13 @@ import PropTypes from 'prop-types'
 import { forwardRef } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { Tooltip, Link, ListItemText } from '@mui/material'
-import { useLocales } from 'locale'
+import { useLocale } from 'locale'
 import { RoleBasedGuard } from 'auth'
 import { Iconify } from 'component/iconify'
 import { StyledItem, StyledIcon } from './style'
 
-// ----------------------------------------------------------------------
-
 const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...other }, ref) => {
-  const { translate } = useLocales()
+  const { translate } = useLocale()
 
   const { title, path, icon, children, disabled, caption, roles } = item
 

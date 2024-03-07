@@ -28,8 +28,6 @@ function NavSectionMini({ data, sx, ...other }) {
 
 export default memo(NavSectionMini)
 
-// ----------------------------------------------------------------------
-
 Items.propTypes = {
   items: PropTypes.array,
   isLastGroup: PropTypes.bool,
