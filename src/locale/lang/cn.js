@@ -1,9 +1,5 @@
-// ----------------------------------------------------------------------
-
 // IF THIS TRANSLATION IS INCORRECT PLEASE IGNORE THIS AS THIS TRANSLATION IS FOR DEMO PURPOSES ONLY
 // We are happy if you can help improve the translation by sending an email to support@minimals.cc.
-
-// ----------------------------------------------------------------------
 
 const cn = {
   demo: {
@@ -56,6 +52,6 @@ const cn = {
   other_cases: `其他情况`,
   item_by_roles: `按角色逐项`,
   only_admin_can_see_this_item: `只有管理员可以看到这个项目`,
-};
+}
 
-export default cn;
+export default cn

@@ -1,9 +1,5 @@
-// ----------------------------------------------------------------------
-
 // IF THIS TRANSLATION IS INCORRECT PLEASE IGNORE THIS AS THIS TRANSLATION IS FOR DEMO PURPOSES ONLY
 // We are happy if you can help improve the translation by sending an email to support@minimals.cc.
-
-// ----------------------------------------------------------------------
 
 const ar = {
   demo: {
@@ -56,6 +52,6 @@ const ar = {
   other_cases: `حالات اخرى`,
   item_by_roles: `عنصر حسب الأدوار`,
   only_admin_can_see_this_item: `يمكن للمسؤول فقط رؤية هذا العنصر`,
-};
+}
 
-export default ar;
+export default ar

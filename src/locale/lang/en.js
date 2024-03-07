@@ -1,9 +1,5 @@
-// ----------------------------------------------------------------------
-
 // IF THIS TRANSLATION IS INCORRECT PLEASE IGNORE THIS AS THIS TRANSLATION IS FOR DEMO PURPOSES ONLY
 // We are happy if you can help improve the translation by sending an email to support@minimals.cc.
-
-// ----------------------------------------------------------------------
 
 const en = {
   demo: {
@@ -56,6 +52,6 @@ const en = {
   other_cases: `other cases`,
   item_by_roles: `item by roles`,
   only_admin_can_see_this_item: `Only admin can see this item`,
-};
+}
 
-export default en;
+export default en

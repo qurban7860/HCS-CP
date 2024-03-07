@@ -1,9 +1,5 @@
-// ----------------------------------------------------------------------
-
 // IF THIS TRANSLATION IS INCORRECT PLEASE IGNORE THIS AS THIS TRANSLATION IS FOR DEMO PURPOSES ONLY
 // We are happy if you can help improve the translation by sending an email to support@minimals.cc.
-
-// ----------------------------------------------------------------------
 
 const vn = {
   demo: {
@@ -56,6 +52,6 @@ const vn = {
   other_cases: `Trường hợp khác`,
   item_by_roles: `mục theo vai trò`,
   only_admin_can_see_this_item: `Chỉ có quản trị viên mới có thể nhìn thấy mục này`,
-};
+}
 
-export default vn;
+export default vn
