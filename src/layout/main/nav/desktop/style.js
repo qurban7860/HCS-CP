@@ -59,8 +59,6 @@ export const ListItem = styled(ListItemButton, {
   }
 })
 
-// ----------------------------------------------------------------------
-
 export const StyledMenu = styled(Paper)(({ theme }) => ({
   top: 72,
   left: 0,
@@ -71,14 +69,12 @@ export const StyledMenu = styled(Paper)(({ theme }) => ({
   alignItems: 'flex-start',
   zIndex: theme.zIndex.modal,
   padding: theme.spacing(5, 1, 1, 3),
-  boxShadow: theme.customShadows.dialog,
+  boxShadow: theme.customShadow.dialog,
   maxWidth: theme.breakpoints.values.lg,
   gridTemplateColumns: 'repeat(12, 1fr)',
   borderRadius: Number(theme.shape.borderRadius) * 2,
   border: `solid 1px ${alpha(theme.palette.grey[500], 0.16)}`,
 }))
-
-// ----------------------------------------------------------------------
 
 export const StyledSubheader = styled(ListSubheader)(({ theme }) => ({
   ...theme.typography.overline,

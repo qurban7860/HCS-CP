@@ -7,8 +7,6 @@ import { Iconify } from 'component/iconify'
 // import Image from '../../../../components/image'
 import { ListItem } from './style'
 
-// ----------------------------------------------------------------------
-
 export const NavItem = forwardRef(
   ({ item, open, isOffset, active, subItem, isExternalLink, ...other }, ref) => {
     const { title, path, children } = item
@@ -60,8 +58,6 @@ NavItem.propTypes = {
   isOffset: PropTypes.bool,
   isExternalLink: PropTypes.bool,
 }
-
-// ----------------------------------------------------------------------
 
 NavItemDashboard.propTypes = {
   item: PropTypes.object,

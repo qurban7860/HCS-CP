@@ -4,8 +4,6 @@ import { Stack } from '@mui/material'
 //
 import NavList from './nav-list'
 
-// ----------------------------------------------------------------------
-
 NavDesktop.propTypes = {
   data: PropTypes.array,
   isOffset: PropTypes.bool,

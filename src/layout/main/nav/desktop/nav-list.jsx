@@ -7,8 +7,6 @@ import { useActiveLink } from 'hook'
 import { NavItem, NavItemDashboard } from './nav-item'
 import { StyledSubheader, StyledMenu } from './style'
 
-// ----------------------------------------------------------------------
-
 NavList.propTypes = {
   item: PropTypes.object,
   isOffset: PropTypes.bool,
@@ -72,8 +70,6 @@ export default function NavList({ item, isOffset }) {
     </>
   )
 }
-
-// ----------------------------------------------------------------------
 
 NavSubList.propTypes = {
   items: PropTypes.array,
