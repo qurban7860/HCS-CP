@@ -6,8 +6,6 @@ import { useActiveLink } from 'hook'
 import { NavSectionVertical } from 'component/nav-section'
 import NavItem from './nav-item'
 
-// ----------------------------------------------------------------------
-
 NavList.propTypes = {
   item: PropTypes.object,
 }
