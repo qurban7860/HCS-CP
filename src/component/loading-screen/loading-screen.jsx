@@ -7,7 +7,7 @@ import { NAV } from 'config'
 import { useAuthContext } from 'auth'
 import { Logo } from 'component/logo'
 import ProgressBar from '../progress-bar'
-import { useSettingsContext } from 'component/setting'
+import { useSettingContext } from 'component/setting'
 
 const StyledRoot = styled('div')(({ theme }) => ({
   right: 0,
@@ -29,7 +29,7 @@ function LoadingScreen() {
 
   const { isInitialized } = useAuthContext()
 
-  const { themeLayout } = useSettingsContext()
+  const { themeLayout } = useSettingContext()
 
   const isDashboard = isInitialized && pathname.includes('/dashboard') && isDesktop
 
