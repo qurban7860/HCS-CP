@@ -1,12 +1,12 @@
 import { RadioGroup } from '@mui/material'
 import { SvgColor } from 'component/svg-color'
-import { useSettingsContext } from 'component/setting'
+import { useSettingContext } from 'component/setting'
 import { StyledCard, StyledWrap, MaskControl } from 'component/setting'
 
 const OPTIONS = ['ltr', 'rtl']
 
 function DirectionOption() {
-  const { themeDirection, onChangeDirection } = useSettingsContext()
+  const { themeDirection, onChangeDirection } = useSettingContext()
 
   return (
     <RadioGroup name="themeDirection" value={themeDirection} onChange={onChangeDirection}>

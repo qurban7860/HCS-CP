@@ -6,10 +6,10 @@ import { NAV } from 'config'
 import { Iconify } from 'component/iconify'
 import { Scrollbar } from 'component/scrollbar'
 import { themePreset } from 'theme'
-import { useSettingsContext } from 'component/setting'
+import { useSettingContext } from 'component/setting'
 import Block from './block'
 import BadgeDot from './badge-dot'
-import ModeOptions from './mode-option'
+import ModeOption from './mode-option'
 import LayoutOptions from './layout-option'
 import StretchOptions from './stretch-option'
 import ContrastOptions from './contrast-option'
@@ -28,7 +28,7 @@ function SettingDrawer() {
     themeDirection,
     themeColorPresets,
     onResetSetting,
-  } = useSettingsContext()
+  } = useSettingContext()
 
   const theme = useTheme()
 
@@ -92,7 +92,7 @@ function SettingDrawer() {
 
         <Scrollbar sx={{ p: SPACING, pb: 0 }}>
           <Block title="Mode">
-            <ModeOptions />
+            <ModeOption />
           </Block>
 
           <Block title="Contrast">

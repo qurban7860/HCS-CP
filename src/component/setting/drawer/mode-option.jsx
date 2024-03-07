@@ -1,12 +1,12 @@
 import { RadioGroup } from '@mui/material'
 import { SvgColor } from 'component/svg-color'
-import { useSettingsContext } from '../setting-context'
+import { useSettingContext } from '../setting-context'
 import { StyledCard, StyledWrap, MaskControl } from '../style'
 
 const OPTIONS = ['light', 'dark']
 
 function ModeOption() {
-  const { themeMode, onChangeMode } = useSettingsContext()
+  const { themeMode, onChangeMode } = useSettingContext()
 
   return (
     <RadioGroup name="themeMode" value={themeMode} onChange={onChangeMode}>

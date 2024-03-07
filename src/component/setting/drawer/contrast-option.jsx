@@ -1,11 +1,11 @@
 import { RadioGroup } from '@mui/material'
 import { SvgColor } from '../../svg-color'
-import { StyledCard, StyledWrap, MaskControl, useSettingsContext } from 'component/setting'
+import { StyledCard, StyledWrap, MaskControl, useSettingContext } from 'component/setting'
 
 const OPTIONS = ['default', 'bold']
 
 function ContrastOption() {
-  const { themeContrast, onChangeContrast } = useSettingsContext()
+  const { themeContrast, onChangeContrast } = useSettingContext()
 
   return (
     <RadioGroup name="themeContrast" value={themeContrast} onChange={onChangeContrast}>

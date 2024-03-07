@@ -1,10 +1,10 @@
 import { Stack, Box } from '@mui/material'
-import { useSettingsContext } from 'component/setting'
+import { useSettingContext } from 'component/setting'
 import { Iconify } from 'component/iconify'
 import { StyledCard } from '../style'
 
 function StretchOptions() {
-  const { themeStretch, onToggleStretch } = useSettingsContext()
+  const { themeStretch, onToggleStretch } = useSettingContext()
 
   return (
     <StyledCard selected={themeStretch} onClick={onToggleStretch} sx={{ height: 48, px: 1 }}>
