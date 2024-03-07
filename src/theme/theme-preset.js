@@ -3,7 +3,7 @@ const themePreset = {
   themeDirection: 'ltr',
   themeContrast: 'default',
   themeLayout: 'vertical',
-  themeColorPresets: 'blue',
+  themeColorPreset: 'blue',
   themeStretch: false,
 }
 

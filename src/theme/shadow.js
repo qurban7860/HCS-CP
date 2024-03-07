@@ -40,6 +40,6 @@ function createShadow(color) {
   ]
 }
 
-export default function shadows(themeMode) {
+export default function shadow(themeMode) {
   return themeMode === 'light' ? createShadow(LIGHT_MODE) : createShadow(DARK_MODE)
 }

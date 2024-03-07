@@ -7,10 +7,12 @@ import {
   StyledEngineProvider,
   ThemeProvider as MUIThemeProvider,
 } from '@mui/material/styles'
+import GlobalStyle from './global-style'
 import palette from './palette'
-import shadows from './shadows'
+import shadow from './shadow'
 import customShadow from './custom-shadow'
 import typography from './typography'
+import ComponentOverride from './override'
 
 ThemeProvider.propTypes = {
   children: PropTypes.node,
@@ -25,7 +27,7 @@ function ThemeProvider({ children }) {
       typography,
       shape: { borderRadius: 8 },
       direction: themeDirection,
-      shadows: shadows(themeMode),
+      shadow: shadow(themeMode),
       customShadow: customShadow(themeMode),
     }),
     [themeDirection, themeMode]
@@ -33,13 +35,13 @@ function ThemeProvider({ children }) {
 
   const theme = createTheme(themeOptions)
 
-  theme.components = componentsOverride(theme)
+  theme.components = ComponentOverride(theme)
 
   return (
     <StyledEngineProvider injectFirst>
       <MUIThemeProvider theme={theme}>
         <CssBaseline />
-        <GlobalStyles />
+        <GlobalStyle />
         {children}
       </MUIThemeProvider>
     </StyledEngineProvider>

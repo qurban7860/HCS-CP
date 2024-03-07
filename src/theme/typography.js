@@ -20,11 +20,8 @@ export function responsiveFontSizes({ sm, md, lg }) {
   }
 }
 
-// const FONT_PRIMARY = 'Public Sans, sans-serif'; // Google Font
-const FONT_PRIMARY = 'Yantramanav, Arimo, Calibri' // Official Howick Fonts
+const FONT_PRIMARY = 'Yantramanav, Arimo, Calibri' // Official Howick Font
 const FONT_SECONDARY = 'Arimo'
-// const FONT_PRIMARY = 'Arimo'; // Local Font
-// const FONT_SECONDARY = 'Calibri, sans-serif'; // Local Font
 
 const typography = {
   fontFamily: FONT_PRIMARY,

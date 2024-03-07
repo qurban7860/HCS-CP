@@ -1,9 +1,9 @@
 // @mui
-import { GlobalStyles as MUIGlobalStyles } from '@mui/material'
+import { GlobalStyles } from '@mui/material'
 
-export default function GlobalStyles() {
-  const inputGlobalStyles = (
-    <MUIGlobalStyles
+function GlobalStyle() {
+  const inputGlobalStyle = (
+    <GlobalStyles
       styles={{
         '*': {
           boxSizing: 'border-box',
@@ -50,5 +50,7 @@ export default function GlobalStyles() {
     />
   )
 
-  return inputGlobalStyles
+  return inputGlobalStyle
 }
+
+export default GlobalStyle
