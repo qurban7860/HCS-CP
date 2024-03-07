@@ -1,16 +1,14 @@
-import { memo } from 'react';
+import { memo } from 'react'
 // @mui
-import { useTheme } from '@mui/material/styles';
-import { Box } from '@mui/material';
-
-// ----------------------------------------------------------------------
+import { useTheme } from '@mui/material/styles'
+import { Box } from '@mui/material'
 
 function SentIcon({ ...other }) {
-  const theme = useTheme();
+  const theme = useTheme()
 
-  const PRIMARY_MAIN = theme.palette.primary.main;
+  const PRIMARY_MAIN = theme.palette.primary.main
 
-  const PRIMARY_DARK = theme.palette.primary.dark;
+  const PRIMARY_DARK = theme.palette.primary.dark
 
   return (
     <Box {...other}>
@@ -67,7 +65,7 @@ function SentIcon({ ...other }) {
         </defs>
       </svg>
     </Box>
-  );
+  )
 }
 
-export default memo(SentIcon);
+export default memo(SentIcon)

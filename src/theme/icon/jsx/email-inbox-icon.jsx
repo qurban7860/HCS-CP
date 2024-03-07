@@ -3,8 +3,6 @@ import { memo } from 'react'
 import { useTheme } from '@mui/material/styles'
 import { Box } from '@mui/material'
 
-// ----------------------------------------------------------------------
-
 function EmailInboxIcon({ ...other }) {
   const theme = useTheme()
 
