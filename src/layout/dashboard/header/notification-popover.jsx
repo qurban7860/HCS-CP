@@ -22,7 +22,7 @@ import { Iconify } from 'component/iconify'
 import { Scrollbar } from 'component/scrollbar'
 import { MenuPopover } from 'component/menu-popover'
 import { IconButtonAnimate } from 'component/animate'
-import { ICONS } from 'constant/icon'
+import { ICON } from 'constant/icon'
 import { PATH_MACHINE } from 'route/path'
 
 function NotificationsPopover() {
@@ -111,8 +111,6 @@ function NotificationsPopover() {
   )
 }
 
-// ----------------------------------------------------------------------
-
 NotificationItem.propTypes = {
   notification: PropTypes.shape({
     _id: PropTypes.string,
@@ -171,8 +169,6 @@ function NotificationItem({ notification, handleMarkAs }) {
   )
 }
 
-// ----------------------------------------------------------------------
-
 function renderNotification(notification) {
   const rendered = { title: '', icon: '', color: '' }
   const { extraInfo } = notification || {}
@@ -188,15 +184,15 @@ function renderNotification(notification) {
 
   rendered.title = title
 
-  if (notification.type === 'SERVICE-CONFIG') {
+  if (notification.type === 'SERVICE-GLOBAL') {
     const { status } = extraInfo
 
     if (status === 'SUBMITTED') {
-      rendered.icon = ICONS.DOCUMENT_ACTIVE.icon
-      rendered.color = ICONS.DOCUMENT_ACTIVE.color
+      rendered.icon = ICON.DOCUMENT_ACTIVE.icon
+      rendered.color = ICON.DOCUMENT_ACTIVE.color
     } else {
-      rendered.icon = ICONS.DOCUMENT_ACTIVE.icon
-      rendered.color = ICONS.DOCUMENT_ACTIVE.color
+      rendered.icon = ICON.DOCUMENT_ACTIVE.icon
+      rendered.color = ICON.DOCUMENT_ACTIVE.color
     }
   }
 

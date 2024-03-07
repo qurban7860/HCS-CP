@@ -14,15 +14,13 @@ import {
   Autocomplete,
   Typography,
 } from '@mui/material'
-import { CONFIG } from 'global'
+import { GLOBAL } from 'global'
 import { bgBlur } from 'theme/style'
 import { flattenArray } from 'util'
 import { Iconify } from 'component/iconify'
 import { IconButtonAnimate } from 'component/animate'
 import { SearchNotFound } from 'component/search-not-found'
 import { NavConfig } from 'layout/dashboard'
-
-// ----------------------------------------------------------------------
 
 const APPBAR_MOBILE = 64
 const APPBAR_DESKTOP = 92
@@ -38,7 +36,7 @@ const StyledSearchbar = styled('div')(({ theme }) => ({
   alignItems: 'center',
   height: APPBAR_MOBILE,
   padding: theme.spacing(0, 3),
-  boxShadow: theme.customShadows.z8,
+  boxShadow: theme.customShadow.z8,
   [theme.breakpoints.up('md')]: {
     height: APPBAR_DESKTOP,
     padding: theme.spacing(0, 5),
@@ -83,8 +81,6 @@ const StyledPopper = styled((props) => <Popper {...props} />)(({ theme }) => ({
     },
   },
 }))
-
-// ----------------------------------------------------------------------
 
 function Searchbar() {
   const navigate = useNavigate()
@@ -229,8 +225,6 @@ function Searchbar() {
 
 export default memo(Searchbar)
 
-// ----------------------------------------------------------------------
-
 function splitPath(array, key) {
   let stack = array.map((item) => ({
     path: [item.title],
@@ -255,8 +249,6 @@ function splitPath(array, key) {
   }
   return null
 }
-
-// ----------------------------------------------------------------------
 
 function handleLoop(array, subheader = '') {
   return array?.map((list) => ({

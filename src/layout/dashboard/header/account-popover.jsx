@@ -19,7 +19,7 @@ import { MenuPopover } from 'component/menu-popover'
 import { IconButtonAnimate } from 'component/animate'
 import {
   Block,
-  ModeOptions,
+  ModeOption,
   ContrastOption,
   DirectionOption,
   StretchOption,
@@ -29,11 +29,12 @@ import {
   SettingDrawer,
 } from 'component/setting'
 import { bgBlur } from 'theme/style'
-import { useSettingsContext } from 'component/setting'
+import { useSettingContext } from 'component/setting'
 import { themePreset } from 'theme'
-import { Iconify, Scrollbar } from 'component/iconify'
-import { TITLES } from 'constant'
-import { OPTIONS } from './util/option-list-items'
+import { Iconify } from 'component/iconify'
+import { Scrollbar } from 'component/scrollbar'
+import { TITLE } from 'constant'
+import { OPTION } from './util'
 
 const SPACING = 2.5
 
@@ -54,7 +55,7 @@ export default function AccountPopover() {
     themeDirection,
     themeColorPresets,
     onResetSetting,
-  } = useSettingsContext()
+  } = useSettingContext()
 
   const handleOpenPopover = (event) => {
     setOpenPopover(event.currentTarget)
@@ -91,12 +92,12 @@ export default function AccountPopover() {
   }
 
   const notDefault =
-    themeMode !== defaultSettings.themeMode ||
-    themeLayout !== defaultSettings.themeLayout ||
-    themeStretch !== defaultSettings.themeStretch ||
-    themeContrast !== defaultSettings.themeContrast ||
-    themeDirection !== defaultSettings.themeDirection ||
-    themeColorPresets !== defaultSettings.themeColorPresets
+    themeMode !== themePreset.themeMode ||
+    themeLayout !== themePreset.themeLayout ||
+    themeStretch !== themePreset.themeStretch ||
+    themeContrast !== themePreset.themeContrast ||
+    themeDirection !== themePreset.themeDirection ||
+    themeColorPresets !== themePreset.themeColorPresets
 
   return (
     <>
@@ -130,7 +131,7 @@ export default function AccountPopover() {
         </Box>
         <Divider sx={{ borderStyle: 'solid' }} />
         <Stack sx={{ p: 1 }}>
-          {OPTIONS.map((option) => (
+          {OPTION.map((option) => (
             <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>
               {option.label}
             </MenuItem>
@@ -143,7 +144,7 @@ export default function AccountPopover() {
             onClose={handleClose}
           >
             <Typography variant="body2" noWrap>
-              {TITLES.CUSTOMIZE}
+              {TITLE.CUSTOMIZE}
             </Typography>
           </MenuItem>
         </Stack>
@@ -151,7 +152,7 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'solid' }} />
 
         <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
-          {TITLES.LOGOUT}
+          {TITLE.LOGOUT}
         </MenuItem>
       </MenuPopover>
       <>
@@ -182,7 +183,7 @@ export default function AccountPopover() {
             sx={{ py: 2, pr: 1, pl: SPACING }}
           >
             <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
-              {TITLES.SETTINGS}
+              {TITLE.SETTINGS}
             </Typography>
 
             <Tooltip title="Reset">
@@ -201,27 +202,27 @@ export default function AccountPopover() {
           <Divider sx={{ borderStyle: 'solid' }} />
 
           <Scrollbar sx={{ p: SPACING, pb: 0 }}>
-            <Block title={TITLES.MODE}>
-              <ModeOptions />
+            <Block title={TITLE.MODE}>
+              <ModeOption />
             </Block>
 
-            <Block title={TITLES.CONTRAST}>
+            <Block title={TITLE.CONTRAST}>
               <ContrastOption />
             </Block>
 
-            <Block title={TITLES.DIRECTION}>
+            <Block title={TITLE.DIRECTION}>
               <DirectionOption />
             </Block>
 
-            <Block title={TITLES.LAYOUT}>
+            <Block title={TITLE.LAYOUT}>
               <LayoutOption />
             </Block>
 
-            <Block title={TITLES.STRETCH.label} tooltip={TITLES.STRETCH.tooltip}>
+            <Block title={TITLE.STRETCH.label} tooltip={TITLE.STRETCH.tooltip}>
               <StretchOption />
             </Block>
 
-            <Block title={TITLES.PRESETS}>
+            <Block title={TITLE.PRESETS}>
               <ColorPresetOption />
             </Block>
           </Scrollbar>

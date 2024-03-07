@@ -8,7 +8,7 @@ import { bgBlur } from 'theme/style'
 import { HEADER, NAV } from 'config'
 import { Logo } from 'component/logo'
 import { Iconify } from 'component/iconify'
-import { useSettingsContext } from 'component/setting'
+import { useSettingContext } from 'component/setting'
 import AccountPopover from './account-popover'
 import NotificationsPopover from './notification-popover'
 
@@ -18,7 +18,7 @@ Header.propTypes = {
 
 function Header({ onOpenNav }) {
   const theme = useTheme()
-  const { themeLayout } = useSettingsContext()
+  const { themeLayout } = useSettingContext()
   const isNavHorizontal = themeLayout === 'horizontal'
   const isNavMini = themeLayout === 'mini'
   const isDesktop = useResponsive('up', 'lg')

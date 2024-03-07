@@ -1,32 +1,27 @@
-import { useState } from 'react';
-// @mui
-import { MenuItem, Stack } from '@mui/material';
-// locales
-import { useLocales } from '../../../locales';
-// components
-import Image from '../../../components/image';
-import MenuPopover from '../../../components/menu-popover';
-import { IconButtonAnimate } from '../../../components/animate';
-
-// ----------------------------------------------------------------------
+import { useState } from 'react'
+import { MenuItem, Stack } from '@mui/material'
+import { useLocale } from 'locale'
+import { MenuPopover } from 'component/menu-popover'
+import { IconButtonAnimate } from 'component/animate'
+// import Image from '../../../components/image'
 
 export default function LanguagePopover() {
-  const { allLangs, currentLang, onChangeLang } = useLocales();
+  const { allLang, currentLang, onChangeLang } = useLocale()
 
-  const [openPopover, setOpenPopover] = useState(null);
+  const [openPopover, setOpenPopover] = useState(null)
 
   const handleOpenPopover = (event) => {
-    setOpenPopover(event.currentTarget);
-  };
+    setOpenPopover(event.currentTarget)
+  }
 
   const handleClosePopover = () => {
-    setOpenPopover(null);
-  };
+    setOpenPopover(null)
+  }
 
   const handleChangeLang = (newLang) => {
-    onChangeLang(newLang);
-    handleClosePopover();
-  };
+    onChangeLang(newLang)
+    handleClosePopover()
+  }
 
   return (
     <>
@@ -45,18 +40,19 @@ export default function LanguagePopover() {
 
       <MenuPopover open={openPopover} onClose={handleClosePopover} sx={{ width: 180 }}>
         <Stack spacing={0.75}>
-          {allLangs.map((option) => (
+          {allLang.map((option) => (
             <MenuItem
               key={option.value}
               selected={option.value === currentLang.value}
               onClick={() => handleChangeLang(option.value)}
             >
-              <Image
+              {/* TODO: Image */}
+              {/* <Image
                 disabledEffect
                 alt={option.label}
                 src={option.icon}
                 sx={{ width: 28, mr: 2 }}
-              />
+              /> */}
 
               {option.label}
             </MenuItem>
@@ -64,5 +60,5 @@ export default function LanguagePopover() {
         </Stack>
       </MenuPopover>
     </>
-  );
+  )
 }
