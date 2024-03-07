@@ -1,5 +1,5 @@
 import 'locale/i18n'
-import 'util/mapboxgl'
+// import 'util/mapboxgl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import 'react-lazy-load-image-component/src/effects/blur.css'
 import 'react-quill/dist/quill.snow.css'
@@ -9,12 +9,12 @@ import { BrowserRouter } from 'react-router-dom'
 // import { LocalizationProvider } from '@mui/x-date-pickers'
 import ErrorBoundary from 'util/error-boundary'
 import Router from 'route'
-import ThemeProvider from 'theme'
+import { ThemeProvider } from 'theme'
 import { ThemeLocalization } from 'locale'
 import { SnackbarProvider } from 'component/snackbar'
 import { ScrollToTop } from 'component/scroll-to-top'
 import { MotionLazyContainer } from 'component/animate'
-import { ThemeSettings, SettingsProvider } from 'component/setting'
+import { ThemeSettings, SettingProvider } from 'component/setting'
 import { IdleManager } from 'component/idle-manager'
 import { InternalServer } from 'page/fallback'
 import { AuthProvider } from 'auth/jwt-context'
@@ -30,7 +30,7 @@ function App() {
     // <WebSocketProvider>
     //   <PersistGate loading={null} persistor={persistor}>
     // <LocalizationProvider dateAdapter={AdapterDateFns}>
-    <SettingsProvider>
+    <SettingProvider>
       <BrowserRouter>
         <MotionLazyContainer>
           <ThemeProvider>
@@ -39,7 +39,7 @@ function App() {
                 <ScrollToTop />
                 <ThemeLocalization>
                   <SnackbarProvider>
-                    <StyledChart />
+                    {/* <StyledChart /> */}
                     {/* <IdleManager /> */}
                     <Router />
                   </SnackbarProvider>
@@ -49,7 +49,7 @@ function App() {
           </ThemeProvider>
         </MotionLazyContainer>
       </BrowserRouter>
-    </SettingsProvider>
+    </SettingProvider>
     // </LocalizationProvider>
     //   </PersistGate>
     // </WebSocketProvider>
