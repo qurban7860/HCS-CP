@@ -12,8 +12,6 @@ const ROOTS_SETTING = '/settings'
 const ROOTS_DOCUMENT = '/documents'
 const ROOTS_SITEMAP = '/site'
 
-// ----------------------------------------------------------------------
-
 export const PATH_AUTH = {
   root: ROOTS_AUTH,
   login: path(ROOTS_AUTH, '/login'),

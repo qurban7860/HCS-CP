@@ -11,7 +11,7 @@ import {
   VerifyCodePage,
   NewPasswordPage,
   ResetPasswordPage,
-  Authenticate,
+  // Authenticate,
   // Dashboard: General
   GeneralAppPage,
   MachineByModelsViewForm,
@@ -20,18 +20,18 @@ import {
   // Setting
   Setting,
   // Email
-  Email,
-  Emailviewform,
+  // Email,
+  // Emailviewform,
   //
   BlankPage,
   PermissionDeniedPage,
-  InternalServer,
-  Forbidden,
-  NotFound,
-  ComingSoonPage,
-  MaintenancePage,
-  ErrorPage,
-  UserInviteLanding,
+  InternalServerPage,
+  ForbiddenPage,
+  NotFoundPage,
+  // ComingSoonPage,
+  // MaintenancePage,
+  // ErrorPage,
+  UserInviteLandingPage,
 } from './element'
 
 export default function Router() {
@@ -120,15 +120,15 @@ export default function Router() {
       element: <SimpleLayout />,
       children: [],
     },
-    { path: 'invite/:id/:code/:expiry', element: <UserInviteLanding /> },
-    { path: '500', element: <InternalServer /> },
-    { path: '403', element: <Forbidden /> },
-    { path: '404', element: <NotFound /> },
+    { path: 'invite/:id/:code/:expiry', element: <UserInviteLandingPage /> },
+    { path: '500', element: <InternalServerPage /> },
+    { path: '403', element: <ForbiddenPage /> },
+    { path: '404', element: <NotFoundPage /> },
     {
       element: <CompactLayout />,
       children: [
-        { path: 'coming-soon', element: <ComingSoonPage /> },
-        { path: 'maintenance', element: <MaintenancePage /> },
+        // { path: 'coming-soon', element: <ComingSoonPage /> },
+        // { path: 'maintenance', element: <MaintenancePage /> },
         {
           path: 'invalidErrorPage',
           element: <ErrorPage title="Invalid Code" />,
