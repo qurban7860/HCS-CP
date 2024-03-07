@@ -78,7 +78,7 @@ const FORM_LABEL = {
   DOCUMENT_SETTINGS: 'Document Settings',
   SECURITY_SETTINGS: 'Security Settings',
   REPORTS: 'Reports',
-  CONFIG: 'Configuration',
+  GLOBAL: 'Configuration',
 
   // @root DocumentAddForm in dashboard/documents
   SELECT_CUSTOMER: 'Select Customer',

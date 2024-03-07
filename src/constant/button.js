@@ -62,7 +62,7 @@ const BUTTON = {
   ADDMODULE: 'Add Module',
   // note
   ADDNOTE: 'Add Note',
-  // CONFIG
+  // GLOBAL
   ADDCONFIG: 'Add Config',
 
   // MACHINE SETTINGS
