@@ -1,11 +1,8 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom'
 // @mui
-import { Stack, Container } from '@mui/material';
-
-// ----------------------------------------------------------------------
+import { Stack, Container } from '@mui/material'
 
 export default function CompactLayout() {
-  
   return (
     <Container component="main">
       <Stack
@@ -21,5 +18,5 @@ export default function CompactLayout() {
         <Outlet />
       </Stack>
     </Container>
-  );
+  )
 }

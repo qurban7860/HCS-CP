@@ -1,15 +1,9 @@
 import PropTypes from 'prop-types'
-// import { Link as RouterLink } from 'react-router-dom';
-// @mui
 import { useTheme } from '@mui/material/styles'
 import { AppBar, Toolbar, Box } from '@mui/material'
-// config
-import { HEADER } from '../../config-global'
-// utils
-import { bgBlur } from 'util/cssStyles'
-import Logo from '../../components/logo'
-
-// ----------------------------------------------------------------------
+import { HEADER } from 'config'
+import { bgBlur } from 'theme/style'
+import { Logo } from 'component/logo'
 
 Header.propTypes = {
   isOffset: PropTypes.bool,
@@ -51,8 +45,6 @@ export default function Header({ isOffset }) {
   )
 }
 
-// ----------------------------------------------------------------------
-
 Shadow.propTypes = {
   sx: PropTypes.object,
 }
@@ -70,7 +62,7 @@ function Shadow({ sx, ...other }) {
         borderRadius: '50%',
         position: 'absolute',
         width: `calc(100% - 48px)`,
-        boxShadow: (theme) => theme.customShadows.z8,
+        boxShadow: (theme) => theme.customShadow.z8,
         ...sx,
       }}
       {...other}
