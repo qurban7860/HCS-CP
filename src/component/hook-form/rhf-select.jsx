@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // form
-import { useFormContext, Controller } from 'react-hook-form';
+import { useFormContext, Controller } from 'react-hook-form'
 // @mui
 import {
   Box,
@@ -13,9 +13,7 @@ import {
   FormControl,
   OutlinedInput,
   FormHelperText,
-} from '@mui/material';
-
-// ----------------------------------------------------------------------
+} from '@mui/material'
 
 RHFSelect.propTypes = {
   name: PropTypes.string,
@@ -23,10 +21,10 @@ RHFSelect.propTypes = {
   children: PropTypes.node,
   helperText: PropTypes.node,
   maxHeight: PropTypes.number,
-};
+}
 
 export function RHFSelect({ name, native, children, helperText, maxHeight = 220, ...other }) {
-  const { control } = useFormContext();
+  const { control } = useFormContext()
 
   return (
     <Controller
@@ -65,10 +63,8 @@ export function RHFSelect({ name, native, children, helperText, maxHeight = 220,
         </TextField>
       )}
     />
-  );
+  )
 }
-
-// ----------------------------------------------------------------------
 
 RHFMultiSelect.propTypes = {
   customObject: PropTypes.bool,
@@ -81,7 +77,7 @@ RHFMultiSelect.propTypes = {
   placeholder: PropTypes.string,
   helperText: PropTypes.node,
   sx: PropTypes.object,
-};
+}
 
 export function RHFMultiSelect({
   customObject,
@@ -96,31 +92,37 @@ export function RHFMultiSelect({
   sx,
   ...other
 }) {
-  const { control } = useFormContext();
+  const { control } = useFormContext()
 
   const renderValues = (selectedIds) => {
-    const selectedItems = options.filter((item) => selectedIds.includes(customObject ? item._id : item.value));
+    const selectedItems = options.filter((item) =>
+      selectedIds.includes(customObject ? item._id : item.value)
+    )
 
     if (!selectedItems.length && placeholder) {
       return (
         <Box component="em" sx={{ color: 'text.disabled' }}>
           {placeholder}
         </Box>
-      );
+      )
     }
 
     if (chip) {
       return (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
           {selectedItems.map((item) => (
-            <Chip key={customObject ? item._id : item.value} size="small" label={customObject ? item[customName] : item.label} />
+            <Chip
+              key={customObject ? item._id : item.value}
+              size="small"
+              label={customObject ? item[customName] : item.label}
+            />
           ))}
         </Box>
-      );
+      )
     }
 
-    return selectedItems.map((item) => customObject ? item[customName] : item.label).join(', ');
-  };
+    return selectedItems.map((item) => (customObject ? item[customName] : item.label)).join(', ')
+  }
 
   return (
     <Controller
@@ -135,7 +137,9 @@ export function RHFMultiSelect({
             multiple
             displayEmpty={!!placeholder}
             labelId={name}
-            input={<OutlinedInput fullWidth label={customObject ? customName : label} error={!!error} />}
+            input={
+              <OutlinedInput fullWidth label={customObject ? customName : label} error={!!error} />
+            }
             renderValue={renderValues}
             MenuProps={{
               PaperProps: {
@@ -160,7 +164,7 @@ export function RHFMultiSelect({
             )}
 
             {options.map((option) => {
-              const selected =  field.value.includes(customObject ? option._id : option.value);
+              const selected = field.value.includes(customObject ? option._id : option.value)
 
               return (
                 <MenuItem
@@ -183,7 +187,7 @@ export function RHFMultiSelect({
 
                   {customObject ? option[customName] : option.label}
                 </MenuItem>
-              );
+              )
             })}
           </Select>
 
@@ -193,5 +197,5 @@ export function RHFMultiSelect({
         </FormControl>
       )}
     />
-  );
+  )
 }

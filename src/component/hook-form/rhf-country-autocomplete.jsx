@@ -4,8 +4,6 @@ import { useFormContext, Controller } from 'react-hook-form'
 import { Autocomplete, TextField, Box } from '@mui/material'
 import { COUNTRY } from 'constant'
 
-// ----------------------------------------------------------------------
-
 RHFCountryAutocomplete.propTypes = {
   name: PropTypes.string,
   label: PropTypes.string,

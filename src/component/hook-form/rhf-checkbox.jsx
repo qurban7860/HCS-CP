@@ -44,8 +44,6 @@ export function RHFCheckbox({ name, label, helperText, ...other }) {
   )
 }
 
-// ----------------------------------------------------------------------
-
 RHFMultiCheckbox.propTypes = {
   row: PropTypes.bool,
   name: PropTypes.string,
