@@ -26,7 +26,7 @@ function SettingDrawer() {
     themeStretch,
     themeContrast,
     themeDirection,
-    themeColorPresets,
+    themeColorPreset,
     onResetSetting,
   } = useSettingContext()
 
@@ -44,7 +44,7 @@ function SettingDrawer() {
     themeStretch !== themePreset.themeStretch ||
     themeContrast !== themePreset.themeContrast ||
     themeDirection !== themePreset.themeDirection ||
-    themeColorPresets !== themePreset.themeColorPresets
+    themeColorPreset !== themePreset.themeColorPreset
 
   return (
     <>

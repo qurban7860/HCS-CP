@@ -4,15 +4,15 @@ import { useSettingContext } from 'component/setting/setting-context'
 import { StyledCard, StyledWrap, MaskControl, StyledCircleColor } from 'component/setting'
 
 function ColorPresetOption() {
-  const { themeColorPresets, onChangeColorPresets, presetsOption } = useSettingContext()
+  const { themeColorPreset, onChangeColorPresets, presetsOption } = useSettingContext()
 
   return (
-    <RadioGroup name="themeColorPresets" value={themeColorPresets} onChange={onChangeColorPresets}>
+    <RadioGroup name="themeColorPreset" value={themeColorPreset} onChange={onChangeColorPresets}>
       <StyledWrap sx={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
         {presetsOption.map((color) => {
           const { name, value } = color
 
-          const selected = themeColorPresets === name
+          const selected = themeColorPreset === name
 
           return (
             <StyledCard
