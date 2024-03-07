@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { LoadingButton } from '@mui/lab'
 import { useIdleTimer } from 'react-idle-timer'
 import { useAuthContext } from 'auth'
-import { CONFIG } from 'global'
+import { GLOBAL } from 'global'
 import { ConfirmDialog } from 'component/dialog'
 
 const IdleManager = () => {
@@ -11,7 +11,7 @@ const IdleManager = () => {
   const [showStay, setShowStay] = useState(true)
   const [countdown, setCountdown] = useState(10)
 
-  const idleTimeout = 1000 * CONFIG.IDLE_TIME
+  const idleTimeout = 1000 * GLOBAL.IDLE_TIME
 
   const handleIdle = () => {
     setOpenModal(true)
@@ -19,7 +19,7 @@ const IdleManager = () => {
 
   const { activate } = useIdleTimer({
     timeout: idleTimeout,
-    promptBeforeIdle: CONFIG.IDLE_TIME,
+    promptBeforeIdle: GLOBAL.IDLE_TIME,
     onPrompt: handleIdle,
     debounce: 500,
     disabled: !isAuthenticated,

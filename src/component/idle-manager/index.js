@@ -1,1 +1,1 @@
-export { default } from './idle-manager'
+export { default as IdleManager } from './idle-manager'
