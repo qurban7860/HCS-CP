@@ -68,8 +68,6 @@ function Breadcrumb({ links = [], action, heading, moreLink, activeLast, sx, ...
   )
 }
 
-// ----------------------------------------------------------------------
-
 function Separator() {
   return (
     <Box
