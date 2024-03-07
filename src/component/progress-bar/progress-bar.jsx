@@ -3,8 +3,6 @@ import NProgress from 'nprogress'
 //
 import StyledProgressBar from './style'
 
-// ----------------------------------------------------------------------
-
 export default function ProgressBar() {
   NProgress.configure({
     showSpinner: false,
