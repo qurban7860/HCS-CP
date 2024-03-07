@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types'
 import { createContext, useEffect, useContext, useMemo, useCallback } from 'react'
-// hooks
-import useLocalStorage from '../../hook/use-local-storage'
-import localStorageSpace from 'util/local-storage-space'
+import { useLocalStorage } from 'hook'
 import { themePreset } from 'theme'
+import { localStorageSpace } from 'util'
 import { defaultPreset, getPresets, presetsOption } from 'theme/preset'
 
 const initialState = {
@@ -31,21 +30,21 @@ const initialState = {
   onResetSetting: () => {},
 }
 
-export const SettingsContext = createContext(initialState)
+export const SettingContext = createContext(initialState)
 
-export const useSettingsContext = () => {
-  const context = useContext(SettingsContext)
+export const useSettingContext = () => {
+  const context = useContext(SettingContext)
 
-  if (!context) throw new Error('useSettingsContext must be use inside SettingsProvider')
+  if (!context) throw new Error('useSettingContext must be use inside SettingProvider')
 
   return context
 }
 
-SettingsProvider.propTypes = {
+SettingProvider.propTypes = {
   children: PropTypes.node,
 }
 
-export function SettingsProvider({ children }) {
+export function SettingProvider({ children }) {
   const [settings, setSettings] = useLocalStorage('settings', themePreset)
   const storageAvailable = localStorageSpace()
   const langStorage = storageAvailable ? localStorage.getItem('i18nextLng') : ''
@@ -192,5 +191,5 @@ export function SettingsProvider({ children }) {
     ]
   )
 
-  return <SettingsContext.Provider value={memoizedValue}>{children}</SettingsContext.Provider>
+  return <SettingContext.Provider value={memoizedValue}>{children}</SettingContext.Provider>
 }

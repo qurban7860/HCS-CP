@@ -4,7 +4,7 @@ import merge from 'lodash/merge'
 // @mui
 import { ThemeProvider, createTheme, useTheme } from '@mui/material/styles'
 import { CssBaseline } from '@mui/material'
-import { useSettingsContext } from './setting-context'
+import { useSettingContext } from './setting-context'
 
 ThemeContrast.propTypes = {
   children: PropTypes.node,
@@ -13,7 +13,7 @@ ThemeContrast.propTypes = {
 function ThemeContrast({ children }) {
   const outerTheme = useTheme()
 
-  const { themeContrast, themeMode } = useSettingsContext()
+  const { themeContrast, themeMode } = useSettingContext()
   const isLight = themeMode === 'light'
   const isContrastBold = themeContrast === 'bold'
 
@@ -31,7 +31,7 @@ function ThemeContrast({ children }) {
           styleOverrides: {
             ...(isContrastBold && {
               root: {
-                boxShadow: outerTheme.customShadows.z4,
+                boxShadow: outerTheme.customShadow.z4,
               },
             }),
           },

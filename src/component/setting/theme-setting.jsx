@@ -4,8 +4,6 @@ import ThemeRtlLayout from './theme-rtl-layout'
 import ThemeColorPresets from './theme-color-preset'
 import SettingsDrawer from './drawer'
 
-// ----------------------------------------------------------------------
-
 ThemeSettings.propTypes = {
   children: PropTypes.node,
 }

@@ -2,15 +2,11 @@ import PropTypes from 'prop-types'
 import { alpha, styled } from '@mui/material/styles'
 import { CardActionArea, Radio, FormControlLabel, Stack, Box } from '@mui/material'
 
-// ----------------------------------------------------------------------
-
 export const StyledWrap = styled(Box)(() => ({
   gap: 8,
   display: 'grid',
   gridTemplateColumns: 'repeat(2, 1fr)',
 }))
-
-// ----------------------------------------------------------------------
 
 export const StyledCard = styled(CardActionArea, {
   shouldForwardProp: (prop) => prop !== 'selected',
@@ -28,12 +24,10 @@ export const StyledCard = styled(CardActionArea, {
   },
   ...(selected && {
     color: theme.palette.primary.main,
-    boxShadow: theme.customShadows.z12,
+    boxShadow: theme.customShadow.z12,
     borderColor: alpha(theme.palette.grey[500], 0.24),
   }),
 }))
-
-// ----------------------------------------------------------------------
 
 export const StyledCircleColor = styled('div', {
   shouldForwardProp: (prop) => prop !== 'selected',
@@ -52,8 +46,6 @@ export const StyledCircleColor = styled('div', {
     boxShadow: `-2px 4px 8px 0px ${alpha(color, 0.48)}`,
   }),
 }))
-
-// ----------------------------------------------------------------------
 
 MaskControl.propTypes = {
   value: PropTypes.string,
@@ -76,8 +68,6 @@ export function MaskControl({ value }) {
     />
   )
 }
-
-// ----------------------------------------------------------------------
 
 LayoutIcon.propTypes = {
   layout: PropTypes.string,
