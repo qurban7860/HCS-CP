@@ -4,12 +4,12 @@ import { NAV, GLOBAL } from 'config'
 import { hideScrollbarX } from 'theme/style'
 import { Logo } from 'component/logo'
 import { NavSectionMini } from 'component/nav-section'
-import NavigationConfig from './nav-config'
+// import NavigationConfig from './nav-config'
 import NavToggleButton from './nav-toggle-button'
 
 export default function NavMini() {
   const [envColor, setEnvColor] = useState('#897A69')
-  const navConfig = NavigationConfig()
+  // const navConfig = NavigationConfig()
 
   useEffect(() => {
     if (
@@ -61,14 +61,14 @@ export default function NavMini() {
                 padding: '2px 5px',
                 color: '#FFF',
               }}
-            >{`${GLOBAL.ENV.toLocaleUpperCase()} ${GLOBAL.Version}`}</Typography>
+            >{`${GLOBAL.ENV.toLocaleUpperCase()} ${GLOBAL.VERSION}`}</Typography>
           )}
 
           {GLOBAL.ENV.toLocaleLowerCase() === 'live' && (
-            <Typography sx={{ color: '#897A69', fontSize: '10px' }}>{GLOBAL.Version}</Typography>
+            <Typography sx={{ color: '#897A69', fontSize: '10px' }}>{GLOBAL.VERSION}</Typography>
           )}
         </Grid>
-        <NavSectionMini data={navConfig} />
+        {/* <NavSectionMini data={navConfig} /> */}
       </Stack>
     </Box>
   )

@@ -5,11 +5,11 @@ import { AppBar, Box, Toolbar } from '@mui/material'
 import { HEADER } from 'config'
 import { bgBlur } from 'theme/style'
 // import { NavSectionHorizontal } from 'component/nav-section'
-import NavigationConfig from './nav-config'
+// import NavigationConfig from './nav-config'
 
 function NavHorizontal() {
   const theme = useTheme()
-  const navConfig = NavigationConfig()
+  // const navConfig = NavigationConfig()
   return (
     <AppBar
       component="nav"

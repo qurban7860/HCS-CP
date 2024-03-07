@@ -7,7 +7,7 @@ import { GLOBAL, NAV } from 'config'
 import { Logo } from 'component/logo'
 import { Scrollbar } from 'component/scrollbar'
 import { NavSectionVertical } from 'component/nav-section'
-import NavigationConfig from './nav-config'
+// import NavigationConfig from './nav-config'
 import NavDocs from './nav-doc'
 // import NavAccount from './nav-account'
 import NavToggleButton from './nav-toggle-button'
@@ -17,8 +17,8 @@ NavVertical.propTypes = {
   onCloseNav: PropTypes.func,
 }
 
-export default function NavVertical({ openNav, onCloseNav }) {
-  const navConfig = NavigationConfig()
+function NavVertical({ openNav, onCloseNav }) {
+  // const navConfig = NavigationConfig()
 
   const { pathname } = useLocation()
   // const { themeLayout } = useSettingContext();
@@ -71,15 +71,15 @@ export default function NavVertical({ openNav, onCloseNav }) {
                 padding: '2px 5px',
                 color: '#FFF',
               }}
-            >{`${GLOBAL.ENV.toLocaleUpperCase()} ${GLOBAL.Version}`}</Typography>
+            >{`${GLOBAL.ENV.toLocaleUpperCase()} ${GLOBAL.VERSION}`}</Typography>
           )}
 
           {GLOBAL.ENV.toLocaleLowerCase() === 'live' && (
-            <Typography sx={{ color: '#897A69', fontSize: '10px' }}>{GLOBAL.Version}</Typography>
+            <Typography sx={{ color: '#897A69', fontSize: '10px' }}>{GLOBAL.VERSION}</Typography>
           )}
         </Grid>
       </Stack>
-      <NavSectionVertical sx={{ mt: '-50px' }} data={navConfig} />
+      {/* <NavSectionVertical sx={{ mt: '-50px' }} data={navConfig} /> */}
       <Box sx={{ flexGrow: 1 }} />
       <NavDocs />
     </Scrollbar>
@@ -121,3 +121,5 @@ export default function NavVertical({ openNav, onCloseNav }) {
     </Box>
   )
 }
+
+export default NavVertical

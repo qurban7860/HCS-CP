@@ -3,7 +3,7 @@ import { useAuthContext } from 'auth'
 import { PATH_DOCS } from 'route/path'
 
 export default function NavDocs() {
-  const { user } = useAuthContext()
+  // const { user } = useAuthContext()
   return (
     <Stack
       sx={{
@@ -19,7 +19,8 @@ export default function NavDocs() {
       }}
     >
       <Typography gutterBottom variant="subtitle1">
-        Hi, {user?.displayName}
+        {/* Hi, {user?.displayName} */}
+        Hi, Howick
       </Typography>
       <Typography variant="body2" sx={{ color: 'text.secondary', pb: 1 }}>
         Know more about our products and services
