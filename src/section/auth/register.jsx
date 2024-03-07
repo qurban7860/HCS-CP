@@ -3,15 +3,15 @@ import { Grid, Stack, Typography, Link } from '@mui/material'
 import LoginLayout from 'layout/login'
 import { PATH_AUTH } from 'route/path'
 import AuthRegisterForm from './auth-register-form'
-import { CONFIG } from 'global'
+import { GLOBAL } from 'global'
 
 function Register() {
   return (
-    <LoginLayout title={CONFIG.MESSAGE_REGISTER_USER}>
+    <LoginLayout title={GLOBAL.MESSAGE_REGISTER_USER}>
       <Grid item xs={6}>
         <Typography
           sx={{
-            backgroundColor: CONFIG.Background_Color,
+            backgroundColor: GLOBAL.Background_Color,
             borderRadius: '2px',
             textAlign: 'center',
             fontWeight: 'bold',
@@ -20,9 +20,9 @@ function Register() {
             mb: 1,
           }}
         >
-          {CONFIG.ENV}
+          {GLOBAL.ENV}
           {'  '}
-          {CONFIG.Version}
+          {GLOBAL.Version}
         </Typography>
       </Grid>
       <Stack

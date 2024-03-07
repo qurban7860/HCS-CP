@@ -6,8 +6,8 @@ import { Alert } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import FormProvider, { RHFTextField } from 'component/hook-form'
 import axios from 'util/axios'
-import { CONFIG } from 'global'
-import { TITLES } from 'constant/default'
+import { GLOBAL } from 'global'
+import { TITLE } from 'constant'
 import { useSnackbar } from 'component/snackbar'
 
 function AuthResetPasswordForm() {
@@ -33,7 +33,7 @@ function AuthResetPasswordForm() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(`${CONFIG.SERVER_URL}security/forgetPassword`, data)
+      const response = await axios.post(`${GLOBAL.SERVER_URL}security/forgetPassword`, data)
       enqueueSnackbar(response.data.Message)
       setDisable(true)
       // await new Promise((resolve) => setTimeout(resolve, 500));
@@ -75,7 +75,7 @@ function AuthResetPasswordForm() {
         disabled={disable}
         sx={{ mt: 3 }}
       >
-        {disable ? TITLES.CHECK_EMAIL : TITLES.FORGOT_REQUEST}
+        {disable ? TITLE.CHECK_EMAIL : TITLE.FORGOT_REQUEST}
       </LoadingButton>
     </FormProvider>
   )

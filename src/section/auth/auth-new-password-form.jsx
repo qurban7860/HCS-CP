@@ -10,7 +10,7 @@ import { Iconify } from 'component/iconify'
 import { useSnackbar } from 'component/snackbar'
 import FormProvider, { RHFTextField } from 'component/hook-form'
 import axios from 'util/axios'
-import { CONFIG } from '../../config-global'
+import { GLOBAL } from '../../config-global'
 import { BUTTONS, Snacks } from 'constants/default-constants'
 
 function AuthNewPasswordForm() {
@@ -63,7 +63,7 @@ function AuthNewPasswordForm() {
         password: data.password,
       }
 
-      await axios.post(`${CONFIG.SERVER_URL}security/forgetPassword/verifyToken`, DATA)
+      await axios.post(`${GLOBAL.SERVER_URL}security/forgetPassword/verifyToken`, DATA)
 
       setUpdate(true)
       enqueueSnackbar(Snacks.password_changed)
