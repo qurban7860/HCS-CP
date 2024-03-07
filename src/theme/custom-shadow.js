@@ -1,18 +1,16 @@
 // @mui
-import { alpha } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles'
 //
-import palette from './palette';
+import palette from './palette'
 
-// ----------------------------------------------------------------------
+const themeColor = palette('light')
 
-const themeColor = palette('light');
+const LIGHT_MODE = themeColor.grey[500]
 
-const LIGHT_MODE = themeColor.grey[500];
-
-const DARK_MODE = themeColor.common.black;
+const DARK_MODE = themeColor.common.black
 
 function createShadow(color) {
-  const transparent = alpha(color, 0.16);
+  const transparent = alpha(color, 0.16)
   return {
     z1: `0 1px 2px 0 ${transparent}`,
     z4: `0 4px 8px 0 ${transparent}`,
@@ -32,9 +30,11 @@ function createShadow(color) {
     card: `0 0 2px 0 ${alpha(color, 0.2)}, 0 12px 24px -4px ${alpha(color, 0.12)}`,
     dialog: `-40px 40px 80px -8px ${alpha(color, 0.24)}`,
     dropdown: `0 0 2px 0 ${alpha(color, 0.24)}, -20px 20px 40px -4px ${alpha(color, 0.24)}`,
-  };
+  }
 }
 
-export default function customShadows(themeMode) {
-  return themeMode === 'light' ? createShadow(LIGHT_MODE) : createShadow(DARK_MODE);
+function customShadow(themeMode) {
+  return themeMode === 'light' ? createShadow(LIGHT_MODE) : createShadow(DARK_MODE)
 }
+
+export default customShadow

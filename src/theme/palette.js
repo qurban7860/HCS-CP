@@ -1,6 +1,4 @@
-import { alpha } from '@mui/material/styles';
-
-// ----------------------------------------------------------------------
+import { alpha } from '@mui/material/styles'
 
 // SETUP COLORS
 
@@ -15,7 +13,7 @@ const GREY = {
   700: '#454F5B',
   800: '#212B36',
   900: '#161C24',
-};
+}
 
 const PRIMARY = {
   lighter: '#0940B2',
@@ -24,7 +22,7 @@ const PRIMARY = {
   dark: '#10079F',
   darker: '#10079F',
   contrastText: '#fff',
-};
+}
 
 const SECONDARY = {
   lighter: '#FFEA00',
@@ -33,7 +31,7 @@ const SECONDARY = {
   dark: '#FFA200',
   darker: '#FFA200',
   contrastText: '#fff',
-};
+}
 
 const INFO = {
   lighter: '#51BFE2',
@@ -42,7 +40,7 @@ const INFO = {
   dark: '#01466F',
   darker: '#001824',
   contrastText: '#fff',
-};
+}
 
 const SUCCESS = {
   lighter: '#897A69',
@@ -51,7 +49,7 @@ const SUCCESS = {
   dark: '#10079F',
   darker: '#FFA200',
   contrastText: '#fff',
-};
+}
 
 const WARNING = {
   lighter: '#FFF5CC',
@@ -60,7 +58,7 @@ const WARNING = {
   dark: '#B76E00',
   darker: '#7A4100',
   contrastText: GREY[800],
-};
+}
 
 const ERROR = {
   lighter: '#FFE9D5',
@@ -69,7 +67,7 @@ const ERROR = {
   dark: '#B71D18',
   darker: '#7A0916',
   contrastText: '#fff',
-};
+}
 
 // const HOWICKGRAY = {
 //   light: '#F4F4F4',
@@ -81,11 +79,11 @@ const HOWICKBLUE = {
   light: '#0084C9',
   main: '#0940B2',
   dark: '#10079F',
-};
+}
 
 const HOWICKORANGE = {
   main: '#FFA200',
-};
+}
 
 const HOWICKBRONZE = {
   lighter: '#B8AEA3',
@@ -93,11 +91,11 @@ const HOWICKBRONZE = {
   main: '#897A69',
   dark: '#5E5244',
   darker: '#473D31',
-};
+}
 
 const HOWICKBURNIN = {
   main: '#D1ED18',
-};
+}
 
 const COMMON = {
   common: { black: '#000', white: '#fff' },
@@ -122,7 +120,7 @@ const COMMON = {
     hoverOpacity: 0.08,
     disabledOpacity: 0.48,
   },
-};
+}
 
 export default function palette(themeMode) {
   const light = {
@@ -138,7 +136,7 @@ export default function palette(themeMode) {
       ...COMMON.action,
       active: GREY[600],
     },
-  };
+  }
 
   const dark = {
     ...COMMON,
@@ -157,7 +155,7 @@ export default function palette(themeMode) {
       ...COMMON.action,
       active: GREY[500],
     },
-  };
+  }
 
-  return themeMode === 'light' ? light : dark;
+  return themeMode === 'light' ? light : dark
 }

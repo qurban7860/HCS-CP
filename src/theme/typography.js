@@ -1,11 +1,9 @@
-// ----------------------------------------------------------------------
-
 export function remToPx(value) {
-  return Math.round(parseFloat(value) * 16);
+  return Math.round(parseFloat(value) * 16)
 }
 
 export function pxToRem(value) {
-  return `${value / 16}rem`;
+  return `${value / 16}rem`
 }
 
 export function responsiveFontSizes({ sm, md, lg }) {
@@ -19,14 +17,12 @@ export function responsiveFontSizes({ sm, md, lg }) {
     '@media (min-width:1200px)': {
       fontSize: pxToRem(lg),
     },
-  };
+  }
 }
 
-// ----------------------------------------------------------------------
-
 // const FONT_PRIMARY = 'Public Sans, sans-serif'; // Google Font
-const FONT_PRIMARY = 'Yantramanav, Arimo, Calibri'; // Official Howick Fonts
-const FONT_SECONDARY = 'Arimo';
+const FONT_PRIMARY = 'Yantramanav, Arimo, Calibri' // Official Howick Fonts
+const FONT_SECONDARY = 'Arimo'
 // const FONT_PRIMARY = 'Arimo'; // Local Font
 // const FONT_SECONDARY = 'Calibri, sans-serif'; // Local Font
 
@@ -112,6 +108,6 @@ const typography = {
     fontSize: pxToRem(14),
     textTransform: 'capitalize',
   },
-};
+}
 
-export default typography;
+export default typography

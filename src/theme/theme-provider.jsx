@@ -1,11 +1,23 @@
+import { useMemo } from 'react'
 import PropTypes from 'prop-types'
+import { useSettingContext } from 'component/setting'
+import { CssBaseline } from '@mui/material'
+import {
+  createTheme,
+  StyledEngineProvider,
+  ThemeProvider as MUIThemeProvider,
+} from '@mui/material/styles'
+import palette from './palette'
+import shadows from './shadows'
+import customShadow from './custom-shadow'
+import typography from './typography'
 
 ThemeProvider.propTypes = {
   children: PropTypes.node,
 }
 
 function ThemeProvider({ children }) {
-  const { themeMode, themeDirection } = useSettingsContext()
+  const { themeMode, themeDirection } = useSettingContext()
 
   const themeOptions = useMemo(
     () => ({
@@ -14,7 +26,7 @@ function ThemeProvider({ children }) {
       shape: { borderRadius: 8 },
       direction: themeDirection,
       shadows: shadows(themeMode),
-      customShadows: customShadows(themeMode),
+      customShadow: customShadow(themeMode),
     }),
     [themeDirection, themeMode]
   )

@@ -1,8 +1,6 @@
 // theme
 import palette from './palette'
 
-// ----------------------------------------------------------------------
-
 const themePalette = palette('light')
 
 export const presets = [
