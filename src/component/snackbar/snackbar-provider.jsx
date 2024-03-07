@@ -3,7 +3,7 @@ import { useRef } from 'react'
 import { SnackbarProvider as NotistackProvider } from 'notistack'
 import { alpha } from '@mui/material/styles'
 import { Box, Collapse, IconButton } from '@mui/material'
-import { useSettingsContext } from 'component/setting'
+import { useSettingContext } from 'component/setting'
 import { Iconify } from 'component/iconify'
 import StyledNotistack from './style'
 
@@ -12,7 +12,7 @@ SnackbarProvider.propTypes = {
 }
 
 export default function SnackbarProvider({ children }) {
-  const { themeDirection } = useSettingsContext()
+  const { themeDirection } = useSettingContext()
 
   const isRTL = themeDirection === 'rtl'
 
@@ -53,8 +53,6 @@ export default function SnackbarProvider({ children }) {
     </>
   )
 }
-
-// ----------------------------------------------------------------------
 
 SnackbarIcon.propTypes = {
   icon: PropTypes.string,

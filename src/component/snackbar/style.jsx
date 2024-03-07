@@ -1,13 +1,11 @@
 // @mui
-import { useTheme } from '@mui/material/styles';
-import { GlobalStyles } from '@mui/material';
-
-// ----------------------------------------------------------------------
+import { useTheme } from '@mui/material/styles'
+import { GlobalStyles } from '@mui/material'
 
 export default function StyledNotistack() {
-  const theme = useTheme();
+  const theme = useTheme()
 
-  const isLight = theme.palette.mode === 'light';
+  const isLight = theme.palette.mode === 'light'
 
   const inputGlobalStyles = (
     <GlobalStyles
@@ -17,7 +15,7 @@ export default function StyledNotistack() {
             width: '100%',
             padding: theme.spacing(1),
             margin: theme.spacing(0.25, 0),
-            boxShadow: theme.customShadows.z8,
+            boxShadow: theme.customShadow.z8,
             borderRadius: theme.shape.borderRadius,
             color: isLight ? theme.palette.common.white : theme.palette.grey[800],
             backgroundColor: isLight ? theme.palette.grey[900] : theme.palette.common.white,
@@ -46,7 +44,7 @@ export default function StyledNotistack() {
         },
       }}
     />
-  );
+  )
 
-  return inputGlobalStyles;
+  return inputGlobalStyles
 }
