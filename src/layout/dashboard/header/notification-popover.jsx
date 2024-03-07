@@ -28,16 +28,16 @@ import { PATH_MACHINE } from 'route/path'
 function NotificationsPopover() {
   const userId = localStorage.getItem('userId')
   const [openPopover, setOpenPopover] = useState(null)
-  const { notifications, sendJsonMessage } = useWebSocketContext()
+  // const { notifications, sendJsonMessage } = useWebSocketContext()
   const [totalUnRead, setTotalUnRead] = useState(0)
   const navigate = useNavigate()
 
-  useEffect(() => {
-    setTotalUnRead(
-      notifications &&
-        notifications.filter((item) => item?.readBy?.includes(userId) === false).length
-    )
-  }, [notifications, userId])
+  // useEffect(() => {
+  //   setTotalUnRead(
+  //     notifications &&
+  //       notifications.filter((item) => item?.readBy?.includes(userId) === false).length
+  //   )
+  // }, [notifications, userId])
 
   const handleOpenPopover = (event) => {
     setOpenPopover(event.currentTarget)
@@ -47,17 +47,17 @@ function NotificationsPopover() {
     setOpenPopover(null)
   }
 
-  const handleMarkAs = (notification) => {
-    if (notification?._id) {
-      // setOpenPopover(null);
-      sendJsonMessage({ eventName: 'markAs', _id: notification?._id, status: true })
-      navigate(
-        PATH_MACHINE.machines.settings.serviceRecordConfigs.view(notification?.extraInfo?._id)
-      )
-    } else {
-      sendJsonMessage({ eventName: 'markAs', status: true })
-    }
-  }
+  // const handleMarkAs = (notification) => {
+  //   if (notification?._id) {
+  //     // setOpenPopover(null);
+  //     sendJsonMessage({ eventName: 'markAs', _id: notification?._id, status: true })
+  //     navigate(
+  //       PATH_MACHINE.machines.settings.serviceRecordConfigs.view(notification?.extraInfo?._id)
+  //     )
+  //   } else {
+  //     sendJsonMessage({ eventName: 'markAs', status: true })
+  //   }
+  // }
 
   return (
     <>
@@ -88,6 +88,8 @@ function NotificationsPopover() {
             </Tooltip>
           )}
         </Box>
+        {/*
+        TODO: Implement notification list
         {notifications && notifications?.length > 0 && (
           <>
             <Divider sx={{ borderStyle: 'solid' }} />
@@ -105,7 +107,7 @@ function NotificationsPopover() {
             <Divider sx={{ borderStyle: 'solid' }} />
             {!notifications && 'Loading...' ? '' : <Box sx={{ p: 1 }}>{` `}</Box>}
           </>
-        )}
+        )} */}
       </MenuPopover>
     </>
   )

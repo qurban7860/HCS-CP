@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 import { NAV } from 'config'
 import { useAuthContext } from 'auth'
-import { CustomAvatar } from 'component/custom-avatar'
+import { CustomAvatar } from 'component/avatar'
 import { useSnackbar } from 'component/snackbar'
 import { MenuPopover } from 'component/menu-popover'
 import { IconButtonAnimate } from 'component/animate'
@@ -41,7 +41,7 @@ const SPACING = 2.5
 export default function AccountPopover() {
   const theme = useTheme()
   const navigate = useNavigate()
-  const { user, logout } = useAuthContext()
+  // const { user, logout } = useAuthContext()
   const email = localStorage.getItem('email')
   const displayName = localStorage.getItem('name')
   const { enqueueSnackbar } = useSnackbar()
@@ -53,7 +53,7 @@ export default function AccountPopover() {
     themeStretch,
     themeContrast,
     themeDirection,
-    themeColorPresets,
+    themeColorPreset,
     onResetSetting,
   } = useSettingContext()
 
@@ -97,7 +97,7 @@ export default function AccountPopover() {
     themeStretch !== themePreset.themeStretch ||
     themeContrast !== themePreset.themeContrast ||
     themeDirection !== themePreset.themeDirection ||
-    themeColorPresets !== themePreset.themeColorPresets
+    themeColorPreset !== themePreset.themeColorPreset
 
   return (
     <>
@@ -117,16 +117,18 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <CustomAvatar src={user?.photoURL} alt={user?.displayName} name={user?.displayName} />
+        {/* <CustomAvatar src={user?.photoURL} alt={user?.displayName} name={user?.displayName} /> */}
       </IconButtonAnimate>
 
       <MenuPopover open={openPopover} onClose={handleClosePopover} sx={{ width: 200, p: 0 }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {user?.displayName || displayName}
+            {/* {user?.displayName || displayName} */}
+            {displayName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {user?.login || email}
+            {/* {user?.login || email} */}
+            {'EMAIL'}
           </Typography>
         </Box>
         <Divider sx={{ borderStyle: 'solid' }} />
@@ -139,7 +141,7 @@ export default function AccountPopover() {
           <MenuItem
             onClick={() => {
               handleToggle()
-              SettingsDrawer()
+              // SettingsDrawer()
             }}
             onClose={handleClose}
           >
