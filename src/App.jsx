@@ -30,26 +30,28 @@ function App() {
     // <WebSocketProvider>
     //   <PersistGate loading={null} persistor={persistor}>
     // <LocalizationProvider dateAdapter={AdapterDateFns}>
-    <SettingProvider>
-      <BrowserRouter>
-        <MotionLazyContainer>
-          <ThemeProvider>
-            <ThemeSettings>
-              <ErrorBoundary fallback={<InternalServer />}>
-                <ScrollToTop />
-                <ThemeLocalization>
-                  <SnackbarProvider>
-                    {/* <StyledChart /> */}
-                    {/* <IdleManager /> */}
-                    <Router />
-                  </SnackbarProvider>
-                </ThemeLocalization>
-              </ErrorBoundary>
-            </ThemeSettings>
-          </ThemeProvider>
-        </MotionLazyContainer>
-      </BrowserRouter>
-    </SettingProvider>
+    <AuthProvider>
+      <SettingProvider>
+        <BrowserRouter>
+          <MotionLazyContainer>
+            <ThemeProvider>
+              <ThemeSettings>
+                <ErrorBoundary fallback={<InternalServer />}>
+                  <ScrollToTop />
+                  <ThemeLocalization>
+                    <SnackbarProvider>
+                      {/* <StyledChart /> */}
+                      {/* <IdleManager /> */}
+                      <Router />
+                    </SnackbarProvider>
+                  </ThemeLocalization>
+                </ErrorBoundary>
+              </ThemeSettings>
+            </ThemeProvider>
+          </MotionLazyContainer>
+        </BrowserRouter>
+      </SettingProvider>
+    </AuthProvider>
     // </LocalizationProvider>
     //   </PersistGate>
     // </WebSocketProvider>
