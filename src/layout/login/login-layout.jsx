@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { Typography, Stack, Grid } from '@mui/material'
 import { Logo } from 'component/logo'
-import { CONFIG } from 'global'
+import { GLOBAL } from 'global'
 import { StyledRoot, StyledContent } from './style'
 
 LoginLayout.propTypes = {
@@ -10,7 +10,7 @@ LoginLayout.propTypes = {
   illustration: PropTypes.string,
 }
 
-export default function LoginLayout({ children, illustration, title }) {
+function LoginLayout({ children, illustration, title }) {
   title = title || 'CLOUD SERVICES'
   return (
     <StyledRoot>
@@ -30,7 +30,7 @@ export default function LoginLayout({ children, illustration, title }) {
             </Stack>
             <Stack sx={{ alignItems: 'end' }}>
               <Typography variant="body2" sx={{ mb: 6, mt: -2 }}>
-                {CONFIG.Version}
+                {GLOBAL.Version}
               </Typography>
             </Stack>
           </Grid>
@@ -40,3 +40,5 @@ export default function LoginLayout({ children, illustration, title }) {
     </StyledRoot>
   )
 }
+
+export default LoginLayout
