@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import { Box } from '@mui/material'
-import useResponsive from 'hook'
+import { useResponsive } from 'hook'
 import { HEADER, NAV } from 'config'
-import { useSettingsContext } from 'component/setting'
+import { useSettingContext } from 'component/setting'
 
 const SPACING = 8
 
@@ -12,7 +12,7 @@ Main.propTypes = {
 }
 
 export default function Main({ children, sx, ...other }) {
-  const { themeLayout } = useSettingsContext()
+  const { themeLayout } = useSettingContext()
 
   const isNavHorizontal = themeLayout === 'horizontal'
 

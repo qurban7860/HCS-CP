@@ -2,18 +2,15 @@ import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Box } from '@mui/material'
 import { useResponsive } from 'hook'
-import { useSettingsContext } from 'component/setting'
-import { CONFIG } from 'global'
+import { useSettingContext } from 'component/setting'
+import { GLOBAL } from 'global'
 import Main from './main'
 import Header from './header'
 import NavMini from './nav/nav-mini'
-import NavVertical from './nav/nav-vertical'
 import NavHorizontal from './nav/nav-horizontal'
 
-// ----------------------------------------------------------------------
-
 export default function DashboardLayout() {
-  const { themeLayout } = useSettingsContext()
+  const { themeLayout } = useSettingContext()
   const isDesktop = useResponsive('up', 'lg')
   const [open, setOpen] = useState(false)
   const isNavHorizontal = themeLayout === 'horizontal'
@@ -28,7 +25,7 @@ export default function DashboardLayout() {
   }
 
   const renderNavVertical = <NavVertical openNav={open} onCloseNav={handleClose} />
-  const bgcolor = CONFIG.Background_Color
+  const bgcolor = GLOBAL.Background_Color
   if (isNavHorizontal) {
     return (
       <>
