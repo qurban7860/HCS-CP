@@ -1,5 +1,3 @@
-import mapboxgl from 'mapbox-gl'
-
-// @ts-ignore
-// eslint-disable-next-line
-mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default
+import * as workerURL from 'mapbox-gl/dist/mapbox-gl-csp-worker'
+const worker = new Worker(workerURL)
+mapboxgl.workerClass = worker
