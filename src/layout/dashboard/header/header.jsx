@@ -20,7 +20,6 @@ function Header({ onOpenNav }) {
   const theme = useTheme()
   const { themeLayout } = useSettingContext()
   const isNavHorizontal = themeLayout === 'horizontal'
-  const isNavMini = themeLayout === 'mini'
   const isDesktop = useResponsive('up', 'lg')
   const isOffset = useOffSetTop(HEADER.H_DASHBOARD_DESKTOP) && !isNavHorizontal
 
@@ -33,7 +32,9 @@ function Header({ onOpenNav }) {
 
   const renderContent = (
     <>
-      {isDesktop && isNavHorizontal && <Logo sx={{ mr: 2.5 }} />}
+      <Stack direction="row" justifyContent="flex-start">
+        {isDesktop && <Logo />}
+      </Stack>
       {!isDesktop && (
         <IconButton onClick={onOpenNav} sx={{ mr: 1, color: 'text.primary' }}>
           <Iconify icon="eva:menu-2-fill" />
@@ -43,8 +44,20 @@ function Header({ onOpenNav }) {
         flexGrow={1}
         direction="row"
         alignItems="center"
+        justifyContent="flex-start"
+        spacing={{ xs: 0.5, sm: 4 }}
+        ml={5}
+      >
+        <h4>Customer</h4>
+        <h4>Machine</h4>
+        <h4>Document</h4>
+      </Stack>
+      <Stack
+        flexGrow={1}
+        direction="row"
+        alignItems="center"
         justifyContent="flex-end"
-        spacing={{ xs: 0.5, sm: 1.5 }}
+        spacing={{ xs: 0.5, sm: 4 }}
       >
         <NotificationsPopover />
         <AccountPopover />
@@ -61,30 +74,30 @@ function Header({ onOpenNav }) {
         top: 0,
         zIndex: theme.zIndex.appBar + 1,
         ...bgBlur({
-          color: '#fff',
+          color: '#D9D9D9',
         }),
         transition: theme.transitions.create(['height'], {
           duration: theme.transitions.duration.shorter,
         }),
         ...(isDesktop && {
-          width: `calc(100% - ${NAV.W_DASHBOARD + 1}px)`,
+          // width: `calc(100% - ${NAV.W_DASHBOARD + 1}px)`,
           height: HEADER.H_DASHBOARD_DESKTOP,
           ...(isOffset && {
             height: HEADER.H_DASHBOARD_DESKTOP_OFFSET,
           }),
-          ...(isNavHorizontal && {
-            width: 1,
-            bgcolor: 'background.default',
-            height: HEADER.H_DASHBOARD_DESKTOP_OFFSET,
-            borderBottom: `solid 1px ${theme.palette.divider}`,
-          }),
-          ...(isNavMini && {
-            width: `calc(100% - ${NAV.W_DASHBOARD_MINI + 1}px)`,
-          }),
+          // ...(isNavHorizontal && {
+          //   width: 1,
+          //   bgcolor: 'background.default',
+          //   height: HEADER.H_DASHBOARD_DESKTOP_OFFSET,
+          //   borderBottom: `solid 1px ${theme.palette.divider}`,
+          // }),
+          // ...(isNavMini && {
+          //   width: `calc(100% - ${NAV.W_DASHBOARD_MINI + 1}px)`,
+          // }),
         }),
       }}
     >
-      <Toolbar sx={{ height: 1, px: { lg: 5 }, color: 'text.primary', position: 'sticky' }}>
+      <Toolbar sx={{ height: 1, color: 'text.primary', position: 'sticky' }}>
         {renderContent}
       </Toolbar>
     </AppBar>
