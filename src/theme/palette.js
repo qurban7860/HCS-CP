@@ -1,6 +1,10 @@
 import { alpha } from '@mui/material/styles'
 
 // SETUP COLORS
+const BRAND = {
+  background: '#63738114',
+  title: '#FFF',
+}
 
 const GREY = {
   0: '#FFFFFF',
@@ -120,6 +124,7 @@ const COMMON = {
     hoverOpacity: 0.08,
     disabledOpacity: 0.48,
   },
+  background: BRAND.background,
 }
 
 export default function palette(themeMode) {

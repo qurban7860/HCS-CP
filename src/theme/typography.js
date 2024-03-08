@@ -20,7 +20,7 @@ export function responsiveFontSizes({ sm, md, lg }) {
   }
 }
 
-const FONT_PRIMARY = 'Yantramanav, Arimo, Calibri' // Official Howick Font
+const FONT_PRIMARY = 'Yantramanav, Arimo, Calibri'
 const FONT_SECONDARY = 'Arimo'
 
 const typography = {
@@ -29,6 +29,12 @@ const typography = {
   fontWeightRegular: 400,
   fontWeightMedium: 600,
   fontWeightBold: 700,
+  h0: {
+    fontWeight: 700,
+    lineHeight: 1.5,
+    fontSize: pxToRem(48),
+    ...responsiveFontSizes({ sm: 60, md: 72, lg: 120 }),
+  },
   h1: {
     fontWeight: 800,
     lineHeight: 80 / 64,
@@ -64,6 +70,12 @@ const typography = {
     lineHeight: 28 / 18,
     fontSize: pxToRem(17),
     ...responsiveFontSizes({ sm: 18, md: 18, lg: 18 }),
+  },
+  subtitle0: {
+    fontFamily: FONT_SECONDARY,
+    fontWeight: 600,
+    lineHeight: 1.5,
+    fontSize: pxToRem(24),
   },
   subtitle1: {
     fontFamily: FONT_SECONDARY,

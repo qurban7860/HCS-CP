@@ -34,7 +34,6 @@ function ThemeProvider({ children }) {
   )
 
   const theme = createTheme(themeOptions)
-
   theme.components = ComponentOverride(theme)
 
   return (
