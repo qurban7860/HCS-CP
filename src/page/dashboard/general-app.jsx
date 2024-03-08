@@ -20,7 +20,7 @@ import { Welcome } from 'component/widget'
 //   getMachinesByCountry,
 //   getMachinesByModel,
 //   getMachinesByYear,
-//   setMachineCategory,
+//   setMachineCategory,H
 //   setMachineCountry,
 //   setMachineModel,
 //   setMachineYear,
@@ -50,12 +50,17 @@ function GeneralAppPage() {
       <Grid container>
         <Grid container spacing={3} mt={2}>
           <Grid item xs={12}>
-            <Welcome />
+            <Welcome
+              title="Customer Portal"
+              description="A customer portal website enabling secure login, machine management, and support ticket submission."
+            />
           </Grid>
         </Grid>
       </Grid>
     </StyledContainer>
   )
 }
+
+// A customer portal website that allows users to securely log in, view and manage their machines, and conveniently submit support tickets for any issues or inquiries they may have, providing a streamlined and efficient way to access and interact with the company's services.
 
 export default GeneralAppPage
