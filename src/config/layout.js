@@ -7,17 +7,21 @@ export const HEADER = {
 
 export const NAV = {
   W_BASE: 260,
-  W_DASHBOARD: 280,
+  W_DASHBOARD: 300,
   W_DASHBOARD_MINI: 88,
 
   H_DASHBOARD_ITEM: 48,
   H_DASHBOARD_ITEM_SUB: 36,
 
-  H_DASHBOARD_ITEM_HORIZONTAL: 32,
+  H_DASHBOARD_ITEM_HORIZONTAL: 25,
 }
 
 export const ICON = {
   NAV_ITEM: 24,
   NAV_ITEM_HORIZONTAL: 22,
   NAV_ITEM_MINI: 22,
+}
+
+export const BRAND = {
+  NAV_ICON: 40,
 }
