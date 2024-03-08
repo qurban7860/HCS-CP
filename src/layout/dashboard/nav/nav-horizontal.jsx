@@ -4,8 +4,6 @@ import { useTheme } from '@mui/material/styles'
 import { AppBar, Box, Toolbar } from '@mui/material'
 import { HEADER } from 'config'
 import { bgBlur } from 'theme/style'
-// import { NavSectionHorizontal } from 'component/nav-section'
-// import NavigationConfig from './nav-config'
 
 function NavHorizontal() {
   const theme = useTheme()
@@ -16,18 +14,8 @@ function NavHorizontal() {
       color="transparent"
       sx={{
         boxShadow: 0,
-        top: HEADER.H_DASHBOARD_DESKTOP_OFFSET,
       }}
     >
-      <Toolbar
-        sx={{
-          ...bgBlur({
-            color: theme.palette.background.default,
-          }),
-        }}
-      >
-        {/* <NavSectionHorizontal data={navConfig} /> */}
-      </Toolbar>
       <Shadow />
     </AppBar>
   )

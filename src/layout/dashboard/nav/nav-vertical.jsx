@@ -7,7 +7,6 @@ import { GLOBAL, NAV } from 'config'
 import { Logo } from 'component/logo'
 import { Scrollbar } from 'component/scrollbar'
 import { NavSectionVertical } from 'component/nav-section'
-// import NavigationConfig from './nav-config'
 import NavDocs from './nav-doc'
 // import NavAccount from './nav-account'
 import NavToggleButton from './nav-toggle-button'
@@ -81,7 +80,6 @@ function NavVertical({ openNav, onCloseNav }) {
       </Stack>
       {/* <NavSectionVertical sx={{ mt: '-50px' }} data={navConfig} /> */}
       <Box sx={{ flexGrow: 1 }} />
-      <NavDocs />
     </Scrollbar>
   )
   return (
