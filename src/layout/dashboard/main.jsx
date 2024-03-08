@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import { Box } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { useResponsive } from 'hook'
 import { HEADER, NAV } from 'config'
 import { useSettingContext } from 'component/setting'
@@ -13,11 +14,10 @@ Main.propTypes = {
 
 export default function Main({ children, sx, ...other }) {
   const { themeLayout } = useSettingContext()
+  const theme = useTheme()
 
   const isNavHorizontal = themeLayout === 'horizontal'
-
   const isNavMini = themeLayout === 'mini'
-
   const isDesktop = useResponsive('up', 'lg')
 
   if (isNavHorizontal) {

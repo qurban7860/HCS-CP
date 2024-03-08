@@ -15,7 +15,6 @@ function DashboardLayout() {
   const isDesktop = useResponsive('up', 'lg')
   const [open, setOpen] = useState(false)
   const isNavHorizontal = themeLayout === 'horizontal'
-  const isNavMini = themeLayout === 'mini'
 
   const handleOpen = () => {
     setOpen(true)
@@ -25,36 +24,16 @@ function DashboardLayout() {
     setOpen(false)
   }
 
-  const renderNavVertical = <NavVertical openNav={open} onCloseNav={handleClose} />
+  const renderNavVertical = <NavHorizontal openNav={open} onCloseNav={handleClose} />
   const bgcolor = GLOBAL.VERSION_COLOR
   if (isNavHorizontal) {
     return (
       <>
-        <Header onOpenNav={handleOpen} sx={{ backgroundColor: bgcolor }} />
-        {isDesktop ? <NavHorizontal /> : renderNavVertical}
+        <Header onOpenNav={handleOpen} />
+        <NavHorizontal />
         <Main>
           <Outlet />
         </Main>
-      </>
-    )
-  }
-
-  if (isNavMini) {
-    return (
-      <>
-        <Header onOpenNav={handleOpen} sx={{ backgroundColor: bgcolor }} />
-        <Box
-          sx={{
-            display: { lg: 'flex' },
-            minHeight: { lg: 1 },
-          }}
-        >
-          {isDesktop ? <NavMini /> : renderNavVertical}
-
-          <Main>
-            <Outlet />
-          </Main>
-        </Box>
       </>
     )
   }
@@ -65,10 +44,10 @@ function DashboardLayout() {
       <Box
         sx={{
           display: { lg: 'flex' },
-          minHeight: { lg: 1 },
+          minHeight: { sm: 1 },
         }}
       >
-        {renderNavVertical}
+        <NavHorizontal />
 
         <Main>
           <Outlet />
