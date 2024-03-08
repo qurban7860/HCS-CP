@@ -15,6 +15,14 @@ const StyledRoot = styled('div')(({ theme }) => ({
   },
 }))
 
+const StyledTitle = styled(Typography)(({ theme }) => {
+  return {
+    color: theme.palette.primary.darker,
+    fontWeight: theme.typography.fontWeightBold,
+    fontSize: '3rem',
+  }
+})
+
 Welcome.propTypes = {
   img: PropTypes.node,
   action: PropTypes.node,
@@ -33,10 +41,10 @@ function Welcome({ title, description, action, img, ...other }) {
           mt: { xs: 0, md: 5 },
         }}
       >
-        <Typography variant="h1">{title}</Typography>
-        <Typography variant="body" sx={{ opacity: 0.8 }}>
-          {description}
-        </Typography>
+        <StyledTitle variant="h0" fontWeight="bold">
+          {title}
+        </StyledTitle>
+        <Typography variant="subtitle0">{description}</Typography>
         {action && action}
       </Stack>
       {img && img}
