@@ -60,7 +60,6 @@ function ComponentOverride(theme) {
     Button(theme),
     Rating(theme),
     Dialog(theme),
-    // Avatar(theme),
     Slider(theme),
     Drawer(theme),
     Stepper(theme),
