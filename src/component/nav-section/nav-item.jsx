@@ -2,6 +2,7 @@ import { forwardRef } from 'react'
 import PropTypes from 'prop-types'
 import { Link as RouterLink } from 'react-router-dom'
 import { Box, Tooltip, ListItemText, Link } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { useLocale } from 'locale'
 import { RoleBasedGuard } from 'auth'
 import { Iconify } from 'component/iconify'
@@ -9,7 +10,7 @@ import { StyledItem, StyledIcon } from './style'
 
 const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...other }, ref) => {
   const { translate } = useLocale()
-
+  const theme = useTheme()
   const { title, path, icon, info, children, disabled, caption, roles } = item
 
   const subItem = depth !== 1
@@ -23,7 +24,8 @@ const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...othe
         primaryTypographyProps={{
           noWrap: true,
           component: 'span',
-          variant: active ? 'subtitle2' : 'body2',
+          variant: active ? 'subtitle2' : 'body1',
+          color: theme.palette.text.primary,
         }}
       />
 
