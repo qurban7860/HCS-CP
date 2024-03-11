@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-// @mui
 import { Stack, Fade, Portal } from '@mui/material'
 import { useActiveLink } from 'hook'
 import { NavItem, NavItemDashboard } from './nav-item'
@@ -14,18 +13,14 @@ NavList.propTypes = {
 
 export default function NavList({ item, isOffset }) {
   const { pathname } = useLocation()
-
   const [openMenu, setOpenMenu] = useState(false)
-
   const { path, children } = item
-
   const { active, isExternalLink } = useActiveLink(path, false)
 
   useEffect(() => {
     if (openMenu) {
       handleCloseMenu()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
 
   const handleOpenMenu = () => {
