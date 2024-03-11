@@ -1,17 +1,18 @@
 import PropTypes from 'prop-types'
 import { useEffect } from 'react'
 import { useTheme } from '@mui/material/styles'
-import { Stack, AppBar, Toolbar, IconButton } from '@mui/material'
+import { Stack, AppBar, Toolbar, IconButton, Badge, Typography } from '@mui/material'
 import { useOffSetTop, useResponsive } from 'hook'
 import { useWebSocketContext } from 'auth'
 import { bgBlur } from 'theme/style'
-import { HEADER, NAV } from 'config'
+import { HEADER, GLOBAL, NavConfiguration } from 'config'
 import { LogoIcon } from 'component/logo'
 import { Iconify } from 'component/iconify'
 import { useSettingContext } from 'component/setting'
-import AccountPopover from './account-popover'
-import NotificationsPopover from './notification-popover'
 import { NavSection } from 'component/nav-section'
+import AccountPopover from './account-popover'
+import NotificationPopover from './notification-popover'
+import { KEY } from 'constant'
 
 Header.propTypes = {
   onOpenNav: PropTypes.func,
@@ -19,6 +20,7 @@ Header.propTypes = {
 
 function Header({ onOpenNav }) {
   const theme = useTheme()
+  const navConfig = NavConfiguration()
   const { themeLayout } = useSettingContext()
   const isNavHorizontal = themeLayout === 'horizontal'
   const isDesktop = useResponsive('up', 'lg')
@@ -34,7 +36,26 @@ function Header({ onOpenNav }) {
   const renderContent = (
     <>
       <Stack direction="row" justifyContent="flex-start">
-        {isDesktop && <LogoIcon />}
+        {isDesktop && (
+          <Badge
+            overlap="circular"
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            color="primary"
+            variant="dot"
+            badgeContent={GLOBAL.VERSION}
+            onMouseEnter={() => <Typography variant="caption">{GLOBAL.VERSION}</Typography>}
+            sx={{
+              '.MuiBadge-dot': {
+                backgroundColor:
+                  GLOBAL.ENV === KEY.DEV || GLOBAL.ENV === KEY.DEVELOPMENT
+                    ? GLOBAL.DEV_COLOR
+                    : theme.palette.error.main,
+              },
+            }}
+          >
+            <LogoIcon />
+          </Badge>
+        )}
       </Stack>
       {!isDesktop && (
         <IconButton onClick={onOpenNav} sx={{ mr: 1, color: 'text.primary' }}>
@@ -49,7 +70,7 @@ function Header({ onOpenNav }) {
         spacing={{ xs: 0.5, sm: 4 }}
         ml={5}
       >
-        <NavSection />
+        <NavSection data={navConfig} />
       </Stack>
       <Stack
         flexGrow={1}
@@ -58,7 +79,7 @@ function Header({ onOpenNav }) {
         justifyContent="flex-end"
         spacing={{ xs: 0.5, sm: 4 }}
       >
-        <NotificationsPopover />
+        <NotificationPopover />
         <AccountPopover />
       </Stack>
     </>
@@ -73,7 +94,7 @@ function Header({ onOpenNav }) {
         top: 0,
         zIndex: theme.zIndex.appBar + 1,
         ...bgBlur({
-          color: '#D9D9D9',
+          color: theme.palette.background.default,
         }),
         transition: theme.transitions.create(['height'], {
           duration: theme.transitions.duration.shorter,
@@ -84,15 +105,6 @@ function Header({ onOpenNav }) {
           ...(isOffset && {
             height: HEADER.H_DASHBOARD_DESKTOP_OFFSET,
           }),
-          // ...(isNavHorizontal && {
-          //   width: 1,
-          //   bgcolor: 'background.default',
-          //   height: HEADER.H_DASHBOARD_DESKTOP_OFFSET,
-          //   borderBottom: `solid 1px ${theme.palette.divider}`,
-          // }),
-          // ...(isNavMini && {
-          //   width: `calc(100% - ${NAV.W_DASHBOARD_MINI + 1}px)`,
-          // }),
         }),
       }}
     >
