@@ -6,5 +6,4 @@ export {
   hideScrollbarY,
   hideScrollbarX,
 } from './css-style'
-
 export * from './default-style'
