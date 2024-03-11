@@ -38,7 +38,7 @@ function NavSection({ data = _mockData, sx, ...other }) {
       }}
       {...other}
     >
-      {_mockData.map((group) => (
+      {data.map((group) => (
         <Items key={group.subheader} items={group.items} />
       ))}
     </Stack>
