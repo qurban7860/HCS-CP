@@ -35,6 +35,7 @@ import { Iconify } from 'component/iconify'
 import { Scrollbar } from 'component/scrollbar'
 import { TITLE } from 'constant'
 import { OPTION } from './util'
+import { mockUser } from '_mock'
 
 const SPACING = 2.5
 
@@ -117,7 +118,11 @@ export default function AccountPopover() {
           }),
         }}
       >
-        {/* <CustomAvatar src={user?.photoURL} alt={user?.displayName} name={user?.displayName} /> */}
+        <CustomAvatar
+          src={mockUser[0]?.photoURL}
+          alt={mockUser[0]?.displayName}
+          name={mockUser[0]?.displayName}
+        />
       </IconButtonAnimate>
 
       <MenuPopover open={openPopover} onClose={handleClosePopover} sx={{ width: 200, p: 0 }}>
