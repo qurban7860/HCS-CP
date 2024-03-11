@@ -6,14 +6,14 @@ import { useSettingContext } from 'component/setting'
 import { GLOBAL } from 'global'
 import Main from './main'
 import Header from './header'
-import NavMini from './nav/nav-mini'
-import NavHorizontal from './nav/nav-horizontal'
-import NavVertical from './nav/nav-vertical'
+import { Navbar } from './nav'
 
 function DashboardLayout() {
   const { themeLayout } = useSettingContext()
   const isDesktop = useResponsive('up', 'lg')
   const [open, setOpen] = useState(false)
+
+  // NOTE: keep it implemented like this for now, just in case we implement layout switching
   const isNavHorizontal = themeLayout === 'horizontal'
 
   const handleOpen = () => {
@@ -24,13 +24,13 @@ function DashboardLayout() {
     setOpen(false)
   }
 
-  const renderNavVertical = <NavHorizontal openNav={open} onCloseNav={handleClose} />
+  const renderNavVertical = <Navbar openNav={open} onCloseNav={handleClose} />
   const bgcolor = GLOBAL.VERSION_COLOR
   if (isNavHorizontal) {
     return (
       <>
         <Header onOpenNav={handleOpen} />
-        <NavHorizontal />
+        <Navbar />
         <Main>
           <Outlet />
         </Main>
@@ -47,8 +47,7 @@ function DashboardLayout() {
           minHeight: { sm: 1 },
         }}
       >
-        <NavHorizontal />
-
+        <Navbar />
         <Main>
           <Outlet />
         </Main>
