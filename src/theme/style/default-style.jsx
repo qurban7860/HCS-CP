@@ -1,9 +1,30 @@
 import { styled, alpha } from '@mui/material/styles'
 import { Popover, Stack, Card, Chip, Container, TableRow } from '@mui/material'
+import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { bgBlur } from 'theme/style'
+import { RADIUS } from 'config'
 
 // :components ____________________________________________________________________________________________
+
+export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.dark,
+  color: 'white',
+  '&:hover': { backgroundColor: theme.palette.secondary.main },
+}))
+
+export const StyledLoadingScreenDiv = styled('div')(({ theme }) => ({
+  right: 0,
+  bottom: 0,
+  zIndex: 9998,
+  width: '100%',
+  height: '100%',
+  position: 'fixed',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: theme.palette.background.default,
+}))
 
 export const StyledRoot = styled('div')(({ theme }) => ({
   '&:before': {
