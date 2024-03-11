@@ -11,7 +11,7 @@ LoginLayout.propTypes = {
 }
 
 function LoginLayout({ children, illustration, title }) {
-  title = title || 'CLOUD SERVICES'
+  title = title || GLOBAL.APP_BRANCH
   return (
     <StyledRoot>
       <StyledContent>
@@ -29,8 +29,8 @@ function LoginLayout({ children, illustration, title }) {
               </Typography>
             </Stack>
             <Stack sx={{ alignItems: 'end' }}>
-              <Typography variant="body2" sx={{ mb: 6, mt: -2 }}>
-                {GLOBAL.VERSION}
+              <Typography variant="body2" sx={{ mb: 4, mt: -1 }}>
+                {GLOBAL.ENV} {GLOBAL.VERSION}
               </Typography>
             </Stack>
           </Grid>
