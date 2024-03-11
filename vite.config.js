@@ -22,6 +22,7 @@ export default defineConfig({
       hook: path.resolve(__dirname, 'src', 'hook'),
       locale: path.resolve(__dirname, 'src', 'locale'),
       layout: path.resolve(__dirname, 'src', 'layout'),
+      _mock: path.resolve(__dirname, 'src', '_mock'),
       route: path.resolve(__dirname, 'src', 'route'),
       theme: path.resolve(__dirname, 'src', 'theme'),
       util: path.resolve(__dirname, 'src', 'util'),
