@@ -4,14 +4,10 @@ import { Box, Link } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
 import { ASSET, BRAND } from 'config'
 
-const Logo = forwardRef(
-  ({ width = BRAND.NAV_ICON, disabledLink = false, sx, src = ASSET.LOGO, ...other }, ref) => {
+const LogoIcon = forwardRef(
+  ({ width = BRAND.NAV_ICON, disabledLink = false, sx, src = ASSET.ICON, ...other }, ref) => {
     const logo = (
-      <Box
-        component="img"
-        src={src}
-        sx={{ width, height: BRAND.AUTH_HEIGHT_LOGO, cursor: 'pointer', ...sx }}
-      />
+      <Box component="img" src={src} sx={{ width, height: 'auto', cursor: 'pointer', ...sx }} />
     )
     if (disabledLink) {
       return logo
@@ -24,11 +20,11 @@ const Logo = forwardRef(
   }
 )
 
-Logo.propTypes = {
+LogoIcon.propTypes = {
   sx: PropTypes.object,
   disabledLink: PropTypes.bool,
   src: PropTypes.string,
   width: PropTypes.number,
 }
 
-export default Logo
+export default LogoIcon
