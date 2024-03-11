@@ -5,32 +5,16 @@ import { Box, LinearProgress } from '@mui/material'
 import { useResponsive } from 'hook'
 import { NAV } from 'config'
 import { useAuthContext } from 'auth'
-import { Logo } from 'component/logo'
+import { LogoIcon } from 'component/logo'
+import { StyledLoadingScreenDiv } from 'theme/style'
 import ProgressBar from '../progress-bar'
 import { useSettingContext } from 'component/setting'
 
-const StyledRoot = styled('div')(({ theme }) => ({
-  right: 0,
-  bottom: 0,
-  zIndex: 9998,
-  width: '100%',
-  height: '100%',
-  position: 'fixed',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  backgroundColor: theme.palette.background.default,
-}))
-
 function LoadingScreen() {
   const { pathname } = useLocation()
-
   const isDesktop = useResponsive('up', 'lg')
-
   const { isInitialized } = useAuthContext()
-
   const { themeLayout } = useSettingContext()
-
   const isDashboard = isInitialized && pathname.includes('/dashboard') && isDesktop
 
   const size =
@@ -41,7 +25,7 @@ function LoadingScreen() {
   return (
     <>
       <ProgressBar />
-      <StyledRoot
+      <StyledLoadingScreenDiv
         sx={{
           ...// isDashboard &&
           (isDesktop && {
@@ -69,7 +53,7 @@ function LoadingScreen() {
                 repeat: Infinity,
               }}
             >
-              <Logo disabledLink sx={{ width: 64, height: 64 }} />
+              <LogoIcon disabledLink sx={{ width: 64, height: 64 }} />
             </m.div>
 
             <Box
@@ -111,7 +95,7 @@ function LoadingScreen() {
             />
           </>
         )}
-      </StyledRoot>
+      </StyledLoadingScreenDiv>
     </>
   )
 }
