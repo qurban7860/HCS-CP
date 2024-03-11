@@ -1,1 +1,1 @@
-export { default as NavigationConfig } from './nav-config'
+export { default as Navbar } from './navbar'
