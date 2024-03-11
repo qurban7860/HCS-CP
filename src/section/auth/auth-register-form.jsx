@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Stack, IconButton, InputAdornment, Alert } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
+import { RADIUS } from 'config'
 import { useAuthContext } from 'auth'
 import { Iconify } from 'component/iconify'
 import FormProvider, { RHFTextField } from 'component/hook-form'
@@ -58,7 +59,6 @@ function AuthRegisterForm() {
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={2.5}>
         {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
-
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
           <RHFTextField name="firstName" label="First name" />
           <RHFTextField name="lastName" label="Last name" />
@@ -89,12 +89,13 @@ function AuthRegisterForm() {
           variant="contained"
           loading={isSubmitting || isSubmitSuccessful}
           sx={{
-            bgcolor: 'primary.main',
+            bgcolor: 'primary.dark',
             color: (theme) => (theme.palette.mode === 'light' ? 'common.white' : 'grey.800'),
             '&:hover': {
               bgcolor: 'secondary.main',
               color: (theme) => (theme.palette.mode === 'light' ? 'common.white' : 'grey.800'),
             },
+            ...RADIUS.BORDER,
           }}
         >
           Create account
