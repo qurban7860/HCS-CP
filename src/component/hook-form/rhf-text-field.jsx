@@ -23,6 +23,25 @@ export default function RHFTextField({ name, helperText, Error, ...other }) {
           error={!!error || !!Error}
           helperText={error ? error?.message : helperText}
           {...other}
+          sx={{
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'grey.600',
+              borderRadius: 0.4,
+              color: 'grey.500',
+            },
+            '& .MuiInputBase-root': {
+              '&:hover': {
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#000',
+                },
+              },
+              '&.Mui-focused': {
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'primary.main',
+                },
+              },
+            },
+          }}
         />
       )}
     />
