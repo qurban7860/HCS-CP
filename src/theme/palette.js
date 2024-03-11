@@ -11,7 +11,7 @@ const GREY = {
   100: '#F4F4F4',
   200: '#F5F5F5',
   300: '#DFDFDF',
-  400: '#DFE3E8',
+  400: '#D4D4D4',
   500: '#919EAB',
   600: '#637381',
   700: '#454F5B',
@@ -73,12 +73,6 @@ const ERROR = {
   contrastText: '#fff',
 }
 
-// const HOWICKGRAY = {
-//   light: '#F4F4F4',
-//   main: '#DFDFDF',
-//   dark: '#DFE3E8',
-// };
-
 const HOWICKBLUE = {
   light: '#0084C9',
   main: '#0940B2',
@@ -136,7 +130,7 @@ export default function palette(themeMode) {
       secondary: GREY[600],
       disabled: GREY[500],
     },
-    background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
+    background: { paper: GREY[200], default: GREY[300], neutral: GREY[500] },
     action: {
       ...COMMON.action,
       active: GREY[600],
