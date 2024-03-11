@@ -12,16 +12,18 @@ import {
   Checkbox,
   FormControlLabel,
 } from '@mui/material'
-import { LoadingButton } from '@mui/lab'
+import { StyledLoadingButton } from 'theme/style'
 import { PATH_AUTH } from 'route/path'
 import { useAuthContext } from 'auth'
 import { Iconify } from 'component/iconify'
 import FormProvider, { RHFTextField } from 'component/hook-form'
+import { RADIUS } from 'config'
+import { BUTTON, REGEX } from 'constant'
 
 function AuthLoginForm() {
   const navigate = useNavigate()
   const { login } = useAuthContext()
-  const regEx = /^[4][0-9][0-9]$/
+  const regEx = new RegExp(REGEX.ERROR_CODE)
   const [showPassword, setShowPassword] = useState(false)
   const [uemail, setEmail] = useState('')
   const [upassword, setPassword] = useState('')
@@ -148,21 +150,19 @@ function AuthLoginForm() {
             variant="soft"
           />
         }
-        label="Remember Me"
+        label={BUTTON.REMEMBER_ME}
       />
-
-      {/* <RHFCheckbox name="remember"  label="Remember Me" variant="soft" value={uremember} Checked/> */}
-      <LoadingButton
+      <StyledLoadingButton
         fullWidth
         color="inherit"
         size="large"
         type="submit"
         variant="contained"
         loading={isSubmitSuccessful || isSubmitting}
-        sx={{ bgcolor: '#10079F', color: 'white', '&:hover': { bgcolor: '#FFA200' } }}
+        sx={RADIUS.BORDER}
       >
-        Login
-      </LoadingButton>
+        {BUTTON.LOGIN}
+      </StyledLoadingButton>
       <Stack alignItems="flex-end" sx={{ my: 2 }}>
         <Link
           component={RouterLink}
@@ -171,7 +171,7 @@ function AuthLoginForm() {
           color="inherit"
           underline="always"
         >
-          Forgot password?
+          {BUTTON.FORGOT_PASSWORD}
         </Link>
       </Stack>
     </FormProvider>
