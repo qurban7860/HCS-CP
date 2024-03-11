@@ -42,7 +42,7 @@ export default function Router() {
       children: [
         {
           path: 'login',
-          element: <GuestGuard>{/* <LoginPage /> */}</GuestGuard>,
+          element: <GuestGuard>{<LoginPage />}</GuestGuard>,
         },
         {
           path: 'authenticate',
