@@ -1,3 +1,9 @@
+/**
+ * Layout configuration for the application
+ *
+ * Dimensions are in pixels
+ *
+ */
 export const HEADER = {
   H_MOBILE: 64,
   H_MAIN_DESKTOP: 88,
@@ -20,8 +26,16 @@ export const ICON = {
   NAV_ITEM: 24,
   NAV_ITEM_HORIZONTAL: 22,
   NAV_ITEM_MINI: 22,
+  DEFAULT_SIZE: 30,
 }
 
 export const BRAND = {
   NAV_ICON: 40,
+  AUTH_HEIGHT_LOGO: 120,
+}
+
+export const RADIUS = {
+  BORDER: {
+    borderRadius: 0.4,
+  },
 }
