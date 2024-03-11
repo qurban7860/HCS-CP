@@ -6,11 +6,12 @@ import { useOffSetTop, useResponsive } from 'hook'
 import { useWebSocketContext } from 'auth'
 import { bgBlur } from 'theme/style'
 import { HEADER, NAV } from 'config'
-import { Logo } from 'component/logo'
+import { LogoIcon } from 'component/logo'
 import { Iconify } from 'component/iconify'
 import { useSettingContext } from 'component/setting'
 import AccountPopover from './account-popover'
 import NotificationsPopover from './notification-popover'
+import { NavSection } from 'component/nav-section'
 
 Header.propTypes = {
   onOpenNav: PropTypes.func,
@@ -33,7 +34,7 @@ function Header({ onOpenNav }) {
   const renderContent = (
     <>
       <Stack direction="row" justifyContent="flex-start">
-        {isDesktop && <Logo />}
+        {isDesktop && <LogoIcon />}
       </Stack>
       {!isDesktop && (
         <IconButton onClick={onOpenNav} sx={{ mr: 1, color: 'text.primary' }}>
@@ -48,9 +49,7 @@ function Header({ onOpenNav }) {
         spacing={{ xs: 0.5, sm: 4 }}
         ml={5}
       >
-        <h4>Customer</h4>
-        <h4>Machine</h4>
-        <h4>Document</h4>
+        <NavSection />
       </Stack>
       <Stack
         flexGrow={1}
