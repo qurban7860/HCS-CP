@@ -7,6 +7,7 @@ function GlobalStyle() {
       styles={{
         '*': {
           boxSizing: 'border-box',
+          borderRadius: 0.4,
         },
         html: {
           margin: 0,
