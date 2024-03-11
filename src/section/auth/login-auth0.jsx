@@ -4,7 +4,6 @@ import { LoginLayout } from 'layout/login'
 
 function LoginAuth0() {
   const { method } = useAuthContext()
-
   // NOTE: Turn off comments below to enable Auth0.
   // const { login } = useAuthContext();
 
@@ -20,7 +19,7 @@ function LoginAuth0() {
   return (
     <LoginLayout>
       <Stack spacing={2} sx={{ mb: 5, position: 'relative' }}>
-        <Typography variant="h4">Sign in to Minimal</Typography>
+        <Typography variant="h4">Sign in to Howick</Typography>
 
         <Tooltip title={method} placement="left">
           <Box
@@ -33,8 +32,7 @@ function LoginAuth0() {
       </Stack>
 
       <Alert severity="info" sx={{ mb: 3 }}>
-        Use email : <strong>naveed@terminustech.co.nz</strong> / password :
-        <strong> qwer1234</strong>
+        <strong>howick cloud services</strong>
       </Alert>
 
       <Button
