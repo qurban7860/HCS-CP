@@ -25,7 +25,7 @@ import { IconButtonAnimate } from 'component/animate'
 import { ICON } from 'constant/icon'
 import { PATH_MACHINE } from 'route/path'
 
-function NotificationsPopover() {
+function NotificationPopover() {
   const userId = localStorage.getItem('userId')
   const [openPopover, setOpenPopover] = useState(null)
   // const { notifications, sendJsonMessage } = useWebSocketContext()
@@ -201,4 +201,4 @@ function renderNotification(notification) {
   return rendered
 }
 
-export default memo(NotificationsPopover)
+export default memo(NotificationPopover)
