@@ -1,6 +1,5 @@
 import { alpha } from '@mui/material/styles'
 
-// SETUP COLORS
 const BRAND = {
   background: '#63738114',
   title: '#FFF',
