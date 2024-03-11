@@ -11,7 +11,7 @@ NavList.propTypes = {
   hasChild: PropTypes.bool,
 }
 
-export default function NavList({ data, depth, hasChild }) {
+function NavList({ data, depth, hasChild }) {
   const [open, setOpen] = useState(false)
   const navRef = useRef(null)
   const { pathname } = useLocation()
@@ -90,8 +90,6 @@ export default function NavList({ data, depth, hasChild }) {
   )
 }
 
-// ----------------------------------------------------------------------
-
 NavSubList.propTypes = {
   data: PropTypes.array,
   depth: PropTypes.number,
@@ -111,3 +109,5 @@ function NavSubList({ data, depth }) {
     </>
   )
 }
+
+export default NavList
