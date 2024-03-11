@@ -74,6 +74,9 @@ const BUTTON = {
   ADD_MACHINE_LOGS: 'Add Log',
 
   // auth
+  LOGIN: 'Login',
+  REMEMBER_ME: 'Remember Me',
+  FORGOT_PASSWORD: 'Forgot Password',
   UPDATEPASSWORD: 'Update Password',
   UPDATED: (param) => `${param} Updated`,
 }
