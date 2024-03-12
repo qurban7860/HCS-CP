@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
 import { forwardRef } from 'react'
-// @mui
 import { Box, Fab } from '@mui/material'
 
 const FabButtonAnimate = forwardRef(({ size = 'large', children, sx, sxWrap, ...other }, ref) => (
