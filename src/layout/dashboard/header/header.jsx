@@ -10,6 +10,7 @@ import { LogoIcon } from 'component/logo'
 import { Iconify } from 'component/iconify'
 import { useSettingContext } from 'component/setting'
 import { NavSection } from 'component/nav-section'
+import { Clock } from 'component/clock'
 import AccountPopover from './account-popover'
 import NotificationPopover from './notification-popover'
 import { KEY } from 'constant'
@@ -79,6 +80,7 @@ function Header({ onOpenNav }) {
         justifyContent="flex-end"
         spacing={{ xs: 0.5, sm: 4 }}
       >
+        <Clock />
         <NotificationPopover />
         <AccountPopover />
       </Stack>
