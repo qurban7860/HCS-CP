@@ -7,7 +7,7 @@ function _brand(image) {
 }
 
 function _sponsor(image) {
-  return `/asset/other/${image}`
+  return `/asset/brand/other/${image}`
 }
 
 const ASSET = {
@@ -18,10 +18,12 @@ const ASSET = {
   COMPANY_CFS: _sponsor('cfs.svg'),
   EVENT_STEEL_HORIZONS: _sponsor('steelhorizons.png'),
   BRAND_TIPABIN: _sponsor('tipabin.png'),
+  BRAND_TIPABIN_2: _sponsor('tipabin-2.svg'),
   BRAND_FRAMA: _sponsor('frama.svg'),
   BRAND_XCALIBR: _sponsor('xcalibr.png'),
   BRAND_XTENDA: _sponsor('xtenda.png'),
   BRAND_SPEEDFLOOR: _sponsor('speedfloor.png'),
+  NZ_MADE: _sponsor('nz-made.png'),
   ICON: _brand('icon.svg'),
   LOGO: '/asset/brand/logo.svg',
   OCTICON: (icon) => `/asset/octicon/${icon}.svg`,
