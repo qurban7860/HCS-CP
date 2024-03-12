@@ -3,6 +3,7 @@ import { PATH_DASHBOARD } from 'route/path'
 export const GLOBAL = {
   APP_TITLE: 'Howick Customer Portal',
   APP_BRANCH: 'CUSTOMER PORTAL',
+  APP_TAGLINE: 'Shaping the World of Construction',
   API_URL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
   APP_NAME: import.meta.env.VITE_NAME,
   ENV: import.meta.env.VITE_ENV,
