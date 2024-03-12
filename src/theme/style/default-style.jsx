@@ -4,6 +4,7 @@ import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { bgBlur } from 'theme/style'
 import { RADIUS, ASSET } from 'config'
+import { PATH_AUTH } from 'route/path'
 
 // :components ____________________________________________________________________________________________
 
@@ -166,7 +167,91 @@ export const StyledBoxFlex = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
 }))
+
+export const StyledBrandOverlayBox = styled(Box)(({ theme }) => ({
+  width: 100,
+  margin: theme.spacing(1),
+  marginRight: theme.spacing(1),
+  marginLeft: theme.spacing(1),
+  position: 'relative',
+  '&:after': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    mixBlendMode: 'color',
+  },
+}))
+
+export const StyledTopPolygonDiv = styled('div')(({ theme }) => ({
+  position: 'absolute',
+  top: -150,
+  right: 150,
+  width: 0,
+  height: 0,
+  borderTop: '200px solid transparent',
+  borderRight: `200px solid ${theme.palette.success.main}`,
+  borderBottom: '200px solid transparent',
+  zIndex: 1,
+  rotate: '-90deg',
+}))
+
+export const StyledBottomPolygonDiv = styled('div')(({ theme }) => ({
+  position: 'absolute',
+  bottom: -150,
+  left: 150,
+  width: 0,
+  height: 0,
+  borderTop: '200px solid transparent',
+  borderRight: `200px solid ${theme.palette.secondary.main}`,
+  borderBottom: '200px solid transparent',
+  zIndex: 1,
+  rotate: '90deg',
+}))
+
+export const StylendLandingContainerBox = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.background.default,
+  height: '100vh',
+  flexDirection: 'column',
+  alignItems: 'center',
+  display: 'flex',
+  justifyContent: 'center',
+  position: 'relative',
+}))
+
+export const ButtonProps = {
+  variant: 'contained',
+  color: 'success',
+  size: 'large',
+  href: PATH_AUTH.login,
+  target: '_blank',
+  fullWidth: true,
+  sx: {
+    cursor: 'pointer',
+    ...RADIUS.BORDER,
+  },
+}
+
 /**
+// for future use
+// export const StyledNZMadeContainerDiv = styled('div')(({ theme }) => ({
+//   position: 'absolute',
+//   top: 50,
+//   left: 150,
+//   width: 100,
+//   height: 100,
+//   // add an image here
+//   backgroundImage: `url(${ASSET.NZ_MADE})`, // replace YourImageUrl with the URL or path of your image
+//   backgroundSize: 'cover',
+//   zIndex: 1,
+//   opacity: 0.5,
+//   // rotate: '90deg',
+// }))
+
+
  * @table :components ____________________________________________________________________________________________
  */
 
