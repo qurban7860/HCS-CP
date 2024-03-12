@@ -1,5 +1,5 @@
 import { styled, alpha } from '@mui/material/styles'
-import { Popover, Stack, Card, Chip, Container, TableRow } from '@mui/material'
+import { Popover, Stack, Card, Chip, Container, TableRow, Box } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { bgBlur } from 'theme/style'
@@ -112,6 +112,7 @@ export const StyledVersionChip = styled(Chip)(({ theme, pointer }) => ({
   paddingTop: theme.spacing(0.5),
   paddingBottom: theme.spacing(0.5),
 }))
+
 export const StyledStack = styled(Stack)(({ theme }) => ({
   justifyContent: 'flex-end',
   flexDirection: 'row',
@@ -152,6 +153,19 @@ export const StyledPopover = styled(Popover)(({ theme }) => ({
   pointerEvents: 'none',
 }))
 
+export const StyledClockBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  padding: '2px',
+  paddingLeft: '8px',
+  paddingRight: '8px',
+  border: `1px ${theme.palette.grey[500]} solid`,
+}))
+
+export const StyledBoxFlex = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}))
 /**
  * @table :components ____________________________________________________________________________________________
  */
