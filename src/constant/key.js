@@ -4,6 +4,7 @@
 const KEY = {
   DEV: 'dev',
   DEVELOPMENT: 'development',
+  AUCKLAND: 'Auckland',
 }
 
 export default KEY
