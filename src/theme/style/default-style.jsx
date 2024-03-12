@@ -3,7 +3,7 @@ import { Popover, Stack, Card, Chip, Container, TableRow, Box } from '@mui/mater
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { bgBlur } from 'theme/style'
-import { RADIUS } from 'config'
+import { RADIUS, ASSET } from 'config'
 
 // :components ____________________________________________________________________________________________
 
@@ -183,7 +183,7 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
 // @root - GeneralAppPage - dashboard
 
 export const StyledContainer = styled(Container)(({ theme }) => ({
-  backgroundImage: `url(/asset/background/howick-logo-2.svg)`,
+  backgroundImage: `url(${ASSET.BG_LOGO})`,
   backgroundRepeat: 'no-repeat',
   backgroundPositionY: 'center',
   backgroundPositionX: 'left',
@@ -194,9 +194,7 @@ export const StyledContainer = styled(Container)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  alignItems: 'center',
   padding: 0,
-  alignContent: 'center',
   color: 'text.primary',
   paddingRight: 24,
   paddingLeft: 24,
