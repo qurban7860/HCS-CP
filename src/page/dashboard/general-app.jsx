@@ -1,15 +1,5 @@
-import {
-  Grid,
-  Card,
-  Divider,
-  TextField,
-  Autocomplete,
-  CardHeader,
-  Box,
-  IconButton,
-  Typography,
-} from '@mui/material'
-import { StyledBg, StyledContainer, StyledGlobalCard } from 'theme/style'
+import { Grid } from '@mui/material'
+import { StyledContainer } from 'theme/style'
 import { Welcome } from 'component/widget'
 // import HowickWidgets from '../components/DashboardWidgets/HowickWidgets'
 // TODO: redux slices
@@ -38,6 +28,7 @@ import { Welcome } from 'component/widget'
 import { TITLE } from 'constant'
 import { varFade } from 'component/animate'
 import { GLOBAL } from 'config'
+import { toTitleCase } from 'util'
 
 import { Iconify } from 'component/iconify'
 import { PATH_DASHBOARD } from 'route/path'
@@ -51,8 +42,8 @@ function GeneralAppPage() {
         <Grid container spacing={3} mt={2}>
           <Grid item xs={12}>
             <Welcome
-              title="Customer Portal"
-              description="A customer portal website enabling secure login, machine management, and support ticket submission."
+              title={toTitleCase(GLOBAL.APP_BRANCH)}
+              description={GLOBAL.APP_CUSTOMER_TAGLINE}
             />
           </Grid>
         </Grid>
@@ -60,7 +51,5 @@ function GeneralAppPage() {
     </StyledContainer>
   )
 }
-
-// A customer portal website that allows users to securely log in, view and manage their machines, and conveniently submit support tickets for any issues or inquiries they may have, providing a streamlined and efficient way to access and interact with the company's services.
 
 export default GeneralAppPage
