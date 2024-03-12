@@ -32,6 +32,10 @@ export const ICON = {
 export const BRAND = {
   NAV_ICON: 40,
   AUTH_HEIGHT_LOGO: 120,
+  LANDING_LOGO: {
+    width: 80,
+    opacity: 0.2,
+  },
 }
 
 export const RADIUS = {
