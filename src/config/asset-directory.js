@@ -1,5 +1,5 @@
 const ASSET = {
-  BG_LOGO: '/assets/illustrations/illustration_bg_logo.svg',
+  BG_LOGO: '/asset/background/howick-logo-2.svg',
   ICON: '/asset/brand/icon.svg',
   LOGO: '/asset/brand/logo.svg',
   OCTICON: (icon) => `/asset/octicon/${icon}.svg`,
