@@ -12,6 +12,10 @@ const ROOTS_SETTING = '/settings'
 const ROOTS_DOCUMENT = '/documents'
 const ROOTS_SITEMAP = '/site'
 
+export const PATH_LANDING = {
+  root: '/',
+}
+
 export const PATH_AUTH = {
   root: ROOTS_AUTH,
   login: path(ROOTS_AUTH, '/login'),
@@ -22,8 +26,6 @@ export const PATH_AUTH = {
   resetPassword: path(ROOTS_AUTH, '/reset-password'),
   newpassword: (token, userId) => path(ROOTS_AUTH, `/new-password/${token}/${userId}`),
   authenticate: path(ROOTS_AUTH, '/authenticate'),
-
-  // newPassword: path(ROOTS_AUTH, '/new-password/${id}/asset/${userId}/edit'),
 }
 
 export const PATH_PAGE = {
