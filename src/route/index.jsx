@@ -5,6 +5,8 @@ import CompactLayout from 'layout/compact'
 import DashboardLayout from 'layout/dashboard'
 import { PATH_AFTER_LOGIN } from 'global'
 import {
+  // Landing
+  LandingPage,
   // Auth
   LoginPage,
   RegisterPage,
@@ -72,6 +74,10 @@ export default function Router() {
       ],
     },
     {
+      path: '/',
+      element: <LandingPage />,
+    },
+    {
       // Dashboard
       path: 'dashboard',
       element: (
@@ -105,7 +111,7 @@ export default function Router() {
     },
     {
       // Main Routes
-      element: <DashboardLayout />,
+      element: <LandingPage />,
       children: [{ element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true }],
     },
     {
