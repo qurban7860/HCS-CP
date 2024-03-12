@@ -17,6 +17,7 @@ export const ResetPasswordPage = Loadable(lazy(() => import('page/auth/reset-pas
 export const Login = Loadable(lazy(() => import('section/auth/login')))
 
 // DASHBOARD: GENERAL
+export const LandingPage = Loadable(lazy(() => import('page/landing/landing')))
 export const GeneralAppPage = Loadable(lazy(() => import('page/dashboard/general-app')))
 export const MachineByCountriesViewForm = Loadable(
   lazy(() => import('page/dashboard/machine-country-viewform'))
