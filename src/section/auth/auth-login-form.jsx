@@ -13,7 +13,7 @@ import {
   FormControlLabel,
 } from '@mui/material'
 import { StyledLoadingButton } from 'theme/style'
-import { PATH_AUTH } from 'route/path'
+import { PATH_AUTH, PATH_DASHBOARD } from 'route/path'
 import { useAuthContext } from 'auth'
 import { Iconify } from 'component/iconify'
 import FormProvider, { RHFTextField } from 'component/hook-form'
@@ -62,13 +62,20 @@ function AuthLoginForm() {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = methods
 
+  const handleSubmitTest = (data) => {
+    // remove the following line after redux is implemented
+    navigate(PATH_DASHBOARD.root)
+  }
+
   const onSubmit = async (data) => {
+    // bring back once redux is implemented
     if (uemail) {
       data.email = uemail
     }
     if (upassword) {
       data.password = upassword
     }
+
     try {
       if (uremember) {
         localStorage.setItem('UserEmail', data.email)
@@ -104,7 +111,9 @@ function AuthLoginForm() {
   }
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    // bring back once redux is implemented
+    // <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <FormProvider methods={methods} onSubmit={handleSubmitTest}>
       <Stack spacing={3} sx={{ mt: 1 }}>
         {!!errors.afterSubmit && (
           <Alert sx={{ width: '380px' }} severity="error">
@@ -169,7 +178,7 @@ function AuthLoginForm() {
           to={PATH_AUTH.resetPassword}
           variant="body2"
           color="inherit"
-          underline="always"
+          underline="none"
         >
           {BUTTON.FORGOT_PASSWORD}
         </Link>
