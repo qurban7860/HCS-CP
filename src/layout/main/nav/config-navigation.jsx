@@ -42,9 +42,9 @@ const navConfig = [
       {
         subheader: 'Error',
         items: [
-          { title: 'Page 403', path: PATH_PAGE.page403 },
-          { title: 'Page 404', path: PATH_PAGE.page404 },
-          { title: 'Page 500', path: PATH_PAGE.page500 },
+          { title: 'Page 403', path: PATH_PAGE.forbidden },
+          { title: 'Page 404', path: PATH_PAGE.notFound },
+          { title: 'Page 500', path: PATH_PAGE.internalServerError },
         ],
       },
       {
