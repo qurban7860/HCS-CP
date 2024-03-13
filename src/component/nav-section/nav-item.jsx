@@ -24,9 +24,11 @@ const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...othe
         primaryTypographyProps={{
           noWrap: true,
           component: 'span',
-          variant: active ? 'subtitle2' : 'body1',
+          variant: active ? 'h6' : 'h5',
+          fontWeight: active && 'bold',
           color: theme.palette.text.primary,
         }}
+        sx={{ margin: 0.5 }}
       />
 
       {info && (
