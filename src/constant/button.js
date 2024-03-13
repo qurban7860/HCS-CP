@@ -11,6 +11,8 @@ const BUTTON = {
   CONTINUE: 'Continue',
   DELETE: 'Delete',
 
+  GO_BACK: 'Go Back',
+
   // New Buttons on the TOP of Modules
   NEWCUSTOMER: 'New Customer',
   NEWDOCUMENT: 'New Document',
