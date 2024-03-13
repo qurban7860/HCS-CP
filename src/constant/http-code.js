@@ -1,4 +1,4 @@
-const CODE = {
+const HTTP_CODE = {
   // good
   SUCCESS: 200,
   CREATED: 201,
@@ -27,4 +27,4 @@ const CODE = {
   GATEWAY_TIMEOUT: 504,
 }
 
-export default CODE
+export default HTTP_CODE
