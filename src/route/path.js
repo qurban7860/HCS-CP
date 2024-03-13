@@ -31,9 +31,9 @@ export const PATH_AUTH = {
 export const PATH_PAGE = {
   comingSoon: '/coming-soon',
   maintenance: '/maintenance',
-  page403: '/403',
-  page404: '/404',
-  page500: '/500',
+  forbidden: '/403',
+  notFound: '/404',
+  internalServerError: '/500',
   components: '/components',
   userInviteLanding: (id, code, expiry) => path(`/invite/${id}/{$code}/{$expiry}`),
   invalidErrorPage: '/InvalidErrorPage',
