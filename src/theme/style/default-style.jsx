@@ -227,7 +227,6 @@ export const ButtonProps = {
   color: 'success',
   size: 'large',
   href: PATH_AUTH.login,
-  target: '_blank',
   fullWidth: true,
   sx: {
     cursor: 'pointer',
