@@ -4,35 +4,25 @@ import SimpleLayout from 'layout/simple'
 import CompactLayout from 'layout/compact'
 import DashboardLayout from 'layout/dashboard'
 import { PATH_AFTER_LOGIN } from 'global'
+import { FALLBACK } from 'constant'
 import {
-  // Landing
+  // Landing:
   LandingPage,
-  // Auth
+  // Auth:
   LoginPage,
   RegisterPage,
   VerifyCodePage,
   NewPasswordPage,
   ResetPasswordPage,
-  // Authenticate,
   // Dashboard: General
   GeneralAppPage,
   MachineByModelViewForm,
   MachineByYearViewForm,
   MachineByCountriesViewForm,
-  // Setting
-  Setting,
-  // Email
-  // Email,
-  // Emailviewform,
-  //
+  // Fallback:
   BlankPage,
   PermissionDeniedPage,
-  InternalServerPage,
-  ForbiddenPage,
-  NotFoundPage,
-  // ComingSoonPage,
-  // MaintenancePage,
-  // ErrorPage,
+  FallbackPage,
   UserInviteLandingPage,
 } from './element'
 
@@ -119,9 +109,9 @@ export default function Router() {
       children: [],
     },
     { path: 'invite/:id/:code/:expiry', element: <UserInviteLandingPage /> },
-    { path: '500', element: <InternalServerPage /> },
-    { path: '403', element: <ForbiddenPage /> },
-    { path: '404', element: <NotFoundPage /> },
+    { path: '500', element: <FallbackPage {...FALLBACK.INTERNAL_SERVER_ERROR} /> },
+    { path: '403', element: <FallbackPage {...FALLBACK.FORBIDDEN} /> },
+    { path: '404', element: <FallbackPage {...FALLBACK.NOT_FOUND} /> },
     {
       element: <CompactLayout />,
       children: [
