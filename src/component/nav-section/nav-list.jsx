@@ -62,6 +62,14 @@ function NavList({ data, depth, hasChild }) {
         isExternalLink={isExternalLink}
         onMouseEnter={handleOpen}
         onMouseLeave={handleClose}
+        sx={{
+          '& .MuiTypography-root': {
+            fontWeight: active ? 'bold' : 'normal',
+            '&: hover': {
+              fontWeight: 'bold',
+            },
+          },
+        }}
       />
 
       {hasChild && (
