@@ -1,5 +1,1 @@
-export { default as Forbidden } from './forbidden'
-export { default as NotFound } from './not-found'
-export { default as UnderDevelopment } from './under-development'
-export { default as InternalServer } from './internal-server'
-export { default as PermissionDenied } from './permission-denied'
+export { default as Fallback } from './fallback'
