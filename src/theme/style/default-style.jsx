@@ -1,10 +1,27 @@
 import { styled, alpha } from '@mui/material/styles'
-import { Popover, Stack, Card, Chip, Container, TableRow, Box } from '@mui/material'
+import { Popover, Stack, Card, Grid, Chip, Container, TableRow, Box } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { bgBlur } from 'theme/style'
 import { RADIUS, ASSET } from 'config'
 import { PATH_AUTH } from 'route/path'
+import { Logo } from 'component/logo'
+
+// :branding __________________________________________________________________________________________________
+export const LogoGrayProps = {
+  width: '50%',
+  height: '60vh',
+  margin: 'auto',
+  filter: 'grayscale(100%) opacity(30%)',
+  pointerEvents: 'none',
+}
+
+export const StyledFallbackWrapperGrid = styled(Grid)(({ theme }) => ({
+  width: 900,
+  margin: 'auto',
+  textAlign: 'center',
+  paddingTop: theme.spacing(10),
+}))
 
 // :components ____________________________________________________________________________________________
 
