@@ -11,8 +11,8 @@ import {
   MenuItem,
   IconButton,
 } from '@mui/material'
-import { NAV } from 'config'
-import { useAuthContext } from 'auth'
+import { NAV, ICON_DIR } from 'config'
+// import { useAuthContext } from 'auth'
 import { CustomAvatar } from 'component/avatar'
 import { useSnackbar } from 'component/snackbar'
 import { MenuPopover } from 'component/menu-popover'
@@ -125,15 +125,26 @@ export default function AccountPopover() {
         />
       </IconButtonAnimate>
 
-      <MenuPopover open={openPopover} onClose={handleClosePopover} sx={{ width: 200, p: 0 }}>
+      <MenuPopover
+        open={openPopover}
+        onClose={handleClosePopover}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        sx={{
+          width: 200,
+          p: 0,
+          borderRadius: 0.4,
+        }}
+      >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {/* {user?.displayName || displayName} */}
+            {mockUser[0].displayName || displayName}
             {displayName}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {/* {user?.login || email} */}
-            {'EMAIL'}
+          <Typography variant="overline" sx={{ color: 'text.secondary' }} fontWeight="bold" noWrap>
+            {mockUser[0]?.login || mockUser[0]?.email}
           </Typography>
         </Box>
         <Divider sx={{ borderStyle: 'solid' }} />
@@ -145,14 +156,34 @@ export default function AccountPopover() {
           ))}
           <MenuItem
             onClick={() => {
-              handleToggle()
-              // SettingsDrawer()
+              // handleToggle()
             }}
             onClose={handleClose}
           >
             <Typography variant="body2" noWrap>
-              {TITLE.CUSTOMIZE}
+              {TITLE.ORGANIZATION}
             </Typography>
+          </MenuItem>
+          <Divider sx={{ borderStyle: 'solid' }} />
+          <MenuItem
+            onClick={() => {
+              handleToggle()
+            }}
+            onClose={handleClose}
+          >
+            {/* icon buttons for full screen and dark mode */}
+            {/* arrange in a row */}
+            <IconButton onClick={handleToggle}>
+              {/* <Iconify icon="eva:settings-2-fill" /> */}
+              <Iconify icon={ICON_DIR.SETTING} />
+            </IconButton>
+            <IconButton onClick={handleToggle}>
+              <Iconify icon="eva:settings-2-fill" />
+            </IconButton>
+
+            {/* <Typography variant="body2" noWrap>
+              {TITLE.CUSTOMIZE}
+            </Typography> */}
           </MenuItem>
         </Stack>
 
@@ -165,13 +196,13 @@ export default function AccountPopover() {
       <>
         {!open && <Drawer open={open} notDefault={notDefault} onToggle={handleToggle} />}
         <Drawer
-          anchor="left"
+          anchor="right"
           open={open}
           onClose={handleClose}
           BackdropProps={{ invisible: true }}
           PaperProps={{
             sx: {
-              ...bgBlur({ color: theme.palette.background.default, opacity: 0.9 }),
+              ...bgBlur({ color: theme.palette.background.default }),
               width: NAV.W_BASE,
               boxShadow: `-24px 12px 40px 0 ${alpha(
                 theme.palette.mode === 'light'
@@ -211,18 +242,6 @@ export default function AccountPopover() {
           <Scrollbar sx={{ p: SPACING, pb: 0 }}>
             <Block title={TITLE.MODE}>
               <ModeOption />
-            </Block>
-
-            <Block title={TITLE.CONTRAST}>
-              <ContrastOption />
-            </Block>
-
-            <Block title={TITLE.DIRECTION}>
-              <DirectionOption />
-            </Block>
-
-            <Block title={TITLE.LAYOUT}>
-              <LayoutOption />
             </Block>
 
             <Block title={TITLE.STRETCH.label} tooltip={TITLE.STRETCH.tooltip}>
