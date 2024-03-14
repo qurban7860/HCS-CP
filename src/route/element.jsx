@@ -34,16 +34,11 @@ export const { UserInvitationView } = Loadable(lazy(() => import('page/security'
 
 // DASHBOARD: SETTINGS
 export const Setting = Loadable(lazy(() => import('page/setting/setting')))
-
 export const HomePage = Loadable(lazy(() => import('page/dashboard/general-app')))
 
 // BLANK PAGE
 export const BlankPage = Loadable(lazy(() => import('page/dashboard/blank')))
 
 // fallback
-export const PermissionDeniedPage = Loadable(lazy(() => import('page/fallback/permission-denied')))
-export const InternalServerPage = Loadable(lazy(() => import('page/fallback/internal-server')))
-export const ForbiddenPage = Loadable(lazy(() => import('page/fallback/forbidden')))
-export const NotFoundPage = Loadable(lazy(() => import('page/fallback/not-found')))
 export const FallbackPage = Loadable(lazy(() => import('page/fallback/fallback')))
 export const UserInviteLandingPage = Loadable(lazy(() => import('page/fallback/user-invite')))

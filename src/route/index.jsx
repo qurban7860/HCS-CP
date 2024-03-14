@@ -21,7 +21,6 @@ import {
   MachineByCountriesViewForm,
   // Fallback:
   BlankPage,
-  PermissionDeniedPage,
   FallbackPage,
   UserInviteLandingPage,
 } from './element'
@@ -81,7 +80,7 @@ export default function Router() {
         { path: 'machineByCountries', element: <MachineByCountriesViewForm /> },
         { path: 'machineByModels', element: <MachineByModelViewForm /> },
         { path: 'machineByYears', element: <MachineByYearViewForm /> },
-        { path: 'permission-denied', element: <PermissionDeniedPage /> },
+        { path: 'permission-denied', element: <FallbackPage {...FALLBACK.FORBIDDEN} /> },
         { path: 'blank', element: <BlankPage /> },
       ],
     },
