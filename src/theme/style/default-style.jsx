@@ -1,13 +1,52 @@
 import { styled, alpha } from '@mui/material/styles'
-import { Popover, Stack, Card, Grid, Chip, Container, TableRow, Box } from '@mui/material'
+import {
+  Popover,
+  Stack,
+  Card,
+  Grid,
+  Chip,
+  Container,
+  TableRow,
+  Box,
+  Typography,
+} from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { bgBlur } from 'theme/style'
 import { RADIUS, ASSET } from 'config'
 import { PATH_AUTH } from 'route/path'
-import { Logo } from 'component/logo'
+import { KEY } from 'constant'
 
 // :branding __________________________________________________________________________________________________
+// dashboard - welcome
+export const StyledWelcomeTitle = styled(({ themeMode, ...other }) => <Typography {...other} />)(
+  ({ theme, themeMode }) => {
+    return {
+      color: themeMode === KEY.LIGHT ? theme.palette.success.main : theme.palette.common.white,
+      fontWeight: theme.typography.fontWeightBold,
+    }
+  }
+)
+export const StyledWelcomeDescription = styled(({ themeMode, ...other }) => (
+  <Typography {...other} />
+))(({ theme, themeMode }) => {
+  return {
+    color: themeMode === KEY.LIGHT ? theme.palette.success.main : theme.palette.common.white,
+  }
+})
+export const StyledWelcomeContainerDiv = styled('div')(({ theme }) => ({
+  height: '100vh',
+  display: 'flex',
+  overflow: 'hidden',
+  position: 'relative',
+  color: theme.palette.primary.darker,
+  borderRadius: Number(theme.shape.borderRadius) * 2,
+  flexDirection: 'column',
+  [theme.breakpoints.up('md')]: {
+    flexDirection: 'row',
+  },
+}))
+
 export const LogoGrayProps = {
   width: '50%',
   height: '60vh',
