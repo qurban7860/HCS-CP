@@ -16,10 +16,11 @@ import { ScrollToTop } from 'component/scroll-to-top'
 import { MotionLazyContainer } from 'component/animate'
 import { ThemeSettings, SettingProvider } from 'component/setting'
 import { IdleManager } from 'component/idle-manager'
-import { InternalServer } from 'page/fallback'
+import { Fallback } from 'page/fallback'
 import { AuthProvider } from 'auth/jwt-context'
 import { WebSocketProvider } from 'auth/web-socket-context'
 import { GLOBAL } from 'config'
+import { FALLBACK } from 'constant'
 
 function App() {
   useEffect(() => {
@@ -36,7 +37,7 @@ function App() {
           <MotionLazyContainer>
             <ThemeProvider>
               <ThemeSettings>
-                <ErrorBoundary fallback={<InternalServer />}>
+                <ErrorBoundary fallback={<Fallback {...FALLBACK.INTERNAL_SERVER_ERROR} />}>
                   <ScrollToTop />
                   <ThemeLocalization>
                     <SnackbarProvider>
