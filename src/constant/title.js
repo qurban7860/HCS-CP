@@ -1,10 +1,6 @@
 const TITLE = {
   UNDERDEVELOPMENT: 'Under Development',
   // @root - GeneralAppPage - dashboard
-  //  Welcome
-  WELCOME: `CUSTOMER \n SERVICE & SUPPORT`,
-  WELCOME_DESC:
-    'Providing seamless and hassle-free experience that exceeds your expectations and helps you to achieve your business goals.',
 
   // @root - LicenseAddForm
   NEWLICENSE: 'New License',
@@ -24,8 +20,7 @@ const TITLE = {
   LOGOUT: 'Logout',
   MODE: 'Mode',
   CONTRAST: 'Contrast',
-  DIRECTION: 'Direction',
-  LAYOUT: 'Layout',
+  ORGANIZATION: 'Organization',
   STRETCH: {
     label: 'Stretch',
     tooltip: 'Only available at large resolutions > 1600px (xl)',
