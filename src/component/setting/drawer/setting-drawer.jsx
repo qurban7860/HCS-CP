@@ -10,12 +10,9 @@ import { useSettingContext } from 'component/setting'
 import Block from './block'
 import BadgeDot from './badge-dot'
 import ModeOption from './mode-option'
-import LayoutOptions from './layout-option'
 import StretchOptions from './stretch-option'
 import ContrastOptions from './contrast-option'
-import DirectionOptions from './direction-option'
 import FullScreenOptions from './full-screen-option'
-import ColorPresetsOptions from './color-preset-option'
 
 const SPACING = 2.5
 
@@ -99,20 +96,8 @@ function SettingDrawer() {
             <ContrastOptions />
           </Block>
 
-          <Block title="Direction">
-            <DirectionOptions />
-          </Block>
-
-          <Block title="Layout">
-            <LayoutOptions />
-          </Block>
-
           <Block title="Stretch" tooltip="Only available at large resolutions > 1600px (xl)">
             <StretchOptions />
-          </Block>
-
-          <Block title="Presets">
-            <ColorPresetsOptions />
           </Block>
         </Scrollbar>
 

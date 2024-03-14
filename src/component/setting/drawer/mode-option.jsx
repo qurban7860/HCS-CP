@@ -14,7 +14,7 @@ function ModeOption() {
   return (
     <IconButton onClick={onToggleMode} aria-label="Toggle Dark Mode">
       <SvgColor
-        src={themeMode === KEY.LIGHT ? sunIcon : moonIcon}
+        icon={themeMode === KEY.LIGHT ? sunIcon : moonIcon}
         color={
           themeMode === KEY.LIGHT ? theme.palette.secondary.main : theme.palette.secondary.light
         }
