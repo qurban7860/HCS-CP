@@ -4,6 +4,8 @@
 const KEY = {
   DEV: 'dev',
   DEVELOPMENT: 'development',
+  LIGHT: 'light',
+  DARK: 'dark',
 
   AUCKLAND: 'Auckland',
 }
