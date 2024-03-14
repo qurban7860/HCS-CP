@@ -1,31 +1,21 @@
 import PropTypes from 'prop-types'
 import { Popover } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import getPosition from './get-position'
 import { StyledArrow } from './style'
+import { MENU_POPOVER_ARROW } from 'constant/component'
 
 MenuPopover.propTypes = {
   sx: PropTypes.object,
   open: PropTypes.object,
   children: PropTypes.node,
   disabledArrow: PropTypes.bool,
-  arrow: PropTypes.oneOf([
-    'top-left',
-    'top-center',
-    'top-right',
-    'bottom-left',
-    'bottom-center',
-    'bottom-right',
-    'left-top',
-    'left-center',
-    'left-bottom',
-    'right-top',
-    'right-center',
-    'right-bottom',
-  ]),
+  arrow: PropTypes.oneOf(Object.values(MENU_POPOVER_ARROW)),
 }
 
-function MenuPopover({ open, children, arrow = 'top-left', disabledArrow, sx, ...other }) {
+function MenuPopover({ open, children, arrow = 'top-right', disabledArrow, sx, ...other }) {
   const { style, anchorOrigin, transformOrigin } = getPosition(arrow)
+  const theme = useTheme()
 
   return (
     <Popover
@@ -35,6 +25,7 @@ function MenuPopover({ open, children, arrow = 'top-left', disabledArrow, sx, ..
       transformOrigin={transformOrigin}
       PaperProps={{
         sx: {
+          backgroundColor: theme.palette.background.default,
           p: 1,
           width: 'auto',
           overflow: 'inherit',
