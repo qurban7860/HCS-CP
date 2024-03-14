@@ -31,7 +31,7 @@ const Fallback = ({ code, title, message }) => {
 }
 
 Fallback.propTypes = {
-  code: PropTypes.string || PropTypes.number || PropTypes.oneOf(Object.values(HTTP_CODE)),
+  code: PropTypes.number || PropTypes.oneOf(Object.values(HTTP_CODE)),
   title: PropTypes.string,
   message: PropTypes.string,
 }
