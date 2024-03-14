@@ -16,11 +16,8 @@ function useCountdown(date) {
 
   const setNewTime = () => {
     const startTime = date
-
     const endTime = new Date()
-
     const distanceToNow = startTime.valueOf() - endTime.valueOf()
-
     const getDays = Math.floor(distanceToNow / (1000 * 60 * 60 * 24))
 
     const getHours = `0${Math.floor(
