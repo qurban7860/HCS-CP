@@ -1,7 +1,7 @@
 import HTTP_CODE from './http-code'
 
 const FALLBACK = {
-  // fallback dialogs
+  // fallback
   NOT_FOUND: {
     code: HTTP_CODE.NOT_FOUND,
     title: 'Ooppps... page not found',
