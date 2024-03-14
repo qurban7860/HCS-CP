@@ -16,6 +16,7 @@ import { bgBlur } from 'theme/style'
 import { RADIUS, ASSET } from 'config'
 import { PATH_AUTH } from 'route/path'
 import { KEY } from 'constant'
+import { SvgColor } from 'component/svg-color'
 
 // :branding __________________________________________________________________________________________________
 // dashboard - welcome
@@ -27,6 +28,7 @@ export const StyledWelcomeTitle = styled(({ themeMode, ...other }) => <Typograph
     }
   }
 )
+
 export const StyledWelcomeDescription = styled(({ themeMode, ...other }) => (
   <Typography {...other} />
 ))(({ theme, themeMode }) => {
@@ -322,19 +324,26 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 // @root - GeneralAppPage - dashboard
 
+export const StyledContainerSvg = styled(({ themeMode, ...other }) => (
+  <SvgColor icon={ASSET.BG_LOGO} {...other} />
+))(({ theme, themeMode }) => {
+  return {
+    color: themeMode === KEY.LIGHT ? theme.palette.success.main : theme.palette.common.white,
+  }
+})
+
 export const StyledContainer = styled(Container)(({ theme }) => ({
   backgroundImage: `url(${ASSET.BG_LOGO})`,
   backgroundRepeat: 'no-repeat',
   backgroundPositionY: 'center',
-  backgroundPositionX: 'left',
-  backgroundSize: '100%',
+  backgroundPositionX: 'right',
+  backgroundSize: '50%',
   backgroundBlendMode: 'multiply',
   backgroundOpacity: 0.9,
   backgroundAttachment: 'fixed',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  padding: 0,
   color: 'text.primary',
   paddingRight: 24,
   paddingLeft: 24,
