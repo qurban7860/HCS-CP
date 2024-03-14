@@ -2,7 +2,7 @@
     <style>
         .a {
             mix-blend-mode: multiply;
-            fill: #fff
+            fill: #FFF
         }
     </style>
     <path class="a"
