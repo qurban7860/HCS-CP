@@ -72,42 +72,6 @@ export function SettingProvider({ children }) {
     [setSettings, settings]
   )
 
-  // Direction
-  const onToggleDirection = useCallback(() => {
-    const themeDirection = settings.themeDirection === 'rtl' ? 'ltr' : 'rtl'
-    setSettings({ ...settings, themeDirection })
-  }, [setSettings, settings])
-
-  const onChangeDirection = useCallback(
-    (event) => {
-      const themeDirection = event.target.value
-      setSettings({ ...settings, themeDirection })
-    },
-    [setSettings, settings]
-  )
-
-  const onChangeDirectionByLang = useCallback(
-    (lang) => {
-      const themeDirection = lang === 'ar' ? 'rtl' : 'ltr'
-      setSettings({ ...settings, themeDirection })
-    },
-    [setSettings, settings]
-  )
-
-  // Layout
-  const onToggleLayout = useCallback(() => {
-    const themeLayout = settings.themeLayout === 'vertical' ? 'mini' : 'vertical'
-    setSettings({ ...settings, themeLayout })
-  }, [setSettings, settings])
-
-  const onChangeLayout = useCallback(
-    (event) => {
-      const themeLayout = event.target.value
-      setSettings({ ...settings, themeLayout })
-    },
-    [setSettings, settings]
-  )
-
   // Contrast
   const onToggleContrast = useCallback(() => {
     const themeContrast = settings.themeContrast === 'default' ? 'bold' : 'default'
@@ -148,13 +112,6 @@ export function SettingProvider({ children }) {
       // Mode
       onToggleMode,
       onChangeMode,
-      // Direction
-      onToggleDirection,
-      onChangeDirection,
-      onChangeDirectionByLang,
-      // Layout
-      onToggleLayout,
-      onChangeLayout,
       // Contrast
       onChangeContrast,
       onToggleContrast,
@@ -172,14 +129,6 @@ export function SettingProvider({ children }) {
       // Mode
       onToggleMode,
       onChangeMode,
-      // Direction
-      onToggleDirection,
-      onChangeDirection,
-      onChangeDirectionByLang,
-      // Layout
-      onToggleLayout,
-      onChangeLayout,
-      onChangeContrast,
       // Contrast
       onToggleContrast,
       // Stretch
