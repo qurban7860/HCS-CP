@@ -1,27 +1,14 @@
 import PropTypes from 'prop-types'
 import { styled } from '@mui/material/styles'
 import { Typography, Stack } from '@mui/material'
-
-const StyledRoot = styled('div')(({ theme }) => ({
-  height: '100vh',
-  display: 'flex',
-  overflow: 'hidden',
-  position: 'relative',
-  color: theme.palette.primary.darker,
-  borderRadius: Number(theme.shape.borderRadius) * 2,
-  flexDirection: 'column',
-  [theme.breakpoints.up('md')]: {
-    flexDirection: 'row',
-  },
-}))
-
-const StyledTitle = styled(Typography)(({ theme }) => {
-  return {
-    color: theme.palette.primary.darker,
-    fontWeight: theme.typography.fontWeightBold,
-    fontSize: '3rem',
-  }
-})
+import {
+  StyledWelcomeTitle,
+  StyledWelcomeContainerDiv,
+  StyledWelcomeDescription,
+} from 'theme/style'
+import { useSettingContext } from 'component/setting'
+import { useTheme } from '@mui/material/styles'
+import { KEY } from 'constant'
 
 Welcome.propTypes = {
   img: PropTypes.node,
@@ -31,8 +18,10 @@ Welcome.propTypes = {
 }
 
 function Welcome({ title, description, action, img, ...other }) {
+  const { themeMode } = useSettingContext()
+  const theme = useTheme()
   return (
-    <StyledRoot {...other}>
+    <StyledWelcomeContainerDiv {...other}>
       <Stack
         flexGrow={1}
         sx={{
@@ -41,14 +30,16 @@ function Welcome({ title, description, action, img, ...other }) {
           mt: { xs: 0, md: 5 },
         }}
       >
-        <StyledTitle variant="h0" fontWeight="bold">
+        <StyledWelcomeTitle variant="h0" fontWeight="bold" themeMode={themeMode}>
           {title}
-        </StyledTitle>
-        <Typography variant="subtitle0">{description}</Typography>
+        </StyledWelcomeTitle>
+        <StyledWelcomeDescription variant="subtitle0" themeMode={themeMode}>
+          {description}
+        </StyledWelcomeDescription>
         {action && action}
       </Stack>
       {img && img}
-    </StyledRoot>
+    </StyledWelcomeContainerDiv>
   )
 }
 
