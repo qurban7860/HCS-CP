@@ -45,8 +45,9 @@ export const StyledArrow = styled('span')(({ arrow, theme }) => {
       display: 'block',
       position: 'absolute',
       transform: 'rotate(-135deg)',
-      background: theme.palette.background.paper,
+      background: theme.palette.background.default,
     },
+
     // Top
     ...(arrow === 'top-left' && { ...topStyle, left: 20 }),
     ...(arrow === 'top-center' && { ...topStyle, left: 0, right: 0, margin: 'auto' }),
