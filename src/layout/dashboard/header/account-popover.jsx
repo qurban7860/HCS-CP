@@ -11,23 +11,13 @@ import {
   MenuItem,
   IconButton,
 } from '@mui/material'
-import { NAV, ICON_DIR } from 'config'
+import { NAV } from 'config'
 // import { useAuthContext } from 'auth'
 import { CustomAvatar } from 'component/avatar'
 import { useSnackbar } from 'component/snackbar'
 import { MenuPopover } from 'component/menu-popover'
 import { IconButtonAnimate } from 'component/animate'
-import {
-  Block,
-  ModeOption,
-  ContrastOption,
-  DirectionOption,
-  StretchOption,
-  ColorPresetOption,
-  FullScreenOption,
-  LayoutOption,
-  SettingDrawer,
-} from 'component/setting'
+import { Block, ModeOption, StretchOption, FullScreenOption } from 'component/setting'
 import { bgBlur } from 'theme/style'
 import { useSettingContext } from 'component/setting'
 import { themePreset } from 'theme'
@@ -36,6 +26,7 @@ import { Scrollbar } from 'component/scrollbar'
 import { TITLE } from 'constant'
 import { OPTION } from './util'
 import { mockUser } from '_mock'
+import { useIcon } from 'component/iconify'
 
 const SPACING = 2.5
 
@@ -47,6 +38,8 @@ export default function AccountPopover() {
   const displayName = localStorage.getItem('name')
   const { enqueueSnackbar } = useSnackbar()
   const [openPopover, setOpenPopover] = useState(null)
+  const [open, setOpen] = useState(false)
+  const { Icon: SettingIcon, iconSrc } = useIcon('SEARCH')
 
   const {
     themeMode,
@@ -75,8 +68,6 @@ export default function AccountPopover() {
       enqueueSnackbar('Unable to logout!', { variant: 'error' })
     }
   }
-
-  const [open, setOpen] = useState(false)
 
   const handleToggle = () => {
     setOpen(!open)
@@ -171,19 +162,12 @@ export default function AccountPopover() {
             }}
             onClose={handleClose}
           >
-            {/* icon buttons for full screen and dark mode */}
-            {/* arrange in a row */}
             <IconButton onClick={handleToggle}>
-              {/* <Iconify icon="eva:settings-2-fill" /> */}
-              <Iconify icon={ICON_DIR.SETTING} />
+              <SettingIcon icon={iconSrc} />
             </IconButton>
             <IconButton onClick={handleToggle}>
               <Iconify icon="eva:settings-2-fill" />
             </IconButton>
-
-            {/* <Typography variant="body2" noWrap>
-              {TITLE.CUSTOMIZE}
-            </Typography> */}
           </MenuItem>
         </Stack>
 
@@ -246,10 +230,6 @@ export default function AccountPopover() {
 
             <Block title={TITLE.STRETCH.label} tooltip={TITLE.STRETCH.tooltip}>
               <StretchOption />
-            </Block>
-
-            <Block title={TITLE.PRESETS}>
-              <ColorPresetOption />
             </Block>
           </Scrollbar>
 
