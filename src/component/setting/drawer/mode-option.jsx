@@ -1,26 +1,25 @@
-import { RadioGroup } from '@mui/material'
+import { IconButton } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { SvgColor } from 'component/svg-color'
 import { useSettingContext } from '../setting-context'
-import { StyledCard, StyledWrap, MaskControl } from '../style'
-
-const OPTIONS = ['light', 'dark']
+import { KEY } from 'constant'
 
 function ModeOption() {
-  const { themeMode, onChangeMode } = useSettingContext()
+  const { themeMode, onToggleMode } = useSettingContext()
+
+  const theme = useTheme()
+  const sunIcon = '/asset/icon/sun.svg'
+  const moonIcon = '/asset/icon/moon.svg'
 
   return (
-    <RadioGroup name="themeMode" value={themeMode} onChange={onChangeMode}>
-      <StyledWrap>
-        {OPTIONS.map((mode) => (
-          <StyledCard key={mode} selected={themeMode === mode}>
-            <SvgColor
-              src={`/assets/icons/setting/${mode === 'light' ? 'ic_sun' : 'ic_moon'}.svg`}
-            />
-            <MaskControl value={mode} />
-          </StyledCard>
-        ))}
-      </StyledWrap>
-    </RadioGroup>
+    <IconButton onClick={onToggleMode} aria-label="Toggle Dark Mode">
+      <SvgColor
+        src={themeMode === KEY.LIGHT ? sunIcon : moonIcon}
+        color={
+          themeMode === KEY.LIGHT ? theme.palette.secondary.main : theme.palette.secondary.light
+        }
+      />
+    </IconButton>
   )
 }
 
