@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material'
-import { StyledContainer } from 'theme/style'
+import { StyledContainer, StyledContainerSvg } from 'theme/style'
 import { Welcome } from 'component/widget'
 // import HowickWidgets from '../components/DashboardWidgets/HowickWidgets'
 // TODO: redux slices
