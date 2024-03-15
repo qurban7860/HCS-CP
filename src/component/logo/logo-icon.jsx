@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Box, Link } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
 import { useSettingContext } from 'component/setting'
-import { useIcon } from 'component/iconify'
+import { useIcon } from 'hook'
 import { ASSET, BRAND } from 'config'
 import { KEY } from 'constant'
 
