@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import { alpha, styled } from '@mui/material/styles'
 import { CardActionArea, Radio, FormControlLabel, Stack, Box } from '@mui/material'
+import { NAV, RADIUS } from 'config'
 
 export const StyledWrap = styled(Box)(() => ({
   gap: 8,
@@ -11,22 +12,18 @@ export const StyledWrap = styled(Box)(() => ({
 export const StyledCard = styled(CardActionArea, {
   shouldForwardProp: (prop) => prop !== 'selected',
 })(({ selected, theme }) => ({
-  height: 72,
+  height: NAV.H_OPTION,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   color: theme.palette.text.disabled,
-  borderRadius: theme.shape.borderRadius,
-  border: `solid 1px ${alpha(theme.palette.grey[500], 0.12)}`,
-  '& .svg-color': {
-    width: 28,
-    height: 28,
-  },
+  border: `solid 1px ${alpha(theme.palette.grey[800], 0.22)}`,
   ...(selected && {
     color: theme.palette.primary.main,
-    boxShadow: theme.customShadow.z12,
-    borderColor: alpha(theme.palette.grey[500], 0.24),
+    // boxShadow: theme.customShadow.z12,
+    borderColor: alpha(theme.palette.grey[800], 0.22),
   }),
+  ...RADIUS.BORDER,
 }))
 
 export const StyledCircleColor = styled('div', {
