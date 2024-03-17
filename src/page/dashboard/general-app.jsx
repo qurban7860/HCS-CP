@@ -29,6 +29,7 @@ import { TITLE } from 'constant'
 import { varFade } from 'component/animate'
 import { GLOBAL } from 'config'
 import { toTitleCase } from 'util'
+import { useSettingContext } from 'component/setting'
 
 import { Iconify } from 'component/iconify'
 import { PATH_DASHBOARD } from 'route/path'
@@ -36,8 +37,9 @@ import { useWebSocketContext } from 'auth'
 import { fQuarterYearDate } from 'util'
 
 function GeneralAppPage() {
+  const { themeMode } = useSettingContext()
   return (
-    <StyledContainer maxWidth={false}>
+    <StyledContainer maxWidth={false} themeMode={themeMode}>
       <Grid container>
         <Grid container spacing={3} mt={2}>
           <Grid item xs={12}>
