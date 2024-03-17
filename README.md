@@ -18,3 +18,20 @@ This repository is a testament to our commitment to leveraging technology to bet
 
 <br/>
 <br/>
+
+> [!IMPORTANT]
+> Branding consistency is key to maintaining a professional image. Please ensure that all content and design elements adhere to Howick Ltd's brand guidelines. For any questions or clarifications, please reach out to the Howick Software team. Following are the brand guidelines:
+>
+> - No Pluralization, every word should be singular.
+> - Folder names should be in lowercase.
+> - Path alias are as documented in vite.config.js.
+> - Folder indexing should be maintained.
+> - All the images should be in the asset folder.
+> - No inline CSS, all the styles should be in the styles folder.
+> - Border Radius is static to 0.4 (px)
+> - Brand fonts should be maintained.
+>
+> For Brand guidelines, please refer to the [Brand Guidelines](https://howickltd.atlassian.net/wiki/spaces/HCS/pages/45121598/User+Interface+UI+Design)
+
+<br/>
+<br/>
