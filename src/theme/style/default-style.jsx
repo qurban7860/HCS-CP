@@ -42,7 +42,7 @@ export const StyledWelcomeContainerDiv = styled('div')(({ theme }) => ({
   overflow: 'hidden',
   position: 'relative',
   color: theme.palette.primary.darker,
-  borderRadius: Number(theme.shape.borderRadius) * 2,
+  borderRadius: Number(theme.shape.borderRadius),
   flexDirection: 'column',
   [theme.breakpoints.up('md')]: {
     flexDirection: 'row',
@@ -332,22 +332,25 @@ export const StyledContainerSvg = styled(({ themeMode, ...other }) => (
   }
 })
 
-export const StyledContainer = styled(Container)(({ theme }) => ({
-  backgroundImage: `url(${ASSET.BG_LOGO})`,
-  backgroundRepeat: 'no-repeat',
-  backgroundPositionY: 'center',
-  backgroundPositionX: 'right',
-  backgroundSize: '50%',
-  backgroundBlendMode: 'multiply',
-  backgroundOpacity: 0.9,
-  backgroundAttachment: 'fixed',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  color: 'text.primary',
-  paddingRight: 24,
-  paddingLeft: 24,
-}))
+export const StyledContainer = styled(({ themeMode, ...other }) => <Container {...other} />)(
+  ({ theme, themeMode }) => ({
+    backgroundImage:
+      themeMode === KEY.LIGHT ? `url(${ASSET.BG_LOGO})` : `url(${ASSET.BG_DARK_LOGO})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPositionY: 'center',
+    backgroundPositionX: 'right',
+    backgroundSize: '50%',
+    backgroundBlendMode: 'multiply',
+    backgroundOpacity: 0.9,
+    backgroundAttachment: 'fixed',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    color: 'text.primary',
+    paddingRight: 24,
+    paddingLeft: 24,
+  })
+)
 
 export const StyledGlobalCard = styled(Card)(({ theme }) => ({
   paddingRight: theme.spacing(3),
