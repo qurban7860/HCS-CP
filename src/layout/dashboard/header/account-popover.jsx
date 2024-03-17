@@ -1,45 +1,35 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { alpha, useTheme } from '@mui/material/styles'
-import {
-  Box,
-  Divider,
-  Drawer,
-  Typography,
-  Stack,
-  Tooltip,
-  MenuItem,
-  IconButton,
-} from '@mui/material'
-import { NAV } from 'config'
+import { Box, Divider, Dialog, Typography, Stack, MenuItem } from '@mui/material'
 // import { useAuthContext } from 'auth'
 import { CustomAvatar } from 'component/avatar'
 import { useSnackbar } from 'component/snackbar'
 import { MenuPopover } from 'component/menu-popover'
 import { IconButtonAnimate } from 'component/animate'
-import { Block, ModeOption, StretchOption, FullScreenOption } from 'component/setting'
-import { bgBlur } from 'theme/style'
+import { Block, ModeOption, FullScreenOption, ContrastOption } from 'component/setting'
 import { useSettingContext } from 'component/setting'
-import { themePreset } from 'theme'
 import { Iconify } from 'component/iconify'
 import { Scrollbar } from 'component/scrollbar'
+import { DisplayDialog } from '../../../component/setting/display/display-dialog'
+import { useIcon, ICON_NAME } from 'hook'
+import { bgBlur } from 'theme/style'
+import { themePreset } from 'theme'
 import { TITLE } from 'constant'
 import { OPTION } from './util'
 import { mockUser } from '_mock'
-import { useIcon } from 'component/iconify'
-
-const SPACING = 2.5
 
 export default function AccountPopover() {
-  const theme = useTheme()
   const navigate = useNavigate()
   // const { user, logout } = useAuthContext()
   const email = localStorage.getItem('email')
   const displayName = localStorage.getItem('name')
-  const { enqueueSnackbar } = useSnackbar()
   const [openPopover, setOpenPopover] = useState(null)
   const [open, setOpen] = useState(false)
-  const { Icon: SettingIcon, iconSrc } = useIcon('SEARCH')
+  const { Icon: WebIcon, iconSrc: refreshSrc } = useIcon(ICON_NAME.REFRESH)
+  const { iconSrc: closeSrc } = useIcon(ICON_NAME.CLOSE)
+
+  const { enqueueSnackbar } = useSnackbar()
 
   const {
     themeMode,
@@ -65,7 +55,7 @@ export default function AccountPopover() {
       handleClosePopover()
     } catch (error) {
       console.error(error)
-      enqueueSnackbar('Unable to logout!', { variant: 'error' })
+      enqueueSnackbar('Unable to logout', { variant: 'error' })
     }
   }
 
@@ -155,88 +145,28 @@ export default function AccountPopover() {
               {TITLE.ORGANIZATION}
             </Typography>
           </MenuItem>
-          <Divider sx={{ borderStyle: 'solid' }} />
+          <Divider />
           <MenuItem
             onClick={() => {
               handleToggle()
             }}
             onClose={handleClose}
           >
-            <IconButton onClick={handleToggle}>
-              <SettingIcon icon={iconSrc} />
-            </IconButton>
-            <IconButton onClick={handleToggle}>
-              <Iconify icon="eva:settings-2-fill" />
-            </IconButton>
+            <Typography variant="body2" noWrap>
+              {TITLE.DISPLAY_SETTING}
+            </Typography>
           </MenuItem>
         </Stack>
 
-        <Divider sx={{ borderStyle: 'solid' }} />
+        <Divider />
 
         <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
           {TITLE.LOGOUT}
         </MenuItem>
       </MenuPopover>
       <>
-        {!open && <Drawer open={open} notDefault={notDefault} onToggle={handleToggle} />}
-        <Drawer
-          anchor="right"
-          open={open}
-          onClose={handleClose}
-          BackdropProps={{ invisible: true }}
-          PaperProps={{
-            sx: {
-              ...bgBlur({ color: theme.palette.background.default }),
-              width: NAV.W_BASE,
-              boxShadow: `-24px 12px 40px 0 ${alpha(
-                theme.palette.mode === 'light'
-                  ? theme.palette.grey[500]
-                  : theme.palette.common.black,
-                0.16
-              )}`,
-              ...(open && { '&:after': { position: 'relative', zIndex: 9999 } }),
-            },
-          }}
-        >
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{ py: 2, pr: 1, pl: SPACING }}
-          >
-            <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
-              {TITLE.SETTINGS}
-            </Typography>
-
-            <Tooltip title="Reset">
-              <Box sx={{ position: 'relative' }}>
-                <IconButton onClick={onResetSetting}>
-                  <Iconify icon="ic:round-refresh" />
-                </IconButton>
-              </Box>
-            </Tooltip>
-
-            <IconButton onClick={handleClose}>
-              <Iconify icon="eva:close-fill" />
-            </IconButton>
-          </Stack>
-
-          <Divider sx={{ borderStyle: 'solid' }} />
-
-          <Scrollbar sx={{ p: SPACING, pb: 0 }}>
-            <Block title={TITLE.MODE}>
-              <ModeOption />
-            </Block>
-
-            <Block title={TITLE.STRETCH.label} tooltip={TITLE.STRETCH.tooltip}>
-              <StretchOption />
-            </Block>
-          </Scrollbar>
-
-          <Box sx={{ p: SPACING, pt: 0 }}>
-            <FullScreenOption />
-          </Box>
-        </Drawer>
+        {!open && <Dialog open={open} notDefault={notDefault} onToggle={handleToggle} />}
+        <DisplayDialog open={open} handleClose={handleClose} onResetSetting={onResetSetting} />
       </>
     </>
   )
