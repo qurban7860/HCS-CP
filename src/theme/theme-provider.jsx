@@ -7,6 +7,7 @@ import {
   StyledEngineProvider,
   ThemeProvider as MUIThemeProvider,
 } from '@mui/material/styles'
+import { RADIUS } from 'config'
 import GlobalStyle from './global-style'
 import palette from './palette'
 import shadow from './shadow'
@@ -25,7 +26,7 @@ function ThemeProvider({ children }) {
     () => ({
       palette: palette(themeMode),
       typography,
-      shape: { borderRadius: 8 },
+      shape: { borderRadius: RADIUS.BORDER.borderRadius },
       direction: themeDirection,
       shadow: shadow(themeMode),
       customShadow: customShadow(themeMode),
