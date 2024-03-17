@@ -3,7 +3,7 @@ import { createContext, useEffect, useContext, useMemo, useCallback } from 'reac
 import { useLocalStorage } from 'hook'
 import { themePreset } from 'theme'
 import { localStorageSpace } from 'util'
-import { defaultPreset, getPresets, presetsOption } from 'theme/preset'
+import { defaultPreset, getPreset, presetsOption } from 'theme/preset'
 
 const initialState = {
   ...themePreset,
@@ -20,12 +20,7 @@ const initialState = {
   // Contrast
   onToggleContrast: () => {},
   onChangeContrast: () => {},
-  // Color
-  onChangeColorPresets: () => {},
-  presetsColor: defaultPreset,
-  presetsOption: [],
-  // Stretch
-  onToggleStretch: () => {},
+  presetOption: [],
   // Reset
   onResetSetting: () => {},
 }
@@ -49,16 +44,6 @@ export function SettingProvider({ children }) {
   const storageAvailable = localStorageSpace()
   const langStorage = storageAvailable ? localStorage.getItem('i18nextLng') : ''
 
-  const isArabic = langStorage === 'ar'
-
-  useEffect(() => {
-    if (isArabic) {
-      onChangeDirectionByLang('ar')
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isArabic])
-
-  // Mode
   const onToggleMode = useCallback(() => {
     const themeMode = settings.themeMode === 'light' ? 'dark' : 'light'
     setSettings({ ...settings, themeMode })
@@ -72,7 +57,6 @@ export function SettingProvider({ children }) {
     [setSettings, settings]
   )
 
-  // Contrast
   const onToggleContrast = useCallback(() => {
     const themeContrast = settings.themeContrast === 'default' ? 'bold' : 'default'
     setSettings({ ...settings, themeContrast })
@@ -86,22 +70,6 @@ export function SettingProvider({ children }) {
     [setSettings, settings]
   )
 
-  // Color
-  const onChangeColorPresets = useCallback(
-    (event) => {
-      const themeColorPreset = event.target.value
-      setSettings({ ...settings, themeColorPreset })
-    },
-    [setSettings, settings]
-  )
-
-  // Stretch
-  const onToggleStretch = useCallback(() => {
-    const themeStretch = !settings.themeStretch
-    setSettings({ ...settings, themeStretch })
-  }, [setSettings, settings])
-
-  // Reset
   const onResetSetting = useCallback(() => {
     setSettings(themePreset)
   }, [setSettings])
@@ -109,35 +77,13 @@ export function SettingProvider({ children }) {
   const memoizedValue = useMemo(
     () => ({
       ...settings,
-      // Mode
       onToggleMode,
       onChangeMode,
-      // Contrast
       onChangeContrast,
       onToggleContrast,
-      // Stretch
-      onToggleStretch,
-      // Color
-      onChangeColorPresets,
-      presetsOption,
-      presetsColor: getPresets(settings.themeColorPreset),
-      // Reset
       onResetSetting,
     }),
-    [
-      settings,
-      // Mode
-      onToggleMode,
-      onChangeMode,
-      // Contrast
-      onToggleContrast,
-      // Stretch
-      onToggleStretch,
-      // Color
-      onChangeColorPresets,
-      // Reset
-      onResetSetting,
-    ]
+    [settings, onToggleMode, onChangeMode, onToggleContrast, onResetSetting]
   )
 
   return <SettingContext.Provider value={memoizedValue}>{children}</SettingContext.Provider>
