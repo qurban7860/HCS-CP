@@ -72,7 +72,7 @@ export const StyledMenu = styled(Paper)(({ theme }) => ({
   boxShadow: theme.customShadow.dialog,
   maxWidth: theme.breakpoints.values.lg,
   gridTemplateColumns: 'repeat(12, 1fr)',
-  borderRadius: Number(theme.shape.borderRadius) * 2,
+  borderRadius: Number(theme.shape.borderRadius),
   border: `solid 1px ${alpha(theme.palette.grey[500], 0.16)}`,
 }))
 
