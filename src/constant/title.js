@@ -1,3 +1,5 @@
+import KEY from './key'
+
 const TITLE = {
   UNDERDEVELOPMENT: 'Under Development',
   // @root - GeneralAppPage - dashboard
@@ -15,17 +17,25 @@ const TITLE = {
   NO_SITELOC: 'No site location was provided',
 
   // @root - AccountPopover - settings drawer
-  SETTINGS: 'Settings',
+  DISPLAY_SETTING: 'Display setting',
   CUSTOMIZE: 'Customize',
   LOGOUT: 'Logout',
-  MODE: 'Mode',
+  MODE: (mode) => {
+    return {
+      title: 'Mode',
+      tooltip: `Toggle ${mode === KEY.LIGHT ? KEY.DARK : KEY.LIGHT} mode`,
+    }
+  },
   CONTRAST: 'Contrast',
   ORGANIZATION: 'Organization',
-  STRETCH: {
-    label: 'Stretch',
-    tooltip: 'Only available at large resolutions > 1600px (xl)',
+  CONSTRAST: {
+    title: 'Contrast',
+    tooltip: 'Toggle contrast mode',
   },
-  PRESETS: 'Presets',
+  FULLSCREEN: {
+    title: 'Fullscreen',
+    tooltip: 'Toggle fullscreen mode',
+  },
 }
 
 export default TITLE
