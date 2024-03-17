@@ -12,6 +12,7 @@ function _sponsor(image) {
 
 const ASSET = {
   BG_LOGO: _background('howick-logo.svg'),
+  BG_DARK_LOGO: _background('howick-logo-dark.svg'),
   BRAND_LOGO_FULL: _brand('logo.svg'),
   COMPANY_HOWICK: _sponsor('howick.png'),
   COMPANY_RFS: _sponsor('rfs.png'),
