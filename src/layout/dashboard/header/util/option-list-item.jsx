@@ -2,10 +2,6 @@ import { PATH_SECURITY } from 'route/path'
 
 const OPTION = [
   {
-    label: 'Home',
-    linkTo: '/',
-  },
-  {
     label: 'Profile',
     linkTo: PATH_SECURITY.users.profile,
   },
