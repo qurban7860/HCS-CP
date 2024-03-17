@@ -89,7 +89,7 @@ export const StyledPopover = styled(Popover)(({ theme }) => ({
     padding: theme.spacing(1),
     marginTop: theme.spacing(0.5),
     boxShadow: theme.customShadows.dropdown,
-    borderRadius: Number(theme.shape.borderRadius) * 1.5,
+    borderRadius: Number(theme.shape.borderRadius),
     ...bgBlur({ color: theme.palette.background.default }),
   },
 }))
