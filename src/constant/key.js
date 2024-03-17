@@ -7,6 +7,9 @@ const KEY = {
   LIGHT: 'light',
   DARK: 'dark',
 
+  CONTRAST_DEFAULT: 'default',
+  CONTRAST_BOLD: 'bold',
+
   AUCKLAND: 'Auckland',
 }
 
