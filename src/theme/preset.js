@@ -1,33 +1,12 @@
-// theme
 import palette from './palette'
 
 const themePalette = palette('light')
 
-export const presets = [
+export const preset = [
   // DEFAULT
   {
     name: 'default',
     ...themePalette.primary,
-  },
-  // CYAN
-  {
-    name: 'cyan',
-    lighter: '#CCF4FE',
-    light: '#68CDF9',
-    main: '#078DEE',
-    dark: '#0351AB',
-    darker: '#012972',
-    contrastText: '#FFFFFF',
-  },
-  // PURPLE
-  {
-    name: 'purple',
-    lighter: '#EBD6FD',
-    light: '#B985F4',
-    main: '#7635dc',
-    dark: '#431A9E',
-    darker: '#200A69',
-    contrastText: '#FFFFFF',
   },
   // BLUE
   {
@@ -49,37 +28,21 @@ export const presets = [
     darker: '#793908',
     contrastText: themePalette.grey[800],
   },
-  // RED
-  {
-    name: 'red',
-    lighter: '#FFE3D5',
-    light: '#FFC1AC',
-    main: '#FF3030',
-    dark: '#B71833',
-    darker: '#7A0930',
-    contrastText: '#FFFFFF',
-  },
 ]
 
-export const defaultPreset = presets[0]
-export const cyanPreset = presets[1]
-export const purplePreset = presets[2]
-export const bluePreset = presets[3]
-export const orangePreset = presets[4]
-export const redPreset = presets[5]
+export const defaultPreset = preset[0]
+export const bluePreset = preset[3]
+export const orangePreset = preset[4]
 
-export const presetsOption = presets.map((color) => ({
+export const presetsOption = preset.map((color) => ({
   name: color.name,
   value: color.main,
 }))
 
-export function getPresets(key) {
+export function getPreset(key) {
   return {
     default: defaultPreset,
-    cyan: cyanPreset,
-    purple: purplePreset,
     blue: bluePreset,
     orange: orangePreset,
-    red: redPreset,
   }[key]
 }
