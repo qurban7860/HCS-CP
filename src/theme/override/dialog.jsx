@@ -1,17 +1,20 @@
+import { RADIUS } from 'config'
+
 export default function Dialog(theme) {
   return {
     MuiDialog: {
       styleOverrides: {
         paper: {
+          backgroundColor: theme.palette.background.default,
           boxShadow: theme.customShadow.dialog,
           '&.MuiPaper-rounded': {
-            borderRadius: Number(theme.shape.borderRadius) * 2,
+            borderRadius: theme.shape.borderRadius,
           },
           '&.MuiDialog-paperFullScreen': {
             borderRadius: 0,
           },
           '&.MuiDialog-paper .MuiDialogActions-root': {
-            padding: theme.spacing(3),
+            padding: theme.spacing(2),
           },
           '@media (max-width: 600px)': {
             margin: theme.spacing(2),
