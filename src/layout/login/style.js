@@ -1,7 +1,7 @@
 import { styled, alpha } from '@mui/material/styles'
 import { bgGradient } from 'theme/style'
 
-export const StyledRoot = styled('main')(() => ({
+export const GStyledRoot = styled('main')(() => ({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
