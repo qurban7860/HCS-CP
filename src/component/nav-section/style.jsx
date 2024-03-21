@@ -81,7 +81,7 @@ export const StyledIcon = styled(ListItemIcon)({
 
 // ----------------------------------------------------------------------
 
-export const StyledPopover = styled(Popover)(({ theme }) => ({
+export const GStyledPopover = styled(Popover)(({ theme }) => ({
   pointerEvents: 'none',
   '& .MuiPopover-paper': {
     width: 160,

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { useLocation } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 import { useActiveLink } from 'hook'
-import { StyledPopover } from './style'
+import { GStyledPopover } from './style'
 import NavItem from './nav-item'
 
 NavList.propTypes = {
@@ -73,26 +73,18 @@ function NavList({ data, depth, hasChild }) {
       />
 
       {hasChild && (
-        <StyledPopover
+        <GStyledPopover
           open={open}
           anchorEl={navRef.current}
-          anchorOrigin={
-            depth === 1
-              ? { vertical: 'bottom', horizontal: 'left' }
-              : { vertical: 'center', horizontal: 'right' }
-          }
-          transformOrigin={
-            depth === 1
-              ? { vertical: 'top', horizontal: 'left' }
-              : { vertical: 'center', horizontal: 'left' }
-          }
+          anchorOrigin={depth === 1 ? { vertical: 'bottom', horizontal: 'left' } : { vertical: 'center', horizontal: 'right' }}
+          transformOrigin={depth === 1 ? { vertical: 'top', horizontal: 'left' } : { vertical: 'center', horizontal: 'left' }}
           PaperProps={{
             onMouseEnter: handleOpen,
             onMouseLeave: handleClose,
           }}
         >
           <NavSubList data={data.children} depth={depth} />
-        </StyledPopover>
+        </GStyledPopover>
       )}
     </>
   )
@@ -107,12 +99,7 @@ function NavSubList({ data, depth }) {
   return (
     <>
       {data.map((list) => (
-        <NavList
-          key={list.title + list.path}
-          data={list}
-          depth={depth + 1}
-          hasChild={!!list.children}
-        />
+        <NavList key={list.title + list.path} data={list} depth={depth + 1} hasChild={!!list.children} />
       ))}
     </>
   )

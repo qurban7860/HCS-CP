@@ -45,13 +45,7 @@ const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...othe
         </Tooltip>
       )}
 
-      {!!children && (
-        <Iconify
-          icon={subItem ? 'eva:chevron-right-fill' : 'eva:chevron-down-fill'}
-          width={16}
-          sx={{ ml: 0.5, flexShrink: 0 }}
-        />
-      )}
+      {!!children && <Iconify icon={subItem ? 'eva:chevron-right-fill' : 'eva:chevron-down-fill'} width={16} sx={{ ml: 0.5, flexShrink: 0 }} />}
     </StyledItem>
   )
 
