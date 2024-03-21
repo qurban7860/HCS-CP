@@ -1,15 +1,5 @@
 import { styled, alpha } from '@mui/material/styles'
-import {
-  Popover,
-  Stack,
-  Card,
-  Grid,
-  Chip,
-  Container,
-  TableRow,
-  Box,
-  Typography,
-} from '@mui/material'
+import { Popover, Stack, Card, Grid, Chip, Container, TableRow, Box, Typography } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { bgBlur } from 'theme/style'
@@ -20,29 +10,23 @@ import { SvgColor } from 'component/svg-color'
 
 // :branding __________________________________________________________________________________________________
 // dashboard - welcome
-export const StyledWelcomeTitle = styled(({ themeMode, ...other }) => <Typography {...other} />)(
-  ({ theme, themeMode }) => {
-    return {
-      color: themeMode === KEY.LIGHT ? theme.palette.success.main : theme.palette.common.white,
-      fontWeight: theme.typography.fontWeightBold,
-    }
+export const GStyledWelcomeTitle = styled(({ themeMode, ...other }) => <Typography {...other} />)(({ theme, themeMode }) => {
+  return {
+    color: themeMode === KEY.LIGHT ? theme.palette.success.main : theme.palette.common.white,
+    fontWeight: theme.typography.fontWeightBold,
   }
-)
+})
 
-export const StyledWelcomeDescription = styled(({ themeMode, ...other }) => (
-  <Typography {...other} />
-))(({ theme, themeMode }) => {
+export const GStyledWelcomeDescription = styled(({ themeMode, ...other }) => <Typography {...other} />)(({ theme, themeMode }) => {
   return {
     color: themeMode === KEY.LIGHT ? theme.palette.success.main : theme.palette.common.white,
   }
 })
-export const StyledWelcomeContainerDiv = styled('div')(({ theme }) => ({
+export const GStyledWelcomeContainerDiv = styled('div')(({ theme }) => ({
   height: '100vh',
   display: 'flex',
   overflow: 'hidden',
   position: 'relative',
-  color: theme.palette.primary.darker,
-  borderRadius: Number(theme.shape.borderRadius),
   flexDirection: 'column',
   [theme.breakpoints.up('md')]: {
     flexDirection: 'row',
@@ -57,7 +41,7 @@ export const LogoGrayProps = {
   pointerEvents: 'none',
 }
 
-export const StyledFallbackWrapperGrid = styled(Grid)(({ theme }) => ({
+export const GStyledFallbackWrapperGrid = styled(Grid)(({ theme }) => ({
   width: 900,
   margin: 'auto',
   textAlign: 'center',
@@ -66,13 +50,13 @@ export const StyledFallbackWrapperGrid = styled(Grid)(({ theme }) => ({
 
 // :components ____________________________________________________________________________________________
 
-export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
+export const GStyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
   color: 'white',
   '&:hover': { backgroundColor: theme.palette.secondary.main },
 }))
 
-export const StyledLoadingScreenDiv = styled('div')(({ theme }) => ({
+export const GStyledLoadingScreenDiv = styled('div')(({ theme }) => ({
   right: 0,
   bottom: 0,
   zIndex: 9998,
@@ -85,7 +69,7 @@ export const StyledLoadingScreenDiv = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
 }))
 
-export const StyledRoot = styled('div')(({ theme }) => ({
+export const GStyledRoot = styled('div')(({ theme }) => ({
   '&:before': {
     ...bgBlur({
       color: theme.palette.primary.dark,
@@ -99,7 +83,7 @@ export const StyledRoot = styled('div')(({ theme }) => ({
   },
 }))
 
-export const StyledInfo = styled('div')(({ theme }) => ({
+export const GStyledInfo = styled('div')(({ theme }) => ({
   left: 0,
   right: 0,
   zIndex: 99,
@@ -109,7 +93,7 @@ export const StyledInfo = styled('div')(({ theme }) => ({
   },
 }))
 
-export const StyledCustomAvatar = styled('div')(({ theme }) => ({
+export const GStyledCustomAvatar = styled('div')(({ theme }) => ({
   borderWidth: 2,
   borderStyle: 'solid',
   borderColor: 'common.white',
@@ -121,77 +105,32 @@ export const StyledCustomAvatar = styled('div')(({ theme }) => ({
   height: { xs: 110, md: 110 },
 }))
 
-export const HtmlTooltip = styled(({ className, ...props }, TooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: '#f5f5f9',
-    color: 'rgba(0, 0, 0, 0.87)',
-    maxWidth: 220,
-    fontSize: theme.typography.pxToRem(12),
-    border: '1px solid #dadde9',
-  },
-}))
-
-export const StyledTooltip = styled(({ className, ...props }) => (
-  <Tooltip {...props} arrow classes={{ popper: className }} />
-))(({ theme, tooltipcolor }) => ({
-  [`& .${tooltipClasses.arrow}`]: {
-    color: tooltipcolor,
-  },
-  [`& .${tooltipClasses.tooltip}`]: {
-    fontSize: '1rem',
-    backgroundColor: tooltipcolor,
-  },
-}))
-
-export const StyledTooltipSliding = styled(({ className, ...props }) => (
-  <Tooltip {...props} arrow classes={{ popper: className }} />
-))(({ theme, tooltipcolor }) => ({
-  [`& .${tooltipClasses.arrow}`]: {
-    color: tooltipcolor,
-  },
-  [`& .${tooltipClasses.tooltip}`]: {
-    fontSize: '1rem',
-    color: tooltipcolor,
-    backgroundColor: 'transparent',
-  },
-}))
-export const StyledVersionChip = styled(Chip)(({ theme, pointer }) => ({
-  margin: theme.spacing(0.2),
-  backgroundColor: alpha(theme.palette.primary.main, 0.08),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.primary.light, 0.25),
-  },
-  fontSize: '1.5rem',
-  fontWeight: 'bold',
-  color: theme.palette.primary.main,
-
-  // change mui chip padding top and bottom
-  paddingTop: theme.spacing(0.5),
-  paddingBottom: theme.spacing(0.5),
-}))
-
-export const StyledStack = styled(Stack)(({ theme }) => ({
-  justifyContent: 'flex-end',
-  flexDirection: 'row',
-  '& > :not(style) + :not(style)': {
-    marginLeft: theme.spacing(1),
-  },
-  // marginBottom: theme.spacing(-5),
-  // marginRight: theme.spacing(3),
-  '& .MuiButton-root': {
-    minWidth: '32px',
-    width: '32px',
-    height: '32px',
-    padding: 0,
-    '&:hover': {
-      background: 'transparent',
+export const GStyledTooltip = styled(({ className, ...props }) => <Tooltip {...props} arrow classes={{ popper: className }} />)(
+  ({ theme, tooltipcolor }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: tooltipcolor,
     },
-  },
-}))
+    [`& .${tooltipClasses.tooltip}`]: {
+      fontSize: '1rem',
+      backgroundColor: tooltipcolor,
+    },
+  })
+)
 
-export const StyledPopover = styled(Popover)(({ theme }) => ({
+export const GStyledTooltipSliding = styled(({ className, ...props }) => <Tooltip {...props} arrow classes={{ popper: className }} />)(
+  ({ theme, tooltipcolor }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: tooltipcolor,
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      fontSize: '1rem',
+      color: tooltipcolor,
+      backgroundColor: 'transparent',
+    },
+  })
+)
+
+export const GStyledPopover = styled(Popover)(({ theme }) => ({
   '& .MuiPaper-root': {
     backgroundColor: 'transparent',
     boxShadow: 'none',
@@ -212,21 +151,9 @@ export const StyledPopover = styled(Popover)(({ theme }) => ({
   pointerEvents: 'none',
 }))
 
-export const StyledClockBox = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  padding: '2px',
-  paddingLeft: '8px',
-  paddingRight: '8px',
-  border: `1px ${theme.palette.grey[500]} solid`,
-}))
+// :landing __________________________________________________________________________________________________
 
-export const StyledBoxFlex = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}))
-
-export const StyledBrandOverlayBox = styled(Box)(({ theme }) => ({
+export const GStyledBrandOverlayBox = styled(Box)(({ theme }) => ({
   width: 100,
   margin: theme.spacing(1),
   marginRight: theme.spacing(1),
@@ -244,7 +171,7 @@ export const StyledBrandOverlayBox = styled(Box)(({ theme }) => ({
   },
 }))
 
-export const StyledTopPolygonDiv = styled('div')(({ theme }) => ({
+export const GStyledTopPolygonDiv = styled('div')(({ theme }) => ({
   position: 'absolute',
   top: -150,
   right: 150,
@@ -257,7 +184,7 @@ export const StyledTopPolygonDiv = styled('div')(({ theme }) => ({
   rotate: '-90deg',
 }))
 
-export const StyledBottomPolygonDiv = styled('div')(({ theme }) => ({
+export const GStyledBottomPolygonDiv = styled('div')(({ theme }) => ({
   position: 'absolute',
   bottom: -150,
   left: 150,
@@ -312,47 +239,32 @@ export const ButtonProps = {
  * @table :components ____________________________________________________________________________________________
  */
 
-// @root - StyledTableRow -
-export const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: 'white',
-  },
-  '&:nth-of-type(even)': {
-    backgroundColor: '#f8f8f8',
-  },
-}))
-
 // @root - GeneralAppPage - dashboard
 
-export const StyledContainerSvg = styled(({ themeMode, ...other }) => (
-  <SvgColor icon={ASSET.BG_LOGO} {...other} />
-))(({ theme, themeMode }) => {
+export const GGStyledContainerSvg = styled(({ themeMode, ...other }) => <SvgColor icon={ASSET.BG_LOGO} {...other} />)(({ theme, themeMode }) => {
   return {
     color: themeMode === KEY.LIGHT ? theme.palette.success.main : theme.palette.common.white,
   }
 })
 
-export const StyledContainer = styled(({ themeMode, ...other }) => <Container {...other} />)(
-  ({ theme, themeMode }) => ({
-    backgroundImage:
-      themeMode === KEY.LIGHT ? `url(${ASSET.BG_LOGO})` : `url(${ASSET.BG_DARK_LOGO})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundPositionY: 'center',
-    backgroundPositionX: 'right',
-    backgroundSize: '50%',
-    backgroundBlendMode: 'multiply',
-    backgroundOpacity: 0.9,
-    backgroundAttachment: 'fixed',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    color: 'text.primary',
-    paddingRight: 24,
-    paddingLeft: 24,
-  })
-)
+export const GStyledContainer = styled(({ themeMode, ...other }) => <Container {...other} />)(({ theme, themeMode }) => ({
+  backgroundImage: themeMode === KEY.LIGHT ? `url(${ASSET.BG_LOGO})` : `url(${ASSET.BG_DARK_LOGO})`,
+  backgroundRepeat: 'no-repeat',
+  backgroundPositionY: 'center',
+  backgroundPositionX: 'right',
+  backgroundSize: '50%',
+  backgroundBlendMode: 'multiply',
+  backgroundOpacity: 0.9,
+  backgroundAttachment: 'fixed',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  color: 'text.primary',
+  paddingRight: 24,
+  paddingLeft: 24,
+}))
 
-export const StyledGlobalCard = styled(Card)(({ theme }) => ({
+export const GStyledGlobalCard = styled(Card)(({ theme }) => ({
   paddingRight: theme.spacing(3),
   paddingLeft: theme.spacing(3),
   marginBottom: theme.spacing(3),
@@ -366,24 +278,14 @@ export const StyledGlobalCard = styled(Card)(({ theme }) => ({
  * @styled components from minimal layout
  */
 
-export const StyledBg = styled('div')(({ theme }) => ({
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  zIndex: -1,
-  position: 'absolute',
-  transform: 'scaleX(-1)',
-}))
-
-export const StyledCardContainer = styled(Card)(({ theme }) => ({
+export const GStyledCardContainer = styled(Card)(({ theme }) => ({
   marginBottom: theme.spacing(3),
   height: 160,
   position: 'relative',
 }))
 
 // @root - MachineEditForm - spacing
-export const ListItem = styled('li')(({ theme }) => ({
+export const GListItem = styled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),
 }))
 
