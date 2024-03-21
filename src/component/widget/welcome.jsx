@@ -1,11 +1,7 @@
 import PropTypes from 'prop-types'
 import { styled } from '@mui/material/styles'
 import { Typography, Stack } from '@mui/material'
-import {
-  StyledWelcomeTitle,
-  StyledWelcomeContainerDiv,
-  StyledWelcomeDescription,
-} from 'theme/style'
+import { GStyledWelcomeTitle, GStyledWelcomeContainerDiv, GStyledWelcomeDescription } from 'theme/style'
 import { useSettingContext } from 'component/setting'
 import { useTheme } from '@mui/material/styles'
 import { KEY } from 'constant'
@@ -21,7 +17,7 @@ function Welcome({ title, description, action, img, ...other }) {
   const { themeMode } = useSettingContext()
   const theme = useTheme()
   return (
-    <StyledWelcomeContainerDiv {...other}>
+    <GStyledWelcomeContainerDiv {...other}>
       <Stack
         flexGrow={1}
         sx={{
@@ -30,16 +26,16 @@ function Welcome({ title, description, action, img, ...other }) {
           mt: { xs: 0, md: 5 },
         }}
       >
-        <StyledWelcomeTitle variant="h0" fontWeight="bold" themeMode={themeMode}>
+        <GStyledWelcomeTitle variant="h0" fontWeight="bold" themeMode={themeMode}>
           {title}
-        </StyledWelcomeTitle>
-        <StyledWelcomeDescription variant="subtitle0" themeMode={themeMode}>
+        </GStyledWelcomeTitle>
+        <GStyledWelcomeDescription variant="subtitle0" themeMode={themeMode}>
           {description}
-        </StyledWelcomeDescription>
+        </GStyledWelcomeDescription>
         {action && action}
       </Stack>
       {img && img}
-    </StyledWelcomeContainerDiv>
+    </GStyledWelcomeContainerDiv>
   )
 }
 
