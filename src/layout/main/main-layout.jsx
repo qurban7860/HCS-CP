@@ -11,7 +11,6 @@ export default function MainLayout() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: 1 }}>
       <Header />
-
       <Box
         component="main"
         sx={{
@@ -23,7 +22,6 @@ export default function MainLayout() {
       >
         <Outlet />
       </Box>
-
       <Footer />
     </Box>
   )
