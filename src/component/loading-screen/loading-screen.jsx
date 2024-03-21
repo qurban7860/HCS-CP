@@ -6,7 +6,7 @@ import { useResponsive } from 'hook'
 import { NAV } from 'config'
 import { useAuthContext } from 'auth'
 import { LogoIcon } from 'component/logo'
-import { StyledLoadingScreenDiv } from 'theme/style'
+import { GStyledLoadingScreenDiv } from 'theme/style'
 import ProgressBar from '../progress-bar'
 import { useSettingContext } from 'component/setting'
 
@@ -17,15 +17,12 @@ function LoadingScreen() {
   const { themeLayout } = useSettingContext()
   const isDashboard = isInitialized && pathname.includes('/dashboard') && isDesktop
 
-  const size =
-    (themeLayout === 'mini' && NAV.W_DASHBOARD_MINI) ||
-    (themeLayout === 'vertical' && NAV.W_DASHBOARD) ||
-    128
+  const size = (themeLayout === 'mini' && NAV.W_DASHBOARD_MINI) || (themeLayout === 'vertical' && NAV.W_DASHBOARD) || 128
 
   return (
     <>
       <ProgressBar />
-      <StyledLoadingScreenDiv
+      <GStyledLoadingScreenDiv
         sx={{
           ...// isDashboard &&
           (isDesktop && {
@@ -95,7 +92,7 @@ function LoadingScreen() {
             />
           </>
         )}
-      </StyledLoadingScreenDiv>
+      </GStyledLoadingScreenDiv>
     </>
   )
 }
