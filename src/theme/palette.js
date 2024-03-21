@@ -66,7 +66,7 @@ const WARNING = {
 const ERROR = {
   lighter: '#FFE9D5',
   light: '#FFAC82',
-  main: '#FF5630',
+  main: '#DA4848',
   dark: '#B71D18',
   darker: '#7A0916',
   contrastText: '#fff',
@@ -129,7 +129,7 @@ export default function palette(themeMode) {
       secondary: GREY[600],
       disabled: GREY[500],
     },
-    background: { paper: GREY[200], default: GREY[300], neutral: GREY[500] },
+    background: { paper: GREY[200], default: GREY[400], neutral: GREY[500] },
     action: {
       ...COMMON.action,
       active: GREY[600],
