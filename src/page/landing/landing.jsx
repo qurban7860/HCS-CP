@@ -1,13 +1,7 @@
 import React from 'react'
 import { Box, Typography, Grid, Button } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import {
-  StyledBrandOverlayBox,
-  StyledBottomPolygonDiv,
-  StyledTopPolygonDiv,
-  StylendLandingContainerBox,
-  ButtonProps,
-} from 'theme/style'
+import { GStyledBrandOverlayBox, GStyledBottomPolygonDiv, GStyledTopPolygonDiv, StylendLandingContainerBox, ButtonProps } from 'theme/style'
 import { ASSET, GLOBAL, BRAND } from 'config'
 import { LABEL, PRODUCT, COMPANY, BUTTON } from 'constant'
 import { PATH_AUTH } from 'route/path'
@@ -46,9 +40,9 @@ const Landing = () => {
               <Grid container>
                 {PRODUCT.map((item, index) => (
                   <Grid item key={index}>
-                    <StyledBrandOverlayBox>
+                    <GStyledBrandOverlayBox>
                       <img alt={item.name} src={item.image} style={BRAND.LANDING_LOGO} />
-                    </StyledBrandOverlayBox>
+                    </GStyledBrandOverlayBox>
                   </Grid>
                 ))}
               </Grid>
@@ -60,9 +54,9 @@ const Landing = () => {
               <Grid container>
                 {COMPANY.map((item, index) => (
                   <Grid item key={index}>
-                    <StyledBrandOverlayBox>
+                    <GStyledBrandOverlayBox>
                       <img alt={item.name} src={item.image} style={BRAND.LANDING_LOGO} />
-                    </StyledBrandOverlayBox>
+                    </GStyledBrandOverlayBox>
                   </Grid>
                 ))}
               </Grid>
@@ -75,8 +69,8 @@ const Landing = () => {
           </Grid>
         </Grid>
       </Grid>
-      <StyledTopPolygonDiv />
-      <StyledBottomPolygonDiv />
+      <GStyledTopPolygonDiv />
+      <GStyledBottomPolygonDiv />
     </StylendLandingContainerBox>
   )
 }
