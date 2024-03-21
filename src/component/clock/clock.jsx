@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Typography, Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { StyledClockBox, StyledBoxFlex } from 'theme/style'
+import { StyledClockBox, StyledBoxFlex } from 'component/clock'
 import { RADIUS, TIME } from 'config'
 import { KEY, LOCALE, TIMEZONE } from 'constant'
 
 const Clock = () => {
   const [time, setTime] = useState(new Date())
-  const [aucklandTime, setAucklandTime] = useState(
-    new Date().toLocaleString(LOCALE.en, TIMEZONE.AUCKLAND)
-  )
+  const [aucklandTime, setAucklandTime] = useState(new Date().toLocaleString(LOCALE.en, TIMEZONE.AUCKLAND))
   const [timeZone, setTimeZone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone)
   const theme = useTheme()
 
