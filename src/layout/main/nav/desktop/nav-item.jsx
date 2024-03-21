@@ -5,50 +5,40 @@ import { Link as RouterLink } from 'react-router-dom'
 import { Link, CardActionArea } from '@mui/material'
 import { Iconify } from 'component/iconify'
 // import Image from '../../../../components/image'
-import { ListItem } from './style'
+import { GListItem } from './style'
 
-export const NavItem = forwardRef(
-  ({ item, open, isOffset, active, subItem, isExternalLink, ...other }, ref) => {
-    const { title, path, children } = item
+export const NavItem = forwardRef(({ item, open, isOffset, active, subItem, isExternalLink, ...other }, ref) => {
+  const { title, path, children } = item
 
-    const renderContent = (
-      <ListItem
-        ref={ref}
-        disableRipple
-        isOffset={isOffset}
-        subItem={subItem}
-        active={active}
-        open={open}
-        {...other}
-      >
-        {title}
+  const renderContent = (
+    <GListItem ref={ref} disableRipple isOffset={isOffset} subItem={subItem} active={active} open={open} {...other}>
+      {title}
 
-        {!!children && <Iconify width={16} icon="eva:arrow-ios-downward-fill" sx={{ ml: 1 }} />}
-      </ListItem>
-    )
+      {!!children && <Iconify width={16} icon="eva:arrow-ios-downward-fill" sx={{ ml: 1 }} />}
+    </GListItem>
+  )
 
-    // ExternalLink
-    if (isExternalLink) {
-      return (
-        <Link href={path} target="_blank" rel="noopener" underline="none">
-          {renderContent}
-        </Link>
-      )
-    }
-
-    // Has child
-    if (children) {
-      return renderContent
-    }
-
-    // Default
+  // ExternalLink
+  if (isExternalLink) {
     return (
-      <Link component={RouterLink} to={path} underline="none">
+      <Link href={path} target="_blank" rel="noopener" underline="none">
         {renderContent}
       </Link>
     )
   }
-)
+
+  // Has child
+  if (children) {
+    return renderContent
+  }
+
+  // Default
+  return (
+    <Link component={RouterLink} to={path} underline="none">
+      {renderContent}
+    </Link>
+  )
+})
 
 NavItem.propTypes = {
   open: PropTypes.bool,

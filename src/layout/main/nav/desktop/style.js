@@ -2,8 +2,7 @@ import { styled, alpha } from '@mui/material/styles'
 import { Paper, ListSubheader, ListItemButton } from '@mui/material'
 
 export const ListItem = styled(ListItemButton, {
-  shouldForwardProp: (prop) =>
-    prop !== 'active' && prop !== 'open' && prop !== 'isOffset' && prop !== 'subItem',
+  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'open' && prop !== 'isOffset' && prop !== 'subItem',
 })(({ active, open, isOffset, subItem, theme }) => {
   const dotActive = {
     content: '""',
