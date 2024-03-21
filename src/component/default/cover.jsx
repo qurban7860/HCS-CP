@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router'
 import { Button, Grid } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
-import { StyledRoot, StyledInfo } from 'theme/style'
+import { GStyledRoot, StyledInfo } from 'theme/style'
 import { PATH_CUSTOMER, PATH_SETTING } from 'route/path'
 import CoverSettingsIcons from './CoverSettingsIcons'
 import CoverTitles from './CoverTitles'
@@ -23,16 +23,7 @@ Cover.propTypes = {
   backLink: PropTypes.bool,
 }
 
-function Cover({
-  name,
-  icon,
-  avatar,
-  setting,
-  generalSettings,
-  customerSites,
-  customerContacts,
-  backLink,
-}) {
+function Cover({ name, icon, avatar, setting, generalSettings, customerSites, customerContacts, backLink }) {
   const navigate = useNavigate()
 
   const handleSettingsNavigate = () => {
@@ -55,46 +46,24 @@ function Cover({
   const { isAllAccessAllowed } = useAuthContext()
 
   return (
-    <StyledRoot style={{ p: { xs: 0, md: 0 } }}>
-      <StyledInfo
-        style={{ width: '100%', flex: 1, display: 'flex', justifyContent: 'space-between' }}
-      >
+    <GStyledRoot style={{ p: { xs: 0, md: 0 } }}>
+      <StyledInfo style={{ width: '100%', flex: 1, display: 'flex', justifyContent: 'space-between' }}>
         {avatar && <CoverAvatar avatar={name} />}
         <CoverTitles title={avatar && isMobile ? '' : name} />
-        <CoverSettingsIcons
-          setting={setting}
-          handleSettingsNavigate={handleSettingsNavigate}
-          generalSettings={generalSettings}
-        />
+        <CoverSettingsIcons setting={setting} handleSettingsNavigate={handleSettingsNavigate} generalSettings={generalSettings} />
       </StyledInfo>
       {isAllAccessAllowed && (
-        <Grid
-          container
-          justifyContent="space-between"
-          columnGap={2}
-          sx={{ position: 'absolute', bottom: 10, px: 3 }}
-        >
+        <Grid container justifyContent="space-between" columnGap={2} sx={{ position: 'absolute', bottom: 10, px: 3 }}>
           <Grid item>
             {backLink && (
-              <Button
-                size="small"
-                startIcon={<Iconify icon="mdi:arrow-left" />}
-                variant="outlined"
-                sx={{ float: 'left' }}
-                onClick={handleBackLink}
-              >
+              <Button size="small" startIcon={<Iconify icon="mdi:arrow-left" />} variant="outlined" sx={{ float: 'left' }} onClick={handleBackLink}>
                 Back
               </Button>
             )}
           </Grid>
           <Grid item>
             {customerSites && (
-              <Button
-                size="small"
-                startIcon={<Iconify icon="mdi:map-legend" />}
-                variant="outlined"
-                onClick={linkCustomerSites}
-              >
+              <Button size="small" startIcon={<Iconify icon="mdi:map-legend" />} variant="outlined" onClick={linkCustomerSites}>
                 Sites
               </Button>
             )}
@@ -112,7 +81,7 @@ function Cover({
           </Grid>
         </Grid>
       )}
-    </StyledRoot>
+    </GStyledRoot>
   )
 }
 
