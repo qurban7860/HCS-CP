@@ -36,8 +36,7 @@ export default function ContactsPopover() {
           width: 40,
           height: 40,
           ...(openPopover && {
-            bgcolor: (theme) =>
-              alpha(theme.palette.primary.main, theme.palette.action.focusOpacity),
+            bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.focusOpacity),
           }),
         }}
       >
