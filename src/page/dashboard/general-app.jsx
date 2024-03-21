@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material'
-import { StyledContainer, StyledContainerSvg } from 'theme/style'
+import { GStyledContainer, GGStyledContainerSvg } from 'theme/style'
 import { Welcome } from 'component/widget'
 // import HowickWidgets from '../components/DashboardWidgets/HowickWidgets'
 // TODO: redux slices
@@ -39,18 +39,13 @@ import { fQuarterYearDate } from 'util'
 function GeneralAppPage() {
   const { themeMode } = useSettingContext()
   return (
-    <StyledContainer maxWidth={false} themeMode={themeMode}>
-      <Grid container>
-        <Grid container spacing={3} mt={2}>
-          <Grid item xs={12}>
-            <Welcome
-              title={toTitleCase(GLOBAL.APP_BRANCH)}
-              description={GLOBAL.APP_CUSTOMER_TAGLINE}
-            />
-          </Grid>
+    <Grid container>
+      <Grid container spacing={3} mt={2}>
+        <Grid item xs={12}>
+          <Welcome title={toTitleCase(GLOBAL.APP_BRANCH)} description={GLOBAL.APP_CUSTOMER_TAGLINE} />
         </Grid>
       </Grid>
-    </StyledContainer>
+    </Grid>
   )
 }
 
