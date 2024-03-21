@@ -3,16 +3,8 @@ import * as Yup from 'yup'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import {
-  Link,
-  Stack,
-  Alert,
-  IconButton,
-  InputAdornment,
-  Checkbox,
-  FormControlLabel,
-} from '@mui/material'
-import { StyledLoadingButton } from 'theme/style'
+import { Link, Stack, Alert, IconButton, InputAdornment, Checkbox, FormControlLabel } from '@mui/material'
+import { GStyledLoadingButton } from 'theme/style'
 import { PATH_AUTH, PATH_DASHBOARD } from 'route/path'
 import { useAuthContext } from 'auth'
 import { Iconify } from 'component/iconify'
@@ -151,17 +143,10 @@ function AuthLoginForm() {
       </Stack>
 
       <FormControlLabel
-        control={
-          <Checkbox
-            name="remember"
-            checked={uremember}
-            onChange={() => setRemember(!uremember)}
-            variant="soft"
-          />
-        }
+        control={<Checkbox name="remember" checked={uremember} onChange={() => setRemember(!uremember)} variant="soft" />}
         label={BUTTON.REMEMBER_ME}
       />
-      <StyledLoadingButton
+      <GStyledLoadingButton
         fullWidth
         color="inherit"
         size="large"
@@ -171,15 +156,9 @@ function AuthLoginForm() {
         sx={RADIUS.BORDER}
       >
         {BUTTON.LOGIN}
-      </StyledLoadingButton>
+      </GStyledLoadingButton>
       <Stack alignItems="flex-end" sx={{ my: 2 }}>
-        <Link
-          component={RouterLink}
-          to={PATH_AUTH.resetPassword}
-          variant="body2"
-          color="inherit"
-          underline="none"
-        >
+        <Link component={RouterLink} to={PATH_AUTH.resetPassword} variant="body2" color="inherit" underline="none">
           {BUTTON.FORGOT_PASSWORD}
         </Link>
       </Stack>
