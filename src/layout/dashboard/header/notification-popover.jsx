@@ -3,20 +3,7 @@ import { noCase } from 'change-case'
 import { useEffect, useState, memo } from 'react'
 import { useNavigate } from 'react-router'
 import { useWebSocketContext } from 'auth'
-import {
-  Box,
-  List,
-  Badge,
-  Avatar,
-  Divider,
-  Typography,
-  ListItemText,
-  ListItemAvatar,
-  ListItemButton,
-  Tooltip,
-  IconButton,
-  Grid,
-} from '@mui/material'
+import { Box, List, Badge, Avatar, Divider, Typography, ListItemText, ListItemAvatar, ListItemButton, Tooltip, IconButton, Grid } from '@mui/material'
 import { fDateTime, fToNow } from 'util'
 import { Iconify } from 'component/iconify'
 import { Scrollbar } from 'component/scrollbar'
@@ -61,11 +48,7 @@ function NotificationPopover() {
 
   return (
     <>
-      <IconButtonAnimate
-        color={openPopover ? 'primary' : 'default'}
-        onClick={handleOpenPopover}
-        sx={{ width: 40, height: 40 }}
-      >
+      <IconButtonAnimate color={openPopover ? 'primary' : 'default'} onClick={handleOpenPopover} sx={{ width: 40, height: 40 }}>
         <Badge badgeContent={totalUnRead} color="error">
           <Iconify icon={openPopover ? 'mdi:bell-ring' : 'mdi:bell'} />
         </Badge>
