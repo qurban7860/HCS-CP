@@ -3,29 +3,35 @@ import { AuthGuard, GuestGuard } from 'auth'
 import SimpleLayout from 'layout/simple'
 import CompactLayout from 'layout/compact'
 import DashboardLayout from 'layout/dashboard'
+import { useSettingContext } from 'component/setting'
+import { GStyledContainer } from 'theme/style'
 import { PATH_AFTER_LOGIN } from 'global'
 import { FALLBACK } from 'constant'
 import {
-  // Landing:
+  // landing:
   LandingPage,
-  // Auth:
+  // auth:
   LoginPage,
   RegisterPage,
   VerifyCodePage,
   NewPasswordPage,
   ResetPasswordPage,
-  // Dashboard: General
+  // dashboard: General
   GeneralAppPage,
   MachineByModelViewForm,
   MachineByYearViewForm,
   MachineByCountriesViewForm,
-  // Fallback:
+  // security:
+  UserProfilePage,
+
+  // fallback:
   BlankPage,
   FallbackPage,
   UserInviteLandingPage,
 } from './element'
 
 export default function Router() {
+  const { themeMode } = useSettingContext()
   return useRoutes([
     {
       // Auth
@@ -67,7 +73,7 @@ export default function Router() {
       element: <LandingPage />,
     },
     {
-      // Dashboard
+      // dashboard
       path: 'dashboard',
       element: (
         <AuthGuard>
@@ -85,7 +91,7 @@ export default function Router() {
       ],
     },
     {
-      // Email
+      // email
       path: 'email',
       element: (
         <AuthGuard>
@@ -96,6 +102,28 @@ export default function Router() {
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         // { path: 'list', element: <Email /> },
         // { path: ':id/view', element: <Emailviewform /> },
+      ],
+    },
+    {
+      // security
+      path: 'security',
+      element: (
+        <AuthGuard>
+          <DashboardLayout />
+        </AuthGuard>
+      ),
+      children: [
+        { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
+        {
+          path: 'users',
+          children: [
+            {
+              path: 'profile',
+              element: <UserProfilePage />,
+            },
+            // { path: 'password', element: <ChangePasswordPage /> },
+          ],
+        },
       ],
     },
     {
