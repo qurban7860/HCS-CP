@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { TableCell, Link } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import { useLimitString } from 'hook'
-import { StyledTooltip } from 'theme/style'
+import { GStyledTooltip } from 'theme/style'
 
 LinkTableCellWithIcon.propTypes = {
   align: PropTypes.string,
@@ -18,7 +18,7 @@ function LinkTableCellWithIcon({ align, onClick, param, isVerified }) {
       {/* // TODO: icons //
       import VerificationIcon from '../Icons/VerificationIcon' */}
       {/* <VerificationIcon isVerified={isVerified} /> */}
-      <StyledTooltip title={param.length > limit ? param : ''} placement="top">
+      <GStyledTooltip title={param.length > limit ? param : ''} placement="top">
         <Link
           onClick={onClick}
           color="inherit"
@@ -34,7 +34,7 @@ function LinkTableCellWithIcon({ align, onClick, param, isVerified }) {
         >
           {useLimitString(param, limit)}
         </Link>
-      </StyledTooltip>
+      </GStyledTooltip>
     </TableCell>
   )
 }

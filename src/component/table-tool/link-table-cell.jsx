@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { TableCell } from '@mui/material'
 import { alpha, createTheme } from '@mui/material/styles'
 import { green } from '@mui/material/colors'
-import { StyledTooltip } from 'theme/style'
+import { GStyledTooltip } from 'theme/style'
 import { Iconify } from 'component/iconify'
 import { ICON } from 'constant/icon'
 import { useLimitString } from 'hook'
@@ -44,13 +44,7 @@ function LinkTableCell({ align, onClick, param, stringLength, isDefault }) {
     >
       {useLimitString(param, stringLength || 30)}
       {isDefault && (
-        <StyledTooltip
-          onClick={onClick}
-          title={ICON.DEFAULT.heading}
-          placement="top"
-          disableFocusListener
-          tooltipcolor={theme.palette.primary.main}
-        >
+        <GStyledTooltip onClick={onClick} title={ICON.DEFAULT.heading} placement="top" disableFocusListener tooltipcolor={theme.palette.primary.main}>
           <Iconify
             icon={ICON.DEFAULT.icon}
             color={theme.palette.primary.main}
@@ -58,7 +52,7 @@ function LinkTableCell({ align, onClick, param, stringLength, isDefault }) {
             height="17px"
             sx={{ mb: -0.3, ml: 0.5, cursor: 'pointer' }}
           />
-        </StyledTooltip>
+        </GStyledTooltip>
       )}
     </TableCell>
   )

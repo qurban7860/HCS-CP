@@ -21,7 +21,7 @@ import { useAuthContext } from 'auth'
 import { useResponsive } from 'hook'
 import { Iconify } from 'component/iconify'
 import { BUTTON } from 'constant'
-import { StyledTooltip } from 'theme/style'
+import { GStyledTooltip } from 'theme/style'
 // TODO: redux slices
 // import { getActiveDocumentTypesWithCategory } from '../../redux/slices/document/documentType'
 // import { setDateFrom, setDateTo } from '../../redux/slices/products/machineErpLogs'
@@ -118,13 +118,7 @@ function SearchBarCombo({
             ),
             endAdornment: isFiltered && (
               <InputAdornment position="end">
-                <Button
-                  fullWidth
-                  onClick={onClick}
-                  color="error"
-                  size="small"
-                  startIcon={<Iconify icon="eva:trash-2-outline" />}
-                >
+                <Button fullWidth onClick={onClick} color="error" size="small" startIcon={<Iconify icon="eva:trash-2-outline" />}>
                   {BUTTON.CLEAR}
                 </Button>
               </InputAdornment>
@@ -193,11 +187,7 @@ function SearchBarCombo({
             value={accountManagerFilter || null}
             options={spContacts}
             isOptionEqualToValue={(option, val) => option?._id === val?._id}
-            getOptionLabel={(option) =>
-              `${option.firstName ? option.firstName : ''} ${
-                option.lastName ? option.lastName : ''
-              }`
-            }
+            getOptionLabel={(option) => `${option.firstName ? option.firstName : ''} ${option.lastName ? option.lastName : ''}`}
             onChange={(event, newValue) => {
               if (newValue) {
                 setAccountManagerFilter(newValue)
@@ -206,9 +196,7 @@ function SearchBarCombo({
               }
             }}
             renderOption={(props, option) => (
-              <li {...props} key={option?._id}>{`${option.firstName ? option.firstName : ''} ${
-                option.lastName ? option.lastName : ''
-              }`}</li>
+              <li {...props} key={option?._id}>{`${option.firstName ? option.firstName : ''} ${option.lastName ? option.lastName : ''}`}</li>
             )}
             renderInput={(params) => <TextField {...params} size="small" label="Account Manager" />}
           />
@@ -225,12 +213,7 @@ function SearchBarCombo({
             sx={{ width: '100%' }}
             onChange={onChangeStartDate}
             error={dateFrom && dateTo && dateTo < dateFrom}
-            helperText={
-              dateFrom &&
-              dateTo &&
-              dateTo < dateFrom &&
-              `Start Date should be less than End date ${fDate(dateTo)}`
-            }
+            helperText={dateFrom && dateTo && dateTo < dateFrom && `Start Date should be less than End date ${fDate(dateTo)}`}
             size="small"
             InputLabelProps={{ shrink: true }}
           />
@@ -247,12 +230,7 @@ function SearchBarCombo({
             sx={{ width: '100%' }}
             onChange={onChangeEndDate}
             error={dateFrom && dateTo && dateFrom > dateTo}
-            helperText={
-              dateFrom &&
-              dateTo &&
-              dateFrom > dateTo &&
-              `End Date should be greater than Start date ${fDate(dateFrom)}`
-            }
+            helperText={dateFrom && dateTo && dateFrom > dateTo && `End Date should be greater than Start date ${fDate(dateFrom)}`}
             size="small"
             InputLabelProps={{ shrink: true }}
           />
@@ -266,11 +244,7 @@ function SearchBarCombo({
             value={supportManagerFilter || null}
             options={spContacts}
             isOptionEqualToValue={(option, val) => option?._id === val?._id}
-            getOptionLabel={(option) =>
-              `${option.firstName ? option.firstName : ''} ${
-                option.lastName ? option.lastName : ''
-              }`
-            }
+            getOptionLabel={(option) => `${option.firstName ? option.firstName : ''} ${option.lastName ? option.lastName : ''}`}
             onChange={(event, newValue) => {
               if (newValue) {
                 setSupportManagerFilter(newValue)
@@ -279,9 +253,7 @@ function SearchBarCombo({
               }
             }}
             renderOption={(props, option) => (
-              <li {...props} key={option?._id}>{`${option.firstName ? option.firstName : ''} ${
-                option.lastName ? option.lastName : ''
-              }`}</li>
+              <li {...props} key={option?._id}>{`${option.firstName ? option.firstName : ''} ${option.lastName ? option.lastName : ''}`}</li>
             )}
             renderInput={(params) => <TextField {...params} size="small" label="Support Manager" />}
           />
@@ -481,21 +453,10 @@ function SearchBarCombo({
       )}
 
       <Grid item xs={12} sm={6} md={4} lg={2} xl={2} sx={{ ml: 'auto' }}>
-        <Grid
-          container
-          rowSpacing={1}
-          columnSpacing={2}
-          sx={{ display: 'flex', justifyContent: 'flex-end' }}
-        >
+        <Grid container rowSpacing={1} columnSpacing={2} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           {onReload && (
             <Grid item>
-              <StyledTooltip
-                title="Reload"
-                placement="top"
-                disableFocusListener
-                tooltipcolor="#103996"
-                color="#103996"
-              >
+              <GStyledTooltip title="Reload" placement="top" disableFocusListener tooltipcolor="#103996" color="#103996">
                 <IconButton
                   onClick={onReload}
                   color="#fff"
@@ -512,41 +473,25 @@ function SearchBarCombo({
                 >
                   <Iconify color="#fff" sx={{ height: '24px', width: '24px' }} icon="mdi:reload" />
                 </IconButton>
-              </StyledTooltip>
+              </GStyledTooltip>
             </Grid>
           )}
 
           {inviteButton && (
             <Grid item>
-              <StyledTooltip
+              <GStyledTooltip
                 title={inviteButton}
                 placement="top"
                 disableFocusListener
                 tooltipcolor={
-                  (machineSettingPage || settingPage || securityUserPage) &&
-                  (isSettingReadOnly || isSecurityReadOnly)
-                    ? '#c3c3c3'
-                    : '#103996'
+                  (machineSettingPage || settingPage || securityUserPage) && (isSettingReadOnly || isSecurityReadOnly) ? '#c3c3c3' : '#103996'
                 }
-                color={
-                  (machineSettingPage || settingPage || securityUserPage) &&
-                  (isSettingReadOnly || isSecurityReadOnly)
-                    ? '#c3c3c3'
-                    : '#103996'
-                }
+                color={(machineSettingPage || settingPage || securityUserPage) && (isSettingReadOnly || isSecurityReadOnly) ? '#c3c3c3' : '#103996'}
               >
                 <IconButton
                   onClick={inviteOnClick}
-                  disabled={
-                    (machineSettingPage || settingPage || securityUserPage) &&
-                    (isSettingReadOnly || isSecurityReadOnly)
-                  }
-                  color={
-                    (machineSettingPage || settingPage || securityUserPage) &&
-                    (isSettingReadOnly || isSecurityReadOnly)
-                      ? '#c3c3c3'
-                      : '#fff'
-                  }
+                  disabled={(machineSettingPage || settingPage || securityUserPage) && (isSettingReadOnly || isSecurityReadOnly)}
+                  color={(machineSettingPage || settingPage || securityUserPage) && (isSettingReadOnly || isSecurityReadOnly) ? '#c3c3c3' : '#fff'}
                   sx={{
                     background: '#2065D1',
                     borderRadius: 1,
@@ -559,29 +504,18 @@ function SearchBarCombo({
                   }}
                 >
                   <Iconify
-                    color={
-                      (machineSettingPage || settingPage || securityUserPage) &&
-                      (isSettingReadOnly || isSecurityReadOnly)
-                        ? '#c3c3c3'
-                        : '#fff'
-                    }
+                    color={(machineSettingPage || settingPage || securityUserPage) && (isSettingReadOnly || isSecurityReadOnly) ? '#c3c3c3' : '#fff'}
                     sx={{ height: '24px', width: '24px' }}
                     icon={buttonIcon || 'mdi:user-plus'}
                   />
                 </IconButton>
-              </StyledTooltip>
+              </GStyledTooltip>
             </Grid>
           )}
 
           {handleAttach && !transferredMachine && (
             <Grid item>
-              <StyledTooltip
-                title="Attach Existing Drawing"
-                placement="top"
-                disableFocusListener
-                tooltipcolor="#103996"
-                color="#103996"
-              >
+              <GStyledTooltip title="Attach Existing Drawing" placement="top" disableFocusListener tooltipcolor="#103996" color="#103996">
                 <IconButton
                   onClick={handleAttach}
                   color="#fff"
@@ -596,25 +530,15 @@ function SearchBarCombo({
                     },
                   }}
                 >
-                  <Iconify
-                    color="#fff"
-                    sx={{ height: '24px', width: '24px' }}
-                    icon="fluent:attach-arrow-right-24-filled"
-                  />
+                  <Iconify color="#fff" sx={{ height: '24px', width: '24px' }} icon="fluent:attach-arrow-right-24-filled" />
                 </IconButton>
-              </StyledTooltip>
+              </GStyledTooltip>
             </Grid>
           )}
 
           {handleGalleryView && (
             <Grid item>
-              <StyledTooltip
-                title="View Gallery"
-                placement="top"
-                disableFocusListener
-                tooltipcolor="#103996"
-                color="#103996"
-              >
+              <GStyledTooltip title="View Gallery" placement="top" disableFocusListener tooltipcolor="#103996" color="#103996">
                 <IconButton
                   onClick={handleGalleryView}
                   color="#fff"
@@ -629,50 +553,25 @@ function SearchBarCombo({
                     },
                   }}
                 >
-                  <Iconify
-                    color="#fff"
-                    sx={{ height: '24px', width: '24px' }}
-                    icon="ooui:image-gallery"
-                  />
+                  <Iconify color="#fff" sx={{ height: '24px', width: '24px' }} icon="ooui:image-gallery" />
                 </IconButton>
-              </StyledTooltip>
+              </GStyledTooltip>
             </Grid>
           )}
 
           {onExportCSV && isAllAccessAllowed && (
             <Grid item>
-              <LoadingButton
-                onClick={() => onExportCSV(false, false)}
-                variant="contained"
-                sx={{ p: 0, minWidth: '24px' }}
-                loading={onExportLoading}
-              >
-                <StyledTooltip
-                  title={BUTTON.EXPORT.label}
-                  placement="top"
-                  disableFocusListener
-                  tooltipcolor="#103996"
-                  color="#103996"
-                >
-                  <Iconify
-                    color="#fff"
-                    sx={{ height: '41px', width: '55px', p: '8px' }}
-                    icon={BUTTON.EXPORT.icon}
-                  />
-                </StyledTooltip>
+              <LoadingButton onClick={() => onExportCSV(false, false)} variant="contained" sx={{ p: 0, minWidth: '24px' }} loading={onExportLoading}>
+                <GStyledTooltip title={BUTTON.EXPORT.label} placement="top" disableFocusListener tooltipcolor="#103996" color="#103996">
+                  <Iconify color="#fff" sx={{ height: '41px', width: '55px', p: '8px' }} icon={BUTTON.EXPORT.icon} />
+                </GStyledTooltip>
               </LoadingButton>
             </Grid>
           )}
 
           {openGraph && (
             <Grid item>
-              <StyledTooltip
-                title="Log Graph"
-                placement="top"
-                disableFocusListener
-                tooltipcolor="#103996"
-                color="#103996"
-              >
+              <GStyledTooltip title="Log Graph" placement="top" disableFocusListener tooltipcolor="#103996" color="#103996">
                 <IconButton
                   onClick={openGraph}
                   color="#fff"
@@ -687,46 +586,26 @@ function SearchBarCombo({
                     },
                   }}
                 >
-                  <Iconify
-                    color="#fff"
-                    sx={{ height: '24px', width: '24px' }}
-                    icon="mdi:graph-bar"
-                  />
+                  <Iconify color="#fff" sx={{ height: '24px', width: '24px' }} icon="mdi:graph-bar" />
                 </IconButton>
-              </StyledTooltip>
+              </GStyledTooltip>
             </Grid>
           )}
 
           {SubOnClick2 && !transferredMachine && (
             <Grid item>
-              <StyledTooltip
+              <GStyledTooltip
                 title="Upload Multiple Drawing"
                 placement="top"
                 disableFocusListener
                 tooltipcolor={
-                  (machineSettingPage || settingPage || securityUserPage) &&
-                  (isSettingReadOnly || isSecurityReadOnly)
-                    ? '#c3c3c3'
-                    : '#103996'
+                  (machineSettingPage || settingPage || securityUserPage) && (isSettingReadOnly || isSecurityReadOnly) ? '#c3c3c3' : '#103996'
                 }
-                color={
-                  (machineSettingPage || settingPage || securityUserPage) &&
-                  (isSettingReadOnly || isSecurityReadOnly)
-                    ? '#c3c3c3'
-                    : '#103996'
-                }
+                color={(machineSettingPage || settingPage || securityUserPage) && (isSettingReadOnly || isSecurityReadOnly) ? '#c3c3c3' : '#103996'}
               >
                 <IconButton
-                  disabled={
-                    (machineSettingPage || settingPage || securityUserPage) &&
-                    (isSettingReadOnly || isSecurityReadOnly)
-                  }
-                  color={
-                    (machineSettingPage || settingPage || securityUserPage) &&
-                    (isSettingReadOnly || isSecurityReadOnly)
-                      ? '#c3c3c3'
-                      : '#fff'
-                  }
+                  disabled={(machineSettingPage || settingPage || securityUserPage) && (isSettingReadOnly || isSecurityReadOnly)}
+                  color={(machineSettingPage || settingPage || securityUserPage) && (isSettingReadOnly || isSecurityReadOnly) ? '#c3c3c3' : '#fff'}
                   onClick={SubOnClick2}
                   sx={{
                     background: '#2065D1',
@@ -740,50 +619,29 @@ function SearchBarCombo({
                   }}
                 >
                   <Iconify
-                    color={
-                      (machineSettingPage || settingPage || securityUserPage) &&
-                      (isSettingReadOnly || isSecurityReadOnly)
-                        ? '#c3c3c3'
-                        : '#fff'
-                    }
+                    color={(machineSettingPage || settingPage || securityUserPage) && (isSettingReadOnly || isSecurityReadOnly) ? '#c3c3c3' : '#fff'}
                     sx={{ height: '24px', width: '24px' }}
                     icon="ic:round-post-add"
                   />
                 </IconButton>
-              </StyledTooltip>
+              </GStyledTooltip>
             </Grid>
           )}
 
           {addButton && !transferredMachine && (
             <Grid item>
-              <StyledTooltip
+              <GStyledTooltip
                 title={addButton}
                 placement="top"
                 disableFocusListener
                 tooltipcolor={
-                  (machineSettingPage || settingPage || securityUserPage) &&
-                  (isSettingReadOnly || isSecurityReadOnly)
-                    ? '#c3c3c3'
-                    : '#103996'
+                  (machineSettingPage || settingPage || securityUserPage) && (isSettingReadOnly || isSecurityReadOnly) ? '#c3c3c3' : '#103996'
                 }
-                color={
-                  (machineSettingPage || settingPage || securityUserPage) &&
-                  (isSettingReadOnly || isSecurityReadOnly)
-                    ? '#c3c3c3'
-                    : '#103996'
-                }
+                color={(machineSettingPage || settingPage || securityUserPage) && (isSettingReadOnly || isSecurityReadOnly) ? '#c3c3c3' : '#103996'}
               >
                 <IconButton
-                  disabled={
-                    (machineSettingPage || settingPage || securityUserPage) &&
-                    (isSettingReadOnly || isSecurityReadOnly)
-                  }
-                  color={
-                    (machineSettingPage || settingPage || securityUserPage) &&
-                    (isSettingReadOnly || isSecurityReadOnly)
-                      ? '#c3c3c3'
-                      : '#fff'
-                  }
+                  disabled={(machineSettingPage || settingPage || securityUserPage) && (isSettingReadOnly || isSecurityReadOnly)}
+                  color={(machineSettingPage || settingPage || securityUserPage) && (isSettingReadOnly || isSecurityReadOnly) ? '#c3c3c3' : '#fff'}
                   onClick={SubOnClick}
                   sx={{
                     background: '#2065D1',
@@ -797,17 +655,12 @@ function SearchBarCombo({
                   }}
                 >
                   <Iconify
-                    color={
-                      (machineSettingPage || settingPage || securityUserPage) &&
-                      (isSettingReadOnly || isSecurityReadOnly)
-                        ? '#c3c3c3'
-                        : '#fff'
-                    }
+                    color={(machineSettingPage || settingPage || securityUserPage) && (isSettingReadOnly || isSecurityReadOnly) ? '#c3c3c3' : '#fff'}
                     sx={{ height: '24px', width: '24px' }}
                     icon={buttonIcon || 'eva:plus-fill'}
                   />
                 </IconButton>
-              </StyledTooltip>
+              </GStyledTooltip>
             </Grid>
           )}
         </Grid>
