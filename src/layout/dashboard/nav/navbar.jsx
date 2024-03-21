@@ -37,7 +37,6 @@ function Shadow({ sx, ...other }) {
         zIndex: -1,
         width: 1,
         m: 'auto',
-        borderRadius: '50%',
         position: 'absolute',
         boxShadow: (theme) => theme.customShadow.z8,
         ...sx,
