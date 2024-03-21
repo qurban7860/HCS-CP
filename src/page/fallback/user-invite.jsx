@@ -10,7 +10,7 @@ import { LoadingButton } from '@mui/lab'
 import { Alert, Box, IconButton, InputAdornment, Stack, Typography, Grid } from '@mui/material'
 import { useSnackbar } from 'notistack'
 import { MuiTelInput } from 'mui-tel-input'
-import { StyledRoot, StyledContent } from 'layout/login'
+import { GStyledRoot, StyledContent } from 'layout/login'
 import FormProvider, { RHFTextField } from 'component/hook-form'
 import { Iconify } from 'component/iconify'
 import { Logo } from 'component/logo'
@@ -28,10 +28,7 @@ function UserInviteLanding() {
   const [phone, setPhone] = useState(verifiedInvite?.phone)
 
   const ChangePassWordSchema = Yup.object().shape({
-    fullName: Yup.string()
-      .trim()
-      .max(50, 'Name must be less than 50 characters')
-      .required('Name is required'),
+    fullName: Yup.string().trim().max(50, 'Name must be less than 50 characters').required('Name is required'),
     password: Yup.string()
       .trim()
       .min(6, 'Password must be at least 6 characters')
@@ -112,7 +109,7 @@ function UserInviteLanding() {
   }
 
   return (
-    <StyledRoot sx={{ width: 900, margin: '0 auto' }}>
+    <GStyledRoot sx={{ width: 900, margin: '0 auto' }}>
       <StyledContent>
         <Grid sx={{ display: 'flex', justifyContent: 'center' }}>
           <Grid item>
@@ -127,15 +124,8 @@ function UserInviteLanding() {
         <Stack sx={{ width: '100%' }}>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
-              <Box
-                rowGap={2}
-                columnGap={2}
-                display="grid"
-                gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }}
-              >
-                {!!errors.afterSubmit && (
-                  <Alert severity="error">{errors.afterSubmit.message}</Alert>
-                )}
+              <Box rowGap={2} columnGap={2} display="grid" gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }}>
+                {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
                 <RHFTextField name="customerName" label="Customer" disabled />
                 <RHFTextField name="contactName" label="Contact" disabled />
@@ -152,12 +142,7 @@ function UserInviteLanding() {
                 />
               </Box>
               <RHFTextField name="login" label="Login" disabled />
-              <Box
-                rowGap={3}
-                columnGap={2}
-                display="grid"
-                gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }}
-              >
+              <Box rowGap={3} columnGap={2} display="grid" gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }}>
                 <RHFTextField
                   name="password"
                   id="password"
@@ -183,13 +168,8 @@ function UserInviteLanding() {
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                          edge="end"
-                        >
-                          <Iconify
-                            icon={showConfirmPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'}
-                          />
+                        <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)} edge="end">
+                          <Iconify icon={showConfirmPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
                         </IconButton>
                       </InputAdornment>
                     ),
@@ -211,7 +191,7 @@ function UserInviteLanding() {
           </FormProvider>
         </Stack>
       </StyledContent>
-    </StyledRoot>
+    </GStyledRoot>
   )
 }
 export default memo(UserInviteLanding)
