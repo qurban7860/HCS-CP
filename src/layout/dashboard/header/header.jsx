@@ -16,11 +16,11 @@ import AccountPopover from './account-popover'
 import NotificationPopover from './notification-popover'
 import { KEY } from 'constant'
 
-Header.propTypes = {
-  onOpenNav: PropTypes.func,
-}
+// Header.propTypes = {
+//   onOpenNav: PropTypes.func,
+// }
 
-function Header({ onOpenNav }) {
+function Header() {
   const theme = useTheme()
   const navConfig = NavConfiguration()
   const { themeLayout } = useSettingContext()
@@ -48,10 +48,7 @@ function Header({ onOpenNav }) {
             onMouseEnter={() => <Typography variant="caption">{GLOBAL.VERSION}</Typography>}
             sx={{
               '.MuiBadge-dot': {
-                backgroundColor:
-                  GLOBAL.ENV === KEY.DEV || GLOBAL.ENV === KEY.DEVELOPMENT
-                    ? GLOBAL.DEV_COLOR
-                    : theme.palette.error.main,
+                backgroundColor: GLOBAL.ENV === KEY.DEV || GLOBAL.ENV === KEY.DEVELOPMENT ? GLOBAL.DEV_COLOR : theme.palette.error.main,
               },
             }}
           >
@@ -60,27 +57,14 @@ function Header({ onOpenNav }) {
         )}
       </Stack>
       {!isDesktop && (
-        <IconButton onClick={onOpenNav} sx={{ mr: 1, color: 'text.primary' }}>
+        <IconButton sx={{ mr: 1, color: 'text.primary' }}>
           <Iconify icon="eva:menu-2-fill" />
         </IconButton>
       )}
-      <Stack
-        flexGrow={1}
-        direction="row"
-        alignItems="center"
-        justifyContent="flex-start"
-        spacing={{ xs: 0.5, sm: 4 }}
-        ml={5}
-      >
+      <Stack flexGrow={1} direction="row" alignItems="center" justifyContent="flex-start" spacing={{ xs: 0.5, sm: 4 }} ml={5}>
         <NavSection data={navConfig} />
       </Stack>
-      <Stack
-        flexGrow={1}
-        direction="row"
-        alignItems="center"
-        justifyContent="flex-end"
-        spacing={{ xs: 0.5, sm: 2 }}
-      >
+      <Stack flexGrow={1} direction="row" alignItems="center" justifyContent="flex-end" spacing={{ xs: 0.5, sm: 2 }}>
         <Clock />
         <ModeOption />
         <NotificationPopover />
@@ -112,9 +96,7 @@ function Header({ onOpenNav }) {
         }),
       }}
     >
-      <Toolbar sx={{ height: 1, color: 'text.primary', position: 'sticky' }}>
-        {renderContent}
-      </Toolbar>
+      <Toolbar sx={{ height: 1, color: 'text.primary', position: 'sticky' }}>{renderContent}</Toolbar>
     </AppBar>
   )
 }
