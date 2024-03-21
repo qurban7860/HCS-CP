@@ -11,6 +11,16 @@ export const HEADER = {
   H_DASHBOARD_DESKTOP_OFFSET: 92 - 32,
 }
 
+export const MARGIN = {
+  PAGE_PROP: {
+    my: 5,
+  },
+  PAGE: {
+    marginTop: 2.5,
+    marginBottom: 2.5,
+  },
+}
+
 export const NAV = {
   W_BASE: 260,
   W_DASHBOARD: 300,
