@@ -13,7 +13,7 @@ import { Card, Grid, Autocomplete, TextField, Divider } from '@mui/material'
 // import { getActiveMachineModels } from '../../redux/slices/products/model'
 // import { getActiveCategories } from '../../redux/slices/products/category'
 import { ViewFormEditDeleteButtons } from 'component/viewform'
-import { StyledGlobalCard } from 'theme/style'
+import { GStyledGlobalCard } from 'theme/style'
 import { ChartBar } from 'component/chart'
 import { Cover } from 'component/default'
 import { PATH_DASHBOARD } from '.route/path'
@@ -23,9 +23,7 @@ function MachineByYearViewForm() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const { machinesByYear, machineCategory, machineModel, machineCountry } = useSelector(
-    (state) => state.count
-  )
+  const { machinesByYear, machineCategory, machineModel, machineCountry } = useSelector((state) => state.count)
   const { activeMachineModels } = useSelector((state) => state.machinemodel)
   const { activeCategories } = useSelector((state) => state.category)
 
@@ -65,13 +63,8 @@ function MachineByYearViewForm() {
       <Card sx={{ mb: 3, height: 160, position: 'relative' }}>
         <Cover name="Machine By Years" icon="material-symbols:list-alt-outline" />
       </Card>
-      <StyledGlobalCard>
-        <Grid
-          container
-          rowSpacing={1}
-          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}
-        >
+      <GStyledGlobalCard>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
           <Grid item xs={12} sm={6}>
             <ViewFormEditDeleteButtons backLink={() => navigate(PATH_DASHBOARD.general.app)} />
           </Grid>
@@ -82,9 +75,7 @@ function MachineByYearViewForm() {
               value={MBYCategory}
               isOptionEqualToValue={(option, value) => option?._id === value?._id}
               getOptionLabel={(option) => `${option.name ? option.name : ''}`}
-              renderOption={(props, option) => (
-                <li {...props} key={option?._id}>{`${option?.name || ''}`}</li>
-              )}
+              renderOption={(props, option) => <li {...props} key={option?._id}>{`${option?.name || ''}`}</li>}
               renderInput={(params) => <TextField {...params} label="Categories" size="small" />}
               onChange={(event, newValue) => {
                 setMBYCategory(newValue)
@@ -100,9 +91,7 @@ function MachineByYearViewForm() {
               value={MBYModel} // Ensure that MBYModel is controlled
               isOptionEqualToValue={(option, value) => option?._id === value?._id}
               getOptionLabel={(option) => `${option?.name || ''}`}
-              renderOption={(props, option) => (
-                <li {...props} key={option?._id}>{`${option.name || ''}`}</li>
-              )}
+              renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.name || ''}`}</li>}
               renderInput={(params) => <TextField {...params} label="Model" size="small" />}
               onChange={(event, newValue) => {
                 setMBYModel(newValue)
@@ -135,7 +124,7 @@ function MachineByYearViewForm() {
           type="bar"
           sx={{ backgroundColor: 'transparent' }}
         />
-      </StyledGlobalCard>
+      </GStyledGlobalCard>
     </Container>
   )
 }

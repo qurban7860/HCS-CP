@@ -9,7 +9,7 @@ import { Card, Grid, Autocomplete, TextField, Divider } from '@mui/material'
 // import {  getActiveCategories } from '../../redux/slices/products/category';
 // hooks
 import { ViewFormEditDeleteButtons } from 'component/viewform'
-import { StyledGlobalCard } from 'theme/style'
+import { GStyledGlobalCard } from 'theme/style'
 import { ChartBar } from 'component/charts'
 import { Cover } from '../components/Defaults/Cover'
 import { PATH_DASHBOARD } from '../../routes/paths'
@@ -18,9 +18,7 @@ export default function MachineByCountryViewForm() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const { machinesByCountry, machineCategory, machineModel, machineYear } = useSelector(
-    (state) => state.count
-  )
+  const { machinesByCountry, machineCategory, machineModel, machineYear } = useSelector((state) => state.count)
   const { activeMachineModels } = useSelector((state) => state.machinemodel)
   const { activeCategories } = useSelector((state) => state.category)
 
@@ -64,13 +62,8 @@ export default function MachineByCountryViewForm() {
       <Card sx={{ mb: 3, height: 160, position: 'relative' }}>
         <Cover name="Machine By Countries" icon="material-symbols:list-alt-outline" />
       </Card>
-      <StyledGlobalCard>
-        <Grid
-          container
-          rowSpacing={1}
-          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}
-        >
+      <GStyledGlobalCard>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
           <Grid item xs={12} sm={6}>
             <ViewFormEditDeleteButtons backLink={() => navigate(PATH_DASHBOARD.general.app)} />
           </Grid>
@@ -81,9 +74,7 @@ export default function MachineByCountryViewForm() {
               value={MBCCategory}
               isOptionEqualToValue={(option, value) => option?._id === value?._id}
               getOptionLabel={(option) => `${option.name ? option.name : ''}`}
-              renderOption={(props, option) => (
-                <li {...props} key={option?._id}>{`${option?.name || ''}`}</li>
-              )}
+              renderOption={(props, option) => <li {...props} key={option?._id}>{`${option?.name || ''}`}</li>}
               renderInput={(params) => <TextField {...params} label="Categories" size="small" />}
               onChange={(event, newValue) => {
                 setMBCCategory(newValue)
@@ -99,9 +90,7 @@ export default function MachineByCountryViewForm() {
               value={MBCModel} // Ensure that MBCModel is controlled
               isOptionEqualToValue={(option, value) => option?._id === value?._id}
               getOptionLabel={(option) => `${option?.name || ''}`}
-              renderOption={(props, option) => (
-                <li {...props} key={option?._id}>{`${option.name || ''}`}</li>
-              )}
+              renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.name || ''}`}</li>}
               renderInput={(params) => <TextField {...params} label="Model" size="small" />}
               onChange={(event, newValue) => {
                 setMBCModel(newValue)
@@ -133,7 +122,7 @@ export default function MachineByCountryViewForm() {
           type="bar"
           sx={{ backgroundColor: 'transparent' }}
         />
-      </StyledGlobalCard>
+      </GStyledGlobalCard>
     </Container>
   )
 }
