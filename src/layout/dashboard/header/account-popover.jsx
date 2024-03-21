@@ -1,16 +1,14 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link as RouterLink } from 'react-router-dom'
 import { alpha, useTheme } from '@mui/material/styles'
-import { Box, Divider, Dialog, Typography, Stack, MenuItem } from '@mui/material'
+
+import { Box, Divider, Dialog, Typography, Stack, MenuItem, Link } from '@mui/material'
 // import { useAuthContext } from 'auth'
 import { CustomAvatar } from 'component/avatar'
 import { useSnackbar } from 'component/snackbar'
 import { MenuPopover } from 'component/menu-popover'
 import { IconButtonAnimate } from 'component/animate'
-import { Block, ModeOption, FullScreenOption, ContrastOption } from 'component/setting'
 import { useSettingContext } from 'component/setting'
-import { Iconify } from 'component/iconify'
-import { Scrollbar } from 'component/scrollbar'
 import { DisplayDialog } from '../../../component/setting/display/display-dialog'
 import { useIcon, ICON_NAME } from 'hook'
 import { bgBlur } from 'theme/style'
@@ -31,15 +29,7 @@ export default function AccountPopover() {
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const {
-    themeMode,
-    themeLayout,
-    themeStretch,
-    themeContrast,
-    themeDirection,
-    themeColorPreset,
-    onResetSetting,
-  } = useSettingContext()
+  const { themeMode, themeLayout, themeStretch, themeContrast, themeDirection, themeColorPreset, onResetSetting } = useSettingContext()
 
   const handleOpenPopover = (event) => {
     setOpenPopover(event.currentTarget)
@@ -99,11 +89,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <CustomAvatar
-          src={mockUser[0]?.photoURL}
-          alt={mockUser[0]?.displayName}
-          name={mockUser[0]?.displayName}
-        />
+        <CustomAvatar src={mockUser[0]?.photoURL} alt={mockUser[0]?.displayName} name={mockUser[0]?.displayName} />
       </IconButtonAnimate>
 
       <MenuPopover
@@ -132,7 +118,9 @@ export default function AccountPopover() {
         <Stack sx={{ p: 1 }}>
           {OPTION.map((option) => (
             <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>
-              {option.label}
+              <Link underline="none" color="inherit" to={option.linkTo} component={RouterLink}>
+                {option.label}
+              </Link>
             </MenuItem>
           ))}
           <MenuItem
