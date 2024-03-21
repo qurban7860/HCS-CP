@@ -25,7 +25,7 @@ import LogoAvatar from '../../components/logo-avatar/LogoAvatar'
 import CustomAvatar from '../../components/custom-avatar/CustomAvatar'
 import CustomerDialog from '../components/Dialog/CustomerDialog'
 import ContactDialog from '../components/Dialog/ContactDialog'
-import { StyledTooltip } from '../../theme/styles/default-styles'
+import { GStyledTooltip } from '../../theme/styles/default-styles'
 import Iconify from '../../components/iconify'
 import FormLabel from '../components/DocumentForms/FormLabel'
 
@@ -150,9 +150,7 @@ export default function SecurityUserViewForm() {
       login: securityUser?.login || '',
       roles: securityUser?.roles,
       regions: securityUser?.regions || [],
-      countries: securityUser?.regions
-        ? securityUser.regions.flatMap((region) => region.countries)
-        : [],
+      countries: securityUser?.regions ? securityUser.regions.flatMap((region) => region.countries) : [],
       customers: securityUser?.customers || [],
       machines: securityUser?.machines || [],
       isActive: securityUser?.isActive,
@@ -206,10 +204,7 @@ export default function SecurityUserViewForm() {
               </Button>
             }
           />
-          <Grid
-            container
-            sx={{ display: { md: 'flex', sm: 'block' }, justifyContent: { md: 'space-between' } }}
-          >
+          <Grid container sx={{ display: { md: 'flex', sm: 'block' }, justifyContent: { md: 'space-between' } }}>
             <Grid item md={6} sm={12} xs={12} sx={{ p: 0.5 }}>
               <Grid
                 sx={{
@@ -230,42 +225,17 @@ export default function SecurityUserViewForm() {
                       <>
                         {defaultValues?.name}
                         {blockedUser.length > 0 && (
-                          <StyledTooltip
-                            title="User is Blocked"
-                            placement="top"
-                            disableFocusListener
-                            tooltipcolor="#FF0000"
-                            color="#FF0000"
-                          >
-                            <Iconify
-                              color="#FF0000"
-                              sx={{ height: '24px', width: '24px', verticalAlign: 'middle', ml: 1 }}
-                              icon="mdi:ban"
-                            />
-                          </StyledTooltip>
+                          <GStyledTooltip title="User is Blocked" placement="top" disableFocusListener tooltipcolor="#FF0000" color="#FF0000">
+                            <Iconify color="#FF0000" sx={{ height: '24px', width: '24px', verticalAlign: 'middle', ml: 1 }} icon="mdi:ban" />
+                          </GStyledTooltip>
                         )}
                       </>
                     )
                   }
                 />
-                <ViewFormField
-                  isLoading={isLoading}
-                  sm={12}
-                  heading="Phone"
-                  param={defaultValues?.phone}
-                />
-                <ViewFormField
-                  isLoading={isLoading}
-                  sm={12}
-                  heading="email"
-                  param={defaultValues?.email}
-                />
-                <ViewFormField
-                  isLoading={isLoading}
-                  sm={12}
-                  heading="Login"
-                  param={defaultValues?.login}
-                />
+                <ViewFormField isLoading={isLoading} sm={12} heading="Phone" param={defaultValues?.phone} />
+                <ViewFormField isLoading={isLoading} sm={12} heading="email" param={defaultValues?.email} />
+                <ViewFormField isLoading={isLoading} sm={12} heading="Login" param={defaultValues?.login} />
                 <ViewFormField
                   isLoading={isLoading}
                   sm={12}
@@ -275,34 +245,14 @@ export default function SecurityUserViewForm() {
                       <Link onClick={handleCustomerDialog} href="#" underline="none">
                         {defaultValues?.customer}
                         {blockedCustomer.length > 0 && (
-                          <StyledTooltip
-                            title="Customer is Blocked"
-                            placement="top"
-                            disableFocusListener
-                            tooltipcolor="#FF0000"
-                            color="#FF0000"
-                          >
-                            <Iconify
-                              color="#FF0000"
-                              sx={{ height: '24px', width: '24px', verticalAlign: 'middle', ml: 1 }}
-                              icon="ooui:block"
-                            />
-                          </StyledTooltip>
+                          <GStyledTooltip title="Customer is Blocked" placement="top" disableFocusListener tooltipcolor="#FF0000" color="#FF0000">
+                            <Iconify color="#FF0000" sx={{ height: '24px', width: '24px', verticalAlign: 'middle', ml: 1 }} icon="ooui:block" />
+                          </GStyledTooltip>
                         )}
                         {!securityUser?.customer?.isActive && (
-                          <StyledTooltip
-                            title="Customer is Inactive"
-                            placement="top"
-                            disableFocusListener
-                            tooltipcolor="#FF0000"
-                            color="#FF0000"
-                          >
-                            <Iconify
-                              color="#FF0000"
-                              sx={{ height: '24px', width: '24px', verticalAlign: 'middle', ml: 1 }}
-                              icon="mdi:ban"
-                            />
-                          </StyledTooltip>
+                          <GStyledTooltip title="Customer is Inactive" placement="top" disableFocusListener tooltipcolor="#FF0000" color="#FF0000">
+                            <Iconify color="#FF0000" sx={{ height: '24px', width: '24px', verticalAlign: 'middle', ml: 1 }} icon="mdi:ban" />
+                          </GStyledTooltip>
                         )}
                       </Link>
                     )
@@ -315,22 +265,11 @@ export default function SecurityUserViewForm() {
                   objectParam={
                     defaultValues?.contact && (
                       <Link onClick={handleContactDialog} href="#" underline="none">
-                        {defaultValues?.contact?.firstName || ''}{' '}
-                        {defaultValues?.contact?.lastName || ''}
+                        {defaultValues?.contact?.firstName || ''} {defaultValues?.contact?.lastName || ''}
                         {!defaultValues?.contact?.isActive && (
-                          <StyledTooltip
-                            title="Contact is Inactive"
-                            placement="top"
-                            disableFocusListener
-                            tooltipcolor="#FF0000"
-                            color="#FF0000"
-                          >
-                            <Iconify
-                              color="#FF0000"
-                              sx={{ height: '24px', width: '24px', verticalAlign: 'middle', ml: 1 }}
-                              icon="mdi:ban"
-                            />
-                          </StyledTooltip>
+                          <GStyledTooltip title="Contact is Inactive" placement="top" disableFocusListener tooltipcolor="#FF0000" color="#FF0000">
+                            <Iconify color="#FF0000" sx={{ height: '24px', width: '24px', verticalAlign: 'middle', ml: 1 }} icon="mdi:ban" />
+                          </GStyledTooltip>
                         )}
                       </Link>
                     )
@@ -350,37 +289,11 @@ export default function SecurityUserViewForm() {
                 }}
               >
                 <FormLabel content="Accessibility Information" />
-                <ViewFormField
-                  isLoading={isLoading}
-                  sm={12}
-                  heading="Roles"
-                  userRolesChips={defaultValues?.roles}
-                />
-                <ViewFormField
-                  isLoading={isLoading}
-                  sm={12}
-                  heading="Regions"
-                  arrayParam={defaultValues?.regions}
-                />
-                <ViewFormField
-                  isLoading={isLoading}
-                  sm={12}
-                  heading="Countries"
-                  chipLabel="country_name"
-                  arrayParam={defaultValues?.countries}
-                />
-                <ViewFormField
-                  isLoading={isLoading}
-                  sm={12}
-                  heading="Customers"
-                  arrayParam={defaultValues?.customers}
-                />
-                <ViewFormField
-                  isLoading={isLoading}
-                  sm={12}
-                  heading="Machines"
-                  arrayParam={defaultValues?.machines}
-                />
+                <ViewFormField isLoading={isLoading} sm={12} heading="Roles" userRolesChips={defaultValues?.roles} />
+                <ViewFormField isLoading={isLoading} sm={12} heading="Regions" arrayParam={defaultValues?.regions} />
+                <ViewFormField isLoading={isLoading} sm={12} heading="Countries" chipLabel="country_name" arrayParam={defaultValues?.countries} />
+                <ViewFormField isLoading={isLoading} sm={12} heading="Customers" arrayParam={defaultValues?.customers} />
+                <ViewFormField isLoading={isLoading} sm={12} heading="Machines" arrayParam={defaultValues?.machines} />
               </Grid>
             </Grid>
           </Grid>

@@ -12,7 +12,7 @@ import { LinkTableCell } from '../components/ListTableTools/LinkTableCell'
 import { useScreenSize } from 'hook'
 import { BadgeStatus } from 'component/badge-status'
 import { ICON } from 'constant/icon'
-import { StyledTooltip } from 'theme/style'
+import { GStyledTooltip } from 'theme/style'
 
 SecurityUserTableRow.propTypes = {
   row: PropTypes.object,
@@ -23,14 +23,7 @@ SecurityUserTableRow.propTypes = {
   onViewRow: PropTypes.func,
 }
 
-export default function SecurityUserTableRow({
-  row,
-  selected,
-  onEditRow,
-  onViewRow,
-  onSelectRow,
-  onDeleteRow,
-}) {
+export default function SecurityUserTableRow({ row, selected, onEditRow, onViewRow, onSelectRow, onDeleteRow }) {
   const { email, name, roles, phone, createdAt, currentEmployee, isActive, isOnline } = row
   const [openConfirm, setOpenConfirm] = useState(false)
   const [openPopover, setOpenPopover] = useState(null)
@@ -81,7 +74,7 @@ export default function SecurityUserTableRow({
         </TableCell>
       )}
       <TableCell align="center" key={isOnline}>
-        <StyledTooltip
+        <GStyledTooltip
           title={isOnline ? ICON.ONLINE.heading : ICON.OFFLINE.heading}
           placement="top"
           disableFocusListener
@@ -93,7 +86,7 @@ export default function SecurityUserTableRow({
             sx={{ height: 20, width: 20 }}
             icon={isOnline ? ICON.ONLINE.icon : ICON.OFFLINE.icon}
           />
-        </StyledTooltip>
+        </GStyledTooltip>
       </TableCell>
       <TableCell align="center">
         <Switch checked={currentEmployee} disabled size="small" />
