@@ -21,13 +21,7 @@ export default function NavList({ item }) {
 
   return (
     <>
-      <NavItem
-        item={item}
-        open={open}
-        onClick={() => setOpen(!open)}
-        active={pathname === path}
-        isExternalLink={isExternalLink}
-      />
+      <NavItem item={item} open={open} onClick={() => setOpen(!open)} active={pathname === path} isExternalLink={isExternalLink} />
 
       {!!children && (
         <Collapse in={open} unmountOnExit>

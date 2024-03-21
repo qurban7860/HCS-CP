@@ -20,13 +20,7 @@ export default function NavItem({ item, open, active, isExternalLink, ...other }
 
       <ListItemText disableTypography primary={title} />
 
-      {!!children && (
-        <Iconify
-          width={16}
-          icon={open ? 'eva:arrow-ios-downward-fill' : 'eva:arrow-ios-forward-fill'}
-          sx={{ ml: 1 }}
-        />
-      )}
+      {!!children && <Iconify width={16} icon={open ? 'eva:arrow-ios-downward-fill' : 'eva:arrow-ios-forward-fill'} sx={{ ml: 1 }} />}
     </ListItem>
   )
 
