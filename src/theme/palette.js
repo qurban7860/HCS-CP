@@ -8,7 +8,7 @@ const BRAND = {
 const GREY = {
   0: '#FFFFFF',
   100: '#F4F4F4',
-  200: '#F5F5F5',
+  200: '#E9ECEF',
   300: '#DFDFDF',
   400: '#D4D4D4',
   500: '#919EAB',
@@ -112,7 +112,7 @@ const COMMON = {
     hover: alpha(GREY[500], 0.08),
     selected: alpha(GREY[500], 0.16),
     disabled: alpha(GREY[500], 0.8),
-    disabledBackground: alpha(GREY[500], 0.24),
+    disabledBackground: alpha(GREY[500], 0.4),
     focus: alpha(GREY[500], 0.24),
     hoverOpacity: 0.08,
     disabledOpacity: 0.48,
