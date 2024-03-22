@@ -19,17 +19,20 @@ function _getWebIcon(icon) {
 // add icons that are from MDI
 const ICON_WEB = {
   ALERT_OUTLINE: _getWebIcon('alert-triangle-outline'),
+  BLUR_ON: _getWebIcon('blur'),
   CLOSE: _getWebIcon('close'),
   CONTRAST_BOX: _getWebIcon('contrast-box'),
   CONTRAST_ON: _getWebIcon('select-inverse'),
   CONTRAST_OFF: _getWebIcon('select-off'),
-  BLUR_ON: _getWebIcon('blur'),
+  EDIT: _getWebIcon('pencil'),
   FULLSCREEN: _getWebIcon('fullscreen'),
   FULLSCREEN_EXIT: _getWebIcon('fullscreen-exit'),
   INFO: _getWebIcon('info-outline'),
   REFRESH: _getWebIcon('refresh'),
+  SAVE: _getWebIcon('content-save'),
   SEARCH: _getWebIcon('magnify'),
   SETTING: _getWebIcon('cog'),
+  TIX_STATUS: _getWebIcon('chevron-up'),
 }
 
 // add icons that are saved locally
@@ -46,17 +49,20 @@ const ICON_LOC = {
 export const ICON_WEB_NAME = {
   // @web
   ALERT_OUTLINE: 'ALERT_OUTLINE',
-  CLOSE: 'CLOSE',
   BLUR_ON: 'BLUR_ON',
+  CLOSE: 'CLOSE',
   CONTRAST_BOX: 'CONTRAST_BOX',
   CONTRAST_ON: 'CONTRAST_ON',
   CONTRAST_OFF: 'CONTRAST_OFF',
+  EDIT: 'EDIT',
   INFO: 'INFO',
   FULLSCREEN: 'FULLSCREEN',
   FULLSCREEN_EXIT: 'FULLSCREEN_EXIT',
   REFRESH: 'REFRESH',
+  SAVE: 'SAVE',
   SEARCH: 'SEARCH',
   SETTING: 'SETTING',
+  TIX_STATUS: 'TIX_STATUS',
 }
 
 export const ICON_LOC_NAME = {
