@@ -9,12 +9,15 @@ const TITLE = {
   // @root - ResetPasswordPage - forgot password
   FORGOT_PASSWORD: 'Forgot your password?',
   CHECK_EMAIL: 'Check your E-mail',
-  FORGOT_DESC:
-    'Enter your email address below and we will send you instructions on how to reset your password.',
+  FORGOT_DESC: 'Enter your email address below and we will send you instructions on how to reset your password.',
   FORGOT_RETURN: 'Return to sign in',
   FORGOT_REQUEST: 'Send Request',
   // @root -MachineViewForm - site location
   NO_SITELOC: 'No site location was provided',
+
+  // @user - UserProfile - user
+  PERSONAL_INFO: 'Personal Information',
+  PROFILE: 'Profile',
 
   // @root - AccountPopover - settings drawer
   DISPLAY_SETTING: 'Display setting',
