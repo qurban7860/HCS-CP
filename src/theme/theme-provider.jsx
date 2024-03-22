@@ -2,11 +2,7 @@ import { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useSettingContext } from 'component/setting'
 import { CssBaseline } from '@mui/material'
-import {
-  createTheme,
-  StyledEngineProvider,
-  ThemeProvider as MUIThemeProvider,
-} from '@mui/material/styles'
+import { createTheme, StyledEngineProvider, ThemeProvider as MUIThemeProvider } from '@mui/material/styles'
 import { RADIUS } from 'config'
 import GlobalStyle from './global-style'
 import palette from './palette'
