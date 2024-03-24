@@ -1,17 +1,24 @@
 import PropTypes from 'prop-types'
 import storage from 'redux-persist/lib/storage'
 import { createContext, useEffect, useReducer, useCallback, useMemo } from 'react'
-import { GLOBAL } from 'global'
-import axios from 'util/axios'
+import { useDispatch, useSelector } from 'react-redux'
 import localStorageSpace from 'util/local-storage-space'
-import { isValidToken, setSession } from './util'
+import { setInitial } from 'slice/auth'
 import { PATH_AUTH } from 'route/path'
+import { GLOBAL } from 'global'
+import { axios } from 'util'
+import { LOCAL_STORAGE_KEY, RESPONSE } from 'constant'
+import { isValidToken, setSession } from './util'
 
 const initialState = {
   isInitialized: false,
   isAuthenticated: false,
   user: null,
-  // resetTokenTime: null,
+  userId: null,
+  isDashboardAccessLimited: true,
+  isSettingAccessAllowed: false,
+  isSecurityUserAccessAllowed: false,
+  isEmailAccessAllowed: false
 }
 
 const reducer = (state, action) => {
@@ -22,16 +29,23 @@ const reducer = (state, action) => {
         isInitialized: true,
         isAuthenticated: action.payload.isAuthenticated,
         user: action.payload.user,
-        // resetTokenTime: action.payload.resetTokenTime, // keeps track to avoid repeating the request
+        userId: action.payload.userId,
+        isSettingAccessAllowed: action.payload.isSettingAccessAllowed,
+        isSecurityUserAccessAllowed: action.payload.isSecurityUserAccessAllowed,
+        isEmailAccessAllowed: action.payload.isEmailAccessAllowed
       }
     }
     case 'LOGIN': {
-      const { user, userId } = action.payload
+      const { user, userId, isDashboardAccessLimited, isSettingAccessAllowed, isSecurityUserAccessAllowed, isEmailAccessAllowed } = action.payload
       return {
         ...state,
         isAuthenticated: true,
         user,
         userId,
+        isDashboardAccessLimited,
+        isSettingAccessAllowed,
+        isSecurityUserAccessAllowed,
+        isEmailAccessAllowed
       }
     }
     case 'REGISTER': {
@@ -39,7 +53,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         isAuthenticated: true,
-        user,
+        user
       }
     }
     case 'LOGOUT': {
@@ -47,7 +61,11 @@ const reducer = (state, action) => {
         ...state,
         isAuthenticated: false,
         user: null,
-        // resetTokenTime: null, // reset the timeout ID when logging out
+        isAllAccessAllowed: false,
+        isSettingAccessAllowed: false,
+        isDashboardAccessLimited: true,
+        isSecurityUserAccessAllowed: false,
+        isEmailAccessAllowed: false
       }
     }
     default: {
@@ -59,55 +77,51 @@ const reducer = (state, action) => {
 export const AuthContext = createContext(null)
 
 AuthProvider.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 }
 
 export function AuthProvider({ children }) {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  // const [state, dispatch] = useReducer(reducer, initialState)
   const storageAvailable = useMemo(() => localStorageSpace(), [])
+  const dispatch = useDispatch()
+  const { isInitialized, isAuthenticated, user, userId } = useSelector((state) => state.auth)
 
   const initialize = useCallback(async () => {
     try {
-      const accessToken = storageAvailable ? localStorage.getItem('accessToken') : ''
+      const accessToken = storageAvailable ? localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN) : ''
 
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken)
 
         const user = {
-          email: localStorage.getItem('email'),
-          displayName: localStorage.getItem('name'),
+          email: localStorage.getItem(LOCAL_STORAGE_KEY.EMAIL),
+          displayName: localStorage.getItem(LOCAL_STORAGE_KEY.NAME)
         }
-        const userId = localStorage.getItem('userId')
+        const userId = localStorage.getItem(LOCAL_STORAGE_KEY.USER_ID)
 
-        dispatch({
-          type: 'INITIAL',
-          payload: {
+        dispatch(
+          setInitial({
             isAuthenticated: true,
             user,
-            userId,
-            // resetTokenTime, // added the timeout ID to the payload
-          },
-        })
+            userId
+          })
+        )
       } else {
-        dispatch({
-          type: 'INITIAL',
-          payload: {
+        dispatch(
+          setInitial({
             isAuthenticated: false,
-            user: null,
-            // resetTokenTime: null, // reset the timeout ID when not authenticated
-          },
-        })
+            user: null
+          })
+        )
       }
     } catch (error) {
       console.error(error)
-      dispatch({
-        type: 'INITIAL',
-        payload: {
+      dispatch(
+        setInitial({
           isAuthenticated: false,
-          user: null,
-          // resetTokenTime: null,
-        },
-      })
+          user
+        })
+      )
     }
   }, [storageAvailable, dispatch])
 
@@ -115,146 +129,105 @@ export function AuthProvider({ children }) {
     initialize()
   }, [initialize])
 
-  // CONFIGURATIONS
-  async function getConfigs() {
-    const configsResponse = await axios.get(`${GLOBAL.SERVER_URL}configs`, {
-      params: { isActive: true, isArchived: false },
-    })
-    if (configsResponse && Array.isArray(configsResponse.data) && configsResponse.data.length > 0) {
-      const configs = configsResponse.data.map((c) => ({
-        name: c.name,
-        type: c.type,
-        value: c.value,
-        notes: c.notes,
-      }))
-      localStorage.setItem('configurations', JSON.stringify(configs))
-    }
-  }
-
-  // LOGIN
   const login = useCallback(async (uEmail, uPassword) => {
-    const response = await axios.post(`${GLOBAL.SERVER_URL}security/getToken`, {
+    const response = await axios.post(`${GLOBAL.SERVER_URL}/security/getToken`, {
       email: uEmail,
-      password: uPassword,
+      password: uPassword
     })
     if (response.data.multiFactorAuthentication) {
-      localStorage.setItem('userId', response.data.userId)
-      localStorage.setItem('MFA', true)
+      localStorage.setItem(LOCAL_STORAGE_KEY.USER_ID, response.data.userId)
+      localStorage.setItem(LOCAL_STORAGE_KEY.MFA, true)
     } else {
       const { accessToken, user, userId } = response.data
       const rolesArrayString = JSON.stringify(user.roles)
-      localStorage.setItem('email', user.email)
-      localStorage.setItem('name', user.displayName)
-      localStorage.setItem('userId', userId)
-      localStorage.setItem('userRoles', rolesArrayString)
+      localStorage.setItem(LOCAL_STORAGE_KEY.EMAIL, user.email)
+      localStorage.setItem(LOCAL_STORAGE_KEY.NAME, user.displayName)
+      localStorage.setItem(LOCAL_STORAGE_KEY.USER_ID, userId)
+      localStorage.setItem(LOCAL_STORAGE_KEY.ROLES, rolesArrayString)
       setSession(accessToken)
-      await getConfigs()
-      dispatch({
-        type: 'LOGIN',
-        payload: { user, userId },
-      })
+
+      dispatch(login({ user, userId }))
     }
   }, [])
 
   // MULTI FACTOR CODE
   const muliFactorAuthentication = useCallback(async (code, userID) => {
-    const response = await axios.post(`${GLOBAL.SERVER_URL}security/multifactorverifyCode`, {
+    const response = await axios.post(`${GLOBAL.SERVER_URL}/security/multifactorverifyCode`, {
       code,
-      userID,
+      userID
     })
     const { accessToken, user, userId } = response.data
     const rolesArrayString = JSON.stringify(user.roles)
-    localStorage.setItem('email', user.email)
-    localStorage.setItem('name', user.displayName)
-    localStorage.setItem('userId', userId)
-    localStorage.setItem('userRoles', rolesArrayString)
+    localStorage.setItem(LOCAL_STORAGE_KEY.EMAIL, user.email)
+    localStorage.setItem(LOCAL_STORAGE_KEY.NAME, user.displayName)
+    localStorage.setItem(LOCAL_STORAGE_KEY.USER_ID, userId)
+    localStorage.setItem(LOCAL_STORAGE_KEY.ROLES, rolesArrayString)
     setSession(accessToken)
     await getConfigs()
-    dispatch({
-      type: 'LOGIN',
-      payload: { user, userId },
-    })
+    dispatch(login({ user, userId }))
   }, [])
 
   // REGISTER
   const register = useCallback(async (firstName, lastName, email, password) => {
-    const response = await axios.post(`${GLOBAL.SERVER_URL}users/signup`, {
+    const response = await axios.post(`${GLOBAL.SERVER_URL}/users/signup`, {
       firstName,
       lastName,
       email,
-      password,
+      password
     })
     const { accessToken, user } = response.data
-    localStorage.setItem('accessToken', accessToken)
-    dispatch({
-      type: 'REGISTER',
-      payload: {
-        user,
-      },
-    })
+    localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, accessToken)
+
+    dispatch(register({ user }))
   }, [])
 
   // Clear All persisted data and remove Items from localStorage
   const clearAllPersistedStates = useCallback(async () => {
     try {
       setSession(null)
-      localStorage.removeItem('name')
-      localStorage.removeItem('email')
-      localStorage.removeItem('userId')
-      localStorage.removeItem('userRoles')
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('configurations')
-      // dispatch({
-      //   type: 'LOGOUT',
-      // });
+      localStorage.removeItem(LOCAL_STORAGE_KEY.NAME)
+      localStorage.removeItem(LOCAL_STORAGE_KEY.EMAIL)
+      localStorage.removeItem(LOCAL_STORAGE_KEY.USER_ID)
+      localStorage.removeItem(LOCAL_STORAGE_KEY.ROLES)
+      localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN)
+      localStorage.removeItem(LOCAL_STORAGE_KEY.CONFIGURATION)
       window.location.href = PATH_AUTH.login
       const keys = Object.keys(localStorage)
       const reduxPersistKeys = keys.filter(
-        (key) => !(key === 'remember' || key === 'UserEmail' || key === 'UserPassword')
+        (key) => !(key === LOCAL_STORAGE_KEY.REMEMBER || key === LOCAL_STORAGE_KEY.USER_EMAIL || key === LOCAL_STORAGE_KEY.USER_PASSWORD)
       )
       await Promise.all(reduxPersistKeys.map((key) => storage.removeItem(key)))
     } catch (error) {
-      console.error('Error clearing persisted states:', error)
+      console.error(RESPONSE.error.REDUX_PERSIST, error)
     }
   }, [])
 
-  // LOGOUT
   const logout = useCallback(async () => {
-    const userId = localStorage.getItem('userId')
+    const userId = localStorage.getItem(LOCAL_STORAGE_KEY.USER_ID)
     try {
       await dispatch(clearAllPersistedStates())
-      await axios.post(`${GLOBAL.SERVER_URL}security/logout/${userId}`)
+      await axios.post(`${GLOBAL.SERVER_URL}/security/logout/${userId}`)
     } catch (error) {
       console.error(error)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [dispatch])
 
   // Memoization
   const memoizedValue = useMemo(
     () => ({
-      isInitialized: state.isInitialized,
-      isAuthenticated: state.isAuthenticated,
-      user: state.user,
-      userId: state.userId,
-      method: 'jwt',
+      isInitialized: isInitialized,
+      isAuthenticated: isAuthenticated,
+      user: user,
+      userId: userId,
+      method: LOCAL_STORAGE_KEY.JWT,
       login,
       register,
       logout,
       clearAllPersistedStates,
-      muliFactorAuthentication,
+      muliFactorAuthentication
     }),
-    [
-      state.isAuthenticated,
-      state.isInitialized,
-      state.user,
-      state.userId,
-      login,
-      logout,
-      register,
-      muliFactorAuthentication,
-      clearAllPersistedStates,
-    ]
+    [isAuthenticated, isInitialized, user, userId, login, logout, register, muliFactorAuthentication, clearAllPersistedStates]
   )
 
   return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>
