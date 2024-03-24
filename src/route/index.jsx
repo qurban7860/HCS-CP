@@ -18,16 +18,13 @@ import {
   ResetPasswordPage,
   // dashboard: General
   GeneralAppPage,
-  MachineByModelViewForm,
-  MachineByYearViewForm,
-  MachineByCountriesViewForm,
   // security:
   UserProfilePage,
 
   // fallback:
   BlankPage,
   FallbackPage,
-  UserInviteLandingPage,
+  UserInviteLandingPage
 } from './element'
 
 export default function Router() {
@@ -39,11 +36,11 @@ export default function Router() {
       children: [
         {
           path: 'login',
-          element: <GuestGuard>{<LoginPage />}</GuestGuard>,
+          element: <GuestGuard>{<LoginPage />}</GuestGuard>
         },
         {
           path: 'authenticate',
-          element: <GuestGuard>{/* <Authenticate /> */}</GuestGuard>,
+          element: <GuestGuard>{/* <Authenticate /> */}</GuestGuard>
         },
         {
           path: 'register',
@@ -51,7 +48,7 @@ export default function Router() {
             <GuestGuard>
               <RegisterPage />
             </GuestGuard>
-          ),
+          )
         },
         { path: 'login-unprotected', element: <LoginPage /> },
         { path: 'register-unprotected', element: <RegisterPage /> },
@@ -61,16 +58,16 @@ export default function Router() {
             { path: 'reset-password', element: <ResetPasswordPage /> },
             {
               path: 'new-password/:token/:userId',
-              element: <NewPasswordPage />,
+              element: <NewPasswordPage />
             },
-            { path: 'verify', element: <VerifyCodePage /> },
-          ],
-        },
-      ],
+            { path: 'verify', element: <VerifyCodePage /> }
+          ]
+        }
+      ]
     },
     {
       path: '/',
-      element: <LandingPage />,
+      element: <LandingPage />
     },
     {
       // dashboard
@@ -83,12 +80,9 @@ export default function Router() {
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         { path: 'app', element: <GeneralAppPage /> },
-        { path: 'machineByCountries', element: <MachineByCountriesViewForm /> },
-        { path: 'machineByModels', element: <MachineByModelViewForm /> },
-        { path: 'machineByYears', element: <MachineByYearViewForm /> },
         { path: 'permission-denied', element: <FallbackPage {...FALLBACK.FORBIDDEN} /> },
-        { path: 'blank', element: <BlankPage /> },
-      ],
+        { path: 'blank', element: <BlankPage /> }
+      ]
     },
     {
       // email
@@ -99,10 +93,10 @@ export default function Router() {
         </AuthGuard>
       ),
       children: [
-        { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
+        { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true }
         // { path: 'list', element: <Email /> },
         // { path: ':id/view', element: <Emailviewform /> },
-      ],
+      ]
     },
     {
       // security
@@ -119,21 +113,21 @@ export default function Router() {
           children: [
             {
               path: 'profile',
-              element: <UserProfilePage />,
-            },
+              element: <UserProfilePage />
+            }
             // { path: 'password', element: <ChangePasswordPage /> },
-          ],
-        },
-      ],
+          ]
+        }
+      ]
     },
     {
       // Main Routes
       element: <LandingPage />,
-      children: [{ element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true }],
+      children: [{ element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true }]
     },
     {
       element: <SimpleLayout />,
-      children: [],
+      children: []
     },
     { path: 'invite/:id/:code/:expiry', element: <UserInviteLandingPage /> },
     { path: '500', element: <FallbackPage {...FALLBACK.INTERNAL_SERVER_ERROR} /> },
@@ -145,15 +139,15 @@ export default function Router() {
         // { path: 'coming-soon', element: <ComingSoonPage /> },
         // { path: 'maintenance', element: <MaintenancePage /> },
         {
-          path: 'invalidErrorPage',
+          path: 'invalidErrorPage'
           // element: <ErrorPage title="Invalid Code" />,
         },
         {
-          path: 'expiredErrorPage',
+          path: 'expiredErrorPage'
           // element: <ErrorPage title="Invitation Expired" />,
-        },
-      ],
+        }
+      ]
     },
-    { path: '*', element: <Navigate to="/404" replace /> },
+    { path: '*', element: <Navigate to="/404" replace /> }
   ])
 }

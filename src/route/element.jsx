@@ -19,9 +19,6 @@ export const Login = Loadable(lazy(() => import('section/auth/login')))
 // dashboard: general
 export const LandingPage = Loadable(lazy(() => import('page/landing/landing')))
 export const GeneralAppPage = Loadable(lazy(() => import('page/dashboard/general-app')))
-export const MachineByCountriesViewForm = Loadable(lazy(() => import('page/dashboard/machine-country-viewform')))
-export const MachineByModelViewForm = Loadable(lazy(() => import('page/dashboard/machine-model-viewform')))
-export const MachineByYearViewForm = Loadable(lazy(() => import('page/dashboard/machine-year-viewform')))
 
 // User Invitations List
 export const { UserInvitationList } = Loadable(lazy(() => import('page/security/user/user')))
