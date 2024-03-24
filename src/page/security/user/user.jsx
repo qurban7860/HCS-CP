@@ -28,7 +28,7 @@ import { mockUser } from '_mock'
 const UserProfile = ({ user = mockUser }) => {
   const [hoverAvatar, setHoverAvatar] = useState(false)
   const [hoverBadge, setHoverBadge] = useState(false)
-  const [isEditState, setIsEditState] = useState(false)
+  const [isNotEditState, setIsNotEditState] = useState(true)
 
   const { control, handleSubmit } = useForm()
   const { themeMode } = useSettingContext()
@@ -36,7 +36,7 @@ const UserProfile = ({ user = mockUser }) => {
   const fileInput = useRef(null)
 
   const handleEdit = () => {
-    setIsEditState((prev) => !prev)
+    setIsNotEditState((prev) => !prev)
   }
 
   const handleFileChange = (event) => {
@@ -217,14 +217,14 @@ const UserProfile = ({ user = mockUser }) => {
                     <Controller
                       name="organization"
                       control={control}
-                      disabled={isEditState}
+                      disabled={isNotEditState}
                       defaultValue={user[0].organization}
                       rules={{ required: 'organization is required' }}
                       render={({ field, fieldState: { error } }) => (
                         <TextField
                           {...field}
                           label="Organization"
-                          variant={isEditState ? 'filled' : 'standard'}
+                          variant={isNotEditState ? 'filled' : 'standard'}
                           error={!!error}
                           helperText={error?.message}
                           size="large"
@@ -262,10 +262,10 @@ const UserProfile = ({ user = mockUser }) => {
                             borderRadius: RADIUS.BORDER.borderRadius,
                           }}
                         >
-                          {isEditState ? (
-                            <Icon icon={editSrc} sx={{ color: themeMode === KEY.LIGHT ? 'primary.lighter' : 'grey.100' }} />
-                          ) : (
+                          {!isNotEditState ? (
                             <Icon icon={saveSrc} sx={{ color: themeMode === KEY.LIGHT ? 'primary.lighter' : 'grey.100' }} />
+                          ) : (
+                            <Icon icon={editSrc} sx={{ color: themeMode === KEY.LIGHT ? 'primary.lighter' : 'grey.100' }} />
                           )}
                         </IconButton>
                       </Grid>
@@ -285,7 +285,7 @@ const UserProfile = ({ user = mockUser }) => {
                       <Controller
                         name="firstName"
                         control={control}
-                        disabled={isEditState}
+                        disabled={isNotEditState}
                         defaultValue={user[0].firstName}
                         rules={{ required: 'Name is required' }}
                         render={({ field, fieldState: { error } }) => (
@@ -299,10 +299,7 @@ const UserProfile = ({ user = mockUser }) => {
                             fullWidth
                             InputProps={{
                               sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'success.main' : 'grey.800',
-                                '&.Mui-disabled': {
-                                  backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
-                                },
+                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
                               },
                             }}
                           />
@@ -314,7 +311,7 @@ const UserProfile = ({ user = mockUser }) => {
                         name="lastName"
                         control={control}
                         defaultValue={user[0].lastName}
-                        disabled={isEditState}
+                        disabled={isNotEditState}
                         render={({ field, fieldState: { error } }) => (
                           <TextField
                             {...field}
@@ -326,8 +323,8 @@ const UserProfile = ({ user = mockUser }) => {
                             fullWidth
                             InputProps={{
                               sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'success.main' : 'grey.800',
-                                '& .MuiInputBase-input.Mui-disabled': {
+                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
+                                '&.Mui-disabled': {
                                   color: themeMode === KEY.LIGHT ? 'common.black' : 'common.white',
                                 },
                               },
@@ -341,7 +338,7 @@ const UserProfile = ({ user = mockUser }) => {
                         name="location"
                         control={control}
                         defaultValue={Object.values(user[0].location).join(', ')}
-                        disabled={isEditState}
+                        disabled={isNotEditState}
                         rules={{ required: 'Location is required' }}
                         render={({ field, fieldState: { error } }) => (
                           <TextField
@@ -360,10 +357,10 @@ const UserProfile = ({ user = mockUser }) => {
                                 maxRows: 5,
                               },
                               sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'success.main' : 'grey.800',
-                                '&.Mui-disabled': {
-                                  backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
-                                },
+                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
+                                // '&.Mui-disabled': {
+                                //   backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
+                                // },
                               },
                             }}
                           />
@@ -388,10 +385,7 @@ const UserProfile = ({ user = mockUser }) => {
                             fullWidth
                             InputProps={{
                               sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'success.main' : 'grey.800',
-                                '&.Mui-disabled': {
-                                  backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
-                                },
+                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
                               },
                             }}
                           />
@@ -404,7 +398,7 @@ const UserProfile = ({ user = mockUser }) => {
                         name="role"
                         control={control}
                         defaultValue={user[0].role}
-                        disabled={isEditState}
+                        disabled={isNotEditState}
                         rules={{ required: 'Role is required' }}
                         render={({ field, fieldState: { error } }) => (
                           <TextField
@@ -417,10 +411,7 @@ const UserProfile = ({ user = mockUser }) => {
                             fullWidth
                             InputProps={{
                               sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'success.main' : 'grey.800',
-                                '&.Mui-disabled': {
-                                  backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
-                                },
+                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
                               },
                             }}
                           />
@@ -432,7 +423,7 @@ const UserProfile = ({ user = mockUser }) => {
                         name="phone"
                         control={control}
                         defaultValue={user[0].phone}
-                        disabled={isEditState}
+                        disabled={isNotEditState}
                         rules={{ required: 'Phone is required' }}
                         render={({ field, fieldState: { error } }) => (
                           <TextField
@@ -445,10 +436,7 @@ const UserProfile = ({ user = mockUser }) => {
                             fullWidth
                             InputProps={{
                               sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'success.main' : 'grey.800',
-                                '&.Mui-disabled': {
-                                  backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
-                                },
+                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
                               },
                             }}
                           />
