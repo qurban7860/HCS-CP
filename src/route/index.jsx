@@ -1,7 +1,5 @@
 import { Navigate, useRoutes } from 'react-router-dom'
 import { AuthGuard, GuestGuard } from 'auth'
-import SimpleLayout from 'layout/simple'
-import CompactLayout from 'layout/compact'
 import DashboardLayout from 'layout/dashboard'
 import { useSettingContext } from 'component/setting'
 import { GStyledContainer } from 'theme/style'
@@ -51,18 +49,7 @@ export default function Router() {
           )
         },
         { path: 'login-unprotected', element: <LoginPage /> },
-        { path: 'register-unprotected', element: <RegisterPage /> },
-        {
-          element: <CompactLayout />,
-          children: [
-            { path: 'reset-password', element: <ResetPasswordPage /> },
-            {
-              path: 'new-password/:token/:userId',
-              element: <NewPasswordPage />
-            },
-            { path: 'verify', element: <VerifyCodePage /> }
-          ]
-        }
+        { path: 'register-unprotected', element: <RegisterPage /> }
       ]
     },
     {
@@ -125,29 +112,10 @@ export default function Router() {
       element: <LandingPage />,
       children: [{ element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true }]
     },
-    {
-      element: <SimpleLayout />,
-      children: []
-    },
     { path: 'invite/:id/:code/:expiry', element: <UserInviteLandingPage /> },
     { path: '500', element: <FallbackPage {...FALLBACK.INTERNAL_SERVER_ERROR} /> },
     { path: '403', element: <FallbackPage {...FALLBACK.FORBIDDEN} /> },
     { path: '404', element: <FallbackPage {...FALLBACK.NOT_FOUND} /> },
-    {
-      element: <CompactLayout />,
-      children: [
-        // { path: 'coming-soon', element: <ComingSoonPage /> },
-        // { path: 'maintenance', element: <MaintenancePage /> },
-        {
-          path: 'invalidErrorPage'
-          // element: <ErrorPage title="Invalid Code" />,
-        },
-        {
-          path: 'expiredErrorPage'
-          // element: <ErrorPage title="Invitation Expired" />,
-        }
-      ]
-    },
     { path: '*', element: <Navigate to="/404" replace /> }
   ])
 }
