@@ -10,7 +10,7 @@ import { LoadingButton } from '@mui/lab'
 import { Alert, Box, IconButton, InputAdornment, Stack, Typography, Grid } from '@mui/material'
 import { useSnackbar } from 'notistack'
 import { MuiTelInput } from 'mui-tel-input'
-import { GStyledRoot, StyledContent } from 'layout/login'
+import { StyledRoot, StyledContent } from 'layout/login'
 import FormProvider, { RHFTextField } from 'component/hook-form'
 import { Iconify } from 'component/iconify'
 import { Logo } from 'component/logo'
@@ -36,7 +36,7 @@ function UserInviteLanding() {
       .required('Password is required'),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password'), null], 'Passwords must match')
-      .required('Please confirm password'),
+      .required('Please confirm password')
   })
 
   const defaultValues = useMemo(
@@ -48,14 +48,14 @@ function UserInviteLanding() {
       phone: verifiedInvite?.phone || '',
       email: verifiedInvite?.email || '',
       password: '',
-      confirmPassword: '',
+      confirmPassword: ''
     }),
     [verifiedInvite]
   )
 
   const methods = useForm({
     resolver: yupResolver(ChangePassWordSchema),
-    defaultValues,
+    defaultValues
   })
 
   useEffect(() => {
@@ -75,7 +75,7 @@ function UserInviteLanding() {
     reset,
     setValue,
     handleSubmit,
-    formState: { isSubmitting, errors, isSubmitSuccessful },
+    formState: { isSubmitting, errors, isSubmitSuccessful }
   } = methods
 
   useEffect(() => {
@@ -109,7 +109,7 @@ function UserInviteLanding() {
   }
 
   return (
-    <GStyledRoot sx={{ width: 900, margin: '0 auto' }}>
+    <StyledRoot sx={{ width: 900, margin: '0 auto' }}>
       <StyledContent>
         <Grid sx={{ display: 'flex', justifyContent: 'center' }}>
           <Grid item>
@@ -156,7 +156,7 @@ function UserInviteLanding() {
                         </IconButton>
                       </InputAdornment>
                     ),
-                    maxLength: 10,
+                    maxLength: 10
                   }}
                 />
 
@@ -172,7 +172,7 @@ function UserInviteLanding() {
                           <Iconify icon={showConfirmPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
                         </IconButton>
                       </InputAdornment>
-                    ),
+                    )
                   }}
                 />
               </Box>
@@ -182,8 +182,7 @@ function UserInviteLanding() {
                   type="submit"
                   variant="contained"
                   loading={isSubmitSuccessful || isSubmitting}
-                  sx={{ bgcolor: '#10079F', color: 'white', '&:hover': { bgcolor: '#FFA200' } }}
-                >
+                  sx={{ bgcolor: '#10079F', color: 'white', '&:hover': { bgcolor: '#FFA200' } }}>
                   Save
                 </LoadingButton>
               </Box>
@@ -191,7 +190,7 @@ function UserInviteLanding() {
           </FormProvider>
         </Stack>
       </StyledContent>
-    </GStyledRoot>
+    </StyledRoot>
   )
 }
 export default memo(UserInviteLanding)

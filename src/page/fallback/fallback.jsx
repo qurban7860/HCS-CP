@@ -12,7 +12,7 @@ const Fallback = ({ code, title, message }) => {
   const defaultValue = useMemo(
     () => ({
       title: content?.value || title,
-      message: content?.notes || message,
+      message: content?.notes || message
     }),
     [content?.value, content?.notes]
   )
@@ -31,7 +31,7 @@ const Fallback = ({ code, title, message }) => {
 Fallback.propTypes = {
   code: PropTypes.number || PropTypes.oneOf(Object.values(HTTP_CODE)),
   title: PropTypes.string,
-  message: PropTypes.string,
+  message: PropTypes.string
 }
 
 export default Fallback
