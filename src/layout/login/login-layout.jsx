@@ -2,18 +2,18 @@ import PropTypes from 'prop-types'
 import { Typography, Stack, Grid } from '@mui/material'
 import { Logo } from 'component/logo'
 import { GLOBAL } from 'global'
-import { GStyledRoot, StyledContent } from './style'
+import { StyledRoot, StyledContent } from './style'
 
 LoginLayout.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node,
-  illustration: PropTypes.string,
+  illustration: PropTypes.string
 }
 
 function LoginLayout({ children, illustration, title }) {
   title = title || GLOBAL.APP_BRANCH
   return (
-    <GStyledRoot>
+    <StyledRoot>
       <StyledContent>
         <Grid sx={{ display: 'flex', justifyContent: 'center', mb: -3 }} alignItems="center" spacing={2} container>
           <Grid item>
@@ -32,7 +32,7 @@ function LoginLayout({ children, illustration, title }) {
         </Grid>
         <Stack sx={{ width: '100%' }}> {children} </Stack>
       </StyledContent>
-    </GStyledRoot>
+    </StyledRoot>
   )
 }
 

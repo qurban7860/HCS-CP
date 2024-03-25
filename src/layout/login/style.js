@@ -1,11 +1,11 @@
 import { styled, alpha } from '@mui/material/styles'
 import { bgGradient } from 'theme/style'
 
-export const GStyledRoot = styled('main')(() => ({
+export const StyledRoot = styled('main')(() => ({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'center',
+  justifyContent: 'center'
   // position: 'relative',
 }))
 
@@ -17,14 +17,14 @@ export const StyledSection = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column',
-  },
+    flexDirection: 'column'
+  }
 }))
 
 export const StyledSectionBg = styled('div')(({ theme }) => ({
   ...bgGradient({
     color: alpha(theme.palette.background.default, theme.palette.mode === 'light' ? 0.9 : 0.94),
-    imgUrl: '/assets/background/overlay_2.jpg',
+    imgUrl: '/assets/background/overlay_2.jpg'
   }),
   top: 0,
   left: 0,
@@ -32,7 +32,7 @@ export const StyledSectionBg = styled('div')(({ theme }) => ({
   width: '100%',
   height: '100%',
   // position: 'absolute',
-  transform: 'scaleX(-1)',
+  transform: 'scaleX(-1)'
 }))
 
 export const StyledContent = styled('div')(({ theme }) => ({
@@ -45,6 +45,6 @@ export const StyledContent = styled('div')(({ theme }) => ({
   padding: theme.spacing(15, 2),
   [theme.breakpoints.up('md')]: {
     flexShrink: 0,
-    padding: theme.spacing(20, 8, 0, 8),
-  },
+    padding: theme.spacing(20, 8, 0, 8)
+  }
 }))
