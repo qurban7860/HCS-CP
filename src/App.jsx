@@ -9,6 +9,7 @@ import { BrowserRouter } from 'react-router-dom'
 // import { LocalizationProvider } from '@mui/x-date-pickers'
 import ErrorBoundary from 'util/error-boundary'
 import Router from 'route'
+import { HelmetProvider } from 'react-helmet-async'
 import { ThemeProvider } from 'theme'
 import { ThemeLocalization } from 'locale'
 import { SnackbarProvider } from 'component/snackbar'
@@ -32,26 +33,28 @@ function App() {
     //   <PersistGate loading={null} persistor={persistor}>
     // <LocalizationProvider dateAdapter={AdapterDateFns}>
     <AuthProvider>
-      <SettingProvider>
-        <BrowserRouter>
-          <MotionLazyContainer>
-            <ThemeProvider>
-              <ThemeSettings>
-                <ErrorBoundary fallback={<Fallback {...FALLBACK.INTERNAL_SERVER_ERROR} />}>
-                  <ScrollToTop />
-                  <ThemeLocalization>
-                    <SnackbarProvider>
-                      {/* <StyledChart /> */}
-                      {/* <IdleManager /> */}
-                      <Router />
-                    </SnackbarProvider>
-                  </ThemeLocalization>
-                </ErrorBoundary>
-              </ThemeSettings>
-            </ThemeProvider>
-          </MotionLazyContainer>
-        </BrowserRouter>
-      </SettingProvider>
+      <HelmetProvider>
+        <SettingProvider>
+          <BrowserRouter>
+            <MotionLazyContainer>
+              <ThemeProvider>
+                <ThemeSettings>
+                  <ErrorBoundary fallback={<Fallback {...FALLBACK.INTERNAL_SERVER_ERROR} />}>
+                    <ScrollToTop />
+                    <ThemeLocalization>
+                      <SnackbarProvider>
+                        {/* <StyledChart /> */}
+                        {/* <IdleManager /> */}
+                        <Router />
+                      </SnackbarProvider>
+                    </ThemeLocalization>
+                  </ErrorBoundary>
+                </ThemeSettings>
+              </ThemeProvider>
+            </MotionLazyContainer>
+          </BrowserRouter>
+        </SettingProvider>
+      </HelmetProvider>
     </AuthProvider>
     // </LocalizationProvider>
     //   </PersistGate>
