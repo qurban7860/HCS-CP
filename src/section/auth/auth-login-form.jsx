@@ -39,19 +39,19 @@ function AuthLoginForm() {
 
   const defaultValues = {
     email: uemail,
-    password: upassword,
+    password: upassword
   }
 
   const methods = useForm({
     resolver: yupResolver(LoginSchema),
-    defaultValues,
+    defaultValues
   })
 
   const {
     reset,
     setError,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting, isSubmitSuccessful }
   } = methods
 
   const handleSubmitTest = (data) => {
@@ -60,7 +60,6 @@ function AuthLoginForm() {
   }
 
   const onSubmit = async (data) => {
-    // bring back once redux is implemented
     if (uemail) {
       data.email = uemail
     }
@@ -90,13 +89,13 @@ function AuthLoginForm() {
         reset()
         setError('afterSubmit', {
           ...error,
-          message: error.Message,
+          message: error.Message
         })
       } else {
         console.error('error : ', error || '')
         setError('afterSubmit', {
           ...error,
-          message: error,
+          message: error
         })
       }
     }
@@ -104,8 +103,8 @@ function AuthLoginForm() {
 
   return (
     // bring back once redux is implemented
-    // <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-    <FormProvider methods={methods} onSubmit={handleSubmitTest}>
+    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      {/* <FormProvider methods={methods} onSubmit={handleSubmitTest}> */}
       <Stack spacing={3} sx={{ mt: 1 }}>
         {!!errors.afterSubmit && (
           <Alert sx={{ width: '380px' }} severity="error">
@@ -135,7 +134,7 @@ function AuthLoginForm() {
                   <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
                 </IconButton>
               </InputAdornment>
-            ),
+            )
           }}
           autoComplete="current-password"
           required
@@ -153,8 +152,7 @@ function AuthLoginForm() {
         type="submit"
         variant="contained"
         loading={isSubmitSuccessful || isSubmitting}
-        sx={RADIUS.BORDER}
-      >
+        sx={RADIUS.BORDER}>
         {BUTTON.LOGIN}
       </GStyledLoadingButton>
       <Stack alignItems="flex-end" sx={{ my: 2 }}>
