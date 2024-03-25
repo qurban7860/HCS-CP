@@ -3,7 +3,7 @@ import { useNavigate, Link as RouterLink } from 'react-router-dom'
 import { alpha, useTheme } from '@mui/material/styles'
 
 import { Box, Divider, Dialog, Typography, Stack, MenuItem, Link } from '@mui/material'
-// import { useAuthContext } from 'auth'
+import { useAuthContext } from 'auth'
 import { CustomAvatar } from 'component/avatar'
 import { useSnackbar } from 'component/snackbar'
 import { MenuPopover } from 'component/menu-popover'
@@ -19,13 +19,11 @@ import { mockUser } from '_mock'
 
 export default function AccountPopover() {
   const navigate = useNavigate()
-  // const { user, logout } = useAuthContext()
+  const { user, logout } = useAuthContext()
   const email = localStorage.getItem('email')
   const displayName = localStorage.getItem('name')
   const [openPopover, setOpenPopover] = useState(null)
   const [open, setOpen] = useState(false)
-  const { Icon: WebIcon, iconSrc: refreshSrc } = useIcon(ICON_NAME.REFRESH)
-  const { iconSrc: closeSrc } = useIcon(ICON_NAME.CLOSE)
 
   const { enqueueSnackbar } = useSnackbar()
 
@@ -84,11 +82,10 @@ export default function AccountPopover() {
               width: '100%',
               height: '100%',
               borderRadius: '50%',
-              position: 'absolute',
-            },
-          }),
-        }}
-      >
+              position: 'absolute'
+            }
+          })
+        }}>
         <CustomAvatar src={mockUser[0]?.photoURL} alt={mockUser[0]?.displayName} name={mockUser[0]?.displayName} />
       </IconButtonAnimate>
 
@@ -97,21 +94,19 @@ export default function AccountPopover() {
         onClose={handleClosePopover}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'right'
         }}
         sx={{
           width: 200,
           p: 0,
-          borderRadius: 0.4,
-        }}
-      >
+          borderRadius: 0.4
+        }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {mockUser[0].displayName || displayName}
             {displayName}
           </Typography>
           <Typography variant="overline" sx={{ color: 'text.secondary' }} fontWeight="bold" noWrap>
-            {mockUser[0]?.login || mockUser[0]?.email}
+            {email}
           </Typography>
         </Box>
         <Divider sx={{ borderStyle: 'solid' }} />
@@ -127,8 +122,7 @@ export default function AccountPopover() {
             onClick={() => {
               // handleToggle()
             }}
-            onClose={handleClose}
-          >
+            onClose={handleClose}>
             <Typography variant="body2" noWrap>
               {TITLE.ORGANIZATION}
             </Typography>
@@ -138,14 +132,12 @@ export default function AccountPopover() {
             onClick={() => {
               handleToggle()
             }}
-            onClose={handleClose}
-          >
+            onClose={handleClose}>
             <Typography variant="body2" noWrap>
               {TITLE.DISPLAY_SETTING}
             </Typography>
           </MenuItem>
         </Stack>
-
         <Divider />
 
         <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
