@@ -1,9 +1,9 @@
 const HTTP_CODE = {
-  // good
+  // success
   SUCCESS: 200,
   CREATED: 201,
   NO_CONTENT: 204,
-  // @redirection
+  // redirection
   MULTIPLE_CHOICES: 300,
   MOVED_PERMANENTLY: 301,
   FOUND: 302,
@@ -12,8 +12,7 @@ const HTTP_CODE = {
   USE_PROXY: 305,
   TEMPORARY_REDIRECT: 307,
   PERMANENT_REDIRECT: 308,
-
-  // bad
+  // error
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
@@ -24,7 +23,7 @@ const HTTP_CODE = {
   NOT_IMPLEMENTED: 501,
   BAD_GATEWAY: 502,
   SERVICE_UNAVAILABLE: 503,
-  GATEWAY_TIMEOUT: 504,
+  GATEWAY_TIMEOUT: 504
 }
 
 export default HTTP_CODE
