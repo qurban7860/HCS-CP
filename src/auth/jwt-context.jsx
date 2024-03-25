@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import localStorageSpace from 'util/local-storage-space'
 import { setInitial } from 'slice/auth'
 import { PATH_AUTH } from 'route/path'
-import { GLOBAL } from 'global'
+import { PATH_SERVER } from 'route/server'
 import { axios } from 'util'
 import { LOCAL_STORAGE_KEY, RESPONSE } from 'constant'
 import { isValidToken, setSession } from './util'
@@ -130,7 +130,7 @@ export function AuthProvider({ children }) {
   }, [initialize])
 
   const login = useCallback(async (uEmail, uPassword) => {
-    const response = await axios.post(`${GLOBAL.SERVER_URL}/security/getToken`, {
+    const response = await axios.post(PATH_SERVER.LOGIN, {
       email: uEmail,
       password: uPassword
     })
@@ -152,7 +152,7 @@ export function AuthProvider({ children }) {
 
   // MULTI FACTOR CODE
   const muliFactorAuthentication = useCallback(async (code, userID) => {
-    const response = await axios.post(`${GLOBAL.SERVER_URL}/security/multifactorverifyCode`, {
+    const response = await axios.post(PATH_SERVER.MFA, {
       code,
       userID
     })
@@ -167,9 +167,9 @@ export function AuthProvider({ children }) {
     dispatch(login({ user, userId }))
   }, [])
 
-  // REGISTER
+  // REGISTER --unused
   const register = useCallback(async (firstName, lastName, email, password) => {
-    const response = await axios.post(`${GLOBAL.SERVER_URL}/users/signup`, {
+    const response = await axios.post(PATH_SERVER.REGISTER, {
       firstName,
       lastName,
       email,
@@ -206,7 +206,7 @@ export function AuthProvider({ children }) {
     const userId = localStorage.getItem(LOCAL_STORAGE_KEY.USER_ID)
     try {
       await dispatch(clearAllPersistedStates())
-      await axios.post(`${GLOBAL.SERVER_URL}/security/logout/${userId}`)
+      await axios.post(PATH_SERVER.LOGOUT(userId))
     } catch (error) {
       console.error(error)
     }
