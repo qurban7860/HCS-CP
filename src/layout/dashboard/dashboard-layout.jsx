@@ -3,8 +3,7 @@ import { Outlet } from 'react-router-dom'
 import { GStyledContainer } from 'theme/style'
 import { useSettingContext } from 'component/setting'
 import Main from './main'
-import Header from './header'
-import { Navbar } from './nav'
+import Header, { Navbar } from './header'
 
 function DashboardLayout() {
   const { themeMode } = useSettingContext()
