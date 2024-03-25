@@ -12,7 +12,7 @@ import typography from './typography'
 import ComponentOverride from './override'
 
 ThemeProvider.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 }
 
 function ThemeProvider({ children }) {
@@ -25,7 +25,7 @@ function ThemeProvider({ children }) {
       shape: { borderRadius: RADIUS.BORDER.borderRadius },
       direction: themeDirection,
       shadow: shadow(themeMode),
-      customShadow: customShadow(themeMode),
+      customShadow: customShadow(themeMode)
     }),
     [themeDirection, themeMode]
   )
