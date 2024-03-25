@@ -6,7 +6,11 @@ const KEY = {
   DEVELOPMENT: 'development',
   LIGHT: 'light',
   DARK: 'dark',
+  ACCESS_TOKEN: 'accessToken',
 
+  // @redux keys
+  REDUX_STORE: 'store',
+  REDUX_AUTH: 'auth',
   CONTRAST_DEFAULT: 'default',
   CONTRAST_BOLD: 'bold',
 
