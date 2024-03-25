@@ -28,11 +28,12 @@ export default defineConfig({
       slice: path.resolve(__dirname, 'src', 'store', 'slice'),
       theme: path.resolve(__dirname, 'src', 'theme'),
       util: path.resolve(__dirname, 'src', 'util'),
+      root: path.resolve(__dirname, 'src', 'App.jsx'),
       // @page
       dashboard: path.resolve(__dirname, 'src', 'page', 'dashboard'),
       customer: path.resolve(__dirname, 'src', 'page', 'customer'),
       machine: path.resolve(__dirname, 'src', 'page', 'machine'),
-      document: path.resolve(__dirname, 'src', 'page', 'document'),
-    },
-  },
+      document: path.resolve(__dirname, 'src', 'page', 'document')
+    }
+  }
 })
