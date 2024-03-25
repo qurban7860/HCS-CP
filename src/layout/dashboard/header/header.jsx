@@ -16,10 +16,6 @@ import AccountPopover from './account-popover'
 import NotificationPopover from './notification-popover'
 import { KEY } from 'constant'
 
-// Header.propTypes = {
-//   onOpenNav: PropTypes.func,
-// }
-
 function Header() {
   const theme = useTheme()
   const navConfig = NavConfiguration()
@@ -48,10 +44,9 @@ function Header() {
             onMouseEnter={() => <Typography variant="caption">{GLOBAL.VERSION}</Typography>}
             sx={{
               '.MuiBadge-dot': {
-                backgroundColor: GLOBAL.ENV === KEY.DEV || GLOBAL.ENV === KEY.DEVELOPMENT ? GLOBAL.DEV_COLOR : theme.palette.error.main,
-              },
-            }}
-          >
+                backgroundColor: GLOBAL.ENV === KEY.DEV || GLOBAL.ENV === KEY.DEVELOPMENT ? GLOBAL.DEV_COLOR : theme.palette.error.main
+              }
+            }}>
             <LogoIcon />
           </Badge>
         )}
@@ -82,20 +77,19 @@ function Header() {
         top: 0,
         zIndex: theme.zIndex.appBar + 1,
         ...bgBlur({
-          color: theme.palette.background.default,
+          color: theme.palette.background.default
         }),
         transition: theme.transitions.create(['height'], {
-          duration: theme.transitions.duration.shorter,
+          duration: theme.transitions.duration.shorter
         }),
         ...(isDesktop && {
           // width: `calc(100% - ${NAV.W_DASHBOARD + 1}px)`,
           height: HEADER.H_DASHBOARD_DESKTOP,
           ...(isOffset && {
-            height: HEADER.H_DASHBOARD_DESKTOP_OFFSET,
-          }),
-        }),
-      }}
-    >
+            height: HEADER.H_DASHBOARD_DESKTOP_OFFSET
+          })
+        })
+      }}>
       <Toolbar sx={{ height: 1, color: 'text.primary', position: 'sticky' }}>{renderContent}</Toolbar>
     </AppBar>
   )
