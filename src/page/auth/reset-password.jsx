@@ -7,7 +7,7 @@ import { Logo } from 'component/logo'
 import { AuthResetPasswordForm } from 'section/auth'
 import { PasswordIcon } from 'theme/asset/jsx'
 import { MotionContainer } from 'component/animate'
-import { TITLES } from 'constant/default'
+import { TITLE } from 'constant'
 
 function ResetPasswordPage() {
   return (
@@ -19,7 +19,7 @@ function ResetPasswordPage() {
             margin: 'auto',
             filter: 'grayscale(100%) opacity(30%)',
             pointerEvents: 'none',
-            padding: '3rem 0',
+            padding: '3rem 0'
           }}
         />
         <PasswordIcon
@@ -28,15 +28,15 @@ function ResetPasswordPage() {
             width: '10%',
             top: '100px',
             right: '100px',
-            transform: 'rotate(30deg)',
+            transform: 'rotate(30deg)'
           }}
         />
       </Box>
       <Typography variant="h3" paragraph>
-        {TITLES.FORGOT_PASSWORD}
+        {TITLE.FORGOT_PASSWORD}
       </Typography>
 
-      <Typography sx={{ color: 'text.secondary', mb: 5 }}>{TITLES.FORGOT_DESC}</Typography>
+      <Typography sx={{ color: 'text.secondary', mb: 5 }}>{TITLE.FORGOT_DESC}</Typography>
       <AuthResetPasswordForm />
 
       <Link
@@ -48,11 +48,10 @@ function ResetPasswordPage() {
           mt: 3,
           mx: 'auto',
           alignItems: 'center',
-          display: 'inline-flex',
-        }}
-      >
+          display: 'inline-flex'
+        }}>
         <Iconify icon="eva:chevron-left-fill" width={16} />
-        {TITLES.FORGOT_RETURN}
+        {TITLE.FORGOT_RETURN}
       </Link>
     </MotionContainer>
   )
