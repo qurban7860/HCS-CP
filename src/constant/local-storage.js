@@ -15,7 +15,8 @@ const LOCAL_STORAGE_KEY = {
   REMEMBER: 'remember',
   USER_EMAIL: 'UserEmail',
   USER_PASSWORD: 'UserPassword',
-  JWT: 'jwt'
+  JWT: 'jwt',
+  AFTER_SUBMIT: 'afterSubmit'
 }
 
 export default LOCAL_STORAGE_KEY
