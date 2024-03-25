@@ -1,5 +1,2 @@
 export { default as GeneralApp } from './general-app'
 export { default as Blank } from './blank'
-export { default as MachineByCountryViewForm } from './machine-country-viewform'
-export { default as MachineByModelViewForm } from './machine-model-viewform'
-export { default as MachineByYearViewForm } from './machine-year-viewform'
