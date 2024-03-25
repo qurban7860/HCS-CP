@@ -6,6 +6,16 @@
 const LOCAL_STORAGE_KEY = {
   ERROR_PAGE: 'ERROR-PAGES',
   CONFIGURATION: 'configurations',
+  MFA: 'MFA',
+  ACCESS_TOKEN: 'accessToken',
+  USER_ID: 'userId',
+  EMAIL: 'email',
+  NAME: 'name',
+  ROLES: 'userRoles',
+  REMEMBER: 'remember',
+  USER_EMAIL: 'UserEmail',
+  USER_PASSWORD: 'UserPassword',
+  JWT: 'jwt'
 }
 
 export default LOCAL_STORAGE_KEY
