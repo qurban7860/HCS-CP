@@ -10,7 +10,7 @@ import { useAuthContext } from 'auth'
 import { Iconify } from 'component/iconify'
 import FormProvider, { RHFTextField } from 'component/hook-form'
 import { RADIUS } from 'config'
-import { BUTTON, REGEX } from 'constant'
+import { BUTTON, REGEX, LOCAL_STORAGE_KEY } from 'constant'
 
 function AuthLoginForm() {
   const navigate = useNavigate()
@@ -22,9 +22,9 @@ function AuthLoginForm() {
   const [uremember, setRemember] = useState(false)
 
   useEffect(() => {
-    const storedEmail = localStorage.getItem('UserEmail')
-    const storedPassword = localStorage.getItem('UserPassword')
-    const storedRemember = localStorage.getItem('remember')
+    const storedEmail = localStorage.getItem(LOCAL_STORAGE_KEY.USER_EMAIL)
+    const storedPassword = localStorage.getItem(LOCAL_STORAGE_KEY.USER_PASSWORD)
+    const storedRemember = localStorage.getItem(LOCAL_STORAGE_KEY.REMEMBER)
     if (storedEmail && storedPassword && storedRemember) {
       setEmail(storedEmail)
       setPassword(storedPassword)
@@ -32,10 +32,7 @@ function AuthLoginForm() {
     }
   }, [])
 
-  const LoginSchema = Yup.object().shape({
-    // email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    // password: Yup.string().required('Password is required'),
-  })
+  const LoginSchema = Yup.object().shape({})
 
   const defaultValues = {
     email: uemail,
@@ -69,31 +66,31 @@ function AuthLoginForm() {
 
     try {
       if (uremember) {
-        localStorage.setItem('UserEmail', data.email)
-        localStorage.setItem('UserPassword', data.password)
-        localStorage.setItem('remember', uremember)
+        localStorage.setItem(LOCAL_STORAGE_KEY.USER_EMAIL, data.email)
+        localStorage.setItem(LOCAL_STORAGE_KEY.USER_PASSWORD, data.password)
+        localStorage.setItem(LOCAL_STORAGE_KEY.REMEMBER, uremember)
       } else {
-        localStorage.removeItem('UserEmail')
-        localStorage.removeItem('UserPassword')
-        localStorage.removeItem('remember')
+        localStorage.removeItem(LOCAL_STORAGE_KEY.USER_EMAIL)
+        localStorage.removeItem(LOCAL_STORAGE_KEY.USER_PASSWORD)
+        localStorage.removeItem(LOCAL_STORAGE_KEY.REMEMBER)
       }
       await login(data.email, data.password)
 
-      if (localStorage.getItem('MFA')) {
+      if (localStorage.getItem(LOCAL_STORAGE_KEY.MFA)) {
         navigate(PATH_AUTH.authenticate)
-        localStorage.removeItem('MFA')
+        localStorage.removeItem(LOCAL_STORAGE_KEY.MFA)
       }
     } catch (error) {
       if (regEx.test(error.MessageCode)) {
         console.error('error : ', error?.Message || '')
         reset()
-        setError('afterSubmit', {
+        setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
           ...error,
           message: error.Message
         })
       } else {
         console.error('error : ', error || '')
-        setError('afterSubmit', {
+        setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
           ...error,
           message: error
         })
@@ -102,9 +99,7 @@ function AuthLoginForm() {
   }
 
   return (
-    // bring back once redux is implemented
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      {/* <FormProvider methods={methods} onSubmit={handleSubmitTest}> */}
       <Stack spacing={3} sx={{ mt: 1 }}>
         {!!errors.afterSubmit && (
           <Alert sx={{ width: '380px' }} severity="error">
