@@ -4,23 +4,14 @@ import match from 'autosuggest-highlight/match'
 import { useNavigate, useLocation } from 'react-router-dom'
 // @mui
 import { alpha, styled } from '@mui/material/styles'
-import {
-  Box,
-  Slide,
-  Popper,
-  InputBase,
-  InputAdornment,
-  ClickAwayListener,
-  Autocomplete,
-  Typography,
-} from '@mui/material'
+import { Box, Slide, Popper, InputBase, InputAdornment, ClickAwayListener, Autocomplete, Typography } from '@mui/material'
 import { GLOBAL } from 'global'
 import { bgBlur } from 'theme/style'
 import { flattenArray } from 'util'
 import { Iconify } from 'component/iconify'
 import { IconButtonAnimate } from 'component/animate'
 import { SearchNotFound } from 'component/search-not-found'
-import { NavConfig } from 'layout/dashboard'
+import { NavConfig } from 'section/dashboard'
 
 const APPBAR_MOBILE = 64
 const APPBAR_DESKTOP = 92
@@ -39,8 +30,8 @@ const StyledSearchbar = styled('div')(({ theme }) => ({
   boxShadow: theme.customShadow.z8,
   [theme.breakpoints.up('md')]: {
     height: APPBAR_DESKTOP,
-    padding: theme.spacing(0, 5),
-  },
+    padding: theme.spacing(0, 5)
+  }
 }))
 
 const StyledPopper = styled((props) => <Popper {...props} />)(({ theme }) => ({
@@ -49,10 +40,10 @@ const StyledPopper = styled((props) => <Popper {...props} />)(({ theme }) => ({
   width: 'calc(100% - 16px) !important',
   transform: 'none !important',
   [theme.breakpoints.up('md')]: {
-    top: `${APPBAR_DESKTOP + 8}px !important`,
+    top: `${APPBAR_DESKTOP + 8}px !important`
   },
   '& .MuiAutocomplete-paper': {
-    padding: theme.spacing(1, 0),
+    padding: theme.spacing(1, 0)
   },
   '& .MuiListSubheader-root': {
     '&.MuiAutocomplete-groupLabel': {
@@ -61,8 +52,8 @@ const StyledPopper = styled((props) => <Popper {...props} />)(({ theme }) => ({
       top: 0,
       margin: 0,
       lineHeight: '48px',
-      borderRadius: theme.shape.borderRadius,
-    },
+      borderRadius: theme.shape.borderRadius
+    }
   },
   '& .MuiAutocomplete-listbox': {
     '& .MuiAutocomplete-option': {
@@ -72,14 +63,14 @@ const StyledPopper = styled((props) => <Popper {...props} />)(({ theme }) => ({
       border: `solid 1px transparent`,
       borderBottomColor: theme.palette.divider,
       '&:last-of-type': {
-        borderBottomColor: 'transparent',
+        borderBottomColor: 'transparent'
       },
       '&:hover': {
         borderColor: theme.palette.primary.main,
-        backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.hoverOpacity),
-      },
-    },
-  },
+        backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.hoverOpacity)
+      }
+    }
+  }
 }))
 
 function Searchbar() {
@@ -100,7 +91,7 @@ function Searchbar() {
       group: group && group.length > 1 ? group[0] : option.subheader,
       title: option.title,
       path: option.path,
-      indexKey: 'minimal',
+      indexKey: 'minimal'
     }
   })
 
@@ -190,9 +181,8 @@ function Searchbar() {
                           sx={{
                             typography: 'subtitle2',
                             textTransform: 'capitalize',
-                            color: part.highlight ? 'primary.main' : 'text.primary',
-                          }}
-                        >
+                            color: part.highlight ? 'primary.main' : 'text.primary'
+                          }}>
                           {part.text}
                         </Box>
                       ))}
@@ -205,9 +195,8 @@ function Searchbar() {
                           component="span"
                           sx={{
                             typography: 'caption',
-                            color: part.highlight ? 'primary.main' : 'text.secondary',
-                          }}
-                        >
+                            color: part.highlight ? 'primary.main' : 'text.secondary'
+                          }}>
                           {part.text}
                         </Box>
                       ))}
@@ -228,7 +217,7 @@ export default memo(Searchbar)
 function splitPath(array, key) {
   let stack = array.map((item) => ({
     path: [item.title],
-    currItem: item,
+    currItem: item
   }))
 
   while (stack.length) {
@@ -242,7 +231,7 @@ function splitPath(array, key) {
       stack = stack.concat(
         currItem.children.map((item) => ({
           path: path.concat(item.title),
-          currItem: item,
+          currItem: item
         }))
       )
     }
@@ -255,7 +244,7 @@ function handleLoop(array, subheader = '') {
     subheader,
     ...list,
     ...(list.children && {
-      children: handleLoop(list.children, subheader),
-    }),
+      children: handleLoop(list.children, subheader)
+    })
   }))
 }
