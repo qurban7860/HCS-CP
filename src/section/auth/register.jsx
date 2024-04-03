@@ -1,8 +1,8 @@
 import { Link as RouterLink } from 'react-router-dom'
 import { Grid, Stack, Typography, Link } from '@mui/material'
-import LoginLayout from 'layout/login'
-import { PATH_AUTH } from 'route/path'
+import { LoginLayout } from 'section/auth'
 import AuthRegisterForm from './auth-register-form'
+import { PATH_AUTH } from 'route/path'
 import { GLOBAL } from 'global'
 
 function Register() {
@@ -14,9 +14,8 @@ function Register() {
             backgroundColor: GLOBAL.VERSION_COLOR,
             textAlign: 'center',
             py: 0.1,
-            mb: 1,
-          }}
-        >
+            mb: 1
+          }}>
           &nbsp;
         </Typography>
       </Grid>
@@ -28,10 +27,7 @@ function Register() {
           Log in here
         </Link>
       </Stack>
-      <Typography
-        component="div"
-        sx={{ color: 'text.secondary', mt: 3, typography: 'caption', textAlign: 'center' }}
-      >
+      <Typography component="div" sx={{ color: 'text.secondary', mt: 3, typography: 'caption', textAlign: 'center' }}>
         {'By signing up, I agree to '}
         <Link underline="always" color="text.primary">
           Terms of Service
