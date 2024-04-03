@@ -18,7 +18,7 @@ import Iconify from '../component/iconify/iconify'
 
 export const ICON_NAME = {
   ...ICON_LOC_NAME,
-  ...ICON_WEB_NAME,
+  ...ICON_WEB_NAME
 }
 
 const useIcon = (iconName) => {
