@@ -1,6 +1,6 @@
 import { Navigate, useRoutes } from 'react-router-dom'
 import { AuthGuard, GuestGuard } from 'auth'
-import DashboardLayout from 'layout/dashboard'
+import DashboardLayout from 'section/dashboard'
 import { useSettingContext } from 'component/setting'
 import { GStyledContainer } from 'theme/style'
 import { PATH_AFTER_LOGIN } from 'global'
