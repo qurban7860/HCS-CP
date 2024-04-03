@@ -62,3 +62,101 @@ export const setSession = (accessToken) => {
     delete axios.defaults.headers.common.Authorization
   }
 }
+
+export const getUserAccess = (roles, accessLevel) => {
+  let userRoles
+  let dataAccessibilityLevel
+
+  if (Array.isArray(roles) && roles.length > 0) {
+    userRoles = roles
+  } else {
+    userRoles = JSON.parse(localStorage.getItem('userRoles'))
+  }
+
+  if (accessLevel) {
+    dataAccessibilityLevel = accessLevel
+  } else {
+    dataAccessibilityLevel = localStorage.getItem('dataAccessibilityLevel')
+  }
+
+  let isAllAccessAllowed = false
+  let isDisableDelete = true
+  let isDashboardAccessLimited = true
+  let isDocumentAccessAllowed = false
+  let isDrawingAccessAllowed = false
+  let isSettingReadOnly = true
+  let isSecurityReadOnly = true
+  let isSettingAccessAllowed = false
+  let isSecurityUserAccessAllowed = false
+  let isEmailAccessAllowed = false
+
+  if (userRoles?.some((role) => role?.roleType?.toLowerCase() === 'superadmin')) {
+    isAllAccessAllowed = true
+    isDisableDelete = userRoles?.some((role) => role?.disableDelete || false)
+    isDashboardAccessLimited = false
+    isDocumentAccessAllowed = true
+    isDrawingAccessAllowed = true
+    isSettingReadOnly = false
+    isSecurityReadOnly = false
+    isSettingAccessAllowed = true
+    isSecurityUserAccessAllowed = true
+    isEmailAccessAllowed = false
+  } else if (userRoles?.some((role) => role?.roleType?.toLowerCase() === 'developer')) {
+    isAllAccessAllowed = true
+    isDisableDelete = userRoles?.some((role) => role?.disableDelete || false)
+    isDashboardAccessLimited = false
+    isDocumentAccessAllowed = true
+    isDrawingAccessAllowed = true
+    isSettingReadOnly = false
+    isSecurityReadOnly = false
+    isSettingAccessAllowed = true
+    isSecurityUserAccessAllowed = true
+    isEmailAccessAllowed = false
+  } else if (userRoles?.some((role) => role?.roleType?.toLowerCase() === 'globalmanager' || dataAccessibilityLevel?.toUpperCase() === 'GLOBAL')) {
+    isAllAccessAllowed = true
+    isDisableDelete = userRoles?.some((role) => role?.disableDelete || true)
+    isDashboardAccessLimited = false
+    isDocumentAccessAllowed = true
+    isDrawingAccessAllowed = true
+    isSettingReadOnly = true
+    isSecurityReadOnly = true
+    isSettingAccessAllowed = true
+    isSecurityUserAccessAllowed = true
+    isEmailAccessAllowed = false
+  } else if (userRoles?.some((role) => role?.roleType?.toLowerCase() === 'regionalmanager' || dataAccessibilityLevel?.toUpperCase() === 'FILTER')) {
+    isAllAccessAllowed = false
+    isDisableDelete = true
+    isDashboardAccessLimited = true
+    isDocumentAccessAllowed = false
+    isDrawingAccessAllowed = false
+    isSettingReadOnly = true
+    isSecurityReadOnly = true
+    isSettingAccessAllowed = false
+    isSecurityUserAccessAllowed = false
+    isEmailAccessAllowed = false
+  } else if (userRoles?.some((role) => role?.roleType?.toLowerCase() === 'supportmanager' || dataAccessibilityLevel?.toUpperCase() === 'FILTER')) {
+    isAllAccessAllowed = false
+    isDisableDelete = true
+    isDashboardAccessLimited = true
+    isDocumentAccessAllowed = false
+    isDrawingAccessAllowed = false
+    isSettingReadOnly = true
+    isSecurityReadOnly = true
+    isSettingAccessAllowed = false
+    isSecurityUserAccessAllowed = false
+    isEmailAccessAllowed = false
+  }
+
+  return {
+    isAllAccessAllowed,
+    isDisableDelete,
+    isDashboardAccessLimited,
+    isDocumentAccessAllowed,
+    isDrawingAccessAllowed,
+    isSettingReadOnly,
+    isSecurityReadOnly,
+    isSettingAccessAllowed,
+    isSecurityUserAccessAllowed,
+    isEmailAccessAllowed
+  }
+}
