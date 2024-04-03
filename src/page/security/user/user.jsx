@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 import {
   Box,
   Badge,
@@ -14,12 +15,13 @@ import {
   Chip,
   Card,
   CardMedia,
-  IconButton,
+  IconButton
 } from '@mui/material'
 import TextareaAutosize from 'react-textarea-autosize'
 import { useForm, Controller } from 'react-hook-form'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
+import { useGetUserQuery } from 'store/slice'
 import { useIcon, ICON_NAME } from 'hook'
 import { MARGIN, RADIUS, ASSET } from 'config'
 import { KEY, TITLE, LABEL } from 'constant'
@@ -29,9 +31,11 @@ const UserProfile = ({ user = mockUser }) => {
   const [hoverAvatar, setHoverAvatar] = useState(false)
   const [hoverBadge, setHoverBadge] = useState(false)
   const [isNotEditState, setIsNotEditState] = useState(true)
+  const { user: userState, userId } = useSelector((state) => state.auth)
 
   const { control, handleSubmit } = useForm()
   const { themeMode } = useSettingContext()
+  const { data: userData, isLoading, error } = useGetUserQuery(userId)
 
   const fileInput = useRef(null)
 
@@ -60,10 +64,15 @@ const UserProfile = ({ user = mockUser }) => {
     console.log(data)
   }
 
+  useEffect(() => {
+    console.log(userState)
+    console.log(userId)
+  }, [userState, userId, isLoading, error])
+
   const machineList = [
     { id: 20566, name: 'FRAMA3200', status: 'Running' },
     { id: 20567, name: 'Decoiler', status: 'Running' },
-    { id: 15699, name: 'H100', status: 'Stopped' },
+    { id: 15699, name: 'H100', status: 'Stopped' }
   ]
 
   const ticketList = [{ id: 'HWKSC-12345', status: 'Under Review', agent: 'Maria Clara' }]
@@ -85,9 +94,8 @@ const UserProfile = ({ user = mockUser }) => {
                   backgroundImage: `url(${ASSET.BG_STROKE_LOGO})`,
                   backgroundSize: 'cover',
                   backgroundPositionY: 'center',
-                  backgroundSize: '150%',
-                }}
-              >
+                  backgroundSize: '150%'
+                }}>
                 <Typography variant="h6" color="common.white" gutterBottom>
                   {LABEL.USER_PROFILE_MACHINE}
                 </Typography>
@@ -108,7 +116,7 @@ const UserProfile = ({ user = mockUser }) => {
                             sx={{
                               backgroundColor: machine.status === 'Stopped' ? 'error.main' : 'burnIn.main',
                               color: `common.${machine.status === 'Stopped' ? 'white' : 'black'}`,
-                              fontWeight: 'bold',
+                              fontWeight: 'bold'
                             }}
                           />
                         </ListItemText>
@@ -128,9 +136,8 @@ const UserProfile = ({ user = mockUser }) => {
                   backgroundImage: `url(${ASSET.BG_STROKE_LOGO})`,
                   backgroundSize: 'cover',
                   backgroundPositionY: 'center',
-                  backgroundSize: '150%',
-                }}
-              >
+                  backgroundSize: '150%'
+                }}>
                 <Typography variant="h6" color="common.white" gutterBottom>
                   {LABEL.USER_PROFILE_TIX}
                 </Typography>
@@ -162,15 +169,14 @@ const UserProfile = ({ user = mockUser }) => {
               backgroundColor: themeMode === 'light' ? 'background.paper' : 'background.default',
               backgroundImage: `url(${themeMode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
               backgroundSize: 'cover',
-              backgroundSize: '150%',
-            }}
-          >
+              backgroundSize: '150%'
+            }}>
             <Divider
               sx={{
                 height: 2,
                 borderStyle: 'solid',
                 borderColor: themeMode === 'light' ? 'success.main' : 'grey.400',
-                borderWidth: 5,
+                borderWidth: 5
               }}
             />
             <Box component="form" onSubmit={handleSubmit(onSubmit)} mb={10} mt={2} mx={4}>
@@ -196,11 +202,10 @@ const UserProfile = ({ user = mockUser }) => {
                             color: 'success.main',
                             fontWeight: 'bold',
                             cursor: 'pointer',
-                            display: hoverBadge ? 'block' : 'none',
+                            display: hoverBadge ? 'block' : 'none'
                           }}
                         />
-                      }
-                    >
+                      }>
                       <CardMedia
                         component="img"
                         src={user[0].badge}
@@ -210,7 +215,7 @@ const UserProfile = ({ user = mockUser }) => {
                           height: 70,
                           objectFit: 'hidden',
                           borderRadius: '10%',
-                          marginRight: 2,
+                          marginRight: 2
                         }}
                       />
                     </Badge>
@@ -236,9 +241,9 @@ const UserProfile = ({ user = mockUser }) => {
                               fontWeight: 'bold',
                               backgroundColor: 'transparent',
                               '&.Mui-disabled': {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'grey.300' : 'grey.900',
-                              },
-                            },
+                                backgroundColor: themeMode === KEY.LIGHT ? 'grey.300' : 'grey.900'
+                              }
+                            }
                           }}
                         />
                       )}
@@ -259,9 +264,8 @@ const UserProfile = ({ user = mockUser }) => {
                           sx={{
                             backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
                             border: `1px solid ${themeMode === KEY.LIGHT ? 'success.main' : 'grey.400'}`,
-                            borderRadius: RADIUS.BORDER.borderRadius,
-                          }}
-                        >
+                            borderRadius: RADIUS.BORDER.borderRadius
+                          }}>
                           {!isNotEditState ? (
                             <Icon icon={saveSrc} sx={{ color: themeMode === KEY.LIGHT ? 'primary.lighter' : 'grey.100' }} />
                           ) : (
@@ -299,8 +303,8 @@ const UserProfile = ({ user = mockUser }) => {
                             fullWidth
                             InputProps={{
                               sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
-                              },
+                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
+                              }
                             }}
                           />
                         )}
@@ -325,9 +329,9 @@ const UserProfile = ({ user = mockUser }) => {
                               sx: {
                                 backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
                                 '&.Mui-disabled': {
-                                  color: themeMode === KEY.LIGHT ? 'common.black' : 'common.white',
-                                },
-                              },
+                                  color: themeMode === KEY.LIGHT ? 'common.black' : 'common.white'
+                                }
+                              }
                             }}
                           />
                         )}
@@ -354,14 +358,14 @@ const UserProfile = ({ user = mockUser }) => {
                               inputComponent: TextareaAutosize,
                               inputProps: {
                                 minRows: 1,
-                                maxRows: 5,
+                                maxRows: 5
                               },
                               sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
+                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
                                 // '&.Mui-disabled': {
                                 //   backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
                                 // },
-                              },
+                              }
                             }}
                           />
                         )}
@@ -385,8 +389,8 @@ const UserProfile = ({ user = mockUser }) => {
                             fullWidth
                             InputProps={{
                               sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
-                              },
+                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
+                              }
                             }}
                           />
                         )}
@@ -411,8 +415,8 @@ const UserProfile = ({ user = mockUser }) => {
                             fullWidth
                             InputProps={{
                               sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
-                              },
+                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
+                              }
                             }}
                           />
                         )}
@@ -436,8 +440,8 @@ const UserProfile = ({ user = mockUser }) => {
                             fullWidth
                             InputProps={{
                               sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
-                              },
+                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
+                              }
                             }}
                           />
                         )}
@@ -466,11 +470,10 @@ const UserProfile = ({ user = mockUser }) => {
                             color: 'success.main',
                             fontWeight: 'bold',
                             cursor: 'pointer',
-                            display: hoverAvatar ? 'block' : 'none',
+                            display: hoverAvatar ? 'block' : 'none'
                           }}
                         />
-                      }
-                    >
+                      }>
                       <Avatar
                         src={user[0].photoURL}
                         alt={user[0].displayName}
@@ -479,7 +482,7 @@ const UserProfile = ({ user = mockUser }) => {
                           height: 250,
                           borderRadius: RADIUS.BORDER_RADIUS,
                           borderColor: themeMode === 'light' ? 'success.main' : 'grey.400',
-                          borderWidth: 5,
+                          borderWidth: 5
                         }}
                       />
                     </Badge>
@@ -495,7 +498,7 @@ const UserProfile = ({ user = mockUser }) => {
 }
 
 UserProfile.propTypes = {
-  user: PropTypes.array,
+  user: PropTypes.array
   // TODO: change to object when using real data
 }
 
