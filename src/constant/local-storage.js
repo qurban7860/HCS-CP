@@ -15,6 +15,7 @@ const LOCAL_STORAGE_KEY = {
   REMEMBER: 'remember',
   USER_EMAIL: 'UserEmail',
   USER_PASSWORD: 'UserPassword',
+  USER_DATA: 'userData',
   JWT: 'jwt',
   AFTER_SUBMIT: 'afterSubmit'
 }
