@@ -19,29 +19,28 @@ import { dispatch } from 'store'
 function LoginForm() {
   const navigate = useNavigate()
   const [login, { isLoading, error }] = useLoginMutation()
-  const { isAuthenticate, user } = useAuthContext()
+  const { isAuthenticate } = useAuthContext()
   const regEx = new RegExp(REGEX.ERROR_CODE)
   const [showPassword, setShowPassword] = useState(false)
-  const [uemail, setEmail] = useState('')
-  const [upassword, setPassword] = useState('')
-  const [uremember, setRemember] = useState(false)
+  const [userEmail, setUserEmail] = useState('')
+  const [userPassword, setUserPassword] = useState('')
+  const [userRemember, setUserRemember] = useState(false)
 
   useEffect(() => {
-    const storedEmail = localStorage.getItem(LOCAL_STORAGE_KEY.USER_EMAIL)
-    const storedPassword = localStorage.getItem(LOCAL_STORAGE_KEY.USER_PASSWORD)
-    const storedRemember = localStorage.getItem(LOCAL_STORAGE_KEY.REMEMBER)
-    if (storedEmail && storedPassword && storedRemember) {
-      setEmail(storedEmail)
-      setPassword(storedPassword)
-      setRemember(true)
+    const storedUser = localStorage.getItem(LOCAL_STORAGE_KEY.USER_DATA)
+
+    if (storedUser) {
+      const { email } = JSON.parse(storedUser)
+      setUserEmail(email)
+      setUserRemember(true)
     }
   }, [])
 
   const LoginSchema = Yup.object().shape({})
 
   const defaultValues = {
-    email: uemail,
-    password: upassword
+    email: userEmail,
+    password: ''
   }
 
   const methods = useForm({
@@ -57,25 +56,23 @@ function LoginForm() {
   } = methods
 
   const onSubmit = async (data) => {
-    if (uemail) {
-      data.email = uemail
-    }
-    if (upassword) {
-      data.password = upassword
+    if (userEmail) {
+      data.email = userEmail
     }
 
     try {
-      if (uremember) {
-        localStorage.setItem(LOCAL_STORAGE_KEY.USER_EMAIL, data.email)
-        localStorage.setItem(LOCAL_STORAGE_KEY.USER_PASSWORD, data.password)
-        localStorage.setItem(LOCAL_STORAGE_KEY.REMEMBER, uremember)
+      if (userRemember) {
+        const userData = {
+          email: data.email,
+          remember: userRemember
+        }
+
+        localStorage.setItem(LOCAL_STORAGE_KEY.USER_DATA, JSON.stringify(userData))
       } else {
-        localStorage.removeItem(LOCAL_STORAGE_KEY.USER_EMAIL)
-        localStorage.removeItem(LOCAL_STORAGE_KEY.USER_PASSWORD)
-        localStorage.removeItem(LOCAL_STORAGE_KEY.REMEMBER)
+        localStorage.removeItem(LOCAL_STORAGE_KEY.USER_DATA)
       }
 
-      const res = await login({ email: uemail, password: upassword }).unwrap()
+      const res = await login({ email: userEmail, password: userPassword }).unwrap()
       dispatch(setInitial({ ...res }))
       dispatch(loginReducer({ ...res }))
 
@@ -111,8 +108,8 @@ function LoginForm() {
         <RHFTextField
           type="email"
           name="email"
-          value={uemail}
-          onChange={(e) => setEmail(e.target.value)}
+          value={userEmail}
+          onChange={(e) => setUserEmail(e.target.value)}
           label="Login/Email address"
           autoComplete="username"
           required
@@ -120,8 +117,8 @@ function LoginForm() {
         <RHFTextField
           name="password"
           id="password"
-          value={upassword}
-          onChange={(e) => setPassword(e.target.value)}
+          value={userPassword}
+          onChange={(e) => setUserPassword(e.target.value)}
           label="Password"
           type={showPassword ? 'text' : 'password'}
           InputProps={{
@@ -139,7 +136,7 @@ function LoginForm() {
       </Stack>
 
       <FormControlLabel
-        control={<Checkbox name="remember" checked={uremember} onChange={() => setRemember(!uremember)} variant="soft" />}
+        control={<Checkbox name="remember" checked={userRemember} onChange={() => setUserRemember(!userRemember)} variant="soft" />}
         label={BUTTON.REMEMBER_ME}
       />
       <GStyledLoadingButton
