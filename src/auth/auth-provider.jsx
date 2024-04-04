@@ -115,11 +115,12 @@ export function AuthProvider({ children }) {
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken)
 
-        const user = {
-          _id: localStorage.getItem(LOCAL_STORAGE_KEY.USER_ID),
-          email: localStorage.getItem(LOCAL_STORAGE_KEY.EMAIL),
-          displayName: localStorage.getItem(LOCAL_STORAGE_KEY.NAME)
-        }
+        // const user = {
+        //   _id: localStorage.getItem(LOCAL_STORAGE_KEY.USER_ID),
+        //   email: localStorage.getItem(LOCAL_STORAGE_KEY.EMAIL),
+        //   displayName: localStorage.getItem(LOCAL_STORAGE_KEY.NAME)
+        // }
+        const user = localStorage.getItem(LOCAL_STORAGE_KEY.USER)
         const userId = localStorage.getItem(LOCAL_STORAGE_KEY.USER_ID)
 
         const { isAllAccessAllowed, isDashboardAccessLimited, isSettingAccessAllowed, isSecurityUserAccessAllowed, isEmailAccessAllowed } =
@@ -244,9 +245,7 @@ export function AuthProvider({ children }) {
       localStorage.removeItem(LOCAL_STORAGE_KEY.CONFIGURATION)
       window.location.href = PATH_AUTH.login
       const keys = Object.keys(localStorage)
-      const reduxPersistKeys = keys.filter(
-        (key) => !(key === LOCAL_STORAGE_KEY.REMEMBER || key === LOCAL_STORAGE_KEY.USER_EMAIL || key === LOCAL_STORAGE_KEY.USER_PASSWORD)
-      )
+      const reduxPersistKeys = keys.filter((key) => !(key === LOCAL_STORAGE_KEY.USER_DATA))
       await Promise.all(reduxPersistKeys.map((key) => storage.removeItem(key)))
     } catch (error) {
       console.error(RESPONSE.error.REDUX_PERSIST, error)
