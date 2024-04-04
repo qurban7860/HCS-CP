@@ -4,6 +4,7 @@ const initialState = {
   isInitialized: false,
   isAuthenticated: false,
   user: null,
+  userId: null,
   resetTokenTime: null
 }
 
@@ -15,6 +16,7 @@ const authSlice = createSlice({
       const {
         isAuthenticated,
         user,
+        isAllAccessAllowed,
         isDashboardAccessLimited,
         isSettingAccessAllowed,
         isSecurityUserAccessAllowed,
@@ -25,17 +27,16 @@ const authSlice = createSlice({
       state.isInitialized = true
       state.isAuthenticated = isAuthenticated
       state.user = user
+      state.isAllAccessAllowed = isAllAccessAllowed
       state.isDashboardAccessLimited = isDashboardAccessLimited
       state.isSettingAccessAllowed = isSettingAccessAllowed
       state.isSecurityUserAccessAllowed = isSecurityUserAccessAllowed
       state.isEmailAccessAllowed = isEmailAccessAllowed
-      //   state.resetTokenTime = resetTokenTime
     },
     login(state, action) {
-      const { user, userId } = action.payload
       state.isAuthenticated = true
-      state.user = user
-      state.userId = userId
+      state.user = action.payload
+      localStorage.setItem('user', JSON.stringify(action.payload))
     },
     register(state, action) {
       const { user } = action.payload
@@ -51,5 +52,4 @@ const authSlice = createSlice({
 })
 
 export const { setInitial, login, register, logout } = authSlice.actions
-
 export default authSlice.reducer
