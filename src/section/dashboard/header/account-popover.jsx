@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link as RouterLink } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { alpha, useTheme } from '@mui/material/styles'
-
 import { Box, Divider, Dialog, Typography, Stack, MenuItem, Link } from '@mui/material'
 import { useAuthContext } from 'auth'
 import { CustomAvatar } from 'component/avatar'
@@ -20,8 +20,9 @@ import { mockUser } from '_mock'
 export default function AccountPopover() {
   const navigate = useNavigate()
   const { user, logout } = useAuthContext()
-  const email = localStorage.getItem('email')
-  const displayName = localStorage.getItem('name')
+  // const { user } = useSelector((state) => state.auth)
+  const email = localStorage.getItem('user')
+
   const [openPopover, setOpenPopover] = useState(null)
   const [open, setOpen] = useState(false)
 
@@ -57,6 +58,7 @@ export default function AccountPopover() {
   }
 
   const handleClickItem = (path) => {
+    console.log('USer:', user)
     handleClosePopover()
     navigate(path || setOpen(!open))
   }
@@ -103,10 +105,10 @@ export default function AccountPopover() {
         }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {displayName}
+            {user?.displayName}
           </Typography>
           <Typography variant="overline" sx={{ color: 'text.secondary' }} fontWeight="bold" noWrap>
-            {email}
+            {user?.email}
           </Typography>
         </Box>
         <Divider sx={{ borderStyle: 'solid' }} />
