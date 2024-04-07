@@ -4,8 +4,6 @@ import { useTheme } from '@mui/material/styles'
 import { GStyledBrandOverlayBox, GStyledBottomPolygonDiv, GStyledTopPolygonDiv, StylendLandingContainerBox, ButtonProps } from 'theme/style'
 import { ASSET, GLOBAL, BRAND } from 'config'
 import { LABEL, PRODUCT, COMPANY, BUTTON } from 'constant'
-import { PATH_AUTH } from 'route/path'
-import { FabButtonAnimate } from 'component/animate'
 
 const Landing = () => {
   const theme = useTheme()
@@ -29,9 +27,8 @@ const Landing = () => {
           justifyContent="flex-start"
           spacing={2}
           sx={{
-            marginTop: 5,
-          }}
-        >
+            marginTop: 5
+          }}>
           <Grid container flexDirection="row" justifyContent="center">
             <Grid item lg={9}>
               <Typography variant="overline" color="grey.500" sx={{ opacity: 0.5 }}>
