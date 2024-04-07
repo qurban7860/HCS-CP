@@ -1,8 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch as useAppDispatch, useSelector as useAppSelector } from 'react-redux'
 import { persistStore, PERSIST, REHYDRATE } from 'redux-persist'
-import { apiSlice } from 'slice/api'
-import { authReducer } from 'slice'
+import { apiSlice } from './slice'
 import rootReducer, { rootPersistConfig } from './root-reducer'
 
 const store = configureStore({
@@ -16,6 +15,7 @@ const store = configureStore({
     }).concat(apiSlice.middleware),
   devTools: true
 })
+
 const persistor = persistStore(store)
 const { dispatch } = store
 const useSelector = useAppSelector
