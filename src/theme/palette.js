@@ -2,11 +2,11 @@ import { alpha } from '@mui/material/styles'
 
 const BRAND = {
   background: '#63738114',
-  title: '#FFF',
+  title: '#FFF'
 }
 
 const GREY = {
-  0: '#FFFFFF',
+  0: '#F2EED8',
   100: '#F4F4F4',
   200: '#E9ECEF',
   300: '#DFDFDF',
@@ -15,7 +15,7 @@ const GREY = {
   600: '#637381',
   700: '#454F5B',
   800: '#212B36',
-  900: '#161C24',
+  900: '#161C24'
 }
 
 const PRIMARY = {
@@ -24,7 +24,7 @@ const PRIMARY = {
   main: '#0940B2',
   dark: '#10079F',
   darker: '#10079F',
-  contrastText: '#fff',
+  contrastText: '#fff'
 }
 
 const SECONDARY = {
@@ -33,7 +33,7 @@ const SECONDARY = {
   main: '#FFA200',
   dark: '#FFA200',
   darker: '#FFA200',
-  contrastText: '#fff',
+  contrastText: '#fff'
 }
 
 const INFO = {
@@ -42,7 +42,7 @@ const INFO = {
   main: '#0084C9',
   dark: '#01466F',
   darker: '#001824',
-  contrastText: '#fff',
+  contrastText: '#fff'
 }
 
 const SUCCESS = {
@@ -51,7 +51,7 @@ const SUCCESS = {
   main: '#10079F',
   dark: '#10079F',
   darker: '#FFA200',
-  contrastText: '#fff',
+  contrastText: '#fff'
 }
 
 const WARNING = {
@@ -60,7 +60,7 @@ const WARNING = {
   main: '#FFAB00',
   dark: '#B76E00',
   darker: '#7A4100',
-  contrastText: GREY[800],
+  contrastText: GREY[800]
 }
 
 const ERROR = {
@@ -69,17 +69,17 @@ const ERROR = {
   main: '#DA4848',
   dark: '#B71D18',
   darker: '#7A0916',
-  contrastText: '#fff',
+  contrastText: '#fff'
 }
 
 const HOWICKBLUE = {
   light: '#0084C9',
   main: '#0940B2',
-  dark: '#10079F',
+  dark: '#10079F'
 }
 
 const HOWICKORANGE = {
-  main: '#FFA200',
+  main: '#FFA200'
 }
 
 const HOWICKBRONZE = {
@@ -87,15 +87,15 @@ const HOWICKBRONZE = {
   light: '#A39586',
   main: '#897A69',
   dark: '#5E5244',
-  darker: '#473D31',
+  darker: '#473D31'
 }
 
 const HOWICKBURNIN = {
-  main: '#D1ED18',
+  main: '#D1ED18'
 }
 
 const COMMON = {
-  common: { black: '#000', white: '#fff' },
+  common: { black: '#000', white: '#F2EED8' },
   primary: PRIMARY,
   secondary: SECONDARY,
   info: INFO,
@@ -115,9 +115,9 @@ const COMMON = {
     disabledBackground: alpha(GREY[700], 0.4),
     focus: alpha(GREY[500], 0.24),
     hoverOpacity: 0.08,
-    disabledOpacity: 0.48,
+    disabledOpacity: 0.48
   },
-  background: BRAND.background,
+  background: BRAND.background
 }
 
 export default function palette(themeMode) {
@@ -127,13 +127,13 @@ export default function palette(themeMode) {
     text: {
       primary: GREY[800],
       secondary: GREY[600],
-      disabled: GREY[500],
+      disabled: GREY[500]
     },
     background: { paper: GREY[200], default: GREY[400], neutral: GREY[500] },
     action: {
       ...COMMON.action,
-      active: GREY[600],
-    },
+      active: GREY[600]
+    }
   }
 
   const dark = {
@@ -142,17 +142,17 @@ export default function palette(themeMode) {
     text: {
       primary: '#fff',
       secondary: GREY[500],
-      disabled: GREY[600],
+      disabled: GREY[600]
     },
     background: {
       paper: GREY[800],
       default: GREY[900],
-      neutral: alpha(GREY[500], 0.16),
+      neutral: alpha(GREY[500], 0.16)
     },
     action: {
       ...COMMON.action,
-      active: GREY[500],
-    },
+      active: GREY[500]
+    }
   }
 
   return themeMode === 'light' ? light : dark
