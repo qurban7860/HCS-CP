@@ -13,13 +13,12 @@ import { Iconify } from 'component/iconify'
 import FormProvider, { RHFTextField } from 'component/hook-form'
 import { RADIUS } from 'config'
 import { BUTTON, REGEX, LOCAL_STORAGE_KEY } from 'constant'
-import { setInitial } from 'store/slice/auth'
 import { dispatch } from 'store'
 
 function LoginForm() {
   const navigate = useNavigate()
-  const [login, { isLoading, error }] = useLoginMutation()
-  const { isAuthenticate } = useAuthContext()
+  const [{ isLoading, error }] = useLoginMutation()
+  const { login, isAuthenticate } = useAuthContext()
   const regEx = new RegExp(REGEX.ERROR_CODE)
   const [showPassword, setShowPassword] = useState(false)
   const [userEmail, setUserEmail] = useState('')
@@ -72,9 +71,7 @@ function LoginForm() {
         localStorage.removeItem(LOCAL_STORAGE_KEY.USER_DATA)
       }
 
-      const res = await login({ email: userEmail, password: userPassword }).unwrap()
-      dispatch(setInitial({ ...res }))
-      dispatch(loginReducer({ ...res }))
+      await login({ email: userEmail, password: userPassword })
 
       if (localStorage.getItem(LOCAL_STORAGE_KEY.MFA)) {
         navigate(PATH_DASHBOARD.general.app)
@@ -131,6 +128,7 @@ function LoginForm() {
             )
           }}
           autoComplete="current-password"
+          helperText={errors.password?.message}
           required
         />
       </Stack>
@@ -145,7 +143,7 @@ function LoginForm() {
         size="large"
         type="submit"
         variant="contained"
-        loading={isSubmitSuccessful || isLoading}
+        loading={isSubmitSuccessful || isSubmitting}
         sx={RADIUS.BORDER}>
         {BUTTON.LOGIN}
       </GStyledLoadingButton>
