@@ -1,9 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import { apiSlice } from './slice'
-import { authReducer } from 'slice'
-// import { userReducer } from 'slice'
+import { apiSlice, authReducer } from './slice'
 
 export const apiPersistConfig = {
   key: 'api',
@@ -36,7 +34,6 @@ export const userPersistConfig = {
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: persistReducer(apiPersistConfig, apiSlice.reducer),
   auth: persistReducer(authPersistConfig, authReducer)
-  // user: persistReducer(userPersistConfig, userReducer)
 })
 
 export default rootReducer
