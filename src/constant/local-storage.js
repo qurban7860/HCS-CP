@@ -13,6 +13,7 @@ const LOCAL_STORAGE_KEY = {
   NAME: 'name',
   ROLES: 'userRoles',
   REMEMBER: 'remember',
+  USER: 'user',
   USER_EMAIL: 'UserEmail',
   USER_PASSWORD: 'UserPassword',
   USER_DATA: 'userData',
