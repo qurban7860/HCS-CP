@@ -33,8 +33,8 @@ export const userPersistConfig = {
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: persistReducer(apiPersistConfig, apiSlice.reducer),
-  auth: persistReducer(authPersistConfig, authReducer),
-  user: persistReducer(userPersistConfig, userReducer)
+  auth: persistReducer(authPersistConfig, authReducer)
+  // user: persistReducer(userPersistConfig, userReducer)
 })
 
 export default rootReducer
