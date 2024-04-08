@@ -47,24 +47,24 @@ const userSlice = createSlice({
   }
 })
 
-export default userSlice.reducer
+export default userSlice.reducery
 
 export const { startLoading, hasError, getSecurityUserSuccess } = userSlice.actions
 
-export function getSecurityUser(id) {
-  return async (dispatch) => {
-    dispatch(userSlice.actions.startLoading())
-    try {
-      const response = await axiosInstance.get(PATH_SERVER.USER.detail(id))
-      console.log('response: ', response.data)
-      if (regEx.test(response.status)) {
-        dispatch(userSlice.actions.getSecurityUserSuccess(response.data))
-      }
-      console.log('response: ', response)
-      return response
-    } catch (error) {
-      console.error(error)
-      throw error
-    }
-  }
-}
+// export function getSecurityUser(id) {
+//   return async (dispatch) => {
+//     dispatch(userSlice.actions.startLoading())
+//     try {
+//       const response = await axiosInstance.get(PATH_SERVER.USER.detail(id))
+//       console.log('response: ', response.data)
+//       if (regEx.test(response.status)) {
+//         dispatch(userSlice.actions.getSecurityUserSuccess(response.data))
+//       }
+//       console.log('response: ', response)
+//       return response
+//     } catch (error) {
+//       console.error(error)
+//       throw error
+//     }
+//   }
+// }
