@@ -121,6 +121,7 @@ export function AuthProvider({ children }) {
     localStorage.setItem(LOCAL_STORAGE_KEY.NAME, user.displayName)
     localStorage.setItem(LOCAL_STORAGE_KEY.USER_ID, userId)
     localStorage.setItem(LOCAL_STORAGE_KEY.ROLES, rolesArrayString)
+
     setSession(accessToken)
     await getConfigs()
 
