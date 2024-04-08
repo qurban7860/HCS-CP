@@ -24,7 +24,7 @@ import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
 import { dispatch } from '../../../store/store'
 import { useGetUserQuery } from 'store/slice'
-import { getSecurityUser } from 'store/slice'
+// import { getSecurityUser } from 'store/slice'
 import { useIcon, ICON_NAME } from 'hook'
 import { MARGIN, RADIUS, ASSET } from 'config'
 import { KEY, TITLE, LABEL } from 'constant'
@@ -35,7 +35,7 @@ const UserProfile = () => {
   const [hoverBadge, setHoverBadge] = useState(false)
   const [isNotEditState, setIsNotEditState] = useState(true)
   const { user: userState, userId } = useSelector((state) => state.auth)
-  const { securityUser } = useSelector((state) => state.user)
+  // const { securityUser } = useSelector((state) => state.user)
   const { data: userDetail, isLoading, error, refetch } = useGetUserQuery(userId)
   const { user } = useAuthContext()
 
@@ -232,7 +232,7 @@ const UserProfile = () => {
                       name="organization"
                       control={control}
                       disabled={isNotEditState}
-                      defaultValue={userDetail.customer.name || 'Organization'}
+                      defaultValue={userDetail?.customer.name || 'Organization'}
                       rules={{ required: 'organization is required' }}
                       render={({ field, fieldState: { error } }) => (
                         <TextField
@@ -296,15 +296,15 @@ const UserProfile = () => {
                   <Grid container spacing={6}>
                     <Grid item xs={12} sm={6}>
                       <Controller
-                        name="firstName"
+                        name="name"
                         control={control}
                         disabled={isNotEditState}
-                        defaultValue={mockUser[0].firstName}
+                        defaultValue={userDetail.name}
                         rules={{ required: 'Name is required' }}
                         render={({ field, fieldState: { error } }) => (
                           <TextField
                             {...field}
-                            label="First name"
+                            label="Name"
                             variant="outlined"
                             error={!!error}
                             helperText={error?.message}
@@ -312,33 +312,9 @@ const UserProfile = () => {
                             fullWidth
                             InputProps={{
                               sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
-                              }
-                            }}
-                          />
-                        )}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Controller
-                        name="lastName"
-                        control={control}
-                        defaultValue={user?.lastName}
-                        disabled={isNotEditState}
-                        render={({ field, fieldState: { error } }) => (
-                          <TextField
-                            {...field}
-                            label="Last name"
-                            variant="outlined"
-                            error={!!error}
-                            helperText={error?.message}
-                            size="small"
-                            fullWidth
-                            InputProps={{
-                              sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
                                 '&.Mui-disabled': {
-                                  color: themeMode === KEY.LIGHT ? 'common.black' : 'common.white'
+                                  color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.100',
+                                  backgroundColor: themeMode === KEY.LIGHT ? 'grey.300' : 'grey.900'
                                 }
                               }
                             }}
@@ -346,6 +322,7 @@ const UserProfile = () => {
                         )}
                       />
                     </Grid>
+
                     <Grid item xs={12} sm={6}>
                       <Controller
                         name="location"
@@ -370,10 +347,10 @@ const UserProfile = () => {
                                 maxRows: 5
                               },
                               sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
-                                // '&.Mui-disabled': {
-                                //   backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
-                                // },
+                                '&.Mui-disabled': {
+                                  color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.100',
+                                  backgroundColor: themeMode === KEY.LIGHT ? 'grey.300' : 'grey.900'
+                                }
                               }
                             }}
                           />
@@ -385,7 +362,7 @@ const UserProfile = () => {
                         name="email"
                         control={control}
                         disabled
-                        defaultValue={mockUser[0].email}
+                        defaultValue={userDetail?.email}
                         rules={{ required: 'Email is required', pattern: /^\S+@\S+$/i }}
                         render={({ field, fieldState: { error } }) => (
                           <TextField
@@ -398,7 +375,38 @@ const UserProfile = () => {
                             fullWidth
                             InputProps={{
                               sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
+                                '&.Mui-disabled': {
+                                  color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.100',
+                                  backgroundColor: themeMode === KEY.LIGHT ? 'grey.300' : 'grey.900'
+                                }
+                              }
+                            }}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Controller
+                        name="login"
+                        control={control}
+                        disabled
+                        defaultValue={userDetail?.login}
+                        rules={{ required: 'Login is required', pattern: /^\S+@\S+$/i }}
+                        render={({ field, fieldState: { error } }) => (
+                          <TextField
+                            {...field}
+                            label="Login"
+                            variant="outlined"
+                            error={!!error}
+                            helperText={error?.message}
+                            size="small"
+                            fullWidth
+                            InputProps={{
+                              sx: {
+                                '&.Mui-disabled': {
+                                  color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.100',
+                                  backgroundColor: themeMode === KEY.LIGHT ? 'grey.300' : 'grey.900'
+                                }
                               }
                             }}
                           />
@@ -410,7 +418,7 @@ const UserProfile = () => {
                       <Controller
                         name="role"
                         control={control}
-                        defaultValue={mockUser[0].role}
+                        defaultValue={userDetail?.roles[0].roleType}
                         disabled={isNotEditState}
                         rules={{ required: 'Role is required' }}
                         render={({ field, fieldState: { error } }) => (
@@ -424,7 +432,10 @@ const UserProfile = () => {
                             fullWidth
                             InputProps={{
                               sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
+                                '&.Mui-disabled': {
+                                  color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.100',
+                                  backgroundColor: themeMode === KEY.LIGHT ? 'grey.300' : 'grey.900'
+                                }
                               }
                             }}
                           />
@@ -449,7 +460,10 @@ const UserProfile = () => {
                             fullWidth
                             InputProps={{
                               sx: {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
+                                '&.Mui-disabled': {
+                                  color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.100',
+                                  backgroundColor: themeMode === KEY.LIGHT ? 'grey.300' : 'grey.900'
+                                }
                               }
                             }}
                           />
