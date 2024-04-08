@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
+import { useAuthContext } from 'auth'
 import {
   Box,
   Badge,
@@ -21,21 +22,25 @@ import TextareaAutosize from 'react-textarea-autosize'
 import { useForm, Controller } from 'react-hook-form'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
+import { dispatch } from '../../../store/store'
 import { useGetUserQuery } from 'store/slice'
+import { getSecurityUser } from 'store/slice'
 import { useIcon, ICON_NAME } from 'hook'
 import { MARGIN, RADIUS, ASSET } from 'config'
 import { KEY, TITLE, LABEL } from 'constant'
 import { mockUser } from '_mock'
 
-const UserProfile = ({ user = mockUser }) => {
+const UserProfile = () => {
   const [hoverAvatar, setHoverAvatar] = useState(false)
   const [hoverBadge, setHoverBadge] = useState(false)
   const [isNotEditState, setIsNotEditState] = useState(true)
   const { user: userState, userId } = useSelector((state) => state.auth)
+  const { securityUser } = useSelector((state) => state.user)
+  const { data: userDetail, isLoading, error, refetch } = useGetUserQuery(userId)
+  const { user } = useAuthContext()
 
   const { control, handleSubmit } = useForm()
   const { themeMode } = useSettingContext()
-  const { data: userData, isLoading, error } = useGetUserQuery(userId)
 
   const fileInput = useRef(null)
 
@@ -62,12 +67,16 @@ const UserProfile = ({ user = mockUser }) => {
 
   const onSubmit = (data) => {
     console.log(data)
+    refetch()
   }
 
   useEffect(() => {
-    console.log(userState)
-    console.log(userId)
-  }, [userState, userId, isLoading, error])
+    console.log('user data: ', userDetail)
+    // console.log('data: ', data)
+    // console.log('securityUser: ', securityUser)
+    // console.log('userData: ', userData)
+    // console.log(userId)
+  }, [userState, userId])
 
   const machineList = [
     { id: 20566, name: 'FRAMA3200', status: 'Running' },
@@ -208,8 +217,8 @@ const UserProfile = ({ user = mockUser }) => {
                       }>
                       <CardMedia
                         component="img"
-                        src={user[0].badge}
-                        alt={user[0].organization}
+                        src={mockUser[0].badge}
+                        alt={mockUser[0]?.organization}
                         sx={{
                           width: 70,
                           height: 70,
@@ -223,7 +232,7 @@ const UserProfile = ({ user = mockUser }) => {
                       name="organization"
                       control={control}
                       disabled={isNotEditState}
-                      defaultValue={user[0].organization}
+                      defaultValue={userDetail.customer.name || 'Organization'}
                       rules={{ required: 'organization is required' }}
                       render={({ field, fieldState: { error } }) => (
                         <TextField
@@ -254,7 +263,7 @@ const UserProfile = ({ user = mockUser }) => {
                   <Grid container justifyContent="flex-end" flexDirection="column" alignContent="flex-end">
                     <Grid item xs={12}>
                       <Typography variant="h1" gutterBottom color={themeMode === KEY.LIGHT ? 'grey.400' : 'grey.800'}>
-                        {TITLE.PROFILE}
+                        {isLoading ? 'isLoading...' : TITLE.PROFILE}
                       </Typography>
                     </Grid>
                     <Grid item xs={12} justifyContent="flex-end">
@@ -290,7 +299,7 @@ const UserProfile = ({ user = mockUser }) => {
                         name="firstName"
                         control={control}
                         disabled={isNotEditState}
-                        defaultValue={user[0].firstName}
+                        defaultValue={mockUser[0].firstName}
                         rules={{ required: 'Name is required' }}
                         render={({ field, fieldState: { error } }) => (
                           <TextField
@@ -314,7 +323,7 @@ const UserProfile = ({ user = mockUser }) => {
                       <Controller
                         name="lastName"
                         control={control}
-                        defaultValue={user[0].lastName}
+                        defaultValue={user?.lastName}
                         disabled={isNotEditState}
                         render={({ field, fieldState: { error } }) => (
                           <TextField
@@ -341,7 +350,7 @@ const UserProfile = ({ user = mockUser }) => {
                       <Controller
                         name="location"
                         control={control}
-                        defaultValue={Object.values(user[0].location).join(', ')}
+                        defaultValue={Object.values(mockUser[0].location).join(', ')}
                         disabled={isNotEditState}
                         rules={{ required: 'Location is required' }}
                         render={({ field, fieldState: { error } }) => (
@@ -376,7 +385,7 @@ const UserProfile = ({ user = mockUser }) => {
                         name="email"
                         control={control}
                         disabled
-                        defaultValue={user[0].email}
+                        defaultValue={mockUser[0].email}
                         rules={{ required: 'Email is required', pattern: /^\S+@\S+$/i }}
                         render={({ field, fieldState: { error } }) => (
                           <TextField
@@ -401,7 +410,7 @@ const UserProfile = ({ user = mockUser }) => {
                       <Controller
                         name="role"
                         control={control}
-                        defaultValue={user[0].role}
+                        defaultValue={mockUser[0].role}
                         disabled={isNotEditState}
                         rules={{ required: 'Role is required' }}
                         render={({ field, fieldState: { error } }) => (
@@ -426,7 +435,7 @@ const UserProfile = ({ user = mockUser }) => {
                       <Controller
                         name="phone"
                         control={control}
-                        defaultValue={user[0].phone}
+                        defaultValue={mockUser[0].phone}
                         disabled={isNotEditState}
                         rules={{ required: 'Phone is required' }}
                         render={({ field, fieldState: { error } }) => (
@@ -475,8 +484,8 @@ const UserProfile = ({ user = mockUser }) => {
                         />
                       }>
                       <Avatar
-                        src={user[0].photoURL}
-                        alt={user[0].displayName}
+                        src={mockUser[0].photoURL}
+                        alt={mockUser[0].displayName}
                         sx={{
                           width: 250,
                           height: 250,
