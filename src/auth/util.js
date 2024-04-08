@@ -2,7 +2,7 @@ import { axios } from 'util'
 import { LOCAL_STORAGE_KEY } from 'constant'
 
 export const getAuthToken = () => {
-  return localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN).toString()
+  return localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN)
 }
 
 function jwtDecode(token) {
