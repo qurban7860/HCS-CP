@@ -39,6 +39,7 @@ const authSlice = createSlice({
       state.sessionId = sessionId
       state.accessToken = accessToken
       localStorage.setItem('user', JSON.stringify(user))
+      localStorage.setItem('email', user.email)
       localStorage.setItem('userId', userId)
       localStorage.setItem('sessionId', sessionId)
       localStorage.setItem('accessToken', accessToken)
