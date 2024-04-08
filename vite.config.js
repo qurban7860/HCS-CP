@@ -11,7 +11,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      root: path.resolve(__dirname, 'src', 'app.jsx'),
       config: path.resolve(__dirname, 'src', 'config'),
       global: path.resolve(__dirname, 'src', 'config', 'global.js'),
       constant: path.resolve(__dirname, 'src', 'constant'),
