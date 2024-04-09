@@ -23,7 +23,7 @@ function AuthForm() {
   const {
     setError,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting, isSubmitSuccessful }
   } = methods
 
   const onSubmit = async (data) => {
@@ -38,12 +38,12 @@ function AuthForm() {
       if (regEx.test(error.MessageCode)) {
         setError('afterSubmit', {
           ...error,
-          message: error.Message,
+          message: error.Message
         })
       } else {
         setError('afterSubmit', {
           ...error,
-          message: 'Something went wrong',
+          message: 'Something went wrong'
         })
       }
     }
@@ -54,14 +54,7 @@ function AuthForm() {
       <Stack spacing={3} sx={{ mt: 1 }}>
         {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
-        <RHFTextField
-          type="number"
-          name="code"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          label="Code"
-          required
-        />
+        <RHFTextField type="number" name="code" value={code} onChange={(e) => setCode(e.target.value)} label="Code" required />
 
         <LoadingButton
           fullWidth
@@ -70,8 +63,7 @@ function AuthForm() {
           type="submit"
           variant="contained"
           loading={isSubmitSuccessful || isSubmitting}
-          sx={{ bgcolor: '#10079F', color: 'white', '&:hover': { bgcolor: '#FFA200' } }}
-        >
+          sx={{ bgcolor: '#10079F', color: 'white', '&:hover': { bgcolor: '#FFA200' } }}>
           Submit
         </LoadingButton>
       </Stack>
@@ -85,9 +77,8 @@ function AuthForm() {
             mt: 3,
             mx: 'auto',
             alignItems: 'center',
-            display: 'inline-flex',
-          }}
-        >
+            display: 'inline-flex'
+          }}>
           <Iconify icon="eva:chevron-left-fill" width={16} />
           {TITLE.FORGOT_RETURN}
         </Link>
