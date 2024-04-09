@@ -23,6 +23,7 @@ export default defineConfig({
       layout: path.resolve(__dirname, 'src', 'layout'),
       _mock: path.resolve(__dirname, 'src', '_mock'),
       route: path.resolve(__dirname, 'src', 'route'),
+      schema: path.resolve(__dirname, 'src', 'schema'),
       store: path.resolve(__dirname, 'src', 'store'),
       slice: path.resolve(__dirname, 'src', 'store', 'slice'),
       theme: path.resolve(__dirname, 'src', 'theme'),
