@@ -86,7 +86,7 @@ export default function AccountPopover() {
             }
           })
         }}>
-        <CustomAvatar alt={mockUser[0]?.displayName} name={user.displayName} />
+        <CustomAvatar /**src={mockUser[0]?.photoURL}  */ alt={mockUser[0]?.displayName} name={user.displayName} />
       </IconButtonAnimate>
 
       <MenuPopover
