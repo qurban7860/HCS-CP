@@ -1,7 +1,9 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useMemo, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { useAuthContext } from 'auth'
+import { yupResolver } from '@hookform/resolvers/yup'
+
 import {
   Box,
   Badge,
@@ -18,11 +20,12 @@ import {
   CardMedia,
   IconButton
 } from '@mui/material'
-import TextareaAutosize from 'react-textarea-autosize'
 import { useForm, Controller } from 'react-hook-form'
+import FormProvider, { RHFTextField } from 'component/hook-form'
+import TextareaAutosize from 'react-textarea-autosize'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
-import { dispatch } from '../../../store/store'
+import { editUserSchema } from 'schema'
 import { useGetUserQuery } from 'store/slice'
 // import { getSecurityUser } from 'store/slice'
 import { useIcon, ICON_NAME } from 'hook'
@@ -39,10 +42,53 @@ const UserProfile = () => {
   const { data: userDetail, isLoading, error, refetch } = useGetUserQuery(userId)
   const { user } = useAuthContext()
 
-  const { control, handleSubmit } = useForm()
   const { themeMode } = useSettingContext()
 
   const fileInput = useRef(null)
+
+  const defaultValues = useMemo(
+    () => ({
+      customer: userDetail?.customer || null,
+      contact: userDetail?.contact || null,
+      name: userDetail?.name || '',
+      phone: userDetail?.phone || '+64 ',
+      email: userDetail?.email || '',
+      loginEmail: userDetail?.login || '',
+      roles: userDetail?.roles[0]?.roleType || [],
+      dataAccessibilityLevel: userDetail?.dataAccessibilityLevel || 'FILTER',
+      regions: userDetail?.regions || [],
+      customers: userDetail?.customers || [],
+      machines: userDetail?.machines || [],
+      isActive: userDetail?.isActive,
+      multiFactorAuthentication: userDetail?.multiFactorAuthentication,
+      currentEmployee: userDetail?.currentEmployee
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [userDetail]
+  )
+  const methods = useForm({
+    resolver: yupResolver(editUserSchema),
+    defaultValues
+  })
+
+  const {
+    reset,
+    control,
+    handleSubmit,
+    formState: { isSubmitting }
+  } = methods
+
+  const onSubmit = async (data) => {
+    try {
+      await dispatch(updateSecurityUser(data, securityUser._id))
+      await dispatch(getSecurityUser(securityUser._id))
+      reset()
+      navigate(PATH_SECURITY.users.profile)
+    } catch (error) {
+      enqueueSnackbar(error, { variant: `error` })
+      console.log('Error:', error)
+    }
+  }
 
   const handleEdit = () => {
     setIsNotEditState((prev) => !prev)
@@ -65,457 +111,294 @@ const UserProfile = () => {
   const { iconSrc: editSrc } = useIcon(ICON_NAME.EDIT)
   const { iconSrc: saveSrc } = useIcon(ICON_NAME.SAVE)
 
-  const onSubmit = (data) => {
-    console.log(data)
-    refetch()
-  }
-
-  useEffect(() => {
-    console.log('user data: ', userDetail)
-    // console.log('data: ', data)
-    // console.log('securityUser: ', securityUser)
-    // console.log('userData: ', userData)
-    // console.log(userId)
-  }, [userState, userId])
-
+  // TODO: #HPS-1053 when machine slice/reducers replace this mock data
   const machineList = [
     { id: 20566, name: 'FRAMA3200', status: 'Running' },
     { id: 20567, name: 'Decoiler', status: 'Running' },
     { id: 15699, name: 'H100', status: 'Stopped' }
   ]
-
+  // TODO: #HPS-1062 when JIRA api integated, replace this mock data
   const ticketList = [{ id: 'HWKSC-12345', status: 'Under Review', agent: 'Maria Clara' }]
 
   return (
     <MotionLazyContainer display="flex">
       {/*  TODO: Make responsive */}
       {/* {TODO: refactor  */}
-      <Grid container spacing={2} flexDirection="row" {...MARGIN.PAGE_PROP}>
-        <Grid item lg={3}>
-          <Grid container mb={2}>
-            <Grid item lg={12} sm={12} mb={2} bgcolor="background.paper">
-              <Box
-                bgcolor={themeMode === 'light' ? 'success.main' : 'grey.800'}
-                flex={1}
-                px={2}
-                pt={2}
-                sx={{
-                  backgroundImage: `url(${ASSET.BG_STROKE_LOGO})`,
-                  backgroundSize: 'cover',
-                  backgroundPositionY: 'center',
-                  backgroundSize: '150%'
-                }}>
-                <Typography variant="h6" color="common.white" gutterBottom>
-                  {LABEL.USER_PROFILE_MACHINE}
-                </Typography>
-              </Box>
-              <List>
-                {machineList.map((machine) => (
-                  <ListItem key={machine.id}>
-                    <Grid container alignItems="center">
-                      <Grid item xs={8}>
-                        <ListItemText primary={machine.id} secondary={machine.name} />
+      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+        <Grid container spacing={2} flexDirection="row" {...MARGIN.PAGE_PROP}>
+          <Grid item lg={3}>
+            <Grid container mb={2}>
+              <Grid item lg={12} sm={12} mb={2} bgcolor="background.paper">
+                <Box
+                  bgcolor={themeMode === 'light' ? 'success.main' : 'grey.800'}
+                  flex={1}
+                  px={2}
+                  pt={2}
+                  sx={{
+                    backgroundImage: `url(${ASSET.BG_STROKE_LOGO})`,
+                    backgroundSize: 'cover',
+                    backgroundPositionY: 'center',
+                    backgroundSize: '150%'
+                  }}>
+                  <Typography variant="h6" color="common.white" gutterBottom>
+                    {LABEL.USER_PROFILE_MACHINE}
+                  </Typography>
+                </Box>
+                <List>
+                  {machineList.map((machine) => (
+                    <ListItem key={machine.id}>
+                      <Grid container alignItems="center">
+                        <Grid item xs={8}>
+                          <ListItemText primary={machine.id} secondary={machine.name} />
+                        </Grid>
+                        <Grid item xs={4} flex={1} justifyContent="flex-end">
+                          <ListItemText>
+                            <Chip
+                              label={<Typography variant="h6">{machine.status}</Typography>}
+                              size="small"
+                              variant="outlined"
+                              sx={{
+                                backgroundColor: machine.status === 'Stopped' ? 'error.main' : 'burnIn.main',
+                                color: `common.${machine.status === 'Stopped' ? 'white' : 'black'}`,
+                                fontWeight: 'bold'
+                              }}
+                            />
+                          </ListItemText>
+                        </Grid>
                       </Grid>
-                      <Grid item xs={4} flex={1} justifyContent="flex-end">
-                        <ListItemText>
-                          <Chip
-                            label={<Typography variant="h6">{machine.status}</Typography>}
-                            size="small"
-                            variant="outlined"
-                            sx={{
-                              backgroundColor: machine.status === 'Stopped' ? 'error.main' : 'burnIn.main',
-                              color: `common.${machine.status === 'Stopped' ? 'white' : 'black'}`,
-                              fontWeight: 'bold'
-                            }}
-                          />
-                        </ListItemText>
-                      </Grid>
-                    </Grid>
-                  </ListItem>
-                ))}
-              </List>
-            </Grid>
-            <Grid item lg={12} sm={12} bgcolor="background.paper">
-              <Box
-                bgcolor={themeMode === 'light' ? 'success.main' : 'grey.800'}
-                flex={1}
-                px={2}
-                pt={2}
-                sx={{
-                  backgroundImage: `url(${ASSET.BG_STROKE_LOGO})`,
-                  backgroundSize: 'cover',
-                  backgroundPositionY: 'center',
-                  backgroundSize: '150%'
-                }}>
-                <Typography variant="h6" color="common.white" gutterBottom>
-                  {LABEL.USER_PROFILE_TIX}
-                </Typography>
-              </Box>
-              <List>
-                {ticketList.map((ticket) => (
-                  <ListItem key={ticket.id}>
-                    <ListItemText
-                      primary={ticket.id}
-                      secondary={
-                        <>
-                          {`STATUS: ${ticket.status}`} <Icon icon={ticketStatusIconSrc} sx={{ color: 'bronze.main' }} />
-                          <br />
-                          {`AGENT: ${ticket.agent}`}
-                        </>
-                      }
-                    />
-                  </ListItem>
-                ))}
-              </List>
+                    </ListItem>
+                  ))}
+                </List>
+              </Grid>
+              <Grid item lg={12} sm={12} bgcolor="background.paper">
+                <Box
+                  bgcolor={themeMode === 'light' ? 'success.main' : 'grey.800'}
+                  flex={1}
+                  px={2}
+                  pt={2}
+                  sx={{
+                    backgroundImage: `url(${ASSET.BG_STROKE_LOGO})`,
+                    backgroundSize: 'cover',
+                    backgroundPositionY: 'center',
+                    backgroundSize: '150%'
+                  }}>
+                  <Typography variant="h6" color="common.white" gutterBottom>
+                    {LABEL.USER_PROFILE_TIX}
+                  </Typography>
+                </Box>
+                <List>
+                  {ticketList.map((ticket) => (
+                    <ListItem key={ticket.id}>
+                      <ListItemText
+                        primary={ticket.id}
+                        secondary={
+                          <>
+                            {`STATUS: ${ticket.status}`} <Icon icon={ticketStatusIconSrc} sx={{ color: 'bronze.main' }} />
+                            <br />
+                            {`AGENT: ${ticket.agent}`}
+                          </>
+                        }
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid item sm={12} lg={9}>
-          <Card
-            height="100vh"
-            py={2}
-            sx={{
-              backgroundColor: themeMode === 'light' ? 'background.paper' : 'background.default',
-              backgroundImage: `url(${themeMode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
-              backgroundSize: 'cover',
-              backgroundSize: '150%'
-            }}>
-            <Divider
-              sx={{
-                height: 2,
-                borderStyle: 'solid',
-                borderColor: themeMode === 'light' ? 'success.main' : 'grey.400',
-                borderWidth: 5
-              }}
-            />
-            <Box component="form" onSubmit={handleSubmit(onSubmit)} mb={10} mt={2} mx={4}>
-              <Grid container mb={10}>
-                <Grid item lg={8}>
-                  <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                    <input accept="image/*" type="file" ref={fileInput} style={{ display: 'none' }} onChange={handleFileChange} />
-                    <Badge
-                      onMouseEnter={handleHoverBadge}
-                      onMouseLeave={handleHoverBadge}
-                      overlap="circular"
-                      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                      badgeContent={
-                        <Chip
-                          icon={<Icon icon={editSrc} color="common.white" width={15} />}
-                          size="small"
-                          variant="filled"
-                          onClick={() => {
-                            fileInput.current.click()
-                          }}
-                          sx={{
-                            borderColor: 'common.white',
-                            color: 'success.main',
-                            fontWeight: 'bold',
-                            cursor: 'pointer',
-                            display: hoverBadge ? 'block' : 'none'
-                          }}
-                        />
-                      }>
-                      <CardMedia
-                        component="img"
-                        src={mockUser[0].badge}
-                        alt={mockUser[0]?.organization}
-                        sx={{
-                          width: 70,
-                          height: 70,
-                          objectFit: 'hidden',
-                          borderRadius: '10%',
-                          marginRight: 2
-                        }}
-                      />
-                    </Badge>
-                    <Controller
-                      name="organization"
-                      control={control}
-                      disabled={isNotEditState}
-                      defaultValue={userDetail?.customer.name || 'Organization'}
-                      rules={{ required: 'organization is required' }}
-                      render={({ field, fieldState: { error } }) => (
-                        <TextField
-                          {...field}
-                          label="Organization"
-                          variant={isNotEditState ? 'filled' : 'standard'}
-                          error={!!error}
-                          helperText={error?.message}
-                          size="large"
-                          fullWidth
-                          fontWeight="bold"
-                          InputProps={{
-                            sx: {
-                              fontSize: '1.5rem',
+
+          <Grid item sm={12} lg={9}>
+            <Box>
+              <Card
+                height="100vh"
+                m={2}
+                py={2}
+                sx={{
+                  backgroundColor: themeMode === 'light' ? 'background.paper' : 'background.default',
+                  backgroundImage: `url(${themeMode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
+                  backgroundSize: 'cover',
+                  backgroundSize: '150%'
+                }}>
+                <Divider
+                  sx={{
+                    height: 2,
+                    borderStyle: 'solid',
+                    borderColor: themeMode === 'light' ? 'success.main' : 'grey.400',
+                    borderWidth: 5
+                  }}
+                />
+
+                <Grid container mb={10} px={1.5}>
+                  <Grid item lg={8}>
+                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                      <input accept="image/*" type="file" ref={fileInput} style={{ display: 'none' }} onChange={handleFileChange} />
+                      <Badge
+                        onMouseEnter={handleHoverBadge}
+                        onMouseLeave={handleHoverBadge}
+                        overlap="circular"
+                        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                        badgeContent={
+                          <Chip
+                            icon={<Icon icon={editSrc} color="common.white" width={15} />}
+                            size="small"
+                            variant="filled"
+                            onClick={() => {
+                              fileInput.current.click()
+                            }}
+                            sx={{
+                              borderColor: 'common.white',
+                              color: 'success.main',
                               fontWeight: 'bold',
-                              backgroundColor: 'transparent',
-                              '&.Mui-disabled': {
-                                backgroundColor: themeMode === KEY.LIGHT ? 'grey.300' : 'grey.900'
-                              }
-                            }
+                              cursor: 'pointer',
+                              display: hoverBadge ? 'block' : 'none'
+                            }}
+                          />
+                        }>
+                        <CardMedia
+                          component="img"
+                          src={mockUser[0].badge}
+                          alt={mockUser[0]?.organization}
+                          sx={{
+                            width: 70,
+                            height: 70,
+                            objectFit: 'hidden',
+                            borderRadius: '10%',
+                            marginRight: 2
                           }}
                         />
-                      )}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item lg={4}>
-                  <Grid container justifyContent="flex-end" flexDirection="column" alignContent="flex-end">
-                    <Grid item xs={12}>
-                      <Typography variant="h1" gutterBottom color={themeMode === KEY.LIGHT ? 'grey.400' : 'grey.800'}>
-                        {isLoading ? 'isLoading...' : TITLE.PROFILE}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12} justifyContent="flex-end">
-                      <Grid container justifyContent="flex-end">
-                        <IconButton
-                          onClick={handleEdit}
-                          sx={{
-                            backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
-                            border: `1px solid ${themeMode === KEY.LIGHT ? 'success.main' : 'grey.400'}`,
-                            borderRadius: RADIUS.BORDER.borderRadius
-                          }}>
-                          {!isNotEditState ? (
-                            <Icon icon={saveSrc} sx={{ color: themeMode === KEY.LIGHT ? 'primary.lighter' : 'grey.100' }} />
-                          ) : (
-                            <Icon icon={editSrc} sx={{ color: themeMode === KEY.LIGHT ? 'primary.lighter' : 'grey.100' }} />
-                          )}
-                        </IconButton>
+                      </Badge>
+                      <Controller
+                        name="organization"
+                        control={control}
+                        disabled={isNotEditState}
+                        defaultValue={userDetail?.customer.name || 'Organization'}
+                        rules={{ required: 'organization is required' }}
+                        render={({ field, fieldState: { error } }) => (
+                          <TextField
+                            {...field}
+                            label="Organization"
+                            variant={isNotEditState ? 'filled' : 'standard'}
+                            error={!!error}
+                            helperText={error?.message}
+                            size="large"
+                            fullWidth
+                            fontWeight="bold"
+                            InputProps={{
+                              sx: {
+                                fontSize: '1.5rem',
+                                fontWeight: 'bold',
+                                backgroundColor: 'transparent',
+                                '&.Mui-disabled': {
+                                  backgroundColor: themeMode === KEY.LIGHT ? 'grey.200' : 'grey.900'
+                                }
+                              }
+                            }}
+                          />
+                        )}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item lg={4}>
+                    <Grid container justifyContent="flex-end" flexDirection="column" alignContent="flex-end">
+                      <Grid item xs={12}>
+                        <Typography variant="h1" gutterBottom color={themeMode === KEY.LIGHT ? 'grey.400' : 'grey.800'}>
+                          {isLoading ? 'isLoading...' : TITLE.PROFILE}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12} justifyContent="flex-end">
+                        <Grid container justifyContent="flex-end">
+                          <IconButton
+                            onClick={handleEdit}
+                            sx={{
+                              backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800',
+                              border: `1px solid ${themeMode === KEY.LIGHT ? 'success.main' : 'grey.400'}`,
+                              borderRadius: RADIUS.BORDER.borderRadius
+                            }}>
+                            {!isNotEditState ? (
+                              <Icon icon={saveSrc} sx={{ color: themeMode === KEY.LIGHT ? 'primary.lighter' : 'grey.100' }} />
+                            ) : (
+                              <Icon icon={editSrc} sx={{ color: themeMode === KEY.LIGHT ? 'primary.lighter' : 'grey.100' }} />
+                            )}
+                          </IconButton>
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-              <Grid container spacing={2}>
-                <Grid item lg={12}>
-                  <Typography variant="h5" gutterBottom>
-                    {TITLE.PERSONAL_INFO}
-                  </Typography>
-                </Grid>
-                <Grid item lg={8} sm={12}>
-                  <Grid container spacing={6}>
-                    <Grid item xs={12} sm={6}>
-                      <Controller
-                        name="name"
-                        control={control}
-                        disabled={isNotEditState}
-                        defaultValue={userDetail.name}
-                        rules={{ required: 'Name is required' }}
-                        render={({ field, fieldState: { error } }) => (
-                          <TextField
-                            {...field}
-                            label="Name"
-                            variant="outlined"
-                            error={!!error}
-                            helperText={error?.message}
-                            size="small"
-                            fullWidth
-                            InputProps={{
-                              sx: {
-                                '&.Mui-disabled': {
-                                  color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.100',
-                                  backgroundColor: themeMode === KEY.LIGHT ? 'grey.300' : 'grey.900'
-                                }
-                              }
-                            }}
-                          />
-                        )}
-                      />
-                    </Grid>
+                <Grid container spacing={2} px={1.5} mb={10}>
+                  <Grid item lg={12}>
+                    <Typography variant="h5" gutterBottom>
+                      {TITLE.PERSONAL_INFO}
+                    </Typography>
+                  </Grid>
+                  <Grid item lg={8} sm={12}>
+                    <Grid container spacing={6} p={2} pb={5}>
+                      <Grid item xs={12} sm={6}>
+                        <RHFTextField name="name" label="Name" disabled={isNotEditState} />
+                      </Grid>
 
-                    <Grid item xs={12} sm={6}>
-                      <Controller
-                        name="location"
-                        control={control}
-                        defaultValue={Object.values(mockUser[0].location).join(', ')}
-                        disabled={isNotEditState}
-                        rules={{ required: 'Location is required' }}
-                        render={({ field, fieldState: { error } }) => (
-                          <TextField
-                            {...field}
-                            label="Location"
-                            variant="outlined"
-                            error={!!error}
-                            helperText={error?.message}
-                            size="small"
-                            fullWidth
-                            multiline
-                            InputProps={{
-                              inputComponent: TextareaAutosize,
-                              inputProps: {
-                                minRows: 1,
-                                maxRows: 5
-                              },
-                              sx: {
-                                '&.Mui-disabled': {
-                                  color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.100',
-                                  backgroundColor: themeMode === KEY.LIGHT ? 'grey.300' : 'grey.900'
-                                }
-                              }
-                            }}
-                          />
-                        )}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Controller
-                        name="email"
-                        control={control}
-                        disabled
-                        defaultValue={userDetail?.email}
-                        rules={{ required: 'Email is required', pattern: /^\S+@\S+$/i }}
-                        render={({ field, fieldState: { error } }) => (
-                          <TextField
-                            {...field}
-                            label="E-mail"
-                            variant="outlined"
-                            error={!!error}
-                            helperText={error?.message}
-                            size="small"
-                            fullWidth
-                            InputProps={{
-                              sx: {
-                                '&.Mui-disabled': {
-                                  color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.100',
-                                  backgroundColor: themeMode === KEY.LIGHT ? 'grey.300' : 'grey.900'
-                                }
-                              }
-                            }}
-                          />
-                        )}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Controller
-                        name="login"
-                        control={control}
-                        disabled
-                        defaultValue={userDetail?.login}
-                        rules={{ required: 'Login is required', pattern: /^\S+@\S+$/i }}
-                        render={({ field, fieldState: { error } }) => (
-                          <TextField
-                            {...field}
-                            label="Login"
-                            variant="outlined"
-                            error={!!error}
-                            helperText={error?.message}
-                            size="small"
-                            fullWidth
-                            InputProps={{
-                              sx: {
-                                '&.Mui-disabled': {
-                                  color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.100',
-                                  backgroundColor: themeMode === KEY.LIGHT ? 'grey.300' : 'grey.900'
-                                }
-                              }
-                            }}
-                          />
-                        )}
-                      />
-                    </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <RHFTextField name="location" label="Location" disabled={isNotEditState} />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <RHFTextField name="email" label="Email" disabled={isNotEditState} />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <RHFTextField name="loginEmail" label="Login" disabled={isNotEditState} />
+                      </Grid>
 
-                    <Grid item xs={12} sm={6}>
-                      <Controller
-                        name="role"
-                        control={control}
-                        defaultValue={userDetail?.roles[0].roleType}
-                        disabled={isNotEditState}
-                        rules={{ required: 'Role is required' }}
-                        render={({ field, fieldState: { error } }) => (
-                          <TextField
-                            {...field}
-                            label="Role"
-                            variant="outlined"
-                            error={!!error}
-                            helperText={error?.message}
-                            size="small"
-                            fullWidth
-                            InputProps={{
-                              sx: {
-                                '&.Mui-disabled': {
-                                  color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.100',
-                                  backgroundColor: themeMode === KEY.LIGHT ? 'grey.300' : 'grey.900'
-                                }
-                              }
-                            }}
-                          />
-                        )}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Controller
-                        name="phone"
-                        control={control}
-                        defaultValue={mockUser[0].phone}
-                        disabled={isNotEditState}
-                        rules={{ required: 'Phone is required' }}
-                        render={({ field, fieldState: { error } }) => (
-                          <TextField
-                            {...field}
-                            label="Phone"
-                            variant="outlined"
-                            error={!!error}
-                            helperText={error?.message}
-                            size="small"
-                            fullWidth
-                            InputProps={{
-                              sx: {
-                                '&.Mui-disabled': {
-                                  color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.100',
-                                  backgroundColor: themeMode === KEY.LIGHT ? 'grey.300' : 'grey.900'
-                                }
-                              }
-                            }}
-                          />
-                        )}
-                      />
+                      <Grid item xs={12} sm={6}>
+                        <RHFTextField name="roles" label="Roles" disabled={isNotEditState} />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <RHFTextField name="phone" label="Phone" disabled={isNotEditState} />
+                      </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
-                <Grid item lg={4} sm={12}>
-                  <Box display="flex" justifyContent="center">
-                    <input accept="image/*" type="file" ref={fileInput} style={{ display: 'none' }} onChange={handleFileChange} />
-                    <Badge
-                      onMouseEnter={handleHoverAvatar}
-                      onMouseLeave={handleHoverAvatar}
-                      overlap="circular"
-                      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                      badgeContent={
-                        <Chip
-                          icon={<Icon icon={editSrc} color="common.white" width={30} />}
-                          size="large"
-                          variant="filled"
-                          onClick={() => {
-                            fileInput.current.click()
-                          }}
+                  <Grid item lg={4} sm={12}>
+                    <Box display="flex" justifyContent="center">
+                      <input accept="image/*" type="file" ref={fileInput} style={{ display: 'none' }} onChange={handleFileChange} />
+                      <Badge
+                        onMouseEnter={handleHoverAvatar}
+                        onMouseLeave={handleHoverAvatar}
+                        overlap="circular"
+                        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                        badgeContent={
+                          <Chip
+                            icon={<Icon icon={editSrc} color="common.white" width={30} />}
+                            size="large"
+                            variant="filled"
+                            onClick={() => {
+                              fileInput.current.click()
+                            }}
+                            sx={{
+                              borderColor: 'common.white',
+                              color: 'success.main',
+                              fontWeight: 'bold',
+                              cursor: 'pointer',
+                              display: hoverAvatar ? 'block' : 'none'
+                            }}
+                          />
+                        }>
+                        <Avatar
+                          src={mockUser[0].photoURL}
+                          alt={mockUser[0].displayName}
                           sx={{
-                            borderColor: 'common.white',
-                            color: 'success.main',
-                            fontWeight: 'bold',
-                            cursor: 'pointer',
-                            display: hoverAvatar ? 'block' : 'none'
+                            width: 250,
+                            height: 250,
+                            borderRadius: RADIUS.BORDER_RADIUS,
+                            borderColor: themeMode === 'light' ? 'success.main' : 'grey.400',
+                            borderWidth: 5
                           }}
                         />
-                      }>
-                      <Avatar
-                        src={mockUser[0].photoURL}
-                        alt={mockUser[0].displayName}
-                        sx={{
-                          width: 250,
-                          height: 250,
-                          borderRadius: RADIUS.BORDER_RADIUS,
-                          borderColor: themeMode === 'light' ? 'success.main' : 'grey.400',
-                          borderWidth: 5
-                        }}
-                      />
-                    </Badge>
-                  </Box>
+                      </Badge>
+                    </Box>
+                  </Grid>
                 </Grid>
-              </Grid>
+              </Card>
             </Box>
-          </Card>
+          </Grid>
         </Grid>
-      </Grid>
+      </FormProvider>
     </MotionLazyContainer>
   )
 }
