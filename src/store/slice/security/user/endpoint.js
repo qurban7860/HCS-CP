@@ -8,7 +8,7 @@ export const userSlice = apiSlice.injectEndpoints({
       query: (id) => ({
         url: PATH_SERVER.USER.detail(id),
         method: 'GET',
-        keepUnusedDataFor: 5,
+        // keepUnusedDataFor: 20,
         headers: {
           Authorization: `Bearer ${getAuthToken()}`
         }
