@@ -6,7 +6,7 @@ import NavList from './nav-list'
 
 NavSection.propTypes = {
   sx: PropTypes.object,
-  data: PropTypes.array,
+  data: PropTypes.array
 }
 
 const _mockData = [
@@ -14,16 +14,16 @@ const _mockData = [
     subheader: 'Subheader 1',
     items: [
       { title: 'Customer', path: '/customer', children: null },
-      { title: 'Machine', path: '/machine', children: null },
-    ],
+      { title: 'Machine', path: '/machine', children: null }
+    ]
   },
   {
     subheader: 'Subheader 2',
     items: [
       { title: 'Document', path: '/document', children: null },
-      { title: 'Support', path: '/support', children: null },
-    ],
-  },
+      { title: 'Support', path: '/support', children: null }
+    ]
+  }
 ]
 
 function NavSection({ data = _mockData, sx, ...other }) {
@@ -34,10 +34,9 @@ function NavSection({ data = _mockData, sx, ...other }) {
       sx={{
         mx: 'auto',
         ...hideScrollbarY,
-        ...sx,
+        ...sx
       }}
-      {...other}
-    >
+      {...other}>
       {data.map((group) => (
         <Items key={group.subheader} items={group.items} />
       ))}
@@ -48,7 +47,7 @@ function NavSection({ data = _mockData, sx, ...other }) {
 export default memo(NavSection)
 
 Items.propTypes = {
-  items: PropTypes.array,
+  items: PropTypes.array
 }
 
 function Items({ items }) {
