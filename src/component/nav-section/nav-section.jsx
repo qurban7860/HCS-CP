@@ -9,24 +9,7 @@ NavSection.propTypes = {
   data: PropTypes.array
 }
 
-const _mockData = [
-  {
-    subheader: 'Subheader 1',
-    items: [
-      { title: 'Customer', path: '/customer', children: null },
-      { title: 'Machine', path: '/machine', children: null }
-    ]
-  },
-  {
-    subheader: 'Subheader 2',
-    items: [
-      { title: 'Document', path: '/document', children: null },
-      { title: 'Support', path: '/support', children: null }
-    ]
-  }
-]
-
-function NavSection({ data = _mockData, sx, ...other }) {
+function NavSection({ data, sx, ...other }) {
   return (
     <Stack
       direction="row"
