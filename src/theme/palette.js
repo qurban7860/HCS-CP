@@ -91,7 +91,21 @@ const HOWICKBRONZE = {
 }
 
 const HOWICKBURNIN = {
-  main: '#D1ED18'
+  main: '#D1ED18',
+  contrastText: '#000'
+}
+
+const HOWICK = {
+  lightGray: '#F4F4F4',
+  darkGray: '#DFDFDF',
+  darkBlue: '#10079F',
+  midBlue: '#0940B2',
+  blue: '#0084C9',
+  orange: '#FFA200',
+  bronze: '#897A69',
+  white: '#FFF',
+  error: '#DA4848',
+  burnIn: '#D1ED18'
 }
 
 const COMMON = {
@@ -102,6 +116,7 @@ const COMMON = {
   success: SUCCESS,
   warning: WARNING,
   error: ERROR,
+  howick: HOWICK,
   grey: GREY,
   bronze: HOWICKBRONZE,
   blue: HOWICKBLUE,
@@ -111,8 +126,8 @@ const COMMON = {
   action: {
     hover: alpha(GREY[500], 0.08),
     selected: alpha(GREY[500], 0.16),
-    // disabled: alpha(GREY[100], 0.8),
-    // disabledBackground: alpha(GREY[700], 0.4),
+    disabled: alpha(GREY[100], 1),
+    disabledBackground: alpha(GREY[700], 0.4),
     focus: alpha(GREY[500], 0.24),
     hoverOpacity: 0.08,
     disabledOpacity: 0.78
@@ -126,8 +141,8 @@ export default function palette(themeMode) {
     mode: 'light',
     text: {
       primary: GREY[800],
-      secondary: GREY[600],
-      disabled: GREY[500]
+      secondary: GREY[600]
+      // disabled: GREY[0]
     },
     background: { paper: GREY[200], default: GREY[400], neutral: GREY[500] },
     action: {
@@ -140,9 +155,9 @@ export default function palette(themeMode) {
     ...COMMON,
     mode: 'dark',
     text: {
-      primary: '#fff',
+      primary: GREY[100],
       secondary: GREY[500],
-      disabled: GREY[600]
+      disabled: GREY[200]
     },
     background: {
       paper: GREY[800],
