@@ -7,11 +7,11 @@ function NavConfiguration() {
       subheader: 'general',
       items: [
         { title: 'Home', path: '/customer', children: null },
-        { title: 'Machine', path: '/machine', children: null },
+        { title: 'Machine', path: '/product/machine', children: null },
         { title: 'Document', path: '/document', children: null },
-        { title: 'Support', path: '/support', children: null },
-      ],
-    },
+        { title: 'Support', path: '/support', children: null }
+      ]
+    }
   ])
 
   return navConfig
