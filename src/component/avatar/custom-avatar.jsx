@@ -15,63 +15,53 @@ const getColorByName = (name) => {
   return 'default'
 }
 
-const CustomAvatar = forwardRef(
-  ({ color, name = '', BadgeProps, children, extension, sx, ...other }, ref) => {
-    const theme = useTheme()
+const CustomAvatar = forwardRef(({ color, name = '', BadgeProps, children, extension, sx, ...other }, ref) => {
+  const theme = useTheme()
 
-    const charAtName = getCharAtSecondName(name)
-      ? getCharAtName(name) + getCharAtSecondName(name)
-      : getCharAtName(name)
+  const charAtName = getCharAtSecondName(name) ? getCharAtName(name) + getCharAtSecondName(name) : getCharAtName(name)
 
-    const colorByName = getColorByName(name)
+  const colorByName = getColorByName(name)
 
-    const colr = color || colorByName
+  const colr = color || colorByName
 
-    const renderContent =
-      colr === 'default' ? (
-        <Avatar
-          ref={ref}
-          sx={{
-            color: theme.palette[colr]?.contrastText,
-            backgroundColor: theme.palette.primary.light,
-            fontWeight: theme.typography.fontWeightBold,
-            ...sx,
-          }}
-          {...other}
-        >
-          {name && charAtName}
-          {extension}
-          {children}
-        </Avatar>
-      ) : (
-        <Avatar
-          ref={ref}
-          sx={{
-            color: theme.palette[colr]?.contrastText,
-            backgroundColor: theme.palette[colr]?.main,
-            fontWeight: theme.typography.fontWeightBold,
-            ...sx,
-          }}
-          {...other}
-        >
-          {name && charAtName}
-          {children}
-        </Avatar>
-      )
-
-    return BadgeProps ? (
-      <Badge
-        overlap="circular"
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        {...BadgeProps}
-      >
-        {renderContent}
-      </Badge>
+  const renderContent =
+    colr === 'default' ? (
+      <Avatar
+        ref={ref}
+        sx={{
+          color: theme.palette[colr]?.contrastText,
+          backgroundColor: theme.palette.primary.light,
+          fontWeight: theme.typography.fontWeightBold,
+          ...sx
+        }}
+        {...other}>
+        {name && charAtName}
+        {extension}
+        {children}
+      </Avatar>
     ) : (
-      renderContent
+      <Avatar
+        ref={ref}
+        sx={{
+          color: theme.palette[colr]?.contrastText,
+          backgroundColor: theme.palette[colr]?.main,
+          fontWeight: theme.typography.fontWeightBold,
+          ...sx
+        }}
+        {...other}>
+        {name && charAtName}
+        {children}
+      </Avatar>
     )
-  }
-)
+
+  return BadgeProps ? (
+    <Badge overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} {...BadgeProps}>
+      {renderContent}
+    </Badge>
+  ) : (
+    renderContent
+  )
+})
 
 CustomAvatar.propTypes = {
   sx: PropTypes.object,
@@ -79,15 +69,7 @@ CustomAvatar.propTypes = {
   extension: PropTypes.string,
   children: PropTypes.node,
   BadgeProps: PropTypes.object,
-  color: PropTypes.oneOf([
-    'default',
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'error',
-  ]),
+  color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error'])
 }
 
 export default CustomAvatar
