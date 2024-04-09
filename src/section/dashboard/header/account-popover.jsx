@@ -25,9 +25,7 @@ export default function AccountPopover() {
 
   const [openPopover, setOpenPopover] = useState(null)
   const [open, setOpen] = useState(false)
-
   const { enqueueSnackbar } = useSnackbar()
-
   const { themeMode, themeLayout, themeStretch, themeContrast, themeDirection, themeColorPreset, onResetSetting } = useSettingContext()
 
   const handleOpenPopover = (event) => {
@@ -88,7 +86,7 @@ export default function AccountPopover() {
             }
           })
         }}>
-        <CustomAvatar src={mockUser[0]?.photoURL} alt={mockUser[0]?.displayName} name={mockUser[0]?.displayName} />
+        <CustomAvatar alt={mockUser[0]?.displayName} name={user.displayName} />
       </IconButtonAnimate>
 
       <MenuPopover
