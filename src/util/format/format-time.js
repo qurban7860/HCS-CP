@@ -10,9 +10,7 @@ export function fDate(date, newFormat) {
 
 export function GetDifferenceInDays(definedDay) {
   const today = new Date()
-
   const definedDate = parseISO(definedDay)
-
   const difference = differenceInDays(definedDate, today)
 
   return difference
