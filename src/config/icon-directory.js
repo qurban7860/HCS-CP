@@ -32,7 +32,8 @@ const ICON_WEB = {
   SAVE: _getWebIcon('content-save'),
   SEARCH: _getWebIcon('magnify'),
   SETTING: _getWebIcon('cog'),
-  TIX_STATUS: _getWebIcon('chevron-up'),
+  TRAFFIC_CONE: _getWebIcon('traffic-cone'),
+  TIX_STATUS: _getWebIcon('chevron-up')
 }
 
 // add icons that are saved locally
@@ -42,7 +43,7 @@ const ICON_LOC = {
   HOWICK_LOGO_DARK: _getIcon('howick-logo-dark'),
   MODE_LIGHT: _getIcon('sun'),
   MODE_DARK: _getIcon('moon'),
-  SETTING: _getIcon('setting'),
+  SETTING: _getIcon('setting')
 }
 
 // constant for icon name values
@@ -62,7 +63,8 @@ export const ICON_WEB_NAME = {
   SAVE: 'SAVE',
   SEARCH: 'SEARCH',
   SETTING: 'SETTING',
-  TIX_STATUS: 'TIX_STATUS',
+  TRAFFIC_CONE: 'TRAFFIC_CONE',
+  TIX_STATUS: 'TIX_STATUS'
 }
 
 export const ICON_LOC_NAME = {
@@ -72,7 +74,7 @@ export const ICON_LOC_NAME = {
   HOWICK_LOGO_DARK: 'HOWICK_LOGO_DARK',
   MODE_LIGHT: 'MODE_LIGHT',
   MODE_DARK: 'MODE_DARK',
-  SETTING: 'SETTING',
+  SETTING: 'SETTING'
 }
 
 export { ICON_LOC, ICON_WEB }
