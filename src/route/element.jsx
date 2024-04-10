@@ -20,6 +20,9 @@ export const Login = Loadable(lazy(() => import('section/auth/login')))
 export const LandingPage = Loadable(lazy(() => import('page/landing/landing')))
 export const GeneralAppPage = Loadable(lazy(() => import('page/dashboard/general-app')))
 
+// machine
+export const MachinePage = Loadable(lazy(() => import('page/product/machine/machine')))
+
 // User Invitations List
 export const { UserInvitationList } = Loadable(lazy(() => import('page/security/user/user')))
 export const { UserInvitationView } = Loadable(lazy(() => import('page/security')))
