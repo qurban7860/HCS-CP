@@ -5,25 +5,24 @@ const FALLBACK = {
   NOT_FOUND: {
     code: HTTP_CODE.NOT_FOUND,
     title: 'Ooppps... page not found',
-    message:
-      "Sorry, we couldn't find the page you're looking for. Perhaps you've mistyped the URL? Be sure to check your spelling",
+    message: "Sorry, we couldn't find the page you're looking for. Perhaps you've mistyped the URL? Be sure to check your spelling"
   },
   FORBIDDEN: {
     code: HTTP_CODE.FORBIDDEN,
     title: "You're not authorized to access this page",
     message:
-      "This server is aware of the request, but denies access due to insufficient permissions. This indicates that you don't possess the required authorization to view the requested page or resource. Contact the system Administrator.",
+      "This server is aware of the request, but denies access due to insufficient permissions. This indicates that you don't possess the required authorization to view the requested page or resource. Contact the system Administrator."
   },
   INTERNAL_SERVER_ERROR: {
     code: HTTP_CODE.INTERNAL_SERVER_ERROR,
     title: 'Ooppps... server error',
-    message: 'Sorry, something went wrong. Please try again later',
+    message: 'Sorry, something went wrong. Please try again later'
   },
   UNDER_DEVELOPMENT: {
     code: 'ERR_UNDER_DEVELOPMENT',
     title: 'Under Development',
-    message: 'This feature is under development. Please check back later',
-  },
+    message: 'This feature is under development. Please check back later'
+  }
 }
 
 export default FALLBACK
