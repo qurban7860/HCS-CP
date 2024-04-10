@@ -18,6 +18,8 @@ import {
   GeneralAppPage,
   // security:
   UserProfilePage,
+  // product:
+  MachinePage,
 
   // fallback:
   BlankPage,
@@ -102,6 +104,63 @@ export default function Router() {
               path: 'profile',
               element: <UserProfilePage />
             }
+            // { path: 'password', element: <ChangePasswordPage /> },
+          ]
+        }
+      ]
+    },
+    {
+      // security
+      path: 'product',
+      element: (
+        <AuthGuard>
+          <DashboardLayout />
+        </AuthGuard>
+      ),
+      children: [
+        { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
+        {
+          path: 'machine',
+          element: <MachinePage />,
+          children: [
+            // { path: 'password', element: <ChangePasswordPage /> },
+          ]
+        }
+      ]
+    },
+    {
+      // document
+      path: 'document',
+      element: (
+        <AuthGuard>
+          <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
+        </AuthGuard>
+      ),
+      children: [
+        { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
+        {
+          path: 'list',
+          element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
+          children: [
+            // { path: 'password', element: <ChangePasswordPage /> },
+          ]
+        }
+      ]
+    },
+    {
+      // support
+      path: 'support',
+      element: (
+        <AuthGuard>
+          <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
+        </AuthGuard>
+      ),
+      children: [
+        { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
+        {
+          path: 'list',
+          element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
+          children: [
             // { path: 'password', element: <ChangePasswordPage /> },
           ]
         }
