@@ -18,6 +18,11 @@ const TITLE = {
   // @user - UserProfile - user
   PERSONAL_INFO: 'Personal Information',
   PROFILE: 'Profile',
+  // @machine - MachineViewForm - machine
+  MACHINE_KEY_DETAILS: 'Key Details',
+  MACHINE_INFO: 'Machine Information',
+  HOWICK_RESOURCES: 'Howick Resources',
+  MACHINE: 'Machine',
 
   // @root - AccountPopover - settings drawer
   DISPLAY_SETTING: 'Display setting',
@@ -26,19 +31,19 @@ const TITLE = {
   MODE: (mode) => {
     return {
       title: 'Mode',
-      tooltip: `Toggle ${mode === KEY.LIGHT ? KEY.DARK : KEY.LIGHT} mode`,
+      tooltip: `Toggle ${mode === KEY.LIGHT ? KEY.DARK : KEY.LIGHT} mode`
     }
   },
   CONTRAST: 'Contrast',
   ORGANIZATION: 'Organization',
   CONSTRAST: {
     title: 'Contrast',
-    tooltip: 'Toggle contrast mode',
+    tooltip: 'Toggle contrast mode'
   },
   FULLSCREEN: {
     title: 'Fullscreen',
-    tooltip: 'Toggle fullscreen mode',
-  },
+    tooltip: 'Toggle fullscreen mode'
+  }
 }
 
 export default TITLE
