@@ -121,10 +121,7 @@ export default function Router() {
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         {
           path: 'machine',
-          element: <MachinePage />,
-          children: [
-            // { path: 'password', element: <ChangePasswordPage /> },
-          ]
+          element: <MachinePage />
         }
       ]
     },
@@ -140,10 +137,7 @@ export default function Router() {
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         {
           path: 'list',
-          element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
-          children: [
-            // { path: 'password', element: <ChangePasswordPage /> },
-          ]
+          element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />
         }
       ]
     },
