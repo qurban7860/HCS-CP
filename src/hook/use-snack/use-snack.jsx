@@ -1,42 +1,40 @@
 import PropTypes from 'prop-types'
-import { useRef, Fragment } from 'react'
+import { Fragment } from 'react'
+import { m, AnimatePresence } from 'framer-motion'
 import { SnackbarProvider as NotistackProvider, useSnackbar } from 'notistack'
 import { alpha } from '@mui/material/styles'
-import { Box, Collapse, IconButton } from '@mui/material'
-import { useIcon } from 'hook'
+import { Box, Slide, IconButton } from '@mui/material'
+import { useIcon, ICON_NAME } from 'hook'
 import { ICON_WEB_NAME } from 'config'
 import { COLOR, KEY } from 'constant'
 import StyledNotistack from './style'
-import { use } from 'i18next'
-// import { Iconify } from 'component/iconify'
+import { Iconify } from 'component/iconify'
 
 SnackProvider.propTypes = {
   children: PropTypes.node
 }
 
 export default function SnackProvider({ children }) {
-  const notistackRef = useRef(null)
   const { closeSnackbar } = useSnackbar()
 
   const onClose = (key) => () => {
     closeSnackbar(key)
   }
 
-  const { Icon, iconSrc: closeIcon } = useIcon(ICON_WEB_NAME.CLOSE)
+  const { Icon, iconSrc: closeIcon } = useIcon(ICON_NAME.CLOSE)
 
   return (
     <Fragment>
       <StyledNotistack />
 
       <NotistackProvider
-        ref={notistackRef}
         dense
         maxSnack={5}
         preventDuplicate
         autoHideDuration={3000}
-        // TransitionComponent={Collapse}
+        TransitionComponent={Slide}
         variant={COLOR.INFO}
-        anchorOrigin={{ vertical: KEY.TOP, horizontal: KEY.RIGHT }}
+        anchorOrigin={{ vertical: KEY.TOP, horizontal: KEY.CENTER }}
         iconVariant={{
           info: <SnackIcon icon={ICON_WEB_NAME.INFO} color={COLOR.INFO} />,
           success: <SnackIcon icon={ICON_WEB_NAME.CHECK_CICLE_OUTLINE} color={COLOR.SUCCESS} />,
@@ -49,7 +47,7 @@ export default function SnackProvider({ children }) {
             <Icon icon={closeIcon} />
           </IconButton>
         )}>
-        {children}
+        <AnimatePresence>{children}</AnimatePresence>
       </NotistackProvider>
     </Fragment>
   )
@@ -64,20 +62,23 @@ function SnackIcon({ icon, color }) {
   const { Icon, iconSrc } = useIcon(icon)
 
   return (
-    <Box
-      component="span"
-      sx={{
-        mr: 1.5,
-        width: 40,
-        height: 40,
+    <m.div
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      transition={{ duration: 0.3 }}
+      style={{
         display: 'flex',
-        borderRadius: 1.5,
         alignItems: 'center',
         justifyContent: 'center',
         color: `${color}.main`,
-        bgcolor: (theme) => alpha(theme.palette[color].main, 0.16)
+        width: 40,
+        height: 40,
+        borderRadius: 12,
+        '& .MuiTypography-root': {
+          fontSize: '3rem'
+        }
       }}>
       <Icon icon={iconSrc} width={18} />
-    </Box>
+    </m.div>
   )
 }
