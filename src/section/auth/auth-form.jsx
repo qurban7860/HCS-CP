@@ -5,7 +5,7 @@ import { Link, Stack, Alert } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import { PATH_AUTH } from 'route/path'
 import { useAuthContext } from 'auth'
-import { useSnackbar } from 'component/snackbar'
+import { useSnackbar } from 'hook'
 import { TITLE } from 'constant'
 import { Iconify } from 'component/iconify'
 import FormProvider, { RHFTextField } from 'component/hook-form'
@@ -32,6 +32,7 @@ function AuthForm() {
     }
     try {
       await muliFactorAuthentication(code, userId)
+      enqueueSnackbar('Login Successful!')
     } catch (error) {
       enqueueSnackbar('Unable to Login!', { variant: 'error' })
       console.error('error: ', error)
