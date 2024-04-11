@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Link, Stack, Alert, IconButton, InputAdornment, Checkbox, FormControlLabel } from '@mui/material'
 import { GStyledLoadingButton } from 'theme/style'
 import { PATH_AUTH, PATH_DASHBOARD } from 'route/path'
+import { useSnackbar } from 'hook/use-snack'
 import { useAuthContext } from 'auth'
 import { useLoginMutation } from 'store/slice/auth/endpoint'
 import { login as loginReducer } from 'slice/auth'
@@ -24,6 +25,8 @@ function LoginForm() {
   const [userEmail, setUserEmail] = useState('')
   const [userPassword, setUserPassword] = useState('')
   const [userRemember, setUserRemember] = useState(false)
+
+  const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
     const storedUser = localStorage.getItem(LOCAL_STORAGE_KEY.USER_DATA)
@@ -55,6 +58,8 @@ function LoginForm() {
   } = methods
 
   const onSubmit = async (data) => {
+    enqueueSnackbar('Login Successful!')
+
     if (userEmail) {
       data.email = userEmail
     }
@@ -74,6 +79,7 @@ function LoginForm() {
       await login({ email: userEmail, password: userPassword })
 
       if (localStorage.getItem(LOCAL_STORAGE_KEY.MFA)) {
+        enqueueSnackbar('Login Successful!', { variant: 'success' })
         navigate(PATH_DASHBOARD.general.app)
         // TODO: activiate when MFA is implemented
         // navigate(PATH_AUTH.authenticate)
@@ -82,6 +88,7 @@ function LoginForm() {
     } catch (error) {
       if (regEx.test(error.MessageCode)) {
         console.error('error : ', error?.Message || '')
+        enqueueSnackbar('Unable to Login!', { variant: 'error' })
         reset()
         setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
           ...error,
@@ -89,6 +96,7 @@ function LoginForm() {
         })
       } else {
         console.error('error : ', error || '')
+        enqueueSnackbar('Unable to Login!', { variant: 'error' })
         setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
           ...error,
           message: error
@@ -107,7 +115,7 @@ function LoginForm() {
           name="email"
           value={userEmail}
           onChange={(e) => setUserEmail(e.target.value)}
-          label="Login/Email address"
+          label="Login / Email address"
           autoComplete="username"
           required
         />
