@@ -15,6 +15,12 @@ const KEY = {
   CONTRAST_BOLD: 'bold',
 
   AUCKLAND: 'Auckland',
+  // @position
+  TOP: 'top',
+  BOTTOM: 'bottom',
+  LEFT: 'left',
+  RIGHT: 'right',
+  CENTER: 'center'
 }
 
 export default KEY
