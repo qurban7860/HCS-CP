@@ -15,7 +15,8 @@ import Router from 'route'
 import { HelmetProvider } from 'react-helmet-async'
 import { ThemeProvider } from 'theme'
 import { ThemeLocalization } from 'locale'
-import { SnackbarProvider } from 'component/snackbar'
+import { SnackProvider } from 'hook/use-snack'
+// import { SnackbarProvider } from 'component/snackbar'
 import { ScrollToTop } from 'component/scroll-to-top'
 import { MotionLazyContainer } from 'component/animate'
 import { ThemeSettings, SettingProvider } from 'component/setting'
@@ -47,11 +48,11 @@ function App() {
                       <ErrorBoundary fallback={<Fallback {...FALLBACK.INTERNAL_SERVER_ERROR} />}>
                         <ScrollToTop />
                         <ThemeLocalization>
-                          <SnackbarProvider>
+                          <SnackProvider>
                             {/* <StyledChart /> */}
                             {/* <IdleManager /> */}
                             <Router />
-                          </SnackbarProvider>
+                          </SnackProvider>
                         </ThemeLocalization>
                       </ErrorBoundary>
                     </ThemeSettings>
