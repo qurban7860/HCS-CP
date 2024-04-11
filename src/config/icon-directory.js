@@ -21,10 +21,13 @@ const ICON_WEB = {
   ALERT_OUTLINE: _getWebIcon('alert-triangle-outline'),
   BLUR_ON: _getWebIcon('blur'),
   CLOSE: _getWebIcon('close'),
+  CHECK_CICLE_OUTLINE: _getWebIcon('check-circle-outline'),
   CONTRAST_BOX: _getWebIcon('contrast-box'),
   CONTRAST_ON: _getWebIcon('select-inverse'),
   CONTRAST_OFF: _getWebIcon('select-off'),
+  DANGER: _getWebIcon('dangerous'),
   EDIT: _getWebIcon('pencil'),
+  ERROR_OUTLINE: _getWebIcon('error-outline'),
   FULLSCREEN: _getWebIcon('fullscreen'),
   FULLSCREEN_EXIT: _getWebIcon('fullscreen-exit'),
   INFO: _getWebIcon('info-outline'),
@@ -33,7 +36,8 @@ const ICON_WEB = {
   SEARCH: _getWebIcon('magnify'),
   SETTING: _getWebIcon('cog'),
   TRAFFIC_CONE: _getWebIcon('traffic-cone'),
-  TIX_STATUS: _getWebIcon('chevron-up')
+  TIX_STATUS: _getWebIcon('chevron-up'),
+  WARNING: _getWebIcon('warning-amber')
 }
 
 // add icons that are saved locally
@@ -52,10 +56,13 @@ export const ICON_WEB_NAME = {
   ALERT_OUTLINE: 'ALERT_OUTLINE',
   BLUR_ON: 'BLUR_ON',
   CLOSE: 'CLOSE',
+  CHECK_CICLE_OUTLINE: 'CHECK_CICLE_OUTLINE',
   CONTRAST_BOX: 'CONTRAST_BOX',
   CONTRAST_ON: 'CONTRAST_ON',
   CONTRAST_OFF: 'CONTRAST_OFF',
+  DANGER: 'DANGER',
   EDIT: 'EDIT',
+  ERROR_OUTLINE: 'ERROR_OUTLINE',
   INFO: 'INFO',
   FULLSCREEN: 'FULLSCREEN',
   FULLSCREEN_EXIT: 'FULLSCREEN_EXIT',
@@ -64,7 +71,8 @@ export const ICON_WEB_NAME = {
   SEARCH: 'SEARCH',
   SETTING: 'SETTING',
   TRAFFIC_CONE: 'TRAFFIC_CONE',
-  TIX_STATUS: 'TIX_STATUS'
+  TIX_STATUS: 'TIX_STATUS',
+  WARNING: 'WARNING'
 }
 
 export const ICON_LOC_NAME = {
