@@ -5,13 +5,11 @@ import { alpha, useTheme } from '@mui/material/styles'
 import { Box, Divider, Dialog, Typography, Stack, MenuItem, Link } from '@mui/material'
 import { useAuthContext } from 'auth'
 import { CustomAvatar } from 'component/avatar'
-import { useSnackbar } from 'component/snackbar'
 import { MenuPopover } from 'component/menu-popover'
 import { IconButtonAnimate } from 'component/animate'
 import { useSettingContext } from 'component/setting'
 import { DisplayDialog } from '../../../component/setting/display/display-dialog'
-import { useIcon, ICON_NAME } from 'hook'
-import { bgBlur } from 'theme/style'
+import { useSnackbar } from 'hook'
 import { themePreset } from 'theme'
 import { TITLE } from 'constant'
 import { OPTION } from './util'
@@ -37,12 +35,14 @@ export default function AccountPopover() {
   }
 
   const handleLogout = async () => {
+    enqueueSnackbar('Logging out...')
     try {
       logout()
+      enqueueSnackbar('Logged out')
       handleClosePopover()
     } catch (error) {
       console.error(error)
-      enqueueSnackbar('Unable to logout', { variant: 'error' })
+      enqueueSnackbar('Unable to logout')
     }
   }
 
@@ -86,7 +86,7 @@ export default function AccountPopover() {
             }
           })
         }}>
-        <CustomAvatar /**src={mockUser[0]?.photoURL}  */ alt={mockUser[0]?.displayName} name={user.displayName} />
+        <CustomAvatar /**src={mockUser[0]?.photoURL}  */ alt={mockUser[0]?.name} name={user?.displayName} />
       </IconButtonAnimate>
 
       <MenuPopover
@@ -103,7 +103,7 @@ export default function AccountPopover() {
         }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {user?.displayName}
+            {user?.displayName || 'User'}
           </Typography>
           <Typography variant="overline" sx={{ color: 'text.secondary' }} fontWeight="bold" noWrap>
             {user?.email}
