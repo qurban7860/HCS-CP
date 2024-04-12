@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types'
 import storage from 'redux-persist/lib/storage'
-import { createContext, useEffect, useReducer, useCallback, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { createContext, useEffect, useCallback, useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { useLoginMutation } from 'store/slice'
 import localStorageSpace from 'util/local-storage-space'
 import { dispatch } from 'store'
+import { snack } from 'hook'
 import { axios } from 'util'
 import { setInitial, login as loginAction } from 'slice/auth'
 import { PATH_AUTH } from 'route/path'
@@ -106,6 +107,7 @@ export function AuthProvider({ children }) {
       const { accessToken, user, userId } = res
       setSession(accessToken)
       dispatch(loginAction({ ...res }))
+      snack(RESPONSE.success.LOGIN)
     }
   }, [])
 
