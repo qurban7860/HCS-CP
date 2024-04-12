@@ -4,17 +4,15 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Link, Stack, Alert, IconButton, InputAdornment, Checkbox, FormControlLabel } from '@mui/material'
-import { GStyledLoadingButton } from 'theme/style'
-import { PATH_AUTH, PATH_DASHBOARD } from 'route/path'
-import { useSnackbar } from 'hook/use-snack'
+import { snack } from 'hook'
 import { useAuthContext } from 'auth'
+import { GStyledLoadingButton } from 'theme/style'
 import { useLoginMutation } from 'store/slice/auth/endpoint'
-import { login as loginReducer } from 'slice/auth'
 import { Iconify } from 'component/iconify'
 import FormProvider, { RHFTextField } from 'component/hook-form'
 import { RADIUS } from 'config'
-import { BUTTON, REGEX, LOCAL_STORAGE_KEY } from 'constant'
-import { dispatch } from 'store'
+import { PATH_AUTH, PATH_DASHBOARD } from 'route/path'
+import { BUTTON, REGEX, LOCAL_STORAGE_KEY, RESPONSE } from 'constant'
 
 function LoginForm() {
   const navigate = useNavigate()
@@ -25,8 +23,6 @@ function LoginForm() {
   const [userEmail, setUserEmail] = useState('')
   const [userPassword, setUserPassword] = useState('')
   const [userRemember, setUserRemember] = useState(false)
-
-  const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
     const storedUser = localStorage.getItem(LOCAL_STORAGE_KEY.USER_DATA)
@@ -58,8 +54,6 @@ function LoginForm() {
   } = methods
 
   const onSubmit = async (data) => {
-    enqueueSnackbar('Login Successful!')
-
     if (userEmail) {
       data.email = userEmail
     }
@@ -79,7 +73,6 @@ function LoginForm() {
       await login({ email: userEmail, password: userPassword })
 
       if (localStorage.getItem(LOCAL_STORAGE_KEY.MFA)) {
-        enqueueSnackbar('Login Successful!', { variant: 'success' })
         navigate(PATH_DASHBOARD.general.app)
         // TODO: activiate when MFA is implemented
         // navigate(PATH_AUTH.authenticate)
@@ -88,7 +81,7 @@ function LoginForm() {
     } catch (error) {
       if (regEx.test(error.MessageCode)) {
         console.error('error : ', error?.Message || '')
-        enqueueSnackbar('Unable to Login!', { variant: 'error' })
+        snack(RESPONSE.error.INVALID_CREDENTIALS, { variant: 'error' })
         reset()
         setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
           ...error,
@@ -96,7 +89,7 @@ function LoginForm() {
         })
       } else {
         console.error('error : ', error || '')
-        enqueueSnackbar('Unable to Login!', { variant: 'error' })
+        snack(RESPONSE.error.INVALID_CREDENTIALS, { variant: 'error' })
         setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
           ...error,
           message: error
