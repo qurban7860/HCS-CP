@@ -15,6 +15,7 @@ const ASSET = {
   BG_DARK_LOGO: _background('howick-logo-dark.svg'),
   BG_STROKE_LOGO: _background('howick-logo-stroke.svg'),
   BG_STROKE_GREY_LOGO: _background('howick-logo-stroke-grey.svg'),
+  BG_STROKE_SNACK_LOGO: _background('howick-logo-stroke-cyan_snack.svg'),
   BG_STROKE_BRONZE_LOGO: _background('howick-logo-stroke-bronze.svg'),
   BRAND_LOGO_FULL: _brand('logo.svg'),
   COMPANY_HOWICK: _sponsor('howick.png'),
@@ -31,7 +32,7 @@ const ASSET = {
   ICON: _brand('icon.svg'),
   LOGO: '/asset/brand/logo.svg',
   OCTICON: (icon) => `/asset/octicon/${icon}.svg`,
-  SVG: (icon) => `/asset/svg/${icon}.svg`,
+  SVG: (icon) => `/asset/svg/${icon}.svg`
 }
 
 export default ASSET
