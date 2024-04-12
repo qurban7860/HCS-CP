@@ -1,49 +1,59 @@
-import { useTheme } from '@mui/material/styles'
-import { GlobalStyles } from '@mui/material'
-import { KEY } from 'constant'
+import { m } from 'framer-motion'
+import { styled } from '@mui/material/styles'
+import { MaterialDesignContent } from 'notistack'
+import ASSET from 'config/asset-directory'
 
-export default function StyledNotistack() {
-  const theme = useTheme()
+export const StyledSnackContent = styled(MaterialDesignContent)(({ theme }) => ({
+  '&.notistack-MuiContent': {
+    backgroundColor: theme.palette.howick.darkBlue,
+    backgroundImage: `url(${ASSET.BG_STROKE_SNACK_LOGO})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPositionY: 'center',
+    backgroundPositionX: 'right',
+    backgroundSize: '140%',
+    backgroundOpacity: 0.2,
+    backgroundAttachment: 'fixed',
+    display: 'flex',
+    flexDirection: 'row',
+    boxShadow: 'none',
+    objectFit: 'cover',
+    justifyContent: 'space-between',
+    fontSize: theme.typography.h4.fontSize,
+    fontWeight: theme.typography.fontWeightBold
+    // padding: theme.spacing(5, 4)
+  },
+  '&.notistack-MuiContent-error': {
+    backgroundColor: theme.palette.error.dark,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // fontSize: theme.typography.h4.fontSize,
+    // fontWeight: theme.typography.fontWeightBold,
+    padding: 0
+  },
+  '&.notistack-MuiContent-success': {
+    backgroundColor: theme.palette.howick.midBlue,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // fontSize: theme.typography.h4.fontSize,
+    // fontWeight: theme.typography.fontWeightBold,
+    padding: 0
+  },
+  '&.notistack-MuiContent-warning': {
+    backgroundColor: theme.palette.howick.orange,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    fontSize: theme.typography.h4.fontSize,
+    fontWeight: theme.typography.fontWeightBold,
+    color: theme.palette.common.black,
+    padding: 0
+  }
+}))
 
-  const isLight = theme.palette.mode === KEY.LIGHT
-
-  const inputGlobalStyles = (
-    <GlobalStyles
-      styles={{
-        '#root': {
-          '.SnackbarContent-root': {
-            width: '100%',
-            padding: theme.spacing(1),
-            margin: theme.spacing(0.25, 0),
-            // boxShadow: theme.customShadows.z8,
-            borderRadius: theme.shape.borderRadius,
-            color: isLight ? theme.palette.common.white : theme.palette.grey[800],
-            backgroundColor: isLight ? theme.palette.grey[900] : theme.palette.common.white,
-            '&.SnackbarItem-variantSuccess, &.SnackbarItem-variantError, &.SnackbarItem-variantWarning, &.SnackbarItem-variantInfo': {
-              color: theme.palette.text.primary,
-              backgroundColor: theme.palette.background.paper
-            },
-            [theme.breakpoints.up('md')]: {
-              minWidth: 240
-            }
-          },
-          '.SnackbarItem-message': {
-            padding: '0 !important',
-            fontWeight: theme.typography.fontWeightMedium
-          },
-          '.SnackbarItem-action': {
-            marginRight: 0,
-            color: theme.palette.action.active,
-
-            '& svg': {
-              width: 20,
-              height: 20
-            }
-          }
-        }
-      }}
-    />
-  )
-
-  return inputGlobalStyles
-}
+export const StyledSnackIconMDiv = styled(m.div)(({ theme, color }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: `${color}.main`,
+  width: 30,
+  height: 30
+}))
