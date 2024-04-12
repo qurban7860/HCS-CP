@@ -1,40 +1,12 @@
+import { useEffect } from 'react'
 import { Grid } from '@mui/material'
 import { GStyledContainer, GGStyledContainerSvg } from 'theme/style'
 import { Welcome } from 'component/widget'
-// import HowickWidgets from '../components/DashboardWidgets/HowickWidgets'
-// TODO: redux slices
-// import { useDispatch, useSelector } from '../../redux/store'
-// import {
-//   getCount,
-//   getERPLogs,
-//   getMachinesByCountry,
-//   getMachinesByModel,
-//   getMachinesByYear,
-//   setMachineCategory,H
-//   setMachineCountry,
-//   setMachineModel,
-//   setMachineYear,
-// } from '../../redux/slices/dashboard/count'
-// import { _appAuthors } from '../../_mock/arrays/_app'
-// import { getActiveMachineModels } from '../../redux/slices/products/model'
-// import { getActiveCategories } from '../../redux/slices/products/category'
-// import { countries } from '../../assets/data'
-// import { ChartBar } from 'component/chart'
-// import ProductionLog from '../components/Charts/ProductionLog'
-// import ChartStacked from '../components/Charts/ChartStacked'
-// import HowickOperators from '../components/DashboardWidgets/OperatorsWidget'
-// import ChartColumnNegative from '../components/Charts/ChartColumnNegative'
-
-import { TITLE } from 'constant'
-import { varFade } from 'component/animate'
+import { useLocation } from 'react-router-dom'
+import { snack } from 'hook'
 import { GLOBAL } from 'config'
 import { toTitleCase } from 'util'
 import { useSettingContext } from 'component/setting'
-
-import { Iconify } from 'component/iconify'
-import { PATH_DASHBOARD } from 'route/path'
-import { useWebSocketContext } from 'auth'
-import { fQuarterYearDate } from 'util'
 
 function GeneralAppPage() {
   const { themeMode } = useSettingContext()
