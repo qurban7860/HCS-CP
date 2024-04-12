@@ -1,9 +1,15 @@
 import { fDate } from 'util'
 
 const RESPONSE = {
+  success: {
+    LOGIN: 'Logged In',
+    LOGOUT: 'Logged Out',
+    REDUX_PERSIST: 'Persisted states have been cleared'
+  },
   error: {
     REDUX_PERSIST: 'Error clearing persisted states:',
-    AUTH_CONTEXT: 'useAuthContext context must be use inside AuthProvider'
+    AUTH_CONTEXT: 'useAuthContext context must be use inside AuthProvider',
+    INVALID_CREDENTIALS: 'Invalid Credentials'
   },
   SCHEMA: {
     MACHINE: {
