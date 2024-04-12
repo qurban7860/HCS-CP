@@ -8,7 +8,7 @@ import FormProvider, { RHFTextField } from 'component/hook-form'
 import axios from 'util/axios'
 import { GLOBAL } from 'global'
 import { TITLE } from 'constant'
-import { useSnackbar } from 'component/snackbar'
+import { useSnackbar } from 'hook'
 
 function AuthResetPasswordForm() {
   const [disable, setDisable] = useState(false)
@@ -16,19 +16,19 @@ function AuthResetPasswordForm() {
   const regEx = /^[4][0-9][0-9]$/
 
   const ResetPasswordSchema = Yup.object().shape({
-    email: Yup.string().required('Email is required').email('Email must be a valid email address'),
+    email: Yup.string().required('Email is required').email('Email must be a valid email address')
   })
 
   const methods = useForm({
     resolver: yupResolver(ResetPasswordSchema),
-    defaultValues: { email: '' },
+    defaultValues: { email: '' }
   })
 
   const {
     reset,
     setError,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting }
   } = methods
 
   const onSubmit = async (data) => {
@@ -45,12 +45,12 @@ function AuthResetPasswordForm() {
         reset()
         setError('afterSubmit', {
           ...error,
-          message: error.Message,
+          message: error.Message
         })
       } else {
         setError('afterSubmit', {
           ...error,
-          message: 'Something went wrong',
+          message: 'Something went wrong'
         })
       }
     }
@@ -66,15 +66,7 @@ function AuthResetPasswordForm() {
 
       <RHFTextField name="email" label="Email" disabled={disable} />
 
-      <LoadingButton
-        fullWidth
-        size="large"
-        type="submit"
-        variant="contained"
-        loading={isSubmitting}
-        disabled={disable}
-        sx={{ mt: 3 }}
-      >
+      <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting} disabled={disable} sx={{ mt: 3 }}>
         {disable ? TITLE.CHECK_EMAIL : TITLE.FORGOT_REQUEST}
       </LoadingButton>
     </FormProvider>
