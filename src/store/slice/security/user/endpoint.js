@@ -1,0 +1,29 @@
+import { apiSlice } from 'store/slice'
+import { PATH_SERVER } from 'route/server'
+import { getAuthToken } from 'auth/util.js'
+
+export const userSlice = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    getUser: builder.query({
+      query: (id) => ({
+        url: PATH_SERVER.USER.detail(id),
+        method: 'GET',
+        // keepUnusedDataFor: 20,
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`
+        }
+      })
+    }),
+    getAllUser: builder.mutation({
+      query: (id) => ({
+        url: PATH_SERVER.USER.list,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`
+        }
+      })
+    })
+  })
+})
+
+export const { useGetUserQuery, useGetAllUserMutation } = userSlice
