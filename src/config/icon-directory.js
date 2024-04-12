@@ -19,14 +19,18 @@ function _getWebIcon(icon) {
 // add icons that are from MDI
 const ICON_WEB = {
   ALERT_OUTLINE: _getWebIcon('alert-triangle-outline'),
+  ALERT_OCTAGON: _getWebIcon('alert-octagon'),
   BLUR_ON: _getWebIcon('blur'),
   CLOSE: _getWebIcon('close'),
+  CHEVRON_RIGHT: _getWebIcon('chevron-right'),
+  CHECK_CIRCLE: _getWebIcon('checkbox-marked-circle'),
   CHECK_CICLE_OUTLINE: _getWebIcon('check-circle-outline'),
   CONTRAST_BOX: _getWebIcon('contrast-box'),
   CONTRAST_ON: _getWebIcon('select-inverse'),
   CONTRAST_OFF: _getWebIcon('select-off'),
   DANGER: _getWebIcon('dangerous'),
   EDIT: _getWebIcon('pencil'),
+  ERROR: _getWebIcon('error'),
   ERROR_OUTLINE: _getWebIcon('error-outline'),
   FULLSCREEN: _getWebIcon('fullscreen'),
   FULLSCREEN_EXIT: _getWebIcon('fullscreen-exit'),
@@ -37,7 +41,7 @@ const ICON_WEB = {
   SETTING: _getWebIcon('cog'),
   TRAFFIC_CONE: _getWebIcon('traffic-cone'),
   TIX_STATUS: _getWebIcon('chevron-up'),
-  WARNING: _getWebIcon('warning-amber')
+  WARNING: _getWebIcon('warning')
 }
 
 // add icons that are saved locally
@@ -54,8 +58,11 @@ const ICON_LOC = {
 export const ICON_WEB_NAME = {
   // @web
   ALERT_OUTLINE: 'ALERT_OUTLINE',
+  ALERT_OCTAGON: 'ALERT_OCTAGON',
   BLUR_ON: 'BLUR_ON',
   CLOSE: 'CLOSE',
+  CHEVRON_RIGHT: 'CHEVRON_RIGHT',
+  CHECK_CIRCLE: 'CHECK_CIRCLE',
   CHECK_CICLE_OUTLINE: 'CHECK_CICLE_OUTLINE',
   CONTRAST_BOX: 'CONTRAST_BOX',
   CONTRAST_ON: 'CONTRAST_ON',
