@@ -166,6 +166,7 @@ export function AuthProvider({ children }) {
     try {
       await dispatch(clearAllPersistedStates())
       await axios.post(PATH_SERVER.LOGOUT(userId))
+      snack(RESPONSE.success.LOGOUT)
     } catch (error) {
       console.error(error)
     }
