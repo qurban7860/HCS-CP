@@ -5,7 +5,7 @@ import { LoadingScreen } from 'component/loading-screen'
 import { useAuthContext } from 'auth'
 
 GuestGuard.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 }
 
 export default function GuestGuard({ children }) {
