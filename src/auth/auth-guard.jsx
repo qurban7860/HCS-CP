@@ -7,12 +7,11 @@ import { LoadingScreen } from 'component/loading-screen'
 import { Login } from 'page/auth'
 
 AuthGuard.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 }
 
 export default function AuthGuard({ children }) {
   const { isAuthenticated, isInitialized } = useAuthContext()
-
   const { pathname } = useLocation()
 
   const [requestedLocation, setRequestedLocation] = useState(null)
