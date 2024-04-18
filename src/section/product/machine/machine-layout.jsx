@@ -4,10 +4,9 @@ import { useSelector } from 'react-redux'
 import { useAuthContext } from 'auth'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Badge, TextField, Typography, List, ListItem, ListItemText, Grid, Divider, Chip, Card, CardMedia, IconButton } from '@mui/material'
-import { alpha } from '@mui/material/styles'
+import { useGetMachineQuery } from 'store/slice'
 import { useForm, Controller } from 'react-hook-form'
 import FormProvider, { RHFTextField, RHFAutocomplete } from 'component/hook-form'
-import TextareaAutosize from 'react-textarea-autosize'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
 import { machineSchema } from 'schema'
@@ -23,8 +22,8 @@ const MachineLayout = () => {
   const [hoverBadge, setHoverBadge] = useState(false)
   const [isNotEditState, setIsNotEditState] = useState(true)
   const { user: userState, userId } = useSelector((state) => state.auth)
-  // const { securityUser } = useSelector((state) => state.user)
-  const { data: userDetail, isLoading, error, refetch } = useGetUserQuery(userId)
+  const { data: securityUser, isLoading, error, refetch } = useGetUserQuery(userId)
+  // const { data: userDetail, isLoading, error, refetch } = useGetUserQuery(userId)
 
   const { themeMode } = useSettingContext()
 
