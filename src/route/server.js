@@ -25,5 +25,23 @@ export const PATH_SERVER = {
     list: _url('security', 'users'),
     // /:id
     detail: (userId) => _url('security', 'users', userId)
+  },
+  PRODUCT: {
+    MACHINE: {
+      // /machine/:id
+      detail: (machineId) => _url('product', 'machine', machineId),
+      // /machine
+      list: _url('product', 'machine')
+    }
+  },
+  CRM: {
+    CUSTOMER: {
+      // /customer/:id
+      detail: (customerId) => _url('crm', 'customer', customerId),
+      // /customer
+      list: _url('crm', 'customer'),
+      // /customer/:id/machine
+      listMachine: (customerId) => _url('crm', 'customer', customerId, 'machine')
+    }
   }
 }
