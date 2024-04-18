@@ -154,7 +154,7 @@ export const GStyledPopover = styled(Popover)(({ theme }) => ({
 
 // :landing __________________________________________________________________________________________________
 
-export const GStyledBrandOverlayBox = styled(Box)(({ theme }) => ({
+export const GStyledBrandOverlayBox = styled(Box)(({ theme, themeMode }) => ({
   width: 100,
   margin: theme.spacing(1),
   marginRight: theme.spacing(1),
@@ -168,7 +168,8 @@ export const GStyledBrandOverlayBox = styled(Box)(({ theme }) => ({
     right: 0,
     bottom: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    mixBlendMode: 'color'
+    color: themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
+    mixBlendMode: themeMode === KEY.LIGHT ? 'color' : 'color-dodge'
   }
 }))
 
@@ -319,7 +320,7 @@ export const iconPropsOption = {
     width: 40,
     position: 'absolute',
     bottom: 250,
-    right: 200,
-    transform: 'rotate(10deg)'
+    right: 200
+    // transform: 'rotate(10deg)'
   }
 }
