@@ -1,5 +1,5 @@
 const LOCALE = {
-  en: 'en-US',
+  en: 'en-US'
 }
 
 export default LOCALE

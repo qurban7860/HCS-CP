@@ -30,10 +30,17 @@ const Fallback = ({ code, title, message }) => {
     <MotionContainer>
       <GStyledFallbackWrapperGrid>
         <FallbackTitle value={defaultValue} />
-        <Box {...motionRelativeBoxOption}>
-          <Logo sx={LogoGrayProps} />
-          {isUnderDevelopment && <Icon icon={trafficCone} {...iconPropsOption} />}
-        </Box>
+        <Logo sx={LogoGrayProps} />
+        {isUnderDevelopment && (
+          <Icon
+            icon={trafficCone}
+            color="howick.orange"
+            sx={{
+              height: 40,
+              width: 40
+            }}
+          />
+        )}
         <FallbackMessage value={defaultValue} code={code} />
         <FallbackButton />
       </GStyledFallbackWrapperGrid>

@@ -11,7 +11,7 @@ import { axios } from 'util'
 import { setInitial, login as loginAction } from 'slice/auth'
 import { PATH_AUTH } from 'route/path'
 import { PATH_SERVER } from 'route/server'
-import { LOCAL_STORAGE_KEY, RESPONSE } from 'constant'
+import { LOCAL_STORAGE_KEY, RESPONSE, COLOR } from 'constant'
 import { isValidToken, setSession, getUserAccess } from './util'
 
 export const AuthContext = createContext(null)
@@ -107,7 +107,7 @@ export function AuthProvider({ children }) {
       const { accessToken, user, userId } = res
       setSession(accessToken)
       dispatch(loginAction({ ...res }))
-      snack(RESPONSE.success.LOGIN)
+      snack(RESPONSE.success.LOGIN, { variant: COLOR.SUCCESS })
     }
   }, [])
 
@@ -166,9 +166,10 @@ export function AuthProvider({ children }) {
     try {
       await dispatch(clearAllPersistedStates())
       await axios.post(PATH_SERVER.LOGOUT(userId))
-      snack(RESPONSE.success.LOGOUT)
+      snack(RESPONSE.success.LOGOUT, { variant: COLOR.SUCCESS })
     } catch (error) {
       console.error(error)
+      snack(RESPONSE.error.LOGOUT, { variant: COLOR.ERROR })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch])

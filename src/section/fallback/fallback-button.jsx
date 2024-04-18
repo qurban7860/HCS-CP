@@ -1,6 +1,6 @@
 import { Button } from '@mui/material'
 import { RADIUS } from 'config'
-import { BUTTON, KEY } from 'constant'
+import { BUTTON, COLOR, KEY } from 'constant'
 import { PATH_DASHBOARD } from 'route/path'
 import { useSettingContext } from 'component/setting'
 
@@ -11,9 +11,11 @@ const FallbackButton = () => {
       onClick={() => window.open(PATH_DASHBOARD.general.app, '_self')}
       variant="outlined"
       size="large"
-      color={themeMode === KEY.LIGHT ? 'success' : 'secondary'}
-      sx={RADIUS.BORDER}
-    >
+      sx={{
+        color: themeMode === KEY.LIGHT ? 'howick.darkBlue' : 'common.white',
+        borderColor: themeMode === KEY.LIGHT ? 'howick.darkBlue' : 'common.white',
+        ...RADIUS.BORDER
+      }}>
       {BUTTON.GO_BACK}
     </Button>
   )

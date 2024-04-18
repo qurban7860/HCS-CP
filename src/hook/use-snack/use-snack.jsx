@@ -37,10 +37,10 @@ export default function SnackProvider({ children }) {
           error: StyledSnackContent
         }}
         iconVariant={{
-          info: <SnackIcon icon={ICON_WEB_NAME.INFO} color={COLOR.INFO} />,
-          success: <SnackIcon icon={ICON_WEB_NAME.CHECK_CIRCLE} color={COLOR.SUCCESS} />,
-          warning: <SnackIcon icon={ICON_WEB_NAME.WARNING} color={COLOR.WARNING} />,
-          error: <SnackIcon icon={ICON_WEB_NAME.ALERT_OCTAGON} color={COLOR.ERROR} />
+          info: <SnackIcon icon={ICON_WEB_NAME.INFO} color="info.main" />,
+          success: <SnackIcon icon={ICON_WEB_NAME.CHECK_CIRCLE} color="howick.midBlue" />,
+          warning: <SnackIcon icon={ICON_WEB_NAME.WARNING} color="warning.main" />,
+          error: <SnackIcon icon={ICON_WEB_NAME.ALERT_OCTAGON} color="error.main" />
         }}
         action={(key) => (
           <IconButton size="small" onClick={onClose(key)}>
@@ -57,7 +57,7 @@ function SnackIcon({ icon, color }) {
   const { Icon, iconSrc } = useIcon(icon)
   return (
     <StyledSnackIconMDiv initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ duration: 0.3 }}>
-      <Icon icon={iconSrc} width={18} />
+      <Icon icon={iconSrc} color={color} width={18} />
     </StyledSnackIconMDiv>
   )
 }

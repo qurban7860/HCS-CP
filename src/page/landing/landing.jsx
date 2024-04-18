@@ -2,10 +2,14 @@ import React from 'react'
 import { Box, Typography, Grid, Button } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledBrandOverlayBox, GStyledBottomPolygonDiv, GStyledTopPolygonDiv, StylendLandingContainerBox, ButtonProps } from 'theme/style'
+import { useAuthContext } from 'auth'
+import { useSettingContext } from 'component/setting'
 import { ASSET, GLOBAL, BRAND } from 'config'
 import { LABEL, PRODUCT, COMPANY, BUTTON } from 'constant'
 
 const Landing = () => {
+  const { isAuthenticated } = useAuthContext()
+  const { themeMode } = useSettingContext()
   const theme = useTheme()
 
   return (
@@ -38,7 +42,7 @@ const Landing = () => {
                 {PRODUCT.map((item, index) => (
                   <Grid item key={index}>
                     <GStyledBrandOverlayBox>
-                      <img alt={item.name} src={item.image} style={BRAND.LANDING_LOGO} />
+                      <img alt={item.name} src={item.image(themeMode)} style={BRAND.LANDING_LOGO} />
                     </GStyledBrandOverlayBox>
                   </Grid>
                 ))}
@@ -52,7 +56,7 @@ const Landing = () => {
                 {COMPANY.map((item, index) => (
                   <Grid item key={index}>
                     <GStyledBrandOverlayBox>
-                      <img alt={item.name} src={item.image} style={BRAND.LANDING_LOGO} />
+                      <img alt={item.name} src={item.image(themeMode)} style={BRAND.LANDING_LOGO} />
                     </GStyledBrandOverlayBox>
                   </Grid>
                 ))}
@@ -60,7 +64,7 @@ const Landing = () => {
             </Grid>
             <Grid container flexDirection="row" justifyContent="flex-end">
               <Grid item lg={2} mr={10}>
-                <Button {...ButtonProps}>{BUTTON.LOGIN}</Button>
+                <Button {...ButtonProps}>{isAuthenticated ? BUTTON.DASHBOARD : BUTTON.LOGIN}</Button>
               </Grid>
             </Grid>
           </Grid>

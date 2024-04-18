@@ -3,7 +3,7 @@ const BUTTON = {
   SAVE_AS_DRAFT: 'Save as Draft',
   EXPORT: {
     label: 'Export CSV',
-    icon: 'icon-park-outline:excel',
+    icon: 'icon-park-outline:excel'
   },
   CLEAR: 'Clear',
   CANCEL: 'Cancel',
@@ -11,7 +11,9 @@ const BUTTON = {
   CONTINUE: 'Continue',
   DELETE: 'Delete',
 
+  HOME: 'Home',
   GO_BACK: 'Go Back',
+  DASHBOARD: 'Dashboard',
 
   // New Buttons on the TOP of Modules
   NEWCUSTOMER: 'New Customer',
@@ -80,7 +82,7 @@ const BUTTON = {
   REMEMBER_ME: 'Remember Me',
   FORGOT_PASSWORD: 'Forgot Password',
   UPDATEPASSWORD: 'Update Password',
-  UPDATED: (param) => `${param} Updated`,
+  UPDATED: (param) => `${param} Updated`
 }
 
 export default BUTTON

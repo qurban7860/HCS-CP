@@ -6,3 +6,6 @@ export * from './auth/endpoint'
 // security/user
 export { default as userReducer } from './security/user/user'
 export * from './security/user'
+
+// product/machine
+export * from './product/machine'
