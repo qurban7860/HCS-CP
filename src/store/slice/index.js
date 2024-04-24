@@ -9,3 +9,6 @@ export * from './security/user'
 
 // product/machine
 export * from './product/machine'
+
+// crm/customer
+export * from './crm/customer'
