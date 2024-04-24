@@ -9,7 +9,7 @@ export const machineSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getMachine: builder.query({
       query: (id) => ({
-        url: PATH_SERVER.USER.detail(id),
+        url: PATH_SERVER.PRODUCT.MACHINE.detail(id),
         method: GET,
         headers: {
           Authorization: `Bearer ${getAuthToken()}`
@@ -18,7 +18,7 @@ export const machineSlice = apiSlice.injectEndpoints({
     }),
     getAllMachine: builder.query({
       query: () => ({
-        url: PATH_SERVER.USER.list,
+        url: PATH_SERVER.PRODUCT.MACHINE.list,
         method: GET,
         headers: {
           Authorization: `Bearer ${getAuthToken()}`
@@ -27,7 +27,7 @@ export const machineSlice = apiSlice.injectEndpoints({
     }),
     updateMachine: builder.mutation({
       query: (id, data) => ({
-        url: PATH_SERVER.USER.detail(id),
+        url: PATH_SERVER.PRODUCT.MACHINE.detail(id),
         method: PUT,
         body: data,
         headers: {
@@ -35,10 +35,10 @@ export const machineSlice = apiSlice.injectEndpoints({
         }
       })
     }),
-    // will be adding this to a customer slice if needed:
+    // will be adding this to a customer slice if needed: this will get the machine via customer that is not archived
     getMachineViaCustomer: builder.query({
       query: (id) => ({
-        url: PATH_SERVER.CRM.CUSTOMER.listMachine(id),
+        url: PATH_SERVER.PRODUCT.MACHINE.viaCustomer(id, false),
         method: GET,
         headers: {
           Authorization: `Bearer ${getAuthToken()}`
@@ -48,4 +48,4 @@ export const machineSlice = apiSlice.injectEndpoints({
   })
 })
 
-export const { useGetMachineQuery, useGetAllMachineQuery, useUpdateMachineMutation } = machineSlice
+export const { useGetMachineQuery, useGetAllMachineQuery, useUpdateMachineMutation, useGetMachineViaCustomerQuery } = machineSlice
