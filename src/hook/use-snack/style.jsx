@@ -24,7 +24,8 @@ export const StyledSnackContent = styled(MaterialDesignContent)(({ theme }) => (
     padding: 0
   },
   '&.notistack-MuiContent-error': {
-    backgroundColor: theme.palette.error.dark
+    backgroundColor: theme.palette.error.dark,
+    color: theme.palette.common.white
   },
   '&.notistack-MuiContent-success': {
     // backgroundColor: theme.palette.howick.midBlue,
