@@ -26,22 +26,25 @@ export const PATH_SERVER = {
     // /:id
     detail: (userId) => _url('security', 'users', userId)
   },
+  // /products
   PRODUCT: {
     MACHINE: {
-      // /machine/:id
-      detail: (machineId) => _url('product', 'machine', machineId),
-      // /machine
-      list: _url('product', 'machine')
+      // /machines/:id
+      detail: (machineId) => _url('products', 'machines', machineId),
+      // /machines
+      list: _url('product', 'machines'),
+      // /machines?customer=:customerId&isArchived=:isArchived
+      viaCustomer: (customerId, isArchived) => _url('products', 'machines', `?customer=${customerId}&isArchived=${isArchived}`)
     }
   },
   CRM: {
     CUSTOMER: {
       // /customer/:id
-      detail: (customerId) => _url('crm', 'customer', customerId),
+      detail: (customerId) => _url('crm', 'customers', customerId),
       // /customer
-      list: _url('crm', 'customer'),
+      list: _url('crm', 'customers'),
       // /customer/:id/machine
-      listMachine: (customerId) => _url('crm', 'customer', customerId, 'machine')
+      listMachine: (customerId) => _url('crm', 'customers', customerId, 'machine')
     }
   }
 }
