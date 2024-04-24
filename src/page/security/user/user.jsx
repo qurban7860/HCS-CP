@@ -44,6 +44,10 @@ const UserProfile = () => {
 
   const { themeMode } = useSettingContext()
 
+  useEffect(() => {
+    refetch()
+  }, [])
+
   const fileInput = useRef(null)
 
   const defaultValues = useMemo(

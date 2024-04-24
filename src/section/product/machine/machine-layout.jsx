@@ -16,6 +16,7 @@ import { MARGIN, RADIUS, ASSET } from 'config'
 import { KEY, TITLE, LABEL } from 'constant'
 import { mockMachine, mockUser, mockMachineConnections } from '_mock'
 import { fDate } from 'util/format'
+import machine from '.'
 
 const MachineLayout = () => {
   const [hoverAvatar, setHoverAvatar] = useState(false)
@@ -23,24 +24,30 @@ const MachineLayout = () => {
   const [isNotEditState, setIsNotEditState] = useState(true)
   const { user: userState, userId } = useSelector((state) => state.auth)
   const { data: securityUser, isLoading, error, refetch } = useGetUserQuery(userId)
-  const { data: allMachineData } = useGetMachineViaCustomerQuery(userState.customer)
-  // const { data: customerData, isLoading: customerIsLoading, error: customerError } = useGetCustomerQuery(userState.customer)
-  const { data: machineData, isLoading: machineIsLoading, error: machineError } = useGetMachineQuery(allMachineData && allMachineData[2]?._id)
-
-  // useEffect(() => {
-  //   if (allMachineData) {
-  //     console.log('allMachineData:', allMachineData)
-  //     console.log('machineData: ', machineData)
-  //   }
-  // }, [allMachineData, machineData])
+  const { data: allMachineData, refetch: allMachineRefetch } = useGetMachineViaCustomerQuery(userState.customer)
+  const {
+    data: machineData,
+    isLoading: machineIsLoading,
+    error: machineError,
+    refetch: machineRefetch
+  } = useGetMachineQuery(allMachineData && allMachineData[2]?._id)
 
   const { themeMode } = useSettingContext()
   const fileInput = useRef(null)
 
+  useEffect(() => {
+    refetch()
+    machineRefetch()
+    allMachineRefetch()
+    if (allMachineData && allMachineData[2]?._id) {
+      refetch()
+    }
+  }, [])
+
   const methods = useForm({
     resolver: yupResolver(machineSchema),
     defaultValues: {
-      serialNo: machineData.serialNo || '',
+      serialNo: machineData?.serialNo || '',
       name: machineData?.name || '',
       alias: machineData?.alias || [],
       profile: machineData?.profile?.default?.size || '',
@@ -56,8 +63,6 @@ const MachineLayout = () => {
       machineConnectionVal: machineData?.machineConnections?.map((connection) => connection?.serialNo) || [],
       status: machineData?.status || null,
       workOrderRef: machineData?.workOrderRef || '',
-      // installationSite: machineData[0]?.installationSite || null,
-      // billingSite: machineData[0].billingSite || null,
       installationDate: fDate(machineData?.installationDate) || null,
       shippingDate: fDate(machineData?.shippingDate) || null,
       siteMilestone: machineData?.siteMilestone || '',
