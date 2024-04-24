@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useAuthContext } from 'auth'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Badge, TextField, Typography, List, ListItem, ListItemText, Grid, Divider, Chip, Card, CardMedia, IconButton } from '@mui/material'
-import { useGetMachineQuery } from 'store/slice'
+import { useGetMachineQuery, useGetMachineViaCustomerQuery, useGetCustomerQuery } from 'store/slice'
 import { useForm, Controller } from 'react-hook-form'
 import FormProvider, { RHFTextField, RHFAutocomplete } from 'component/hook-form'
 import { MotionLazyContainer } from 'component/animate'
@@ -23,42 +23,50 @@ const MachineLayout = () => {
   const [isNotEditState, setIsNotEditState] = useState(true)
   const { user: userState, userId } = useSelector((state) => state.auth)
   const { data: securityUser, isLoading, error, refetch } = useGetUserQuery(userId)
-  // const { data: userDetail, isLoading, error, refetch } = useGetUserQuery(userId)
+  const { data: allMachineData } = useGetMachineViaCustomerQuery(userState.customer)
+  // const { data: customerData, isLoading: customerIsLoading, error: customerError } = useGetCustomerQuery(userState.customer)
+  const { data: machineData, isLoading: machineIsLoading, error: machineError } = useGetMachineQuery(allMachineData && allMachineData[2]?._id)
+
+  // useEffect(() => {
+  //   if (allMachineData) {
+  //     console.log('allMachineData:', allMachineData)
+  //     console.log('machineData: ', machineData)
+  //   }
+  // }, [allMachineData, machineData])
 
   const { themeMode } = useSettingContext()
-
   const fileInput = useRef(null)
 
   const methods = useForm({
     resolver: yupResolver(machineSchema),
     defaultValues: {
-      serialNo: mockMachine[0].serialNo || '',
-      name: mockMachine[0].name || '',
-      alias: mockMachine[0].alias || [],
-      profile: mockMachine[0].profile.default.size || '',
-      parentSerialNo: mockMachine[0]?.parentMachine || '',
-      previousMachine: mockMachine[0]?.parentMachine?.name || '',
-      supplier: mockMachine[0].supplier || null,
-      category: mockMachine[0]?.machineModel?.category || null,
-      machineModel: mockMachine[0]?.machineModel.name || null,
-      manufactureDate: mockMachine[0]?.manufactureDate || null,
-      purchaseDate: mockMachine[0]?.purchaseDate || null,
-      customer: mockMachine[0].customer || null,
-      financialCompany: mockMachine[0]?.financialCompany.name || null,
-      machineConnectionVal: mockMachine[0]?.machineConnections?.map((connection) => connection?.serialNo) || [],
-      status: mockMachine[0].status || null,
-      workOrderRef: mockMachine[0].workOrderRef || '',
-      // installationSite: mockMachine[0]?.installationSite || null,
-      // billingSite: mockMachine[0].billingSite || null,
-      installationDate: fDate(mockMachine[0]?.installationDate) || null,
-      shippingDate: fDate(mockMachine[0]?.shippingDate) || null,
-      siteMilestone: mockMachine[0].siteMilestone || '',
-      projectManager: mockMachine[0]?.projectManager[0].name || [],
-      supportManager: mockMachine[0]?.supportManager[0].name || [],
-      accountManager: mockMachine[0]?.accountManager[0].name || [],
-      supportExpireDate: mockMachine[0].supportExpireDate || null,
-      description: mockMachine[0].description || '',
-      isActive: mockMachine[0].isActive || false
+      serialNo: machineData.serialNo || '',
+      name: machineData?.name || '',
+      alias: machineData?.alias || [],
+      profile: machineData?.profile?.default?.size || '',
+      parentSerialNo: machineData?.parentMachine || '',
+      previousMachine: machineData?.parentMachine?.name || '',
+      supplier: machineData?.supplier || null,
+      category: machineData?.machineModel?.category || null,
+      machineModel: machineData?.machineModel?.name || null,
+      manufactureDate: machineData?.manufactureDate || null,
+      purchaseDate: machineData?.purchaseDate || null,
+      customer: machineData?.customer || null,
+      financialCompany: machineData?.financialCompany?.name || null,
+      machineConnectionVal: machineData?.machineConnections?.map((connection) => connection?.serialNo) || [],
+      status: machineData?.status || null,
+      workOrderRef: machineData?.workOrderRef || '',
+      // installationSite: machineData[0]?.installationSite || null,
+      // billingSite: machineData[0].billingSite || null,
+      installationDate: fDate(machineData?.installationDate) || null,
+      shippingDate: fDate(machineData?.shippingDate) || null,
+      siteMilestone: machineData?.siteMilestone || '',
+      projectManager: (machineData?.projectManager && machineData?.projectManager[0]?.firstName) || null,
+      supportManager: (machineData?.supportManager && machineData?.supportManager[0]?.firstName) || null,
+      accountManager: (machineData?.accountManager && machineData?.accountManager[0]?.firstName) || null,
+      supportExpireDate: machineData?.supportExpireDate || null,
+      description: machineData?.description || '',
+      isActive: machineData?.isActive || false
     }
   })
 
@@ -226,7 +234,7 @@ const MachineLayout = () => {
                         name="machineName"
                         control={control}
                         disabled={isNotEditState}
-                        defaultValue={mockMachine[0]?.customer.name || 'Organization'}
+                        defaultValue={machineData?.customer?.name || 'Organization'}
                         rules={{ required: 'organization is required' }}
                         render={({ field, fieldState: { error } }) => (
                           <TextField
@@ -347,7 +355,7 @@ const MachineLayout = () => {
                           name="machineConnectionVal"
                           label="Connected Machines"
                           id="tags-outlined"
-                          options={mockMachineConnections?.filter((machineKit) => machineKit?._id !== mockMachine[0]?._id)}
+                          options={mockMachineConnections?.filter((machineKit) => machineKit?._id !== machineData?._id)}
                           getOptionLabel={(option) =>
                             `${option?.connectedMachine?.serialNo ? option?.connectedMachine?.serialNo : option?.serialNo} ${
                               option?.name ? '-' : ''
