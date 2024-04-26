@@ -32,7 +32,7 @@ export const PATH_SERVER = {
       // /machines/:id
       detail: (machineId) => _url('products', 'machines', machineId),
       // /machines
-      list: _url('product', 'machines'),
+      list: _url('products', 'machines'),
       // /machines?customer=:customerId&isArchived=:isArchived
       viaCustomer: (customerId, isArchived) => _url('products', 'machines', `?customer=${customerId}&isArchived=${isArchived}`)
     }
