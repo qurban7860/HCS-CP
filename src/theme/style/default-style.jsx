@@ -286,9 +286,12 @@ export const GStyledCardContainer = styled(Card)(({ theme }) => ({
   position: 'relative'
 }))
 
-// @root - MachineEditForm - spacing
-export const GListItem = styled('li')(({ theme }) => ({
-  margin: theme.spacing(0.5)
+// @product - machines - machines-section
+export const GStyledTableHeaderBox = styled(Box)(({ theme }) => ({
+  backgroundImage: `url(${ASSET.BG_STROKE_LOGO})`,
+  backgroundSize: 'cover',
+  backgroundPositionY: 'center',
+  backgroundSize: '150%'
 }))
 
 /**
