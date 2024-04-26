@@ -2,10 +2,6 @@ import KEY from './key'
 
 const TITLE = {
   UNDERDEVELOPMENT: 'Under Development',
-  // @root - GeneralAppPage - dashboard
-
-  // @root - LicenseAddForm
-  NEWLICENSE: 'New License',
   // @root - ResetPasswordPage - forgot password
   FORGOT_PASSWORD: 'Forgot your password?',
   CHECK_EMAIL: 'Check your E-mail',
@@ -14,7 +10,8 @@ const TITLE = {
   FORGOT_REQUEST: 'Send Request',
   // @root -MachineViewForm - site location
   NO_SITELOC: 'No site location was provided',
-
+  // @machine - MachineList
+  MACHINE_LIST: 'MACHINE LIST',
   // @user - UserProfile - user
   PERSONAL_INFO: 'Personal Information',
   PROFILE: 'Profile',
