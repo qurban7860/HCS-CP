@@ -1,5 +1,4 @@
 export const HEADER = [
-  // { key: 'id', label: 'ID' },
   { key: 'serialNo', label: 'Serial No' },
   { key: 'name', label: 'Name' },
   { key: 'model', label: 'Model' },
