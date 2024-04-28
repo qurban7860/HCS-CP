@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react'
+import { snack } from 'hook'
 import { Table, Typography, Grid } from '@mui/material'
 import { GStyledTableHeaderBox } from 'theme/style'
 import { useGetAllMachineQuery } from 'store/slice'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
 import { SearchBox } from 'component/search'
-import { MachineTable, MachineHeader } from 'section/product'
+import { MachineTable, MachineHeader, MachineListPagination } from 'section/product'
 import { MARGIN, ASSET } from 'config'
 import { COLOR, KEY, TITLE } from 'constant'
-import { mockMachineList } from '_mock'
-import { snack } from 'hook'
 
 const MachineListSection = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -21,21 +20,21 @@ const MachineListSection = () => {
     if (isError) {
       snack('Failed to fetch machine data', { variant: COLOR.ERROR })
     } else if (isLoading) {
-      snack('Loading machine data', { type: KEY.INFO })
+      snack('Loading machine data')
     } else {
-      console.log('ALL MACHINES:', allMachineData)
-      snack('Fetched All Machine Data', { type: KEY.SUCCESS })
+      snack('Fetched All Machine Data', { variant: COLOR.SUCCESS })
       refetchAllMachine()
     }
-  }, [refetchAllMachine])
+    refetchAllMachine()
+  }, [refetchAllMachine, allMachineData, isLoading, isError])
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value)
   }
 
-  const filteredData = mockMachineList.filter((row) =>
-    Object.values(row).some((value) => value.toString().toLowerCase().includes(searchTerm.toLowerCase()))
-  )
+  const filteredData =
+    allMachineData &&
+    allMachineData.filter((row) => Object.values(row)?.some((value) => value?.toString().toLowerCase().includes(searchTerm.toLowerCase())))
 
   return (
     <MotionLazyContainer display="flex">
@@ -46,6 +45,7 @@ const MachineListSection = () => {
           <Grid container mb={2}>
             <Grid item lg={12} sm={12} mb={2} bgcolor="background.paper">
               <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
+              <MachineListPagination count={allMachineData ? allMachineData?.length : 0} page={1} />
               <Table>
                 <MachineHeader mode={themeMode} />
                 {filteredData?.map((machine) => (
