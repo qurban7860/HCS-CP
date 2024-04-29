@@ -98,3 +98,114 @@ export const mockMachineConnections = [
     name: 'Decoiler 5T'
   }
 ]
+
+export const mockMachineList = [
+  {
+    accountManager: ['65c2035f7b193ceaed68b568'],
+    projectManager: [],
+    supportManager: ['65c2035f7b193ceaed68b568'],
+    isActive: true,
+    _id: '64ae5b6fdc483f373399472b',
+    serialNo: '10051',
+    name: '10051 - Forman Insulation Tile Trolley',
+    customer: {
+      _id: '64ae5b6edc483f37339946e9',
+      name: 'UNKNOWN CUSTOMER'
+    },
+    machineModel: {
+      _id: '64ae5b6fdc483f3733994727',
+      name: 'Custom Machine',
+      category: '64ae5b6fdc483f3733994720'
+    },
+    status: {
+      _id: '642607ab7ce0781e19dc2b22',
+      name: 'Commissioned',
+      slug: ''
+    },
+    verifications: [],
+    createdAt: '2023-07-12T07:51:11.476Z',
+    installationDate: '1998-11-09T11:00:00.000Z',
+    shippingDate: '1998-07-09T12:00:00.000Z'
+  },
+  {
+    accountManager: ['65c2035f7b193ceaed68b568'],
+    projectManager: [],
+    supportManager: ['65c2035f7b193ceaed68b568'],
+    isActive: true,
+    _id: '64ae5b6fdc483f3733994742',
+    serialNo: '10083',
+    name: '10083 - STEEL FRAMING MACHINE - 18 GAUGE - unknown',
+    customer: {
+      _id: '64ae5b6edc483f37339946e9',
+      name: 'UNKNOWN CUSTOMER'
+    },
+    machineModel: {
+      _id: '64ae5b6fdc483f373399473e',
+      name: 'Steel Framer-18Gauge',
+      category: '64ae5b6fdc483f3733994737'
+    },
+    status: {
+      _id: '642607ab7ce0781e19dc2b22',
+      name: 'Commissioned',
+      slug: ''
+    },
+    verifications: [],
+    createdAt: '2023-07-12T07:51:11.554Z',
+    installationDate: '1999-04-08T12:00:00.000Z',
+    shippingDate: '1999-03-08T11:00:00.000Z'
+  },
+  {
+    accountManager: ['65c2035f7b193ceaed68b568'],
+    projectManager: [],
+    supportManager: ['65c2035f7b193ceaed68b568'],
+    isActive: true,
+    _id: '64ae5b6fdc483f373399475c',
+    serialNo: '10133',
+    name: '10133 - SML Box Gutter Rollformer',
+    customer: {
+      _id: '64ae5b6edc483f37339946e9',
+      name: 'UNKNOWN CUSTOMER'
+    },
+    machineModel: {
+      _id: '64ae5b6fdc483f3733994727',
+      name: 'Custom Machine',
+      category: '64ae5b6fdc483f3733994720'
+    },
+    status: {
+      _id: '642607ab7ce0781e19dc2b22',
+      name: 'Commissioned',
+      slug: ''
+    },
+    verifications: [],
+    createdAt: '2023-07-12T07:51:11.626Z',
+    installationDate: '1999-02-24T11:00:00.000Z',
+    shippingDate: '1999-01-24T11:00:00.000Z'
+  },
+  {
+    accountManager: ['65c2035e7b193ceaed68b4e1'],
+    projectManager: [],
+    supportManager: ['65c2035e7b193ceaed68b4e1'],
+    isActive: true,
+    _id: '64ae5b6fdc483f3733994766',
+    serialNo: '10142',
+    name: '10142 - STEEL FRAMING MACHINE - 18 GAUGE - Modular Engineering and Manufacturing',
+    customer: {
+      _id: '64ae5b56ced4733723e00bb6',
+      name: 'Modular Engineering and Manufacturing'
+    },
+    machineModel: {
+      _id: '64ae5b6fdc483f373399473e',
+      name: 'Steel Framer-18Gauge',
+      category: '64ae5b6fdc483f3733994737'
+    },
+    shippingDate: '2000-10-04T00:00:00.000Z',
+    installationDate: '2000-10-04T00:00:00.000Z',
+    status: {
+      _id: '642607ab7ce0781e19dc2b22',
+      name: 'Commissioned',
+      slug: ''
+    },
+    verifications: [],
+    createdAt: '2023-07-12T07:51:11.654Z'
+  }
+]

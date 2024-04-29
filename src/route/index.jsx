@@ -20,7 +20,7 @@ import {
   UserProfilePage,
   // product:
   MachinePage,
-
+  MachinesListPage,
   // fallback:
   BlankPage,
   FallbackPage,
@@ -110,7 +110,7 @@ export default function Router() {
       ]
     },
     {
-      // security
+      // product
       path: 'product',
       element: (
         <AuthGuard>
@@ -121,7 +121,10 @@ export default function Router() {
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         {
           path: 'machine',
-          element: <MachinePage />
+          children: [
+            { path: 'list', element: <MachinesListPage /> },
+            { path: ':id/view', element: <MachinePage /> }
+          ]
         }
       ]
     },

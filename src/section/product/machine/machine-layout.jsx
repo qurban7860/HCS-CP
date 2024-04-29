@@ -1,7 +1,6 @@
 import { useState, useRef, useMemo, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
-import { useAuthContext } from 'auth'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Badge, TextField, Typography, List, ListItem, ListItemText, Grid, Divider, Chip, Card, CardMedia, IconButton } from '@mui/material'
 import { useGetMachineQuery, useGetMachineViaCustomerQuery, useGetCustomerQuery } from 'store/slice'
@@ -14,9 +13,8 @@ import { useGetUserQuery } from 'store/slice'
 import { useIcon, ICON_NAME } from 'hook'
 import { MARGIN, RADIUS, ASSET } from 'config'
 import { KEY, TITLE, LABEL } from 'constant'
-import { mockMachine, mockUser, mockMachineConnections } from '_mock'
+import { mockUser, mockMachineConnections } from '_mock'
 import { fDate } from 'util/format'
-import machine from '.'
 
 const MachineLayout = () => {
   const [hoverAvatar, setHoverAvatar] = useState(false)
@@ -39,10 +37,7 @@ const MachineLayout = () => {
     refetch()
     machineRefetch()
     allMachineRefetch()
-    if (allMachineData && allMachineData[2]?._id) {
-      refetch()
-    }
-  }, [])
+  }, [refetch, machineRefetch, allMachineRefetch])
 
   const methods = useForm({
     resolver: yupResolver(machineSchema),
@@ -53,22 +48,22 @@ const MachineLayout = () => {
       profile: machineData?.profile?.default?.size || '',
       parentSerialNo: machineData?.parentMachine || '',
       previousMachine: machineData?.parentMachine?.name || '',
-      supplier: machineData?.supplier || null,
-      category: machineData?.machineModel?.category || null,
-      machineModel: machineData?.machineModel?.name || null,
-      manufactureDate: machineData?.manufactureDate || null,
-      purchaseDate: machineData?.purchaseDate || null,
-      customer: machineData?.customer || null,
-      financialCompany: machineData?.financialCompany?.name || null,
+      supplier: machineData?.supplier || '',
+      category: machineData?.machineModel?.category || '',
+      machineModel: machineData?.machineModel?.name || '',
+      manufactureDate: machineData?.manufactureDate || '',
+      purchaseDate: machineData?.purchaseDate || '',
+      customer: machineData?.customer || '',
+      financialCompany: machineData?.financialCompany?.name || '',
       machineConnectionVal: machineData?.machineConnections?.map((connection) => connection?.serialNo) || [],
-      status: machineData?.status || null,
+      status: machineData?.status || '',
       workOrderRef: machineData?.workOrderRef || '',
-      installationDate: fDate(machineData?.installationDate) || null,
-      shippingDate: fDate(machineData?.shippingDate) || null,
+      installationDate: fDate(machineData?.installationDate) || '',
+      shippingDate: fDate(machineData?.shippingDate) || '',
       siteMilestone: machineData?.siteMilestone || '',
-      projectManager: (machineData?.projectManager && machineData?.projectManager[0]?.firstName) || null,
-      supportManager: (machineData?.supportManager && machineData?.supportManager[0]?.firstName) || null,
-      accountManager: (machineData?.accountManager && machineData?.accountManager[0]?.firstName) || null,
+      projectManager: (machineData?.projectManager && machineData?.projectManager[0]?.firstName) || '',
+      supportManager: (machineData?.supportManager && machineData?.supportManager[0]?.firstName) || '',
+      accountManager: (machineData?.accountManager && machineData?.accountManager[0]?.firstName) || '',
       supportExpireDate: machineData?.supportExpireDate || null,
       description: machineData?.description || '',
       isActive: machineData?.isActive || false

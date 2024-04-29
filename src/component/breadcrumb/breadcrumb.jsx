@@ -8,7 +8,7 @@ Breadcrumb.propTypes = {
   links: PropTypes.array,
   heading: PropTypes.string,
   moreLink: PropTypes.array,
-  activeLast: PropTypes.bool,
+  activeLast: PropTypes.bool
 }
 
 function Breadcrumb({ links = [], action, heading, moreLink, activeLast, sx, ...other }) {
@@ -32,12 +32,7 @@ function Breadcrumb({ links = [], action, heading, moreLink, activeLast, sx, ...
           {!!links.length && links.length > 0 && (
             <Breadcrumbs separator={<Separator />} {...other}>
               {links.map((link) => (
-                <LinkItem
-                  key={link.name || ''}
-                  link={link}
-                  activeLast={activeLast}
-                  disabled={link.name === lastLink}
-                />
+                <LinkItem key={link.name || ''} link={link} activeLast={activeLast} disabled={link.name === lastLink} />
               ))}
             </Breadcrumbs>
           )}
@@ -50,15 +45,7 @@ function Breadcrumb({ links = [], action, heading, moreLink, activeLast, sx, ...
       {!!moreLink && (
         <Box sx={{ mt: 2 }}>
           {moreLink.map((href) => (
-            <Link
-              noWrap
-              key={href}
-              href={href}
-              variant="body2"
-              target="_blank"
-              rel="noopener"
-              sx={{ display: 'table' }}
-            >
+            <Link noWrap key={href} href={href} variant="body2" target="_blank" rel="noopener" sx={{ display: 'table' }}>
               {href}
             </Link>
           ))}
@@ -69,12 +56,7 @@ function Breadcrumb({ links = [], action, heading, moreLink, activeLast, sx, ...
 }
 
 function Separator() {
-  return (
-    <Box
-      component="span"
-      sx={{ width: 4, height: 4, borderRadius: '50%', bgcolor: 'text.disabled' }}
-    />
-  )
+  return <Box component="span" sx={{ width: 4, height: 4, borderRadius: '50%', bgcolor: 'text.disabled' }} />
 }
 
 export default Breadcrumb

@@ -7,6 +7,10 @@ const KEY = {
   LIGHT: 'light',
   DARK: 'dark',
   ACCESS_TOKEN: 'accessToken',
+  ASC: 'asc',
+  DESC: 'desc',
+  // default
+  NAME: 'name',
 
   // @redux keys
   REDUX_STORE: 'store',

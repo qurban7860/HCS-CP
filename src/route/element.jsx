@@ -22,6 +22,7 @@ export const GeneralAppPage = Loadable(lazy(() => import('page/dashboard/general
 
 // machine
 export const MachinePage = Loadable(lazy(() => import('page/product/machine/machine')))
+export const MachinesListPage = Loadable(lazy(() => import('page/product/machines/machines')))
 
 // User Invitations List
 export const { UserInvitationList } = Loadable(lazy(() => import('page/security/user/user')))

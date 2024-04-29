@@ -1,1 +1,5 @@
-export { default } from './machine/machine-layout'
+export { default as MachineLayout } from './machine/machine-layout'
+export { default as MachineListSection } from './machines/machines-section'
+export { default as MachineTable } from './machines/machines-table'
+export { default as MachineHeader } from './machines/machines-header'
+export { default as MachineListPagination } from './machines/machines-pagination'

@@ -10,6 +10,10 @@ function _sponsor(image) {
   return `/asset/brand/other/${image}`
 }
 
+function _image(image) {
+  return `/asset/image/${image}`
+}
+
 const ASSET = {
   BG_LOGO: _background('howick-logo.svg'),
   BG_DARK_LOGO: _background('howick-logo-dark.svg'),
@@ -39,6 +43,8 @@ const ASSET = {
   NZ_MADE: _sponsor('nz-made.png'),
   ICON: _brand('icon.svg'),
   LOGO: '/asset/brand/logo.svg',
+  TRANSPARENT: _image('transparent.png'),
+  PLACEHOLDER: _image('placeholder.svg'),
   OCTICON: (icon) => `/asset/octicon/${icon}.svg`,
   SVG: (icon) => `/asset/svg/${icon}.svg`
 }

@@ -4,6 +4,7 @@ const LABEL = {
   ERROR_CODE: 'Error Code:',
   FULLSCREEN: 'Fullscreen',
   FULLSCREEN_EXIT: 'Exit Fullscreen',
+  ROWS: 'Rows:',
   USER_PROFILE_TIX: 'Your Ticket/s',
   USER_PROFILE_MACHINE: 'Your Machine/s',
   MACHINE_LIST: 'Machine List',
