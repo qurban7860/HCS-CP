@@ -10,6 +10,7 @@ import { useSettingContext } from 'component/setting'
 
 function GeneralAppPage() {
   const { themeMode } = useSettingContext()
+
   return (
     <Grid container>
       <Grid container spacing={3} mt={2}>
