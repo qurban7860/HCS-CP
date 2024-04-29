@@ -8,17 +8,17 @@ export const HEADER = {
   H_MOBILE: 64,
   H_MAIN_DESKTOP: 88,
   H_DASHBOARD_DESKTOP: 65,
-  H_DASHBOARD_DESKTOP_OFFSET: 92 - 32,
+  H_DASHBOARD_DESKTOP_OFFSET: 92 - 32
 }
 
 export const MARGIN = {
   PAGE_PROP: {
-    my: 5,
+    my: 5
   },
   PAGE: {
     marginTop: 2.5,
-    marginBottom: 2.5,
-  },
+    marginBottom: 2.5
+  }
 }
 
 export const NAV = {
@@ -33,14 +33,14 @@ export const NAV = {
   // popover
   SPACING: 2,
   H_OPTION: 50,
-  H_ACCOUNT_POPOVER: 380,
+  H_ACCOUNT_POPOVER: 380
 }
 
 export const ICON = {
   NAV_ITEM: 24,
   NAV_ITEM_HORIZONTAL: 22,
   NAV_ITEM_MINI: 22,
-  DEFAULT_SIZE: 30,
+  DEFAULT_SIZE: 30
 }
 
 export const BRAND = {
@@ -48,12 +48,25 @@ export const BRAND = {
   AUTH_HEIGHT_LOGO: 120,
   LANDING_LOGO: {
     width: 80,
-    opacity: 0.2,
-  },
+    opacity: 0.2
+  }
 }
 
 export const RADIUS = {
   BORDER: {
-    borderRadius: 2,
+    borderRadius: 2
+  }
+}
+
+export const TABLE = {
+  DENSE_HEIGHT: 60,
+  CELL: {
+    PADDING: 16
   },
+  ROW: {
+    HEIGHT: 64
+  },
+  HEADER: {
+    HEIGHT: 64
+  }
 }

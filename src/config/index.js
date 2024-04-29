@@ -1,6 +1,6 @@
 export { GLOBAL, HOST_API_KEY } from 'global'
-export { HEADER, NAV, ICON, BRAND, RADIUS, MARGIN } from './layout'
+export { HEADER, NAV, ICON, BRAND, RADIUS, MARGIN, TABLE } from './layout'
+export { ICON_LOC, ICON_WEB, ICON_LOC_NAME, ICON_WEB_NAME } from './icon-directory'
 export { default as NavConfiguration } from './nav-config'
 export { default as ASSET } from './asset-directory'
-export { ICON_LOC, ICON_WEB, ICON_LOC_NAME, ICON_WEB_NAME } from './icon-directory'
 export { default as TIME } from './time'
