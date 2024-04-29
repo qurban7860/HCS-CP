@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { snack, useTable } from 'hook'
-import { Table, TableBody, Typography, Grid } from '@mui/material'
+import { Table, Typography, Grid } from '@mui/material'
 import { GStyledTableHeaderBox } from 'theme/style'
 import { useGetAllMachineQuery } from 'store/slice'
 import { MotionLazyContainer } from 'component/animate'
@@ -8,8 +8,8 @@ import { useSettingContext } from 'component/setting'
 import { SearchBox } from 'component/search'
 import { TableNoData, TableSkeleton } from 'component/table'
 import { MachineTable, MachineHeader, MachineListPagination } from 'section/product'
-import { MARGIN, ASSET } from 'config'
-import { COLOR, KEY, TITLE } from 'constant'
+import { MARGIN, ASSET, TABLE } from 'config'
+import { COLOR, KEY, TITLE, RESPONSE } from 'constant'
 
 const MachineListSection = () => {
   const [page, setPage] = useState(0)
@@ -20,6 +20,7 @@ const MachineListSection = () => {
   const { data: allMachineData, isLoading, isError, refetch: refetchAllMachine } = useGetAllMachineQuery()
 
   const { themeMode } = useSettingContext()
+  const denseHeight = TABLE.DENSE_HEIGHT
 
   const {
     order,
@@ -31,16 +32,16 @@ const MachineListSection = () => {
     onSort
   } = useTable({
     defaultOrderBy: 'createdAt',
-    defaultOrder: 'desc'
+    defaultOrder: KEY.DESC
   })
 
   useEffect(() => {
     if (isError) {
-      snack('Failed to fetch machine data', { variant: COLOR.ERROR })
+      snack(RESPONSE.error.FETCH, { variant: COLOR.ERROR })
     } else if (isLoading) {
-      snack('Loading machine data')
+      snack(RESPONSE.FETCH_LOADING)
     } else {
-      snack('Fetched All Machine Data', { variant: COLOR.SUCCESS })
+      snack(RESPONSE.success.FETCH, { variant: COLOR.SUCCESS })
       refetchAllMachine()
       setTableData(allMachineData)
     }
@@ -65,7 +66,7 @@ const MachineListSection = () => {
 
   return (
     <MotionLazyContainer display="flex">
-      <Typography variant="h2" color="common.white">
+      <Typography variant="h2" color={themeMode === KEY.LIGHT ? 'common.black' : 'common.white'}>
         {TITLE.MACHINE_LIST}
       </Typography>
       <SearchBox term={searchTerm} mode={themeMode} handleSearch={handleSearch} />
@@ -88,7 +89,7 @@ const MachineListSection = () => {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) =>
                     row ? (
-                      <MachineTable key={row._id} machine={row} mode={themeMode} />
+                      <MachineTable key={row._id} machine={row} mode={themeMode} index={index} />
                     ) : (
                       !isNotFound && <TableSkeleton key={index} sx={{ height: denseHeight }} />
                     )
