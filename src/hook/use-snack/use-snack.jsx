@@ -34,13 +34,14 @@ export default function SnackProvider({ children }) {
           default: StyledSnackContent,
           warning: StyledSnackContent,
           success: StyledSnackContent,
-          error: StyledSnackContent
+          error: StyledSnackContent,
+          info: StyledSnackContent
         }}
         iconVariant={{
-          info: <SnackIcon icon={ICON_WEB_NAME.INFO} color="info.main" />,
+          info: <SnackIcon icon={ICON_WEB_NAME.INFO} color="howick.orange" />,
           success: <SnackIcon icon={ICON_WEB_NAME.CHECK_CIRCLE} color="howick.midBlue" />,
           warning: <SnackIcon icon={ICON_WEB_NAME.WARNING} color="warning.main" />,
-          error: <SnackIcon icon={ICON_WEB_NAME.ALERT_OCTAGON} color="error.main" />
+          error: <SnackIcon icon={ICON_WEB_NAME.ALERT_OCTAGON} color="common.white" />
         }}
         action={(key) => (
           <IconButton size="small" onClick={onClose(key)}>

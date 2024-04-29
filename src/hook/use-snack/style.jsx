@@ -1,18 +1,12 @@
 import { m } from 'framer-motion'
 import { styled } from '@mui/material/styles'
 import { MaterialDesignContent } from 'notistack'
-import ASSET from 'config/asset-directory'
 
 export const StyledSnackContent = styled(MaterialDesignContent)(({ theme }) => ({
+  marginLeft: theme.spacing(2),
   '&.notistack-MuiContent': {
     backgroundColor: theme.palette.common.white,
-    backgroundImage: `url(${ASSET.BG_STROKE_SNACK_LOGO})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundPositionY: 'center',
-    backgroundPositionX: 'right',
-    backgroundSize: '140%',
-    backgroundOpacity: 0.2,
-    backgroundAttachment: 'fixed',
+    padding: theme.spacing(1),
     display: 'flex',
     flexDirection: 'row',
     boxShadow: 'none',
@@ -20,11 +14,20 @@ export const StyledSnackContent = styled(MaterialDesignContent)(({ theme }) => (
     justifyContent: 'space-between',
     fontSize: theme.typography.h4.fontSize,
     fontWeight: theme.typography.fontWeightBold,
-    color: theme.palette.common.black,
-    padding: 0
+    color: theme.palette.grey[800],
+    // padding horizontal
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    // padding vertical
+    paddingTop: theme.spacing(0),
+    paddingBottom: theme.spacing(0)
   },
   '&.notistack-MuiContent-error': {
     backgroundColor: theme.palette.error.dark,
+    color: theme.palette.common.white
+  },
+  '&.notistack-MuiContent-info': {
+    backgroundColor: theme.palette.howick.midBlue,
     color: theme.palette.common.white
   },
   '&.notistack-MuiContent-success': {
@@ -45,7 +48,7 @@ export const StyledSnackIconMDiv = styled(m.div)(({ theme, color }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  color: `${color}.main`,
+  color: color === 'error' ? 'common.white' : `${color}.main`,
   width: 30,
   height: 30
 }))
