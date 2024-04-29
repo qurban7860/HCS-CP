@@ -15,9 +15,9 @@ const EmptyContent = ({ title, description, img, sx, ...other }) => {
         ...sx
       }}
       {...other}>
-      <Image disabledEffect alt="empty content" src={img || ASSET.BG_LOGO} sx={{ height: 240, mb: 3 }} />
+      <Image disabledEffect alt="empty content" src={img || ASSET.LOGO} sx={{ height: 240, mb: 3, filter: 'grayscale(100%) opacity(10%)' }} />
 
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h4" gutterBottom>
         {title}
       </Typography>
 
