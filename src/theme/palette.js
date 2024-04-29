@@ -91,7 +91,13 @@ const HOWICKBRONZE = {
 }
 
 const HOWICKBURNIN = {
+  lighter: '#F2FAC2',
+  light: '#E9F799',
   main: '#D1ED18',
+  dark: '#B4C300',
+  darker: '#8A8400',
+  alt: '#18ED34',
+  altDark: '#32C600',
   contrastText: '#000'
 }
 
@@ -106,6 +112,22 @@ const HOWICK = {
   white: '#FFF',
   error: '#DA4848',
   burnIn: '#D1ED18'
+}
+const ACTION = {
+  hover: alpha(GREY[500], 0.08),
+  selected: alpha(GREY[500], 0.16),
+  disabled: alpha(GREY[100], 1),
+  disabledBackground: alpha(GREY[700], 0.4),
+  focus: alpha(GREY[500], 0.24),
+  hoverOpacity: 0.08,
+  disabledOpacity: 0.78
+}
+
+const TABLE = {
+  header: GREY[400],
+  row: GREY[700],
+  cellOdd: GREY[200],
+  cellEven: '#EDEDED'
 }
 
 const COMMON = {
@@ -123,15 +145,8 @@ const COMMON = {
   orange: HOWICKORANGE,
   burnIn: HOWICKBURNIN,
   divider: alpha(GREY[500], 0.24),
-  action: {
-    hover: alpha(GREY[500], 0.08),
-    selected: alpha(GREY[500], 0.16),
-    disabled: alpha(GREY[100], 1),
-    disabledBackground: alpha(GREY[700], 0.4),
-    focus: alpha(GREY[500], 0.24),
-    hoverOpacity: 0.08,
-    disabledOpacity: 0.78
-  },
+  action: ACTION,
+  table: TABLE,
   background: BRAND.background
 }
 
