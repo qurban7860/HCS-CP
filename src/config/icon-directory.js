@@ -18,6 +18,7 @@ function _getWebIcon(icon) {
 
 // add icons that are from MDI
 const ICON_WEB = {
+  ACTIVE: _getWebIcon('checkbox-marked-circle'),
   ALERT_OUTLINE: _getWebIcon('alert-triangle-outline'),
   ALERT_OCTAGON: _getWebIcon('alert-octagon'),
   BLUR_ON: _getWebIcon('blur'),
@@ -35,6 +36,7 @@ const ICON_WEB = {
   FULLSCREEN: _getWebIcon('fullscreen'),
   FULLSCREEN_EXIT: _getWebIcon('fullscreen-exit'),
   INFO: _getWebIcon('info-outline'),
+  INACTIVE: _getWebIcon('minus-circle'),
   REFRESH: _getWebIcon('refresh'),
   SAVE: _getWebIcon('content-save'),
   SEARCH: _getWebIcon('magnify'),
@@ -64,6 +66,7 @@ export const ICON_WEB_NAME = {
   CHEVRON_RIGHT: 'CHEVRON_RIGHT',
   CHECK_CIRCLE: 'CHECK_CIRCLE',
   CHECK_CICLE_OUTLINE: 'CHECK_CICLE_OUTLINE',
+  ACTIVE: 'ACTIVE',
   CONTRAST_BOX: 'CONTRAST_BOX',
   CONTRAST_ON: 'CONTRAST_ON',
   CONTRAST_OFF: 'CONTRAST_OFF',
@@ -71,6 +74,7 @@ export const ICON_WEB_NAME = {
   EDIT: 'EDIT',
   ERROR_OUTLINE: 'ERROR_OUTLINE',
   INFO: 'INFO',
+  INACTIVE: 'INACTIVE',
   FULLSCREEN: 'FULLSCREEN',
   FULLSCREEN_EXIT: 'FULLSCREEN_EXIT',
   REFRESH: 'REFRESH',
