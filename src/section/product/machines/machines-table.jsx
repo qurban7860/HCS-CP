@@ -1,32 +1,25 @@
-import { Fragment, useRef, useEffect } from 'react'
-import { Box, TableBody, TableCell, Table, TableHead, TableRow, Typography, ListItemText, Chip } from '@mui/material'
+import { Fragment } from 'react'
+import { m } from 'framer-motion'
+import { ICON_NAME, useIcon } from 'hook'
+import { Box, TableBody, TableCell } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { fDate } from 'util'
 import { KEY } from 'constant'
+import { StyledIconListItemText, StyledPopTableCell, StyledTableRow } from './style'
 
-const MachineTable = ({ machine, mode }) => {
+const MachineTable = ({ machine, mode, index }) => {
+  const theme = useTheme()
+  const { Icon, iconSrc: activeSrc } = useIcon(ICON_NAME.ACTIVE)
+  const { iconSrc: inactiveSrc } = useIcon(ICON_NAME.INACTIVE)
+
+  const activeColor = mode === KEY.DARK ? theme.palette.howick.burnIn : theme.palette.burnIn.altDark
+  const inactiveColor = theme.palette.howick.error
+
   return (
     <Fragment>
       <TableBody>
-        <TableRow
-          sx={{
-            '&:nth-of-type(odd)': {
-              backgroundColor: mode === KEY.DARK ? 'grey.800' : 'grey.300'
-            },
-            '&:nth-of-type(even)': {
-              backgroundColor: mode === KEY.DARK ? 'grey.900' : 'grey.200'
-            },
-            '&:hover': {
-              backgroundColor: mode === KEY.DARK ? 'grey.700' : 'common.white'
-            },
-            cursor: 'pointer'
-          }}>
-          <TableCell
-            sx={{
-              fontWeight: 'bold',
-              fontSize: '1rem'
-            }}>
-            {machine?.serialNo}
-          </TableCell>
+        <StyledTableRow index={index} mode={mode}>
+          <StyledPopTableCell>{machine?.serialNo}</StyledPopTableCell>
           <TableCell>{machine?.name}</TableCell>
           <TableCell>
             <Box>{machine?.machineModel?.name}</Box>
@@ -35,20 +28,11 @@ const MachineTable = ({ machine, mode }) => {
           <TableCell>{fDate(machine?.shippingDate)}</TableCell>
           <TableCell>{machine?.status?.name}</TableCell>
           <TableCell>
-            <ListItemText>
-              <Chip
-                label={<Typography variant="h6">{machine?.isActive ? 'active' : 'not active'}</Typography>}
-                size="small"
-                variant="outlined"
-                sx={{
-                  backgroundColor: !machine?.isActive ? 'error.main' : 'burnIn.main',
-                  color: `common.${!machine?.isActive ? 'white' : 'black'}`,
-                  fontWeight: 'bold'
-                }}
-              />
-            </ListItemText>
+            <StyledIconListItemText inActive={machine?.isActive}>
+              <m.div>{machine?.isActive ? <Icon icon={activeSrc} color={activeColor} /> : <Icon icon={inactiveSrc} color={inactiveColor} />}</m.div>
+            </StyledIconListItemText>
           </TableCell>
-        </TableRow>
+        </StyledTableRow>
       </TableBody>
     </Fragment>
   )
