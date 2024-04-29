@@ -1,11 +1,12 @@
 import { useState, useCallback } from 'react'
+import { KEY } from 'constant'
 
 export default function useTable(props) {
   const [dense, setDense] = useState(!!props?.defaultDense)
 
-  const [orderBy, setOrderBy] = useState(props?.defaultOrderBy || 'name')
+  const [orderBy, setOrderBy] = useState(props?.defaultOrderBy || KEY.NAME)
 
-  const [order, setOrder] = useState(props?.defaultOrder || 'asc')
+  const [order, setOrder] = useState(props?.defaultOrder || KEY.ASC)
 
   const [page, setPage] = useState(props?.defaultCurrentPage || 0)
 
@@ -15,9 +16,9 @@ export default function useTable(props) {
 
   const onSort = useCallback(
     (id) => {
-      const isAsc = orderBy === id && order === 'asc'
+      const isAsc = orderBy === id && order === KEY.ASC
       if (id !== '') {
-        setOrder(isAsc ? 'desc' : 'asc')
+        setOrder(isAsc ? KEY.DESC : KEY.ASC)
         setOrderBy(id)
       }
     },
