@@ -48,7 +48,6 @@ export const StyledSnackIconMDiv = styled(m.div)(({ theme, color }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  color: color === 'error' ? 'common.white' : `${color}.main`,
   width: 30,
   height: 30
 }))
