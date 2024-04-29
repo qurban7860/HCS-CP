@@ -1,5 +1,5 @@
 import { styled, alpha } from '@mui/material/styles'
-import { Popover, Stack, Card, Grid, Chip, Container, TableRow, Box, Typography } from '@mui/material'
+import { Popover, Stack, Card, Grid, Chip, Container, Skeleton, Box, Typography } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { m } from 'framer-motion'
@@ -284,6 +284,10 @@ export const GStyledCardContainer = styled(Card)(({ theme }) => ({
   marginBottom: theme.spacing(3),
   height: 160,
   position: 'relative'
+}))
+
+export const GStyledTableSkeleton = styled(Skeleton)(({ theme, themeMode }) => ({
+  backgroundColor: themeMode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[800]
 }))
 
 // @product - machines - machines-section
