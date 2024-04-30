@@ -22,6 +22,11 @@ const FALLBACK = {
     code: 'ERR_UNDER_DEVELOPMENT',
     title: 'Under Development',
     message: 'This feature is under development. Please check back later'
+  },
+  NO_DATA: {
+    code: 'ERR_NO_DATA',
+    title: 'No Data Found',
+    description: 'The data you are looking for is not found. Try to use a different keyword.'
   }
 }
 
