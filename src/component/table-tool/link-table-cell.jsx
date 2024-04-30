@@ -12,14 +12,14 @@ LinkTableCell.propTypes = {
   onClick: PropTypes.func,
   param: PropTypes.string,
   stringLength: PropTypes.number,
-  isDefault: PropTypes.bool,
+  isDefault: PropTypes.bool
 }
 
 function LinkTableCell({ align, onClick, param, stringLength, isDefault }) {
   const theme = createTheme({
     palette: {
-      success: green,
-    },
+      success: green
+    }
   })
 
   return (
@@ -30,18 +30,16 @@ function LinkTableCell({ align, onClick, param, stringLength, isDefault }) {
       color="inherit"
       sx={{
         cursor: 'pointer',
-        textDecoration: 'underline',
-        textDecorationStyle: 'dotted',
+        fontSize: '1rem',
         fontWeight: 'bold',
-        whiteSpace: 'nowrap', // Prevent text from wrapping
-        overflow: 'hidden', // Hide any overflow
-        textOverflow: 'ellipsis', // Add ellipsis for overflowed text
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
         maxWidth: '400px',
         '&:hover': {
-          color: () => alpha(theme.palette.info.main, 0.98),
-        },
-      }}
-    >
+          color: () => alpha(theme.palette.info.main, 0.98)
+        }
+      }}>
       {useLimitString(param, stringLength || 30)}
       {isDefault && (
         <GStyledTooltip onClick={onClick} title={ICON.DEFAULT.heading} placement="top" disableFocusListener tooltipcolor={theme.palette.primary.main}>
