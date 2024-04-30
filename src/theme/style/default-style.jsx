@@ -51,6 +51,11 @@ export const GStyledFallbackWrapperGrid = styled(Grid)(({ theme }) => ({
 
 // :components ____________________________________________________________________________________________
 
+export const GStyledSpanBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center'
+}))
+
 export const GStyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
   color: 'white',

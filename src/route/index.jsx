@@ -111,7 +111,7 @@ export default function Router() {
     },
     {
       // product
-      path: 'product',
+      path: 'products',
       element: (
         <AuthGuard>
           <DashboardLayout />
@@ -120,7 +120,7 @@ export default function Router() {
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         {
-          path: 'machine',
+          path: 'machines',
           children: [
             { path: 'list', element: <MachinesListPage /> },
             { path: ':id/view', element: <MachinePage /> }
@@ -130,7 +130,7 @@ export default function Router() {
     },
     {
       // document
-      path: 'document',
+      path: 'documents',
       element: (
         <AuthGuard>
           <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,

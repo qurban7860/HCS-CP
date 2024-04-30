@@ -1,5 +1,5 @@
 import { styled, alpha } from '@mui/material/styles'
-import { TablePagination, TableRow, TableCell, ListItemText } from '@mui/material'
+import { TableContainer, TablePagination, TableRow, TableCell, ListItemText } from '@mui/material'
 import { KEY } from 'constant'
 import { HEADER } from './constant'
 
@@ -55,26 +55,10 @@ export const StyledTablePagination = styled(TablePagination)(({ theme, mode, pag
   }
 }))
 
-// export const StyledHeaderTableCell = styled(TableCell)(({ theme, mode, item }) => ({
-//   backgroundColor: mode === KEY.LIGHT ? theme.palette.table.header : 'inherit',
-//   borderBottom: `2px solid ${mode === KEY.LIGHT ? theme.palette.howick.bronze : theme.palette.howick.blue} !important`,
-//   color: mode === KEY.DARK ? 'common.white' : 'common.black',
-//   margin: 0,
-//   fontWeight: 'bold',
-//   fontSize: '1.1rem',
-//   padding: '0.5rem 1rem',
-//   paddingBottom: '1rem',
-//   overflow: 'hidden',
-//   textOverflow: 'ellipsis',
-//   whiteSpace: 'nowrap',
-//   width: item.key === KEY.NAME ? '20%' : item.key === 'isActive' ? '5%' : `calc(100% / ${HEADER.length})`
-// }))
-
 export const StyledHeaderTableCell = styled(({ theme, mode, item, ...other }) => <TableCell {...other} />)(({ theme, mode, item }) => ({
-  backgroundColor: mode === KEY.LIGHT ? theme.palette.table.header : 'inherit',
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.table.header : theme.palette.grey[800],
   borderBottom: `2px solid ${mode === KEY.LIGHT ? theme.palette.howick.bronze : theme.palette.howick.blue} !important`,
   color: mode === KEY.DARK ? 'common.white' : 'common.black',
-  margin: 0,
   fontWeight: 'bold',
   fontSize: '1.1rem',
   padding: '0.5rem 1rem',
@@ -82,6 +66,9 @@ export const StyledHeaderTableCell = styled(({ theme, mode, item, ...other }) =>
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
+  position: 'sticky',
+  top: 0,
+  zIndex: 1,
   width: item.key === KEY.NAME ? '20%' : item.key === 'isActive' ? '5%' : `calc(100% / ${HEADER.length})`
 }))
 
@@ -97,26 +84,6 @@ export const StyledPopTableCell = styled(TableCell)(({ theme, mode }) => ({
   fontSize: '1rem'
 }))
 
-// export const StyledTableRow = styled(TableRow)(({ theme, mode, index, machine }) =>
-//   index % 2
-//     ? {
-//         backgroundColor: mode === KEY.DARK ? alpha(theme.palette.grey[900], 0.5) : alpha(theme.palette.grey[300], 0.4),
-//         cursor: 'pointer',
-//         '&:hover': {
-//           backgroundColor: mode === KEY.DARK ? theme.palette.grey[700] : theme.palette.common.white
-//         },
-//         width: machine?.name ? '20%' : machine?.isActive.toString() ? '5%' : `calc(100% / ${HEADER.length})`
-//       }
-//     : {
-//         backgroundColor: mode === KEY.DARK ? alpha(theme.palette.grey[800], 0.5) : alpha(theme.palette.table.cellEven, 0.9),
-//         cursor: 'pointer',
-//         '&:hover': {
-//           backgroundColor: mode === KEY.DARK ? theme.palette.grey[700] : theme.palette.common.white
-//         },
-//         width: machine?.name ? '20%' : machine?.isActive.toString() ? '5%' : `calc(100% / ${HEADER.length})`
-//       }
-// )
-
 export const StyledTableRow = styled(({ theme, mode, index, machine, ...other }) => <TableRow {...other} />)(({ theme, mode, index, machine }) => ({
   backgroundColor:
     index % 2
@@ -131,4 +98,10 @@ export const StyledTableRow = styled(({ theme, mode, index, machine, ...other })
     backgroundColor: mode === KEY.DARK ? theme.palette.grey[700] : theme.palette.common.white
   },
   width: machine?.name ? '20%' : machine?.isActive.toString() ? '5%' : `calc(100% / ${HEADER.length})`
+}))
+
+export const StyledScrollTableContainer = styled(TableContainer)(({ theme }) => ({
+  position: 'relative',
+  overflow: 'auto',
+  maxHeight: 630
 }))

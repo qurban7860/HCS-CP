@@ -339,7 +339,6 @@ const UserProfile = () => {
                       <Grid item xs={12} sm={6}>
                         <RHFTextField name="name" label="Name" disabled={isNotEditState} />
                       </Grid>
-
                       <Grid item xs={12} sm={6}>
                         <RHFTextField name="location" label="Location" disabled={isNotEditState} />
                       </Grid>
