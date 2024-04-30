@@ -6,8 +6,8 @@ function NavConfiguration() {
       subheader: 'general',
       items: [
         { title: 'Home', path: '/dashboard/app', children: null },
-        { title: 'Machine', path: '/product/machine/list', children: null },
-        { title: 'Document', path: '/document', children: null },
+        { title: 'Machine', path: '/products/machines/list', children: null },
+        { title: 'Document', path: '/documents', children: null },
         { title: 'Support', path: '/support', children: null }
       ]
     }
