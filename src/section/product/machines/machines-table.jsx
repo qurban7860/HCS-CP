@@ -18,7 +18,7 @@ const MachineTable = ({ machine, mode, index }) => {
   return (
     <Fragment>
       <TableBody>
-        <StyledTableRow index={index} mode={mode}>
+        <StyledTableRow index={index} mode={mode} item={machine}>
           <StyledPopTableCell>{machine?.serialNo}</StyledPopTableCell>
           <TableCell>{machine?.name}</TableCell>
           <TableCell>
