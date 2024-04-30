@@ -1,24 +1,28 @@
 import { useEffect, useState, useRef } from 'react'
-import { snack, useTable } from 'hook'
+import { useSelector } from 'store'
+import { m } from 'framer-motion'
 import debounce from 'lodash/debounce'
-import { Table, TableContainer, Typography, Grid } from '@mui/material'
-import { GStyledTableHeaderBox } from 'theme/style'
-import { useGetAllMachineQuery } from 'store/slice'
+import { snack, useTable } from 'hook'
+import { Table, Typography, Grid, Box } from '@mui/material'
+import { GStyledTableHeaderBox, GStyledSpanBox } from 'theme/style'
+import { useGetAllMachineQuery, useGetUserQuery } from 'store/slice'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
 import { SearchBox } from 'component/search'
 import { TableNoData, TableSkeleton } from 'component/table'
 import { MachineTable, MachineHeader, MachineListPagination } from 'section/product'
-import { Scrollbar } from 'component'
-import { MARGIN, ASSET, TABLE } from 'config'
+import { MARGIN, TABLE } from 'config'
 import { COLOR, KEY, TITLE, RESPONSE } from 'constant'
+import { StyledScrollTableContainer } from './style'
 
 const MachineListSection = () => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [tableData, setTableData] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-
+  const { user: userState, userId } = useSelector((state) => state.auth)
+  // const { securityUser } = useSelector((state) => state.user)
+  const { data: userDetail, isLoading: isUserFetching, error, refetch } = useGetUserQuery(userId)
   const { data: allMachineData, isLoading, isError, refetch: refetchAllMachine } = useGetAllMachineQuery()
 
   const { themeMode } = useSettingContext()
@@ -76,9 +80,14 @@ const MachineListSection = () => {
 
   return (
     <MotionLazyContainer display="flex">
-      <Typography variant="h2" color={themeMode === KEY.LIGHT ? 'common.black' : 'common.white'}>
-        {TITLE.MACHINE_LIST}
-      </Typography>
+      <GStyledSpanBox>
+        <Typography variant="h2" color={themeMode === KEY.LIGHT ? 'common.black' : 'common.white'}>
+          {userDetail?.customer?.name.toUpperCase() || TITLE.MACHINE} &nbsp;
+        </Typography>
+        <Typography variant="h2" color={themeMode === KEY.LIGHT ? 'grey.200' : 'howick.bronze'}>
+          / {TITLE.MACHINE_LIST}
+        </Typography>
+      </GStyledSpanBox>
       <SearchBox term={searchTerm} mode={themeMode} handleSearch={handleSearch} />
       <Grid container flexDirection="row" {...MARGIN.PAGE_PROP}>
         <Grid item lg={12}>
@@ -93,24 +102,23 @@ const MachineListSection = () => {
                 handleChangePage={handleChangePage}
                 handleChangeRowsPerPage={handleChangeRowsPerPage}
               />
-              {/* <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
-                <Scrollbar> */}
-              <Table>
-                <MachineHeader mode={themeMode} />
+              <StyledScrollTableContainer>
+                <Table>
+                  <MachineHeader mode={themeMode} />
+                  <Box gutterBottom={2} component={m.div} height={2} />
+                  {(isLoading ? [...Array(rowsPerPage)] : filteredData)
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) =>
+                      row ? (
+                        <MachineTable key={row._id} machine={row} mode={themeMode} index={index} />
+                      ) : (
+                        !isNotFound && <TableSkeleton key={index} sx={{ height: denseHeight }} />
+                      )
+                    )}
 
-                {(isLoading ? [...Array(rowsPerPage)] : filteredData)
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) =>
-                    row ? (
-                      <MachineTable key={row._id} machine={row} mode={themeMode} index={index} />
-                    ) : (
-                      !isNotFound && <TableSkeleton key={index} sx={{ height: denseHeight }} />
-                    )
-                  )}
-                <TableNoData isNotFound={isNotFound} />
-              </Table>
-              {/* </Scrollbar>
-              </TableContainer> */}
+                  <TableNoData isNotFound={isNotFound} />
+                </Table>
+              </StyledScrollTableContainer>
             </Grid>
           </Grid>
         </Grid>
