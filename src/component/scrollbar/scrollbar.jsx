@@ -5,7 +5,7 @@ import { GStyledRootScrollbar, StyledScrollbar } from './style'
 
 Scrollbar.propTypes = {
   sx: PropTypes.object,
-  children: PropTypes.node,
+  children: PropTypes.node
 }
 
 function Scrollbar({ children, sx, ...other }) {

@@ -1,5 +1,7 @@
 // @scroll to top
 export { default as ScrollToTop } from './scroll-to-top/scroll-to-top'
+// @scrollbar
+export { default as Scrollbar } from './scrollbar/scrollbar'
 // @breadcrumb
 export { default as Breadcrumb } from './breadcrumb/breadcrumb'
 // @image
