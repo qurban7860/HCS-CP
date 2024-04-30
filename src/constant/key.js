@@ -2,6 +2,7 @@
  * @description - important keys to the applications are stored here
  */
 const KEY = {
+  // @config
   DEV: 'dev',
   DEVELOPMENT: 'development',
   LIGHT: 'light',
@@ -11,6 +12,7 @@ const KEY = {
   DESC: 'desc',
   // default
   NAME: 'name',
+  PRODUCTION: 'production',
 
   // @redux keys
   REDUX_STORE: 'store',
