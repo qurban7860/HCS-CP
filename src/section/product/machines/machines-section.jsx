@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { snack, useTable } from 'hook'
-import { Table, Typography, Grid } from '@mui/material'
+import debounce from 'lodash/debounce'
+import { Table, TableContainer, Typography, Grid } from '@mui/material'
 import { GStyledTableHeaderBox } from 'theme/style'
 import { useGetAllMachineQuery } from 'store/slice'
 import { MotionLazyContainer } from 'component/animate'
@@ -8,6 +9,7 @@ import { useSettingContext } from 'component/setting'
 import { SearchBox } from 'component/search'
 import { TableNoData, TableSkeleton } from 'component/table'
 import { MachineTable, MachineHeader, MachineListPagination } from 'section/product'
+import { Scrollbar } from 'component'
 import { MARGIN, ASSET, TABLE } from 'config'
 import { COLOR, KEY, TITLE, RESPONSE } from 'constant'
 
@@ -15,8 +17,8 @@ const MachineListSection = () => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [tableData, setTableData] = useState([])
-
   const [searchTerm, setSearchTerm] = useState('')
+
   const { data: allMachineData, isLoading, isError, refetch: refetchAllMachine } = useGetAllMachineQuery()
 
   const { themeMode } = useSettingContext()
@@ -48,7 +50,15 @@ const MachineListSection = () => {
     refetchAllMachine()
   }, [refetchAllMachine, allMachineData, isLoading, isError])
 
+  const debouncedSearch = useRef(
+    debounce((value) => {
+      setPage(0)
+      setSearchTerm(value)
+    }, 500)
+  )
+
   const handleSearch = (event) => {
+    debouncedSearch.current(event.target.value)
     setSearchTerm(event.target.value)
   }
 
@@ -83,8 +93,11 @@ const MachineListSection = () => {
                 handleChangePage={handleChangePage}
                 handleChangeRowsPerPage={handleChangeRowsPerPage}
               />
+              {/* <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
+                <Scrollbar> */}
               <Table>
                 <MachineHeader mode={themeMode} />
+
                 {(isLoading ? [...Array(rowsPerPage)] : filteredData)
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) =>
@@ -96,6 +109,8 @@ const MachineListSection = () => {
                   )}
                 <TableNoData isNotFound={isNotFound} />
               </Table>
+              {/* </Scrollbar>
+              </TableContainer> */}
             </Grid>
           </Grid>
         </Grid>

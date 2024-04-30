@@ -286,7 +286,7 @@ export const GStyledCardContainer = styled(Card)(({ theme }) => ({
   position: 'relative'
 }))
 
-export const GStyledTableSkeleton = styled(Skeleton)(({ theme, themeMode }) => ({
+export const GStyledTableSkeleton = styled(({ theme, themeMode, ...other }) => <Skeleton {...other} />)(({ theme, themeMode }) => ({
   backgroundColor: themeMode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[800]
 }))
 
