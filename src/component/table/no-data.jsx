@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
-import { Table, TableBody, TableCell, TableRow } from '@mui/material'
+import { TableBody, TableCell, TableRow } from '@mui/material'
 import { useSettingContext } from 'component/setting'
 import { EmptyContent } from 'component'
+import { FALLBACK } from 'constant'
 
 TableNoData.propTypes = {
   isNotFound: PropTypes.bool
@@ -16,8 +17,7 @@ export default function TableNoData({ isNotFound }) {
           <TableRow>
             <TableCell colSpan={12}>
               <EmptyContent
-                title="Not Found"
-                description="The data you are looking for is not found. Try to use a different keyword."
+                {...FALLBACK.NO_DATA}
                 sx={{
                   color: themeMode === 'dark' ? 'text.secondary' : 'grey.700'
                 }}
