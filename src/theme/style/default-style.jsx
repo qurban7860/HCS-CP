@@ -56,6 +56,11 @@ export const GStyledSpanBox = styled(Box)(({ theme }) => ({
   alignItems: 'center'
 }))
 
+export const GStyledScrollContainerGrid = styled(Box)(({ theme }) => ({
+  overflow: 'auto',
+  height: '100%'
+}))
+
 export const GStyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
   color: 'white',

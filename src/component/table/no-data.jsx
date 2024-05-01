@@ -4,11 +4,7 @@ import { useSettingContext } from 'component/setting'
 import { EmptyContent } from 'component'
 import { FALLBACK } from 'constant'
 
-TableNoData.propTypes = {
-  isNotFound: PropTypes.bool
-}
-
-export default function TableNoData({ isNotFound }) {
+const TableNoData = ({ isNotFound }) => {
   const { themeMode } = useSettingContext()
   return (
     <>
@@ -35,3 +31,9 @@ export default function TableNoData({ isNotFound }) {
     </>
   )
 }
+
+TableNoData.propTypes = {
+  isNotFound: PropTypes.bool
+}
+
+export default TableNoData

@@ -9,7 +9,8 @@ import { useGetAllMachineQuery, useGetUserQuery } from 'store/slice'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
 import { SearchBox } from 'component/search'
-import { TableNoData, TableSkeleton } from 'component/table'
+import { TableNoData } from 'component'
+import { SkeletonTable } from 'component/skeleton'
 import { MachineTable, MachineHeader, MachineListPagination } from 'section/product'
 import { MARGIN, TABLE } from 'config'
 import { COLOR, KEY, TITLE, RESPONSE } from 'constant'
@@ -20,10 +21,10 @@ const MachineListSection = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [tableData, setTableData] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
+
   const { user: userState, userId } = useSelector((state) => state.auth)
-  // const { securityUser } = useSelector((state) => state.user)
   const { data: userDetail, isLoading: isUserFetching, error, refetch } = useGetUserQuery(userId)
-  const { data: allMachineData, isLoading, isError, refetch: refetchAllMachine } = useGetAllMachineQuery()
+  const { data: allMachineData, isLoading, error: allMachineError, refetch: refetchAllMachine } = useGetAllMachineQuery()
 
   const { themeMode } = useSettingContext()
   const denseHeight = TABLE.DENSE_HEIGHT
@@ -42,7 +43,7 @@ const MachineListSection = () => {
   })
 
   useEffect(() => {
-    if (isError) {
+    if (allMachineError) {
       snack(RESPONSE.error.FETCH, { variant: COLOR.ERROR })
     } else if (isLoading) {
       snack(RESPONSE.FETCH_LOADING)
@@ -52,7 +53,7 @@ const MachineListSection = () => {
       setTableData(allMachineData)
     }
     refetchAllMachine()
-  }, [refetchAllMachine, allMachineData, isLoading, isError])
+  }, [refetchAllMachine, allMachineData, isLoading, allMachineError])
 
   const debouncedSearch = useRef(
     debounce((value) => {
@@ -105,17 +106,16 @@ const MachineListSection = () => {
               <StyledScrollTableContainer>
                 <Table>
                   <MachineHeader mode={themeMode} />
-                  <Box gutterBottom={2} component={m.div} height={2} />
+                  {/* <Box gutterBottom={2} component={m.div} height={2} /> */}
                   {(isLoading ? [...Array(rowsPerPage)] : filteredData)
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) =>
                       row ? (
                         <MachineTable key={row._id} machine={row} mode={themeMode} index={index} />
                       ) : (
-                        !isNotFound && <TableSkeleton key={index} sx={{ height: denseHeight }} />
+                        !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />
                       )
                     )}
-
                   <TableNoData isNotFound={isNotFound} />
                 </Table>
               </StyledScrollTableContainer>
