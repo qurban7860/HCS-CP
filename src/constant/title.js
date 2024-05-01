@@ -10,6 +10,7 @@ const TITLE = {
   FORGOT_REQUEST: 'Send Request',
   // @root -MachineViewForm - site location
   NO_SITELOC: 'No site location was provided',
+  NOT_PROVIDED: 'Not Provided',
   // @machine - MachineList
   MACHINE_LIST: 'MACHINE LIST',
   // @user - UserProfile - user

@@ -8,6 +8,11 @@ const LABEL = {
   USER_PROFILE_TIX: 'Your Ticket/s',
   USER_PROFILE_MACHINE: 'Your Machine/s',
   MACHINE_LIST: 'Machine List',
+  MACHINE_HISTORY: 'Machine History',
+  SITE: 'Site',
+  INSTALLATION_SITE: 'Installation Site',
+  SHIPPING_SITE: 'Shipping Site',
+  CONNECTED_MACHINE: 'Connected Machine List',
   SCHEMA: {
     MACHINE: {
       SERIAL_NUMBER: 'Serial Number',
