@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
-import { TableBody, TableRow, TableCell, Skeleton, Stack } from '@mui/material'
+import { TableBody, TableRow, TableCell, Stack } from '@mui/material'
 import { GStyledTableSkeleton } from 'theme/style'
 import { useSettingContext } from 'component/setting'
 
-const TableSkeleton = ({ ...other }) => {
+const SkeletonTable = ({ ...other }) => {
   const { themeMode } = useSettingContext()
   return (
     <TableBody>
@@ -24,8 +24,8 @@ const TableSkeleton = ({ ...other }) => {
   )
 }
 
-TableSkeleton.propTypes = {
+SkeletonTable.propTypes = {
   other: PropTypes.any
 }
 
-export default TableSkeleton
+export default SkeletonTable

@@ -6,7 +6,8 @@ const RESPONSE = {
     LOGIN: 'Logged In',
     LOGOUT: 'Logged Out',
     REDUX_PERSIST: 'Persisted states have been cleared',
-    FETCH: 'Fetched All Machine Data'
+    FETCH: 'Fetched All Data',
+    FETCH_DATA: 'Fetched Data'
   },
   error: {
     REDUX_PERSIST: 'Error clearing persisted states:',

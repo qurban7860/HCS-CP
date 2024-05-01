@@ -10,6 +10,10 @@ export { default as Image } from './image/image'
 export { default as SearchBox } from './search/search-box'
 // @default
 export { default as EmptyContent } from './default/empty-content'
+// @viewform
+export { default as ViewFormField } from './viewform/view-form-field'
+// @skeleton
+export { default as SkeletonViewFormField } from './skeleton/view-form-field'
+export { default as SkeletonTable } from './skeleton/table'
 // @table
 export { default as TableNoData } from './table/no-data'
-export { default as TableSkeleton } from './table/skeleton'
