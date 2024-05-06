@@ -14,7 +14,7 @@ const AuditBox = ({ value }) => {
     <Box>
       <GStyledSpanBox>
         <Typography variant={TYPOGRAPHY.OVERLINE} color="grey.500">
-          {CREATED_BY}
+          {CREATED_BY} &nbsp;
         </Typography>
         <Typography variant={TYPOGRAPHY.BODY2} color="grey.500">
           {createdBy && createdBy} {createdAt && `${' / ' + fDate(createdAt)}`} {createdIP && `/ ${createdIP}`}
@@ -22,7 +22,7 @@ const AuditBox = ({ value }) => {
       </GStyledSpanBox>
       <GStyledSpanBox>
         <Typography variant={TYPOGRAPHY.OVERLINE} color="grey.500">
-          {UPDATED_BY}
+          {UPDATED_BY} &nbsp;
         </Typography>
         <Typography variant={TYPOGRAPHY.BODY2} color="grey.500">
           {updatedBy} {updatedAt && `${' / ' + fDate(updatedAt)}`} {updatedIP && `/ ${updatedIP}`}
