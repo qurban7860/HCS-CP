@@ -1,5 +1,5 @@
 import { styled, alpha } from '@mui/material/styles'
-import { Popover, Stack, Card, Grid, Chip, Container, Skeleton, Box, Typography } from '@mui/material'
+import { Popover, ListItemText, Card, Grid, Divider, Container, Skeleton, Box, Typography, IconButton } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { m } from 'framer-motion'
@@ -56,9 +56,30 @@ export const GStyledSpanBox = styled(Box)(({ theme }) => ({
   alignItems: 'center'
 }))
 
+export const GStyledCenterBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center'
+}))
+
+export const GStyledListItemText = styled(ListItemText)(({ theme }) => ({
+  '& .MuiListItemText-primary': {
+    fontSize: '1.5rem',
+    fontWeight: 'bold'
+  }
+}))
+
 export const GStyledScrollContainerGrid = styled(Box)(({ theme }) => ({
   overflow: 'auto',
   height: '100%'
+}))
+
+// :form top border divider
+export const GStyledTopBorderDivider = styled(({ theme, mode, ...other }) => <Divider {...other} />)(({ theme, mode }) => ({
+  height: 2,
+  borderStyle: 'solid',
+  borderColor: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.grey[400],
+  borderWidth: 5
 }))
 
 export const GStyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
@@ -140,6 +161,38 @@ export const GStyledTooltipSliding = styled(({ className, ...props }) => <Toolti
     }
   })
 )
+
+export const GStyledIconButton = styled(IconButton, {
+  shouldForwardProp: (prop) => prop !== 'filled' && prop !== 'hasChildren' && prop !== 'shape'
+})(({ filled, shape, hasChildren, theme }) => ({
+  color: 'inherit',
+  transition: theme.transitions.create('all', {
+    duration: theme.transitions.duration.shorter
+  }),
+  ...(shape === 'rounded' && {
+    borderRadius: Number(theme.shape.borderRadius) * 1.5
+  }),
+  ...(!filled && {
+    opacity: 0.48,
+    '&:hover': {
+      opacity: 1
+    }
+  }),
+  ...(filled && {
+    color: alpha(theme.palette.common.white, 0.8),
+    backgroundColor: alpha(theme.palette.grey[900], 0.48),
+    '&:hover': {
+      color: theme.palette.common.white,
+      backgroundColor: theme.palette.grey[900]
+    }
+  }),
+  ...(hasChildren && {
+    zIndex: 9,
+    top: '50%',
+    position: 'absolute',
+    marginTop: theme.spacing(-2.5)
+  })
+}))
 
 export const GStyledPopover = styled(Popover)(({ theme }) => ({
   '& .MuiPaper-root': {
@@ -231,6 +284,7 @@ export const ButtonProps = {
   }
 }
 
+// :popover __________________________________________________________________________________________________
 /**
 // for future use
 // export const StyledNZMadeContainerDiv = styled('div')(({ theme }) => ({
