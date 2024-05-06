@@ -1,9 +1,13 @@
 const LABEL = {
+  ACTIVE: 'Active',
+  GO_BACK: 'Go Back',
+  INACTIVE: 'Inactive',
   OUR_PRODUCT: 'OUR PRODUCTS: ',
   OUR_COMPANY: 'OUR COMPANIES: ',
   ERROR_CODE: 'Error Code:',
   FULLSCREEN: 'Fullscreen',
   FULLSCREEN_EXIT: 'Exit Fullscreen',
+  HEADER: ' Form Header',
   ROWS: 'Rows:',
   USER_PROFILE_TIX: 'Your Ticket/s',
   USER_PROFILE_MACHINE: 'Your Machine/s',
@@ -12,7 +16,20 @@ const LABEL = {
   SITE: 'Site',
   INSTALLATION_SITE: 'Installation Site',
   SHIPPING_SITE: 'Shipping Site',
-  CONNECTED_MACHINE: 'Connected Machine List',
+  NO_CONNECTED_MACHINE: ' No Connected Machine',
+  PURCHASED: 'Purchased',
+  SHIPPED: 'Shipped',
+  INSTALLED: 'Installed',
+  TRANSFERRED: 'Transferred',
+  NOT_SPECIFIED: 'Not Specified',
+
+  // @audit
+  AUDIT: {
+    CREATED_BY: 'Created By: ',
+    UPDATED_BY: 'Updated By: '
+  },
+  // CONNECTED_MACHINE: 'Connected Machine List',
+  CONNECTED_MACHINE: (arr) => (arr > 1 ? 'Connected Machines' : 'Connected Machine'),
   SCHEMA: {
     MACHINE: {
       SERIAL_NUMBER: 'Serial Number',

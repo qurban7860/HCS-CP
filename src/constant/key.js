@@ -11,6 +11,8 @@ const KEY = {
   ASC: 'asc',
   DESC: 'desc',
   // default
+  ACTIVE: 'active',
+  INACTIVE: 'inactive',
   NAME: 'name',
   PRODUCTION: 'production',
 
