@@ -1,12 +1,38 @@
+import { useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Grid, Box, Typography } from '@mui/material'
 import { GStyledListItemText } from 'theme/style'
-import { ViewFormField } from 'component'
-import { VARIANT, KEY, FLEX_DIR, VIEW_FORM } from 'constant'
+import { ViewFormField, NothingProvided } from 'component'
+import { GoogleMaps } from 'component/google-maps'
+import { VARIANT, KEY, FLEX_DIR, VIEW_FORM, SNACK } from 'constant'
+import { MAP } from 'config/layout'
+import { StyledSiteMapBox } from '../style'
+import { hasValidArray } from './util'
 
 const SiteTab = ({ value, isBilling, isLoading }) => {
+  const [validCoordinates, setValidCoordinates] = useState(false)
   const { TYPOGRAPHY } = VARIANT
   const { ADDRESS, MACHINE } = VIEW_FORM
+
+  const latLong = useMemo(
+    () => [
+      {
+        lat: value?.installationSiteLat || '',
+        long: value?.installationSiteLong || ''
+      },
+      {
+        lat: value?.billingSiteLat || '',
+        long: value?.billingSiteLong || ''
+      }
+    ],
+    [value]
+  )
+
+  useEffect(() => {
+    if (value?.installationSiteLat && value?.installationSiteLong && value?.billingSiteLat && value?.billingSiteLong) {
+      setValidCoordinates(true)
+    }
+  }, [])
 
   let site
   let country
@@ -44,9 +70,14 @@ const SiteTab = ({ value, isBilling, isLoading }) => {
       )}
 
       <Grid item xs={12}>
-        <Box sx={{ justifyContent: 'center', margin: 'auto', alignItems: 'center' }}>
-          <Typography variant={TYPOGRAPHY.H4}>{'MAP HERE'}</Typography>
-        </Box>
+        <StyledSiteMapBox>
+          {/* <GoogleMaps machineView latlongArr={latLong} mapHeight={MAP.MACHINE.HEIGHT} /> */}
+          {validCoordinates ? (
+            <GoogleMaps machineView latlongArr={latLong} mapHeight={MAP.MACHINE.HEIGHT} />
+          ) : (
+            <NothingProvided content={SNACK.NO_COORIDNATES} />
+          )}
+        </StyledSiteMapBox>
       </Grid>
     </Grid>
   )

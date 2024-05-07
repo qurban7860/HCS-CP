@@ -2,11 +2,9 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
 import { useSettingContext } from 'component/setting'
-import { Grid, Box, Typography, Tabs, Tab } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import { GStyledListItemText } from 'theme/style'
-import { FormHeader, ViewFormField } from 'component'
-import { LABEL, VIEW_FORM, VARIANT, DIV_ROLE, KEY, FLEX, FLEX_DIR } from 'constant'
+import { Grid, Box, Typography } from '@mui/material'
+import { FormHeader } from 'component'
+import { LABEL, VIEW_FORM, VARIANT, DIV_ROLE, KEY } from 'constant'
 import { StyledSiteTab, StyledSiteTabs, StyledSiteTabBox } from '../style'
 import SiteTab from './tab'
 import { a11yProps } from './util'
@@ -21,19 +19,18 @@ function TabPanel({ children, value, index, ...other }) {
 
 const MachineSiteWidget = ({ value, isLoading }) => {
   const [tab, setTab] = useState(1)
-  const theme = useTheme()
   const { themeMode } = useSettingContext()
+
   const handleChange = (event, newValue) => {
     setTab(newValue)
   }
 
   const { TYPOGRAPHY } = VARIANT
-  const { ADDRESS, MACHINE } = VIEW_FORM
   const { INSTALLATION, BILLING } = LABEL.SCHEMA.SITE
 
   return (
     <Grid container mb={2}>
-      <Grid item lg={12} sm={12} mb={2} bgcolor="background.paper" sx={{ height: '700px' }}>
+      <Grid item lg={12} sm={12} mb={2} bgcolor="background.paper" sx={{ height: KEY.FULL_PERCENT }}>
         <FormHeader label={LABEL.SITE} />
 
         <StyledSiteTabBox>
