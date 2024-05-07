@@ -78,3 +78,9 @@ export const TABLE = {
     HEIGHT: 64
   }
 }
+
+export const MAP = {
+  MACHINE: {
+    HEIGHT: 350
+  }
+}
