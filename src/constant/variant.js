@@ -34,6 +34,7 @@ export const VARIANT = {
   CIRCULAR: 'circular',
   OUTLINED: 'outlined',
   COVER: 'cover',
+  FULL_WIDTH: 'fullWidth',
   TYPOGRAPHY: {
     H0: 'h0',
     H1: 'h1',

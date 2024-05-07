@@ -21,6 +21,7 @@ const LABEL = {
   SHIPPED: 'Shipped',
   INSTALLED: 'Installed',
   TRANSFERRED: 'Transferred',
+  MANUFACTURED: 'Manufactured',
   NOT_SPECIFIED: 'Not Specified',
 
   // @audit
@@ -31,6 +32,10 @@ const LABEL = {
   // CONNECTED_MACHINE: 'Connected Machine List',
   CONNECTED_MACHINE: (arr) => (arr > 1 ? 'Connected Machines' : 'Connected Machine'),
   SCHEMA: {
+    SITE: {
+      BILLING: 'Billing Site',
+      INSTALLATION: 'Installation Site'
+    },
     MACHINE: {
       SERIAL_NUMBER: 'Serial Number',
       PURCHASE_DATE: 'Purchase Date',
