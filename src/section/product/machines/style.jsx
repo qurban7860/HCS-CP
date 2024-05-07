@@ -5,7 +5,7 @@ import { HEADER } from './constant'
 
 export const StyledTablePagination = styled(TablePagination)(({ theme, mode, page, data, rowsPerPage }) => ({
   '.MuiTablePagination-toolbar': {
-    backgroundColor: mode === KEY.LIGHT ? theme.palette.table.header : 'inherit',
+    backgroundColor: mode === KEY.LIGHT ? theme.palette.table.header : theme.palette.grey[800],
     height: '5px',
     width: '!important 200px',
     '& .MuiTablePagination-actions': {
@@ -76,7 +76,7 @@ export const StyledIconListItemText = styled(({ theme, inActive, ...other }) => 
   justifyContent: 'center',
   alignItems: 'center',
   display: 'flex',
-  color: inActive ? theme.palette.error.main : theme.palette.burnIn.main
+  color: !inActive ? theme.palette.error.main : theme.palette.burnIn.main
 }))
 
 export const StyledPopTableCell = styled(TableCell)(({ theme, mode }) => ({

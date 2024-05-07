@@ -4,15 +4,17 @@ import { m } from 'framer-motion'
 import { useSettingContext } from 'component/setting'
 import { Typography, Grid, Chip } from '@mui/material'
 import { SkeletonViewFormField } from 'component/skeleton'
-import { TYPOGRAPHY_VARIANT, SIZE } from 'constant'
+import { TYPOGRAPHY_VARIANT, SIZE, VARIANT } from 'constant'
 import { StyledDefaultTypography, StyledFieldGrid, StyledChipGrid, StyledFieldChip } from './style'
 
-const ViewFormField = ({ children, heading, variant, isLoading, gridSize, contact }) => {
+const { TYPOGRAPHY } = VARIANT
+
+const ViewFormField = ({ children, heading, variant, isLoading, gridSize, contact, isWidget, isOrg }) => {
   const { themeMode } = useSettingContext()
 
   return (
-    <StyledFieldGrid item xs={12} sm={gridSize} mode={themeMode}>
-      <Typography variant="overline1" color="grey.600">
+    <StyledFieldGrid item xs={!isWidget && 12} sm={gridSize} mode={themeMode} isOrg={isOrg}>
+      <Typography variant={TYPOGRAPHY.OVERLINE1} color="grey.600">
         {heading}
       </Typography>
       {isLoading ? (
@@ -28,7 +30,7 @@ const ViewFormField = ({ children, heading, variant, isLoading, gridSize, contac
                 <StyledFieldChip
                   key={index}
                   mode={themeMode}
-                  label={<Typography variant={TYPOGRAPHY_VARIANT.H5}>{`${chip?.firstName || ''} ${chip?.lastName || ''}`}</Typography>}
+                  label={<Typography variant={TYPOGRAPHY_VARIANT.H5}>{` ${chip?.firstName || ''} ${chip?.lastName || ''}`}</Typography>}
                   size={SIZE.SMALL}
                 />
               ))}
@@ -48,7 +50,8 @@ ViewFormField.propTypes = {
   children: PropTypes.node,
   heading: PropTypes.string,
   isLoading: PropTypes.bool,
-  contact: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  isWidget: PropTypes.bool,
+  contact: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
   variant: PropTypes.oneOf(Object.values(TYPOGRAPHY_VARIANT))
 }
 
@@ -58,6 +61,7 @@ ViewFormField.defaultProps = {
   heading: null,
   isLoading: false,
   contact: null,
+  isWidget: false,
   variant: TYPOGRAPHY_VARIANT.H4
 }
 

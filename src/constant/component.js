@@ -1,4 +1,8 @@
-const MENU_POPOVER_ARROW = {
+export const COMPONENT = {
+  IMG: 'img'
+}
+
+export const MENU_POPOVER_ARROW = {
   TOP_LEFT: 'top-left',
   TOP_CENTER: 'top-center',
   TOP_RIGHT: 'top-right',
@@ -10,7 +14,9 @@ const MENU_POPOVER_ARROW = {
   LEFT_BOTTOM: 'left-bottom',
   RIGHT_TOP: 'right-top',
   RIGHT_CENTER: 'right-center',
-  RIGHT_BOTTOM: 'right-bottom',
+  RIGHT_BOTTOM: 'right-bottom'
 }
 
-export default MENU_POPOVER_ARROW
+export const DIV_ROLE = {
+  TAB_PANEL: 'tabpanel'
+}

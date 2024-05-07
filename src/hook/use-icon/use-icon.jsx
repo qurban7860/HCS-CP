@@ -14,7 +14,7 @@
 import { useState, useEffect } from 'react'
 import { ICON_LOC, ICON_WEB, ICON_LOC_NAME, ICON_WEB_NAME } from 'config'
 import { SvgColor } from 'component/svg-color'
-import Iconify from '../component/iconify/iconify'
+import Iconify from '../../component/iconify/iconify'
 
 export const ICON_NAME = {
   ...ICON_LOC_NAME,

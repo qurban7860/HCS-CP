@@ -1,9 +1,2 @@
-export {
-  bgBlur,
-  bgGradient,
-  textGradient,
-  filterStyles,
-  hideScrollbarY,
-  hideScrollbarX,
-} from './css-style'
-export * from './default-style'
+export { bgBlur, bgGradient, textGradient, filterStyles, hideScrollbarY, hideScrollbarX } from './css-style'
+export * from './global'
