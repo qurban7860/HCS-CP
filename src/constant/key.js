@@ -15,6 +15,7 @@ const KEY = {
   INACTIVE: 'inactive',
   NAME: 'name',
   PRODUCTION: 'production',
+  FULL_PERCENT: '100%',
 
   // @redux keys
   REDUX_STORE: 'store',

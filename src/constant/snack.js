@@ -1,4 +1,4 @@
-const SNACK = {
+export const SNACK = {
   // @customer
   SAVE_FAILED: 'Save FAILED',
   SAVE_SUCCESS: 'Save SUCCESS',
@@ -75,4 +75,6 @@ const SNACK = {
   // auth: reset
   PASSWORD_CHANGED: 'Password update Successful',
   PASSWORD_CHANGE_FAILED: 'Password update Failed',
+
+  NO_COORIDNATES: 'No Coordinates Provided'
 }
