@@ -57,7 +57,7 @@ const MachineHistoryWidget = ({ value }) => {
               date={NOT_SPECIFIED}
               icon={ICON_NAME.STATUS}
               color="howick.orange"
-              story={value?.status}
+              status={value?.status}
             />
           </Timeline>
         </Grid>

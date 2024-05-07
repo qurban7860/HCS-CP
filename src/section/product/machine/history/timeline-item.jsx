@@ -4,6 +4,7 @@ import { TimelineItem, TimelineSeparator, TimelineConnector, TimelineDot, Timeli
 import { Box, Typography } from '@mui/material'
 import { KEY, VARIANT } from 'constant'
 import { GStyledSpanBox } from 'theme/style'
+import { normalizer } from 'util/format'
 
 const { TYPOGRAPHY } = VARIANT
 
@@ -28,10 +29,30 @@ const HistoryTimelineItem = ({ date, status, icon, story, color, transferredTo }
       color = 'grey.300'
   }
 
+  let statusBgColor
+
+  if (status !== undefined) {
+    const normalizedStatus = normalizer(status)
+    switch (normalizedStatus) {
+      case 'shipped':
+        statusBgColor = 'howick.color'
+        break
+      case 'commissioned':
+        statusBgColor = 'howick.darkBlue'
+        break
+      case 'transferred':
+        statusBgColor = 'error.main'
+        break
+
+      default:
+        statusBgColor = 'grey.500'
+    }
+  }
+
   const isTransfer = icon === ICON_NAME.TRANSFER
   const isPurchased = icon === ICON_NAME.PURCHASED
   const isStatus = icon === ICON_NAME.STATUS
-  const background = isTransfer ? 'error.main' : isStatus ? 'howick.orange' : 'grey.500'
+  const background = isTransfer ? 'error.main' : isStatus ? statusBgColor : 'grey.500'
 
   return (
     <TimelineItem>
@@ -79,7 +100,8 @@ const HistoryTimelineItem = ({ date, status, icon, story, color, transferredTo }
 HistoryTimelineItem.propTypes = {
   date: PropTypes.string,
   icon: PropTypes.oneOf(Object.values(ICON_NAME)),
-  story: PropTypes.string,
+  story: PropTypes.string || null,
+  status: PropTypes.string || null,
   color: PropTypes.string,
   transferredTo: PropTypes.string || null
 }
