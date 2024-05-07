@@ -29,6 +29,8 @@ export default function machineSchema(machineData) {
       billingSiteCountry: machineData?.billingSite?.address.country || '',
       installationSiteLat: machineData?.instalationSite?.lat || '',
       installationSiteLong: machineData?.instalationSite?.long || '',
+      billingSiteLat: machineData?.instalationSite?.lat || '',
+      billingSiteLong: machineData?.instalationSite?.long || '',
       installationDate: fDate(machineData?.installationDate) || '',
       manufactureDate: fDate(machineData?.manufactureDate) || '',
       purchaseDate: fDate(machineData?.purchaseDate) || '',
