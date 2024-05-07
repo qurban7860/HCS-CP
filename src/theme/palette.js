@@ -1,4 +1,5 @@
 import { alpha } from '@mui/material/styles'
+import { KEY } from 'constant'
 
 const BRAND = {
   background: '#63738114',
@@ -153,15 +154,17 @@ const COMMON = {
 export default function palette(themeMode) {
   const light = {
     ...COMMON,
-    mode: 'light',
+    mode: KEY.LIGHT,
     text: {
       primary: GREY[800],
-      secondary: GREY[600]
-      // disabled: GREY[0]
+      secondary: GREY[600],
+      disabled: GREY[500],
+      no: GREY[800]
     },
     background: { paper: GREY[200], default: GREY[400], neutral: GREY[500] },
     action: {
       ...COMMON.action,
+      // hover: GREY[200],
       active: GREY[600]
     }
   }
@@ -172,10 +175,11 @@ export default function palette(themeMode) {
     text: {
       primary: GREY[100],
       secondary: GREY[500],
-      disabled: GREY[200]
+      disabled: GREY[200],
+      no: GREY[500]
     },
     background: {
-      paper: GREY[800],
+      paper: GREY[900],
       default: GREY[900],
       neutral: alpha(GREY[500], 0.16)
     },
@@ -185,5 +189,5 @@ export default function palette(themeMode) {
     }
   }
 
-  return themeMode === 'light' ? light : dark
+  return themeMode === KEY.LIGHT ? light : dark
 }

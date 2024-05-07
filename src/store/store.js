@@ -10,7 +10,7 @@ const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: GLOBAL.ENV === KEY.PR ? undefined : false,
+      serializableCheck: GLOBAL.ENV === KEY.PRODUCTION ? undefined : false,
       immutableCheck: false
     }).concat(apiSlice.middleware),
   devTools: true

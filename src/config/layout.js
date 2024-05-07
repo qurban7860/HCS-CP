@@ -40,7 +40,15 @@ export const ICON = {
   NAV_ITEM: 24,
   NAV_ITEM_HORIZONTAL: 22,
   NAV_ITEM_MINI: 22,
-  DEFAULT_SIZE: 30
+  DEFAULT_SIZE: 30,
+  TOOLTIP: 24
+}
+
+export const BADGE = {
+  MACHINE: {
+    width: 70,
+    height: 70
+  }
 }
 
 export const BRAND = {
