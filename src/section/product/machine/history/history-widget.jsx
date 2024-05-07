@@ -6,7 +6,7 @@ import { LABEL } from 'constant'
 import { HistoryTimelineItem } from '.'
 import { ICON_NAME } from 'hook'
 
-const { NOT_SPECIFIED, PURCHASED, SHIPPED, INSTALLED, TRANSFERRED } = LABEL
+const { NOT_SPECIFIED, PURCHASED, MANUFACTURED, SHIPPED, INSTALLED, TRANSFERRED } = LABEL
 
 const MachineHistoryWidget = ({ value }) => {
   return (
@@ -23,6 +23,11 @@ const MachineHistoryWidget = ({ value }) => {
         <Grid container>
           <Timeline position="right">
             <HistoryTimelineItem date={value?.purchasedDate ? value?.purchasedDate : NOT_SPECIFIED} icon={ICON_NAME.PURCHASED} story={PURCHASED} />
+            <HistoryTimelineItem
+              date={value?.manufactureDate ? value?.manufactureDate : NOT_SPECIFIED}
+              icon={ICON_NAME.MANUFACTURE}
+              story={MANUFACTURED}
+            />
             <HistoryTimelineItem date={value?.shippingDate ? value?.shippingDate : NOT_SPECIFIED} icon={ICON_NAME.SHIPPING} story={SHIPPED} />
             <HistoryTimelineItem
               date={value?.installationDate ? value?.installationDate : NOT_SPECIFIED}
@@ -47,6 +52,13 @@ const MachineHistoryWidget = ({ value }) => {
                 />
               ))
             ) : null}
+            <HistoryTimelineItem
+              // TODO: this will be date of the latest status
+              date={NOT_SPECIFIED}
+              icon={ICON_NAME.STATUS}
+              color="howick.orange"
+              story={value?.status}
+            />
           </Timeline>
         </Grid>
       </Grid>
