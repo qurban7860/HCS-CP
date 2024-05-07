@@ -16,3 +16,7 @@ export const MENU_POPOVER_ARROW = {
   RIGHT_CENTER: 'right-center',
   RIGHT_BOTTOM: 'right-bottom'
 }
+
+export const DIV_ROLE = {
+  TAB_PANEL: 'tabpanel'
+}
