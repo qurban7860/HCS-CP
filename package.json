@@ -16,6 +16,7 @@
     "@iconify/react": "^4.1.1",
     "@mui/lab": "^5.0.0-alpha.166",
     "@mui/material": "^5.15.11",
+    "@react-google-maps/api": "^2.19.3",
     "@reduxjs/toolkit": "^2.2.2",
     "axios": "^1.6.7",
     "change-case": "^5.4.3",
