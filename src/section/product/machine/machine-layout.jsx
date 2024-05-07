@@ -120,7 +120,11 @@ const MachineLayout = () => {
                       <Grid item xs={12} justifyContent="flex-end">
                         <Grid container justifyContent="flex-end">
                           {defaultValues?.isActive ? (
-                            <IconTooltip title={LABEL.ACTIVE} icon={ICON_NAME.ACTIVE} color={theme.palette.burnIn.altDark} />
+                            <IconTooltip
+                              title={LABEL.ACTIVE}
+                              icon={ICON_NAME.ACTIVE}
+                              color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+                            />
                           ) : (
                             <IconTooltip title={LABEL.INACTIVE} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} />
                           )}
