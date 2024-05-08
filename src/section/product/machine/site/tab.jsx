@@ -32,7 +32,7 @@ const SiteTab = ({ value, isBilling, isLoading }) => {
     if (value?.installationSiteLat && value?.installationSiteLong && value?.billingSiteLat && value?.billingSiteLong) {
       setValidCoordinates(true)
     }
-  }, [])
+  }, [value])
 
   let site
   let country
