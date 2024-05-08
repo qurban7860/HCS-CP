@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
-import { dispatch } from 'store'
 import { useIcon, ICON_NAME } from 'hook'
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api'
-// TODOL #1220
+// TODO: #1221
+// import { dispatch } from 'store'
+// TODO: #1220
 // import { AdvancedMarkerElement } from '@googlemaps/adv-markers-utils'
 import { Button, Grid, Typography } from '@mui/material'
 import { GLOBAL } from 'config/global'
