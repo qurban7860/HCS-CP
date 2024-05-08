@@ -57,6 +57,10 @@ const ICON_WEB = {
 
 // add icons that are saved locally
 const ICON_LOC = {
+  DECOILER_1_5T: _getIcon('decoiler_1-5t'),
+  DECOILER_3T: _getIcon('decoiler_3t'),
+  DECOILER_5T: _getIcon('decoiler_5t'),
+  DECOILER_6T: _getIcon('decoiler_6t'),
   EXPAND: _getIcon('expand-outline'),
   HOWICK_LOGO: _getIcon('howick-logo'),
   HOWICK_LOGO_DARK: _getIcon('howick-logo-dark'),
@@ -106,6 +110,10 @@ export const ICON_WEB_NAME = {
 
 export const ICON_LOC_NAME = {
   // @local
+  DECOILER_1_5T: 'DECOILER_1_5T',
+  DECOILER_3T: 'DECOILER_3T',
+  DECOILER_5T: 'DECOILER_5T',
+  DECOILER_6T: 'DECOILER_6T',
   EXPAND: 'EXPAND',
   HOWICK_LOGO: 'HOWICK_LOGO',
   HOWICK_LOGO_DARK: 'HOWICK_LOGO_DARK',
