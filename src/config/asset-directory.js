@@ -18,6 +18,10 @@ function _svg(image) {
   return `/asset/svg/${image}`
 }
 
+function _icon(image) {
+  return `/asset/icon/${image}`
+}
+
 const ASSET = {
   BG_LOGO: _background('howick-logo.svg'),
   BG_DARK_LOGO: _background('howick-logo-dark.svg'),
@@ -44,6 +48,10 @@ const ASSET = {
   BRAND_XTENDA_DM: _sponsor('xtenda-dm.png'),
   BRAND_SPEEDFLOOR: _sponsor('speedfloor.png'),
   BRAND_SPEEDFLOOR_DM: _sponsor('speedfloor-dm.png'),
+  DECOILER_1_5T: _icon('decoiler_1-5t.svg'),
+  DECOILER_3T: _icon('decoiler_3t.svg'),
+  DECOILER_5T: _icon('decoiler_5t.svg'),
+  DECOILER_6T: _icon('decoiler_6t.svg'),
   MAP_MARKER: _brand('howick-map-marker.svg'),
   NZ_MADE: _sponsor('nz-made.png'),
   ICON: _brand('icon.svg'),
