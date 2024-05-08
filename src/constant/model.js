@@ -1,0 +1,13 @@
+export const DECOILER = {
+  ONE_HALF_T: '1.5t',
+  THREE_T: '3.0t',
+  FIVE_T: '5.0t',
+  SIX_T: '6.0t'
+}
+
+export const FILTER_TYPE = {
+  ONE_HALF_TON: [DECOILER.ONE_HALF_T, '1.5 tonne', '1.5t'],
+  THREE_TON: [DECOILER.THREE_T, '3 tonne', '3t'],
+  FIVE_TON: [DECOILER.FIVE_T, '5 tonne', '5t'],
+  SIX_TON: [DECOILER.SIX_T, '6 tonne', '6t']
+}
