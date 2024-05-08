@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Badge, TextField, Typography, List, ListItem, ListItemText, Grid, Chip, Card, CardMedia, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledSpanBox } from 'theme/style'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox } from 'theme/style'
 import { useGetMachineQuery } from 'store/slice'
 import { useForm, Controller } from 'react-hook-form'
 import { IconTooltip, BackButton, AuditBox } from 'component'
@@ -16,7 +16,7 @@ import { useSettingContext } from 'component/setting'
 import { useGetUserQuery } from 'store/slice'
 import { useIcon, ICON_NAME, useReadyIcon, snack } from 'hook'
 import { MARGIN, RADIUS, ASSET } from 'config'
-import { KEY, TITLE, LABEL, RESPONSE, COLOR, TYPOGRAPHY_VARIANT, VIEW_FORM, VARIANT } from 'constant'
+import { KEY, TITLE, LABEL, RESPONSE, COLOR, TYPOGRAPHY_VARIANT, VIEW_FORM, VARIANT, FLEX_DIR, FLEX } from 'constant'
 import { fDate } from 'util/format'
 import { parseAddress } from 'util/address-parser'
 import MachineConnectedWidget from './connection/connection-widget'
@@ -84,7 +84,7 @@ const MachineLayout = () => {
       {/*  TODO: Make responsive */}
       {/* {TODO: refactor  */}
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={2} flexDirection="row" {...MARGIN.PAGE_PROP}>
+        <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
           <Grid container>
             <Grid item sm={12}>
               <BackButton />
@@ -111,14 +111,14 @@ const MachineLayout = () => {
                     </GStyledSpanBox>
                   </Grid>
                   <Grid item lg={4}>
-                    <Grid container justifyContent="flex-end" flexDirection="column" alignContent="flex-end">
+                    <Grid container justifyContent={FLEX.FLEX_END} flexDirection="column" alignContent={FLEX.FLEX_END}>
                       <Grid item xs={12}>
                         <Typography variant="h1" gutterBottom color={themeMode === KEY.LIGHT ? 'grey.400' : 'grey.800'}>
                           {isLoading ? 'isLoading...' : defaultValues?.serialNo}
                         </Typography>
                       </Grid>
-                      <Grid item xs={12} justifyContent="flex-end">
-                        <Grid container justifyContent="flex-end">
+                      <Grid item xs={12} justifyContent={FLEX.FLEX_END}>
+                        <Grid container justifyContent={FLEX.FLEX_END}>
                           {defaultValues?.isActive ? (
                             <IconTooltip
                               title={LABEL.ACTIVE}
@@ -259,7 +259,9 @@ const MachineLayout = () => {
                     </Grid>
                   </Grid>
                   <Grid item sm={12}>
-                    <AuditBox value={defaultValues} />
+                    <GStyledFlexEndBox>
+                      <AuditBox value={defaultValues} />
+                    </GStyledFlexEndBox>
                   </Grid>
                 </Grid>
               </Card>
