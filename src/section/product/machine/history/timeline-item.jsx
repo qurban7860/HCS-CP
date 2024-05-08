@@ -43,6 +43,9 @@ const HistoryTimelineItem = ({ date, status, icon, story, color, transferredTo }
       case 'transferred':
         statusBgColor = 'error.main'
         break
+      case 'freight':
+        statusBgColor = 'howick.orange'
+        break
 
       default:
         statusBgColor = 'grey.500'
