@@ -4,9 +4,14 @@ import { m } from 'framer-motion'
 import { dispatch } from 'store'
 import { useIcon, ICON_NAME } from 'hook'
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api'
+// TODOL #1220
+// import { AdvancedMarkerElement } from '@googlemaps/adv-markers-utils'
 import { Button, Grid, Typography } from '@mui/material'
 import { GLOBAL } from 'config/global'
 import ASSET from 'config/asset-directory'
+import { BUTTON, BUTTON_VARIANT, KEY, VARIANT } from 'constant'
+
+const { TYPOGRAPHY } = VARIANT
 
 const reportDefaultCenter = {
   lat: 26.902893343776185,
@@ -115,7 +120,7 @@ export default function GoogleMaps({
       onClick={machinesSites.length > 0 ? () => setIsOpen(false) : onMapClick}>
       {machinesSites.length > 0 &&
         machinesSites.map(({ lat, lng, name, serialNo, customerName, address }, index) => (
-          <m.div>
+          <m.div key={index}>
             <Marker
               key={index}
               position={{ lat: parseFloat(lat), lng: parseFloat(lng) }}
@@ -132,19 +137,21 @@ export default function GoogleMaps({
                   }}>
                   <Grid container spacing={0} sx={{ margin: 0 }}>
                     <Grid item maxWidth={300} textAlign="center">
-                      <Typography variant="h6" textAlign="left">{`${infoWindowData?.serialNo} (${infoWindowData?.customerName})`}</Typography>
-                      <Typography variant="body2" textAlign="left">
+                      <Typography
+                        variant={TYPOGRAPHY.H6}
+                        textAlign="left">{`${infoWindowData?.serialNo} (${infoWindowData?.customerName})`}</Typography>
+                      <Typography variant={TYPOGRAPHY.BODY2} textAlign={KEY.LEFT}>
                         {infoWindowData?.stringAddress}
                       </Typography>
                       <Button
-                        variant=""
+                        variant={BUTTON_VARIANT.CONTAINED}
                         disableRipple
                         onClick={() => {
                           handleZoomClick(zoomLevel !== 15 ? 15 : 2)
                           map.setCenter({ lat: parseFloat(lat), lng: parseFloat(lng) })
                         }}
                         startIcon={<WebIcon icon={zoomLevel !== 15 ? magnifyInSrc : magnifyOutSrc} />}>
-                        {zoomLevel !== 15 ? ' Zoom In' : ' Zoom Out'}
+                        {zoomLevel !== 15 ? BUTTON.ZOOM_IN : BUTTON.ZOOM_OUT}
                       </Button>
                     </Grid>
                   </Grid>
@@ -154,7 +161,7 @@ export default function GoogleMaps({
           </m.div>
         ))}
       {markerPositions.map((position, index) => (
-        <m.div>
+        <m.div key={index}>
           <Marker
             key={index}
             position={position}
