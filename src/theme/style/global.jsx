@@ -62,6 +62,12 @@ export const GStyledCenterBox = styled(Box)(({ theme }) => ({
   alignItems: 'center'
 }))
 
+export const GStyledFlexEndBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'flex-end',
+  flexDirection: 'column-reverse'
+}))
+
 export const GStyledListItemText = styled(ListItemText)(({ theme }) => ({
   '& .MuiListItemText-primary': {
     fontSize: '1.5rem',

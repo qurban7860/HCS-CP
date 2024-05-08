@@ -15,6 +15,7 @@ export { default as Image } from './image/image'
 export { default as SearchBox } from './search/search-box'
 // @default
 export { default as EmptyContent } from './default/empty-content'
+export { default as NothingProvided } from './default/nothing-provided'
 // @form
 export { default as FormHeader } from './header/form'
 // @viewform

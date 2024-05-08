@@ -9,7 +9,7 @@ export const document = {
     xlsx: 'mdi:file-excel',
     ppt: 'mdi:file-powerpoint',
     pptx: 'mdi:file-powerpoint',
-    img: 'mdi:file-image',
+    img: 'mdi:file-image'
   },
   color: {
     pdf: '#f44336',
@@ -19,25 +19,11 @@ export const document = {
     xlsx: '#388e3c',
     ppt: '#e65100',
     pptx: '#e65100',
-    img: '#0f8c20',
-  },
+    img: '#0f8c20'
+  }
 }
 
-export const fileTypesArray = [
-  'png',
-  'jpeg',
-  'jpg',
-  'gif',
-  'bmp',
-  'webp',
-  'pdf',
-  'doc',
-  'docx',
-  'xls',
-  'xlsx',
-  'ppt',
-  'pptx',
-]
+export const fileTypesArray = ['png', 'jpeg', 'jpg', 'gif', 'bmp', 'webp', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx']
 
 export const fileTypesMessage = `
 Only the following formats are accepted:
@@ -123,7 +109,7 @@ export const allowedExtensions = [
   'rtf',
   'txt',
   'json',
-  'xlsm',
+  'xlsm'
 ]
 
 // NOTE: These are the constants for the document upload radio buttons for adding a document
@@ -136,7 +122,7 @@ export const DocRadioValue = {
 
   // documentAddForm in documents
   customer: 'customer',
-  machine: 'machine',
+  machine: 'machine'
 }
 // Labels for the radio buttons
 export const DocRadioLabel = {
@@ -147,23 +133,23 @@ export const DocRadioLabel = {
 
   // documentAddForm in documents
   customer: 'Customer',
-  machine: 'Machine',
+  machine: 'Machine'
 }
 // Radio button options - 'DocRadioLabel & DocRadioValue are confusing, so I have separted them'
 export const DocRadioNewVersion = {
   value: 'newVersion',
-  label: 'New Version',
+  label: 'New Version'
 }
 
 export const DocRadioNewDocument = {
   value: 'new',
-  label: 'New Document',
+  label: 'New Document'
 }
 
 export const DocRadioExistingDocument = {
   value: 'existingVersion',
   label: 'Upload New File Against Existing Document',
-  currLabel: 'Current Version',
+  currLabel: 'Current Version'
 }
 
 // Snackbars constants
@@ -210,7 +196,7 @@ export const Snacks = {
   // @root - DocumentViewForm - documents dashboard
   // preview
   UNEXPECTED: 'Unexpected error occurred',
-  DOC_REQUIRED: 'File is required',
+  DOC_REQUIRED: 'File is required'
 }
 
 // @root - DocumentViewForm - documents dashboard

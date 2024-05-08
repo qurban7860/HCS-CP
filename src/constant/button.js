@@ -82,7 +82,9 @@ const BUTTON = {
   REMEMBER_ME: 'Remember Me',
   FORGOT_PASSWORD: 'Forgot Password',
   UPDATEPASSWORD: 'Update Password',
-  UPDATED: (param) => `${param} Updated`
+  UPDATED: (param) => `${param} Updated`,
+  ZOOM_IN: 'Zoom In',
+  ZOOM_OUT: 'Zoom Out'
 }
 
 export default BUTTON
