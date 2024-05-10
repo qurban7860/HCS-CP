@@ -8,9 +8,7 @@ import { Logo } from 'component/logo'
 import { LogoGrayProps, GStyledFallbackWrapperGrid, motionRelativeBoxOption, iconPropsOption } from 'theme/style'
 import { HTTP_CODE, LOCAL_STORAGE_KEY, FALLBACK } from 'constant'
 
-const {
-  UNDER_DEVELOPMENT: { code: CODE }
-} = FALLBACK
+const { code: CODE } = FALLBACK.UNDER_DEVELOPMENT
 
 const Fallback = ({ code, title, message }) => {
   const configurations = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.CONFIGURATION))
@@ -49,7 +47,7 @@ const Fallback = ({ code, title, message }) => {
 }
 
 Fallback.propTypes = {
-  code: PropTypes.number || PropTypes.oneOf(Object.values(HTTP_CODE)),
+  code: PropTypes.oneOf(Object.values(HTTP_CODE)),
   title: PropTypes.string,
   message: PropTypes.string
 }
