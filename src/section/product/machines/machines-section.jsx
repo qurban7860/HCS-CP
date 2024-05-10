@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
 import { useSelector } from 'store'
-import { m } from 'framer-motion'
 import debounce from 'lodash/debounce'
 import { snack, useTable } from 'hook'
 import { Table, Typography, Grid, Box } from '@mui/material'
@@ -82,10 +81,10 @@ const MachineListSection = () => {
   return (
     <MotionLazyContainer display="flex">
       <GStyledSpanBox>
-        <Typography variant="h2" color={themeMode === KEY.LIGHT ? 'common.black' : 'common.white'}>
+        <Typography variant="h3" color={themeMode === KEY.LIGHT ? 'common.black' : 'common.white'}>
           {userDetail?.customer?.name.toUpperCase() || TITLE.MACHINE} &nbsp;
         </Typography>
-        <Typography variant="h2" color={themeMode === KEY.LIGHT ? 'grey.200' : 'howick.bronze'}>
+        <Typography variant="h3" color={themeMode === KEY.LIGHT ? 'grey.200' : 'howick.bronze'}>
           / {TITLE.MACHINE_LIST}
         </Typography>
       </GStyledSpanBox>
