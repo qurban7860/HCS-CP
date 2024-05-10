@@ -8,6 +8,7 @@ export { default as userReducer } from './security/user/user'
 export * from './security/user'
 
 // product/machine
+export { default as machineReducer } from './product/machine/machine'
 export * from './product/machine'
 
 // crm/customer
