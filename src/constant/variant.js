@@ -33,6 +33,7 @@ export const VARIANT = {
   RECTANGULAR: 'rectangular',
   CIRCULAR: 'circular',
   OUTLINED: 'outlined',
+  FILLED: 'filled',
   COVER: 'cover',
   FULL_WIDTH: 'fullWidth',
   TYPOGRAPHY: {
