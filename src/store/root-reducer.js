@@ -1,7 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import { apiSlice, authReducer, userReducer } from './slice'
+import { apiSlice, authReducer, userReducer, machineReducer } from './slice'
 
 export const apiPersistConfig = {
   key: 'api',
@@ -31,9 +31,17 @@ export const userPersistConfig = {
   blacklist: ['error', 'initial', 'responseMessage']
 }
 
+export const machinePersistConfig = {
+  key: 'machine',
+  storage,
+  keyPrefix: 'redux-',
+  blacklist: ['error', 'initial', 'responseMessage']
+}
+
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: persistReducer(apiPersistConfig, apiSlice.reducer),
-  auth: persistReducer(authPersistConfig, authReducer)
+  auth: persistReducer(authPersistConfig, authReducer),
+  machine: persistReducer(machinePersistConfig, machineReducer)
   // user: persistReducer(userPersistConfig, userReducer)
 })
 

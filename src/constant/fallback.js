@@ -19,12 +19,12 @@ const FALLBACK = {
     message: 'Sorry, something went wrong. Please try again later'
   },
   UNDER_DEVELOPMENT: {
-    code: 'ERR_UNDER_DEVELOPMENT',
+    code: HTTP_CODE.UNDER_DEVELOPMENT,
     title: 'Under Development',
     message: 'This feature is under development. Please check back later'
   },
   NO_DATA: {
-    code: 'ERR_NO_DATA',
+    code: HTTP_CODE.NO_DATA,
     title: 'No Data Found',
     description: 'The data you are looking for is not found. Try to use a different keyword.'
   }

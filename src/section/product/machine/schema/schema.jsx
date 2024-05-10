@@ -17,6 +17,7 @@ export default function machineSchema(machineData) {
       customer: machineData?.customer?.name || '',
       clientCode: machineData?.customer?.clientCode || '',
       financialCompany: machineData?.financialCompany?.name || '',
+      parentConnection: machineData?.parentMachines || [],
       machineConnection: machineData?.machineConnections || [],
       transferredHistory: machineData?.transferredHistory || [],
       transferredMachine: machineData?.transferredToMachine?.serialNo || '',

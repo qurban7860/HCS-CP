@@ -66,7 +66,12 @@ const BackButton = () => {
 
   return (
     <Fragment>
-      <StyledBackIconButton onClick={handleClick} aria-label={LABEL.GO_BACK} onMouseEnter={handleOpen} onMouseLeave={handleClose}>
+      <StyledBackIconButton
+        disabled={window.history.length === 1}
+        onClick={handleClick}
+        aria-label={LABEL.GO_BACK}
+        onMouseEnter={handleOpen}
+        onMouseLeave={handleClose}>
         <Icon icon={backIconSrc} width={50} />
       </StyledBackIconButton>
       <GStyledPopover
