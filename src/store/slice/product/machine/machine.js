@@ -2,21 +2,20 @@ import { createSlice } from '@reduxjs/toolkit'
 // import axios from '../../../utils/axios'
 
 const initialState = {
-  intial: false,
+  initial: false,
   machineTab: 'info',
-  machineEditFormFlag: false,
   machineTransferDialog: false,
-  machineMoveFormVisibility: false,
-  transferMachineFlag: false,
   responseMessage: null,
   success: false,
   isLoading: false,
   error: null,
   machine: {},
+  parentMachine: {},
+  connectedMachine: {},
   machineForDialog: {},
   machineDialog: false,
+  machineType: null,
   machines: [],
-  connectedMachine: {},
   activeMachines: [],
   allMachines: [],
   customerMachines: [],
@@ -25,7 +24,6 @@ const initialState = {
   machineGallery: [],
   transferDialogBoxVisibility: false,
   filterBy: '',
-  verified: 'all',
   accountManager: null,
   supportManager: null,
   page: 0,
@@ -56,27 +54,16 @@ const slice = createSlice({
       state.transferDialogBoxVisibility = action.payload
     },
 
-    // SET EDIT FORM
-    setMachineEditFormVisibility(state, action) {
-      state.machineEditFormFlag = action.payload
-    },
-
-    // SET MOVE FORM
-    setMachineMoveFormVisibility(state, action) {
-      state.machineMoveFormVisibility = action.payload
-    },
-
-    // SET TOGGLE
-    setTransferMachineFlag(state, action) {
-      state.transferMachineFlag = action.payload
-    },
-    // SET TOGGLE
     setMachineDialog(state, action) {
       state.machineDialog = action.payload
     },
-    // SET TOGGLE
+
     setMachineTransferDialog(state, action) {
       state.machineTransferDialog = action.payload
+    },
+    // set machine type
+    setMachineType(state, action) {
+      state.machineType = action.payload
     },
 
     // HAS ERROR
@@ -223,12 +210,6 @@ const slice = createSlice({
     setFilterBy(state, action) {
       state.filterBy = action.payload
     },
-
-    // Set FilterBy
-    setVerified(state, action) {
-      state.verified = action.payload
-    },
-
     // Set Account Manager Filter
     setAccountManager(state, action) {
       state.accountManager = action.payload
@@ -238,7 +219,6 @@ const slice = createSlice({
     setSupportManager(state, action) {
       state.supportManager = action.payload
     },
-
     // Set PageRowCount
     ChangeRowsPerPage(state, action) {
       state.rowsPerPage = action.payload
@@ -354,19 +334,19 @@ export const {
 
 // // ----------------------------get Connected Machines------------------------------------------
 
-// export function getConnntedMachine(id) {
-//   return async (dispatch) => {
-//     dispatch(slice.actions.startLoading())
-//     try {
-//       const response = await axios.get(`${CONFIG.SERVER_URL}products/machines/${id}`)
-//       dispatch(slice.actions.getConnectedMachineSuccess(response.data))
-//     } catch (error) {
-//       console.error(error)
-//       dispatch(slice.actions.hasError(error.Message))
-//       throw error
-//     }
-//   }
-// }
+export function getConnntedMachine(id) {
+  return async (dispatch) => {
+    dispatch(slice.actions.startLoading())
+    try {
+      const response = await axios.get(`${CONFIG.SERVER_URL}products/machines/${id}`)
+      dispatch(slice.actions.getConnectedMachineSuccess(response.data))
+    } catch (error) {
+      console.error(error)
+      dispatch(slice.actions.hasError(error.Message))
+      throw error
+    }
+  }
+}
 
 // // -------------------------Machine Verification---------------------------------------
 
