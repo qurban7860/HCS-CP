@@ -2,7 +2,7 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { TextField, InputAdornment, Button, Box } from '@mui/material'
 import { useIcon, ICON_NAME } from 'hook'
-import { BUTTON, KEY } from 'constant'
+import { BUTTON, KEY, SIZE, VARIANT } from 'constant'
 
 const SearchBox = ({ term, handleSearch, mode }) => {
   const [isSearchEmpty, setIsSearchEmpty] = useState(true)
@@ -15,9 +15,9 @@ const SearchBox = ({ term, handleSearch, mode }) => {
   return (
     <Box display="flex" alignItems="center">
       <TextField
-        variant="filled"
+        variant={VARIANT.FILLED}
         value={term}
-        size="small"
+        size={SIZE.SMALL}
         fullWidth
         onChange={(e) => {
           handleSearch(e)
