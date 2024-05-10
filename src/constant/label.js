@@ -23,6 +23,9 @@ const LABEL = {
   TRANSFERRED: 'Transferred',
   MANUFACTURED: 'Manufactured',
   NOT_SPECIFIED: 'Not Specified',
+  PARENT: 'Parent machine',
+  DECOILER_DEF: 'Decoiler',
+  DECOILER: (type) => `Decoiler ${type}`,
 
   // @audit
   AUDIT: {

@@ -7,7 +7,7 @@ const regEx = /^[^2]*/
 const initialState = {
   securityUserFormVisibility: false,
   securityUserEditFormVisibility: false,
-  intial: false,
+  initial: false,
   responseMessage: null,
   isLoading: false,
   success: false,
@@ -47,7 +47,7 @@ const userSlice = createSlice({
   }
 })
 
-export default userSlice.reducery
+export default userSlice.reducer
 
 export const { startLoading, hasError, getSecurityUserSuccess } = userSlice.actions
 

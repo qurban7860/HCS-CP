@@ -3,11 +3,11 @@ import { useIcon, ICON_NAME } from 'hook'
 import { Button, alpha } from '@mui/material'
 import { GStyledTooltip } from 'theme/style'
 import { ICON } from 'config/layout'
-import Iconify from './iconify'
 
-export default function IconTooltip({ onDelete, onClick, color, title, placement, icon, disabled }) {
+const { TOOLTIP } = ICON
+
+export default function IconTooltip({ onDelete, onClick, color, title, placement, icon, disabled, dimension = TOOLTIP }) {
   const { Icon, iconSrc } = useIcon(icon)
-  const { TOOLTIP } = ICON
 
   // create a utility function that convert theme color to alpha
   const convertToAlpha = (color) => {
@@ -19,7 +19,7 @@ export default function IconTooltip({ onDelete, onClick, color, title, placement
       {disabled ? (
         <Button variant="filled" sx={{ cursor: 'default', color, borderColor: color, ':hover': { borderColor: convertToAlpha(color, 0.5) } }}>
           <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={color} color={color}>
-            <Icon color={color} sx={{ height: TOOLTIP, width: TOOLTIP }} icon={iconSrc} />
+            <Icon color={color} sx={{ height: dimension, width: dimension }} icon={iconSrc} />
           </GStyledTooltip>
         </Button>
       ) : (
@@ -28,7 +28,7 @@ export default function IconTooltip({ onDelete, onClick, color, title, placement
           variant="filled"
           sx={{ cursor: onClick ? 'pointer' : 'default', color, borderColor: color, ':hover': { borderColor: convertToAlpha(color, 0.5) } }}>
           <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={color} color={color}>
-            <Icon color={color} sx={{ height: TOOLTIP, width: TOOLTIP }} icon={iconSrc} />
+            <Icon color={color} sx={{ height: dimension, width: dimension }} icon={iconSrc} />
           </GStyledTooltip>
         </Button>
       )}

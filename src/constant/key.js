@@ -16,6 +16,7 @@ const KEY = {
   NAME: 'name',
   PRODUCTION: 'production',
   FULL_PERCENT: '100%',
+  BLANK: '_blank',
 
   // @redux keys
   REDUX_STORE: 'store',

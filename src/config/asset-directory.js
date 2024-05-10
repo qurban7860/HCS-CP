@@ -52,11 +52,13 @@ const ASSET = {
   DECOILER_3T: _icon('decoiler_3t.svg'),
   DECOILER_5T: _icon('decoiler_5t.svg'),
   DECOILER_6T: _icon('decoiler_6t.svg'),
+  FRAMA: _icon('frama-def-1.svg'),
   MAP_MARKER: _brand('howick-map-marker.svg'),
   NZ_MADE: _sponsor('nz-made.png'),
   ICON: _brand('icon.svg'),
   LOGO: '/asset/brand/logo.svg',
   TRANSPARENT: _image('transparent.png'),
+  PARENT: _icon('parent.svg'),
   PLACEHOLDER: _image('placeholder.svg'),
   OCTICON: (icon) => `/asset/octicon/${icon}.svg`,
   SVG: (icon) => `/asset/svg/${icon}.svg`

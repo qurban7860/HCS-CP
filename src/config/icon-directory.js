@@ -62,10 +62,13 @@ const ICON_LOC = {
   DECOILER_5T: _getIcon('decoiler_5t'),
   DECOILER_6T: _getIcon('decoiler_6t'),
   EXPAND: _getIcon('expand-outline'),
+  FRAMA: _getIcon('frama-def-1'),
+  FRAMA_3200: _getIcon('frama-3200'),
   HOWICK_LOGO: _getIcon('howick-logo'),
   HOWICK_LOGO_DARK: _getIcon('howick-logo-dark'),
   MODE_LIGHT: _getIcon('sun'),
   MODE_DARK: _getIcon('moon'),
+  PARENT: _getIcon('parent'),
   SETTING: _getIcon('setting')
 }
 
@@ -115,10 +118,13 @@ export const ICON_LOC_NAME = {
   DECOILER_5T: 'DECOILER_5T',
   DECOILER_6T: 'DECOILER_6T',
   EXPAND: 'EXPAND',
+  FRAMA: 'FRAMA',
+  FRAMA_3200: 'FRAMA_3200',
   HOWICK_LOGO: 'HOWICK_LOGO',
   HOWICK_LOGO_DARK: 'HOWICK_LOGO_DARK',
   MODE_LIGHT: 'MODE_LIGHT',
   MODE_DARK: 'MODE_DARK',
+  PARENT: 'PARENT',
   SETTING: 'SETTING'
 }
 

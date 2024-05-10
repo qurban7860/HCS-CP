@@ -9,12 +9,12 @@ const FallbackButton = () => {
   return (
     <Button
       onClick={() => window.open(PATH_DASHBOARD.general.app, '_self')}
-      variant="outlined"
-      size="large"
+      variant={themeMode === KEY.LIGHT ? 'contained' : 'contained'}
+      size="small"
       sx={{
-        color: themeMode === KEY.LIGHT ? 'howick.darkBlue' : 'common.white',
-        borderColor: themeMode === KEY.LIGHT ? 'howick.darkBlue' : 'common.white',
-        ...RADIUS.BORDER
+        color: themeMode === KEY.LIGHT ? 'grey.300' : 'common.white',
+        backgroundColor: themeMode === KEY.LIGHT ? 'howick.bronze' : COLOR.PRIMARY,
+        borderColor: themeMode === KEY.LIGHT ? 'howick.darkBlue' : 'common.white'
       }}>
       {BUTTON.GO_BACK}
     </Button>
