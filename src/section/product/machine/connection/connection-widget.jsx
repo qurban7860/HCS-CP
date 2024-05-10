@@ -1,7 +1,9 @@
 import { Fragment, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { useNavigate } from 'react-router-dom'
 import { useIcon, ICON_NAME } from 'hook'
+import { useSelector } from 'react-redux'
+import { dispatch } from 'store'
+import { setMachineType, setMachineParent, setMachineConnected } from 'store/slice'
 import { Grid, Typography, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTooltip } from 'theme/style'
@@ -21,6 +23,8 @@ const MachineConnectionWidget = ({ value }) => {
   const [icon, setIcon] = useState(null)
   const theme = useTheme()
   const { themeMode } = useSettingContext()
+  const { machine, isParent, isConnected } = useSelector((state) => state.machine)
+
   const isActive = (status) => (status ? LABEL.ACTIVE : LABEL.INACTIVE)
 
   const isDecoiler1_5T = (machineName) => normalizer(machineName)?.includes(ONE_HALF_T)
@@ -52,18 +56,23 @@ const MachineConnectionWidget = ({ value }) => {
     const machineNames = value?.machineConnection?.map((mach) => mach?.connectedMachine?.name)
     const parentMachineNames = value?.parentConnection?.map((mach) => mach?.connectedMachine?.name)
 
-    const isConnected = (mach) => Object.keys(mach).some((key) => mach[key])
-    const isParent = (mach) => Object.keys(mach).some((key) => mach[key])
+    const checkIsConnected = (mach) => Object.keys(mach).some((key) => mach[key])
+    const checkIsParent = (mach) => Object.keys(mach).some((key) => mach[key])
 
-    const checkConnected = isConnected(value?.machineConnection)
-    const checkParent = isParent(value?.parentConnection)
+    const checkConnected = checkIsConnected(value?.machineConnection)
+    const checkParent = checkIsParent(value?.parentConnection)
 
     // console.log('value', value)
     // console.log('checkConnected', checkConnected)
     // console.log('checkParent', checkParent)
 
     if (checkParent) {
+      dispatch(setMachineParent(true))
       setIcon(ICON_NAME.PARENT)
+    }
+
+    if (checkConnected) {
+      dispatch(setMachineConnected(true))
     }
 
     machineNames.forEach((machineName) => {
@@ -88,7 +97,7 @@ const MachineConnectionWidget = ({ value }) => {
       <Grid item lg={12} sm={12} mb={2} bgcolor="background.paper">
         <FormHeader label={LABEL.CONNECTED_MACHINE(value?.machineConnection)} />
         <Grid container p={2}>
-          {value?.machineConnection?.length > 0 ? (
+          {isConnected ? (
             value?.machineConnection?.map((mach, index) => (
               <Fragment key={index}>
                 <Grid item xs={8}>
@@ -103,7 +112,7 @@ const MachineConnectionWidget = ({ value }) => {
                             size={SIZE.MEDIUM}
                             color={themeMode === KEY.LIGHT ? 'grey.800' : 'common.white'}
                             aria-label="view"
-                            target="_blank"
+                            target={KEY.BLANK}
                             sx={{
                               padding: 0.5,
                               borderRadius: 2,
@@ -139,7 +148,7 @@ const MachineConnectionWidget = ({ value }) => {
                 </Grid>
               </Fragment>
             ))
-          ) : value?.parentConnection?.length > 0 ? (
+          ) : isParent ? (
             value?.parentConnection?.map((mach, index) => (
               <Fragment key={index}>
                 <Grid item xs={8}>
