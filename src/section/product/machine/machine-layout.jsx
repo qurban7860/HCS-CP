@@ -1,24 +1,22 @@
-import { useState, useRef, useMemo, useEffect } from 'react'
+import { useState, useRef, memo, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, dispatch } from 'store'
 import { useParams } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Box, Badge, TextField, Typography, List, ListItem, ListItemText, Grid, Chip, Card, CardMedia, IconButton } from '@mui/material'
+import { Box, Typography, Grid, Card } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox } from 'theme/style'
 import { useGetMachineQuery } from 'store/slice'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { IconTooltip, BackButton, AuditBox } from 'component'
 import FormProvider from 'component/hook-form'
 import { ViewFormField } from 'component/viewform'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
 import { useGetUserQuery } from 'store/slice'
-import { useIcon, ICON_NAME, useReadyIcon, snack } from 'hook'
+import { ICON_NAME, snack } from 'hook'
 import { MARGIN, RADIUS, ASSET } from 'config'
-import { KEY, TITLE, LABEL, RESPONSE, COLOR, TYPOGRAPHY_VARIANT, VIEW_FORM, VARIANT, FLEX_DIR, FLEX } from 'constant'
-import { fDate } from 'util/format'
-import { parseAddress } from 'util/address-parser'
+import { KEY, TITLE, LABEL, RESPONSE, COLOR, VIEW_FORM, VARIANT, FLEX_DIR, FLEX } from 'constant'
 import MachineConnectedWidget from './connection/connection-widget'
 import MachineSiteWidget from './site/site-widget'
 import MachineHistoryWidget from './history/history-widget'
@@ -277,4 +275,4 @@ MachineLayout.propTypes = {
   machine: PropTypes.array
 }
 
-export default MachineLayout
+export default memo(MachineLayout)
