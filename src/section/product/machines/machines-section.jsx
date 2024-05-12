@@ -1,10 +1,11 @@
 import { useEffect, useState, useRef } from 'react'
-import { useSelector } from 'store'
+import { useSelector, dispatch } from 'store'
 import debounce from 'lodash/debounce'
 import { snack, useTable } from 'hook'
 import { Table, Typography, Grid, Box } from '@mui/material'
 import { GStyledTableHeaderBox, GStyledSpanBox } from 'theme/style'
 import { useGetAllMachineQuery, useGetUserQuery } from 'store/slice'
+import { ChangePage, ChangeRowsPerPage, setFilterBy } from 'store/slice/product'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
 import { SearchBox } from 'component/search'
@@ -16,11 +17,9 @@ import { COLOR, KEY, TITLE, RESPONSE } from 'constant'
 import { StyledScrollTableContainer } from './style'
 
 const MachineListSection = () => {
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
   const [tableData, setTableData] = useState([])
-  const [searchTerm, setSearchTerm] = useState('')
 
+  const { page, rowsPerPage, filterBy } = useSelector((state) => state.machine)
   const { user: userState, userId } = useSelector((state) => state.auth)
   const { data: userDetail, isLoading: isUserFetching, error, refetch } = useGetUserQuery(userId)
   const { data: allMachineData, isLoading, error: allMachineError, refetch: refetchAllMachine } = useGetAllMachineQuery()
@@ -56,26 +55,26 @@ const MachineListSection = () => {
 
   const debouncedSearch = useRef(
     debounce((value) => {
-      setPage(0)
-      setSearchTerm(value)
+      dispatch(ChangePage(0))
+      dispatch(setFilterBy(value))
     }, 500)
   )
 
   const handleSearch = (event) => {
     debouncedSearch.current(event.target.value)
-    setSearchTerm(event.target.value)
+    dispatch(setFilterBy(event.target.value))
   }
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage)
+    dispatch(ChangePage(newPage))
   }
 
   const handleChangeRowsPerPage = (event) => {
-    setPage(0)
-    setRowsPerPage(parseInt(event.target.value, 10))
+    dispatch(ChangePage(0))
+    dispatch(ChangeRowsPerPage(parseInt(event.target.value, 10)))
   }
   const filteredData =
-    tableData && tableData.filter((row) => Object.values(row)?.some((value) => value?.toString().toLowerCase().includes(searchTerm.toLowerCase())))
+    tableData && tableData.filter((row) => Object.values(row)?.some((value) => value?.toString().toLowerCase().includes(filterBy.toLowerCase())))
   const isNotFound = !isLoading && !filteredData.length
 
   return (
@@ -88,7 +87,7 @@ const MachineListSection = () => {
           / {TITLE.MACHINE_LIST}
         </Typography>
       </GStyledSpanBox>
-      <SearchBox term={searchTerm} mode={themeMode} handleSearch={handleSearch} />
+      <SearchBox term={filterBy} mode={themeMode} handleSearch={handleSearch} />
       <Grid container flexDirection="row" {...MARGIN.PAGE_PROP}>
         <Grid item lg={12}>
           <Grid container mb={2}>
