@@ -1,3 +1,5 @@
+import { PRODUCT } from './brand'
+
 /**
  * @description - important keys to the applications are stored here
  */
@@ -17,6 +19,15 @@ const KEY = {
   PRODUCTION: 'production',
   FULL_PERCENT: '100%',
   BLANK: '_blank',
+
+  // modules
+  CRM: 'crm',
+  PRODUCT: 'product',
+  PRODUCTS: 'products',
+  CUSTOMER: 'customer',
+  CUSTOMERS: 'customers',
+  MACHINE: 'machine',
+  MACHINES: 'machines',
 
   // @redux keys
   REDUX_STORE: 'store',
