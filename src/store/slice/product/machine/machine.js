@@ -25,9 +25,9 @@ const initialState = {
   machineLatLongCoordinates: [],
   machineGallery: [],
   transferDialogBoxVisibility: false,
-  filterBy: '',
   accountManager: null,
   supportManager: null,
+  filterBy: '',
   page: 0,
   rowsPerPage: 100
 }
@@ -213,10 +213,6 @@ const machineSlice = createSlice({
       state.initial = true
     },
 
-    // Set FilterBy
-    setFilterBy(state, action) {
-      state.filterBy = action.payload
-    },
     // Set Account Manager Filter
     setAccountManager(state, action) {
       state.accountManager = action.payload
@@ -226,6 +222,12 @@ const machineSlice = createSlice({
     setSupportManager(state, action) {
       state.supportManager = action.payload
     },
+
+    // Set FilterBy
+    setFilterBy(state, action) {
+      state.filterBy = action.payload
+    },
+
     // Set PageRowCount
     ChangeRowsPerPage(state, action) {
       state.rowsPerPage = action.payload

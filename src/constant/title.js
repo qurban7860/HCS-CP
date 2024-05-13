@@ -13,6 +13,8 @@ const TITLE = {
   NOT_PROVIDED: 'Not Provided',
   // @machine - MachineList
   MACHINE_LIST: 'MACHINE LIST',
+  CUSTOMER_LIST: 'CUSTOMER LIST',
+  ORGANIZATIONS: 'Organizations',
   // @user - UserProfile - user
   PERSONAL_INFO: 'Personal Information',
   PROFILE: 'Profile',

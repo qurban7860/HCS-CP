@@ -21,6 +21,8 @@ import {
   // product:
   MachinePage,
   MachinesListPage,
+  //  crm:
+  CustomerListPage,
   // fallback:
   BlankPage,
   FallbackPage,
@@ -124,6 +126,25 @@ export default function Router() {
           children: [
             { path: 'list', element: <MachinesListPage /> },
             { path: ':id/view', element: <MachinePage /> }
+          ]
+        }
+      ]
+    },
+    {
+      // crm
+      path: 'crm',
+      element: (
+        <AuthGuard>
+          <DashboardLayout />
+        </AuthGuard>
+      ),
+      children: [
+        { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
+        {
+          path: 'customers', // might changed to organizations later
+          children: [
+            { path: 'list', element: <CustomerListPage /> }
+            // { path: ':id/view', element: <MachinePage /> }
           ]
         }
       ]

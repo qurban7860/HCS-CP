@@ -2,27 +2,26 @@ import { useEffect, useState, useRef } from 'react'
 import { useSelector, dispatch } from 'store'
 import debounce from 'lodash/debounce'
 import { snack, useTable } from 'hook'
-import { Table, Typography, Grid, Box } from '@mui/material'
+import { Table, Typography, Grid } from '@mui/material'
 import { GStyledTableHeaderBox, GStyledSpanBox } from 'theme/style'
-import { useGetAllMachineQuery, useGetUserQuery } from 'store/slice'
-import { ChangePage, ChangeRowsPerPage, setFilterBy } from 'store/slice/product'
+import { useGetAllCustomerQuery, useGetUserQuery } from 'store/slice'
+import { ChangePage, ChangeRowsPerPage, setFilterBy } from 'store/slice/crm'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
 import { SearchBox } from 'component/search'
 import { TableNoData } from 'component'
 import { SkeletonTable } from 'component/skeleton'
-import { MachineTable, MachineHeader, MachineListPagination } from 'section/product'
+import { CustomerTable, CustomerHeader, CustomerListPagination } from 'section/crm'
 import { MARGIN, TABLE } from 'config'
 import { COLOR, KEY, TITLE, RESPONSE } from 'constant'
 import { StyledScrollTableContainer } from './style'
 
-const MachineListSection = () => {
+const CustomerListSection = () => {
   const [tableData, setTableData] = useState([])
-
-  const { page, rowsPerPage, filterBy } = useSelector((state) => state.machine)
+  const { filterBy, page, rowsPerPage } = useSelector((state) => state.customer)
   const { user: userState, userId } = useSelector((state) => state.auth)
   const { data: userDetail, isLoading: isUserFetching, error, refetch } = useGetUserQuery(userId)
-  const { data: allMachineData, isLoading, error: allMachineError, refetch: refetchAllMachine } = useGetAllMachineQuery()
+  const { data: allCustomerData, isLoading, error: allCustomerError, refetch: refetchAllCustomer } = useGetAllCustomerQuery()
 
   const { themeMode } = useSettingContext()
   const denseHeight = TABLE.DENSE_HEIGHT
@@ -41,17 +40,17 @@ const MachineListSection = () => {
   })
 
   useEffect(() => {
-    if (allMachineError) {
+    if (allCustomerError) {
       snack(RESPONSE.error.FETCH, { variant: COLOR.ERROR })
     } else if (isLoading) {
       snack(RESPONSE.FETCH_LOADING)
     } else {
       snack(RESPONSE.success.FETCH, { variant: COLOR.SUCCESS })
-      refetchAllMachine()
-      setTableData(allMachineData)
+      refetchAllCustomer()
+      setTableData(allCustomerData)
     }
-    refetchAllMachine()
-  }, [refetchAllMachine, allMachineData, isLoading, allMachineError])
+    refetchAllCustomer()
+  }, [refetchAllCustomer, allCustomerData, isLoading, allCustomerError])
 
   const debouncedSearch = useRef(
     debounce((value) => {
@@ -80,11 +79,11 @@ const MachineListSection = () => {
   return (
     <MotionLazyContainer display="flex">
       <GStyledSpanBox>
-        <Typography variant="h3" color={themeMode === KEY.LIGHT ? 'common.black' : 'common.white'}>
+        {/* <Typography variant="h3" color={themeMode === KEY.LIGHT ? 'common.black' : 'common.white'}>
           {userDetail?.customer?.name.toUpperCase() || TITLE.MACHINE} &nbsp;
-        </Typography>
+        </Typography> */}
         <Typography variant="h3" color={themeMode === KEY.LIGHT ? 'grey.200' : 'howick.bronze'}>
-          / {TITLE.MACHINE_LIST}
+          {TITLE.ORGANIZATIONS.toUpperCase()}
         </Typography>
       </GStyledSpanBox>
       <SearchBox term={filterBy} mode={themeMode} handleSearch={handleSearch} />
@@ -93,7 +92,7 @@ const MachineListSection = () => {
           <Grid container mb={2}>
             <Grid item lg={12} sm={12} mb={2} bgcolor="background.paper">
               <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
-              <MachineListPagination
+              <CustomerListPagination
                 mode={themeMode}
                 data={filteredData}
                 page={page}
@@ -103,13 +102,12 @@ const MachineListSection = () => {
               />
               <StyledScrollTableContainer>
                 <Table>
-                  <MachineHeader mode={themeMode} />
-                  {/* <Box gutterBottom={2} component={m.div} height={2} /> */}
+                  <CustomerHeader mode={themeMode} />
                   {(isLoading ? [...Array(rowsPerPage)] : filteredData)
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) =>
                       row ? (
-                        <MachineTable key={row._id} machine={row} mode={themeMode} index={index} />
+                        <CustomerTable key={row._id} customer={row} mode={themeMode} index={index} />
                       ) : (
                         !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />
                       )
@@ -125,4 +123,4 @@ const MachineListSection = () => {
   )
 }
 
-export default MachineListSection
+export default CustomerListSection
