@@ -7,6 +7,7 @@ function NavConfiguration() {
       items: [
         { title: 'Home', path: '/dashboard/app', children: null },
         { title: 'Machine', path: '/products/machines/list', children: null },
+        { title: 'Organization', path: '/crm/customers/list', children: null },
         { title: 'Document', path: '/documents', children: null },
         { title: 'Support', path: '/support', children: null }
       ]

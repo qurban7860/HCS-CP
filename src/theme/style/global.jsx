@@ -1,5 +1,5 @@
 import { styled, alpha } from '@mui/material/styles'
-import { Popover, ListItemText, Card, Grid, Divider, Container, Skeleton, Box, Typography, IconButton } from '@mui/material'
+import { Popover, ListItemText, Card, Chip, Grid, Divider, Container, Skeleton, Box, Typography, IconButton } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { m } from 'framer-motion'
@@ -78,6 +78,13 @@ export const GStyledListItemText = styled(ListItemText)(({ theme }) => ({
 export const GStyledScrollContainerGrid = styled(Box)(({ theme }) => ({
   overflow: 'auto',
   height: '100%'
+}))
+
+export const GStyledTableChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
+  margin: theme.spacing(0.2),
+  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
+  // backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.howick.midBlue,
+  borderRadius: 2
 }))
 
 // :form top border divider
