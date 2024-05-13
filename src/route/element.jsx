@@ -24,7 +24,10 @@ export const GeneralAppPage = Loadable(lazy(() => import('page/dashboard/general
 export const MachinePage = Loadable(lazy(() => import('page/product/machine/machine')))
 export const MachinesListPage = Loadable(lazy(() => import('page/product/machines/machines')))
 
-// User Invitations List
+// customer
+export const CustomerListPage = Loadable(lazy(() => import('page/crm/customers/customers')))
+
+// user Invitations List
 export const { UserInvitationList } = Loadable(lazy(() => import('page/security/user/user')))
 export const { UserInvitationView } = Loadable(lazy(() => import('page/security')))
 
