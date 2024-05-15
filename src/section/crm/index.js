@@ -1,6 +1,7 @@
-// export { default as CustomerLayout } from './customer/customer-layout'
 // export { default as machineSchema } from './customer/schema/schema'
+export { default as CustomerLayout } from './customer/customer-layout'
 export { default as CustomerListSection } from './customers/customers-section'
 export { default as CustomerTable } from './customers/customers-table'
 export { default as CustomerHeader } from './customers/customers-header'
 export { default as CustomerListPagination } from './customers/customers-pagination'
+export { default as customerDefaultValues } from './customer/default-values/default-values'

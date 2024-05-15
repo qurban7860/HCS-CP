@@ -25,6 +25,7 @@ export const MachinePage = Loadable(lazy(() => import('page/product/machine/mach
 export const MachinesListPage = Loadable(lazy(() => import('page/product/machines/machines')))
 
 // customer
+export const CustomerPage = Loadable(lazy(() => import('page/crm/customer/customer')))
 export const CustomerListPage = Loadable(lazy(() => import('page/crm/customers/customers')))
 
 // user Invitations List

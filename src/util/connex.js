@@ -1,5 +1,5 @@
 const conNex = (...param) => {
-  return param.join('/')
+  return '/' + param.join('/')
 }
 
 export default conNex

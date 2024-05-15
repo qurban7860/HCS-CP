@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { fDate, parseAddress } from 'util'
 
-export default function machineSchema(machineData) {
+export default function machineDefaultValues(machineData) {
   return useMemo(() => {
     return {
       serialNo: machineData?.serialNo || '',

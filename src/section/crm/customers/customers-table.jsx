@@ -7,7 +7,7 @@ import { Box, TableBody, TableCell, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTableChip } from 'theme/style'
 import { LinkTableCell } from 'component/table-tool'
-import { PATH_MACHINE } from 'route/path'
+import { PATH_CUSTOMER } from 'route/path'
 import { fDate } from 'util'
 import { KEY, SIZE, VARIANT } from 'constant'
 import { StyledIconListItemText, StyledTableRow } from './style'
@@ -25,7 +25,7 @@ const CustomerTable = ({ customer, mode, index }) => {
   const inactiveColor = theme.palette.howick.error
 
   const handleOnClick = (id) => {
-    navigate(PATH_MACHINE.machines.view(id))
+    navigate(PATH_CUSTOMER.customers.view(id))
   }
 
   const address = []
