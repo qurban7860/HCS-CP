@@ -1,11 +1,17 @@
+import conNex from 'util/connex'
+
 function path(root, sublink) {
   return `${root}${sublink}`
 }
 
-const ROOTS_AUTH = '/auth'
-const ROOTS_DASHBOARD = '/dashboard'
-const ROOTS_CUSTOMER = '/customers'
-const ROOTS_MACHINE = '/products'
+const ROOTS_AUTH = 'auth'
+const ROOTS_DASHBOARD = 'dashboard'
+
+const ROOTS_CRM = 'crm'
+const SUB_CUSTOMERS = 'customers'
+const ROOTS_PRODUCTS = 'products'
+const SUB_MACHINES = 'machines'
+
 const ROOTS_EMAIL = '/email'
 const ROOTS_SECURITY = '/security'
 const ROOTS_SETTING = '/settings'
@@ -18,14 +24,14 @@ export const PATH_LANDING = {
 
 export const PATH_AUTH = {
   root: ROOTS_AUTH,
-  login: path(ROOTS_AUTH, '/login'),
-  register: path(ROOTS_AUTH, '/register'),
-  loginUnprotected: path(ROOTS_AUTH, '/login-unprotected'),
-  registerUnprotected: path(ROOTS_AUTH, '/register-unprotected'),
-  verify: path(ROOTS_AUTH, '/verify'),
-  resetPassword: path(ROOTS_AUTH, '/reset-password'),
-  newpassword: (token, userId) => path(ROOTS_AUTH, `/new-password/${token}/${userId}`),
-  authenticate: path(ROOTS_AUTH, '/authenticate')
+  login: conNex(ROOTS_AUTH, 'login'),
+  register: conNex(ROOTS_AUTH, 'register'),
+  loginUnprotected: conNex(ROOTS_AUTH, 'login-unprotected'),
+  registerUnprotected: conNex(ROOTS_AUTH, 'register-unprotected'),
+  verify: conNex(ROOTS_AUTH, 'verify'),
+  resetPassword: conNex(ROOTS_AUTH, 'reset-password'),
+  newpassword: (token, userId) => path(ROOTS_AUTH, 'new-password', token, userId),
+  authenticate: conNex(ROOTS_AUTH, 'authenticate')
 }
 
 export const PATH_PAGE = {
@@ -42,87 +48,41 @@ export const PATH_PAGE = {
 
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
-  permissionDenied: path(ROOTS_DASHBOARD, '/permission-denied'),
-  blank: path(ROOTS_AUTH, '/login'),
+  permissionDenied: conNex(ROOTS_DASHBOARD, 'permission-denied'),
+  blank: conNex(ROOTS_AUTH, 'login'),
   general: {
-    app: path(ROOTS_DASHBOARD, '/app'),
-    machineByCountries: path(ROOTS_DASHBOARD, `/machineByCountries`),
-    machineByModels: path(ROOTS_DASHBOARD, '/machineByModels'),
-    machineByYears: path(ROOTS_DASHBOARD, '/machineByYears')
-  },
-  asset: {
-    root: path(ROOTS_DASHBOARD, '/asset'),
-    shop: path(ROOTS_DASHBOARD, '/asset/shop'),
-    list: path(ROOTS_DASHBOARD, '/asset/list'),
-    // checkout: path(ROOTS_DASHBOARD, '/asset/checkout'),
-    new: path(ROOTS_DASHBOARD, '/asset/new'),
-    view: (id) => path(ROOTS_DASHBOARD, `/asset/${id}/view`),
-    edit: (id) => path(ROOTS_DASHBOARD, `/asset/${id}/edit`),
-    demoEdit: path(ROOTS_DASHBOARD, '/asset/product/nike-bblazer-low-77-vintage/edit'),
-    demoView: path(ROOTS_DASHBOARD, '/asset/product/nike-air-force-1-ndestrukt')
-  },
-  customer: {
-    dashboard: path(ROOTS_DASHBOARD, '/customer/dashboard'),
-    list: path(ROOTS_DASHBOARD, '/customer/list'),
-    new: path(ROOTS_DASHBOARD, '/customer/new'),
-    view: (id) => path(ROOTS_DASHBOARD, `/customer/${id}/view`),
-    edit: (id) => path(ROOTS_DASHBOARD, `/customer/${id}/edit`)
+    app: conNex(ROOTS_DASHBOARD, 'app')
   }
 }
 
 export const PATH_CUSTOMER = {
-  root: ROOTS_CUSTOMER,
-  permissionDenied: path(ROOTS_CUSTOMER, '/permission-denied'),
-  list: path(ROOTS_CUSTOMER, '/list'),
-  new: path(ROOTS_CUSTOMER, '/new'),
-  view: (id) => path(ROOTS_CUSTOMER, `/${id}/view`),
-  edit: (id) => path(ROOTS_CUSTOMER, `/${id}/edit`),
-  general: {
-    app: path(ROOTS_CUSTOMER, '/app')
-  },
-  site: {
-    root: path(ROOTS_CUSTOMER, '/site'),
-    list: path(ROOTS_CUSTOMER, '/site/list'),
-    new: path(ROOTS_CUSTOMER, '/site/new'),
-    view: (id) => path(ROOTS_CUSTOMER, `/site/${id}/view`),
-    edit: (id) => path(ROOTS_CUSTOMER, `/site/${id}/edit`)
-  },
-  contact: {
-    root: path(ROOTS_CUSTOMER, '/contact'),
-    list: path(ROOTS_CUSTOMER, '/contact/list'),
-    new: path(ROOTS_CUSTOMER, '/contact/new'),
-    view: (id) => path(ROOTS_CUSTOMER, `/contact/${id}/view`),
-    edit: (id) => path(ROOTS_CUSTOMER, `/contact/${id}/edit`)
-  },
-  note: {
-    root: path(ROOTS_CUSTOMER, '/note'),
-    list: path(ROOTS_CUSTOMER, '/note/list'),
-    new: path(ROOTS_CUSTOMER, '/note/new'),
-    view: (id) => path(ROOTS_CUSTOMER, `/note/${id}/view`),
-    edit: (id) => path(ROOTS_CUSTOMER, `/note/${id}/edit`)
+  root: ROOTS_CRM,
+  permissionDenied: path(ROOTS_CRM, '/permission-denied'),
+  customers: {
+    list: conNex(ROOTS_CRM, SUB_CUSTOMERS, 'list'),
+    new: conNex(ROOTS_CRM, SUB_CUSTOMERS, 'new'),
+    view: (id) => conNex(ROOTS_CRM, SUB_CUSTOMERS, id, 'view')
   }
 }
 
 // :machine
 export const PATH_MACHINE = {
-  root: ROOTS_MACHINE,
-  permissionDenied: path(ROOTS_MACHINE, '/permission-denied'),
+  root: ROOTS_PRODUCTS,
+  permissionDenied: path(ROOTS_PRODUCTS, '/permission-denied'),
   machines: {
-    root: path(ROOTS_MACHINE, '/machines'),
-    list: path(ROOTS_MACHINE, '/machines/list'),
-    view: (id) => path(ROOTS_MACHINE, `/machines/${id}/view`),
-    edit: (id) => path(ROOTS_MACHINE, `/machines/${id}/edit`),
-    transfer: (id) => path(ROOTS_MACHINE, `/machines/${id}/transfer`)
+    root: conNex(ROOTS_PRODUCTS, SUB_MACHINES),
+    list: conNex(ROOTS_PRODUCTS, SUB_MACHINES, 'list'),
+    view: (id) => conNex(ROOTS_PRODUCTS, SUB_MACHINES, id, 'view')
   }
 }
 
 export const PATH_EMAIL = {
   root: ROOTS_EMAIL,
-  permissionDenied: path(ROOTS_EMAIL, '/permission-denied'),
+  permissionDenied: conNex(ROOTS_EMAIL, 'permission-denied'),
   email: {
-    list: path(ROOTS_EMAIL, '/list'),
-    new: path(ROOTS_EMAIL, '/new'),
-    view: (id) => path(ROOTS_EMAIL, `/${id}/view`)
+    list: conNex(ROOTS_EMAIL, 'list'),
+    new: conNex(ROOTS_EMAIL, 'new'),
+    view: (id) => path(ROOTS_EMAIL, id, 'view')
   }
 }
 
@@ -144,82 +104,6 @@ export const PATH_SECURITY = {
     edit: (id) => path(ROOTS_SECURITY, `/users/${id}/edit`),
     demoEdit: path(ROOTS_SECURITY, `/users/reece-chung/edit`),
     signInLogList: path(ROOTS_SECURITY, '/users/signInLogList')
-  },
-  config: {
-    blockedCustomer: {
-      list: path(ROOTS_SECURITY, '/config/blockedCustomer/list'),
-      new: path(ROOTS_SECURITY, `/config/blockedCustomer/new`)
-    },
-    blockedUser: {
-      list: path(ROOTS_SECURITY, '/config/blockedUser/list'),
-      new: path(ROOTS_SECURITY, `/config/blockedUser/new`)
-    },
-    blacklistIP: {
-      list: path(ROOTS_SECURITY, '/config/blacklistIP/list'),
-      new: path(ROOTS_SECURITY, `/config/blacklistIP/new`)
-    },
-    whitelistIP: {
-      list: path(ROOTS_SECURITY, '/config/whitelistIP/list'),
-      new: path(ROOTS_SECURITY, `/config/whitelistIP/new`)
-    }
-  }
-}
-
-export const PATH_SETTING = {
-  root: ROOTS_SETTING,
-  permissionDenied: path(ROOTS_SETTING, '/permission-denied'),
-  general: {
-    app: path(ROOTS_SETTING, '/app')
-  },
-  app: path(ROOTS_SETTING, '/app'),
-  documentType: {
-    list: path(ROOTS_SETTING, '/documentType/list'),
-    new: path(ROOTS_SETTING, '/documentType/new'),
-    view: (id) => path(ROOTS_SETTING, `/documentType/${id}/view`),
-    edit: (id) => path(ROOTS_SETTING, `/documentType/${id}/edit`)
-  },
-  documentCategory: {
-    list: path(ROOTS_SETTING, '/documentCategory/list'),
-    new: path(ROOTS_SETTING, '/documentCategory/new'),
-    view: (id) => path(ROOTS_SETTING, `/documentCategory/${id}/view`),
-    edit: (id) => path(ROOTS_SETTING, `/documentCategory/${id}/edit`)
-  },
-  role: {
-    new: path(ROOTS_SETTING, '/role/new'),
-    list: path(ROOTS_SETTING, '/role/list'),
-    view: (id) => path(ROOTS_SETTING, `/role/${id}/view`),
-    edit: (id) => path(ROOTS_SETTING, `/role/${id}/edit`)
-  },
-  signInLogs: {
-    list: path(ROOTS_SETTING, '/signInLogs/list')
-  },
-  regions: {
-    list: path(ROOTS_SETTING, '/regions/list'),
-    new: path(ROOTS_SETTING, '/regions/new'),
-    view: (id) => path(ROOTS_SETTING, `/regions/${id}/view`),
-    edit: (id) => path(ROOTS_SETTING, `/regions/${id}/edit`)
-  },
-  modules: {
-    list: path(ROOTS_SETTING, '/modules/list'),
-    new: path(ROOTS_SETTING, '/modules/new'),
-    view: (id) => path(ROOTS_SETTING, `/modules/${id}/view`),
-    edit: (id) => path(ROOTS_SETTING, `/modules/${id}/edit`)
-  },
-  configs: {
-    list: path(ROOTS_SETTING, '/configs/list'),
-    new: path(ROOTS_SETTING, '/configs/new'),
-    view: (id) => path(ROOTS_SETTING, `/configs/${id}/view`),
-    edit: (id) => path(ROOTS_SETTING, `/configs/${id}/edit`)
-  },
-  departments: {
-    list: path(ROOTS_SETTING, '/departments/list'),
-    new: path(ROOTS_SETTING, '/departments/new'),
-    view: (id) => path(ROOTS_SETTING, `/departments/${id}/view`),
-    edit: (id) => path(ROOTS_SETTING, `/departments/${id}/edit`)
-  },
-  invite: {
-    list: path(ROOTS_SETTING, '/invite/list'),
-    view: (id) => path(ROOTS_SETTING, `/invite/${id}/view`)
   }
 }
 
@@ -255,16 +139,3 @@ export const PATH_DOCS = {
   root: 'https://www.howickltd.com/why-howick',
   changelog: 'https://www.howickltd.com/why-howick'
 }
-
-// export const PATH_ZONE_ON_STORE =
-//   'https://mui.com/store/items/zone-landing-page/'
-
-// export const PATH_MINIMAL_ON_STORE =
-//   'https://mui.com/store/items/minimal-dashboard/'
-
-// export const PATH_FREE_VERSION =
-//   'https://mui.com/store/items/minimal-dashboard-free/'
-
-// TODO:check this on figma for MOCK-UP INSPARATION
-// export const PATH_FIGMA_PREVIEW =
-//   'https://www.figma.com/file/rWMDOkMZYw2VpTdNuBBCvN/%5BPreview%5D-Minimal-Web.26.11.22?node-id=0%3A1&t=ya2mDFiuhTXXLLF1-1'
