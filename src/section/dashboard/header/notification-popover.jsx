@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types'
 import { noCase } from 'change-case'
-import { useEffect, useState, memo } from 'react'
+import { useState, memo } from 'react'
 import { useNavigate } from 'react-router'
-import { useWebSocketContext } from 'auth'
 import { Box, List, Badge, Avatar, Divider, Typography, ListItemText, ListItemAvatar, ListItemButton, Tooltip, IconButton, Grid } from '@mui/material'
 import { fDateTime, fToNow } from 'util'
 import { Iconify } from 'component/iconify'
@@ -10,7 +9,6 @@ import { Scrollbar } from 'component/scrollbar'
 import { MenuPopover } from 'component/menu-popover'
 import { IconButtonAnimate } from 'component/animate'
 import { ICON } from 'constant/icon'
-import { PATH_MACHINE } from 'route/path'
 
 function NotificationPopover() {
   const userId = localStorage.getItem('userId')
@@ -105,9 +103,9 @@ NotificationItem.propTypes = {
     extraInfo: PropTypes.object,
     readBy: PropTypes.array,
     receivers: PropTypes.array,
-    createdAt: PropTypes.string,
+    createdAt: PropTypes.string
   }),
-  handleMarkAs: PropTypes.func,
+  handleMarkAs: PropTypes.func
 }
 
 function NotificationItem({ notification, handleMarkAs }) {
@@ -122,11 +120,10 @@ function NotificationItem({ notification, handleMarkAs }) {
         pb: 0.5,
         borderBottom: '1px solid #919eab3d',
         ...(!notification?.readBy?.includes(userId) && {
-          bgcolor: 'action.selected',
-        }),
+          bgcolor: 'action.selected'
+        })
       }}
-      onClick={() => handleMarkAs(notification)}
-    >
+      onClick={() => handleMarkAs(notification)}>
       <ListItemAvatar>
         <Avatar sx={{ bgcolor: 'background.primary' }}>
           <Iconify icon={icon} color={color} width={30} />
