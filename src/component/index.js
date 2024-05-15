@@ -20,6 +20,8 @@ export { default as NothingProvided } from './default/nothing-provided'
 export { default as FormHeader } from './header/form'
 // @viewform
 export { default as ViewFormField } from './viewform/view-form-field'
+export { default as GridViewTitle } from './viewform/grid-view-title'
+export { default as GridViewField } from './viewform/grid-view-field'
 // @skeleton
 export { default as SkeletonViewFormField } from './skeleton/view-form-field'
 export { default as SkeletonTable } from './skeleton/table'
