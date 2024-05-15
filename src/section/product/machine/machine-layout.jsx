@@ -1,28 +1,25 @@
-import { useState, useRef, memo, useEffect } from 'react'
+import { memo, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, dispatch } from 'store'
 import { useParams } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Box, Typography, Grid, Card } from '@mui/material'
+import { Box, Typography, Grid, Card, Divider } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox } from 'theme/style'
 import { useGetMachineQuery } from 'store/slice'
+import { useGetUserQuery } from 'store/slice'
 import { useForm } from 'react-hook-form'
-import { IconTooltip, BackButton, AuditBox } from 'component'
+import { machineDefaultValues } from 'section/product'
+import { HowickResources } from 'section/common'
+import { IconTooltip, BackButton, AuditBox, GridViewField, GridViewTitle } from 'component'
 import FormProvider from 'component/hook-form'
 import { ViewFormField } from 'component/viewform'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
-import { useGetUserQuery } from 'store/slice'
 import { ICON_NAME, snack } from 'hook'
-import { MARGIN, RADIUS, ASSET } from 'config'
+import { MARGIN } from 'config'
 import { KEY, TITLE, LABEL, RESPONSE, COLOR, VIEW_FORM, VARIANT, FLEX_DIR, FLEX } from 'constant'
-import MachineConnectedWidget from './connection/connection-widget'
-import MachineSiteWidget from './site/site-widget'
-import MachineHistoryWidget from './history/history-widget'
-import BadgeCardMedia from './badge-media'
-import { CardOption } from './style'
-import { machineSchema } from 'section/product'
+import { MachineConnectionWidget, MachineSiteWidget, MachineHistoryWidget, BadgeCardMedia, CardOption } from 'section/product/machine'
 
 const MachineLayout = () => {
   const { id } = useParams()
@@ -49,10 +46,10 @@ const MachineLayout = () => {
     machineRefetch()
   }, [machineRefetch, id, machineData, machineIsLoading, machineError])
 
-  const defaultValues = machineSchema(machineData)
+  const defaultValues = machineDefaultValues(machineData)
 
   const methods = useForm({
-    resolver: yupResolver(machineSchema),
+    resolver: yupResolver(machineDefaultValues),
     defaultValues
   })
 
@@ -90,7 +87,7 @@ const MachineLayout = () => {
           </Grid>
           <Grid item lg={3}>
             <MachineHistoryWidget value={defaultValues} />
-            <MachineConnectedWidget value={defaultValues} />
+            <MachineConnectionWidget value={defaultValues} />
             <MachineSiteWidget value={defaultValues} />
           </Grid>
 
@@ -99,7 +96,7 @@ const MachineLayout = () => {
               <Card {...CardOption(themeMode)}>
                 <GStyledTopBorderDivider mode={themeMode} />
 
-                <Grid container mb={10} px={1.5}>
+                <Grid container px={1.5}>
                   <Grid item lg={8}>
                     <GStyledSpanBox my={2}>
                       <BadgeCardMedia />
@@ -111,7 +108,7 @@ const MachineLayout = () => {
                   <Grid item lg={4}>
                     <Grid container justifyContent={FLEX.FLEX_END} flexDirection="column" alignContent={FLEX.FLEX_END}>
                       <Grid item xs={12}>
-                        <Typography variant="h1" gutterBottom color={themeMode === KEY.LIGHT ? 'grey.400' : 'grey.800'}>
+                        <Typography variant={TYPOGRAPHY.H1} gutterBottom color={themeMode === KEY.LIGHT ? 'grey.400' : 'grey.800'}>
                           {isLoading ? 'isLoading...' : defaultValues?.serialNo}
                         </Typography>
                       </Grid>
@@ -132,30 +129,22 @@ const MachineLayout = () => {
                   </Grid>
                 </Grid>
                 <Grid container spacing={2} px={1.5} mb={5}>
-                  <Grid item lg={12} my={1}>
-                    <Typography variant="h5" gutterBottom>
-                      {TITLE.MACHINE_KEY_DETAILS}
-                    </Typography>
-                  </Grid>
+                  <GridViewTitle title={TITLE.MACHINE_KEY_DETAILS} />
+                  <Divider variant="middle" style={{ width: '100%', marginBottom: '20px' }} />
                   <Grid item lg={12} sm={12}>
                     <Grid container spacing={2} p={2} pb={5}>
-                      <Grid item xs={6} sm={4}>
-                        <ViewFormField heading={MACHINE.SERIAL_NO} isLoading={isLoading}>
-                          {machineData?.serialNo}
-                        </ViewFormField>
-                      </Grid>
-                      <Grid item xs={6} sm={4}>
-                        <ViewFormField heading={MACHINE.MODEL} isLoading={isLoading}>
-                          {machineData?.machineModel?.name}
-                        </ViewFormField>
-                      </Grid>
-                      <Grid item xs={6} sm={4}>
-                        <ViewFormField heading={MACHINE.DEFAULT_PROFILE} isLoading={isLoading}>
-                          {Array.isArray(machineData?.profiles)
+                      <GridViewField heading={MACHINE.SERIAL_NO} isLoading={isLoading} children={defaultValues?.serialNo} gridSize={4} />
+                      <GridViewField heading={MACHINE.MODEL} isLoading={isLoading} children={defaultValues?.serialNo} gridSize={4} />
+                      <GridViewField
+                        heading={MACHINE.DEFAULT_PROFILE}
+                        isLoading={isLoading}
+                        children={
+                          Array.isArray(machineData?.profiles)
                             ? machineData?.profiles[0].flange + 'X' + machineData?.profiles[0].web
-                            : TITLE.NOT_PROVIDED}
-                        </ViewFormField>
-                      </Grid>
+                            : TITLE.NOT_PROVIDED
+                        }
+                        gridSize={4}
+                      />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -165,69 +154,21 @@ const MachineLayout = () => {
               <Card {...CardOption(themeMode)}>
                 <GStyledTopBorderDivider mode={themeMode} />
                 <Grid container spacing={2} px={1.5} mb={5}>
-                  <Grid item lg={12} my={1}>
-                    <Typography variant="h5" gutterBottom>
-                      {TITLE.MACHINE_INFO}
-                    </Typography>
-                  </Grid>
+                  <GridViewTitle title={TITLE.MACHINE_INFO} />
+                  <Divider variant="middle" style={{ width: '100%', marginBottom: '20px' }} />
                   <Grid item lg={12} sm={12}>
                     <Grid container spacing={6} p={2} pb={5}>
-                      <Grid item xs={12} sm={12}>
-                        <ViewFormField heading={VIEW_FORM.NAME} isLoading={isLoading}>
-                          {machineData?.name}
-                        </ViewFormField>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <ViewFormField heading={VIEW_FORM.STATUS} isLoading={isLoading}>
-                          {defaultValues?.status}
-                        </ViewFormField>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <ViewFormField heading={MACHINE.WORK_ORDER} isLoading={isLoading}>
-                          {defaultValues?.workOrderRef}
-                        </ViewFormField>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <ViewFormField heading={MACHINE.FINANCING_COMPANY} isLoading={isLoading}>
-                          {defaultValues?.financialCompany}
-                        </ViewFormField>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6}>
-                        <ViewFormField heading={MACHINE.SUPPLIER} isLoading={isLoading}>
-                          {defaultValues?.supplier}
-                        </ViewFormField>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <ViewFormField heading={MACHINE.SUPPORT_EXPIRATION} isLoading={isLoading}>
-                          {defaultValues?.supportExpireDate}
-                        </ViewFormField>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <ViewFormField heading={MACHINE.PURCHASE_DATE} isLoading={isLoading}>
-                          {defaultValues?.purchaseDate}
-                        </ViewFormField>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <ViewFormField heading={MACHINE.MANUFACTURE_DATE} isLoading={isLoading}>
-                          {defaultValues?.manufactureDate}
-                        </ViewFormField>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <ViewFormField heading={MACHINE.SHIPPING_DATE} isLoading={isLoading}>
-                          {defaultValues?.shippingDate}
-                        </ViewFormField>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <ViewFormField heading={MACHINE.INSTALLATION_DATE} isLoading={isLoading}>
-                          {defaultValues?.installationDate}
-                        </ViewFormField>
-                      </Grid>
-                      <Grid item xs={12} sm={12}>
-                        <ViewFormField heading={VIEW_FORM.DESCRIPTION} isLoading={isLoading}>
-                          {defaultValues?.description}
-                        </ViewFormField>
-                      </Grid>
+                      <GridViewField heading={VIEW_FORM.NAME} isLoading={isLoading} children={defaultValues?.name} gridSize={12} />
+                      <GridViewField heading={VIEW_FORM.STATUS} isLoading={isLoading} children={defaultValues?.status} />
+                      <GridViewField heading={MACHINE.WORK_ORDER} isLoading={isLoading} children={defaultValues?.workOrderRef} />
+                      <GridViewField heading={MACHINE.FINANCING_COMPANY} isLoading={isLoading} children={defaultValues?.financialCompany} />
+                      <GridViewField heading={MACHINE.SUPPLIER} isLoading={isLoading} children={defaultValues?.supplier} />
+                      <GridViewField heading={MACHINE.SUPPORT_EXPIRATION} isLoading={isLoading} children={defaultValues?.supportExpireDate} />
+                      <GridViewField heading={MACHINE.PURCHASE_DATE} isLoading={isLoading} children={defaultValues?.purchaseDate} />
+                      <GridViewField heading={MACHINE.MANUFACTURE_DATE} isLoading={isLoading} children={defaultValues?.manufactureDate} />
+                      <GridViewField heading={MACHINE.SHIPPING_DATE} isLoading={isLoading} children={defaultValues?.shippingDate} />
+                      <GridViewField heading={MACHINE.INSTALLATION_DATE} isLoading={isLoading} children={defaultValues?.installationDate} />
+                      <GridViewField heading={VIEW_FORM.DESCRIPTION} isLoading={isLoading} children={defaultValues?.description} gridSize={12} />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -236,25 +177,11 @@ const MachineLayout = () => {
             <Box mb={4}>
               <Card {...CardOption(themeMode)}>
                 <GStyledTopBorderDivider mode={themeMode} />
-
                 <Grid container spacing={2} px={1.5} mb={5}>
-                  <Grid item lg={12} my={1}>
-                    <Typography variant="h5" gutterBottom>
-                      {TITLE.HOWICK_RESOURCES}
-                    </Typography>
-                  </Grid>
+                  <GridViewTitle title={TITLE.HOWICK_RESOURCES} />
+                  <Divider variant="middle" style={{ width: '100%', marginBottom: '20px' }} />
                   <Grid item lg={12} sm={12}>
-                    <Grid container spacing={6} p={2} pb={5}>
-                      <Grid item xs={12} sm={6}>
-                        <ViewFormField heading={HOWICK_RESOURCES.PROJECT_MANAGER} isLoading={isLoading} contact={defaultValues.projectManager} />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <ViewFormField heading={HOWICK_RESOURCES.SUPPORT_MANAGER} isLoading={isLoading} contact={defaultValues.supportManager} />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <ViewFormField heading={HOWICK_RESOURCES.ACCOUNT_MANAGER} isLoading={isLoading} contact={defaultValues.accountManager} />
-                      </Grid>
-                    </Grid>
+                    <HowickResources value={defaultValues} isLoading={isLoading} />
                   </Grid>
                   <Grid item sm={12}>
                     <GStyledFlexEndBox>

@@ -1,6 +1,7 @@
 export { default } from './machine-layout'
-export { default as machineSchema } from './schema/schema'
+export { default as machineDefaultValues } from './default-values/default-values'
 export { default as MachineConnectionWidget } from './connection/connection-widget'
 export { default as MachineHistoryWidget } from './history/history-widget'
 export { default as MachineSiteWidget } from './site/site-widget'
+export { default as BadgeCardMedia } from './badge-media'
 export * from './style'
