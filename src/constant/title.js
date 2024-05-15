@@ -21,6 +21,7 @@ const TITLE = {
   // @machine - MachineViewForm - machine
   MACHINE_KEY_DETAILS: 'Key Details',
   MACHINE_INFO: 'Machine Information',
+  SITE_INFO: 'Site Information',
   HOWICK_RESOURCES: 'Howick Resources',
   MACHINE: 'Machine',
 

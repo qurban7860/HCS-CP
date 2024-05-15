@@ -6,10 +6,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Typography, Grid, Card, Divider } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox } from 'theme/style'
-import { useGetMachineQuery } from 'store/slice'
+import { useGetCustomerQuery } from 'store/slice'
 import { useGetUserQuery } from 'store/slice'
 import { useForm } from 'react-hook-form'
-import { machineDefaultValues } from 'section/product'
+import { customerDefaultValues } from 'section/crm'
 import { HowickResources } from 'section/common'
 import { IconTooltip, BackButton, AuditBox, GridViewField, GridViewTitle } from 'component'
 import FormProvider from 'component/hook-form'
@@ -19,37 +19,38 @@ import { useSettingContext } from 'component/setting'
 import { ICON_NAME, snack } from 'hook'
 import { MARGIN } from 'config'
 import { KEY, TITLE, LABEL, RESPONSE, COLOR, VIEW_FORM, VARIANT, FLEX_DIR, FLEX } from 'constant'
-import { MachineConnectionWidget, MachineSiteWidget, MachineHistoryWidget, BadgeCardMedia, CardOption } from 'section/product/machine'
+import BadgeCardMedia from './badge-media'
+import { CardOption } from './style'
 
-const MachineLayout = () => {
+const CustomerLayout = () => {
   const { id } = useParams()
   const { user: userState, userId } = useSelector((state) => state.auth)
   const { data: securityUser, isLoading, error, refetch } = useGetUserQuery(userId)
-  const { data: machineData, isLoading: machineIsLoading, error: machineError, refetch: machineRefetch } = useGetMachineQuery(id)
+  const { data: customerData, isLoading: customerIsLoading, error: customerError, refetch: customerRefetch } = useGetCustomerQuery(id)
 
   const theme = useTheme()
   const { themeMode } = useSettingContext()
 
-  const { MACHINE, HOWICK_RESOURCES, ADDRESS } = VIEW_FORM
+  const { CUSTOMER, SITE, HOWICK_RESOURCES, ADDRESS } = VIEW_FORM
   const { TYPOGRAPHY } = VARIANT
 
   useEffect(() => {
-    if (machineError) {
+    if (customerError) {
       snack(RESPONSE.error.FETCH, { variant: COLOR.ERROR })
-    } else if (machineIsLoading) {
+    } else if (customerIsLoading) {
       snack(RESPONSE.FETCH_LOADING)
     } else {
       snack(RESPONSE.success.FETCH_DATA, { variant: COLOR.SUCCESS })
 
       // machineRefetch()
     }
-    machineRefetch()
-  }, [machineRefetch, id, machineData, machineIsLoading, machineError])
+    customerRefetch()
+  }, [customerRefetch, id, customerData, customerIsLoading, customerError])
 
-  const defaultValues = machineDefaultValues(machineData)
+  const defaultValues = customerDefaultValues(customerData)
 
   const methods = useForm({
-    resolver: yupResolver(machineDefaultValues),
+    resolver: yupResolver(customerDefaultValues),
     defaultValues
   })
 
@@ -76,8 +77,7 @@ const MachineLayout = () => {
 
   return (
     <MotionLazyContainer display="flex">
-      {/*  TODO: Make responsive */}
-      {/* {TODO: refactor  */}
+      {/* TODO: [HPS-1240] HPS-1245 Machine Layout Reponsiveness */}
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
           <Grid container>
@@ -85,13 +85,12 @@ const MachineLayout = () => {
               <BackButton />
             </Grid>
           </Grid>
-          <Grid item lg={3}>
-            <MachineHistoryWidget value={defaultValues} />
-            <MachineConnectionWidget value={defaultValues} />
-            <MachineSiteWidget value={defaultValues} />
-          </Grid>
+          {/* TODO: HPS-1246: Machine List widget */}
+          {/* <Grid item lg={3}> */}
+          {/* <MachineConnectionWidget value={defaultValues} /> */}
+          {/* </Grid> */}
 
-          <Grid item sm={12} lg={9}>
+          <Grid item sm={12} lg={12}>
             <Box mb={2}>
               <Card {...CardOption(themeMode)}>
                 <GStyledTopBorderDivider mode={themeMode} />
@@ -101,7 +100,7 @@ const MachineLayout = () => {
                     <GStyledSpanBox my={2}>
                       <BadgeCardMedia />
                       <ViewFormField heading={VIEW_FORM.ORGANIZATION} isLoading={isLoading} isOrg>
-                        {defaultValues?.customer}
+                        {defaultValues?.name}
                       </ViewFormField>
                     </GStyledSpanBox>
                   </Grid>
@@ -109,7 +108,7 @@ const MachineLayout = () => {
                     <Grid container justifyContent={FLEX.FLEX_END} flexDirection="column" alignContent={FLEX.FLEX_END}>
                       <Grid item xs={12}>
                         <Typography variant={TYPOGRAPHY.H1} gutterBottom color={themeMode === KEY.LIGHT ? 'grey.400' : 'grey.800'}>
-                          {isLoading ? 'isLoading...' : defaultValues?.serialNo}
+                          {isLoading ? 'isLoading...' : defaultValues?.code}
                         </Typography>
                       </Grid>
                       <Grid item xs={12} justifyContent={FLEX.FLEX_END}>
@@ -129,22 +128,12 @@ const MachineLayout = () => {
                   </Grid>
                 </Grid>
                 <Grid container spacing={2} px={1.5} mb={5}>
-                  <GridViewTitle title={TITLE.MACHINE_KEY_DETAILS} />
-                  <Divider variant="middle" style={{ width: '100%', marginBottom: '20px' }} />
                   <Grid item lg={12} sm={12}>
-                    <Grid container spacing={2} p={2} pb={5}>
-                      <GridViewField heading={MACHINE.SERIAL_NO} isLoading={isLoading} children={defaultValues?.serialNo} gridSize={4} />
-                      <GridViewField heading={MACHINE.MODEL} isLoading={isLoading} children={defaultValues?.serialNo} gridSize={4} />
-                      <GridViewField
-                        heading={MACHINE.DEFAULT_PROFILE}
-                        isLoading={isLoading}
-                        children={
-                          Array.isArray(machineData?.profiles)
-                            ? machineData?.profiles[0].flange + 'X' + machineData?.profiles[0].web
-                            : TITLE.NOT_PROVIDED
-                        }
-                        gridSize={4}
-                      />
+                    <Grid container spacing={5} p={2} pb={5}>
+                      <GridViewField heading={CUSTOMER.CUSTOMER_NAME} isLoading={isLoading} children={defaultValues?.name} />
+                      <GridViewField heading={CUSTOMER.CUSTOMER_CODE} isLoading={isLoading} children={defaultValues?.code} />
+                      <GridViewField heading={CUSTOMER.TRADING_NAME} isLoading={isLoading} alias={defaultValues?.tradingName} />
+                      <GridViewField heading={VIEW_FORM.STATUS} isLoading={isLoading} children={defaultValues?.status} />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -154,21 +143,19 @@ const MachineLayout = () => {
               <Card {...CardOption(themeMode)}>
                 <GStyledTopBorderDivider mode={themeMode} />
                 <Grid container spacing={2} px={1.5} mb={5}>
-                  <GridViewTitle title={TITLE.MACHINE_INFO} />
+                  <GridViewTitle title={TITLE.SITE_INFO} />
+
                   <Divider variant="middle" style={{ width: '100%', marginBottom: '20px' }} />
                   <Grid item lg={12} sm={12}>
-                    <Grid container spacing={6} p={2} pb={5}>
-                      <GridViewField heading={VIEW_FORM.NAME} isLoading={isLoading} children={defaultValues?.name} gridSize={12} />
-                      <GridViewField heading={VIEW_FORM.STATUS} isLoading={isLoading} children={defaultValues?.status} />
-                      <GridViewField heading={MACHINE.WORK_ORDER} isLoading={isLoading} children={defaultValues?.workOrderRef} />
-                      <GridViewField heading={MACHINE.FINANCING_COMPANY} isLoading={isLoading} children={defaultValues?.financialCompany} />
-                      <GridViewField heading={MACHINE.SUPPLIER} isLoading={isLoading} children={defaultValues?.supplier} />
-                      <GridViewField heading={MACHINE.SUPPORT_EXPIRATION} isLoading={isLoading} children={defaultValues?.supportExpireDate} />
-                      <GridViewField heading={MACHINE.PURCHASE_DATE} isLoading={isLoading} children={defaultValues?.purchaseDate} />
-                      <GridViewField heading={MACHINE.MANUFACTURE_DATE} isLoading={isLoading} children={defaultValues?.manufactureDate} />
-                      <GridViewField heading={MACHINE.SHIPPING_DATE} isLoading={isLoading} children={defaultValues?.shippingDate} />
-                      <GridViewField heading={MACHINE.INSTALLATION_DATE} isLoading={isLoading} children={defaultValues?.installationDate} />
-                      <GridViewField heading={VIEW_FORM.DESCRIPTION} isLoading={isLoading} children={defaultValues?.description} gridSize={12} />
+                    <Grid container spacing={5} p={2} pb={5}>
+                      <GridViewField heading={SITE.SITE_NAME} isLoading={isLoading} children={defaultValues?.name} />
+                      <GridViewField heading={ADDRESS.STREET} isLoading={isLoading} children={defaultValues?.street} />
+                      <GridViewField heading={ADDRESS.SUBURB} isLoading={isLoading} children={defaultValues?.suburb} />
+                      <GridViewField heading={ADDRESS.CITY} isLoading={isLoading} children={defaultValues?.city} />
+                      <GridViewField heading={ADDRESS.POST_CODE} isLoading={isLoading} children={defaultValues?.postCode} />
+                      <GridViewField heading={ADDRESS.REGION} isLoading={isLoading} children={defaultValues?.region} />
+                      <GridViewField heading={ADDRESS.STATE} isLoading={isLoading} children={defaultValues?.state} />
+                      <GridViewField heading={ADDRESS.COUNTRY} isLoading={isLoading} children={defaultValues?.country} />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -177,11 +164,13 @@ const MachineLayout = () => {
             <Box mb={4}>
               <Card {...CardOption(themeMode)}>
                 <GStyledTopBorderDivider mode={themeMode} />
+
                 <Grid container spacing={2} px={1.5} mb={5}>
                   <GridViewTitle title={TITLE.HOWICK_RESOURCES} />
+
                   <Divider variant="middle" style={{ width: '100%', marginBottom: '20px' }} />
                   <Grid item lg={12} sm={12}>
-                    <HowickResources value={defaultValues} isLoading={isLoading} />
+                    <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} />
                   </Grid>
                   <Grid item sm={12}>
                     <GStyledFlexEndBox>
@@ -198,8 +187,8 @@ const MachineLayout = () => {
   )
 }
 
-MachineLayout.propTypes = {
-  machine: PropTypes.array
+CustomerLayout.propTypes = {
+  customer: PropTypes.array
 }
 
-export default memo(MachineLayout)
+export default memo(CustomerLayout)

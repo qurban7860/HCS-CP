@@ -14,7 +14,7 @@ import {
   VerifyCodePage,
   NewPasswordPage,
   ResetPasswordPage,
-  // dashboard: General
+  // dashboard: general
   GeneralAppPage,
   // security:
   UserProfilePage,
@@ -22,6 +22,7 @@ import {
   MachinePage,
   MachinesListPage,
   //  crm:
+  CustomerPage,
   CustomerListPage,
   // fallback:
   BlankPage,
@@ -143,8 +144,8 @@ export default function Router() {
         {
           path: 'customers', // might changed to organizations later
           children: [
-            { path: 'list', element: <CustomerListPage /> }
-            // { path: ':id/view', element: <MachinePage /> }
+            { path: 'list', element: <CustomerListPage /> },
+            { path: ':id/view', element: <CustomerPage /> }
           ]
         }
       ]

@@ -6,17 +6,34 @@ export const VIEW_FORM = {
   NAME: 'Name',
   EMAIL: 'Email',
   PHONE: 'Phone',
+  WEBSITE: 'Website',
   DESCRIPTION: 'Description',
   ORGANIZATION: 'Organization',
   STATUS: 'Status',
+  REF_NO: 'Reference Number',
 
   ADDRESS: {
     ADDRESS: 'Address',
     STREET: 'Street',
+    SUBURB: 'Suburb',
     CITY: 'City',
     STATE: 'State',
     ZIP: 'Zip',
+    POST_CODE: 'Post Code',
+    REGION: 'Region',
     COUNTRY: 'Country'
+  },
+
+  CUSTOMER: {
+    CUSTOMER_NAME: 'Customer Name',
+    TRADING_NAME: 'Trading Name / Alias',
+    CUSTOMER_CODE: 'Customer Code',
+    PRIMARY_BILLING_CONTACT: 'Primary Billing Contact',
+    PRIMARY_TECHNICAL_CONTACT: 'Primary Technical Contact'
+  },
+
+  SITE: {
+    SITE_NAME: 'Site Name'
   },
 
   MACHINE: {

@@ -9,7 +9,7 @@ import { StyledDefaultTypography, StyledFieldGrid, StyledChipGrid, StyledFieldCh
 
 const { TYPOGRAPHY } = VARIANT
 
-const ViewFormField = ({ children, heading, variant, isLoading, gridSize, contact, isWidget, isOrg }) => {
+const ViewFormField = ({ children, heading, variant, isLoading, gridSize, contact, isWidget, isOrg, alias }) => {
   const { themeMode } = useSettingContext()
 
   return (
@@ -39,6 +39,20 @@ const ViewFormField = ({ children, heading, variant, isLoading, gridSize, contac
             contact &&
             typeof contact?.firstName === 'string' && <Chip label={`${contact?.firstName || ''} ${contact?.lastName || ''}`} sx={{ m: 0.2 }} />
           )}
+          {alias && typeof alias === 'object' && alias.length > 0 ? (
+            <StyledChipGrid container>
+              {alias.map((chip, index) => (
+                <StyledFieldChip
+                  key={index}
+                  mode={themeMode}
+                  label={<Typography variant={TYPOGRAPHY_VARIANT.H5}>{chip}</Typography>}
+                  size={SIZE.SMALL}
+                />
+              ))}
+            </StyledChipGrid>
+          ) : (
+            alias && typeof alias === 'string' && <Chip label={alias} sx={{ m: 0.2 }} />
+          )}
         </>
       )}
     </StyledFieldGrid>
@@ -52,6 +66,7 @@ ViewFormField.propTypes = {
   isLoading: PropTypes.bool,
   isWidget: PropTypes.bool,
   contact: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
+  alias: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
   variant: PropTypes.oneOf(Object.values(TYPOGRAPHY_VARIANT))
 }
 
