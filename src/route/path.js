@@ -1,9 +1,12 @@
-import conNex from 'util/connex'
+// import conNex from 'util/connex'
 
 function path(root, sublink) {
   return `${root}${sublink}`
 }
 
+const conNex = (...param) => {
+  return '/' + param.join('/')
+}
 const ROOTS_AUTH = 'auth'
 const ROOTS_DASHBOARD = 'dashboard'
 
@@ -24,6 +27,7 @@ export const PATH_LANDING = {
 
 export const PATH_AUTH = {
   root: ROOTS_AUTH,
+  // login: path('/auth', '/login'),
   login: conNex(ROOTS_AUTH, 'login'),
   register: conNex(ROOTS_AUTH, 'register'),
   loginUnprotected: conNex(ROOTS_AUTH, 'login-unprotected'),
@@ -47,11 +51,11 @@ export const PATH_PAGE = {
 }
 
 export const PATH_DASHBOARD = {
-  root: ROOTS_DASHBOARD,
+  root: conNex(ROOTS_DASHBOARD),
   permissionDenied: conNex(ROOTS_DASHBOARD, 'permission-denied'),
   blank: conNex(ROOTS_AUTH, 'login'),
   general: {
-    app: conNex(ROOTS_DASHBOARD, 'app')
+    app: path('/dashboard', '/app')
   }
 }
 
