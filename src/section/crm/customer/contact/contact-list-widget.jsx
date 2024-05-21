@@ -23,13 +23,20 @@ const ContactListWidget = ({ value }) => {
   const { contacts } = useSelector((state) => state.contact)
 
   const fullName = (contact) => contact?.firstName + ' ' + contact?.lastName
-  const isActive = (status) => (status ? LABEL.ACTIVE : LABEL.INACTIVE)
+
+  const getContactTitleOrEmail = (c) => {
+    const hasValidTitle = c?.title
+    const hasValidEmail = c?.email && c?.email.length <= 18
+    const shouldShowSeparator = hasValidTitle && hasValidEmail
+
+    return `${hasValidTitle ? c.title : ''}${shouldShowSeparator ? ' / ' : ''}${
+      hasValidTitle && hasValidTitle.length <= 20 && hasValidEmail ? c.email : ''
+    }`
+  }
 
   useEffect(() => {
     if (id) {
       dispatch(getContacts(id))
-
-      console.log('contacts', contacts)
     }
   }, [dispatch])
 
@@ -71,7 +78,7 @@ const ContactListWidget = ({ value }) => {
                       }
                       secondary={
                         <Typography variant={TYPOGRAPHY.BODY2} color="text.secondary">
-                          {c?.title ? c?.title : ''} {!c?.title || !c?.email ? '' : ' / '} {c?.email || ''}
+                          {getContactTitleOrEmail(c)}
                         </Typography>
                       }
                     />
