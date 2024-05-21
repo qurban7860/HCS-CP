@@ -5,7 +5,6 @@ export const GLOBAL = {
   APP_BRANCH: 'CUSTOMER PORTAL',
   APP_TAGLINE: 'Shaping the World of Construction',
   APP_CUSTOMER_TAGLINE: 'Customer portal for convenient & efficient machine management, update and support.',
-  API_URL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
   APP_NAME: import.meta.env.VITE_NAME,
   SERVER_URL: import.meta.env.VITE_SERVER_URL,
   SERVER_DEV_URL: import.meta.env.VITE_SERVER_DEV_URL,
