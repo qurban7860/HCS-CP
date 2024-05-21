@@ -3,28 +3,29 @@ import PropTypes from 'prop-types'
 import { useSelector, dispatch } from 'store'
 import { useParams } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from 'react-hook-form'
+import { useIcon, ICON_NAME, snack } from 'hook'
 import { Box, Typography, Grid, Card, Divider } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox } from 'theme/style'
-import { useGetCustomerQuery } from 'store/slice'
-import { useGetUserQuery } from 'store/slice'
-import { useForm } from 'react-hook-form'
+import { getCustomerMachines, useGetCustomerQuery, useGetUserQuery, resetCustomerMachines } from 'store/slice'
 import { customerDefaultValues } from 'section/crm'
 import { HowickResources } from 'section/common'
-import { IconTooltip, BackButton, AuditBox, GridViewField, GridViewTitle } from 'component'
+import { IconTooltip, BackButton, AuditBox, GridViewField, GridViewTitle, SvgFlagIcon } from 'component'
 import FormProvider from 'component/hook-form'
 import { ViewFormField } from 'component/viewform'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
-import { ICON_NAME, snack } from 'hook'
 import { MARGIN } from 'config'
 import { KEY, TITLE, LABEL, RESPONSE, COLOR, VIEW_FORM, VARIANT, FLEX_DIR, FLEX } from 'constant'
+import { MachineListWidget, ContactListWidget } from 'section/crm/customer'
 import BadgeCardMedia from './badge-media'
 import { CardOption } from './style'
 
 const CustomerLayout = () => {
   const { id } = useParams()
   const { user: userState, userId } = useSelector((state) => state.auth)
+  const { customerMachines } = useSelector((state) => state.machine)
   const { data: securityUser, isLoading, error, refetch } = useGetUserQuery(userId)
   const { data: customerData, isLoading: customerIsLoading, error: customerError, refetch: customerRefetch } = useGetCustomerQuery(id)
 
@@ -41,13 +42,20 @@ const CustomerLayout = () => {
       snack(RESPONSE.FETCH_LOADING)
     } else {
       snack(RESPONSE.success.FETCH_DATA, { variant: COLOR.SUCCESS })
-
-      // machineRefetch()
     }
     customerRefetch()
   }, [customerRefetch, id, customerData, customerIsLoading, customerError])
 
-  const defaultValues = customerDefaultValues(customerData)
+  useEffect(() => {
+    if (id) {
+      dispatch(getCustomerMachines(id))
+    }
+    return () => {
+      dispatch(resetCustomerMachines())
+    }
+  }, [id, dispatch])
+
+  const defaultValues = customerDefaultValues(customerData, customerMachines)
 
   const methods = useForm({
     resolver: yupResolver(customerDefaultValues),
@@ -86,11 +94,12 @@ const CustomerLayout = () => {
             </Grid>
           </Grid>
           {/* TODO: HPS-1246: Machine List widget */}
-          {/* <Grid item lg={3}> */}
-          {/* <MachineConnectionWidget value={defaultValues} /> */}
-          {/* </Grid> */}
+          <Grid item lg={3}>
+            <MachineListWidget value={defaultValues} />
+            <ContactListWidget value={defaultValues} />
+          </Grid>
 
-          <Grid item sm={12} lg={12}>
+          <Grid item sm={12} lg={9}>
             <Box mb={2}>
               <Card {...CardOption(themeMode)}>
                 <GStyledTopBorderDivider mode={themeMode} />
@@ -113,6 +122,11 @@ const CustomerLayout = () => {
                       </Grid>
                       <Grid item xs={12} justifyContent={FLEX.FLEX_END}>
                         <Grid container justifyContent={FLEX.FLEX_END}>
+                          <SvgFlagIcon
+                            country={defaultValues?.country}
+                            color={themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.bronze}
+                            dimension={24}
+                          />
                           {defaultValues?.isActive ? (
                             <IconTooltip
                               title={LABEL.ACTIVE}
@@ -134,6 +148,7 @@ const CustomerLayout = () => {
                       <GridViewField heading={CUSTOMER.CUSTOMER_CODE} isLoading={isLoading} children={defaultValues?.code} />
                       <GridViewField heading={CUSTOMER.TRADING_NAME} isLoading={isLoading} alias={defaultValues?.tradingName} />
                       <GridViewField heading={VIEW_FORM.STATUS} isLoading={isLoading} children={defaultValues?.status} />
+                      <GridViewField heading={VIEW_FORM.WEBSITE} isLoading={isLoading} link={defaultValues?.website} />
                     </Grid>
                   </Grid>
                 </Grid>
