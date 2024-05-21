@@ -1,4 +1,4 @@
-import { alpha } from '@mui/material/styles'
+import { alpha, useTheme } from '@mui/material/styles'
 import { KEY } from 'constant'
 
 const BRAND = {
@@ -191,3 +191,5 @@ export default function palette(themeMode) {
 
   return themeMode === KEY.LIGHT ? light : dark
 }
+
+export const { theme } = useTheme
