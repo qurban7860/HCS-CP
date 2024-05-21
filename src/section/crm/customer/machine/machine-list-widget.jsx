@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from 'react'
+import { m } from 'framer-motion'
 import PropTypes from 'prop-types'
 import { useIcon, ICON_NAME } from 'hook'
 import { useSelector } from 'react-redux'
@@ -9,7 +10,7 @@ import { Grid, Typography, IconButton, Divider } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTooltip } from 'theme/style'
 import { useSettingContext } from 'component/setting'
-import { FormHeader } from 'component'
+import { FormHeader, SkeletonViewFormField } from 'component'
 import { PATH_MACHINE } from 'route/path'
 import { GStyledCenterBox, GStyledListItemText, GStyledSpanBox } from 'theme/style'
 import { VARIANT, SIZE, LABEL, KEY, DECOILER, FILTER_TYPE } from 'constant'
@@ -18,24 +19,45 @@ import { StyledStatusChip } from '../style'
 
 const { TYPOGRAPHY } = VARIANT
 const { ONE_HALF_T, THREE_T, FIVE_T, SIX_T } = DECOILER
-const { THREE_TON } = FILTER_TYPE
 
 const MachineListWidget = ({ value }) => {
   const [icon, setIcon] = useState(null)
+  const [loading, setLoading] = useState(false)
   const { id } = useParams()
   const theme = useTheme()
   const { themeMode } = useSettingContext()
-  const { customerMachines } = useSelector((state) => state.machine)
+  const { customerMachines, isLoading } = useSelector((state) => state.machine)
   const { machineModels, machineModel } = useSelector((state) => state.machinemodel)
 
   const isActive = (status) => (status ? LABEL.ACTIVE : LABEL.INACTIVE)
   const decoilers = ['1.5T', '3.0T', '5.0T', '6.0T']
 
   useEffect(() => {
-    if (id) {
-      dispatch(getCustomerMachines(id))
+    const fetchData = async () => {
+      setLoading(true)
+      await dispatch(getCustomerMachines(id))
+      setLoading(false)
     }
+    fetchData()
   }, [dispatch, id])
+
+  useEffect(() => {
+    const model = customerMachines?.map((mach) => mach?.machineModel?.name)
+
+    model.forEach((machineName) => {
+      if (checkDecoilerType(machineName) === THREE_T) {
+        setIcon(ICON_NAME.DECOILER_3T)
+      } else if (checkDecoilerType(machineName) === FIVE_T) {
+        setIcon(ICON_NAME.DECOILER_5T)
+      } else if (checkDecoilerType(machineName) === SIX_T) {
+        setIcon(ICON_NAME.DECOILER_6T)
+      } else if (checkDecoilerType(machineName) === ONE_HALF_T) {
+        setIcon(ICON_NAME.DECOILER_1_5T)
+      } else {
+        setIcon(null)
+      }
+    })
+  }, [customerMachines, machineModel])
 
   const isDecoiler1_5T = (machineName) => normalizer(machineName)?.includes(ONE_HALF_T)
   const isDecoiler3T = (machineName) => normalizer(machineName)?.includes(THREE_T)
@@ -45,16 +67,11 @@ const MachineListWidget = ({ value }) => {
   const checkDecoilerType = (machineName) => {
     const normalizedMachineName = normalizer(machineName)
 
-    // console.log('normalizedMachineName', normalizedMachineName)
-
     if (isDecoiler1_5T(normalizedMachineName)) {
-      setIcon(ICON_NAME.DECOILER_1_5T)
       return ONE_HALF_T
     } else if (isDecoiler3T(normalizedMachineName)) {
-      setIcon(ICON_NAME.DECOILER_3T)
       return THREE_T
     } else if (isDecoiler5T(normalizedMachineName)) {
-      setIcon(ICON_NAME.DECOILER_5T)
       return FIVE_T
     } else if (isDecoiler6T(normalizedMachineName)) {
       return SIX_T
@@ -62,28 +79,6 @@ const MachineListWidget = ({ value }) => {
       return null
     }
   }
-
-  useEffect(() => {
-    const model = customerMachines?.map((mach) => mach?.machineModel?.name)
-
-    model.forEach((machineName) => {
-      if (checkDecoilerType(machineName) === THREE_T) {
-        setIsDecoiler(true)
-        setIcon(ICON_NAME.DECOILER_3T)
-      } else if (checkDecoilerType(machineName) === FIVE_T) {
-        setIsDecoiler(true)
-        setIcon(ICON_NAME.DECOILER_5T)
-      } else if (checkDecoilerType(machineName) === SIX_T) {
-        setIsDecoiler(true)
-        setIcon(ICON_NAME.DECOILER_6T)
-      } else if (checkDecoilerType(machineName) === ONE_HALF_T) {
-        setIsDecoiler(true)
-        setIcon(ICON_NAME.DECOILER_1_5T)
-      } else {
-        setIcon(null)
-      }
-    })
-  }, [customerMachines])
 
   const { Icon: LocIcon, iconSrc } = useIcon(icon)
 
@@ -149,9 +144,13 @@ const MachineListWidget = ({ value }) => {
                   </GStyledCenterBox>
                 </Grid>
                 {/* if in the last index dont add divider */}
-                {index !== value?.machines.length - 1 && <Divider variant="fullWidth" style={{ width: '100%', marginBottom: '10px' }} />}
+                {index !== customerMachines?.length - 1 && <Divider variant="fullWidth" style={{ width: '100%', marginBottom: '10px' }} />}
               </Fragment>
             ))
+          ) : loading ? (
+            <m.div>
+              <SkeletonViewFormField />
+            </m.div>
           ) : (
             <Typography variant={TYPOGRAPHY.OVERLINE1} color="text.no">
               {LABEL.NO_MACHINE_FOUND}
