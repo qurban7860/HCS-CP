@@ -4,7 +4,7 @@ import { VARIANT, TITLE } from 'constant'
 
 const { TYPOGRAPHY } = VARIANT
 
-const GridViewTitle = ({ title, variant = TYPOGRAPHY.H5, gridSize = 12 }) => {
+const GridViewTitle = ({ title, variant = TYPOGRAPHY.OVERLINE2, gridSize = 12 }) => {
   return (
     <Grid item lg={gridSize} my={1}>
       <Typography variant={variant} gutterBottom>
