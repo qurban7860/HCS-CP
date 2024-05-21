@@ -2,14 +2,16 @@ import { sub } from 'date-fns'
 import { useMemo } from 'react'
 import { fDate, parseAddress } from 'util'
 
-export default function customerDefaultValues(customerData) {
+export default function customerDefaultValues(customerData, ext) {
   return useMemo(() => {
     return {
       id: customerData?._id || '',
       code: customerData?.clientCode || '',
       name: customerData?.name || '',
       ref: customerData?.ref || '',
+      website: customerData?.mainSite?.website || '',
       tradingName: customerData?.tradingName || '',
+      contacts: customerData?.contacts || [],
       accountManager: customerData?.accountManager || [],
       projectManager: customerData?.projectManager || [],
       supportManager: customerData?.supportManager || [],
@@ -28,6 +30,7 @@ export default function customerDefaultValues(customerData) {
       excludeReports: customerData?.excludeReports || false,
       isActive: customerData?.isActive,
       supportSubscription: customerData?.supportSubscription,
+      machines: ext || [],
       createdAt: fDate(customerData?.createdAt) || '',
       updatedAt: fDate(customerData?.updatedAt) || '',
       createdBy: customerData?.createdBy?.name || '',

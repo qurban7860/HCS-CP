@@ -2,6 +2,7 @@ import { apiSlice } from 'store/slice'
 import { PATH_SERVER } from 'route/server'
 import { getAuthToken } from 'auth/util.js'
 import { METHOD } from 'constant'
+import { get } from 'react-hook-form'
 
 const { GET } = METHOD
 
@@ -45,6 +46,15 @@ export const machineSlice = apiSlice.injectEndpoints({
         }
       })
     })
+    // getMachineViaCustomerArchived: builder.query({
+    //   query: (id) => ({
+    //     url: PATH_SERVER.PRODUCT.MACHINE.viaCustomer(id, true),
+    //     method: GET,
+    //     headers: {
+    //       Authorization: `Bearer ${getAuthToken()}`
+    //     }
+    //   })
+    // })
   })
 })
 

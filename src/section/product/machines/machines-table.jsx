@@ -13,6 +13,7 @@ import { StyledIconListItemText, StyledTableRow } from './style'
 const MachineTable = ({ machine, mode, index }) => {
   const theme = useTheme()
   const navigate = useNavigate()
+
   const { Icon, iconSrc: activeSrc } = useIcon(ICON_NAME.ACTIVE)
   const { iconSrc: inactiveSrc } = useIcon(ICON_NAME.INACTIVE)
 
@@ -26,7 +27,7 @@ const MachineTable = ({ machine, mode, index }) => {
   return (
     <Fragment>
       <TableBody>
-        <StyledTableRow index={index} mode={mode} item={machine}>
+        <StyledTableRow index={index} mode={mode} machine={machine}>
           <LinkTableCell
             param={machine?.serialNo}
             onClick={() => {

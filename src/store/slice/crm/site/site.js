@@ -18,83 +18,63 @@ const initialState = {
   site: null,
   lat: '',
   long: '',
-  filterBy: '',
-  page: 0,
-  rowsPerPage: 100
+  siteFilterBy: '',
+  sitePage: 0,
+  siteRowsPerPage: 10
 }
 
 const slice = createSlice({
   name: 'site',
   initialState,
   reducers: {
-    // START LOADING
     startLoading(state) {
       state.error = null
       state.isLoading = true
     },
-    // SET TOGGLE
     setSiteDialog(state, action) {
       state.siteDialog = action.payload
     },
-
-    // ACTIVE CARD INDEX
     setCardActiveIndex(state, action) {
       state.activeCardIndex = action.payload
     },
-
-    // CARD IS EXPENDED
     setIsExpanded(state, action) {
       state.isExpanded = action.payload
     },
-
-    // HAS ERROR
     hasError(state, action) {
       state.isLoading = false
       state.error = action.payload
       state.initial = true
     },
-
-    // GET Sites
     getSitesSuccess(state, action) {
       state.isLoading = false
       state.success = true
       state.sites = action.payload
       state.initial = true
     },
-
-    // GET Active Sites
     getActiveSitesSuccess(state, action) {
       state.isLoading = false
       state.success = true
       state.activeSites = action.payload
       state.initial = true
     },
-
-    // GET Site
     getSiteSuccess(state, action) {
       state.isLoading = false
       state.success = true
       state.site = action.payload
       state.initial = true
     },
-
-    // RESET SITE
     resetSite(state) {
       state.site = null
       state.responseMessage = null
       state.success = false
       state.isLoading = false
     },
-
-    // RESET SITES
     resetSites(state) {
       state.sites = []
       state.responseMessage = null
       state.success = false
       state.isLoading = false
     },
-
-    // RESET Active SITES
     resetActiveSites(state) {
       state.activeSites = []
       state.responseMessage = null
@@ -107,22 +87,18 @@ const slice = createSlice({
       state.success = true
       state.initial = true
     },
-
     setLatLongCoordinates(state, action) {
       state.lat = action.payload.lat
       state.long = action.payload.lng
     },
-    // Set FilterBy
-    setFilterBy(state, action) {
-      state.filterBy = action.payload
+    setSiteFilterBy(state, action) {
+      state.siteFilterBy = action.payload
     },
-    // Set PageRowCount
-    ChangeRowsPerPage(state, action) {
-      state.rowsPerPage = action.payload
+    ChangeSiteRowsPerPage(state, action) {
+      state.siteRowsPerPage = action.payload
     },
-    // Set PageNo
-    ChangePage(state, action) {
-      state.page = action.payload
+    ChangeSitePage(state, action) {
+      state.sitePage = action.payload
     }
   }
 })
@@ -140,9 +116,9 @@ export const {
   resetSite,
   resetSites,
   resetActiveSites,
-  setFilterBy,
-  ChangeRowsPerPage,
-  ChangePage,
+  setSiteFilterBy,
+  ChangeSiteRowsPerPage,
+  ChangeSitePage,
   setSiteDialog
 } = slice.actions
 

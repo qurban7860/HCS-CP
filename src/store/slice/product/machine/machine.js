@@ -1,4 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
+import axiosInstance from 'util/axios'
+import { GLOBAL } from 'config/global'
+import { PATH_SERVER } from 'route/server'
+import conNex from 'util/connex'
 // import axios from '../../../utils/axios'
 
 const initialState = {
@@ -11,6 +15,7 @@ const initialState = {
   error: null,
   isParent: false,
   isConnected: false,
+  isDecoiler: false,
   machine: {},
   parentMachine: {},
   connectedMachine: {},
@@ -27,43 +32,33 @@ const initialState = {
   transferDialogBoxVisibility: false,
   accountManager: null,
   supportManager: null,
-  filterBy: '',
-  page: 0,
-  rowsPerPage: 100
+  machineFilterBy: '',
+  machinePage: 0,
+  machineRowsPerPage: 100
 }
 
 const machineSlice = createSlice({
   name: 'machine',
   initialState,
   reducers: {
-    // START LOADING
     startLoading(state) {
       state.isLoading = true
     },
-
-    // STOP LOADING
     stopLoading(state) {
       state.isLoading = false
     },
-
-    // SET DIALOGBOX VISIBILITY
     setMachineTab(state, action) {
       state.machineTab = action.payload
     },
-
-    // set dialogbox visibility
     setTransferDialogBoxVisibility(state, action) {
       state.transferDialogBoxVisibility = action.payload
     },
-
     setMachineDialog(state, action) {
       state.machineDialog = action.payload
     },
-
     setMachineTransferDialog(state, action) {
       state.machineTransferDialog = action.payload
     },
-    // set machine type
     setMachineType(state, action) {
       state.machineType = action.payload
     },
@@ -73,176 +68,142 @@ const machineSlice = createSlice({
     setMachineConnected(state, action) {
       state.isConnected = action.payload
     },
-    //  has error
+    setIsDecoiler(state, action) {
+      state.isDecoiler = action.payload
+    },
     hasError(state, action) {
       state.isLoading = false
       state.error = action.payload
       state.initial = true
     },
-
-    // GET Machines
-    getMachinesSuccess(state, action) {
-      state.isLoading = false
-      state.success = true
-      state.machines = action.payload
-      state.initial = true
-    },
-    // GET Active Machines
-    getActiveMachinesSuccess(state, action) {
-      state.isLoading = false
-      state.success = true
-      state.activeMachines = action.payload
-      state.initial = true
-    },
-    // GET All Machines
-    getAllMachinesSuccess(state, action) {
-      state.isLoading = false
-      state.success = true
-      state.allMachines = action.payload
-      state.initial = true
-    },
-
-    // GET Connected Machine
-    getConnectedMachineSuccess(state, action) {
-      state.isLoading = false
-      state.success = true
-      state.connectedMachine = action.payload
-      state.initial = true
-    },
-
-    // GET Customer Machines
-    getCustomerMachinesSuccess(state, action) {
-      state.isLoading = false
-      state.success = true
-      state.customerMachines = action.payload
-      state.initial = true
-    },
-
-    // GET Active Customer Machines
-    getActiveCustomerMachinesSuccess(state, action) {
-      state.isLoading = false
-      state.success = true
-      state.activeCustomerMachines = action.payload
-      state.initial = true
-    },
-
-    // RESET Active Customer Machines
-    resetActiveCustomerMachines(state, action) {
-      state.isLoading = false
-      state.success = true
-      state.activeCustomerMachines = []
-      state.initial = true
-    },
-
-    // GET Machine LatLong Coordinates
-    getMachineLatLongCoordinatesSuccess(state, action) {
-      state.isLoading = false
-      state.success = true
-      state.machineLatLongCoordinates = action.payload
-      state.initial = true
-    },
-
-    // GET Machine
     getMachineSuccess(state, action) {
       state.isLoading = false
       state.success = true
       state.machine = action.payload
       state.initial = true
     },
-
-    // GET Machine For Dialog
+    getMachinesSuccess(state, action) {
+      state.isLoading = false
+      state.success = true
+      state.machines = action.payload
+      state.initial = true
+    },
+    getActiveMachinesSuccess(state, action) {
+      state.isLoading = false
+      state.success = true
+      state.activeMachines = action.payload
+      state.initial = true
+    },
+    getAllMachinesSuccess(state, action) {
+      state.isLoading = false
+      state.success = true
+      state.allMachines = action.payload
+      state.initial = true
+    },
+    getConnectedMachineSuccess(state, action) {
+      state.isLoading = false
+      state.success = true
+      state.connectedMachine = action.payload
+      state.initial = true
+    },
+    getCustomerMachinesSuccess(state, action) {
+      state.isLoading = false
+      state.success = true
+      state.customerMachines = action.payload
+      state.initial = true
+    },
+    getActiveCustomerMachinesSuccess(state, action) {
+      state.isLoading = false
+      state.success = true
+      state.activeCustomerMachines = action.payload
+      state.initial = true
+    },
+    resetActiveCustomerMachines(state, action) {
+      state.isLoading = false
+      state.success = true
+      state.activeCustomerMachines = []
+      state.initial = true
+    },
+    getMachineLatLongCoordinatesSuccess(state, action) {
+      state.isLoading = false
+      state.success = true
+      state.machineLatLongCoordinates = action.payload
+      state.initial = true
+    },
+    getMachineSuccess(state, action) {
+      state.isLoading = false
+      state.success = true
+      state.machine = action.payload
+      state.initial = true
+    },
     getMachineForDialogSuccess(state, action) {
       state.isLoading = false
       state.success = true
       state.machineForDialog = action.payload
       state.initial = true
     },
-
-    // GET Machine Gallery
     getMachineGallerySuccess(state, action) {
       state.isLoading = false
       state.success = true
       state.machineGallery = action.payload
       state.initial = true
     },
-
     setResponseMessage(state, action) {
       state.responseMessage = action.payload
       state.isLoading = false
       state.success = true
       state.initial = true
     },
-
-    // RESET MACHINE
     resetMachine(state) {
       state.machine = {}
       state.responseMessage = null
       state.success = false
       state.isLoading = false
     },
-
-    // RESET MACHINE
     resetMachines(state) {
       state.machines = []
       state.responseMessage = null
       state.success = false
       state.isLoading = false
     },
-
-    // RESET Active MACHINE
     resetActiveMachines(state) {
       state.activeMachines = []
       state.responseMessage = null
       state.success = false
       state.isLoading = false
     },
-
-    // Reset Customer Machines
     resetCustomerMachines(state) {
       state.customerMachines = []
       state.responseMessage = null
       state.success = false
       state.isLoading = false
     },
-
-    // RESET All Machines
     resetAllMachines(state, action) {
       state.isLoading = false
       state.success = true
       state.allMachines = []
       state.initial = true
     },
-
-    // Set Account Manager Filter
     setAccountManager(state, action) {
       state.accountManager = action.payload
     },
-
-    // Set Support Manager Filter
     setSupportManager(state, action) {
       state.supportManager = action.payload
     },
-
-    // Set FilterBy
-    setFilterBy(state, action) {
-      state.filterBy = action.payload
+    setMachineFilterBy(state, action) {
+      state.machineFilterBy = action.payload
     },
-
-    // Set PageRowCount
-    ChangeRowsPerPage(state, action) {
-      state.rowsPerPage = action.payload
+    ChangeMachineRowsPerPage(state, action) {
+      state.machineRowsPerPage = action.payload
     },
-    // Set PageNo
-    ChangePage(state, action) {
-      state.page = action.payload
+    ChangeMachinePage(state, action) {
+      state.machinePage = action.payload
     }
   }
 })
 
-// Reducer
 export default machineSlice.reducer
 
-// Actions
 export const {
   setMachineTab,
   setMachineEditFormVisibility,
@@ -253,6 +214,7 @@ export const {
   setMachineType,
   setMachineParent,
   setMachineConnected,
+  setIsDecoiler,
   resetCustomerMachines,
   resetActiveCustomerMachines,
   resetMachine,
@@ -261,24 +223,37 @@ export const {
   resetAllMachines,
   setResponseMessage,
   setTransferDialogBoxVisibility,
-  setFilterBy,
-  setVerified,
   setAccountManager,
   setSupportManager,
-  ChangeRowsPerPage,
-  ChangePage,
+  setMachineFilterBy,
+  ChangeMachineRowsPerPage,
+  ChangeMachinePage,
   setMachineDialog
 } = machineSlice.actions
 
-export function getConnntedMachine(id) {
+export function getMachine(id) {
   return async (dispatch) => {
-    dispatch(slice.actions.startLoading())
+    dispatch(machineSlice.actions.startLoading())
     try {
-      const response = await axios.get(`${CONFIG.SERVER_URL}products/machines/${id}`)
-      dispatch(slice.actions.getConnectedMachineSuccess(response.data))
+      const response = await axiosInstance.get(PATH_SERVER.PRODUCT.MACHINE.detail(id))
+      dispatch(machineSlice.actions.getMachineSuccess(response.data))
     } catch (error) {
       console.error(error)
-      dispatch(slice.actions.hasError(error.Message))
+      dispatch(machineSlice.actions.hasError(error.Message))
+      throw error
+    }
+  }
+}
+
+export function getCustomerMachines(id) {
+  return async (dispatch) => {
+    dispatch(machineSlice.actions.startLoading())
+    try {
+      const response = await axiosInstance.get(PATH_SERVER.PRODUCT.MACHINE.viaCustomer(id, false))
+      dispatch(machineSlice.actions.getCustomerMachinesSuccess(response.data))
+    } catch (error) {
+      console.error(error)
+      dispatch(machineSlice.actions.hasError(error.Message))
       throw error
     }
   }

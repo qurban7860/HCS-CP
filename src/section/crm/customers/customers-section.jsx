@@ -5,7 +5,7 @@ import { snack, useTable } from 'hook'
 import { Table, Typography, Grid } from '@mui/material'
 import { GStyledTableHeaderBox, GStyledSpanBox } from 'theme/style'
 import { useGetAllCustomerQuery, useGetUserQuery } from 'store/slice'
-import { ChangePage, ChangeRowsPerPage, setFilterBy } from 'store/slice/crm'
+import { ChangeCustomerPage, ChangeCustomerRowsPerPage, setCustomerFilterBy } from 'store/slice/crm'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
 import { SearchBox } from 'component/search'
@@ -13,14 +13,15 @@ import { TableNoData } from 'component'
 import { SkeletonTable } from 'component/skeleton'
 import { CustomerTable, CustomerHeader, CustomerListPagination } from 'section/crm'
 import { MARGIN, TABLE } from 'config'
-import { COLOR, KEY, TITLE, RESPONSE } from 'constant'
+import { COLOR, KEY, TITLE, RESPONSE, VARIANT } from 'constant'
 import { StyledScrollTableContainer } from './style'
+
+const { TYPOGRAPHY } = VARIANT
 
 const CustomerListSection = () => {
   const [tableData, setTableData] = useState([])
-  const { filterBy, page, rowsPerPage } = useSelector((state) => state.customer)
-  const { user: userState, userId } = useSelector((state) => state.auth)
-  const { data: userDetail, isLoading: isUserFetching, error, refetch } = useGetUserQuery(userId)
+  const { customerFilterBy, customerPage, customerRowsPerPage } = useSelector((state) => state.customer)
+  const { userId } = useSelector((state) => state.auth)
   const { data: allCustomerData, isLoading, error: allCustomerError, refetch: refetchAllCustomer } = useGetAllCustomerQuery()
 
   const { themeMode } = useSettingContext()
@@ -54,26 +55,29 @@ const CustomerListSection = () => {
 
   const debouncedSearch = useRef(
     debounce((value) => {
-      dispatch(ChangePage(0))
-      dispatch(setFilterBy(value))
+      dispatch(ChangeCustomerPage(0))
+      dispatch(setCustomerFilterBy(value))
     }, 500)
   )
 
   const handleSearch = (event) => {
     debouncedSearch.current(event.target.value)
-    dispatch(setFilterBy(event.target.value))
+    dispatch(setCustomerFilterBy(event.target.value))
   }
 
   const handleChangePage = (event, newPage) => {
-    dispatch(ChangePage(newPage))
+    if (newPage < Math.ceil(filteredData.length / customerRowsPerPage)) {
+      dispatch(ChangeCustomerPage(newPage))
+    }
   }
 
   const handleChangeRowsPerPage = (event) => {
-    dispatch(ChangePage(0))
-    dispatch(ChangeRowsPerPage(parseInt(event.target.value, 10)))
+    dispatch(ChangeCustomerPage(0))
+    dispatch(ChangeCustomerRowsPerPage(parseInt(event.target.value, 10)))
   }
   const filteredData =
-    tableData && tableData.filter((row) => Object.values(row)?.some((value) => value?.toString().toLowerCase().includes(filterBy.toLowerCase())))
+    tableData &&
+    tableData.filter((row) => Object.values(row)?.some((value) => value?.toString().toLowerCase().includes(customerFilterBy.toLowerCase())))
   const isNotFound = !isLoading && !filteredData.length
 
   return (
@@ -82,11 +86,11 @@ const CustomerListSection = () => {
         {/* <Typography variant="h3" color={themeMode === KEY.LIGHT ? 'common.black' : 'common.white'}>
           {userDetail?.customer?.name.toUpperCase() || TITLE.MACHINE} &nbsp;
         </Typography> */}
-        <Typography variant="h3" color={themeMode === KEY.LIGHT ? 'grey.200' : 'howick.bronze'}>
+        <Typography variant={TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? 'grey.200' : 'howick.bronze'}>
           {TITLE.ORGANIZATIONS.toUpperCase()}
         </Typography>
       </GStyledSpanBox>
-      <SearchBox term={filterBy} mode={themeMode} handleSearch={handleSearch} />
+      <SearchBox term={customerFilterBy} mode={themeMode} handleSearch={handleSearch} />
       <Grid container flexDirection="row" {...MARGIN.PAGE_PROP}>
         <Grid item lg={12}>
           <Grid container mb={2}>
@@ -95,16 +99,16 @@ const CustomerListSection = () => {
               <CustomerListPagination
                 mode={themeMode}
                 data={filteredData}
-                page={page}
-                rowsPerPage={rowsPerPage}
+                page={customerPage}
+                rowsPerPage={customerRowsPerPage}
                 handleChangePage={handleChangePage}
                 handleChangeRowsPerPage={handleChangeRowsPerPage}
               />
               <StyledScrollTableContainer>
                 <Table>
                   <CustomerHeader mode={themeMode} />
-                  {(isLoading ? [...Array(rowsPerPage)] : filteredData)
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  {(isLoading ? [...Array(customerRowsPerPage)] : filteredData)
+                    .slice(customerPage * customerRowsPerPage, customerPage * customerRowsPerPage + customerRowsPerPage)
                     .map((row, index) =>
                       row ? (
                         <CustomerTable key={row._id} customer={row} mode={themeMode} index={index} />

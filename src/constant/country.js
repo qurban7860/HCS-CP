@@ -38,13 +38,15 @@ const COUNTRY = [
   // { code: 'BR', label: 'British Indian Ocean Territory', phone: '+246' },
   // { code: 'BR', label: 'British Virgin Island', phone: '+1' },
   { code: 'BN', label: 'Brunei Darussalam', phone: '+673' },
-
   { code: 'AE', label: 'United Arab Emirates', phone: '+971' },
   { code: 'AQ', label: 'Antarctica', phone: '+672' },
   { code: 'BF', label: 'Burkina Faso', phone: '+226' },
   { code: 'BG', label: 'Bulgaria', phone: '+359' },
   { code: 'BI', label: 'Burundi', phone: '+257' },
   { code: 'BL', label: 'Saint Barthelemy', phone: '+590' },
+  { code: 'BQ-BO', label: 'Bonaire, Saint Eustatius and Saba', phone: '+599' },
+  { code: 'BQ-SA', label: 'Sint Eustatius and Saba Bonaire', phone: '+599' },
+  { code: 'BQ-SE', label: 'Sint Eustatius and Saba Saba', phone: '+599' },
   { code: 'BV', label: 'Bouvet Island', phone: '+47' },
   { code: 'CA', label: 'Canada', phone: '+1' },
   { code: 'CC', label: 'Cocos (Keeling) Islands', phone: '+61' },
@@ -85,6 +87,10 @@ const COUNTRY = [
   { code: 'FR', label: 'France', phone: '+33' },
   { code: 'GA', label: 'Gabon', phone: '+241' },
   { code: 'GB', label: 'United Kingdom', phone: '+44' },
+  { code: 'GB-ENG', label: 'England', phone: '+44' },
+  { code: 'GB-NIR', label: 'Northern Ireland', phone: '+44' },
+  { code: 'GB-SCT', label: 'Scotland', phone: '+44' },
+  { code: 'GB-WLS', label: 'Wales', phone: '+44' },
   { code: 'GD', label: 'Grenada', phone: '+1-473' },
   { code: 'GE', label: 'Georgia', phone: '+995' },
   { code: 'GF', label: 'French Guiana', phone: '+594' },
@@ -256,7 +262,7 @@ const COUNTRY = [
   { code: 'YT', label: 'Mayotte', phone: '+262' },
   { code: 'ZA', label: 'South Africa', phone: '+27' },
   { code: 'ZM', label: 'Zambia', phone: '+260' },
-  { code: 'ZW', label: 'Zimbabwe', phone: '+263' },
+  { code: 'ZW', label: 'Zimbabwe', phone: '+263' }
 ]
 
 export default COUNTRY
