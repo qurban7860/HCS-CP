@@ -39,7 +39,7 @@ const CustomerTable = ({ customer, mode, index }) => {
   return (
     <Fragment>
       <TableBody>
-        <StyledTableRow index={index} mode={mode} item={customer}>
+        <StyledTableRow index={index} mode={mode} customer={customer}>
           <LinkTableCell
             param={customer?.name}
             onClick={() => {
@@ -61,8 +61,8 @@ const CustomerTable = ({ customer, mode, index }) => {
               .filter((value) => value !== '')
               .join(', ')}
           </TableCell>
-          <TableCell align="center">{fDate(customer?.createdAt)}</TableCell>
-          <TableCell align="center">
+          <TableCell>{fDate(customer?.createdAt)}</TableCell>
+          <TableCell>
             <StyledIconListItemText inActive={customer?.isActive}>
               <m.div>{customer?.isActive ? <Icon icon={activeSrc} color={activeColor} /> : <Icon icon={inactiveSrc} color={inactiveColor} />}</m.div>
             </StyledIconListItemText>
