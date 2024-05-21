@@ -84,7 +84,11 @@ export const GStyledTableChip = styled(({ theme, ...other }) => <Chip {...other}
   margin: theme.spacing(0.2),
   // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
   // backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.howick.midBlue,
-  borderRadius: 2
+  borderRadius: 2,
+  height: '24px',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap'
 }))
 
 // :form top border divider

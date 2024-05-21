@@ -17,13 +17,6 @@ function NotificationPopover() {
   const [totalUnRead, setTotalUnRead] = useState(0)
   const navigate = useNavigate()
 
-  // useEffect(() => {
-  //   setTotalUnRead(
-  //     notifications &&
-  //       notifications.filter((item) => item?.readBy?.includes(userId) === false).length
-  //   )
-  // }, [notifications, userId])
-
   const handleOpenPopover = (event) => {
     setOpenPopover(event.currentTarget)
   }

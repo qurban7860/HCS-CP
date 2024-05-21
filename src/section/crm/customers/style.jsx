@@ -69,7 +69,7 @@ export const StyledHeaderTableCell = styled(({ theme, mode, item, ...other }) =>
   position: 'sticky',
   top: 0,
   zIndex: 1,
-  width: item.key === KEY.CUSTOMER ? '20%' : item.key === 'isActive' ? '5%' : item.key === 'createdAt' ? '5%' : `calc(100% / ${HEADER.length})`
+  width: item.key === KEY.CUSTOMER ? '20%' : item.key === 'isActive' ? '5%' : `calc(100% / ${HEADER.length})`
 }))
 
 export const StyledIconListItemText = styled(({ theme, inActive, ...other }) => <ListItemText {...other} />)(({ theme, inActive }) => ({
@@ -97,7 +97,7 @@ export const StyledTableRow = styled(({ theme, mode, index, customer, ...other }
   '&:hover': {
     backgroundColor: mode === KEY.DARK ? theme.palette.grey[700] : theme.palette.common.white
   },
-  width: customer?.name ? '20%' : customer?.isActive.toString() ? '5%' : customer?.createdAt.toString() ? '5%' : `calc(100% / ${HEADER.length})`
+  width: customer?.name ? '30%' : customer?.isActive.toString() ? '5%' : `calc(100% / ${HEADER.length})`
 }))
 
 export const StyledScrollTableContainer = styled(TableContainer)(({ theme }) => ({

@@ -62,10 +62,6 @@ const MachineConnectionWidget = ({ value }) => {
     const checkConnected = checkIsConnected(value?.machineConnection)
     const checkParent = checkIsParent(value?.parentConnection)
 
-    // console.log('value', value)
-    // console.log('checkConnected', checkConnected)
-    // console.log('checkParent', checkParent)
-
     if (checkParent) {
       dispatch(setMachineParent(true))
       setIcon(ICON_NAME.PARENT)
@@ -188,6 +184,7 @@ const MachineConnectionWidget = ({ value }) => {
                 <Grid item xs={4} flex={1} justifyContent={KEY.CENTER} alignContent={KEY.CENTER}>
                   <GStyledCenterBox>
                     <StyledStatusChip
+                      // NOTE: isActive set to true for now, while waiting for the API to return the correct value
                       label={<Typography variant={TYPOGRAPHY.H6}>{isActive(true)}</Typography>}
                       size={SIZE.SMALL}
                       variant={VARIANT.OUTLINED}

@@ -9,7 +9,6 @@ const { TOOLTIP } = ICON
 export default function IconTooltip({ onDelete, onClick, color, title, placement, icon, disabled, dimension = TOOLTIP }) {
   const { Icon, iconSrc } = useIcon(icon)
 
-  // create a utility function that convert theme color to alpha
   const convertToAlpha = (color) => {
     return alpha(color, 0.5)
   }

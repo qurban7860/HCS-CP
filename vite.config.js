@@ -29,6 +29,7 @@ export default defineConfig({
       theme: path.resolve(__dirname, 'src', 'theme'),
       util: path.resolve(__dirname, 'src', 'util'),
       root: path.resolve(__dirname, 'src', 'App.jsx'),
+      flag: path.resolve(__dirname, 'public', 'asset', 'svg', 'flag'),
       // @page
       dashboard: path.resolve(__dirname, 'src', 'page', 'dashboard'),
       customer: path.resolve(__dirname, 'src', 'page', 'customer'),
