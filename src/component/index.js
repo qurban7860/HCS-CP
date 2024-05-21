@@ -29,3 +29,6 @@ export { default as SkeletonTable } from './skeleton/table'
 export { default as TableNoData } from './table/no-data'
 // @audit
 export { default as AuditBox } from './audit/audit-box'
+// @svg
+export { default as SvgColor } from './svg-color/svg-color'
+export { default as SvgFlagIcon } from './svg-color/svg-flag'
