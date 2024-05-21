@@ -12,6 +12,10 @@ function _getIcon(icon) {
   return `/asset/icon/${icon}.svg`
 }
 
+function _getCountryIcon(icon) {
+  return `/asset/svg/flag/${icon}.svg`
+}
+
 function _getWebIcon(icon) {
   return `mdi:${icon}`
 }
@@ -42,6 +46,8 @@ const ICON_WEB = {
   MANUFACTURE: _getWebIcon('factory'),
   MAGNIFY_IN: _getWebIcon('magnify-plus'),
   MAGNIFY_OUT: _getWebIcon('magnify-minus'),
+  OPEN_IN_NEW: _getWebIcon('open-in-new'),
+  PHONE: _getWebIcon('phone'),
   REFRESH: _getWebIcon('refresh'),
   SAVE: _getWebIcon('content-save'),
   SEARCH: _getWebIcon('magnify'),
@@ -69,7 +75,9 @@ const ICON_LOC = {
   MODE_LIGHT: _getIcon('sun'),
   MODE_DARK: _getIcon('moon'),
   PARENT: _getIcon('parent'),
-  SETTING: _getIcon('setting')
+  SETTING: _getIcon('setting'),
+  // country icons
+  US: _getCountryIcon('usa')
 }
 
 // constant for icon name values
@@ -98,6 +106,8 @@ export const ICON_WEB_NAME = {
   MANUFACTURE: 'MANUFACTURE',
   MAGNIFY_IN: 'MAGNIFY_IN',
   MAGNIFY_OUT: 'MAGNIFY_OUT',
+  OPEN_IN_NEW: 'OPEN_IN_NEW',
+  PHONE: 'PHONE',
   REFRESH: 'REFRESH',
   SAVE: 'SAVE',
   SEARCH: 'SEARCH',
@@ -124,6 +134,7 @@ export const ICON_LOC_NAME = {
   HOWICK_LOGO_DARK: 'HOWICK_LOGO_DARK',
   MODE_LIGHT: 'MODE_LIGHT',
   MODE_DARK: 'MODE_DARK',
+  US: 'US',
   PARENT: 'PARENT',
   SETTING: 'SETTING'
 }
