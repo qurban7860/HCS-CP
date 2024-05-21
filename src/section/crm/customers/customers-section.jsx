@@ -22,7 +22,6 @@ const CustomerListSection = () => {
   const [tableData, setTableData] = useState([])
   const { customerFilterBy, customerPage, customerRowsPerPage } = useSelector((state) => state.customer)
   const { userId } = useSelector((state) => state.auth)
-  const { data: userDetail, isLoading: isUserFetching, error, refetch } = useGetUserQuery(userId)
   const { data: allCustomerData, isLoading, error: allCustomerError, refetch: refetchAllCustomer } = useGetAllCustomerQuery()
 
   const { themeMode } = useSettingContext()
@@ -67,7 +66,9 @@ const CustomerListSection = () => {
   }
 
   const handleChangePage = (event, newPage) => {
-    dispatch(ChangeCustomerPage(newPage))
+    if (newPage < Math.ceil(filteredData.length / customerRowsPerPage)) {
+      dispatch(ChangeCustomerPage(newPage))
+    }
   }
 
   const handleChangeRowsPerPage = (event) => {
