@@ -5,7 +5,7 @@ import { snack, useTable } from 'hook'
 import { Table, Typography, Grid, Box } from '@mui/material'
 import { GStyledTableHeaderBox, GStyledSpanBox } from 'theme/style'
 import { useGetAllMachineQuery, useGetUserQuery } from 'store/slice'
-import { ChangePage, ChangeRowsPerPage, setFilterBy } from 'store/slice/product'
+import { ChangeMachinePage, ChangeMachineRowsPerPage, setMachineFilterBy } from 'store/slice/product'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
 import { SearchBox } from 'component/search'
@@ -19,8 +19,8 @@ import { StyledScrollTableContainer } from './style'
 const MachineListSection = () => {
   const [tableData, setTableData] = useState([])
 
-  const { page, rowsPerPage, filterBy } = useSelector((state) => state.machine)
-  const { user: userState, userId } = useSelector((state) => state.auth)
+  const { machinePage, machineRowsPerPage, machineFilterBy } = useSelector((state) => state.machine)
+  const { userId } = useSelector((state) => state.auth)
   const { data: userDetail, isLoading: isUserFetching, error, refetch } = useGetUserQuery(userId)
   const { data: allMachineData, isLoading, error: allMachineError, refetch: refetchAllMachine } = useGetAllMachineQuery()
 
@@ -55,26 +55,27 @@ const MachineListSection = () => {
 
   const debouncedSearch = useRef(
     debounce((value) => {
-      dispatch(ChangePage(0))
-      dispatch(setFilterBy(value))
+      dispatch(ChangeMachinePage(0))
+      dispatch(setMachineFilterBy(value))
     }, 500)
   )
 
   const handleSearch = (event) => {
     debouncedSearch.current(event.target.value)
-    dispatch(setFilterBy(event.target.value))
+    dispatch(setMachineFilterBy(event.target.value))
   }
 
   const handleChangePage = (event, newPage) => {
-    dispatch(ChangePage(newPage))
+    dispatch(ChangeMachinePage(newPage))
   }
 
   const handleChangeRowsPerPage = (event) => {
-    dispatch(ChangePage(0))
-    dispatch(ChangeRowsPerPage(parseInt(event.target.value, 10)))
+    dispatch(ChangeMachinePage(0))
+    dispatch(ChangeMachineRowsPerPage(parseInt(event.target.value, 10)))
   }
   const filteredData =
-    tableData && tableData.filter((row) => Object.values(row)?.some((value) => value?.toString().toLowerCase().includes(filterBy.toLowerCase())))
+    tableData &&
+    tableData.filter((row) => Object.values(row)?.some((value) => value?.toString().toLowerCase().includes(machineFilterBy.toLowerCase())))
   const isNotFound = !isLoading && !filteredData.length
 
   return (
@@ -87,7 +88,7 @@ const MachineListSection = () => {
           / {TITLE.MACHINE_LIST}
         </Typography>
       </GStyledSpanBox>
-      <SearchBox term={filterBy} mode={themeMode} handleSearch={handleSearch} />
+      <SearchBox term={machineFilterBy} mode={themeMode} handleSearch={handleSearch} />
       <Grid container flexDirection="row" {...MARGIN.PAGE_PROP}>
         <Grid item lg={12}>
           <Grid container mb={2}>
@@ -96,17 +97,16 @@ const MachineListSection = () => {
               <MachineListPagination
                 mode={themeMode}
                 data={filteredData}
-                page={page}
-                rowsPerPage={rowsPerPage}
+                page={machinePage}
+                rowsPerPage={machineRowsPerPage}
                 handleChangePage={handleChangePage}
                 handleChangeRowsPerPage={handleChangeRowsPerPage}
               />
               <StyledScrollTableContainer>
                 <Table>
                   <MachineHeader mode={themeMode} />
-                  {/* <Box gutterBottom={2} component={m.div} height={2} /> */}
-                  {(isLoading ? [...Array(rowsPerPage)] : filteredData)
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  {(isLoading ? [...Array(machineRowsPerPage)] : filteredData)
+                    .slice(machinePage * machineRowsPerPage, machinePage * machineRowsPerPage + machineRowsPerPage)
                     .map((row, index) =>
                       row ? (
                         <MachineTable key={row._id} machine={row} mode={themeMode} index={index} />
