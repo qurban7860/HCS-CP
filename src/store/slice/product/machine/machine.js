@@ -2,8 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import axiosInstance from 'util/axios'
 import { PATH_SERVER } from 'route/server'
 import { RESPONSE } from 'constant'
-import conNex from 'util/connex'
-// import axios from '../../../utils/axios'
 
 const initialState = {
   initial: false,
