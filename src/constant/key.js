@@ -28,6 +28,7 @@ const KEY = {
   CUSTOMERS: 'customers',
   MACHINE: 'machine',
   MACHINES: 'machines',
+  SERIAL_NO: 'serialNo',
 
   // @redux keys
   REDUX_STORE: 'store',

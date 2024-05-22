@@ -134,7 +134,7 @@ const MachineLayout = () => {
                   <Grid item lg={12} sm={12}>
                     <Grid container spacing={2} p={2} pb={5}>
                       <GridViewField heading={MACHINE.SERIAL_NO} isLoading={isLoading} children={defaultValues?.serialNo} gridSize={4} />
-                      <GridViewField heading={MACHINE.MODEL} isLoading={isLoading} children={defaultValues?.serialNo} gridSize={4} />
+                      <GridViewField heading={MACHINE.MODEL} isLoading={isLoading} children={defaultValues?.machineModel} gridSize={4} />
                       <GridViewField
                         heading={MACHINE.DEFAULT_PROFILE}
                         isLoading={isLoading}

@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef } from 'react'
 import { useSelector, dispatch } from 'store'
 import debounce from 'lodash/debounce'
-import { snack, useTable } from 'hook'
+import { snack, useTable, useFilter, getComparator } from 'hook'
 import { Table, Typography, Grid } from '@mui/material'
 import { GStyledTableHeaderBox, GStyledSpanBox } from 'theme/style'
-import { useGetAllCustomerQuery, useGetUserQuery } from 'store/slice'
+import { useGetAllCustomerQuery, getCustomers, resetCustomers } from 'store/slice'
 import { ChangeCustomerPage, ChangeCustomerRowsPerPage, setCustomerFilterBy } from 'store/slice/crm'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
@@ -20,9 +20,7 @@ const { TYPOGRAPHY } = VARIANT
 
 const CustomerListSection = () => {
   const [tableData, setTableData] = useState([])
-  const { customerFilterBy, customerPage, customerRowsPerPage } = useSelector((state) => state.customer)
-  const { userId } = useSelector((state) => state.auth)
-  const { data: allCustomerData, isLoading, error: allCustomerError, refetch: refetchAllCustomer } = useGetAllCustomerQuery()
+  const { customers, initial, isLoading, customerPage, customerRowsPerPage, responseMessage } = useSelector((state) => state.customer)
 
   const { themeMode } = useSettingContext()
   const denseHeight = TABLE.DENSE_HEIGHT
@@ -40,30 +38,24 @@ const CustomerListSection = () => {
     defaultOrder: KEY.DESC
   })
 
-  useEffect(() => {
-    if (allCustomerError) {
-      snack(RESPONSE.error.FETCH, { variant: COLOR.ERROR })
-    } else if (isLoading) {
-      snack(RESPONSE.FETCH_LOADING)
-    } else {
-      snack(RESPONSE.success.FETCH, { variant: COLOR.SUCCESS })
-      refetchAllCustomer()
-      setTableData(allCustomerData)
-    }
-    refetchAllCustomer()
-  }, [refetchAllCustomer, allCustomerData, isLoading, allCustomerError])
-
-  const debouncedSearch = useRef(
-    debounce((value) => {
-      dispatch(ChangeCustomerPage(0))
-      dispatch(setCustomerFilterBy(value))
-    }, 500)
+  const { filterName, handleFilterName, filteredData } = useFilter(
+    getComparator(order, orderBy),
+    customers,
+    initial,
+    ChangeCustomerPage,
+    setCustomerFilterBy
   )
 
-  const handleSearch = (event) => {
-    debouncedSearch.current(event.target.value)
-    dispatch(setCustomerFilterBy(event.target.value))
-  }
+  useEffect(() => {
+    dispatch(getCustomers(null, null, false))
+    return () => {
+      dispatch(resetCustomers())
+    }
+  }, [dispatch])
+
+  useEffect(() => {
+    setTableData(customers || [])
+  }, [customers])
 
   const handleChangePage = (event, newPage) => {
     if (newPage < Math.ceil(filteredData.length / customerRowsPerPage)) {
@@ -75,22 +67,16 @@ const CustomerListSection = () => {
     dispatch(ChangeCustomerPage(0))
     dispatch(ChangeCustomerRowsPerPage(parseInt(event.target.value, 10)))
   }
-  const filteredData =
-    tableData &&
-    tableData.filter((row) => Object.values(row)?.some((value) => value?.toString().toLowerCase().includes(customerFilterBy.toLowerCase())))
   const isNotFound = !isLoading && !filteredData.length
 
   return (
     <MotionLazyContainer display="flex">
       <GStyledSpanBox>
-        {/* <Typography variant="h3" color={themeMode === KEY.LIGHT ? 'common.black' : 'common.white'}>
-          {userDetail?.customer?.name.toUpperCase() || TITLE.MACHINE} &nbsp;
-        </Typography> */}
         <Typography variant={TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? 'grey.200' : 'howick.bronze'}>
           {TITLE.ORGANIZATIONS.toUpperCase()}
         </Typography>
       </GStyledSpanBox>
-      <SearchBox term={customerFilterBy} mode={themeMode} handleSearch={handleSearch} />
+      <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} />
       <Grid container flexDirection="row" {...MARGIN.PAGE_PROP}>
         <Grid item lg={12}>
           <Grid container mb={2}>
