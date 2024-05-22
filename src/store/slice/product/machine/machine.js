@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axiosInstance from 'util/axios'
-import { GLOBAL } from 'config/global'
 import { PATH_SERVER } from 'route/server'
+import { RESPONSE } from 'constant'
 import conNex from 'util/connex'
 // import axios from '../../../utils/axios'
 
@@ -231,6 +231,8 @@ export const {
   setMachineDialog
 } = machineSlice.actions
 
+// :thunks
+
 export function getMachine(id) {
   return async (dispatch) => {
     dispatch(machineSlice.actions.startLoading())
@@ -241,6 +243,32 @@ export function getMachine(id) {
       console.error(error)
       dispatch(machineSlice.actions.hasError(error.Message))
       throw error
+    }
+  }
+}
+
+export function getMachines(page, pageSize, isArchived) {
+  return async (dispatch) => {
+    dispatch(machineSlice.actions.startLoading())
+    try {
+      const response = await axiosInstance.get(PATH_SERVER.PRODUCT.MACHINE.list, {
+        params: {
+          isArchived: isArchived || false,
+          orderBy: {
+            createdAt: -1
+          },
+          pagination: {
+            page,
+            pageSize
+          }
+        }
+      })
+      dispatch(machineSlice.actions.getMachinesSuccess(response.data))
+      dispatch(machineSlice.actions.setResponseMessage(RESPONSE.success.FETCH))
+    } catch (error) {
+      console.error(error)
+      dispatch(machineSlice.actions.hasError(error.Message))
+      dispatch(machineSlice.actions.setResponseMessage(RESPONSE.error.FETCH))
     }
   }
 }
