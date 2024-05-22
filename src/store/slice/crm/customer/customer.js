@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import axios from 'util/axios'
+import axiosInstance from 'util/axios'
 import { GLOBAL } from 'config/global'
+import { PATH_SERVER } from 'route/server'
 
 const initialState = {
   initial: false,
@@ -156,3 +157,31 @@ export const {
   ChangeCustomerPage,
   setCustomerDialog
 } = customerSlice.actions
+
+// :thunks
+
+export function getCustomers(page, pageSize, isArchived) {
+  return async (dispatch) => {
+    dispatch(customerSlice.actions.startLoading())
+    try {
+      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.list, {
+        params: {
+          isArchived: isArchived || false,
+          orderBy: {
+            createdAt: -1
+          },
+          pagination: {
+            page,
+            pageSize
+          }
+        }
+      })
+      dispatch(customerSlice.actions.getCustomersSuccess(response.data))
+      // dispatch(slice.actions.setResponseMessage('Customers loaded successfully'));
+    } catch (error) {
+      console.log(error)
+      dispatch(customerSlice.actions.hasError(error.Message))
+      throw error
+    }
+  }
+}
