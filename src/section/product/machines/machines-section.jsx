@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef } from 'react'
 import { useSelector, dispatch } from 'store'
 import debounce from 'lodash/debounce'
-import { snack, useTable } from 'hook'
+import { snack, useTable, useFilter, getComparator } from 'hook'
 import { Table, Typography, Grid, Box } from '@mui/material'
 import { GStyledTableHeaderBox, GStyledSpanBox } from 'theme/style'
-import { useGetAllMachineQuery, useGetUserQuery } from 'store/slice'
+import { useGetAllMachineQuery, useGetUserQuery, getMachines, resetMachines } from 'store/slice'
 import { ChangeMachinePage, ChangeMachineRowsPerPage, setMachineFilterBy } from 'store/slice/product'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
@@ -18,11 +18,10 @@ import { StyledScrollTableContainer } from './style'
 
 const MachineListSection = () => {
   const [tableData, setTableData] = useState([])
-
-  const { machinePage, machineRowsPerPage, machineFilterBy } = useSelector((state) => state.machine)
+  const { machines, initial, isLoading, machinePage, machineRowsPerPage, machineFilterBy, responseMessage } = useSelector((state) => state.machine)
   const { userId } = useSelector((state) => state.auth)
   const { data: userDetail, isLoading: isUserFetching, error, refetch } = useGetUserQuery(userId)
-  const { data: allMachineData, isLoading, error: allMachineError, refetch: refetchAllMachine } = useGetAllMachineQuery()
+  // const { data: allMachineData, isLoading, error: allMachineError, refetch: refetchAllMachine } = useGetAllMachineQuery()
 
   const { themeMode } = useSettingContext()
   const denseHeight = TABLE.DENSE_HEIGHT
@@ -40,42 +39,61 @@ const MachineListSection = () => {
     defaultOrder: KEY.DESC
   })
 
-  useEffect(() => {
-    if (allMachineError) {
-      snack(RESPONSE.error.FETCH, { variant: COLOR.ERROR })
-    } else if (isLoading) {
-      snack(RESPONSE.FETCH_LOADING)
-    } else {
-      snack(RESPONSE.success.FETCH, { variant: COLOR.SUCCESS })
-      refetchAllMachine()
-      setTableData(allMachineData)
-    }
-    refetchAllMachine()
-  }, [refetchAllMachine, allMachineData, isLoading, allMachineError])
-
-  const debouncedSearch = useRef(
-    debounce((value) => {
-      dispatch(ChangeMachinePage(0))
-      dispatch(setMachineFilterBy(value))
-    }, 500)
+  const { filterName, handleFilterName, filteredData } = useFilter(
+    getComparator(order, orderBy),
+    machines,
+    initial,
+    ChangeMachinePage,
+    setMachineFilterBy
   )
 
-  const handleSearch = (event) => {
-    debouncedSearch.current(event.target.value)
-    dispatch(setMachineFilterBy(event.target.value))
-  }
+  useEffect(() => {
+    dispatch(getMachines(null, null, false))
+    return () => {
+      dispatch(resetMachines())
+    }
+  }, [dispatch])
+
+  useEffect(() => {
+    setTableData(machines || [])
+  }, [machines])
+
+  // useEffect(() => {
+  //   if (allMachineError) {
+  //     snack(RESPONSE.error.FETCH, { variant: COLOR.ERROR })
+  //   } else if (isLoading) {
+  //     snack(RESPONSE.FETCH_LOADING)
+  //   } else {
+  //     snack(RESPONSE.success.FETCH, { variant: COLOR.SUCCESS })
+  //     refetchAllMachine()
+  //     setTableData(allMachineData)
+  //   }
+  //   refetchAllMachine()
+  // }, [refetchAllMachine, allMachineData, isLoading, allMachineError])
+
+  // const debouncedSearch = useRef(
+  //   debounce((value) => {
+  //     dispatch(ChangeMachinePage(0))
+  //     dispatch(setMachineFilterBy(value))
+  //   }, 500)
+  // )
+
+  // const handleSearch = (event) => {
+  //   debouncedSearch.current(event.target.value)
+  //   dispatch(setMachineFilterBy(event.target.value))
+  // }
 
   const handleChangePage = (event, newPage) => {
-    dispatch(ChangeMachinePage(newPage))
+    if (newPage < Math.ceil(filteredData.length / machineRowsPerPage)) {
+      dispatch(ChangeMachinePage(newPage))
+    }
   }
 
   const handleChangeRowsPerPage = (event) => {
     dispatch(ChangeMachinePage(0))
     dispatch(ChangeMachineRowsPerPage(parseInt(event.target.value, 10)))
   }
-  const filteredData =
-    tableData &&
-    tableData.filter((row) => Object.values(row)?.some((value) => value?.toString().toLowerCase().includes(machineFilterBy.toLowerCase())))
+
   const isNotFound = !isLoading && !filteredData.length
 
   return (
@@ -88,7 +106,7 @@ const MachineListSection = () => {
           / {TITLE.MACHINE_LIST}
         </Typography>
       </GStyledSpanBox>
-      <SearchBox term={machineFilterBy} mode={themeMode} handleSearch={handleSearch} />
+      <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} />
       <Grid container flexDirection="row" {...MARGIN.PAGE_PROP}>
         <Grid item lg={12}>
           <Grid container mb={2}>
