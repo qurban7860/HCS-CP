@@ -54,7 +54,6 @@ const MachineConnectionWidget = ({ value }) => {
 
   useEffect(() => {
     const machineNames = value?.machineConnection?.map((mach) => mach?.connectedMachine?.name)
-    const parentMachineNames = value?.parentConnection?.map((mach) => mach?.connectedMachine?.name)
 
     const checkIsConnected = (mach) => Object.keys(mach).some((key) => mach[key])
     const checkIsParent = (mach) => Object.keys(mach).some((key) => mach[key])
@@ -93,7 +92,7 @@ const MachineConnectionWidget = ({ value }) => {
       <Grid item lg={12} sm={12} mb={2} bgcolor="background.paper">
         <FormHeader label={LABEL.CONNECTED_MACHINE(value?.machineConnection)} />
         <Grid container p={2}>
-          {isConnected ? (
+          {value?.machineConnection?.length > 0 && isConnected ? (
             value?.machineConnection?.map((mach, index) => (
               <Fragment key={index}>
                 <Grid item xs={8}>
@@ -144,7 +143,7 @@ const MachineConnectionWidget = ({ value }) => {
                 </Grid>
               </Fragment>
             ))
-          ) : isParent ? (
+          ) : value?.parentConnection?.length > 0 && isParent ? (
             value?.parentConnection?.map((mach, index) => (
               <Fragment key={index}>
                 <Grid item xs={8}>
