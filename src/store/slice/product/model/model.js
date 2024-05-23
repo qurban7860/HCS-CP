@@ -5,11 +5,12 @@ import { PATH_SERVER } from 'route/server'
 const regEx = /^[2][0-9][0-9]$/
 const initialState = {
   initial: false,
-  machinemodelEditFormFlag: false,
   responseMessage: null,
   success: false,
   isLoading: false,
   error: null,
+  isDecoiler: false,
+  decoilerIcon: null,
   machineModels: [],
   activeMachineModels: [],
   machineModel: {},
@@ -24,9 +25,6 @@ const modelSlice = createSlice({
   reducers: {
     startLoading(state) {
       state.isLoading = true
-    },
-    setMachinemodelsEditFormVisibility(state, action) {
-      state.machinemodelEditFormFlag = action.payload
     },
     hasError(state, action) {
       state.isLoading = false
@@ -63,6 +61,15 @@ const modelSlice = createSlice({
       state.success = false
       state.isLoading = false
     },
+    setDecoilerIcon(state, action) {
+      state.decoilerIcon = action.payload
+    },
+    setIsDecoiler(state, action) {
+      state.isDecoiler = action.payload
+    },
+    resetDecoilerIcon(state) {
+      state.decoilerIcon = null
+    },
     resetMachineModels(state) {
       state.machineModels = []
       state.responseMessage = null
@@ -94,7 +101,9 @@ export const {
   resetMachineModel,
   resetMachineModels,
   resetActiveMachineModels,
+  resetDecoilerIcon,
   setResponseMessage,
+  setDecoilerIcon,
   setFilterBy,
   ChangeModelRowsPerPage,
   ChangeModelPage
