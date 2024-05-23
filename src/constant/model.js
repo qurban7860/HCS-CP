@@ -11,3 +11,5 @@ export const FILTER_TYPE = {
   FIVE_TON: [DECOILER.FIVE_T, '5 tonne', '5t'],
   SIX_TON: [DECOILER.SIX_T, '6 tonne', '6t']
 }
+
+export const DECOILER_TYPE_ARR = ['1.5T', '3.0T', '5.0T', '6.0T']
