@@ -1,13 +1,13 @@
-import { memo, useEffect } from 'react'
+import { memo, useEffect, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, dispatch } from 'store'
 import { useParams } from 'react-router-dom'
+import { ICON_NAME, snack } from 'hook'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Typography, Grid, Card, Divider } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox } from 'theme/style'
-import { useGetMachineQuery } from 'store/slice'
-import { useGetUserQuery } from 'store/slice'
+import { useGetMachineQuery, useGetUserQuery, setDecoilerIcon, getMachineModels, resetMachineModels, resetDecoilerIcon } from 'store/slice'
 import { useForm } from 'react-hook-form'
 import { machineDefaultValues } from 'section/product'
 import { HowickResources } from 'section/common'
@@ -16,21 +16,23 @@ import FormProvider from 'component/hook-form'
 import { ViewFormField } from 'component/viewform'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
-import { ICON_NAME, snack } from 'hook'
 import { MARGIN } from 'config'
-import { KEY, TITLE, LABEL, RESPONSE, COLOR, VIEW_FORM, VARIANT, FLEX_DIR, FLEX } from 'constant'
+import { KEY, TITLE, LABEL, RESPONSE, COLOR, VIEW_FORM, VARIANT, FLEX_DIR, FLEX, DECOILER, DECOILER_TYPE_ARR } from 'constant'
 import { MachineConnectionWidget, MachineSiteWidget, MachineHistoryWidget, BadgeCardMedia, CardOption } from 'section/product/machine'
+
+const { ONE_HALF_T, THREE_T, FIVE_T, SIX_T } = DECOILER
 
 const MachineLayout = () => {
   const { id } = useParams()
-  const { user: userState, userId } = useSelector((state) => state.auth)
+  const { userId } = useSelector((state) => state.auth)
+  const { decoilerIcon, machineModel, machineModels } = useSelector((state) => state.machinemodel)
   const { data: securityUser, isLoading, error, refetch } = useGetUserQuery(userId)
   const { data: machineData, isLoading: machineIsLoading, error: machineError, refetch: machineRefetch } = useGetMachineQuery(id)
 
   const theme = useTheme()
   const { themeMode } = useSettingContext()
 
-  const { MACHINE, HOWICK_RESOURCES, ADDRESS } = VIEW_FORM
+  const { MACHINE } = VIEW_FORM
   const { TYPOGRAPHY } = VARIANT
 
   useEffect(() => {
@@ -40,8 +42,6 @@ const MachineLayout = () => {
       snack(RESPONSE.FETCH_LOADING)
     } else {
       snack(RESPONSE.success.FETCH_DATA, { variant: COLOR.SUCCESS })
-
-      // machineRefetch()
     }
     machineRefetch()
   }, [machineRefetch, id, machineData, machineIsLoading, machineError])
@@ -52,6 +52,31 @@ const MachineLayout = () => {
     resolver: yupResolver(machineDefaultValues),
     defaultValues
   })
+
+  useEffect(() => {
+    dispatch(getMachineModels())
+
+    if (defaultValues?.machineModel?.includes(ONE_HALF_T.toUpperCase())) {
+      dispatch(setDecoilerIcon(ICON_NAME.DECOILER_1_5T))
+    }
+
+    if (defaultValues?.machineModel?.includes(THREE_T.toUpperCase())) {
+      dispatch(setDecoilerIcon(ICON_NAME.DECOILER_3T))
+    }
+
+    if (defaultValues?.machineModel?.includes(FIVE_T.toUpperCase())) {
+      dispatch(setDecoilerIcon(ICON_NAME.DECOILER_1_5T))
+    }
+
+    if (defaultValues?.machineModel?.includes(SIX_T.toUpperCase())) {
+      dispatch(setDecoilerIcon(ICON_NAME.DECOILER_1_5T))
+    }
+
+    return () => {
+      // dispatch(resetMachineModels())
+      dispatch(resetDecoilerIcon())
+    }
+  }, [dispatch, defaultValues?.machineModel])
 
   const {
     reset,
@@ -114,6 +139,14 @@ const MachineLayout = () => {
                       </Grid>
                       <Grid item xs={12} justifyContent={FLEX.FLEX_END}>
                         <Grid container justifyContent={FLEX.FLEX_END}>
+                          {DECOILER_TYPE_ARR.some((type) => defaultValues?.machineModel?.includes(type)) && (
+                            <IconTooltip
+                              title={LABEL.DECOILER(defaultValues?.machineModel)}
+                              icon={decoilerIcon}
+                              color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.lightGray}
+                            />
+                          )}
+
                           {defaultValues?.isActive ? (
                             <IconTooltip
                               title={LABEL.ACTIVE}
