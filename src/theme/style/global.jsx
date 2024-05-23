@@ -161,7 +161,8 @@ export const GStyledTooltip = styled(({ className, ...props }) => <Tooltip {...p
     },
     [`& .${tooltipClasses.tooltip}`]: {
       fontSize: '1rem',
-      backgroundColor: tooltipcolor
+      backgroundColor: tooltipcolor,
+      color: theme.palette.common.black
     }
   })
 )
