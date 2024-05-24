@@ -13,19 +13,19 @@ function _getCountryIcon(country) {
   return `/asset/svg/flag/${countryCode}.svg`
 }
 
-const SvgFlagIcon = ({ country, dimension = 24, color, ...other }) => {
+const SvgFlagIcon = ({ country, dimension = 24, color = '#FFF', ...other }) => {
   return (
     country !== undefined && (
       <Button
         variant="filled"
         sx={{
           cursor: 'default',
-          color,
-          borderColor: color
+          borderColor: color,
+          padding: 0.4
         }}
         {...other}>
         <GStyledTooltip title={country} placement="top" disableFocusListener tooltipcolor={color} color={color}>
-          <img src={_getCountryIcon(country)} alt={country} style={{ borderRadius: 2 }} />
+          <img src={_getCountryIcon(country)} alt={country} style={{ borderRadius: 2, height: dimension }} />
         </GStyledTooltip>
       </Button>
     )
