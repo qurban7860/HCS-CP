@@ -11,13 +11,13 @@ import { GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox } from 'them
 import { getCustomerMachines, useGetCustomerQuery } from 'store/slice'
 import { customerDefaultValues } from 'section/crm'
 import { HowickResources } from 'section/common'
-import { IconTooltip, BackButton, AuditBox, GridViewField, GridViewTitle, SvgFlagIcon } from 'component'
+import { IconTooltip, BackButton, AuditBox, GridViewField, GridViewTitle, SvgFlagIcon, BadgeCardMedia } from 'component'
 import { ViewFormField } from 'component/viewform'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
 import { MARGIN } from 'config'
 import { KEY, TITLE, LABEL, RESPONSE, COLOR, VIEW_FORM, VARIANT, FLEX_DIR, FLEX } from 'constant'
-import { MachineListWidget, ContactListWidget, BadgeCardMedia, CardOption } from 'section/crm/customer'
+import { MachineListWidget, ContactListWidget, CardOption } from 'section/crm/customer'
 
 const CustomerLayout = () => {
   const { id } = useParams()
@@ -27,12 +27,8 @@ const CustomerLayout = () => {
   const theme = useTheme()
   const { themeMode } = useSettingContext()
 
-  const { CUSTOMER, SITE, HOWICK_RESOURCES, ADDRESS } = VIEW_FORM
+  const { CUSTOMER, SITE, ADDRESS } = VIEW_FORM
   const { TYPOGRAPHY } = VARIANT
-
-  // useLayoutEffect(() => {
-  //   dispatch(resetCustomerMachines())
-  // }, [customerData])
 
   useEffect(() => {
     if (customerError) {
@@ -105,7 +101,7 @@ const CustomerLayout = () => {
                 <Grid item lg={8}>
                   <GStyledSpanBox my={2}>
                     <BadgeCardMedia />
-                    <ViewFormField heading={VIEW_FORM.ORGANIZATION} isLoading={isLoading} isOrg>
+                    <ViewFormField heading={VIEW_FORM.ORGANIZATION} isLoading={isLoading} isMachineView>
                       {defaultValues?.name}
                     </ViewFormField>
                   </GStyledSpanBox>
