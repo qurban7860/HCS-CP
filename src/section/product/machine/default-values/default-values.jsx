@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { fDate, parseAddress } from 'util'
 
-export default function machineDefaultValues(machineData) {
+export default function machineDefaultValues(machineData, customer) {
   return useMemo(() => {
     return {
       serialNo: machineData?.serialNo || '',
@@ -15,6 +15,8 @@ export default function machineDefaultValues(machineData) {
       category: machineData?.machineModel?.category || '',
       machineModel: machineData?.machineModel?.name || '',
       customer: machineData?.customer?.name || '',
+      customerId: machineData?.customer?._id || '',
+      customerCountry: customer?.mainSite?.address?.country || '',
       clientCode: machineData?.customer?.clientCode || '',
       financialCompany: machineData?.financialCompany?.name || '',
       parentConnection: machineData?.parentMachines || [],
