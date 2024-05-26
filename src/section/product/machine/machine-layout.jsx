@@ -8,7 +8,7 @@ import { PATH_CUSTOMER } from 'route/path'
 import { Box, Grid, Card, Divider } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox } from 'theme/style'
-import { useGetMachineQuery, setDecoilerIcon, getMachineModels, resetDecoilerIcon, useGetCustomerQuery } from 'store/slice'
+import { setDecoilerIcon, getMachineModels, resetDecoilerIcon, getCustomer, getMachine } from 'store/slice'
 import { useForm } from 'react-hook-form'
 import { machineDefaultValues } from 'section/product'
 import { HowickResources } from 'section/common'
@@ -20,14 +20,15 @@ import { useSettingContext } from 'component/setting'
 import { MARGIN } from 'config'
 import { KEY, TITLE, LABEL, RESPONSE, COLOR, VIEW_FORM, VARIANT, FLEX_DIR, FLEX, DECOILER, DECOILER_TYPE_ARR } from 'constant'
 import { MachineConnectionWidget, MachineSiteWidget, MachineHistoryWidget, CardOption } from 'section/product/machine'
+import { truncate } from 'util/truncate'
 
 const { ONE_HALF_T, THREE_T, FIVE_T, SIX_T } = DECOILER
 
 const MachineLayout = () => {
   const { id } = useParams()
+  const { machine, isLoading } = useSelector((state) => state.machine)
   const { decoilerIcon, machineModel, machineModels } = useSelector((state) => state.machinemodel)
-  const { data: machineData, isLoading, error: machineError, refetch: machineRefetch } = useGetMachineQuery(id)
-  const { data: customer, isLoading: customerLoading, error: customerError } = useGetCustomerQuery(machineData?.customer?._id)
+  const { customer } = useSelector((state) => state.customer)
 
   const theme = useTheme()
   const { themeMode } = useSettingContext()
@@ -36,17 +37,16 @@ const MachineLayout = () => {
   const { TYPOGRAPHY } = VARIANT
 
   useEffect(() => {
-    if (machineError) {
-      snack(RESPONSE.error.FETCH, { variant: COLOR.ERROR })
-    } else if (isLoading) {
-      snack(RESPONSE.FETCH_LOADING)
-    } else {
-      snack(RESPONSE.success.FETCH_DATA, { variant: COLOR.SUCCESS })
-    }
-    machineRefetch()
-  }, [machineRefetch, id, machineData, isLoading, machineError])
+    dispatch(getMachine(id))
+  }, [id])
 
-  const defaultValues = machineDefaultValues(machineData, customer)
+  useEffect(() => {
+    if (machine?.customer) {
+      dispatch(getCustomer(machine?.customer._id))
+    }
+  }, [dispatch, machine?.customer])
+
+  const defaultValues = machineDefaultValues(machine, customer)
 
   const methods = useForm({
     resolver: yupResolver(machineDefaultValues),
@@ -128,11 +128,6 @@ const MachineLayout = () => {
                   </Grid>
                   <Grid item lg={4}>
                     <Grid container justifyContent={FLEX.FLEX_END} flexDirection="column" alignContent={FLEX.FLEX_END}>
-                      <Grid item xs={12}>
-                        {/* <Typography variant={TYPOGRAPHY.H1} gutterBottom color={themeMode === KEY.LIGHT ? 'grey.400' : 'grey.800'}>
-                          {isLoading ? 'isLoading...' : defaultValues?.serialNo}
-                        </Typography> */}
-                      </Grid>
                       <Grid item xs={12} justifyContent={FLEX.FLEX_END} mt={2}>
                         <Grid container justifyContent={FLEX.FLEX_END}>
                           {DECOILER_TYPE_ARR.some((type) => defaultValues?.machineModel?.includes(type)) && (
@@ -142,7 +137,6 @@ const MachineLayout = () => {
                               color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.lightGray}
                             />
                           )}
-
                           {defaultValues?.isActive ? (
                             <IconTooltip
                               title={LABEL.ACTIVE}
@@ -167,8 +161,8 @@ const MachineLayout = () => {
                         heading={MACHINE.DEFAULT_PROFILE}
                         isLoading={isLoading}
                         children={
-                          Array.isArray(machineData?.profiles)
-                            ? machineData?.profiles[0].flange + 'X' + machineData?.profiles[0].web
+                          Array.isArray(defaultValues?.profiles)
+                            ? defaultValues?.profiles[0].flange + 'X' + defaultValues?.profiles[0].web
                             : TITLE.NOT_PROVIDED
                         }
                         gridSize={4}
@@ -176,7 +170,7 @@ const MachineLayout = () => {
                       <GridViewField
                         heading={VIEW_FORM.ORGANIZATION}
                         isLoading={isLoading}
-                        children={defaultValues?.customer}
+                        children={truncate(defaultValues?.customer, 21)}
                         gridSize={4}
                         country={defaultValues?.customerCountry}
                         customerLink={PATH_CUSTOMER.customers.view(defaultValues?.customerId)}
