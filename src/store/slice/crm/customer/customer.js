@@ -185,3 +185,17 @@ export function getCustomers(page, pageSize, isArchived) {
     }
   }
 }
+
+export function getCustomer(id) {
+  return async (dispatch) => {
+    dispatch(customerSlice.actions.startLoading())
+    try {
+      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.detail(id))
+
+      dispatch(customerSlice.actions.getCustomerSuccess(response.data))
+    } catch (error) {
+      dispatch(customerSlice.actions.hasError(error.Message))
+      throw error
+    }
+  }
+}

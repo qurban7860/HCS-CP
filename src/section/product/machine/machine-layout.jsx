@@ -4,10 +4,11 @@ import { useSelector, dispatch } from 'store'
 import { useParams } from 'react-router-dom'
 import { ICON_NAME, snack } from 'hook'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Box, Typography, Grid, Card, Divider } from '@mui/material'
+import { PATH_CUSTOMER } from 'route/path'
+import { Box, Grid, Card, Divider } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox } from 'theme/style'
-import { useGetMachineQuery, useGetUserQuery, setDecoilerIcon, getMachineModels, resetMachineModels, resetDecoilerIcon } from 'store/slice'
+import { setDecoilerIcon, getMachineModels, resetDecoilerIcon, getCustomer, getMachine } from 'store/slice'
 import { useForm } from 'react-hook-form'
 import { machineDefaultValues } from 'section/product'
 import { HowickResources } from 'section/common'
@@ -18,16 +19,16 @@ import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
 import { MARGIN } from 'config'
 import { KEY, TITLE, LABEL, RESPONSE, COLOR, VIEW_FORM, VARIANT, FLEX_DIR, FLEX, DECOILER, DECOILER_TYPE_ARR } from 'constant'
-import { MachineConnectionWidget, MachineSiteWidget, MachineHistoryWidget, BadgeCardMedia, CardOption } from 'section/product/machine'
+import { MachineConnectionWidget, MachineSiteWidget, MachineHistoryWidget, CardOption } from 'section/product/machine'
+import { truncate } from 'util/truncate'
 
 const { ONE_HALF_T, THREE_T, FIVE_T, SIX_T } = DECOILER
 
 const MachineLayout = () => {
   const { id } = useParams()
-  const { userId } = useSelector((state) => state.auth)
+  const { machine, isLoading } = useSelector((state) => state.machine)
   const { decoilerIcon, machineModel, machineModels } = useSelector((state) => state.machinemodel)
-  const { data: securityUser, isLoading, error, refetch } = useGetUserQuery(userId)
-  const { data: machineData, isLoading: machineIsLoading, error: machineError, refetch: machineRefetch } = useGetMachineQuery(id)
+  const { customer } = useSelector((state) => state.customer)
 
   const theme = useTheme()
   const { themeMode } = useSettingContext()
@@ -36,17 +37,16 @@ const MachineLayout = () => {
   const { TYPOGRAPHY } = VARIANT
 
   useEffect(() => {
-    if (machineError) {
-      snack(RESPONSE.error.FETCH, { variant: COLOR.ERROR })
-    } else if (machineIsLoading) {
-      snack(RESPONSE.FETCH_LOADING)
-    } else {
-      snack(RESPONSE.success.FETCH_DATA, { variant: COLOR.SUCCESS })
-    }
-    machineRefetch()
-  }, [machineRefetch, id, machineData, machineIsLoading, machineError])
+    dispatch(getMachine(id))
+  }, [id])
 
-  const defaultValues = machineDefaultValues(machineData)
+  useEffect(() => {
+    if (machine?.customer) {
+      dispatch(getCustomer(machine?.customer._id))
+    }
+  }, [dispatch, machine?.customer])
+
+  const defaultValues = machineDefaultValues(machine, customer)
 
   const methods = useForm({
     resolver: yupResolver(machineDefaultValues),
@@ -55,7 +55,6 @@ const MachineLayout = () => {
 
   useEffect(() => {
     dispatch(getMachineModels())
-
     if (defaultValues?.machineModel?.includes(ONE_HALF_T.toUpperCase())) {
       dispatch(setDecoilerIcon(ICON_NAME.DECOILER_1_5T))
     }
@@ -101,8 +100,7 @@ const MachineLayout = () => {
 
   return (
     <MotionLazyContainer display="flex">
-      {/*  TODO: Make responsive */}
-      {/* {TODO: refactor  */}
+      {/*  TODO: HPS-1240 Make responsive */}
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
           <Grid container>
@@ -120,24 +118,17 @@ const MachineLayout = () => {
             <Box mb={2}>
               <Card {...CardOption(themeMode)}>
                 <GStyledTopBorderDivider mode={themeMode} />
-
                 <Grid container px={1.5}>
                   <Grid item lg={8}>
                     <GStyledSpanBox my={2}>
-                      <BadgeCardMedia />
-                      <ViewFormField heading={VIEW_FORM.ORGANIZATION} isLoading={isLoading} isOrg>
-                        {defaultValues?.customer}
+                      <ViewFormField heading={MACHINE.SERIAL_NO} isLoading={isLoading} variant={TYPOGRAPHY.H1} gridSize={6} isMachineView>
+                        {defaultValues?.serialNo}
                       </ViewFormField>
                     </GStyledSpanBox>
                   </Grid>
                   <Grid item lg={4}>
                     <Grid container justifyContent={FLEX.FLEX_END} flexDirection="column" alignContent={FLEX.FLEX_END}>
-                      <Grid item xs={12}>
-                        <Typography variant={TYPOGRAPHY.H1} gutterBottom color={themeMode === KEY.LIGHT ? 'grey.400' : 'grey.800'}>
-                          {isLoading ? 'isLoading...' : defaultValues?.serialNo}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12} justifyContent={FLEX.FLEX_END}>
+                      <Grid item xs={12} justifyContent={FLEX.FLEX_END} mt={2}>
                         <Grid container justifyContent={FLEX.FLEX_END}>
                           {DECOILER_TYPE_ARR.some((type) => defaultValues?.machineModel?.includes(type)) && (
                             <IconTooltip
@@ -146,7 +137,6 @@ const MachineLayout = () => {
                               color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.lightGray}
                             />
                           )}
-
                           {defaultValues?.isActive ? (
                             <IconTooltip
                               title={LABEL.ACTIVE}
@@ -166,17 +156,24 @@ const MachineLayout = () => {
                   <Divider variant="middle" style={{ width: '100%', marginBottom: '20px' }} />
                   <Grid item lg={12} sm={12}>
                     <Grid container spacing={2} p={2} pb={5}>
-                      <GridViewField heading={MACHINE.SERIAL_NO} isLoading={isLoading} children={defaultValues?.serialNo} gridSize={4} />
                       <GridViewField heading={MACHINE.MODEL} isLoading={isLoading} children={defaultValues?.machineModel} gridSize={4} />
                       <GridViewField
                         heading={MACHINE.DEFAULT_PROFILE}
                         isLoading={isLoading}
                         children={
-                          Array.isArray(machineData?.profiles)
-                            ? machineData?.profiles[0].flange + 'X' + machineData?.profiles[0].web
+                          Array.isArray(defaultValues?.profiles)
+                            ? defaultValues?.profiles[0].flange + 'X' + defaultValues?.profiles[0].web
                             : TITLE.NOT_PROVIDED
                         }
                         gridSize={4}
+                      />
+                      <GridViewField
+                        heading={VIEW_FORM.ORGANIZATION}
+                        isLoading={isLoading}
+                        children={truncate(defaultValues?.customer, 21)}
+                        gridSize={4}
+                        country={defaultValues?.customerCountry}
+                        customerLink={PATH_CUSTOMER.customers.view(defaultValues?.customerId)}
                       />
                     </Grid>
                   </Grid>
