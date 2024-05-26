@@ -7,7 +7,7 @@ import { mockUser } from '_mock'
 import { KEY, COMPONENT, SIZE, VARIANT } from 'constant'
 import { BADGE } from 'config/layout'
 
-const BadgeCardMedia = () => {
+const BadgeCardMedia = ({ dimension }) => {
   const [hoverBadge, setHoverBadge] = useState(false)
   const { Icon, iconSrc: editSrc } = useIcon(ICON_NAME.EDIT)
   const fileInput = useRef(null)
@@ -52,14 +52,23 @@ const BadgeCardMedia = () => {
           alt={mockUser[0]?.organization}
           sx={{
             objectFit: 'hidden',
-            borderRadius: '10%',
+            borderRadius: '5%',
             marginRight: 2,
-            ...BADGE.MACHINE
+            height: dimension,
+            width: dimension
           }}
         />
       </Badge>
     </m.div>
   )
+}
+
+BadgeCardMedia.propTypes = {
+  dimension: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+}
+
+BadgeCardMedia.defaultProps = {
+  dimension: 70
 }
 
 export default BadgeCardMedia

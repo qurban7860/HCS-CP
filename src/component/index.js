@@ -32,3 +32,5 @@ export { default as AuditBox } from './audit/audit-box'
 // @svg
 export { default as SvgColor } from './svg-color/svg-color'
 export { default as SvgFlagIcon } from './svg-color/svg-flag'
+// @badge
+export { default as BadgeCardMedia } from './badge/badge-card-media'

@@ -137,6 +137,16 @@ export default function AccountPopover() {
               {TITLE.DISPLAY_SETTING}
             </Typography>
           </MenuItem>
+          <MenuItem
+          // onClick={() => {
+          //   handleToggle()
+          // }}
+          // onClose={handleClose}
+          >
+            <Typography variant="body2" noWrap>
+              {TITLE.LANGUAGE}
+            </Typography>
+          </MenuItem>
         </Stack>
         <Divider />
 
