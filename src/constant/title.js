@@ -27,6 +27,7 @@ const TITLE = {
 
   // @root - AccountPopover - settings drawer
   DISPLAY_SETTING: 'Display setting',
+  LANGUAGE: 'Language',
   CUSTOMIZE: 'Customize',
   LOGOUT: 'Logout',
   MODE: (mode) => {
