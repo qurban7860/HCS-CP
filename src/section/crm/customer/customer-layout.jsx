@@ -34,9 +34,9 @@ const CustomerLayout = () => {
     if (customerError) {
       snack(RESPONSE.error.FETCH, { variant: COLOR.ERROR })
     } else if (isLoading) {
-      snack(RESPONSE.FETCH_LOADING)
+      // snack(RESPONSE.FETCH_LOADING)
     } else {
-      snack(RESPONSE.success.FETCH_DATA, { variant: COLOR.SUCCESS })
+      // snack(RESPONSE.success.FETCH_DATA, { variant: COLOR.SUCCESS })
     }
     customerRefetch()
   }, [customerRefetch, id, customerData, isLoading, customerError])
