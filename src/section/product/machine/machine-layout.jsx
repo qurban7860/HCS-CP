@@ -161,8 +161,8 @@ const MachineLayout = () => {
                         heading={MACHINE.DEFAULT_PROFILE}
                         isLoading={isLoading}
                         children={
-                          Array.isArray(defaultValues?.profiles)
-                            ? defaultValues?.profiles[0].flange + 'X' + defaultValues?.profiles[0].web
+                          Array.isArray(defaultValues?.profiles) && defaultValues?.profiles.length > 0
+                            ? defaultValues?.profiles[0]?.flange + 'X' + defaultValues?.profiles[0]?.web
                             : TITLE.NOT_PROVIDED
                         }
                         gridSize={4}

@@ -9,6 +9,7 @@ export default function machineDefaultValues(machineData, customer) {
       description: machineData?.description || '',
       alias: machineData?.alias || [],
       profile: machineData?.profile?.default?.size || '',
+      profiles: machineData?.machineProfiles || [],
       parentSerialNo: machineData?.parentMachine || '',
       previousMachine: machineData?.parentMachine?.name || '',
       supplier: machineData?.supplier?.name || '',
