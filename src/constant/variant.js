@@ -4,7 +4,7 @@ export const BUTTON_VARIANT = {
   TEXT: 'text'
 }
 
-export const TYPOGRAPHY_VARIANT = {
+export const TYPOGRAPHY = {
   H0: 'h0',
   H1: 'h1',
   H2: 'h2',
@@ -15,10 +15,12 @@ export const TYPOGRAPHY_VARIANT = {
   H7: 'h7',
   SUBTITLE1: 'subtitle1',
   SUBTITLE2: 'subtitle2',
+  BODY0: 'body0',
   BODY1: 'body1',
   BODY2: 'body2',
   CAPTION: 'caption',
   OVERLINE: 'overline',
+  OVERLINE0: 'overline0',
   OVERLINE1: 'overline1',
   OVERLINE2: 'overline2'
 }
@@ -36,24 +38,6 @@ export const VARIANT = {
   FILLED: 'filled',
   COVER: 'cover',
   FULL_WIDTH: 'fullWidth',
-  TYPOGRAPHY: {
-    H0: 'h0',
-    H1: 'h1',
-    H2: 'h2',
-    H3: 'h3',
-    H4: 'h4',
-    H5: 'h5',
-    H6: 'h6',
-    H7: 'h7',
-    SUBTITLE1: 'subtitle1',
-    SUBTITLE2: 'subtitle2',
-    BODY1: 'body1',
-    BODY2: 'body2',
-    CAPTION: 'caption',
-    OVERLINE: 'overline',
-    OVERLINE1: 'overline1',
-    OVERLINE2: 'overline2'
-  },
   SKELETON: {
     RECTANGULAR: 'rectangular',
     CIRCULAR: 'circular',
@@ -63,5 +47,6 @@ export const VARIANT = {
     CONTAINED: 'contained',
     OUTLINED: 'outlined',
     TEXT: 'text'
-  }
+  },
+  ...{ TYPOGRAPHY }
 }

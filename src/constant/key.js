@@ -1,4 +1,10 @@
 import { PRODUCT } from './brand'
+import { VARIANT } from './variant'
+
+const ORIENTATION = {
+  HORIZONTAL: 'horizontal',
+  VERTICAL: 'vertical'
+}
 
 /**
  * @description - important keys to the applications are stored here
@@ -42,7 +48,9 @@ const KEY = {
   BOTTOM: 'bottom',
   LEFT: 'left',
   RIGHT: 'right',
-  CENTER: 'center'
+  CENTER: 'center',
+  ...ORIENTATION,
+  ...VARIANT
 }
 
 export default KEY
