@@ -1,21 +1,22 @@
 import { useState, useEffect, memo } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
+import { useIcon, ICON_NAME } from 'hook'
 import { useLocation } from 'react-router-dom'
 import { Typography, Chip, IconButton, Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledSpanBox, GStyledPopover } from 'theme/style'
 import { SvgFlagIcon } from 'component'
 import { useSettingContext } from 'component/setting'
-import { useIcon, ICON_NAME } from 'hook'
 import { SkeletonViewFormField } from 'component/skeleton'
-import { TYPOGRAPHY_VARIANT, SIZE, VARIANT, KEY } from 'constant'
+import { SIZE, VARIANT, KEY } from 'constant'
 import { StyledDefaultTypography, StyledFieldGrid, StyledChipGrid, StyledFieldChip } from './style'
 
 const { TYPOGRAPHY } = VARIANT
 
 const ViewFormField = ({
   children,
+  node,
   heading,
   variant,
   isLoading,
@@ -55,7 +56,7 @@ const ViewFormField = ({
 
   return (
     <StyledFieldGrid item xs={!isWidget && 12} sm={gridSize} mode={themeMode} isMachineView={isMachineView}>
-      <Typography variant={TYPOGRAPHY.OVERLINE1} color="grey.600">
+      <Typography variant={TYPOGRAPHY.OVERLINE0} color="grey.600">
         {heading}
       </Typography>
       {isLoading ? (
@@ -73,7 +74,7 @@ const ViewFormField = ({
                 anchorOrigin={{ vertical: KEY.CENTER, horizontal: KEY.RIGHT }}
                 transformOrigin={{ vertical: KEY.CENTER, horizontal: KEY.LEFT }}>
                 <Typography variant={TYPOGRAPHY.OVERLINE} color={themeMode === KEY.DARK ? 'howick.orange' : 'howick.blue'}>
-                  Go to {link} &nbsp;
+                  {link} &nbsp;
                 </Typography>
               </GStyledPopover>
               <IconButton
@@ -139,7 +140,7 @@ const ViewFormField = ({
                 <StyledFieldChip
                   key={index}
                   mode={themeMode}
-                  label={<Typography variant={TYPOGRAPHY_VARIANT.H5}>{` ${chip?.firstName || ''} ${chip?.lastName || ''}`}</Typography>}
+                  label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{` ${chip?.firstName || ''} ${chip?.lastName || ''}`}</Typography>}
                   size={SIZE.SMALL}
                 />
               ))}
@@ -154,7 +155,7 @@ const ViewFormField = ({
                 <StyledFieldChip
                   key={index}
                   mode={themeMode}
-                  label={<Typography variant={TYPOGRAPHY_VARIANT.H5}>{chip}</Typography>}
+                  label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{chip}</Typography>}
                   size={SIZE.SMALL}
                 />
               ))}
@@ -171,12 +172,13 @@ const ViewFormField = ({
 ViewFormField.propTypes = {
   gridSize: PropTypes.number,
   children: PropTypes.node,
+  node: PropTypes.node,
   heading: PropTypes.string,
   isLoading: PropTypes.bool,
   isWidget: PropTypes.bool,
   contact: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
   alias: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
-  variant: PropTypes.oneOf(Object.values(TYPOGRAPHY_VARIANT)),
+  variant: PropTypes.oneOf(Object.values(TYPOGRAPHY)),
   link: PropTypes.string,
   customerLink: PropTypes.string
 }
@@ -184,11 +186,12 @@ ViewFormField.propTypes = {
 ViewFormField.defaultProps = {
   gridSize: 12,
   children: null,
+  node: null,
   heading: null,
   isLoading: false,
   contact: null,
   isWidget: false,
-  variant: TYPOGRAPHY_VARIANT.H4
+  variant: TYPOGRAPHY.BODY0
 }
 
 export default memo(ViewFormField)
