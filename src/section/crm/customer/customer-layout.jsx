@@ -28,7 +28,6 @@ const CustomerLayout = () => {
   const { themeMode } = useSettingContext()
 
   const { CUSTOMER, SITE, ADDRESS } = VIEW_FORM
-  const { TYPOGRAPHY } = VARIANT
 
   useEffect(() => {
     if (customerError) {
