@@ -8,11 +8,20 @@ import { PATH_CUSTOMER } from 'route/path'
 import { Box, Grid, Card, Divider, Link } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox } from 'theme/style'
-import { setDecoilerIcon, getMachineModels, resetDecoilerIcon, getCustomer, getMachine, setCustomerDialog } from 'store/slice'
+import {
+  setDecoilerIcon,
+  getMachineModels,
+  resetDecoilerIcon,
+  getCustomer,
+  getMachine,
+  setCustomerDialog,
+  getConnectedMachineDialog,
+  setMachineDialog
+} from 'store/slice'
 import { useForm } from 'react-hook-form'
 import { machineDefaultValues } from 'section/product'
 import { HowickResources } from 'section/common'
-import { IconTooltip, BackButton, AuditBox, GridViewField, GridViewTitle, CustomerDialog } from 'component'
+import { IconTooltip, BackButton, AuditBox, GridViewField, GridViewTitle, CustomerDialog, MachineDialog } from 'component'
 import FormProvider from 'component/hook-form'
 import { ViewFormField } from 'component/viewform'
 import { MotionLazyContainer } from 'component/animate'
@@ -26,7 +35,7 @@ const { ONE_HALF_T, THREE_T, FIVE_T, SIX_T } = DECOILER
 
 const MachineLayout = () => {
   const { id } = useParams()
-  const { machine, isLoading } = useSelector((state) => state.machine)
+  const { machine, isLoading, connectedMachineDialog } = useSelector((state) => state.machine)
   const { decoilerIcon, machineModel, machineModels } = useSelector((state) => state.machinemodel)
   const { customer, customerDialog } = useSelector((state) => state.customer)
 
@@ -87,24 +96,10 @@ const MachineLayout = () => {
     dispatch(setCustomerDialog(true))
   }
 
-  // const {
-  //   reset,
-  //   control,
-  //   handleSubmit,
-  //   formState: { isSubmitting, errors }
-  // } = methods
-
-  // const onSubmit = async (data) => {
-  //   try {
-  //     await dispatch(updateSecurityUser(data, securityUser._id))
-  //     // await dispatch(getSecurityUser(securityUser._id))
-  //     reset()
-  //     navigate(PATH_SECURITY.users.profile)
-  //   } catch (error) {
-  //     enqueueSnackbar(error, { variant: `error` })
-  //     console.log('Error:', error)
-  //   }
-  // }
+  const handleConnectedMachineDialog = (machineId) => {
+    dispatch(getConnectedMachineDialog(machineId))
+    dispatch(setMachineDialog(true))
+  }
 
   // TODO: #HPS-1062 when JIRA api integated, replace this mock data
 
@@ -120,7 +115,7 @@ const MachineLayout = () => {
         </Grid>
         <Grid item lg={3}>
           <MachineHistoryWidget value={defaultValues} />
-          <MachineConnectionWidget value={defaultValues} />
+          <MachineConnectionWidget value={defaultValues} handleConnectedMachineDialog={handleConnectedMachineDialog} />
           <MachineSiteWidget value={defaultValues} />
         </Grid>
 
@@ -246,6 +241,7 @@ const MachineLayout = () => {
       </Grid>
       {/* </FormProvider> */}
       <CustomerDialog />
+      {connectedMachineDialog && <MachineDialog />}
     </MotionLazyContainer>
   )
 }
