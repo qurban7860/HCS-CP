@@ -26,6 +26,7 @@ export const filterProperties = [
   'mainSite.address.street',
   'mainSite.address.city',
   'mainSite.address.country',
+  'city',
   // contact
   'firstName',
   'lastName',
@@ -55,6 +56,9 @@ export const moduleFilter = (inputSub, filterName) => {
       filterParams?.status?.name?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
       filterParams?.customer?.name?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
       filterParams?.instalationSite?.name?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
+      filterParams?.instalationSite?.street?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
+      filterParams?.instalationSite?.city?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
+      filterParams?.instalationSite?.country?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
       // customer
       filterParams?.tradingName?.some((tName) => tName.toLowerCase().indexOf(filterName.toLowerCase()) >= 0) ||
       //  contact
