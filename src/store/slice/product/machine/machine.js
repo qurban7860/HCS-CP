@@ -17,7 +17,7 @@ const initialState = {
   machine: {},
   parentMachine: {},
   connectedMachine: {},
-  machineForDialog: {},
+  connectedMachineDialog: {},
   machineDialog: false,
   machineType: null,
   machines: [],
@@ -134,10 +134,10 @@ const machineSlice = createSlice({
       state.machine = action.payload
       state.initial = true
     },
-    getMachineForDialogSuccess(state, action) {
+    getConnecetedMachineDialogSuccess(state, action) {
       state.isLoading = false
       state.success = true
-      state.machineForDialog = action.payload
+      state.connectedMachineDialog = action.payload
       state.initial = true
     },
     getMachineGallerySuccess(state, action) {
@@ -277,6 +277,20 @@ export function getCustomerMachines(id) {
     try {
       const response = await axiosInstance.get(PATH_SERVER.PRODUCT.MACHINE.viaCustomer(id, false))
       dispatch(machineSlice.actions.getCustomerMachinesSuccess(response.data))
+    } catch (error) {
+      console.error(error)
+      dispatch(machineSlice.actions.hasError(error.Message))
+      throw error
+    }
+  }
+}
+
+export function getConnectedMachineDialog(id) {
+  return async (dispatch) => {
+    dispatch(machineSlice.actions.startLoading())
+    try {
+      const response = await axiosInstance.get(PATH_SERVER.PRODUCT.MACHINE.detail(id))
+      dispatch(machineSlice.actions.getConnecetedMachineDialogSuccess(response.data))
     } catch (error) {
       console.error(error)
       dispatch(machineSlice.actions.hasError(error.Message))
