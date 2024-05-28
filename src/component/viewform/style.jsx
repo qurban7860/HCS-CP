@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles'
-import { Typography, Grid, Chip } from '@mui/material'
+import { Typography, Grid, Chip, Box } from '@mui/material'
 import { KEY } from 'constant'
 import { ASSET } from 'config'
 
@@ -39,4 +39,10 @@ export const StyledFieldChip = styled(({ theme, ...other }) => <Chip {...other} 
   borderRadius: theme.spacing(0.4),
   // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
   backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
+}))
+
+export const StyledFlagBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  marginLeft: 8
 }))
