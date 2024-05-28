@@ -10,7 +10,7 @@ import { SvgFlagIcon } from 'component'
 import { useSettingContext } from 'component/setting'
 import { SkeletonViewFormField } from 'component/skeleton'
 import { SIZE, VARIANT, KEY } from 'constant'
-import { StyledDefaultTypography, StyledFieldGrid, StyledChipGrid, StyledFieldChip } from './style'
+import { StyledDefaultTypography, StyledFieldGrid, StyledChipGrid, StyledFieldChip, StyledFlagBox } from './style'
 
 const { TYPOGRAPHY } = VARIANT
 
@@ -122,13 +122,13 @@ const ViewFormField = ({
                   <WebIcon icon={openInSrc} width={15} />
                 </IconButton>
               </GStyledSpanBox>
-              <Box style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>
+              <StyledFlagBox>
                 <SvgFlagIcon
                   country={country}
                   color={themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.bronze}
                   dimension={16}
                 />
-              </Box>
+              </StyledFlagBox>
             </GStyledSpanBox>
           ) : (
             <StyledDefaultTypography variant={variant}>&nbsp; {children}</StyledDefaultTypography>
