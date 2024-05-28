@@ -63,6 +63,7 @@ const ICON_WEB = {
 
 // add icons that are saved locally
 const ICON_LOC = {
+  DECOILER_DEF: _getIcon('decoiler-def'),
   DECOILER_1_5T: _getIcon('decoiler_1-5t'),
   DECOILER_3T: _getIcon('decoiler_3t'),
   DECOILER_5T: _getIcon('decoiler_5t'),
@@ -127,6 +128,7 @@ export const ICON_LOC_NAME = {
   DECOILER_3T: 'DECOILER_3T',
   DECOILER_5T: 'DECOILER_5T',
   DECOILER_6T: 'DECOILER_6T',
+  DECOILER_DEF: 'DECOILER_DEF',
   EXPAND: 'EXPAND',
   FRAMA: 'FRAMA',
   FRAMA_3200: 'FRAMA_3200',
