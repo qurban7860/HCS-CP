@@ -7,14 +7,23 @@ import cityMapping from './city-map.json'
  * @param {string} city - The name of the city.
  * @returns {Array} - An array of timezone objects matching the given city.
  */
-export function huntTimezone(city) {
-  const cityLookup = _.filter(cityMapping, function (o) {
-    return o.city.toLowerCase() === city.toLowerCase()
-  })
-  if (cityLookup && cityLookup.length) {
-    return cityLookup
+export function huntTimezone(city, country) {
+  const cityLookups = cityMapping.filter((o) => o.city.toLowerCase() === city.toLowerCase().trim())
+  if ((cityLookups.length > 1 && country) || (cityLookups.length === 0 && country)) {
+    const countryLookup = cityLookups.find((o) => o.country.toLowerCase() === country.toLowerCase().trim())
+    return countryLookup ? countryLookup : {}
+  } else if (cityLookups.length > 0) {
+    return cityLookups[0]
+  } else if (!cityLookups && country) {
+    const partialLookup = findPartialMatch(cityMapping, city)
+    if (partialLookup) {
+      const cityLookup = _.filter(cityMapping, function (o) {
+        return findPartialMatch([o.city, o.state_ansi, o.province, o.country], city)
+      })
+      return cityLookup.length > 0 ? cityLookup[0] : {}
+    }
   } else {
-    return []
+    return {}
   }
 }
 

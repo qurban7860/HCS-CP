@@ -3,7 +3,7 @@ import { Typography, Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { StyledClockBox, StyledBoxFlex } from 'component/clock'
 import { RADIUS, TIME } from 'config'
-import { KEY, LOCALE, TIMEZONE } from 'constant'
+import { KEY, LOCALE, TIMEZONE, VARIANT } from 'constant'
 
 const Clock = () => {
   const [time, setTime] = useState(new Date())
@@ -37,7 +37,7 @@ const Clock = () => {
       </StyledClockBox>
       <StyledClockBox sx={RADIUS.BORDER}>
         <span>{KEY.AUCKLAND}: &nbsp;</span>
-        <Typography variant="h6">{TIME.DAY_CLOCK(new Date(aucklandTime))}</Typography>
+        <Typography variant={VARIANT.TYPOGRAPHY.H6}>{TIME.DAY_CLOCK(new Date(aucklandTime))}</Typography>
       </StyledClockBox>
     </StyledBoxFlex>
   )

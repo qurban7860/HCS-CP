@@ -1,27 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Typography, Box } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import { StyledClockBox, StyledBoxFlex } from 'component/clock'
 import { RADIUS, TIME } from 'config'
-import { KEY, LOCALE, TIMEZONE } from 'constant'
-import useCityTime from 'path/to/useCityTime'
+import { LOCALE, VARIANT } from 'constant'
+import useClock from './use-clock'
+import { huntTimezone } from './city-timezone'
+import { StyledClockBox, StyledBoxFlex } from './style'
 
-const Clock = () => {
-  const theme = useTheme()
-  const localTime = useCityTime(LOCALE.en, Intl.DateTimeFormat().resolvedOptions().timeZone)
-  const aucklandTime = useCityTime(LOCALE.en, TIMEZONE.AUCKLAND)
+const Clock = ({ city = 'auckland', country = 'New Zealand' }) => {
+  let timezone = huntTimezone(city, country)
+
+  const localTime = useClock(LOCALE.en, timezone.timezone)
 
   return (
-    <StyledBoxFlex gap={2}>
-      <StyledClockBox sx={RADIUS.BORDER}>
-        <span>{Intl.DateTimeFormat().resolvedOptions().timeZone}: &nbsp;</span>
-        <Typography variant="h6">{TIME.DAY_CLOCK(new Date(localTime))}</Typography>
-      </StyledClockBox>
-      <StyledClockBox sx={RADIUS.BORDER}>
-        <span>{KEY.AUCKLAND}: &nbsp;</span>
-        <Typography variant="h6">{TIME.DAY_CLOCK(new Date(aucklandTime))}</Typography>
-      </StyledClockBox>
-    </StyledBoxFlex>
+    timezone?.timezone && (
+      <StyledBoxFlex gap={2}>
+        <StyledClockBox sx={RADIUS.BORDER}>
+          <span>{timezone?.timezone}: &nbsp;</span>
+          <Typography variant={VARIANT.TYPOGRAPHY.H6}>{TIME.DAY_CLOCK(new Date(localTime))}</Typography>
+        </StyledClockBox>
+      </StyledBoxFlex>
+    )
   )
 }
 

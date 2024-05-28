@@ -1,5 +1,17 @@
 [
     {
+        "city": "Basildon",
+        "timezone": "Europe/London"
+    },
+    {
+        "city": "Kraluv Dvur",
+        "timezone": "Europe/Prague"
+    },
+    {
+        "city": "Vidalia",
+        "timezone": "America/Chicago"
+    },
+    {
         "city": "Qal eh-ye Now",
         "city_ascii": "Qal eh-ye",
         "lat": 34.98300013,
