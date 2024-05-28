@@ -2,7 +2,7 @@ import { memo, useEffect, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, dispatch } from 'store'
 import { useParams } from 'react-router-dom'
-import { ICON_NAME, snack } from 'hook'
+import { ICON_NAME, Clock } from 'hook'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { PATH_CUSTOMER } from 'route/path'
 import { Box, Grid, Card, Divider, Link } from '@mui/material'
@@ -132,13 +132,17 @@ const MachineLayout = () => {
                   </GStyledSpanBox>
                 </Grid>
                 <Grid item lg={4}>
-                  <Grid container justifyContent={FLEX.FLEX_END} flexDirection="column" alignContent={FLEX.FLEX_END}>
+                  <Grid container justifyContent={FLEX.FLEX_END} flexDirection={FLEX_DIR.COLUMN} alignContent={FLEX.FLEX_END}>
                     <Grid item xs={12} justifyContent={FLEX.FLEX_END} mt={2}>
-                      <Grid container justifyContent={FLEX.FLEX_END}>
+                      <Grid container justifyContent={FLEX.FLEX_END} gap={3}>
+                        {defaultValues?.installationSiteCity && (
+                          <Clock city={defaultValues?.installationSiteCity} country={defaultValues?.installationSiteCountry} />
+                        )}
                         {DECOILER_TYPE_ARR.some((type) => defaultValues?.machineModel?.includes(type)) && (
                           <IconTooltip
                             title={LABEL.DECOILER(defaultValues?.machineModel)}
                             icon={decoilerIcon}
+                            isActiveIcon
                             color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.lightGray}
                           />
                         )}
@@ -146,6 +150,7 @@ const MachineLayout = () => {
                           <IconTooltip
                             title={LABEL.ACTIVE}
                             icon={ICON_NAME.ACTIVE}
+                            isActiveIcon
                             color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
                           />
                         ) : (
