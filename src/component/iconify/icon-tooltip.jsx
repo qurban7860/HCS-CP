@@ -3,10 +3,23 @@ import { useIcon, ICON_NAME } from 'hook'
 import { Button, alpha } from '@mui/material'
 import { GStyledTooltip } from 'theme/style'
 import { ICON } from 'config/layout'
+import { VARIANT } from 'constant'
 
 const { TOOLTIP } = ICON
 
-export default function IconTooltip({ onDelete, onClick, color, title, placement, icon, disabled, dimension = TOOLTIP }) {
+export default function IconTooltip({
+  onDelete,
+  isActiveIcon = false,
+  onClick,
+  color,
+  title,
+  placement,
+  icon,
+  disabled,
+  dimension = TOOLTIP,
+  noHoverAction,
+  noButton = false
+}) {
   const { Icon, iconSrc } = useIcon(icon)
 
   const convertToAlpha = (color) => {
@@ -16,16 +29,29 @@ export default function IconTooltip({ onDelete, onClick, color, title, placement
   return (
     <>
       {disabled ? (
-        <Button variant="filled" sx={{ cursor: 'default', color, borderColor: color, ':hover': { borderColor: convertToAlpha(color, 0.5) } }}>
+        <Button variant={VARIANT.FILLED} sx={{ cursor: 'default', color, borderColor: color, ':hover': { borderColor: convertToAlpha(color, 0.5) } }}>
           <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={color} color={color}>
             <Icon color={color} sx={{ height: dimension, width: dimension }} icon={iconSrc} />
           </GStyledTooltip>
         </Button>
+      ) : isActiveIcon ? (
+        <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={color} color={color}>
+          <Icon color={color} sx={{ height: dimension, width: dimension }} icon={iconSrc} />
+        </GStyledTooltip>
+      ) : noButton ? (
+        <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={color} color={color}>
+          <Icon color={color} sx={{ height: dimension, width: dimension }} icon={iconSrc} />
+        </GStyledTooltip>
       ) : (
         <Button
           onClick={onClick}
-          variant="filled"
-          sx={{ cursor: onClick ? 'pointer' : 'default', color, borderColor: color, ':hover': { borderColor: convertToAlpha(color, 0.5) } }}>
+          variant={VARIANT.FILLED}
+          sx={{
+            cursor: onClick ? 'pointer' : 'default',
+            color,
+            borderColor: color,
+            ':hover': { borderColor: convertToAlpha(color, 0.5) }
+          }}>
           <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={color} color={color}>
             <Icon color={color} sx={{ height: dimension, width: dimension }} icon={iconSrc} />
           </GStyledTooltip>
@@ -42,7 +68,9 @@ IconTooltip.propTypes = {
   color: PropTypes.string,
   title: PropTypes.string,
   placement: PropTypes.string,
-  icon: PropTypes.string
+  icon: PropTypes.string,
+  isActiveIcon: PropTypes.bool,
+  noButton: PropTypes.bool
 }
 
 IconTooltip.defaultProps = {
