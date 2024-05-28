@@ -1,7 +1,7 @@
 import { dispatch, useSelector } from 'store'
 import { useSettingContext } from 'component/setting'
 import { setMachineDialog } from 'store/slice'
-import { ICON_NAME } from 'hook'
+import { ICON_NAME, Clock } from 'hook'
 import { PATH_CUSTOMER } from 'route/path'
 import { machineDefaultValues } from 'section/product'
 import { setIsDecoiler } from 'store/slice'
@@ -33,6 +33,9 @@ const MachineDialog = () => {
           }}>
           <Typography variant={TYPOGRAPHY.H2}>{defaultValues?.serialNo}</Typography> &nbsp;
           <Grid container justifyContent={FLEX.FLEX_END}>
+            {defaultValues?.installationSiteCity && (
+              <Clock city={defaultValues?.installationSiteCity} country={defaultValues?.installationSiteCountry} />
+            )}
             {DECOILER_TYPE_ARR.some((type) => defaultValues?.machineModel?.includes(type)) && (
               <IconTooltip
                 title={LABEL.DECOILER(defaultValues?.machineModel)}
