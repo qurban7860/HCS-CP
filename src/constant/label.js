@@ -29,8 +29,10 @@ const LABEL = {
   MANUFACTURED: 'Manufactured',
   NOT_SPECIFIED: 'Not Specified',
   PARENT: 'Parent machine',
+  NAVIGATE_TO: (d) => `Navigate to ${d}`,
   DECOILER_DEF: 'Decoiler',
   DECOILER: (type) => `Decoiler ${type}`,
+  PARENT_MACHINE: 'Parent Machine',
 
   // @audit
   AUDIT: {

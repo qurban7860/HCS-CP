@@ -1,5 +1,6 @@
-import { PRODUCT } from './brand'
+import { FLEX, FLEX_DIR } from './flex'
 import { VARIANT } from './variant'
+import { SZ } from './size'
 
 const ORIENTATION = {
   HORIZONTAL: 'horizontal',
@@ -50,7 +51,10 @@ const KEY = {
   RIGHT: 'right',
   CENTER: 'center',
   ...ORIENTATION,
-  ...VARIANT
+  ...VARIANT,
+  ...SZ,
+  ...FLEX,
+  ...FLEX_DIR
 }
 
 export default KEY
