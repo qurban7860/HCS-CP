@@ -29,6 +29,7 @@ export default function machineDefaultValues(machineData, customer) {
       workOrderRef: machineData?.workOrderRef || '',
       installationSite: parseAddress(machineData?.instalationSite?.address) || '',
       billingSite: parseAddress(machineData?.billingSite?.address) || '',
+      installationSiteCity: machineData?.instalationSite?.address?.city || '',
       installationSiteCountry: machineData?.instalationSite?.address?.country || '',
       billingSiteCountry: machineData?.billingSite?.address?.country || '',
       installationSiteLat: machineData?.instalationSite?.lat || '',
