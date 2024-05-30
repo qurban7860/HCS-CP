@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Grid, Box, Typography } from '@mui/material'
-import { GStyledListItemText } from 'theme/style'
+import { GStyledListItemText, GStyledSiteMapBox } from 'theme/style'
 import { ViewFormField, NothingProvided } from 'component'
 import { GoogleMaps } from 'component/google-maps'
 import { VARIANT, KEY, FLEX_DIR, VIEW_FORM, SNACK } from 'constant'
 import { MAP } from 'config/layout'
-import { StyledSiteMapBox } from '../style'
 import { hasValidArray } from './util'
 
 const SiteTab = ({ value, isBilling, isLoading }) => {
@@ -70,14 +69,13 @@ const SiteTab = ({ value, isBilling, isLoading }) => {
       )}
 
       <Grid item xs={12}>
-        <StyledSiteMapBox>
-          {/* <GoogleMaps machineView latlongArr={latLong} mapHeight={MAP.MACHINE.HEIGHT} /> */}
+        <GStyledSiteMapBox>
           {validCoordinates ? (
             <GoogleMaps machineView latlongArr={latLong} mapHeight={MAP.MACHINE.HEIGHT} />
           ) : (
             <NothingProvided content={SNACK.NO_COORIDNATES} />
           )}
-        </StyledSiteMapBox>
+        </GStyledSiteMapBox>
       </Grid>
     </Grid>
   )
