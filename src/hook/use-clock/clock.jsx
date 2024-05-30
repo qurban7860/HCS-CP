@@ -7,10 +7,10 @@ import useClock from './use-clock'
 import { huntTimezone } from './city-timezone'
 import { StyledClockBox, StyledBoxFlex } from './style'
 
-const Clock = ({ main, city = KEY.AUCKLAND, country = KEY.NEW_ZEALAND }) => {
+const Clock = ({ main, city = KEY.AUCKLAND, country = KEY.NEW_ZEALAND, local }) => {
   const [aucklandTime, setAucklandTime] = useState(new Date().toLocaleString(LOCALE.en, TIMEZONE.AUCKLAND))
   let timezone = huntTimezone(city, country)
-  const localTime = useClock(LOCALE.en, timezone.timezone)
+  const localTime = useClock(LOCALE.en, timezone.timezone || local)
 
   useEffect(() => {
     const timerID = setInterval(() => {
