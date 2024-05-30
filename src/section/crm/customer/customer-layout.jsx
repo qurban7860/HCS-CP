@@ -3,13 +3,20 @@ import PropTypes from 'prop-types'
 import { useSelector, dispatch } from 'store'
 import { useParams } from 'react-router-dom'
 import { ICON_NAME } from 'hook'
-import { getCustomerMachines, getConnectedMachineDialog, getCustomer, setMachineDialog } from 'store/slice'
+import {
+  getCustomerMachines,
+  getConnectedMachineDialog,
+  getCustomer,
+  setMachineDialog,
+  setMachineSiteDialog,
+  getMachinesSiteDialog
+} from 'store/slice'
 import { Box, Grid, Card, Divider } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox } from 'theme/style'
 import { customerDefaultValues } from 'section/crm'
 import { HowickResources } from 'section/common'
-import { IconTooltip, BackButton, AuditBox, GridViewField, GridViewTitle, SvgFlagIcon, BadgeCardMedia, MachineDialog } from 'component'
+import { IconTooltip, BackButton, AuditBox, GridViewField, GridViewTitle, SvgFlagIcon, BadgeCardMedia, MachineDialog, SiteDialog } from 'component'
 import { ViewFormField } from 'component/viewform'
 import { MotionLazyContainer } from 'component/animate'
 import { useSettingContext } from 'component/setting'
@@ -20,7 +27,7 @@ import { truncate } from 'util/truncate'
 
 const CustomerLayout = () => {
   const { id } = useParams()
-  const { customerMachines, connectedMachineDialog } = useSelector((state) => state.machine)
+  const { customerMachines, connectedMachineDialog, machineSiteDialogData } = useSelector((state) => state.machine)
   const { customer, isLoading } = useSelector((state) => state.customer)
 
   const theme = useTheme()
@@ -40,11 +47,21 @@ const CustomerLayout = () => {
     }
   }, [id, dispatch])
 
+  useEffect(() => {
+    dispatch(setMachineDialog(false))
+    dispatch(setMachineSiteDialog(false))
+  }, [dispatch])
+
   const defaultValues = customerDefaultValues(customer, customerMachines)
 
   const handleConnectedMachineDialog = (machineId) => {
     dispatch(getConnectedMachineDialog(machineId))
     dispatch(setMachineDialog(true))
+  }
+
+  const handleMachineSiteDialog = (machineId) => {
+    dispatch(getMachinesSiteDialog(machineId))
+    dispatch(setMachineSiteDialog(true))
   }
 
   // TODO: #HPS-1062 when JIRA api integated, replace this mock data
@@ -62,7 +79,11 @@ const CustomerLayout = () => {
         </Grid>
         {/* TODO: HPS-1246: Machine List widget */}
         <Grid item lg={3}>
-          <MachineListWidget value={defaultValues} handleMachineDialog={handleConnectedMachineDialog} />
+          <MachineListWidget
+            value={defaultValues}
+            handleMachineDialog={handleConnectedMachineDialog}
+            handleMachineSiteDialog={handleMachineSiteDialog}
+          />
           <ContactListWidget value={defaultValues} />
         </Grid>
 
@@ -160,6 +181,7 @@ const CustomerLayout = () => {
         </Grid>
       </Grid>
       {/* </FormProvider> */}
+      {machineSiteDialogData && <SiteDialog />}
       {connectedMachineDialog && <MachineDialog />}
     </MotionLazyContainer>
   )
