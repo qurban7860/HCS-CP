@@ -154,15 +154,15 @@ export const GStyledCustomAvatar = styled('div')(({ theme }) => ({
   height: { xs: 110, md: 110 }
 }))
 
-export const GStyledTooltip = styled(({ className, mode, ...props }) => <Tooltip {...props} arrow classes={{ popper: className }} />)(
-  ({ theme, mode, tooltipcolor }) => ({
+export const GStyledTooltip = styled(({ className, mode, green, ...props }) => <Tooltip {...props} arrow classes={{ popper: className }} />)(
+  ({ theme, mode, tooltipcolor, green }) => ({
     [`& .${tooltipClasses.arrow}`]: {
       color: tooltipcolor
     },
     [`& .${tooltipClasses.tooltip}`]: {
       fontSize: '1rem',
       backgroundColor: tooltipcolor,
-      color: mode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
+      color: mode === KEY.LIGHT ? theme.palette.common.black : green && mode !== KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white
     }
   })
 )
@@ -378,6 +378,13 @@ export const GStyledTableHeaderBox = styled(Box)(({ theme }) => ({
   backgroundSize: 'cover',
   backgroundPositionY: 'center',
   backgroundSize: '150%'
+}))
+
+export const GStyledSiteMapBox = styled(Box)(({ theme }) => ({
+  justifyContent: 'center',
+  margin: 'auto',
+  alignItems: 'center',
+  overflow: 'hidden'
 }))
 
 /**
