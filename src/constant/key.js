@@ -44,6 +44,7 @@ const KEY = {
   CONTRAST_BOLD: 'bold',
 
   AUCKLAND: 'Auckland',
+  NEW_ZEALAND: 'New Zealand',
   // @position
   TOP: 'top',
   BOTTOM: 'bottom',
