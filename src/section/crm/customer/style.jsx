@@ -42,13 +42,6 @@ export const StyledSiteTabBox = styled(Box)(({ theme }) => ({
   borderColor: alpha(theme.palette.grey[500], 0.5)
 }))
 
-export const StyledSiteMapBox = styled(Box)(({ theme }) => ({
-  justifyContent: 'center',
-  margin: 'auto',
-  alignItems: 'center',
-  overflow: 'hidden'
-}))
-
 export const StyledSiteTab = styled(({ theme, mode, ...other }) => <Tab {...other} />)(({ theme, mode }) => ({
   '&.Mui-selected': {
     color: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
