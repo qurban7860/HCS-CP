@@ -16,6 +16,10 @@ function _getCountryIcon(icon) {
   return `/asset/svg/flag/${icon}.svg`
 }
 
+function _getBrandIcon(icon) {
+  return `/asset/brand/${icon}.svg`
+}
+
 function _getWebIcon(icon) {
   return `mdi:${icon}`
 }
@@ -73,6 +77,7 @@ const ICON_LOC = {
   FRAMA_3200: _getIcon('frama-3200'),
   HOWICK_LOGO: _getIcon('howick-logo'),
   HOWICK_LOGO_DARK: _getIcon('howick-logo-dark'),
+  MAP_MARKER: _getIcon('howick-marker-icon'),
   MODE_LIGHT: _getIcon('sun'),
   MODE_DARK: _getIcon('moon'),
   PARENT: _getIcon('parent'),
@@ -134,6 +139,7 @@ export const ICON_LOC_NAME = {
   FRAMA_3200: 'FRAMA_3200',
   HOWICK_LOGO: 'HOWICK_LOGO',
   HOWICK_LOGO_DARK: 'HOWICK_LOGO_DARK',
+  MAP_MARKER: 'MAP_MARKER',
   MODE_LIGHT: 'MODE_LIGHT',
   MODE_DARK: 'MODE_DARK',
   US: 'US',
