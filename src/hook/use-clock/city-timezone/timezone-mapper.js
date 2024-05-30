@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import cityMapping from './city-map.json'
+import cityMapping from 'config/city-map.json'
 
 /**
  * Finds the timezone for a given city.
@@ -8,17 +8,19 @@ import cityMapping from './city-map.json'
  * @returns {Array} - An array of timezone objects matching the given city.
  */
 export function huntTimezone(city, country) {
-  const cityLookups = cityMapping.filter((o) => o.city.toLowerCase() === city.toLowerCase().trim())
+  const normalizedCity = sanitizeCityName(city)
+
+  const cityLookups = cityMapping.filter((o) => o.city.toLowerCase() === normalizedCity.toLowerCase().trim())
   if ((cityLookups.length > 1 && country) || (cityLookups.length === 0 && country)) {
     const countryLookup = cityLookups.find((o) => o.country.toLowerCase() === country.toLowerCase().trim())
     return countryLookup ? countryLookup : {}
   } else if (cityLookups.length > 0) {
     return cityLookups[0]
   } else if (!cityLookups && country) {
-    const partialLookup = findPartialMatch(cityMapping, city)
+    const partialLookup = findPartialMatch(cityMapping, normalizedCity)
     if (partialLookup) {
       const cityLookup = _.filter(cityMapping, function (o) {
-        return findPartialMatch([o.city, o.state_ansi, o.province, o.country], city)
+        return findPartialMatch([o.city, o.state_ansi, o.province, o.country], normalizedCity)
       })
       return cityLookup.length > 0 ? cityLookup[0] : {}
     }
@@ -55,4 +57,12 @@ export function findFromCityStateProvince(searchString) {
   } else {
     return []
   }
+}
+
+function sanitizeCityName(c) {
+  const sanitizedCity = c
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z ]/g, '')
+  return sanitizedCity
 }
