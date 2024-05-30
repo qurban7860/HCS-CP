@@ -7,7 +7,7 @@ import { Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { KEY, LABEL, VARIANT } from 'constant'
 import { GStyledPopover } from 'theme/style'
-import { StyledBackIconButton } from './style'
+import { StyledBackIconButton } from '../style'
 
 const {
   TYPOGRAPHY: { OVERLINE1 }
