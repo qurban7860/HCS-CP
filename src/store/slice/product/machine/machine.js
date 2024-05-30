@@ -19,6 +19,8 @@ const initialState = {
   connectedMachine: {},
   connectedMachineDialog: {},
   machineDialog: false,
+  machineSiteDialog: false,
+  machineSiteDialogData: {},
   machineType: null,
   machines: [],
   activeMachines: [],
@@ -53,6 +55,9 @@ const machineSlice = createSlice({
     },
     setMachineDialog(state, action) {
       state.machineDialog = action.payload
+    },
+    setMachineSiteDialog(state, action) {
+      state.machineSiteDialog = action.payload
     },
     setMachineTransferDialog(state, action) {
       state.machineTransferDialog = action.payload
@@ -138,6 +143,12 @@ const machineSlice = createSlice({
       state.isLoading = false
       state.success = true
       state.connectedMachineDialog = action.payload
+      state.initial = true
+    },
+    getMachineSiteDialogSuccess(state, action) {
+      state.isLoading = false
+      state.success = true
+      state.machineSiteDialogData = action.payload
       state.initial = true
     },
     getMachineGallerySuccess(state, action) {
@@ -226,6 +237,7 @@ export const {
   setMachineFilterBy,
   ChangeMachineRowsPerPage,
   ChangeMachinePage,
+  setMachineSiteDialog,
   setMachineDialog
 } = machineSlice.actions
 
@@ -291,6 +303,20 @@ export function getConnectedMachineDialog(id) {
     try {
       const response = await axiosInstance.get(PATH_SERVER.PRODUCT.MACHINE.detail(id))
       dispatch(machineSlice.actions.getConnecetedMachineDialogSuccess(response.data))
+    } catch (error) {
+      console.error(error)
+      dispatch(machineSlice.actions.hasError(error.Message))
+      throw error
+    }
+  }
+}
+
+export function getMachinesSiteDialog(id) {
+  return async (dispatch) => {
+    dispatch(machineSlice.actions.startLoading())
+    try {
+      const response = await axiosInstance.get(PATH_SERVER.PRODUCT.MACHINE.detail(id))
+      dispatch(machineSlice.actions.getMachineSiteDialogSuccess(response.data))
     } catch (error) {
       console.error(error)
       dispatch(machineSlice.actions.hasError(error.Message))
