@@ -10,7 +10,7 @@ import { useTheme } from '@mui/material/styles'
 import { useSettingContext } from 'component/setting'
 import { FormHeader, IconTooltip } from 'component'
 import { GStyledCenterBox, GStyledListItemText, GStyledSpanBox } from 'theme/style'
-import { VARIANT, SIZE, LABEL, KEY } from 'constant'
+import { VARIANT, SIZE, LABEL, KEY, FLEX } from 'constant'
 
 const { TYPOGRAPHY } = VARIANT
 
@@ -69,7 +69,7 @@ const ContactListWidget = ({ value }) => {
                                 borderRadius: 2,
                                 m: 0
                               }}>
-                              <Typography color={themeMode === KEY.LIGHT ? 'common.black' : 'grey.400'} variant={TYPOGRAPHY.H4}>
+                              <Typography color={themeMode === KEY.LIGHT ? 'common.black' : 'grey.400'} variant={TYPOGRAPHY.H5}>
                                 {fullName(c)}
                               </Typography>
                             </IconButton>
@@ -84,15 +84,16 @@ const ContactListWidget = ({ value }) => {
                     />
                   </Box>
                 </Grid>
-                <Grid item xs={2} flex={1} justifyContent={KEY.CENTER} alignContent={KEY.CENTER}>
-                  <GStyledCenterBox>
+                <Grid item xs={2} flex={1} justifyContent={FLEX.FLEX_END} alignContent={KEY.RIGHT}>
+                  <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1}>
                     <IconTooltip
                       title={LABEL.CONTACT_THIS(c.firstName, c.phone)}
                       icon={ICON_NAME.PHONE}
                       color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
-                      dimension={15}
+                      dimension={18}
+                      iconOnly
                     />
-                  </GStyledCenterBox>
+                  </GStyledSpanBox>
                 </Grid>
                 {index !== contacts.length - 1 && <Divider variant="fullWidth" style={{ width: '100%', marginBottom: '10px' }} />}
               </Fragment>
