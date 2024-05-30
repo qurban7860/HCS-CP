@@ -9,7 +9,7 @@ import { Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@
 import { GStyledTopBorderDivider, GStyledFlexEndBox, GStyledSpanBox } from 'theme/style'
 import { GridViewField, GridViewTitle, AuditBox, BadgeCardMedia } from 'component'
 import { HowickResources } from 'section/common'
-import { VIEW_FORM, TITLE, TYPOGRAPHY, SIZE, ICON, KEY } from 'constant'
+import { VIEW_FORM, TITLE, TYPOGRAPHY, KEY } from 'constant'
 
 const CustomerDialog = () => {
   const { themeMode } = useSettingContext()
@@ -27,7 +27,7 @@ const CustomerDialog = () => {
           sx={{
             justifyContent: 'space-between'
           }}>
-          <Typography variant={TYPOGRAPHY.H3}>{customer?.name.toUpperCase()}</Typography> &nbsp;
+          <Typography variant={TYPOGRAPHY.H3}>{customer?.name?.toUpperCase()}</Typography> &nbsp;
           <BadgeCardMedia dimension={40} />
         </GStyledSpanBox>
       </DialogTitle>
