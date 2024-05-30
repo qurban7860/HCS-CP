@@ -9,6 +9,7 @@ const { TOOLTIP } = ICON
 
 export default function IconTooltip({
   onDelete,
+  iconOnly = false,
   isActiveIcon = false,
   onClick,
   color,
@@ -18,7 +19,7 @@ export default function IconTooltip({
   disabled,
   dimension = TOOLTIP,
   noHoverAction,
-  noButton = false
+  cursor = false
 }) {
   const { Icon, iconSrc } = useIcon(icon)
 
@@ -34,13 +35,20 @@ export default function IconTooltip({
             <Icon color={color} sx={{ height: dimension, width: dimension }} icon={iconSrc} />
           </GStyledTooltip>
         </Button>
-      ) : isActiveIcon ? (
-        <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={color} color={color}>
-          <Icon color={color} sx={{ height: dimension, width: dimension }} icon={iconSrc} />
-        </GStyledTooltip>
-      ) : noButton ? (
-        <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={color} color={color}>
-          <Icon color={color} sx={{ height: dimension, width: dimension }} icon={iconSrc} />
+      ) : iconOnly ? (
+        <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={color} color={color} green={isActiveIcon}>
+          <Icon
+            color={color}
+            sx={{
+              height: dimension,
+              width: dimension,
+              margin: 0.5,
+              cursor: cursor ? 'pointer' : 'arrow',
+              ':hover': { color: noHoverAction ? color : convertToAlpha(color, 0.5), borderRadius: 1 }
+            }}
+            icon={iconSrc}
+            onClick={onClick}
+          />
         </GStyledTooltip>
       ) : (
         <Button
@@ -69,8 +77,9 @@ IconTooltip.propTypes = {
   title: PropTypes.string,
   placement: PropTypes.string,
   icon: PropTypes.string,
+  iconOnly: PropTypes.bool,
   isActiveIcon: PropTypes.bool,
-  noButton: PropTypes.bool
+  cursor: PropTypes.bool
 }
 
 IconTooltip.defaultProps = {
