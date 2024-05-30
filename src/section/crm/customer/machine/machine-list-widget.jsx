@@ -5,31 +5,24 @@ import { useIcon, ICON_NAME } from 'hook'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { dispatch } from 'store'
-import { getCustomerMachines, resetCustomerMachines, getMachineModel, getMachineModels } from 'store/slice'
+import { getCustomerMachines } from 'store/slice'
 import { Grid, Typography, IconButton, Divider } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTooltip } from 'theme/style'
 import { useSettingContext } from 'component/setting'
-import { FormHeader, SkeletonViewFormField, IconTooltip, MachineDialog } from 'component'
+import { FormHeader, SkeletonViewFormField, IconTooltip } from 'component'
 import { PATH_MACHINE } from 'route/path'
-import { GStyledCenterBox, GStyledListItemText, GStyledSpanBox } from 'theme/style'
+import { GStyledListItemText, GStyledSpanBox } from 'theme/style'
 import { VARIANT, SIZE, LABEL, KEY, DECOILER, DECOILER_TYPE_ARR, FLEX } from 'constant'
-import { normalizer } from 'util/format'
-import { StyledStatusChip } from '../style'
 
 const { TYPOGRAPHY } = VARIANT
-const { ONE_HALF_T, THREE_T, FIVE_T, SIX_T } = DECOILER
 
-const MachineListWidget = ({ value, handleMachineDialog }) => {
+const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog }) => {
   const { id } = useParams()
-  const [icon, setIcon] = useState(null)
   const [loading, setLoading] = useState(false)
   const theme = useTheme()
   const { themeMode } = useSettingContext()
   const { customerMachines, isLoading } = useSelector((state) => state.machine)
-  const { machineModels, machineModel } = useSelector((state) => state.machinemodel)
-
-  const isActive = (status) => (status ? LABEL.ACTIVE : LABEL.INACTIVE)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,25 +87,36 @@ const MachineListWidget = ({ value, handleMachineDialog }) => {
                   />
                 </Grid>
                 <Grid item xs={4} flex={1} justifyContent={KEY.FLEX_END} alignContent={KEY.RIGHT}>
-                  <GStyledSpanBox justifyContent={FLEX.FLEX_END}>
+                  <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1}>
+                    <IconTooltip
+                      title={LABEL.SITE_VIEW(mach?.serialNo)}
+                      icon={ICON_NAME.MAP_MARKER}
+                      dimension={18}
+                      onClick={() => handleMachineSiteDialog(mach._id)}
+                      color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
+                      iconOnly
+                      cursor
+                    />
                     <IconTooltip
                       title={LABEL.NAVIGATE_TO(mach?.serialNo)}
                       icon={ICON_NAME.OPEN_IN_NEW}
-                      dimension={20}
+                      dimension={18}
                       onClick={() => window.open(PATH_MACHINE.machines.view(mach?._id), KEY.BLANK)}
-                      color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.lightGray}
+                      color={theme.palette.grey[500]}
+                      iconOnly
                     />
                     {value?.isActive ? (
                       <IconTooltip
                         title={LABEL.ACTIVE}
                         icon={ICON_NAME.ACTIVE}
-                        dimension={20}
-                        isActiveIcon
                         color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+                        dimension={18}
                         px={0}
+                        isActiveIcon
+                        iconOnly
                       />
                     ) : (
-                      <IconTooltip title={LABEL.INACTIVE} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} dimension={20} />
+                      <IconTooltip title={LABEL.INACTIVE} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} dimension={18} iconOnly />
                     )}
                   </GStyledSpanBox>
                 </Grid>
@@ -136,7 +140,8 @@ const MachineListWidget = ({ value, handleMachineDialog }) => {
 }
 
 MachineListWidget.propTypes = {
-  value: PropTypes.object
+  value: PropTypes.object,
+  handleMachineDialog: PropTypes.func
 }
 
 export default MachineListWidget
