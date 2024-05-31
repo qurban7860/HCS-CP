@@ -10,9 +10,9 @@ import cityMapping from 'config/city-map.json'
 export function huntTimezone(city, country) {
   const normalizedCity = sanitizeCityName(city)
 
-  const cityLookups = cityMapping.filter((o) => o.city.toLowerCase() === normalizedCity.toLowerCase().trim())
+  const cityLookups = cityMapping.filter((o) => o.city.toLowerCase() === normalizedCity.toLowerCase())
   if ((cityLookups.length > 1 && country) || (cityLookups.length === 0 && country)) {
-    const countryLookup = cityLookups.find((o) => o.country.toLowerCase() === country.toLowerCase().trim())
+    const countryLookup = cityLookups.find((o) => o.country.toLowerCase() === country.toLowerCase())
     return countryLookup ? countryLookup : {}
   } else if (cityLookups.length > 0) {
     return cityLookups[0]
@@ -63,6 +63,6 @@ function sanitizeCityName(c) {
   const sanitizedCity = c
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-zA-Z ]/g, '')
+    .replace(/[^a-zA-Z]/g, '')
   return sanitizedCity
 }
