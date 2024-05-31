@@ -7,11 +7,13 @@ import { customerDefaultValues } from 'section/crm'
 import { useIcon, ICON_NAME } from 'hook'
 import { Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
 import { GStyledTopBorderDivider, GStyledFlexEndBox, GStyledSpanBox } from 'theme/style'
-import { GridViewField, GridViewTitle, AuditBox, BadgeCardMedia } from 'component'
+import { GridViewField, GridViewTitle, Button, BadgeCardMedia } from 'component'
 import { HowickResources } from 'section/common'
-import { VIEW_FORM, TITLE, TYPOGRAPHY, KEY } from 'constant'
+import { VIEW_FORM, TITLE, TYPOGRAPHY, KEY, BUTTON, FLEX } from 'constant'
+import { PATH_CUSTOMER } from 'route/path'
 
 const CustomerDialog = () => {
+  const navigate = useNavigate()
   const { themeMode } = useSettingContext()
   const { customer, isLoading, customerDialog } = useSelector((state) => state.customer)
   const { CUSTOMER, SITE, ADDRESS } = VIEW_FORM
@@ -19,6 +21,11 @@ const CustomerDialog = () => {
   const defaultValues = customerDefaultValues(customer, null)
 
   const handleCustomerDialog = () => dispatch(setCustomerDialog(false))
+
+  const handleCustomerOverview = () => {
+    dispatch(setCustomerDialog(false))
+    navigate(PATH_CUSTOMER.customers.view(defaultValues?.id))
+  }
   return (
     <Dialog disableEnforceFocus maxWidth="lg" open={customerDialog} onClose={handleCustomerDialog} aria-describedby="alert-dialog-slide-description">
       <GStyledTopBorderDivider mode={themeMode} />
@@ -33,7 +40,7 @@ const CustomerDialog = () => {
       </DialogTitle>
       <Divider orientation={KEY.HORIZONTAL} flexItem />
       <DialogContent dividers sx={{ px: 3, py: 2 }}>
-        <Grid container spacing={2}>
+        <Grid item pb={2}>
           <Grid container spacing={1} p={2} pb={1}>
             <GridViewField heading={CUSTOMER.CUSTOMER_NAME} isLoading={isLoading} children={defaultValues?.name} />
             <GridViewField heading={CUSTOMER.CUSTOMER_CODE} isLoading={isLoading} children={defaultValues?.code} />
@@ -58,9 +65,11 @@ const CustomerDialog = () => {
           <Grid container spacing={1} pb={1}>
             <Grid item sm={12}>
               <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} isDialog />
-              <GStyledFlexEndBox>
-                <AuditBox value={defaultValues} />
-              </GStyledFlexEndBox>
+            </Grid>
+            <Grid item sm={12}>
+              <Grid container justifyContent={FLEX.FLEX_END}>
+                <Button label={BUTTON.CUSTOMER_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCustomerOverview} />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

@@ -1,8 +1,9 @@
+import { useNavigate } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
 import { useSettingContext } from 'component/setting'
 import { setMachineDialog } from 'store/slice'
 import { ICON_NAME, useIcon, Clock } from 'hook'
-import { PATH_CUSTOMER } from 'route/path'
+import { PATH_CUSTOMER, PATH_MACHINE } from 'route/path'
 import { machineDefaultValues } from 'section/product'
 import { Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
@@ -13,16 +14,21 @@ import { VIEW_FORM, TITLE, TYPOGRAPHY, FLEX, LABEL, KEY, DECOILER_TYPE_ARR, BUTT
 import { truncate } from 'util/truncate'
 
 const MachineDialog = () => {
+  const navigate = useNavigate()
   const theme = useTheme()
   const { themeMode } = useSettingContext()
   const { connectedMachineDialog, isLoading, isParent, isDecoiler, machineDialog } = useSelector((state) => state.machine)
   const { customer } = useSelector((state) => state.customer)
 
-  const { Icon: WebIcon, iconSrc: rightSrc } = useIcon(ICON_NAME.CHEVRON_RIGHT)
   const { MACHINE } = VIEW_FORM
 
   const defaultValues = machineDefaultValues(connectedMachineDialog, customer)
   const handleDialog = () => dispatch(setMachineDialog(false))
+
+  const handleMachineOverview = () => {
+    dispatch(setMachineDialog(false))
+    navigate(PATH_MACHINE.machines.view(defaultValues?.id))
+  }
 
   return (
     <Dialog disableEnforceFocus maxWidth={KEY.LG} open={machineDialog} onClose={handleDialog} aria-describedby="alert-dialog-slide-description">
@@ -119,7 +125,7 @@ const MachineDialog = () => {
               <Grid item sm={12}>
                 <Grid container justifyContent={FLEX.FLEX_END}>
                   <Grid container justifyContent={FLEX.FLEX_END}>
-                    <Button label={BUTTON.MACHINE_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} />
+                    <Button label={BUTTON.MACHINE_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleMachineOverview} />
                   </Grid>
                 </Grid>
               </Grid>
