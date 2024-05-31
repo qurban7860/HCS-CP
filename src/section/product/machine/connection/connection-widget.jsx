@@ -45,7 +45,7 @@ const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMa
                       mach.connectedMachine.name && (
                         <GStyledSpanBox>
                           <IconButton
-                            onClick={() => handleConnectedMachineDialog(mach.connectedMachine._id)}
+                            onClick={(e) => handleConnectedMachineDialog(e, mach.connectedMachine._id)}
                             size={SIZE.MEDIUM}
                             color={themeMode === KEY.LIGHT ? 'grey.800' : 'common.white'}
                             aria-label="view"
@@ -78,7 +78,7 @@ const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMa
                       title={LABEL.SITE_VIEW(mach?.connectedMachine?.serialNo)}
                       icon={ICON_NAME.MAP_MARKER}
                       dimension={18}
-                      onClick={() => handleMachineSiteDialog(mach.connectedMachine._id)}
+                      onClick={(e) => handleMachineSiteDialog(e, mach.connectedMachine._id)}
                       color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
                       iconOnly
                       cursor
@@ -96,8 +96,8 @@ const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMa
                       <IconTooltip
                         title={LABEL.ACTIVE}
                         icon={ICON_NAME.ACTIVE}
-                        dimension={18}
                         color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+                        dimension={18}
                         px={0}
                         isActiveIcon
                         iconOnly
@@ -118,7 +118,7 @@ const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMa
                       mach && (
                         <GStyledSpanBox>
                           <IconButton
-                            onClick={() => handleConnectedMachineDialog(mach.machine._id)}
+                            onClick={(e) => handleConnectedMachineDialog(e, mach.machine._id)}
                             size={SIZE.MEDIUM}
                             color={themeMode === KEY.LIGHT ? 'grey.800' : 'common.white'}
                             aria-label="view"
@@ -152,7 +152,7 @@ const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMa
                       title={LABEL.SITE_VIEW(mach?.machine?.serialNo)}
                       icon={ICON_NAME.MAP_MARKER}
                       dimension={18}
-                      onClick={() => handleMachineSiteDialog(mach.machine._id)}
+                      onClick={(e) => handleMachineSiteDialog(e, mach.machine._id)}
                       color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
                       iconOnly
                       cursor
@@ -160,10 +160,11 @@ const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMa
                     <IconTooltip
                       title={LABEL.NAVIGATE_TO(mach?.machine?.serialNo)}
                       icon={ICON_NAME.OPEN_IN_NEW}
-                      dimension={18}
                       onClick={() => window.open(PATH_MACHINE.machines.view(mach?.machine?._id), KEY.BLANK)}
                       color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]}
+                      dimension={18}
                       iconOnly
+                      cursor
                     />
                     {value?.isActive ? (
                       <IconTooltip
