@@ -52,7 +52,7 @@ const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog
                       mach && (
                         <GStyledSpanBox>
                           <IconButton
-                            onClick={() => handleMachineDialog(mach._id)}
+                            onClick={(e) => handleMachineDialog(e, mach._id)}
                             size={SIZE.MEDIUM}
                             color={themeMode === KEY.LIGHT ? 'grey.800' : 'common.white'}
                             aria-label="view"
@@ -92,7 +92,7 @@ const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog
                       title={LABEL.SITE_VIEW(mach?.serialNo)}
                       icon={ICON_NAME.MAP_MARKER}
                       dimension={18}
-                      onClick={() => handleMachineSiteDialog(mach._id)}
+                      onClick={(e) => handleMachineSiteDialog(e, mach._id)}
                       color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
                       iconOnly
                       cursor
@@ -104,6 +104,7 @@ const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog
                       onClick={() => window.open(PATH_MACHINE.machines.view(mach?._id), KEY.BLANK)}
                       color={theme.palette.grey[500]}
                       iconOnly
+                      cursor
                     />
                     {value?.isActive ? (
                       <IconTooltip
