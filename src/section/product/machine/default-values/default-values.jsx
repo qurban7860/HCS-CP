@@ -4,6 +4,7 @@ import { fDate, parseAddress } from 'util'
 export default function machineDefaultValues(machineData, customer) {
   return useMemo(() => {
     return {
+      id: machineData?._id || '',
       serialNo: machineData?.serialNo || '',
       name: machineData?.name || '',
       description: machineData?.description || '',
@@ -36,7 +37,8 @@ export default function machineDefaultValues(machineData, customer) {
       mainSiteCity: customer?.mainSite?.address?.city || '',
       mainSiteRegion: customer?.mainSite?.address?.region || '',
       mainSiteCountry: customer?.mainSite?.address?.country || '',
-      installationSiteStreet: machineData?.instalationSite?.street || '',
+      installationSiteName: machineData?.instalationSite?.name || '',
+      installationSiteStreet: machineData?.instalationSite?.address?.street || '',
       installationSiteSuburb: machineData?.instalationSite?.address?.suburb || '',
       installationSitePostCode: machineData?.instalationSite?.address?.postCode || '',
       installationSiteCity: machineData?.instalationSite?.address?.city || '',

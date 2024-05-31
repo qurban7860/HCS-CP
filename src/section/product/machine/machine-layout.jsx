@@ -18,7 +18,10 @@ import {
   getConnectedMachineDialog,
   getMachinesSiteDialog,
   setMachineDialog,
-  setMachineSiteDialog
+  setMachineSiteDialog,
+  resetCustomer,
+  resetConnectedMachineDialog,
+  resetMachineSiteDialogData
 } from 'store/slice'
 import { useForm } from 'react-hook-form'
 import { machineDefaultValues } from 'section/product'
@@ -60,6 +63,9 @@ const MachineLayout = () => {
     dispatch(setCustomerDialog(false))
     dispatch(setMachineDialog(false))
     dispatch(setMachineSiteDialog(false))
+    dispatch(resetCustomer())
+    dispatch(resetConnectedMachineDialog())
+    dispatch(resetMachineSiteDialogData())
   }, [dispatch])
 
   const defaultValues = machineDefaultValues(machine, customer)
@@ -95,16 +101,21 @@ const MachineLayout = () => {
 
   const handleCustomerDialog = (event, customerId) => {
     event.preventDefault()
+    dispatch(resetCustomer())
     dispatch(getCustomer(customerId))
     dispatch(setCustomerDialog(true))
   }
 
-  const handleConnectedMachineDialog = (machineId) => {
+  const handleConnectedMachineDialog = (event, machineId) => {
+    event.preventDefault()
+    dispatch(resetConnectedMachineDialog())
     dispatch(getConnectedMachineDialog(machineId))
     dispatch(setMachineDialog(true))
   }
 
-  const handleMachineSiteDialog = (machineId) => {
+  const handleMachineSiteDialog = (event, machineId) => {
+    event.preventDefault()
+    dispatch(resetMachineSiteDialogData())
     dispatch(getMachinesSiteDialog(machineId))
     dispatch(setMachineSiteDialog(true))
   }
