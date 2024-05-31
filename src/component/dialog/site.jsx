@@ -13,7 +13,7 @@ import { VIEW_FORM, SNACK, TITLE, TYPOGRAPHY, FLEX, LABEL, KEY, DECOILER_TYPE_AR
 
 const SiteDialog = () => {
   const [validCoordinates, setValidCoordinates] = useState(false)
-  const { machineSiteDialogData, machineSiteDialog, isLoading, isParent, isDecoiler, machineDialog } = useSelector((state) => state.machine)
+  const { machineSiteDialogData, machineSiteDialog, isLoading } = useSelector((state) => state.machine)
   const { customer } = useSelector((state) => state.customer)
 
   const theme = useTheme()
@@ -96,8 +96,8 @@ const SiteDialog = () => {
             <Grid container flexDirection="row">
               <GridViewTitle title={TITLE.SITE_INFO} />
               <Grid container spacing={1} pb={1}>
-                <GridViewField heading={SITE.SITE_NAME} isLoading={isLoading} children={defaultValues?.installationSiteStreet} gridSize={12} />
-                <GridViewField heading={ADDRESS.STREET} isLoading={isLoading} children={defaultValues?.street} gridSize={8} />
+                <GridViewField heading={SITE.SITE_NAME} isLoading={isLoading} children={defaultValues?.installationSiteName} gridSize={12} />
+                <GridViewField heading={ADDRESS.STREET} isLoading={isLoading} children={defaultValues?.installationSiteStreet} gridSize={8} />
                 <GridViewField heading={ADDRESS.SUBURB} isLoading={isLoading} children={defaultValues?.installationSiteSuburb} gridSize={4} />
                 <GridViewField heading={ADDRESS.CITY} isLoading={isLoading} children={defaultValues?.installationSiteCity} />
                 <GridViewField heading={ADDRESS.REGION} isLoading={isLoading} children={defaultValues?.installationSiteRegion} />
