@@ -9,12 +9,12 @@ import { Grid, Typography, IconButton, Divider, Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useSettingContext } from 'component/setting'
 import { FormHeader, IconTooltip } from 'component'
-import { GStyledCenterBox, GStyledListItemText, GStyledSpanBox } from 'theme/style'
+import { GStyledListItemText, GStyledSpanBox } from 'theme/style'
 import { VARIANT, SIZE, LABEL, KEY, FLEX } from 'constant'
 
 const { TYPOGRAPHY } = VARIANT
 
-const ContactListWidget = ({ value }) => {
+const ContactListWidget = ({ value, handleContactDialog }) => {
   const [icon, setIcon] = useState(null)
 
   const theme = useTheme()
@@ -58,8 +58,6 @@ const ContactListWidget = ({ value }) => {
                         c && (
                           <GStyledSpanBox>
                             <IconButton
-                              // activate when contact view page is ready
-                              // onClick={() => window.open(PATH_MACHINE.machines.view(c.machine._id), KEY.BLANK)}
                               size={SIZE.MEDIUM}
                               color={themeMode === KEY.LIGHT ? 'grey.800' : 'common.white'}
                               aria-label="view"
@@ -68,7 +66,8 @@ const ContactListWidget = ({ value }) => {
                                 padding: 0,
                                 borderRadius: 2,
                                 m: 0
-                              }}>
+                              }}
+                              onClick={() => handleContactDialog(c._id)}>
                               <Typography color={themeMode === KEY.LIGHT ? 'common.black' : 'grey.400'} variant={TYPOGRAPHY.H5}>
                                 {fullName(c)}
                               </Typography>
@@ -110,7 +109,8 @@ const ContactListWidget = ({ value }) => {
 }
 
 ContactListWidget.propTypes = {
-  value: PropTypes.object
+  value: PropTypes.object,
+  handleContactDialog: PropTypes.func
 }
 
 export default ContactListWidget
