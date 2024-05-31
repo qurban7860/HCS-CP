@@ -15,16 +15,18 @@ const TITLE = {
   MACHINE_LIST: 'MACHINE LIST',
   CUSTOMER_LIST: 'CUSTOMER LIST',
   ORGANIZATIONS: 'Organizations',
+  // :contact
   // @user - UserProfile - user
   PERSONAL_INFO: 'Personal Information',
+  KEY_DETAILS: 'Key Details',
   PROFILE: 'Profile',
   // @machine - MachineViewForm - machine
   MACHINE_KEY_DETAILS: 'Key Details',
   MACHINE_INFO: 'Machine Information',
   SITE_INFO: 'Site Information',
+  ADDRESS_INFO: 'Address Information',
   HOWICK_RESOURCES: 'Howick Resources',
   MACHINE: 'Machine',
-
   // @root - AccountPopover - settings drawer
   DISPLAY_SETTING: 'Display setting',
   LANGUAGE: 'Language',
