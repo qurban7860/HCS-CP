@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { useAuthContext } from 'auth'
 import { yupResolver } from '@hookform/resolvers/yup'
-
+import { MotionLazyContainer } from 'component/animate'
 import {
   Box,
   Badge,
