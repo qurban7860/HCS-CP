@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types'
-import { useIcon, ICON_NAME } from 'hook'
+import { useIcon } from 'hook'
+import { useSettingContext } from 'component/setting'
 import { Button, alpha } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { GStyledTooltip } from 'theme/style'
 import { ICON } from 'config/layout'
-import { VARIANT } from 'constant'
+import { KEY, LABEL, VARIANT } from 'constant'
 
 const { TOOLTIP } = ICON
 
@@ -22,6 +24,11 @@ export default function IconTooltip({
   cursor = false
 }) {
   const { Icon, iconSrc } = useIcon(icon)
+  const { themeMode } = useSettingContext()
+  const theme = useTheme()
+
+  const disabledColor = themeMode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
+  const disabledHoverColor = themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[700]
 
   const convertToAlpha = (color) => {
     return alpha(color, 0.5)
@@ -29,13 +36,15 @@ export default function IconTooltip({
 
   return (
     <>
-      {disabled ? (
-        <Button variant={VARIANT.FILLED} sx={{ cursor: 'default', color, borderColor: color, ':hover': { borderColor: convertToAlpha(color, 0.5) } }}>
-          <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={color} color={color}>
-            <Icon color={color} sx={{ height: dimension, width: dimension }} icon={iconSrc} />
+      {disabled && !iconOnly ? (
+        <Button
+          variant={VARIANT.FILLED}
+          sx={{ cursor: 'default', color, borderColor: disabledColor, ':hover': { borderColor: convertToAlpha(color, 0.5) } }}>
+          <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={disabledColor} color={theme.palette.grey[400]}>
+            <Icon color={disabledColor} sx={{ height: dimension, width: dimension, ':hover': { color: disabledHoverColor } }} icon={iconSrc} />
           </GStyledTooltip>
         </Button>
-      ) : iconOnly ? (
+      ) : iconOnly && !disabled ? (
         <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={color} color={color} green={isActiveIcon}>
           <Icon
             color={color}
@@ -48,6 +57,27 @@ export default function IconTooltip({
             }}
             icon={iconSrc}
             onClick={onClick}
+          />
+        </GStyledTooltip>
+      ) : iconOnly && disabled ? (
+        <GStyledTooltip
+          title={LABEL.NO_PROVIDED}
+          placement={placement}
+          disableFocusListener
+          tooltipcolor={disabledColor}
+          color={disabledColor}
+          green={isActiveIcon}
+          disabled={disabled}>
+          <Icon
+            color={disabledColor}
+            sx={{
+              height: dimension,
+              width: dimension,
+              margin: 0.5,
+              cursor: cursor ? 'pointer' : 'arrow'
+            }}
+            icon={iconSrc}
+            disabled={disabled}
           />
         </GStyledTooltip>
       ) : (
