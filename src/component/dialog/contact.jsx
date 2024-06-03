@@ -62,6 +62,8 @@ const ContactDialog = () => {
             <Grid container flexDirection="row">
               <GridViewTitle title={TITLE.KEY_DETAILS} />
               <Grid container spacing={1} pb={1}>
+                <GridViewField heading={VIEW_FORM.FIRST_NAME} isLoading={isLoading} children={defaultValues?.firstName} />
+                <GridViewField heading={VIEW_FORM.LAST_NAME} isLoading={isLoading} children={defaultValues?.lastName} />
                 <GridViewField heading={VIEW_FORM.EMAIL} isLoading={isLoading} children={defaultValues?.email} />
                 <GridViewField heading={VIEW_FORM.PHONE} isLoading={isLoading} children={defaultValues?.phone} />
                 <GridViewField
