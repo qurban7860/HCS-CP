@@ -1,8 +1,7 @@
+import { useSettingContext } from 'hook'
 import { Button } from '@mui/material'
-import { RADIUS } from 'config'
 import { BUTTON, COLOR, KEY } from 'constant'
 import { PATH_DASHBOARD } from 'route/path'
-import { useSettingContext } from 'component/setting'
 
 const FallbackButton = () => {
   const { themeMode } = useSettingContext()

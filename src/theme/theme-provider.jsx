@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { useSettingContext } from 'component/setting'
+import { useSettingContext } from 'hook'
 import { CssBaseline } from '@mui/material'
 import { createTheme, StyledEngineProvider, ThemeProvider as MUIThemeProvider } from '@mui/material/styles'
 import { RADIUS } from 'config'

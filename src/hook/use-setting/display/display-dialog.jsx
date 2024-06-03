@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
-import { Block, ModeOption, FullScreenOption, ContrastOption } from 'component/setting'
+import { Block, ModeOption, FullScreenOption, ContrastOption } from 'hook'
 import { Box, Dialog, Divider, IconButton, Stack, Tooltip, Typography } from '@mui/material'
 import { Scrollbar } from 'component/scrollbar'
-import { useSettingContext } from 'component/setting'
+import { useSettingContext } from 'hook'
 import { useIcon, ICON_NAME } from 'hook'
 import { NAV } from 'config'
 import { TITLE } from 'constant'
@@ -22,16 +22,10 @@ const DisplayDialog = ({ open, handleClose, onResetSetting }) => {
         sx: {
           width: NAV.W_BASE,
           ...(open && { '&:after': { position: 'relative', zIndex: 9999 } }),
-          height: NAV.H_ACCOUNT_POPOVER,
-        },
-      }}
-    >
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ py: 1, pr: 1, pl: NAV.SPACING }}
-      >
+          height: NAV.H_ACCOUNT_POPOVER
+        }
+      }}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: 1, pr: 1, pl: NAV.SPACING }}>
         <Typography variant="body1" my={0} sx={{ flexGrow: 1 }}>
           {TITLE.DISPLAY_SETTING}
         </Typography>
@@ -69,7 +63,7 @@ const DisplayDialog = ({ open, handleClose, onResetSetting }) => {
 DisplayDialog.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func,
-  onResetSetting: PropTypes.func,
+  onResetSetting: PropTypes.func
 }
 
-export { DisplayDialog }
+export default DisplayDialog

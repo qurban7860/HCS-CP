@@ -1,8 +1,5 @@
-import { IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { StyledCard } from 'component/setting'
-import { useSettingContext } from 'component/setting'
-import { useIcon } from 'hook'
+import { useIcon, useSettingContext, StyledCard } from 'hook'
 import { RADIUS } from 'config'
 import { KEY } from 'constant'
 
@@ -24,13 +21,12 @@ function ModeOption() {
       sx={{
         '&: MuiIconButton-root': {
           backgroundColor: theme.palette.grey[200],
-          borderRadius: 0,
+          borderRadius: 0
         },
         '&:hover': {
-          ...RADIUS.BORDER,
-        },
-      }}
-    >
+          ...RADIUS.BORDER
+        }
+      }}>
       {themeMode === KEY.LIGHT ? (
         <Icon icon={iconLight} color={theme.palette.secondary.main} />
       ) : (

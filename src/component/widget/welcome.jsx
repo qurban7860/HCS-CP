@@ -1,16 +1,14 @@
 import PropTypes from 'prop-types'
-import { styled } from '@mui/material/styles'
-import { Typography, Stack } from '@mui/material'
+import { useSettingContext } from 'hook'
+import { Stack } from '@mui/material'
 import { GStyledWelcomeTitle, GStyledWelcomeContainerDiv, GStyledWelcomeDescription } from 'theme/style'
-import { useSettingContext } from 'component/setting'
 import { useTheme } from '@mui/material/styles'
-import { KEY } from 'constant'
 
 Welcome.propTypes = {
   img: PropTypes.node,
   action: PropTypes.node,
   title: PropTypes.string,
-  description: PropTypes.string,
+  description: PropTypes.string
 }
 
 function Welcome({ title, description, action, img, ...other }) {
@@ -23,9 +21,8 @@ function Welcome({ title, description, action, img, ...other }) {
         sx={{
           textAlign: { xs: 'center', md: 'left' },
           mb: { xs: 5, md: 10 },
-          mt: { xs: 0, md: 5 },
-        }}
-      >
+          mt: { xs: 0, md: 5 }
+        }}>
         <GStyledWelcomeTitle variant="h0" fontWeight="bold" themeMode={themeMode}>
           {title}
         </GStyledWelcomeTitle>

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { Icon } from 'hook'
 import { Typography, Button as MuiButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { useSettingContext } from 'component/setting'
+import { useSettingContext } from 'hook'
 import { KEY, VARIANT } from 'constant'
 
 const { TYPOGRAPHY } = VARIANT

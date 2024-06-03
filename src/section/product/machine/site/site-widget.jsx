@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
-import { useSettingContext } from 'component/setting'
+import { useSettingContext } from 'hook'
 import { Grid, Box, Typography } from '@mui/material'
 import { FormHeader } from 'component'
 import { LABEL, VIEW_FORM, VARIANT, DIV_ROLE, KEY } from 'constant'

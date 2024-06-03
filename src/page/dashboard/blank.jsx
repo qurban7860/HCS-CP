@@ -1,5 +1,5 @@
+import { useSettingContext } from 'hook'
 import { Container, Typography } from '@mui/material'
-import { useSettingContext } from 'component/setting'
 
 function Blank() {
   const { themeStretch } = useSettingContext()

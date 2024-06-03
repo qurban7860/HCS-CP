@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
-import { useIcon } from 'hook'
-import { useSettingContext } from 'component/setting'
+import { useIcon, useSettingContext } from 'hook'
 import { Button, alpha } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTooltip } from 'theme/style'

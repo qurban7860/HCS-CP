@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
+import { useSettingContext } from 'hook'
 import { localStorageSpace } from 'util'
-import { useSettingContext } from 'component/setting'
 import { allLang, defaultLang } from './config-lang'
 
 function useLocale() {
@@ -23,7 +23,7 @@ function useLocale() {
     onChangeLang: handleChangeLanguage,
     translate: (text, options) => translate(text, options),
     currentLang,
-    allLang,
+    allLang
   }
 }
 

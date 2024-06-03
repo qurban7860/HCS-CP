@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types'
-import { useIcon, ICON_NAME } from 'hook'
+import { useIcon, useSettingContext } from 'hook'
 import { Typography } from '@mui/material'
 import { GStyledSpanBox } from 'theme/style'
-import { useSettingContext } from 'component/setting'
 import { KEY, LABEL, VARIANT } from 'constant'
 import { StyledHeaderBox } from './style'
 

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
-import { useSettingContext } from 'component/setting'
+import { useSettingContext } from 'hook'
 import { setCustomerDialog } from 'store/slice'
 import { customerDefaultValues } from 'section/crm'
 import { useIcon, ICON_NAME } from 'hook'
