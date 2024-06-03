@@ -17,10 +17,10 @@ const initialState = {
   machine: {},
   parentMachine: {},
   connectedMachine: {},
-  connectedMachineDialog: {},
+  connectedMachineDialog: null,
   machineDialog: false,
   machineSiteDialog: false,
-  machineSiteDialogData: {},
+  machineSiteDialogData: null,
   machineType: null,
   machines: [],
   activeMachines: [],
@@ -193,6 +193,18 @@ const machineSlice = createSlice({
       state.allMachines = []
       state.initial = true
     },
+    resetConnectedMachineDialog(state) {
+      state.connectedMachineDialog = {}
+      state.responseMessage = null
+      state.success = false
+      state.isLoading = false
+    },
+    resetMachineSiteDialogData(state) {
+      state.machineSiteDialogData = null
+      state.responseMessage = null
+      state.success = false
+      state.isLoading = false
+    },
     setAccountManager(state, action) {
       state.accountManager = action.payload
     },
@@ -230,6 +242,8 @@ export const {
   resetMachines,
   resetActiveMachines,
   resetAllMachines,
+  resetMachineSiteDialogData,
+  resetConnectedMachineDialog,
   setResponseMessage,
   setTransferDialogBoxVisibility,
   setAccountManager,
