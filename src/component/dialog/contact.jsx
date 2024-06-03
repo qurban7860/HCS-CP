@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
 import { dispatch, useSelector } from 'store'
-import { useSettingContext } from 'component/setting'
+import { useSettingContext } from 'hook'
 import { PATH_CUSTOMER } from 'route/path'
 import { setContactDialog } from 'store/slice'
 import { ICON_NAME, Clock } from 'hook'

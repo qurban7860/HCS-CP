@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { useAuthContext } from 'auth'
 import { yupResolver } from '@hookform/resolvers/yup'
-
+import { MotionLazyContainer } from 'component/animate'
 import {
   Box,
   Badge,
@@ -22,13 +22,9 @@ import {
 } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
 import FormProvider, { RHFTextField } from 'component/hook-form'
-import TextareaAutosize from 'react-textarea-autosize'
-import { MotionLazyContainer } from 'component/animate'
-import { useSettingContext } from 'component/setting'
 import { editUserSchema } from 'schema'
 import { useGetUserQuery } from 'store/slice'
-// import { getSecurityUser } from 'store/slice'
-import { useIcon, ICON_NAME } from 'hook'
+import { useIcon, ICON_NAME, useSettingContext } from 'hook'
 import { MARGIN, RADIUS, ASSET } from 'config'
 import { KEY, TITLE, LABEL } from 'constant'
 import { mockUser } from '_mock'

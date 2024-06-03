@@ -1,8 +1,5 @@
 import countries from 'i18n-iso-countries'
 import enLocale from 'i18n-iso-countries/langs/en.json'
-import { useSettingContext } from 'component/setting'
-import { Box } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
 
 import { GStyledTooltip } from 'theme/style'
 

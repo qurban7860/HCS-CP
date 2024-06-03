@@ -2,7 +2,7 @@ import { memo, useEffect, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, dispatch } from 'store'
 import { useParams } from 'react-router-dom'
-import { ICON_NAME } from 'hook'
+import { ICON_NAME, useSettingContext } from 'hook'
 import {
   getCustomerMachines,
   getConnectedMachineDialog,
@@ -35,7 +35,6 @@ import {
 } from 'component'
 import { ViewFormField } from 'component/viewform'
 import { MotionLazyContainer } from 'component/animate'
-import { useSettingContext } from 'component/setting'
 import { MARGIN } from 'config'
 import { KEY, TITLE, LABEL, RESPONSE, COLOR, VIEW_FORM, VARIANT, FLEX_DIR, FLEX } from 'constant'
 import { MachineListWidget, ContactListWidget, CardOption } from 'section/crm/customer'

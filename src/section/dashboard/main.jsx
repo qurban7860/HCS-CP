@@ -1,15 +1,14 @@
 import PropTypes from 'prop-types'
 import { Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { useResponsive } from 'hook'
-import { HEADER, NAV } from 'config'
-import { useSettingContext } from 'component/setting'
+import { useResponsive, useSettingContext } from 'hook'
+import { HEADER } from 'config'
 
 const SPACING = 8
 
 Main.propTypes = {
   sx: PropTypes.object,
-  children: PropTypes.node,
+  children: PropTypes.node
 }
 
 export default function Main({ children, sx, ...other }) {
@@ -30,10 +29,9 @@ export default function Main({ children, sx, ...other }) {
           ...(isDesktop && {
             px: 2,
             pt: `${HEADER.H_DASHBOARD_DESKTOP + 80}px`,
-            pb: `${HEADER.H_DASHBOARD_DESKTOP + SPACING}px`,
-          }),
-        }}
-      >
+            pb: `${HEADER.H_DASHBOARD_DESKTOP + SPACING}px`
+          })
+        }}>
         {children}
       </Box>
     )
@@ -48,16 +46,15 @@ export default function Main({ children, sx, ...other }) {
         ...(isDesktop && {
           px: 2,
           py: `${HEADER.H_DASHBOARD_DESKTOP + SPACING}px`,
-          width: '100%',
+          width: '100%'
           // width: `calc(100% - ${NAV.W_DASHBOARD}px)`,
           // ...(isNavMini && {
           //   width: `calc(100% - ${NAV.W_DASHBOARD_MINI}px)`,
           // }),
         }),
-        ...sx,
+        ...sx
       }}
-      {...other}
-    >
+      {...other}>
       {children}
     </Box>
   )

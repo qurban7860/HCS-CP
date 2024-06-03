@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
-import { useSettingContext } from 'component/setting'
+import { useSettingContext } from 'hook'
 import { setMachineDialog } from 'store/slice'
 import { ICON_NAME, useIcon, Clock } from 'hook'
 import { PATH_CUSTOMER, PATH_MACHINE } from 'route/path'

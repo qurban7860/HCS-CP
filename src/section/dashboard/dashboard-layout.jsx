@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { Outlet } from 'react-router-dom'
 import { GStyledContainer } from 'theme/style'
-import { useSettingContext } from 'component/setting'
+import { useSettingContext } from 'hook'
 import Main from './main'
 import Header, { Navbar } from './header'
 

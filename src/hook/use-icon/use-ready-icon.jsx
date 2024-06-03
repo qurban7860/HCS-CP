@@ -1,6 +1,5 @@
-import { useState } from 'react'
+import { useSettingContext } from 'hook'
 import { useTheme } from '@mui/material/styles'
-import { useSettingContext } from 'component/setting'
 import useIcon, { ICON_NAME } from './use-icon'
 import { KEY } from 'constant'
 

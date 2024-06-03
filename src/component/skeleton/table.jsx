@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { TableBody, TableRow, TableCell, Stack } from '@mui/material'
 import { GStyledTableSkeleton } from 'theme/style'
-import { useSettingContext } from 'component/setting'
+import { useSettingContext } from 'hook'
 
 const SkeletonTable = ({ ...other }) => {
   const { themeMode } = useSettingContext()
