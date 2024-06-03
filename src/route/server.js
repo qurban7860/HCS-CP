@@ -51,6 +51,8 @@ export const PATH_SERVER = {
       list: _url('crm', 'customers'),
       // /customer/:id/contact
       listContact: (customerId) => _url('crm', 'customers', customerId, 'contacts'),
+      // /customer/:id/contact/:contactId
+      contactDetail: (customerId, contactId) => _url('crm', 'customers', customerId, 'contacts', contactId),
       // /customer/:id/machine
       listMachine: (customerId) => _url('crm', 'customers', customerId, 'machine')
     }

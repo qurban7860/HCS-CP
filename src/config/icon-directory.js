@@ -16,6 +16,10 @@ function _getCountryIcon(icon) {
   return `/asset/svg/flag/${icon}.svg`
 }
 
+function _getBrandIcon(icon) {
+  return `/asset/brand/${icon}.svg`
+}
+
 function _getWebIcon(icon) {
   return `mdi:${icon}`
 }
@@ -63,6 +67,7 @@ const ICON_WEB = {
 
 // add icons that are saved locally
 const ICON_LOC = {
+  DECOILER_DEF: _getIcon('decoiler-def'),
   DECOILER_1_5T: _getIcon('decoiler_1-5t'),
   DECOILER_3T: _getIcon('decoiler_3t'),
   DECOILER_5T: _getIcon('decoiler_5t'),
@@ -72,6 +77,7 @@ const ICON_LOC = {
   FRAMA_3200: _getIcon('frama-3200'),
   HOWICK_LOGO: _getIcon('howick-logo'),
   HOWICK_LOGO_DARK: _getIcon('howick-logo-dark'),
+  MAP_MARKER: _getIcon('howick-marker-icon'),
   MODE_LIGHT: _getIcon('sun'),
   MODE_DARK: _getIcon('moon'),
   PARENT: _getIcon('parent'),
@@ -127,11 +133,13 @@ export const ICON_LOC_NAME = {
   DECOILER_3T: 'DECOILER_3T',
   DECOILER_5T: 'DECOILER_5T',
   DECOILER_6T: 'DECOILER_6T',
+  DECOILER_DEF: 'DECOILER_DEF',
   EXPAND: 'EXPAND',
   FRAMA: 'FRAMA',
   FRAMA_3200: 'FRAMA_3200',
   HOWICK_LOGO: 'HOWICK_LOGO',
   HOWICK_LOGO_DARK: 'HOWICK_LOGO_DARK',
+  MAP_MARKER: 'MAP_MARKER',
   MODE_LIGHT: 'MODE_LIGHT',
   MODE_DARK: 'MODE_DARK',
   US: 'US',

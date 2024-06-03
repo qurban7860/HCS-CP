@@ -27,32 +27,32 @@ export default function Button(theme) {
           color: theme.palette.grey[800],
           '&:hover': {
             boxShadow: theme.customShadow.z8,
-            backgroundColor: theme.palette.grey[400],
-          },
+            backgroundColor: theme.palette.grey[400]
+          }
         }),
         // OUTLINED
         ...(outlinedVariant && {
           borderColor: alpha(theme.palette.grey[500], 0.32),
           '&:hover': {
             borderColor: theme.palette.text.primary,
-            backgroundColor: theme.palette.action.hover,
-          },
+            backgroundColor: theme.palette.action.hover
+          }
         }),
         // TEXT
         ...(textVariant && {
           '&:hover': {
-            backgroundColor: theme.palette.action.hover,
-          },
+            backgroundColor: theme.palette.action.hover
+          }
         }),
         // SOFT
         ...(softVariant && {
           color: theme.palette.text.primary,
           backgroundColor: alpha(theme.palette.grey[500], 0.08),
           '&:hover': {
-            backgroundColor: alpha(theme.palette.grey[500], 0.24),
-          },
-        }),
-      }),
+            backgroundColor: alpha(theme.palette.grey[500], 0.24)
+          }
+        })
+      })
     }
 
     const colorStyle = COLORS.map((color) => ({
@@ -60,44 +60,44 @@ export default function Button(theme) {
         // CONTAINED
         ...(containedVariant && {
           '&:hover': {
-            boxShadow: theme.customShadow[color],
-          },
+            boxShadow: theme.customShadow[color]
+          }
         }),
         // SOFT
         ...(softVariant && {
           color: theme.palette[color][isLight ? 'dark' : 'light'],
           backgroundColor: alpha(theme.palette[color].main, 0.16),
           '&:hover': {
-            backgroundColor: alpha(theme.palette[color].main, 0.32),
-          },
-        }),
-      }),
+            backgroundColor: alpha(theme.palette[color].main, 0.32)
+          }
+        })
+      })
     }))
 
     const disabledState = {
       '&.Mui-disabled': {
         // SOFT
         ...(softVariant && {
-          backgroundColor: theme.palette.action.disabledBackground,
-        }),
-      },
+          backgroundColor: theme.palette.action.disabledBackground
+        })
+      }
     }
 
     const size = {
       ...(smallSize && {
-        height: 30,
+        // height: 30,
         fontSize: 13,
         ...(softVariant && {
-          padding: '4px 10px',
-        }),
+          padding: '4px 10px'
+        })
       }),
       ...(largeSize && {
-        height: 48,
+        // height: 48,
         fontSize: 15,
         ...(softVariant && {
-          padding: '8px 22px',
-        }),
-      }),
+          padding: '8px 22px'
+        })
+      })
     }
 
     return [...colorStyle, defaultStyle, disabledState, size]
@@ -106,12 +106,12 @@ export default function Button(theme) {
   return {
     MuiButton: {
       defaultProps: {
-        disableElevation: true,
+        disableElevation: true
       },
 
       styleOverrides: {
-        root: ({ ownerState }) => rootStyle(ownerState),
-      },
-    },
+        root: ({ ownerState }) => rootStyle(ownerState)
+      }
+    }
   }
 }

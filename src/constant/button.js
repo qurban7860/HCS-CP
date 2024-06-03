@@ -77,6 +77,10 @@ const BUTTON = {
   ADD_MACHINE_INI: 'Add INI',
   ADD_MACHINE_LOGS: 'Add Log',
 
+  MACHINE_OVERVIEW: 'Machine Overview',
+  SITE_OVERVIEW: 'Site Overview',
+  CUSTOMER_OVERVIEW: 'Customer Overview',
+  CONTACT_OVERVIEW: 'Contact Overview',
   // auth
   LOGIN: 'LOG IN',
   REMEMBER_ME: 'Remember Me',
