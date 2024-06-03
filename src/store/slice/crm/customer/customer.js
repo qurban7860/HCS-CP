@@ -43,6 +43,9 @@ const customerSlice = createSlice({
     setCustomerTab(state, action) {
       state.customerTab = action.payload
     },
+    setCustomerDialog(state, action) {
+      state.customerDialog = action.payload
+    },
     hasError(state, action) {
       state.isLoading = false
       state.error = action.payload

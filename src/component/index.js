@@ -1,5 +1,6 @@
 // @back-button
-export { default as BackButton } from './back-button/back-button'
+export { default as Button } from './button/button'
+export { default as BackButton } from './button/back-button/back-button'
 // @scroll to top
 export { default as ScrollToTop } from './scroll-to-top/scroll-to-top'
 // @scrollbar
@@ -18,6 +19,8 @@ export { default as EmptyContent } from './default/empty-content'
 export { default as NothingProvided } from './default/nothing-provided'
 // @form
 export { default as FormHeader } from './header/form'
+// @google-map
+export { default as GoogleMaps } from './google-maps/google-maps'
 // @viewform
 export { default as ViewFormField } from './viewform/view-form-field'
 export { default as GridViewTitle } from './viewform/grid-view-title'
@@ -34,3 +37,9 @@ export { default as SvgColor } from './svg-color/svg-color'
 export { default as SvgFlagIcon } from './svg-color/svg-flag'
 // @badge
 export { default as BadgeCardMedia } from './badge/badge-card-media'
+// @dialogs
+export { default as ConfirmDialog } from './dialog/confirm-dialog'
+export { default as CustomerDialog } from './dialog/customer'
+export { default as MachineDialog } from './dialog/machine'
+export { default as SiteDialog } from './dialog/site'
+export { default as ContactDialog } from './dialog/contact'

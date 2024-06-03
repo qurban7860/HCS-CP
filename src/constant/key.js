@@ -1,4 +1,11 @@
-import { PRODUCT } from './brand'
+import { FLEX, FLEX_DIR } from './flex'
+import { VARIANT } from './variant'
+import { SZ } from './size'
+
+const ORIENTATION = {
+  HORIZONTAL: 'horizontal',
+  VERTICAL: 'vertical'
+}
 
 /**
  * @description - important keys to the applications are stored here
@@ -37,12 +44,18 @@ const KEY = {
   CONTRAST_BOLD: 'bold',
 
   AUCKLAND: 'Auckland',
+  NEW_ZEALAND: 'New Zealand',
   // @position
   TOP: 'top',
   BOTTOM: 'bottom',
   LEFT: 'left',
   RIGHT: 'right',
-  CENTER: 'center'
+  CENTER: 'center',
+  ...ORIENTATION,
+  ...VARIANT,
+  ...SZ,
+  ...FLEX,
+  ...FLEX_DIR
 }
 
 export default KEY

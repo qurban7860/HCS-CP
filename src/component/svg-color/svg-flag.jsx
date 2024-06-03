@@ -1,7 +1,7 @@
 import countries from 'i18n-iso-countries'
 import enLocale from 'i18n-iso-countries/langs/en.json'
 import { useSettingContext } from 'component/setting'
-import { Button } from '@mui/material'
+import { Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 import { GStyledTooltip } from 'theme/style'
@@ -16,18 +16,20 @@ function _getCountryIcon(country) {
 const SvgFlagIcon = ({ country, dimension = 24, color = '#FFF', ...other }) => {
   return (
     country !== undefined && (
-      <Button
-        variant="filled"
-        sx={{
-          cursor: 'default',
-          borderColor: color,
-          padding: 0.4
-        }}
-        {...other}>
-        <GStyledTooltip title={country} placement="top" disableFocusListener tooltipcolor={color} color={color}>
-          <img src={_getCountryIcon(country)} alt={country} style={{ borderRadius: 2, height: dimension }} />
-        </GStyledTooltip>
-      </Button>
+      // <Button
+      //   variant="filled"
+      //   sx={{
+      //     cursor: 'default',
+      //     borderColor: color,
+      //     padding: 0.4
+      //   }}
+      //   {...other}>
+
+      <GStyledTooltip title={country} placement="top" disableFocusListener tooltipcolor={color} color={color}>
+        <img src={_getCountryIcon(country)} alt={country} style={{ borderRadius: 2, height: dimension }} />
+      </GStyledTooltip>
+
+      // </Button>
     )
   )
 }

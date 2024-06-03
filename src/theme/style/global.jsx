@@ -154,18 +154,25 @@ export const GStyledCustomAvatar = styled('div')(({ theme }) => ({
   height: { xs: 110, md: 110 }
 }))
 
-export const GStyledTooltip = styled(({ className, mode, ...props }) => <Tooltip {...props} arrow classes={{ popper: className }} />)(
-  ({ theme, mode, tooltipcolor }) => ({
-    [`& .${tooltipClasses.arrow}`]: {
-      color: tooltipcolor
-    },
-    [`& .${tooltipClasses.tooltip}`]: {
-      fontSize: '1rem',
-      backgroundColor: tooltipcolor,
-      color: mode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
-    }
-  })
-)
+export const GStyledTooltip = styled(({ className, mode, green, disabled, ...props }) => (
+  <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme, mode, tooltipcolor, green, disabled }) => ({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: disabled ? theme.palette.action.disabled : tooltipcolor
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    fontSize: '1rem',
+    backgroundColor: disabled ? theme.palette.action.disabled : tooltipcolor,
+    color:
+      mode === KEY.LIGHT
+        ? theme.palette.common.black
+        : green && mode !== KEY.LIGHT
+        ? theme.palette.grey[800]
+        : disabled
+        ? theme.palette.action.disabledText
+        : theme.palette.common.white
+  }
+}))
 
 export const GStyledTooltipSliding = styled(({ className, ...props }) => <Tooltip {...props} arrow classes={{ popper: className }} />)(
   ({ theme, tooltipcolor }) => ({
@@ -378,6 +385,13 @@ export const GStyledTableHeaderBox = styled(Box)(({ theme }) => ({
   backgroundSize: 'cover',
   backgroundPositionY: 'center',
   backgroundSize: '150%'
+}))
+
+export const GStyledSiteMapBox = styled(Box)(({ theme }) => ({
+  justifyContent: 'center',
+  margin: 'auto',
+  alignItems: 'center',
+  overflow: 'hidden'
 }))
 
 /**

@@ -3,10 +3,10 @@ import { Grid } from '@mui/material'
 import { ViewFormField } from 'component/viewform'
 import { VIEW_FORM } from 'constant'
 
-const HowickResources = ({ value, isLoading, gridSize = 6 }) => {
+const HowickResources = ({ value, isLoading, gridSize = 6, spacing = 2, isDialog }) => {
   const { HOWICK_RESOURCES } = VIEW_FORM
   return (
-    <Grid container spacing={6} p={2} pb={5}>
+    <Grid container spacing={isDialog ? 1 : spacing} p={2} pb={5}>
       <Grid item xs={12} sm={gridSize}>
         <ViewFormField heading={HOWICK_RESOURCES.PROJECT_MANAGER} isLoading={isLoading} contact={value.projectManager} />
       </Grid>
@@ -23,7 +23,9 @@ const HowickResources = ({ value, isLoading, gridSize = 6 }) => {
 HowickResources.propTypes = {
   value: PropTypes.object,
   isLoading: PropTypes.bool,
-  gridSize: PropTypes.number
+  gridSize: PropTypes.number,
+  spacing: PropTypes.number,
+  isDialog: PropTypes.bool
 }
 
 export default HowickResources

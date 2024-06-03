@@ -3,96 +3,38 @@ import PropTypes from 'prop-types'
 import { useIcon, ICON_NAME } from 'hook'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
-import { setMachineType, setMachineParent, setMachineConnected } from 'store/slice'
+import { getConnectedMachineDialog, setMachineParent, setMachineConnected, resetMachine, setMachineDialog, getCustomer } from 'store/slice'
 import { Grid, Typography, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTooltip } from 'theme/style'
 import { useSettingContext } from 'component/setting'
-import { FormHeader } from 'component'
+import { FormHeader, IconTooltip } from 'component'
 import { PATH_MACHINE } from 'route/path'
-import { GStyledCenterBox, GStyledListItemText, GStyledSpanBox } from 'theme/style'
-import { VARIANT, SIZE, LABEL, KEY, DECOILER, FILTER_TYPE } from 'constant'
-import { normalizer } from 'util/format'
-import { StyledStatusChip } from '../style'
+import { GStyledListItemText, GStyledSpanBox } from 'theme/style'
+import { VARIANT, SIZE, LABEL, KEY, FLEX } from 'constant'
+import { truncate } from 'util/truncate'
 
 const { TYPOGRAPHY } = VARIANT
-const { ONE_HALF_T, THREE_T, FIVE_T, SIX_T } = DECOILER
-const { THREE_TON } = FILTER_TYPE
 
-const MachineConnectionWidget = ({ value }) => {
+const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMachineSiteDialog }) => {
   const [icon, setIcon] = useState(null)
   const theme = useTheme()
   const { themeMode } = useSettingContext()
-  const { machine, isParent, isConnected } = useSelector((state) => state.machine)
-
-  const isActive = (status) => (status ? LABEL.ACTIVE : LABEL.INACTIVE)
-
-  const isDecoiler1_5T = (machineName) => normalizer(machineName)?.includes(ONE_HALF_T)
-  const isDecoiler3T = (machineName) => {
-    const normalizedMachineName = normalizer(machineName)
-    return THREE_TON.some((str) => normalizedMachineName?.includes(str))
-  }
-  const isDecoiler5T = (machineName) => normalizer(machineName)?.includes(FIVE_T)
-  const isDecoiler6T = (machineName) => normalizer(machineName)?.includes(SIX_T)
-
-  const checkDecoilerType = (machineName) => {
-    const normalizedMachineName = normalizer(machineName)
-
-    if (isDecoiler1_5T(normalizedMachineName)) {
-      return ONE_HALF_T
-    } else if (isDecoiler3T(normalizedMachineName)) {
-      setIcon(ICON_NAME.DECOILER_3T)
-      return THREE_T
-    } else if (isDecoiler5T(normalizedMachineName)) {
-      setIcon(ICON_NAME.DECOILER_5T)
-      return FIVE_T
-    } else if (isDecoiler6T(normalizedMachineName)) {
-      return SIX_T
-    }
-    return null
-  }
+  const { machine, machineDialog, isParent, isConnected } = useSelector((state) => state.machine)
 
   useEffect(() => {
-    const machineNames = value?.machineConnection?.map((mach) => mach?.connectedMachine?.name)
+    dispatch(setMachineDialog(false))
+  }, [dispatch])
 
-    const checkIsConnected = (mach) => Object.keys(mach).some((key) => mach[key])
-    const checkIsParent = (mach) => Object.keys(mach).some((key) => mach[key])
-
-    const checkConnected = checkIsConnected(value?.machineConnection)
-    const checkParent = checkIsParent(value?.parentConnection)
-
-    if (checkParent) {
-      dispatch(setMachineParent(true))
-      setIcon(ICON_NAME.PARENT)
-    }
-
-    if (checkConnected) {
-      dispatch(setMachineConnected(true))
-    }
-
-    machineNames.forEach((machineName) => {
-      if (checkDecoilerType(machineName) === THREE_T) {
-        setIcon(ICON_NAME.DECOILER_3T)
-      } else if (checkDecoilerType(machineName) === FIVE_T) {
-        setIcon(ICON_NAME.DECOILER_5T)
-      } else if (checkDecoilerType(machineName) === SIX_T) {
-        setIcon(ICON_NAME.DECOILER_6T)
-      } else if (checkDecoilerType(machineName) === ONE_HALF_T) {
-        setIcon(ICON_NAME.DECOILER_1_5T)
-      } else {
-        setIcon(null)
-      }
-    })
-  }, [value?.machineConnection])
-
-  const { Icon: LocIcon, iconSrc } = useIcon(icon)
+  const { Icon: LocIcon, iconSrc: decoilerSrc } = useIcon(ICON_NAME.DECOILER_DEF)
+  const { iconSrc: parentSrc } = useIcon(ICON_NAME.PARENT)
 
   return (
     <Grid container mb={2}>
       <Grid item lg={12} sm={12} mb={2} bgcolor="background.paper">
         <FormHeader label={LABEL.CONNECTED_MACHINE(value?.machineConnection)} />
         <Grid container p={2}>
-          {value?.machineConnection?.length > 0 && isConnected ? (
+          {value?.machineConnection?.length > 0 ? (
             value?.machineConnection?.map((mach, index) => (
               <Fragment key={index}>
                 <Grid item xs={8}>
@@ -103,7 +45,7 @@ const MachineConnectionWidget = ({ value }) => {
                       mach.connectedMachine.name && (
                         <GStyledSpanBox>
                           <IconButton
-                            onClick={() => window.open(PATH_MACHINE.machines.view(mach.connectedMachine._id), KEY.BLANK)}
+                            onClick={(e) => handleConnectedMachineDialog(e, mach.connectedMachine._id)}
                             size={SIZE.MEDIUM}
                             color={themeMode === KEY.LIGHT ? 'grey.800' : 'common.white'}
                             aria-label="view"
@@ -114,7 +56,7 @@ const MachineConnectionWidget = ({ value }) => {
                               m: 0
                             }}>
                             <Typography variant={value?.machineConnection?.length > 1 ? TYPOGRAPHY.H4 : TYPOGRAPHY.H3}>
-                              {mach?.connectedMachine?.serialNo}
+                              {truncate(mach?.connectedMachine?.serialNo, 35)}
                             </Typography>
                           </IconButton>
                           <GStyledTooltip
@@ -123,27 +65,51 @@ const MachineConnectionWidget = ({ value }) => {
                             placement={KEY.TOP}
                             tooltipcolor={theme.palette.grey[500]}
                             color={theme.palette.grey[500]}>
-                            <LocIcon icon={iconSrc} color={theme.palette.grey[500]} sx={{ height: 15 }} />
+                            <LocIcon icon={decoilerSrc} color={theme.palette.grey[500]} sx={{ height: 15 }} />
                           </GStyledTooltip>
                         </GStyledSpanBox>
                       )
                     }
-                    secondary={mach?.connectedMachine?.name}
                   />
                 </Grid>
                 <Grid item xs={4} flex={1} justifyContent={KEY.CENTER} alignContent={KEY.CENTER}>
-                  <GStyledCenterBox>
-                    <StyledStatusChip
-                      label={<Typography variant={TYPOGRAPHY.H6}>{isActive(mach.isActive)}</Typography>}
-                      size={SIZE.SMALL}
-                      variant={VARIANT.OUTLINED}
-                      isActive={mach?.isActive}
+                  <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1}>
+                    <IconTooltip
+                      title={LABEL.SITE_VIEW(mach?.connectedMachine?.serialNo)}
+                      icon={ICON_NAME.MAP_MARKER}
+                      dimension={18}
+                      onClick={(e) => handleMachineSiteDialog(e, mach.connectedMachine._id)}
+                      color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
+                      iconOnly
+                      cursor
                     />
-                  </GStyledCenterBox>
+                    <IconTooltip
+                      title={LABEL.NAVIGATE_TO(mach?.connectedMachine?.serialNo)}
+                      icon={ICON_NAME.OPEN_IN_NEW}
+                      dimension={18}
+                      onClick={() => window.open(PATH_MACHINE.machines.view(mach?.connectedMachine?._id), KEY.BLANK)}
+                      color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.lightGray}
+                      iconOnly
+                      cursor
+                    />
+                    {value?.isActive ? (
+                      <IconTooltip
+                        title={LABEL.ACTIVE}
+                        icon={ICON_NAME.ACTIVE}
+                        color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+                        dimension={18}
+                        px={0}
+                        isActiveIcon
+                        iconOnly
+                      />
+                    ) : (
+                      <IconTooltip title={LABEL.INACTIVE} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} dimension={18} iconOnly />
+                    )}
+                  </GStyledSpanBox>
                 </Grid>
               </Fragment>
             ))
-          ) : value?.parentConnection?.length > 0 && isParent ? (
+          ) : value?.parentConnection?.length > 0 ? (
             value?.parentConnection?.map((mach, index) => (
               <Fragment key={index}>
                 <Grid item xs={8}>
@@ -152,7 +118,7 @@ const MachineConnectionWidget = ({ value }) => {
                       mach && (
                         <GStyledSpanBox>
                           <IconButton
-                            onClick={() => window.open(PATH_MACHINE.machines.view(mach.machine._id), KEY.BLANK)}
+                            onClick={(e) => handleConnectedMachineDialog(e, mach.machine._id)}
                             size={SIZE.MEDIUM}
                             color={themeMode === KEY.LIGHT ? 'grey.800' : 'common.white'}
                             aria-label="view"
@@ -173,7 +139,7 @@ const MachineConnectionWidget = ({ value }) => {
                             placement={KEY.TOP}
                             tooltipcolor={theme.palette.grey[500]}
                             color={theme.palette.grey[500]}>
-                            <LocIcon icon={iconSrc} color={theme.palette.grey[500]} sx={{ height: 15 }} />
+                            <LocIcon icon={parentSrc} color={theme.palette.grey[500]} sx={{ height: 15 }} />
                           </GStyledTooltip>
                         </GStyledSpanBox>
                       )
@@ -181,15 +147,39 @@ const MachineConnectionWidget = ({ value }) => {
                   />
                 </Grid>
                 <Grid item xs={4} flex={1} justifyContent={KEY.CENTER} alignContent={KEY.CENTER}>
-                  <GStyledCenterBox>
-                    <StyledStatusChip
-                      // NOTE: isActive set to true for now, while waiting for the API to return the correct value
-                      label={<Typography variant={TYPOGRAPHY.H6}>{isActive(true)}</Typography>}
-                      size={SIZE.SMALL}
-                      variant={VARIANT.OUTLINED}
-                      isActive
+                  <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1}>
+                    <IconTooltip
+                      title={LABEL.SITE_VIEW(mach?.machine?.serialNo)}
+                      icon={ICON_NAME.MAP_MARKER}
+                      dimension={18}
+                      onClick={(e) => handleMachineSiteDialog(e, mach.machine._id)}
+                      color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
+                      iconOnly
+                      cursor
                     />
-                  </GStyledCenterBox>
+                    <IconTooltip
+                      title={LABEL.NAVIGATE_TO(mach?.machine?.serialNo)}
+                      icon={ICON_NAME.OPEN_IN_NEW}
+                      onClick={() => window.open(PATH_MACHINE.machines.view(mach?.machine?._id), KEY.BLANK)}
+                      color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]}
+                      dimension={18}
+                      iconOnly
+                      cursor
+                    />
+                    {value?.isActive ? (
+                      <IconTooltip
+                        title={LABEL.ACTIVE}
+                        icon={ICON_NAME.ACTIVE}
+                        color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+                        dimension={18}
+                        px={0}
+                        isActiveIcon
+                        iconOnly
+                      />
+                    ) : (
+                      <IconTooltip title={LABEL.INACTIVE} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} dimension={20} iconOnly />
+                    )}
+                  </GStyledSpanBox>
                 </Grid>
               </Fragment>
             ))
@@ -205,7 +195,9 @@ const MachineConnectionWidget = ({ value }) => {
 }
 
 MachineConnectionWidget.propTypes = {
-  value: PropTypes.object
+  value: PropTypes.object,
+  handleConnectedMachineDialog: PropTypes.func,
+  handleMachineSiteDialog: PropTypes.func
 }
 
 export default MachineConnectionWidget

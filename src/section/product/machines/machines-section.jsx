@@ -58,31 +58,6 @@ const MachineListSection = () => {
     setTableData(machines || [])
   }, [machines])
 
-  // useEffect(() => {
-  //   if (allMachineError) {
-  //     snack(RESPONSE.error.FETCH, { variant: COLOR.ERROR })
-  //   } else if (isLoading) {
-  //     snack(RESPONSE.FETCH_LOADING)
-  //   } else {
-  //     snack(RESPONSE.success.FETCH, { variant: COLOR.SUCCESS })
-  //     refetchAllMachine()
-  //     setTableData(allMachineData)
-  //   }
-  //   refetchAllMachine()
-  // }, [refetchAllMachine, allMachineData, isLoading, allMachineError])
-
-  // const debouncedSearch = useRef(
-  //   debounce((value) => {
-  //     dispatch(ChangeMachinePage(0))
-  //     dispatch(setMachineFilterBy(value))
-  //   }, 500)
-  // )
-
-  // const handleSearch = (event) => {
-  //   debouncedSearch.current(event.target.value)
-  //   dispatch(setMachineFilterBy(event.target.value))
-  // }
-
   const handleChangePage = (event, newPage) => {
     if (newPage < Math.ceil(filteredData.length / machineRowsPerPage)) {
       dispatch(ChangeMachinePage(newPage))

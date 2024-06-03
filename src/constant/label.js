@@ -22,6 +22,8 @@ const LABEL = {
   NO_CONTACT_FOUND: 'No Contact Record Found',
   NO_CONNECTED_MACHINE: ' No Connected Machine',
   NO_MACHINE_FOUND: 'No Machine Record Found',
+  NO_PHONE_PROVIDED: 'No contact number provided',
+  NO_PROVIDED: 'No data provided',
   PURCHASED: 'Purchased',
   SHIPPED: 'Shipped',
   INSTALLED: 'Installed',
@@ -29,8 +31,13 @@ const LABEL = {
   MANUFACTURED: 'Manufactured',
   NOT_SPECIFIED: 'Not Specified',
   PARENT: 'Parent machine',
+  SITE_VIEW: (d) => `View Installation Site of ${d}`,
+  NAVIGATE_TO: (d) => `Navigate to ${d} in  a new tab`,
+  VIEW_IN_NEW_TAB: 'View in a new tab',
+  GO_TO: (d) => `Go to ${d} in a new tab`,
   DECOILER_DEF: 'Decoiler',
   DECOILER: (type) => `Decoiler ${type}`,
+  PARENT_MACHINE: 'Parent Machine',
 
   // @audit
   AUDIT: {

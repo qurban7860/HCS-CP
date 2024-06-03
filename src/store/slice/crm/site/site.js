@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-// utils
-import axios from '../../../utils/axios'
-import { CONFIG } from '../../../config-global'
+import axiosInstance from 'util/axios'
+import { GLOBAL } from 'config'
 
 // ----------------------------------------------------------------------
 const initialState = {
@@ -23,7 +22,7 @@ const initialState = {
   siteRowsPerPage: 10
 }
 
-const slice = createSlice({
+const siteSlice = createSlice({
   name: 'site',
   initialState,
   reducers: {
@@ -103,7 +102,7 @@ const slice = createSlice({
   }
 })
 
-export default slice.reducer
+export default siteSlice.reducer
 
 // Actions
 export const {
@@ -120,136 +119,4 @@ export const {
   ChangeSiteRowsPerPage,
   ChangeSitePage,
   setSiteDialog
-} = slice.actions
-
-// ----------------------------------------------------------------------
-
-export function createCustomerStiesCSV(customerID) {
-  return async (dispatch) => {
-    try {
-      if (customerID) {
-        const response = axios.get(`${CONFIG.SERVER_URL}crm/customers/${customerID}/sites/export`, {
-          params: {
-            isArchived: false,
-            orderBy: {
-              createdAt: -1
-            }
-          }
-        })
-
-        response
-          .then((res) => {
-            const fileName = 'CustomerSites.csv'
-            const blob = new Blob([res.data], { type: 'text/csv;charset=utf-8' })
-            const url = URL.createObjectURL(blob)
-            const a = document.createElement('a')
-            a.href = url
-            a.download = fileName
-            document.body.appendChild(a)
-            a.click()
-            window.URL.revokeObjectURL(url)
-            dispatch(slice.actions.setResponseMessage('Customer Sites CSV generated successfully'))
-          })
-          .catch((error) => {
-            console.error(error)
-          })
-      }
-    } catch (error) {
-      console.log(error)
-      dispatch(slice.actions.hasError(error.Message))
-      throw error
-    }
-  }
-}
-
-export function getSites(customerID) {
-  return async (dispatch) => {
-    dispatch(slice.actions.startLoading())
-    try {
-      const response = await axios.get(`${CONFIG.SERVER_URL}crm/customers/${customerID}/sites`, {
-        params: {
-          isArchived: false,
-          orderBy: {
-            createdAt: -1
-          }
-        }
-      })
-      dispatch(slice.actions.getSitesSuccess(response.data))
-      dispatch(slice.actions.setResponseMessage('Sites loaded successfully'))
-    } catch (error) {
-      console.log(error)
-      dispatch(slice.actions.hasError(error.Message))
-      throw error
-    }
-  }
-}
-
-// ----------------------------------------------------------------------
-
-export function getActiveSites(customerID, cancelToken) {
-  return async (dispatch) => {
-    dispatch(slice.actions.startLoading())
-    try {
-      let response = null
-      if (customerID) {
-        response = await axios.get(`${CONFIG.SERVER_URL}crm/customers/${customerID}/sites`, {
-          params: {
-            isActive: true,
-            isArchived: false
-          },
-          cancelToken: cancelToken?.token
-        })
-        dispatch(slice.actions.getActiveSitesSuccess(response.data))
-        dispatch(slice.actions.setResponseMessage('Sites loaded successfully'))
-      }
-    } catch (error) {
-      console.log(error)
-      dispatch(slice.actions.hasError(error.Message))
-      throw error
-    }
-  }
-}
-
-// ----------------------------------------------------------------------
-
-export function searchSites() {
-  return async (dispatch) => {
-    dispatch(slice.actions.startLoading())
-    try {
-      let response = null
-      response = await axios.get(`${CONFIG.SERVER_URL}crm/sites/search`, {
-        params: {
-          isArchived: false,
-          lat: { $exists: true },
-          long: { $exists: true }
-        }
-      })
-      dispatch(slice.actions.getSitesSuccess(response.data))
-      dispatch(slice.actions.setResponseMessage('Sites loaded successfully'))
-      // else{
-      //   response = await axios.get(`${CONFIG.SERVER_URL}crm/customers/sites/search`);
-      // }
-    } catch (error) {
-      console.log(error)
-      dispatch(slice.actions.hasError(error.Message))
-      throw error
-    }
-  }
-}
-
-// ----------------------------------------------------------------------
-
-export function getSite(customerID, id) {
-  return async (dispatch) => {
-    dispatch(slice.actions.startLoading())
-    try {
-      const response = await axios.get(`${CONFIG.SERVER_URL}crm/customers/${customerID}/sites/${id}`)
-      dispatch(slice.actions.getSiteSuccess(response.data))
-      // dispatch(slice.actions.setResponseMessage('Sites Loaded Successfuly'));
-    } catch (error) {
-      console.error(error)
-      dispatch(slice.actions.hasError(error.Message))
-      throw error
-    }
-  }
-}
+} = siteSlice.actions

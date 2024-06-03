@@ -153,26 +153,7 @@ export const {
   setContactDialog
 } = contactSlice.actions
 
-// export function getSPContacts(cancelToken) {
-//   return async (dispatch) => {
-//     dispatch(slice.actions.startLoading())
-//     try {
-//       const response = await axios.get(`${CONFIG.SERVER_URL}crm/sp/contacts`, {
-//         params: {
-//           isArchived: false,
-//           isActive: true
-//         },
-//         cancelToken: cancelToken?.token
-//       })
-//       dispatch(slice.actions.getSPContactsSuccess(response.data))
-//       dispatch(slice.actions.setResponseMessage('Contacts loaded successfully'))
-//     } catch (error) {
-//       console.log(error)
-//       dispatch(slice.actions.hasError(error.Message))
-//       // throw error;
-//     }
-//   }
-// }
+// : thunks
 
 export function getContacts(customerID) {
   return async (dispatch) => {
@@ -189,121 +170,15 @@ export function getContacts(customerID) {
   }
 }
 
-export function getActiveSPContacts() {
-  return async (dispatch) => {
-    dispatch(slice.actions.startLoading())
-    try {
-      const response = await axios.get(`${CONFIG.SERVER_URL}crm/sp/contacts`, {
-        params: {
-          isActive: true,
-          isArchived: false
-        }
-      })
-      dispatch(slice.actions.getActiveSPContactsSuccess(response.data))
-      dispatch(slice.actions.setResponseMessage('Contacts loaded successfully'))
-    } catch (error) {
-      console.log(error)
-      dispatch(slice.actions.hasError(error.Message))
-      throw error
-    }
-  }
-}
-
-export function getActiveContacts(customerID) {
-  return async (dispatch) => {
-    dispatch(slice.actions.startLoading())
-    try {
-      const response = await axios.get(`${CONFIG.SERVER_URL}crm/customers/${customerID}/contacts`, {
-        params: {
-          isActive: true,
-          isArchived: false
-        }
-      })
-      dispatch(slice.actions.getActiveContactsSuccess(response.data))
-      dispatch(slice.actions.setResponseMessage('Contacts loaded successfully'))
-    } catch (error) {
-      console.log(error)
-      dispatch(slice.actions.hasError(error.Message))
-      throw error
-    }
-  }
-}
-
-export function getCustomerArrayActiveContacts(customerArr) {
-  return async (dispatch) => {
-    dispatch(slice.actions.startLoading())
-    try {
-      const response = await axios.get(`${CONFIG.SERVER_URL}crm/contacts/search`, {
-        params: {
-          isActive: true,
-          isArchived: false,
-          customerArr
-        }
-      })
-      dispatch(slice.actions.getActiveContactsSuccess(response.data))
-      dispatch(slice.actions.setResponseMessage('Contacts loaded successfully'))
-    } catch (error) {
-      console.log(error)
-      dispatch(slice.actions.hasError(error.Message))
-      throw error
-    }
-  }
-}
-
-// ----------------------------------------------------------------------
-
 export function getContact(customerID, id) {
   return async (dispatch) => {
-    dispatch(slice.actions.startLoading())
+    dispatch(contactSlice.actions.startLoading())
     try {
-      const response = await axios.get(`${CONFIG.SERVER_URL}crm/customers/${customerID}/contacts/${id}`)
-      dispatch(slice.actions.getContactSuccess(response.data))
-      // dispatch(slice.actions.setResponseMessage('Contacts Loaded Successfuly'));
+      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.contactDetail(customerID, id))
+      dispatch(contactSlice.actions.getContactSuccess(response.data))
     } catch (error) {
       console.error(error)
-      dispatch(slice.actions.hasError(error.Message))
-      throw error
-    }
-  }
-}
-
-// ----------------------------------------------------------------------
-
-export function deleteContact(customerID, id) {
-  return async (dispatch) => {
-    dispatch(slice.actions.startLoading())
-    try {
-      const data = {
-        isArchived: true
-      }
-      const response = await axios.patch(`${CONFIG.SERVER_URL}crm/customers/${customerID}/contacts/${id}`, data)
-      dispatch(slice.actions.setResponseMessage(response.data))
-    } catch (error) {
-      console.error(error)
-      dispatch(slice.actions.hasError(error.Message))
-      throw error
-    }
-  }
-}
-
-export function moveCustomerContact(params) {
-  return async (dispatch) => {
-    dispatch(slice.actions.startLoading())
-    dispatch(slice.actions.setContactEditFormVisibility(false))
-
-    try {
-      /* eslint-disable */
-      let data = {
-        contact: params?.contact,
-        customer: params?.customer?._id
-      }
-
-      await axios.post(`${CONFIG.SERVER_URL}crm/customers/${params?.customer?._id}/contacts/moveContact`, data)
-      dispatch(slice.actions.setContactMoveFormVisibility(false))
-      dispatch(slice.actions.setResponseMessage('Contact updated successfully'))
-    } catch (error) {
-      console.log(error)
-      dispatch(slice.actions.hasError(error.Message))
+      dispatch(contactSlice.actions.hasError(error.Message))
       throw error
     }
   }

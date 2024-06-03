@@ -1,22 +1,22 @@
-import PropTypes from 'prop-types'
-// import { useEffect } from 'react'
-// import { useWebSocketContext } from 'auth'
-import { useTheme } from '@mui/material/styles'
+import { useSelector } from 'store'
+import { useOffSetTop, useResponsive, Clock } from 'hook'
+import { useAuthContext } from 'auth'
 import { Stack, AppBar, Toolbar, IconButton, Badge, Typography } from '@mui/material'
-import { useOffSetTop, useResponsive } from 'hook'
+import { useTheme } from '@mui/material/styles'
 import { bgBlur } from 'theme/style'
 import { HEADER, GLOBAL, NavConfiguration } from 'config'
 import { LogoIcon } from 'component/logo'
 import { Iconify } from 'component/iconify'
 import { useSettingContext } from 'component/setting'
 import { NavSection } from 'component/nav-section'
-import { Clock } from 'component/clock'
 import ModeOption from './mode-option'
 import AccountPopover from './account-popover'
 import NotificationPopover from './notification-popover'
-import { KEY } from 'constant'
+import { KEY, TIMEZONE } from 'constant'
+import { useEffect } from 'react'
 
 function Header() {
+  const { user, logout } = useAuthContext()
   const theme = useTheme()
   const navConfig = NavConfiguration()
   const { themeLayout } = useSettingContext()
@@ -24,7 +24,10 @@ function Header() {
   const isDesktop = useResponsive('up', 'lg')
   const isOffset = useOffSetTop(HEADER.H_DASHBOARD_DESKTOP) && !isNavHorizontal
 
-  // TODO: Uncomment this when the websocket is ready
+  const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+  const aucklandTimeZone = TIMEZONE.AUCKLAND.timeZone
+
+  // TODO: HPS-1224: Uncomment this when the websocket is ready
   // const { sendJsonMessage } = useWebSocketContext()
 
   // useEffect(() => {
@@ -60,7 +63,8 @@ function Header() {
         <NavSection data={navConfig} />
       </Stack>
       <Stack flexGrow={1} direction="row" alignItems="center" justifyContent="flex-end" spacing={{ xs: 0.5, sm: 2 }}>
-        <Clock />
+        {localTimeZone !== aucklandTimeZone && <Clock local={localTimeZone} />}
+        <Clock main city={KEY.AUCKLAND} />
         <ModeOption />
         <NotificationPopover />
         <AccountPopover />
