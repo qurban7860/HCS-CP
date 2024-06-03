@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { useSelector, dispatch } from 'store'
 import { useParams } from 'react-router-dom'
 import { ICON_NAME, Clock } from 'hook'
+import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { PATH_CUSTOMER } from 'route/path'
 import { Box, Grid, Card, Divider, Link, Typography } from '@mui/material'
@@ -23,7 +24,6 @@ import {
   resetConnectedMachineDialog,
   resetMachineSiteDialogData
 } from 'store/slice'
-import { useForm } from 'react-hook-form'
 import { machineDefaultValues } from 'section/product'
 import { HowickResources } from 'section/common'
 import { IconTooltip, BackButton, AuditBox, GridViewField, GridViewTitle, CustomerDialog, MachineDialog, SiteDialog } from 'component'
@@ -154,7 +154,6 @@ const MachineLayout = () => {
                         {defaultValues?.machineModel}
                       </Typography>
                     </ViewFormField>
-                    <></>
                   </GStyledSpanBox>
                 </Grid>
                 <Grid item lg={4}>
