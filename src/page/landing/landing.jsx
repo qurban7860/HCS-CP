@@ -1,9 +1,9 @@
 import React from 'react'
-import { Box, Typography, Grid, Button } from '@mui/material'
+import { useSettingContext } from 'hook'
+import { Typography, Grid, Button } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledBrandOverlayBox, GStyledBottomPolygonDiv, GStyledTopPolygonDiv, StylendLandingContainerBox, ButtonProps } from 'theme/style'
 import { useAuthContext } from 'auth'
-import { useSettingContext } from 'component/setting'
 import { ASSET, GLOBAL, BRAND } from 'config'
 import { LABEL, PRODUCT, COMPANY, BUTTON } from 'constant'
 

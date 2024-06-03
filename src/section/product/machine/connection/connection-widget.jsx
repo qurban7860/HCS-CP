@@ -7,7 +7,7 @@ import { getConnectedMachineDialog, setMachineParent, setMachineConnected, reset
 import { Grid, Typography, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTooltip } from 'theme/style'
-import { useSettingContext } from 'component/setting'
+import { useSettingContext } from 'hook'
 import { FormHeader, IconTooltip } from 'component'
 import { PATH_MACHINE } from 'route/path'
 import { GStyledListItemText, GStyledSpanBox } from 'theme/style'

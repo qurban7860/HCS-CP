@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
+import { useSettingContext } from 'hook'
 import { TableBody, TableCell, TableRow } from '@mui/material'
-import { useSettingContext } from 'component/setting'
 import { EmptyContent } from 'component'
 import { FALLBACK } from 'constant'
 

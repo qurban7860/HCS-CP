@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { useFormContext, Controller } from 'react-hook-form'
 import { TextField } from '@mui/material'
-import { useSettingContext } from 'component/setting'
+import { useSettingContext } from 'hook'
 
 RHFTextField.propTypes = {
   name: PropTypes.string,
