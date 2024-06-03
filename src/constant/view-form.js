@@ -4,6 +4,8 @@
 
 export const VIEW_FORM = {
   NAME: 'Name',
+  FIRST_NAME: 'First Name',
+  LAST_NAME: 'Last Name',
   EMAIL: 'Email',
   PHONE: 'Phone',
   WEBSITE: 'Website',
