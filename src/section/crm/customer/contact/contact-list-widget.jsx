@@ -90,7 +90,9 @@ const ContactListWidget = ({ value, handleContactDialog }) => {
                       icon={ICON_NAME.PHONE}
                       color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
                       dimension={18}
+                      disabled={!c.phone}
                       iconOnly
+                      cursor
                     />
                   </GStyledSpanBox>
                 </Grid>
