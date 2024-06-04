@@ -44,9 +44,17 @@ export const LogoGrayProps = {
 
 export const GStyledFallbackWrapperGrid = styled(Grid)(({ theme }) => ({
   width: 900,
+  height: '100vh',
   margin: 'auto',
   textAlign: 'center',
   paddingTop: theme.spacing(10)
+}))
+
+export const GStyledBgMain = styled(({ mode, theme, ...other }) => <main {...other} />)(({ theme, mode }) => ({
+  display: 'flex',
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[900],
+  width: '100%',
+  height: '100vh'
 }))
 
 // :components ____________________________________________________________________________________________
@@ -331,23 +339,27 @@ export const ButtonProps = {
  */
 
 // @root - GeneralAppPage - dashboard
-
 export const GGStyledContainerSvg = styled(({ themeMode, ...other }) => <SvgColor icon={ASSET.BG_LOGO} {...other} />)(({ theme, themeMode }) => {
   return {
     color: themeMode === KEY.LIGHT ? theme.palette.success.main : theme.palette.common.white
   }
 })
 
+// export const GStyledBGBox = styled(({ themeMode, ...other }) => <Box {...other} />)(({ theme, themeMode }) => ({
+//   backgroundImage: themeMode === KEY.LIGHT ? `url(${ASSET.BG_LOGO})` : `url(${ASSET.BG_DARK_LOGO})`,
+//   backgroundRepeat: 'no-repeat',
+//   backgroundPositionY: 'center',
+//   backgroundPositionX: 'right',
+//   backgroundSize: '100%',
+//   backgroundBlendMode: 'multiply',
+//   backgroundOpacity: 0.9,
+//   backgroundAttachment: 'fixed',
+//   display: 'flex',
+//   flexDirection: 'column',
+//   justifyContent: 'center'
+// }))
+
 export const GStyledContainer = styled(({ themeMode, ...other }) => <Container {...other} />)(({ theme, themeMode }) => ({
-  backgroundImage: themeMode === KEY.LIGHT ? `url(${ASSET.BG_LOGO})` : `url(${ASSET.BG_DARK_LOGO})`,
-  backgroundRepeat: 'no-repeat',
-  backgroundPositionY: 'center',
-  backgroundPositionX: 'right',
-  backgroundSize: '50%',
-  backgroundBlendMode: 'multiply',
-  backgroundOpacity: 0.9,
-  backgroundAttachment: 'fixed',
-  display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   color: 'text.primary',
