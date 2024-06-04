@@ -140,8 +140,6 @@ export function AuthProvider({ children }) {
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken)
 
-        const storedUserData = localStorage.getItem(LOCAL_STORAGE_KEY.USER_DATA)
-
         const user = {}
         user.customer = localStorage.getItem(LOCAL_STORAGE_KEY.CUSTOMER)
         user.email = localStorage.getItem(LOCAL_STORAGE_KEY.EMAIL)
