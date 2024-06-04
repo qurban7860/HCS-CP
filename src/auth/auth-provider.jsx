@@ -1,127 +1,14 @@
+import { createContext, useEffect, useCallback, useMemo, useReducer } from 'react'
 import PropTypes from 'prop-types'
 import storage from 'redux-persist/lib/storage'
-import { createContext, useEffect, useCallback, useMemo, useReducer } from 'react'
 import localStorageSpace from 'util/local-storage-space'
 import { snack } from 'hook'
 import axiosInstance from 'util/axios'
 import { PATH_AUTH } from 'route/path'
 import { PATH_SERVER } from 'route/server'
+import { initialState, reducer, REDUCER_KEY } from 'auth/initial-state'
 import { LOCAL_STORAGE_KEY, RESPONSE, COLOR } from 'constant'
 import { isValidToken, setSession, getUserAccess } from './util'
-
-const REDUCER_KEY = {
-  INITIAL: 'INITIAL',
-  LOGIN: 'LOGIN',
-  REGISTER: 'REGISTER',
-  LOGOUT: 'LOGOUT'
-}
-
-const initialState = {
-  isInitialized: false,
-  isAuthenticated: false,
-  user: null,
-  userId: null,
-  isAllAccessAllowed: false,
-  isDisableDelete: true,
-  isDashboardAccessLimited: true,
-  isDocumentAccessAllowed: false,
-  isDrawingAccessAllowed: false,
-  isSettingReadOnly: true,
-  isSecurityReadOnly: true,
-  isSettingAccessAllowed: false,
-  isSecurityUserAccessAllowed: false,
-  isEmailAccessAllowed: false,
-  isDeveloper: false
-}
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case REDUCER_KEY.INITIAL: {
-      return {
-        ...state,
-        isInitialized: true,
-        isAuthenticated: action.payload.isAuthenticated,
-        user: action.payload.user,
-        userId: action.payload.userId,
-        isAllAccessAllowed: action.payload.isAllAccessAllowed,
-        isDisableDelete: action.payload.isDisableDelete,
-        isDashboardAccessLimited: action.payload.isDashboardAccessLimited,
-        isDocumentAccessAllowed: action.payload.isDocumentAccessAllowed,
-        isDrawingAccessAllowed: action.payload.isDrawingAccessAllowed,
-        isSettingReadOnly: action.payload.isSettingReadOnly,
-        isSecurityReadOnly: action.payload.isSecurityReadOnly,
-        isSettingAccessAllowed: action.payload.isSettingAccessAllowed,
-        isSecurityUserAccessAllowed: action.payload.isSecurityUserAccessAllowed,
-        isEmailAccessAllowed: action.payload.isEmailAccessAllowed,
-        isDeveloper: action.payload.isDeveloper
-      }
-    }
-    case REDUCER_KEY.LOGIN: {
-      const {
-        user,
-        userId,
-        isAllAccessAllowed,
-        isDisableDelete,
-        isDashboardAccessLimited,
-        isDocumentAccessAllowed,
-        isDrawingAccessAllowed,
-        isSettingReadOnly,
-        isSecurityReadOnly,
-        isSettingAccessAllowed,
-        isSecurityUserAccessAllowed,
-        isEmailAccessAllowed,
-        isDeveloper
-      } = action.payload
-      return {
-        ...state,
-        isAuthenticated: true,
-        user,
-        userId,
-        isAllAccessAllowed,
-        isDisableDelete,
-        isDashboardAccessLimited,
-        isDocumentAccessAllowed,
-        isDrawingAccessAllowed,
-        isSettingReadOnly,
-        isSecurityReadOnly,
-        isSettingAccessAllowed,
-        isSecurityUserAccessAllowed,
-        isEmailAccessAllowed,
-        isDeveloper
-      }
-    }
-    case REDUCER_KEY.REGISTER: {
-      const { user } = action.payload
-      return {
-        ...state,
-        isAuthenticated: true,
-        user
-      }
-    }
-    case 'LOGOUT': {
-      return {
-        ...state,
-        isAuthenticated: false,
-        user: null,
-        userId: null,
-        isAllAccessAllowed: false,
-        isDisableDelete: true,
-        isDashboardAccessLimited: true,
-        isDocumentAccessAllowed: false,
-        isDrawingAccessAllowed: false,
-        isSettingReadOnly: true,
-        isSecurityReadOnly: true,
-        isSettingAccessAllowed: false,
-        isSecurityUserAccessAllowed: false,
-        isEmailAccessAllowed: false,
-        isDeveloper: false
-      }
-    }
-    default: {
-      return state
-    }
-  }
-}
 
 export const AuthContext = createContext(null)
 
