@@ -1,16 +1,12 @@
+import { createContext, useEffect, useCallback, useMemo, useReducer } from 'react'
 import PropTypes from 'prop-types'
 import storage from 'redux-persist/lib/storage'
-import { createContext, useEffect, useCallback, useMemo } from 'react'
-import { useSelector } from 'react-redux'
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import { useLoginMutation } from 'store/slice'
 import localStorageSpace from 'util/local-storage-space'
-import { dispatch } from 'store'
 import { snack } from 'hook'
-import { axios } from 'util'
-import { setInitial, login as loginAction } from 'slice/auth'
+import axiosInstance from 'util/axios'
 import { PATH_AUTH } from 'route/path'
 import { PATH_SERVER } from 'route/server'
+import { initialState, reducer, REDUCER_KEY } from 'auth/initial-state'
 import { LOCAL_STORAGE_KEY, RESPONSE, COLOR } from 'constant'
 import { isValidToken, setSession, getUserAccess } from './util'
 
@@ -21,75 +17,96 @@ AuthProvider.propTypes = {
 }
 
 export function AuthProvider({ children }) {
-  // const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, initialState)
   const storageAvailable = useMemo(() => localStorageSpace(), [])
-  const [loginReducer, { isLoading }] = useLoginMutation()
-
-  const {
-    isInitialized,
-    isAuthenticated,
-    isAllAccessAllowed,
-    isDashboardAccessLimited,
-    isSettingAccessAllowed,
-    isSecurityUserAccessAllowed,
-    isEmailAccessAllowed,
-    user,
-    userId
-  } = useSelector((state) => state.auth)
-
-  // const user = localStorage.getItem(LOCAL_STORAGE_KEY.USER)
 
   const initialize = useCallback(async () => {
     try {
-      const accessToken = storageAvailable ? localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN) : ''
+      const accessToken = storageAvailable && localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN)
 
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken)
 
-        const { isAllAccessAllowed, isDashboardAccessLimited, isSettingAccessAllowed, isSecurityUserAccessAllowed, isEmailAccessAllowed } =
-          getUserAccess()
+        const user = {}
+        user.customer = localStorage.getItem(LOCAL_STORAGE_KEY.CUSTOMER)
+        user.email = localStorage.getItem(LOCAL_STORAGE_KEY.EMAIL)
+        user.displayName = localStorage.getItem(LOCAL_STORAGE_KEY.NAME)
 
-        dispatch(
-          setInitial({
-            isInitialized: true,
-            isAuthenticated,
+        const userId = localStorage.getItem(LOCAL_STORAGE_KEY.USER_ID)
+
+        const {
+          isAllAccessAllowed,
+          isDisableDelete,
+          isDashboardAccessLimited,
+          isDocumentAccessAllowed,
+          isDrawingAccessAllowed,
+          isSettingReadOnly,
+          isSecurityReadOnly,
+          isSettingAccessAllowed,
+          isSecurityUserAccessAllowed,
+          isEmailAccessAllowed,
+          isDeveloper
+        } = getUserAccess()
+
+        dispatch({
+          type: REDUCER_KEY.INITIAL,
+          payload: {
+            isAuthenticated: true,
             user,
             userId,
             isAllAccessAllowed,
+            isDisableDelete,
             isDashboardAccessLimited,
+            isDocumentAccessAllowed,
+            isDrawingAccessAllowed,
+            isSettingReadOnly,
+            isSecurityReadOnly,
             isSettingAccessAllowed,
             isSecurityUserAccessAllowed,
-            isEmailAccessAllowed
-          })
-        )
+            isEmailAccessAllowed,
+            isDeveloper
+          }
+        })
       } else {
-        dispatch(
-          setInitial({
+        dispatch({
+          type: REDUCER_KEY.INITIAL,
+          payload: {
             isAuthenticated: false,
             user: null,
-            userId: null,
             isAllAccessAllowed: false,
+            isDisableDelete: true,
             isDashboardAccessLimited: true,
+            isDocumentAccessAllowed: false,
+            isDrawingAccessAllowed: false,
+            isSettingReadOnly: true,
+            isSecurityReadOnly: true,
             isSettingAccessAllowed: false,
             isSecurityUserAccessAllowed: false,
-            isEmailAccessAllowed: false
-          })
-        )
+            isEmailAccessAllowed: false,
+            isDeveloper: false
+          }
+        })
       }
     } catch (error) {
       console.error(error)
-      dispatch(
-        setInitial({
+      dispatch({
+        type: REDUCER_KEY.INITIAL,
+        payload: {
           isAuthenticated: false,
           user: null,
-          userId: null,
           isAllAccessAllowed: false,
+          isDisableDelete: true,
           isDashboardAccessLimited: true,
+          isDocumentAccessAllowed: false,
+          isDrawingAccessAllowed: false,
+          isSettingReadOnly: true,
+          isSecurityReadOnly: true,
           isSettingAccessAllowed: false,
           isSecurityUserAccessAllowed: false,
-          isEmailAccessAllowed: false
-        })
-      )
+          isEmailAccessAllowed: false,
+          isDeveloper: false
+        }
+      })
     }
   }, [storageAvailable, dispatch])
 
@@ -97,42 +114,156 @@ export function AuthProvider({ children }) {
     initialize()
   }, [initialize])
 
-  const login = useCallback(async ({ email, password }) => {
-    const res = await loginReducer({ email, password }).unwrap()
+  // :this will clear All persisted data and remove Items from localStorage
+  const clearAllPersistedStates = useCallback(async () => {
+    try {
+      setSession(null)
+      localStorage.removeItem(LOCAL_STORAGE_KEY.USER)
+      localStorage.removeItem(LOCAL_STORAGE_KEY.EMAIL)
+      localStorage.removeItem(LOCAL_STORAGE_KEY.USER_ID)
+      localStorage.removeItem(LOCAL_STORAGE_KEY.ROLES)
+      localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN)
+      localStorage.removeItem(LOCAL_STORAGE_KEY.CONFIGURATION)
+      const keys = Object.keys(localStorage)
+      const reduxPersistKeys = keys.filter((key) => !(key === LOCAL_STORAGE_KEY.HOWICK_USER_DATA))
+      await Promise.all(reduxPersistKeys.map((key) => storage.removeItem(key)))
+    } catch (error) {
+      console.error(RESPONSE.error.REDUX_PERSIST, error)
+    }
+  }, [])
 
-    if (res?.data?.multiFactorAuthentication) {
-      localStorage.setItem(LOCAL_STORAGE_KEY.USER_ID, res.data.userId)
+  const clearStorageAndNaviagteToLogin = useCallback(async () => {
+    await clearAllPersistedStates()
+    window.location.href = PATH_AUTH.login
+  }, [clearAllPersistedStates])
+
+  // :get configurations
+  async function getConfigs() {
+    const configsResponse = await axiosInstance.get(PATH_SERVER.CONFIG, { params: { isActive: true, isArchived: false } })
+    if (configsResponse && Array.isArray(configsResponse.data) && configsResponse.data.length > 0) {
+      const configs = configsResponse.data.map((c) => ({ name: c.name, type: c.type, value: c.value, notes: c.notes }))
+      localStorage.setItem(LOCAL_STORAGE_KEY.CONFIGURATION, JSON.stringify(configs))
+    }
+  }
+
+  // :login
+  const login = useCallback(async (email, password) => {
+    await dispatch(clearAllPersistedStates())
+    const response = await axiosInstance.post(PATH_SERVER.LOGIN, { email, password })
+
+    if (response?.data?.multiFactorAuthentication) {
+      localStorage.setItem(LOCAL_STORAGE_KEY.USER_ID, response.data.userId)
       localStorage.setItem(LOCAL_STORAGE_KEY.MFA, true)
     } else {
-      const { accessToken, user, userId } = res
+      const { accessToken, user, userId } = response.data
+      localStorage.setItem(LOCAL_STORAGE_KEY.CUSTOMER, user?.customer)
+
+      const {
+        isAllAccessAllowed,
+        isDisableDelete,
+        isDashboardAccessLimited,
+        isDocumentAccessAllowed,
+        isDrawingAccessAllowed,
+        isSettingReadOnly,
+        isSecurityReadOnly,
+        isSettingAccessAllowed,
+        isSecurityUserAccessAllowed,
+        isEmailAccessAllowed,
+        isDeveloper
+      } = getUserAccess(user?.roles, user?.dataAccessibilityLevel)
+
+      const rolesArray = JSON.stringify(user.roles)
+
+      const userData = {
+        email: user.email
+      }
+
+      localStorage.setItem(LOCAL_STORAGE_KEY.EMAIL, user.email)
+      localStorage.setItem(LOCAL_STORAGE_KEY.NAME, user.displayName)
+      localStorage.setItem(LOCAL_STORAGE_KEY.USER_ID, userId)
+      localStorage.setItem(LOCAL_STORAGE_KEY.ROLES, rolesArray)
+      localStorage.setItem(LOCAL_STORAGE_KEY.DATA_ACCESS_LEVEL, user?.dataAccessibilityLevel)
+
       setSession(accessToken)
-      dispatch(loginAction({ ...res }))
+      await getConfigs()
+      dispatch({
+        type: REDUCER_KEY.LOGIN,
+        payload: {
+          user,
+          userId,
+          isAllAccessAllowed,
+          isDisableDelete,
+          isDashboardAccessLimited,
+          isDocumentAccessAllowed,
+          isDrawingAccessAllowed,
+          isSettingReadOnly,
+          isSecurityReadOnly,
+          isSettingAccessAllowed,
+          isSecurityUserAccessAllowed,
+          isEmailAccessAllowed,
+          isDeveloper
+        }
+      })
       snack(RESPONSE.success.LOGIN, { variant: COLOR.SUCCESS })
     }
   }, [])
 
-  // MULTI FACTOR CODE
+  // :multi-factor code
   const muliFactorAuthentication = useCallback(async (code, userID) => {
-    const response = await axios.post(PATH_SERVER.MFA, {
+    const response = await axiosInstance.post(PATH_SERVER.MFA, {
       code,
       userID
     })
     const { accessToken, user, userId } = response.data
-    const rolesArrayString = JSON.stringify(user.roles)
+
+    const {
+      isAllAccessAllowed,
+      isDisableDelete,
+      isDashboardAccessLimited,
+      isDocumentAccessAllowed,
+      isDrawingAccessAllowed,
+      isSettingReadOnly,
+      isSecurityReadOnly,
+      isSettingAccessAllowed,
+      isSecurityUserAccessAllowed,
+      isEmailAccessAllowed,
+      isDeveloper
+    } = getUserAccess(user?.roles, user?.dataAccessibilityLevel)
+
+    const rolesArray = JSON.stringify(user.roles)
+
     localStorage.setItem(LOCAL_STORAGE_KEY.EMAIL, user.email)
     localStorage.setItem(LOCAL_STORAGE_KEY.NAME, user.displayName)
     localStorage.setItem(LOCAL_STORAGE_KEY.USER_ID, userId)
-    localStorage.setItem(LOCAL_STORAGE_KEY.ROLES, rolesArrayString)
+    localStorage.setItem(LOCAL_STORAGE_KEY.ROLES, rolesArray)
+    localStorage.setItem(LOCAL_STORAGE_KEY.DATA_ACCESS_LEVEL, user?.dataAccessibilityLevel)
 
     setSession(accessToken)
     await getConfigs()
 
-    dispatch(loginReducer({ user, userId }))
+    dispatch({
+      type: REDUCER_KEY.LOGIN,
+      payload: {
+        user,
+        userId,
+        isAllAccessAllowed,
+        isDisableDelete,
+        isDashboardAccessLimited,
+        isDocumentAccessAllowed,
+        isDrawingAccessAllowed,
+        isSettingReadOnly,
+        isSecurityReadOnly,
+        isSettingAccessAllowed,
+        isSecurityUserAccessAllowed,
+        isEmailAccessAllowed,
+        isDeveloper
+      }
+    })
   }, [])
 
-  // REGISTER --unused
+  // :register --disabled
   const register = useCallback(async (firstName, lastName, email, password) => {
-    const response = await axios.post(PATH_SERVER.REGISTER, {
+    const response = await axiosInstance.post(PATH_SERVER.REGISTER, {
       firstName,
       lastName,
       email,
@@ -141,31 +272,21 @@ export function AuthProvider({ children }) {
     const { accessToken, user } = response.data
     localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, accessToken)
 
-    return { user }
-  })
+    dispatch({
+      type: REDUCER_KEY.REGISTER,
+      payload: {
+        user
+      }
+    })
+  }, [])
 
-  // Clear All persisted data and remove Items from localStorage
-  const clearAllPersistedStates = createAsyncThunk('auth/clearAllPersistedStates', async (_, { dispatch }) => {
-    try {
-      setSession(null)
-      localStorage.removeItem(LOCAL_STORAGE_KEY.USER)
-      localStorage.removeItem(LOCAL_STORAGE_KEY.USER_ID)
-      localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN)
-      // localStorage.removeItem(LOCAL_STORAGE_KEY.CONFIGURATION)
-      window.location.href = PATH_AUTH.login
-      const keys = Object.keys(localStorage)
-      const reduxPersistKeys = keys.filter((key) => !(key === LOCAL_STORAGE_KEY.USER_DATA))
-      await Promise.all(reduxPersistKeys.map((key) => storage.removeItem(key)))
-    } catch (error) {
-      console.error(RESPONSE.error.REDUX_PERSIST, error)
-    }
-  })
-
+  // :logout
   const logout = useCallback(async () => {
     const userId = localStorage.getItem(LOCAL_STORAGE_KEY.USER_ID)
+    const id = initialState.userId
     try {
-      await dispatch(clearAllPersistedStates())
-      await axios.post(PATH_SERVER.LOGOUT(userId))
+      await dispatch(clearStorageAndNaviagteToLogin())
+      await axiosInstance.post(PATH_SERVER.LOGOUT(userId))
       snack(RESPONSE.success.LOGOUT, { variant: COLOR.SUCCESS })
     } catch (error) {
       console.error(error)
@@ -176,15 +297,21 @@ export function AuthProvider({ children }) {
 
   const memoizedValue = useMemo(
     () => ({
-      isInitialized,
-      isAuthenticated,
-      isAllAccessAllowed,
-      isDashboardAccessLimited,
-      isSettingAccessAllowed,
-      isSecurityUserAccessAllowed,
-      isEmailAccessAllowed,
-      user,
-      userId,
+      isInitialized: state.isInitialized,
+      isAuthenticated: state.isAuthenticated,
+      user: state.user,
+      userId: state.userId,
+      isAllAccessAllowed: state.isAllAccessAllowed,
+      isDisableDelete: state.isDisableDelete,
+      isDashboardAccessLimited: state.isDashboardAccessLimited,
+      isDocumentAccessAllowed: state.isDocumentAccessAllowed,
+      isDrawingAccessAllowed: state.isDrawingAccessAllowed,
+      isSettingReadOnly: state.isSettingReadOnly,
+      isSecurityReadOnly: state.isSecurityReadOnly,
+      isSettingAccessAllowed: state.isSettingAccessAllowed,
+      isSecurityUserAccessAllowed: state.isSecurityUserAccessAllowed,
+      isEmailAccessAllowed: state.isEmailAccessAllowed,
+      isDeveloper: state.isDeveloper,
       method: LOCAL_STORAGE_KEY.JWT,
       login,
       register,
@@ -193,15 +320,21 @@ export function AuthProvider({ children }) {
       muliFactorAuthentication
     }),
     [
-      isInitialized,
-      isAuthenticated,
-      isAllAccessAllowed,
-      isDashboardAccessLimited,
-      isSettingAccessAllowed,
-      isSecurityUserAccessAllowed,
-      isEmailAccessAllowed,
-      user,
-      userId,
+      state.isInitialized,
+      state.isAuthenticated,
+      state.isAllAccessAllowed,
+      state.isDisableDelete,
+      state.isDashboardAccessLimited,
+      state.isDocumentAccessAllowed,
+      state.isDrawingAccessAllowed,
+      state.isSettingReadOnly,
+      state.isSecurityReadOnly,
+      state.isSettingAccessAllowed,
+      state.isSecurityUserAccessAllowed,
+      state.isEmailAccessAllowed,
+      state.isDeveloper,
+      state.user,
+      state.userId,
       login,
       logout,
       register,

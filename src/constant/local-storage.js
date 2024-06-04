@@ -4,21 +4,23 @@
 
  */
 const LOCAL_STORAGE_KEY = {
-  ERROR_PAGE: 'ERROR-PAGES',
-  CONFIGURATION: 'configurations',
-  MFA: 'MFA',
   ACCESS_TOKEN: 'accessToken',
-  USER_ID: 'userId',
+  AFTER_SUBMIT: 'afterSubmit',
+  CONFIGURATION: 'configurations',
+  CUSTOMER: 'customer',
+  DATA_ACCESS_LEVEL: 'dataAccessibilityLevel',
   EMAIL: 'email',
+  ERROR_PAGE: 'ERROR-PAGES',
+  JWT: 'jwt',
+  MFA: 'MFA',
   NAME: 'name',
   ROLES: 'userRoles',
   REMEMBER: 'remember',
   USER: 'user',
   USER_EMAIL: 'UserEmail',
-  USER_PASSWORD: 'UserPassword',
-  USER_DATA: 'userData',
-  JWT: 'jwt',
-  AFTER_SUBMIT: 'afterSubmit'
+  HOWICK_USER_DATA: 'HowickUserData',
+  USER_ID: 'userId',
+  USER_PASSWORD: 'UserPassword'
 }
 
 export default LOCAL_STORAGE_KEY

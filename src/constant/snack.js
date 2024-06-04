@@ -1,4 +1,5 @@
 export const SNACK = {
+  GENERIC_ERROR: 'Something went wrong. Please try again later.',
   // @customer
   SAVE_FAILED: 'Save FAILED',
   SAVE_SUCCESS: 'Save SUCCESS',

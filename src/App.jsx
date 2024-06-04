@@ -32,9 +32,9 @@ function App() {
     // <WebSocketProvider>
     //   <PersistGate loading={null} persistor={persistor}>
     // <LocalizationProvider dateAdapter={AdapterDateFns}>
-    <Provider store={store}>
-      <AuthProvider>
-        <HelmetProvider>
+    <AuthProvider>
+      <HelmetProvider>
+        <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <SettingProvider>
               <BrowserRouter>
@@ -57,9 +57,9 @@ function App() {
               </BrowserRouter>
             </SettingProvider>
           </PersistGate>
-        </HelmetProvider>
-      </AuthProvider>
-    </Provider>
+        </Provider>
+      </HelmetProvider>
+    </AuthProvider>
     // </LocalizationProvider>
     //   </PersistGate>
     // </WebSocketProvider>

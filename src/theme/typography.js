@@ -20,8 +20,8 @@ export function responsiveFontSizes({ sm, md, lg }) {
   }
 }
 
-const FONT_PRIMARY = 'Yantramanav, Arimo, Calibri'
-const FONT_SECONDARY = 'Arimo'
+const FONT_PRIMARY = 'Yantramanav, Arimo, Calibri, sans-serif'
+const FONT_SECONDARY = 'Arimo, Yantramanav, Calibri, sans-serif'
 
 const typography = {
   fontFamily: FONT_PRIMARY,
