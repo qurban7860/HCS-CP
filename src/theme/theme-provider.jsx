@@ -4,6 +4,8 @@ import { useSettingContext } from 'hook'
 import { CssBaseline } from '@mui/material'
 import { createTheme, StyledEngineProvider, ThemeProvider as MUIThemeProvider } from '@mui/material/styles'
 import { RADIUS } from 'config'
+
+// : theming
 import GlobalStyle from './global-style'
 import palette from './palette'
 import shadow from './shadow'

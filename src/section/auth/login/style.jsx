@@ -1,17 +1,18 @@
 import { styled, alpha } from '@mui/material/styles'
+import { KEY } from 'constant'
 import { bgGradient } from 'theme/style'
 
-export const StyledRoot = styled('main')(() => ({
+export const StyledRoot = styled(({ theme, mode, ...other }) => <main {...other} />)(({ theme, mode }) => ({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'center'
+  justifyContent: 'center',
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[900]
   // position: 'relative',
 }))
 
 export const StyledSection = styled('div')(({ theme }) => ({
   display: 'none',
-  // position: 'relative',
   [theme.breakpoints.up('md')]: {
     flexGrow: 1,
     display: 'flex',

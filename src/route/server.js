@@ -11,6 +11,7 @@ function _url(...param) {
  * @path {baseUrl}/api/{apiVersion}{PATH_SERVER}
  */
 export const PATH_SERVER = {
+  CONFIG: _url('configs'),
   // /security/getToken
   LOGIN: _url('security', 'getToken'),
   // /security/refreshToken
@@ -26,6 +27,7 @@ export const PATH_SERVER = {
     // /:id
     detail: (userId) => _url('security', 'users', userId)
   },
+
   // /products
   PRODUCT: {
     MACHINE: {
@@ -43,6 +45,8 @@ export const PATH_SERVER = {
       list: _url('products', 'models')
     }
   },
+
+  // /crm
   CRM: {
     CUSTOMER: {
       // /customer/:id

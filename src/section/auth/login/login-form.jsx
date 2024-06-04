@@ -1,44 +1,28 @@
-import { useState, useEffect } from 'react'
-import * as Yup from 'yup'
+import { useEffect } from 'react'
+import { useAuthContext } from 'auth'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import { snack } from 'hook'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Link, Stack, Alert, IconButton, InputAdornment, Checkbox, FormControlLabel } from '@mui/material'
-import { snack } from 'hook'
-import { useAuthContext } from 'auth'
+import { LoginSchema } from 'schema'
+import { Link, Stack, Alert } from '@mui/material'
 import { GStyledLoadingButton } from 'theme/style'
-import { useLoginMutation } from 'store/slice/auth/endpoint'
-import { Iconify } from 'component/iconify'
-import FormProvider, { RHFTextField } from 'component/hook-form'
+import FormProvider, { RHFTextField, RHFPasswordField, RHFCheckbox } from 'component/hook-form'
 import { RADIUS } from 'config'
-import { PATH_AUTH, PATH_DASHBOARD } from 'route/path'
-import { BUTTON, REGEX, LOCAL_STORAGE_KEY, RESPONSE } from 'constant'
+import { PATH_AUTH } from 'route/path'
+import { BUTTON, REGEX, LOCAL_STORAGE_KEY, RESPONSE, KEY, LABEL, FLEX, VARIANT, SNACK, SIZE, COLOR, DEBUG } from 'constant'
+
+const { TYPOGRAPHY } = VARIANT
 
 function LoginForm() {
   const navigate = useNavigate()
-  const [{ isLoading, error }] = useLoginMutation()
-  const { login, isAuthenticate } = useAuthContext()
+  const { login } = useAuthContext()
   const regEx = new RegExp(REGEX.ERROR_CODE)
-  const [showPassword, setShowPassword] = useState(false)
-  const [userEmail, setUserEmail] = useState('')
-  const [userPassword, setUserPassword] = useState('')
-  const [userRemember, setUserRemember] = useState(false)
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem(LOCAL_STORAGE_KEY.USER_DATA)
-
-    if (storedUser) {
-      const { email } = JSON.parse(storedUser)
-      setUserEmail(email)
-      setUserRemember(true)
-    }
-  }, [])
-
-  const LoginSchema = Yup.object().shape({})
 
   const defaultValues = {
-    email: userEmail,
-    password: ''
+    email: '',
+    password: '',
+    remember: false
   }
 
   const methods = useForm({
@@ -49,47 +33,56 @@ function LoginForm() {
   const {
     reset,
     setError,
+    setValue,
+    watch,
     handleSubmit,
     formState: { errors, isSubmitting, isSubmitSuccessful }
   } = methods
 
-  const onSubmit = async (data) => {
-    if (userEmail) {
-      data.email = userEmail
-    }
+  const { remember, email, password } = watch()
 
+  useEffect(() => {
+    const storedHowickUserData = localStorage.getItem(LOCAL_STORAGE_KEY.HOWICK_USER_DATA)
+
+    if (storedHowickUserData) {
+      const { email, remember } = JSON.parse(storedHowickUserData)
+      setValue(KEY.EMAIL, email)
+      setValue(KEY.REMEMBER, remember)
+    }
+  }, [])
+
+  const onSubmit = async (data) => {
     try {
-      if (userRemember) {
-        const userData = {
-          email: data.email,
-          remember: userRemember
+      if (remember) {
+        const HowickUserData = {
+          email,
+          remember
         }
 
-        localStorage.setItem(LOCAL_STORAGE_KEY.USER_DATA, JSON.stringify(userData))
+        localStorage.setItem(LOCAL_STORAGE_KEY.HOWICK_USER_DATA, JSON.stringify(HowickUserData))
       } else {
         localStorage.removeItem(LOCAL_STORAGE_KEY.USER_DATA)
       }
 
-      await login({ email: userEmail, password: userPassword })
+      await login(data.email, data.password)
 
       if (localStorage.getItem(LOCAL_STORAGE_KEY.MFA)) {
-        navigate(PATH_DASHBOARD.general.app)
-        // TODO: activiate when MFA is implemented
-        // navigate(PATH_AUTH.authenticate)
+        navigate(PATH_AUTH.authenticate)
         localStorage.removeItem(LOCAL_STORAGE_KEY.MFA)
       }
+      reset()
     } catch (error) {
       if (regEx.test(error.MessageCode)) {
-        console.error('error : ', error?.Message || '')
-        snack(RESPONSE.error.INVALID_CREDENTIALS, { variant: 'error' })
+        console.error(DEBUG.AUTH_LOGIN_ERROR, error?.Message || '')
+        snack(RESPONSE.error.INVALID_CREDENTIALS, { variant: COLOR.ERROR })
         reset()
         setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
           ...error,
           message: error.Message
         })
       } else {
-        console.error('error : ', error || '')
-        snack(RESPONSE.error.INVALID_CREDENTIALS, { variant: 'error' })
+        console.error(DEBUG.AUTH_LOGIN_ERROR, error || '')
+        snack(RESPONSE.error.INVALID_CREDENTIALS, { variant: COLOR.ERROR })
         setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
           ...error,
           message: error
@@ -101,55 +94,37 @@ function LoginForm() {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3} sx={{ mt: 1 }}>
-        {!!errors.afterSubmit ||
-          (error && <Alert severity="error">{errors?.afterSubmit?.message || 'Something went wrong. Please try again later.'}</Alert>)}
+        {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity="error">{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
         <RHFTextField
-          type="email"
-          name="email"
-          value={userEmail}
-          onChange={(e) => setUserEmail(e.target.value)}
-          label="Login / Email address"
-          autoComplete="username"
+          type={KEY.EMAIL}
+          name={KEY.EMAIL}
+          label={LABEL.LOGIN_EMAIL}
+          autoComplete={KEY.USERNAME}
+          aria-label={LABEL.LOGIN_EMAIL}
           required
         />
-        <RHFTextField
-          name="password"
-          id="password"
-          value={userPassword}
-          onChange={(e) => setUserPassword(e.target.value)}
-          label="Password"
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                </IconButton>
-              </InputAdornment>
-            )
-          }}
-          autoComplete="current-password"
-          helperText={errors.password?.message}
-          required
+        <RHFPasswordField
+          name={KEY.PASSWORD}
+          id={KEY.PASSWORD}
+          label={LABEL.LOGIN_PASSWORD}
+          autoComplete={KEY.CURRENT_PASSWORD}
+          aria-label={LABEL.LOGIN_PASSWORD}
         />
       </Stack>
 
-      <FormControlLabel
-        control={<Checkbox name="remember" checked={userRemember} onChange={() => setUserRemember(!userRemember)} variant="soft" />}
-        label={BUTTON.REMEMBER_ME}
-      />
+      <RHFCheckbox name={KEY.REMEMBER} label={BUTTON.REMEMBER_ME} />
       <GStyledLoadingButton
         fullWidth
-        color="inherit"
-        size="large"
-        type="submit"
-        variant="contained"
+        color={KEY.INHERIT}
+        size={SIZE.LARGE}
+        type={KEY.SUBMIT}
+        variant={KEY.CONTAINED}
         loading={isSubmitSuccessful || isSubmitting}
         sx={RADIUS.BORDER}>
         {BUTTON.LOGIN}
       </GStyledLoadingButton>
-      <Stack alignItems="flex-end" sx={{ my: 2 }}>
-        <Link component={RouterLink} to={PATH_AUTH.resetPassword} variant="body2" color="inherit" underline="none">
+      <Stack alignItems={FLEX.FLEX_END} sx={{ my: 2 }}>
+        <Link component={RouterLink} to={PATH_AUTH.resetPassword} variant={TYPOGRAPHY.BODY2} color={KEY.INHERIT} underline={KEY.NONE}>
           {BUTTON.FORGOT_PASSWORD}
         </Link>
       </Stack>

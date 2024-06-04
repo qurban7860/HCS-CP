@@ -1,3 +1,5 @@
+// @animate
+export { default as MotionContainer } from './animate/motion-container'
 // @back-button
 export { default as Button } from './button/button'
 export { default as BackButton } from './button/back-button/back-button'
@@ -21,6 +23,8 @@ export { default as NothingProvided } from './default/nothing-provided'
 export { default as FormHeader } from './header/form'
 // @google-map
 export { default as GoogleMaps } from './google-maps/google-maps'
+// @logo
+export { default as Logo } from './logo/logo'
 // @viewform
 export { default as ViewFormField } from './viewform/view-form-field'
 export { default as GridViewTitle } from './viewform/grid-view-title'

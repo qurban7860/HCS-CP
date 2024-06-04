@@ -9,6 +9,8 @@ const LABEL = {
   FULLSCREEN_EXIT: 'Exit Fullscreen',
   HEADER: ' Form Header',
   ROWS: 'Rows:',
+  LOGIN_EMAIL: 'Login / Email address',
+  LOGIN_PASSWORD: 'Password',
   USER_PROFILE_TIX: 'Your Ticket/s',
   USER_PROFILE_MACHINE: 'Your Machine/s',
   MACHINE: (length) => (length > 1 ? 'Machines' : 'Machine'),
