@@ -1,52 +1,62 @@
-// @mui
+import { useSettingContext } from 'hook'
 import { GlobalStyles } from '@mui/material'
+import { ASSET } from 'config'
+import { KEY } from 'constant'
 
 function GlobalStyle() {
+  const { themeMode } = useSettingContext()
   const inputGlobalStyle = (
     <GlobalStyles
       styles={{
         '*': {
           boxSizing: 'border-box',
-          borderRadius: 0.4,
+          borderRadius: 0.4
         },
         html: {
           margin: 0,
           padding: 0,
           width: '100%',
           height: '100%',
-          WebkitOverflowScrolling: 'touch',
+          WebkitOverflowScrolling: 'touch'
         },
         body: {
+          backgroundImage: themeMode === KEY.LIGHT ? `url(${ASSET.BG_LOGO})` : `url(${ASSET.BG_DARK_LOGO})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPositionY: 'center',
+          backgroundPositionX: 'right',
+          backgroundSize: '50%',
+          backgroundOpacity: 0.9,
+          backgroundAttachment: 'fixed',
           margin: 0,
           padding: 0,
           width: '100%',
-          height: '100%',
+          height: '100%'
         },
         '#root': {
           width: '100%',
-          height: '100%',
+          height: '100%'
         },
         input: {
           '&[type=number]': {
             MozAppearance: 'textfield',
             '&::-webkit-outer-spin-button': {
               margin: 0,
-              WebkitAppearance: 'none',
+              WebkitAppearance: 'none'
             },
             '&::-webkit-inner-spin-button': {
               margin: 0,
-              WebkitAppearance: 'none',
-            },
-          },
+              WebkitAppearance: 'none'
+            }
+          }
         },
         img: {
           display: 'block',
-          maxWidth: '100%',
+          maxWidth: '100%'
         },
         ul: {
           margin: 0,
-          padding: 0,
-        },
+          padding: 0
+        }
       }}
     />
   )
