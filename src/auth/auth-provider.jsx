@@ -149,7 +149,7 @@ export function AuthProvider({ children }) {
   // :login
   const login = useCallback(async (email, password) => {
     await dispatch(clearAllPersistedStates())
-    const response = await axiosInstance.post(PATH_SERVER.LOGIN, { email, password })
+    const response = await axiosInstance.post(PATH_SERVER.SECURITY.LOGIN, { email, password })
 
     if (response?.data?.multiFactorAuthentication) {
       localStorage.setItem(LOCAL_STORAGE_KEY.USER_ID, response.data.userId)
@@ -210,7 +210,7 @@ export function AuthProvider({ children }) {
 
   // :multi-factor code
   const muliFactorAuthentication = useCallback(async (code, userID) => {
-    const response = await axiosInstance.post(PATH_SERVER.MFA, {
+    const response = await axiosInstance.post(PATH_SERVER.SECURITY.MFA, {
       code,
       userID
     })
@@ -263,7 +263,7 @@ export function AuthProvider({ children }) {
 
   // :register --disabled
   const register = useCallback(async (firstName, lastName, email, password) => {
-    const response = await axiosInstance.post(PATH_SERVER.REGISTER, {
+    const response = await axiosInstance.post(PATH_SERVER.SECURITY.REGISTER, {
       firstName,
       lastName,
       email,
@@ -286,7 +286,7 @@ export function AuthProvider({ children }) {
     const id = initialState.userId
     try {
       await dispatch(clearStorageAndNaviagteToLogin())
-      await axiosInstance.post(PATH_SERVER.LOGOUT(userId))
+      await axiosInstance.post(PATH_SERVER.SECURITY.LOGOUT(userId))
       snack(RESPONSE.success.LOGOUT, { variant: COLOR.SUCCESS })
     } catch (error) {
       console.error(error)
