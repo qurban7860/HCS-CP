@@ -15,8 +15,9 @@ export const PATH_SERVER = {
   CONFIG: _url('configs'),
   //  /security
   SECURITY: {
+    // /roles
     ROLES: {
-      // /roles
+      // /
       list: _url('security', 'roles'),
       // /roles/:id
       detail: (roleId) => _url('security', 'roles', roleId)
