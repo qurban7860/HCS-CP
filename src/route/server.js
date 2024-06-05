@@ -11,21 +11,38 @@ function _url(...param) {
  * @path {baseUrl}/api/{apiVersion}{PATH_SERVER}
  */
 export const PATH_SERVER = {
+  // /configs
   CONFIG: _url('configs'),
-  // /security/getToken
-  LOGIN: _url('security', 'getToken'),
-  // /security/refreshToken
-  MFA: _url('security', 'multifactorverifyCode'),
-  // /security/register
-  REGISTER: _url('security', 'register'),
-  // /security/logout/:userId
-  LOGOUT: (userId) => _url('security', 'logout', userId),
-  // /security/users
-  USER: {
-    // /
-    list: _url('security', 'users'),
-    // /:id
-    detail: (userId) => _url('security', 'users', userId)
+  //  /security
+  SECURITY: {
+    // /roles
+    ROLES: {
+      // /
+      list: _url('security', 'roles'),
+      // /roles/:id
+      detail: (roleId) => _url('security', 'roles', roleId)
+    },
+    // /getToken
+    LOGIN: _url('security', 'getToken'),
+    // /multifactorverifyCode
+    MFA: _url('security', 'multifactorverifyCode'),
+    // /register
+    REGISTER: _url('security', 'register'),
+    // /logout/:userId
+    LOGOUT: (userId) => _url('security', 'logout', userId),
+    // /invites/sendUserInvite/:userId
+    SEND_USER_INVITE: (userId) => _url('security', 'invites', 'sendUserInvite', userId),
+    // /users
+    USER: {
+      // /
+      list: _url('security', 'users'),
+      // /:id
+      detail: (userId) => _url('security', 'users', userId),
+      // /updatePassword/:userId
+      updatePassword: (userId) => _url('security', 'users', 'updatePassword', userId),
+      // /:userId/signinlogs/
+      signInLogs: (userId) => _url('security', 'users', userId, 'signinlogs')
+    }
   },
 
   // /products

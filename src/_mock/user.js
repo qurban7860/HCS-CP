@@ -1,3 +1,7 @@
+const _getImage = (image) => {
+  return `/asset/image/${image}.png`
+}
+
 const mockUser = [
   {
     id: 1,
@@ -13,11 +17,11 @@ const mockUser = [
       postalCode: '12345',
       state: 'Lagos',
       city: 'Testing City',
-      country: 'TS',
+      country: 'TS'
     },
-    badge: 'https://cdn3.vectorstock.com/i/1000x1000/15/12/gold-arrow-chart-business-finance-logo-vector-14921512.jpg',
-    photoURL: 'https://mighty.tools/mockmind-api/content/cartoon/11.jpg',
-  },
+    badge: _getImage('customer-portal'),
+    photoURL: 'https://mighty.tools/mockmind-api/content/cartoon/11.jpg'
+  }
 ]
 
 export default mockUser

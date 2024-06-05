@@ -439,3 +439,19 @@ export const iconPropsOption = {
     // transform: 'rotate(10deg)'
   }
 }
+
+export const GCardOption = (mode) => {
+  return {
+    height: '100vh',
+    margin: 2,
+    margintop: 10,
+    paddingtop: 2,
+
+    sx: {
+      backgroundColor: mode === KEY.LIGHT ? 'background.paper' : 'background.default',
+      backgroundImage: `url(${mode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
+      backgroundSize: 'cover',
+      backgroundSize: '150%'
+    }
+  }
+}

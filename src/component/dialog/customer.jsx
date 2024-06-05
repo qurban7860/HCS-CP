@@ -46,7 +46,7 @@ const CustomerDialog = () => {
             <GridViewField heading={CUSTOMER.CUSTOMER_CODE} isLoading={isLoading} children={defaultValues?.code} />
             <GridViewField heading={VIEW_FORM.STATUS} isLoading={isLoading} children={defaultValues?.status} />
             <GridViewField heading={VIEW_FORM.WEBSITE} isLoading={isLoading} link={defaultValues?.website} />
-            <GridViewField heading={CUSTOMER.TRADING_NAME} isLoading={isLoading} alias={defaultValues?.tradingName} />
+            <GridViewField heading={CUSTOMER.TRADING_NAME} isLoading={isLoading} chip={defaultValues?.tradingName} />
           </Grid>
           <Divider variant={KEY.FULL_WIDTH} style={{ width: '100%', marginX: '20px' }} />
           <GridViewTitle title={TITLE.SITE_INFO} />

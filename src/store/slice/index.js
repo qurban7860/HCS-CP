@@ -7,6 +7,10 @@ export * from './auth/endpoint'
 export { default as userReducer } from './security/user/user'
 export * from './security/user'
 
+// security/role
+export { default as roleReducer } from './security/role/role'
+export * from './security/role'
+
 // product/machine
 export { default as machineReducer } from './product/machine/machine'
 export * from './product/machine'

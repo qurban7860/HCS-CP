@@ -5,14 +5,14 @@ export const authActionSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (data) => ({
-        url: PATH_SERVER.LOGIN,
+        url: PATH_SERVER.SECURITY.LOGIN,
         method: 'POST',
         body: data
       })
     }),
     logout: builder.mutation({
       query: (id) => ({
-        url: PATH_SERVER.LOGOUT(id),
+        url: PATH_SERVER.SECURITY.LOGOUT(id),
         method: 'POST'
       })
     })

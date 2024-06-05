@@ -23,7 +23,9 @@ const ViewFormField = ({
   contact,
   isWidget,
   isOrg,
-  alias,
+  userRolesChip,
+  isNoBg,
+  chip,
   link,
   isMachineView,
   customerLink,
@@ -54,7 +56,7 @@ const ViewFormField = ({
   }
 
   return (
-    <StyledFieldGrid item xs={!isWidget && 12} sm={gridSize} mode={themeMode} isMachineView={isMachineView}>
+    <StyledFieldGrid item xs={!isWidget && 12} sm={gridSize} mode={themeMode} isMachineView={isMachineView} isNoBg={isNoBg}>
       <Typography variant={TYPOGRAPHY.OVERLINE0} color="grey.600">
         {heading}
       </Typography>
@@ -144,19 +146,29 @@ const ViewFormField = ({
             contact &&
             typeof contact?.firstName === 'string' && <Chip label={`${contact?.firstName || ''} ${contact?.lastName || ''}`} sx={{ m: 0.2 }} />
           )}
-          {alias && typeof alias === 'object' && alias.length > 0 ? (
+          {chip && typeof chip === 'object' && userRolesChip?.length > 0 ? (
             <StyledChipGrid container>
-              {alias.map((chip, index) => (
+              {chip?.map((c, index) => (
+                <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{c}</Typography>} size={SIZE.SMALL} />
+              ))}
+            </StyledChipGrid>
+          ) : (
+            chip && typeof chip === 'string' && <Chip label={chip} sx={{ m: 0.2 }} />
+          )}
+
+          {userRolesChip && typeof userRolesChip === 'object' && userRolesChip.length > 0 ? (
+            <StyledChipGrid container>
+              {userRolesChip?.map((r, index) => (
                 <StyledFieldChip
                   key={index}
                   mode={themeMode}
-                  label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{chip}</Typography>}
+                  label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{r?.roleType}</Typography>}
                   size={SIZE.SMALL}
                 />
               ))}
             </StyledChipGrid>
           ) : (
-            alias && typeof alias === 'string' && <Chip label={alias} sx={{ m: 0.2 }} />
+            userRolesChip && typeof userRolesChip === 'string' && userRolesChip.trim().length > 0 && <Chip label={userRolesChip} sx={{ m: 0.2 }} />
           )}
         </Fragment>
       )}
@@ -171,8 +183,10 @@ ViewFormField.propTypes = {
   heading: PropTypes.string,
   isLoading: PropTypes.bool,
   isWidget: PropTypes.bool,
+  isNoBg: PropTypes.bool,
   contact: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
-  alias: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
+  chip: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
+  userRolesChip: PropTypes.array,
   variant: PropTypes.oneOf(Object.values(TYPOGRAPHY)),
   link: PropTypes.string,
   customerLink: PropTypes.string

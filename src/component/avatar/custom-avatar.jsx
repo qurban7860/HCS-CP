@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import { forwardRef } from 'react'
 import { useTheme } from '@mui/material/styles'
-import { Badge, Avatar } from '@mui/material'
+import { Badge, Avatar, Typography } from '@mui/material'
+import { TYPOGRAPHY } from 'constant'
 
 const getCharAtName = (name) => name && name.charAt(0).toUpperCase()
 const getCharAtSecondName = (name) => name && name.split(' ')[1]?.charAt(0).toUpperCase()
@@ -15,7 +16,7 @@ const getColorByName = (name) => {
   return 'default'
 }
 
-const CustomAvatar = forwardRef(({ color, name = '', BadgeProps, children, extension, sx, ...other }, ref) => {
+const CustomAvatar = forwardRef(({ color, name = '', justName, BadgeProps, children, extension, sx, ...other }, ref) => {
   const theme = useTheme()
 
   const charAtName = getCharAtSecondName(name) ? getCharAtName(name) + getCharAtSecondName(name) : getCharAtName(name)
@@ -35,7 +36,8 @@ const CustomAvatar = forwardRef(({ color, name = '', BadgeProps, children, exten
           ...sx
         }}
         {...other}>
-        {name && charAtName}
+        {justName ? <Typography variant={TYPOGRAPHY.H0}>{name && charAtName}</Typography> : name && charAtName}
+
         {extension}
         {children}
       </Avatar>
@@ -49,7 +51,7 @@ const CustomAvatar = forwardRef(({ color, name = '', BadgeProps, children, exten
           ...sx
         }}
         {...other}>
-        {name && charAtName}
+        {justName ? <Typography variant={TYPOGRAPHY.H0}>{name && charAtName}</Typography> : name && charAtName}
         {children}
       </Avatar>
     )
@@ -66,6 +68,7 @@ const CustomAvatar = forwardRef(({ color, name = '', BadgeProps, children, exten
 CustomAvatar.propTypes = {
   sx: PropTypes.object,
   name: PropTypes.string,
+  justName: PropTypes.bool,
   extension: PropTypes.string,
   children: PropTypes.node,
   BadgeProps: PropTypes.object,

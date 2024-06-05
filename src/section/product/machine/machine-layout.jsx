@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { PATH_CUSTOMER } from 'route/path'
 import { Box, Grid, Card, Divider, Link, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox } from 'theme/style'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox, GCardOption } from 'theme/style'
 import {
   setDecoilerIcon,
   getMachineModels,
@@ -31,7 +31,7 @@ import { ViewFormField } from 'component/viewform'
 import { MotionLazyContainer } from 'component/animate'
 import { MARGIN } from 'config'
 import { KEY, TITLE, LABEL, VIEW_FORM, VARIANT, FLEX_DIR, FLEX, DECOILER, DECOILER_TYPE_ARR } from 'constant'
-import { MachineConnectionWidget, MachineSiteWidget, MachineHistoryWidget, CardOption } from 'section/product/machine'
+import { MachineConnectionWidget, MachineSiteWidget, MachineHistoryWidget } from 'section/product/machine'
 import { truncate } from 'util/truncate'
 
 const { ONE_HALF_T, THREE_T, FIVE_T, SIX_T } = DECOILER
@@ -142,7 +142,7 @@ const MachineLayout = () => {
 
         <Grid item sm={12} lg={9}>
           <Box mb={2}>
-            <Card {...CardOption(themeMode)}>
+            <Card {...GCardOption(themeMode)}>
               <GStyledTopBorderDivider mode={themeMode} />
               <Grid container px={1.5}>
                 <Grid item lg={8}>
@@ -217,7 +217,7 @@ const MachineLayout = () => {
             </Card>
           </Box>
           <Box mb={2}>
-            <Card {...CardOption(themeMode)}>
+            <Card {...GCardOption(themeMode)}>
               <GStyledTopBorderDivider mode={themeMode} />
               <Grid container spacing={2} px={1.5} mb={5}>
                 <GridViewTitle title={TITLE.MACHINE_INFO} />
@@ -250,7 +250,7 @@ const MachineLayout = () => {
             </Card>
           </Box>
           <Box mb={4}>
-            <Card {...CardOption(themeMode)}>
+            <Card {...GCardOption(themeMode)}>
               <GStyledTopBorderDivider mode={themeMode} />
               <Grid container spacing={2} px={1.5} mb={5}>
                 <GridViewTitle title={TITLE.HOWICK_RESOURCES} />
