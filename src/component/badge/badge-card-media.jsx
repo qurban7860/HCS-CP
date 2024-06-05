@@ -3,9 +3,8 @@ import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
 import { Badge, CardMedia, Chip } from '@mui/material'
 import { useIcon, ICON_NAME } from 'hook'
-import { mockUser } from '_mock'
 import { KEY, COMPONENT, SIZE, VARIANT } from 'constant'
-import { BADGE } from 'config/layout'
+import { mockUser } from '_mock'
 
 const BadgeCardMedia = ({ dimension }) => {
   const [hoverBadge, setHoverBadge] = useState(false)
