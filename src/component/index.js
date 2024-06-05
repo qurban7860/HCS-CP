@@ -1,5 +1,10 @@
 // @animate
 export { default as MotionContainer } from './animate/motion-container'
+export { default as MotionLazyContainer } from './animate/motion-lazy-container'
+export { default as IconButtonAnimate } from './animate/icon-button-animate'
+// @avatar
+export { default as Avatar } from './avatar/avatar'
+export { default as CustomAvatar } from './avatar/custom-avatar'
 // @back-button
 export { default as Button } from './button/button'
 export { default as BackButton } from './button/back-button/back-button'
@@ -25,6 +30,8 @@ export { default as FormHeader } from './header/form'
 export { default as GoogleMaps } from './google-maps/google-maps'
 // @logo
 export { default as Logo } from './logo/logo'
+// @menu-popover
+export { default as MenuPopover } from './menu-popover/menu-popover'
 // @viewform
 export { default as ViewFormField } from './viewform/view-form-field'
 export { default as GridViewTitle } from './viewform/grid-view-title'

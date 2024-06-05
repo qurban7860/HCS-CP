@@ -1,3 +1,17 @@
+export const ERROR = {
+  UNABLE_LOGOUT: 'Unable to logout'
+}
+
+export const LOAD_STATE = {
+  LOGGING_OUT: 'Logging out...',
+  LOADED: 'loaded',
+  ERROR: 'error'
+}
+
+export const SUCCESS = {
+  LOGGED_OUT: 'Logged out'
+}
+
 export const SNACK = {
   GENERIC_ERROR: 'Something went wrong. Please try again later.',
   // @customer
@@ -77,5 +91,7 @@ export const SNACK = {
   PASSWORD_CHANGED: 'Password update Successful',
   PASSWORD_CHANGE_FAILED: 'Password update Failed',
 
-  NO_COORIDNATES: 'No Coordinates Provided'
+  NO_COORIDNATES: 'No Coordinates Provided',
+  ...ERROR,
+  ...LOAD_STATE
 }

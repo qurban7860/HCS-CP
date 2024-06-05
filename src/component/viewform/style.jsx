@@ -10,20 +10,22 @@ export const StyledDefaultTypography = styled(Typography)(({ theme }) => ({
   wordBreak: 'break-word'
 }))
 
-export const StyledFieldGrid = styled(({ theme, mode, isMachineView, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView }) => ({
-  overflowWrap: 'break-word',
-  backgroundColor:
-    mode === KEY.LIGHT && !isMachineView
-      ? theme.palette.grey[300]
-      : isMachineView && mode === KEY.LIGHT
-      ? 'transparent'
-      : isMachineView && mode === KEY.DARK
-      ? theme.palette.grey[900]
-      : theme.palette.grey[800],
-  padding: '0.5rem 1rem',
-  border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
-  borderRadius: isMachineView && theme.spacing(1)
-}))
+export const StyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ...other }) => <Grid {...other} />)(
+  ({ theme, mode, isMachineView, isNoBg }) => ({
+    overflowWrap: 'break-word',
+    backgroundColor:
+      mode === KEY.LIGHT && !isMachineView && !isNoBg
+        ? theme.palette.grey[300]
+        : (isMachineView || isNoBg) && mode === KEY.LIGHT
+        ? 'transparent'
+        : (isMachineView || isNoBg) && mode === KEY.DARK
+        ? theme.palette.grey[900]
+        : theme.palette.grey[800],
+    padding: '0.5rem 1rem',
+    border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
+    borderRadius: isMachineView && theme.spacing(1)
+  })
+)
 
 export const StyledChipGrid = styled(Grid)(({ theme }) => ({
   marginTop: theme.spacing(-3),

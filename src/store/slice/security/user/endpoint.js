@@ -6,7 +6,7 @@ export const userSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUser: builder.query({
       query: (id) => ({
-        url: PATH_SERVER.USER.detail(id),
+        url: PATH_SERVER.SECURITY.USER.detail(id),
         method: 'GET',
         headers: {
           Authorization: `Bearer ${getAuthToken()}`
@@ -15,7 +15,7 @@ export const userSlice = apiSlice.injectEndpoints({
     }),
     getAllUser: builder.mutation({
       query: (id) => ({
-        url: PATH_SERVER.USER.list,
+        url: PATH_SERVER.SECURITY.USER.list,
         method: 'GET',
         headers: {
           Authorization: `Bearer ${getAuthToken()}`

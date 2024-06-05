@@ -38,6 +38,7 @@ export const VARIANT = {
   FILLED: 'filled',
   COVER: 'cover',
   FULL_WIDTH: 'fullWidth',
+  MIDDLE: 'middle',
   SKELETON: {
     RECTANGULAR: 'rectangular',
     CIRCULAR: 'circular',

@@ -1,25 +1,21 @@
 import { useState } from 'react'
 import { useNavigate, Link as RouterLink } from 'react-router-dom'
-import { Box, Divider, Dialog, Typography, Stack, MenuItem, Link } from '@mui/material'
 import { useAuthContext } from 'auth'
-import { CustomAvatar } from 'component/avatar'
-import { MenuPopover } from 'component/menu-popover'
-import { IconButtonAnimate } from 'component/animate'
-import { useSnackbar, useSettingContext, DisplayDialog } from 'hook'
+import { useSettingContext, DisplayDialog, snack } from 'hook'
+import { Box, Divider, Dialog, Typography, Stack, MenuItem, Link } from '@mui/material'
+import { CustomAvatar, MenuPopover, IconButtonAnimate } from 'component'
 import { themePreset } from 'theme'
-import { TITLE } from 'constant'
+import { SNACK, TITLE, TYPOGRAPHY } from 'constant'
 import { OPTION } from './util'
 import { mockUser } from '_mock'
 
 export default function AccountPopover() {
   const navigate = useNavigate()
   const { user, logout } = useAuthContext()
-  // const { user } = useSelector((state) => state.auth)
   const email = localStorage.getItem('user')
 
   const [openPopover, setOpenPopover] = useState(null)
   const [open, setOpen] = useState(false)
-  const { enqueueSnackbar } = useSnackbar()
   const { themeMode, themeLayout, themeStretch, themeContrast, themeDirection, themeColorPreset, onResetSetting } = useSettingContext()
 
   const handleOpenPopover = (event) => {
@@ -31,14 +27,13 @@ export default function AccountPopover() {
   }
 
   const handleLogout = async () => {
-    enqueueSnackbar('Logging out...')
     try {
       logout()
-      enqueueSnackbar('Logged out')
+      snack(SNACK.LOGGED_OUT)
       handleClosePopover()
     } catch (error) {
       console.error(error)
-      enqueueSnackbar('Unable to logout')
+      snack(SNACK.ERROR.UNABLE_LOGOUT, { variant: COLOR.ERROR })
     }
   }
 
@@ -52,7 +47,6 @@ export default function AccountPopover() {
   }
 
   const handleClickItem = (path) => {
-    console.log('USer:', user)
     handleClosePopover()
     navigate(path || setOpen(!open))
   }
@@ -98,7 +92,7 @@ export default function AccountPopover() {
           borderRadius: 0.4
         }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
-          <Typography variant="subtitle2" noWrap>
+          <Typography variant={TYPOGRAPHY.SUBTITLE2} noWrap>
             {user?.displayName || 'User'}
           </Typography>
           <Typography variant="overline" sx={{ color: 'text.secondary' }} fontWeight="bold" noWrap>
@@ -133,12 +127,7 @@ export default function AccountPopover() {
               {TITLE.DISPLAY_SETTING}
             </Typography>
           </MenuItem>
-          <MenuItem
-          // onClick={() => {
-          //   handleToggle()
-          // }}
-          // onClose={handleClose}
-          >
+          <MenuItem>
             <Typography variant="body2" noWrap>
               {TITLE.LANGUAGE}
             </Typography>

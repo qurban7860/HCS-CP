@@ -18,7 +18,7 @@ import {
 } from 'store/slice'
 import { Box, Grid, Card, Divider } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox } from 'theme/style'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox, GCardOption } from 'theme/style'
 import { customerDefaultValues } from 'section/crm'
 import { HowickResources } from 'section/common'
 import {
@@ -37,7 +37,7 @@ import { ViewFormField } from 'component/viewform'
 import { MotionLazyContainer } from 'component/animate'
 import { MARGIN } from 'config'
 import { KEY, TITLE, LABEL, RESPONSE, COLOR, VIEW_FORM, VARIANT, FLEX_DIR, FLEX } from 'constant'
-import { MachineListWidget, ContactListWidget, CardOption } from 'section/crm/customer'
+import { MachineListWidget, ContactListWidget } from 'section/crm/customer'
 import { truncate } from 'util/truncate'
 
 const CustomerLayout = () => {
@@ -106,7 +106,6 @@ const CustomerLayout = () => {
             <BackButton />
           </Grid>
         </Grid>
-        {/* TODO: HPS-1246: Machine List widget */}
         <Grid item lg={3}>
           <MachineListWidget
             value={defaultValues}
@@ -118,7 +117,7 @@ const CustomerLayout = () => {
 
         <Grid item sm={12} lg={9}>
           <Box mb={2}>
-            <Card {...CardOption(themeMode)}>
+            <Card {...GCardOption(themeMode)}>
               <GStyledTopBorderDivider mode={themeMode} />
 
               <Grid container px={1.5}>
@@ -159,7 +158,7 @@ const CustomerLayout = () => {
                   <Grid container spacing={2} p={2} pb={5}>
                     <GridViewField heading={CUSTOMER.CUSTOMER_CODE} isLoading={isLoading} children={defaultValues?.code} />
                     <GridViewField heading={VIEW_FORM.STATUS} isLoading={isLoading} children={defaultValues?.status} />
-                    <GridViewField heading={CUSTOMER.TRADING_NAME} isLoading={isLoading} alias={defaultValues?.tradingName} gridSize={12} />
+                    <GridViewField heading={CUSTOMER.TRADING_NAME} isLoading={isLoading} chip={defaultValues?.tradingName} gridSize={12} />
                     <GridViewField heading={VIEW_FORM.WEBSITE} isLoading={isLoading} link={defaultValues?.website} />
                   </Grid>
                 </Grid>
@@ -167,7 +166,7 @@ const CustomerLayout = () => {
             </Card>
           </Box>
           <Box mb={2}>
-            <Card {...CardOption(themeMode)}>
+            <Card {...GCardOption(themeMode)}>
               <GStyledTopBorderDivider mode={themeMode} />
               <Grid container spacing={2} px={1.5} mb={5}>
                 <GridViewTitle title={TITLE.SITE_INFO} />
@@ -189,13 +188,13 @@ const CustomerLayout = () => {
             </Card>
           </Box>
           <Box mb={4}>
-            <Card {...CardOption(themeMode)}>
+            <Card {...GCardOption(themeMode)}>
               <GStyledTopBorderDivider mode={themeMode} />
 
               <Grid container spacing={2} px={1.5} mb={5}>
                 <GridViewTitle title={TITLE.HOWICK_RESOURCES} />
 
-                <Divider variant="middle" style={{ width: '100%', marginBottom: '20px' }} />
+                <Divider variant={KEY.MIDDLE} style={{ width: '100%', marginBottom: '20px' }} />
                 <Grid item lg={12} sm={12}>
                   <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} />
                 </Grid>

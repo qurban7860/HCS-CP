@@ -27,7 +27,7 @@ export const customerSlice = apiSlice.injectEndpoints({
     }),
     updateCustomer: builder.mutation({
       query: (id, data) => ({
-        url: PATH_SERVER.USER.detail(id),
+        url: PATH_SERVER.CRM.CUSTOMER.detail(id),
         method: PUT,
         body: data,
         headers: {
