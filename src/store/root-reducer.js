@@ -65,8 +65,8 @@ const rootReducer = combineReducers({
   machine: persistReducer(machinePersistConfig, machineReducer),
   customer: persistReducer(customerPersistConfig, customerReducer),
   contact: persistReducer(contactPersistConfig, contactReducer),
-  machinemodel: persistReducer(machineModelPersistConfig, machineModelReducer)
-  // user: persistReducer(userPersistConfig, userReducer)
+  machinemodel: persistReducer(machineModelPersistConfig, machineModelReducer),
+  user: persistReducer(userPersistConfig, userReducer)
 })
 
 export default rootReducer
