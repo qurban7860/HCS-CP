@@ -4,6 +4,7 @@
 
 export const VIEW_FORM = {
   NAME: 'Name',
+  FULL_NAME: 'Full Name',
   FIRST_NAME: 'First Name',
   LAST_NAME: 'Last Name',
   HEADING_EMAIL: 'Email',
@@ -13,6 +14,12 @@ export const VIEW_FORM = {
   ORGANIZATION: 'Organization',
   STATUS: 'Status',
   REF_NO: 'Reference Number',
+  CONTACT: 'Contact',
+  LOGIN: 'Login',
+  REGIONS: 'Region',
+  COUNTRIES: 'Countries',
+  MACHINES: 'Machines',
+  ROLES: 'Roles',
 
   ADDRESS: {
     ADDRESS: 'Address',

@@ -20,6 +20,7 @@ const TITLE = {
   PERSONAL_INFO: 'Personal Information',
   KEY_DETAILS: 'Key Details',
   PROFILE: 'Profile',
+  ACCESSIBILITY: 'Accessiblity',
   // @machine - MachineViewForm - machine
   MACHINE_KEY_DETAILS: 'Key Details',
   MACHINE_INFO: 'Machine Information',
