@@ -39,6 +39,10 @@ const KEY = {
   FULL_PERCENT: '100%',
   BLANK: '_blank',
 
+  // configurations keys/related
+  CONFIGURATIONS: 'configurations',
+  ERROR_PAGES: 'ERROR-PAGES',
+
   // modules
   CRM: 'crm',
   PRODUCT: 'product',
