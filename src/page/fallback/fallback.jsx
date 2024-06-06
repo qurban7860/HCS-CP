@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { Icon, ICON_NAME, useSettingContext } from 'hook'
 import { useTheme } from '@mui/material/styles'
@@ -8,13 +8,15 @@ import { FallbackTitle, FallbackMessage, FallbackButton } from 'section/fallback
 import { HTTP_CODE, LOCAL_STORAGE_KEY, FALLBACK } from 'constant'
 
 const { code: CODE } = FALLBACK.UNDER_DEVELOPMENT
+const IconDimension = { height: 40, width: 40 }
 
 const Fallback = ({ code, title, message }) => {
   const theme = useTheme()
   const { themeMode } = useSettingContext()
+
   const configurations = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.CONFIGURATION))
-  const content = configurations?.find((config) => config.type === LOCAL_STORAGE_KEY.ERROR_PAGE && config.name === code)
-  const defaultValue = useMemo(
+  const content = configurations?.find((config) => config.type === LOCAL_STORAGE_KEY.ERROR_PAGES && config.name === String(code))
+  const defaultValues = useMemo(
     () => ({
       title: content?.value || title,
       message: content?.notes || message
@@ -28,19 +30,10 @@ const Fallback = ({ code, title, message }) => {
     <MotionContainer>
       <GStyledBgMain mode={themeMode}>
         <GStyledFallbackWrapperGrid>
-          <FallbackTitle value={defaultValue} />
+          <FallbackTitle value={defaultValues} />
           <Logo sx={LogoGrayProps} />
-          {isUnderDevelopment && (
-            <Icon
-              icon={ICON_NAME.TRAFFIC_CONE}
-              color={theme.palette.howick.orange}
-              sx={{
-                height: 40,
-                width: 40
-              }}
-            />
-          )}
-          <FallbackMessage value={defaultValue} code={code} />
+          {isUnderDevelopment && <Icon icon={ICON_NAME.TRAFFIC_CONE} color={theme.palette.howick.orange} sx={IconDimension} />}
+          <FallbackMessage value={defaultValues} code={code} />
           <FallbackButton />
         </GStyledFallbackWrapperGrid>
       </GStyledBgMain>
