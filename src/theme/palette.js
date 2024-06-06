@@ -6,8 +6,13 @@ const BRAND = {
   title: '#FFF'
 }
 
+const BASE = {
+  white: '#F2EED8',
+  black: '#000'
+}
+
 const GREY = {
-  0: '#F2EED8',
+  0: BASE.white,
   100: '#F4F4F4',
   200: '#E9ECEF',
   300: '#DFDFDF',
@@ -25,7 +30,7 @@ const PRIMARY = {
   main: '#0940B2',
   dark: '#10079F',
   darker: '#10079F',
-  contrastText: '#fff'
+  contrastText: BASE.white
 }
 
 const SECONDARY = {
@@ -34,7 +39,7 @@ const SECONDARY = {
   main: '#FFA200',
   dark: '#FFA200',
   darker: '#FFA200',
-  contrastText: '#fff'
+  contrastText: BASE.white
 }
 
 const INFO = {
@@ -43,7 +48,7 @@ const INFO = {
   main: '#0084C9',
   dark: '#01466F',
   darker: '#001824',
-  contrastText: '#fff'
+  contrastText: BASE.white
 }
 
 const SUCCESS = {
@@ -52,7 +57,7 @@ const SUCCESS = {
   main: '#10079F',
   dark: '#10079F',
   darker: '#FFA200',
-  contrastText: '#fff'
+  contrastText: BASE.white
 }
 
 const WARNING = {
@@ -70,25 +75,34 @@ const ERROR = {
   main: '#DA4848',
   dark: '#B71D18',
   darker: '#7A0916',
-  contrastText: '#fff'
+  contrastText: BASE.white
 }
 
 const HOWICKBLUE = {
-  light: '#0084C9',
+  lighter: '#8BC9FF',
+  light: '#0161d1',
   main: '#0940B2',
-  dark: '#10079F'
+  dark: '#10079F',
+  darker: '#062B74',
+  contrastText: BASE.white
 }
 
 const HOWICKORANGE = {
-  main: '#FFA200'
+  lighter: '#FFE183',
+  light: '#FFC309',
+  main: '#FFA200',
+  dark: '#FF9100',
+  darker: '#FF7100',
+  contrastText: BASE.black
 }
 
 const HOWICKBRONZE = {
-  lighter: '#B8AEA3',
-  light: '#A39586',
+  lighter: '#B8B2AB',
+  light: '#9D9286',
   main: '#897A69',
-  dark: '#5E5244',
-  darker: '#473D31'
+  dark: '#75634D',
+  darker: '#5B4C3C',
+  contrastText: BASE.white
 }
 
 const HOWICKBURNIN = {
@@ -114,6 +128,7 @@ const HOWICK = {
   error: '#DA4848',
   burnIn: '#D1ED18'
 }
+
 const ACTION = {
   hover: alpha(GREY[500], 0.08),
   selected: alpha(GREY[500], 0.16),
@@ -133,7 +148,7 @@ const TABLE = {
 }
 
 const COMMON = {
-  common: { black: '#000', white: '#F2EED8' },
+  common: BASE,
   primary: PRIMARY,
   secondary: SECONDARY,
   info: INFO,
@@ -172,7 +187,7 @@ export default function palette(themeMode) {
 
   const dark = {
     ...COMMON,
-    mode: 'dark',
+    mode: KEY.DARK,
     text: {
       primary: GREY[100],
       secondary: GREY[500],
