@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, memo } from 'react'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
 import { useAuthContext } from 'auth'
@@ -177,4 +177,4 @@ const UserProfileLayout = () => {
   )
 }
 
-export default UserProfileLayout
+export default memo(UserProfileLayout)
