@@ -12,7 +12,6 @@ import { KEY, TYPOGRAPHY, VARIANT, LABEL, FLEX, FLEX_DIR, VIEW_FORM } from 'cons
 import { truncate } from 'util'
 
 const CustomerNav = ({ renderedTab, navigatePage, value, isLoading }) => {
-  // const [renderedTab, setRenderedTab] = useState(0)
   const theme = useTheme()
   const navigate = useNavigate()
   const { themeMode } = useSettingContext()

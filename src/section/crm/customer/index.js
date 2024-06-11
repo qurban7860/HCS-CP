@@ -1,4 +1,8 @@
 export { default as MachineListWidget } from './machine/machine-list-widget'
 export { default as ContactListWidget } from './contact/contact-list-widget'
+export { default as CustomerNav } from './customer-nav'
+export { default as CustomerLayout } from './customer-layout'
 export * from './default-values/default-values'
 export * from './style'
+export * from './tabs'
+export * from './util'
