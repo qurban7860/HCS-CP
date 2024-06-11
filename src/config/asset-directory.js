@@ -53,6 +53,8 @@ const ASSET = {
   DECOILER_5T: _icon('decoiler_5t.svg'),
   DECOILER_6T: _icon('decoiler_6t.svg'),
   FRAMA: _icon('frama-def-1.svg'),
+  HOWICK_PORTAL: _brand('howick-portal.svg'),
+  HOWICK_PORTAL_DARK: _brand('howick-portal-dark.svg'),
   MAP_MARKER: _brand('howick-map-marker.svg'),
   NZ_MADE: _sponsor('nz-made.png'),
   ICON: _brand('icon.svg'),
