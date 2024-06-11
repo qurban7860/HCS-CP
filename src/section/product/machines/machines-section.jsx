@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef } from 'react'
 import { useSelector, dispatch } from 'store'
-import debounce from 'lodash/debounce'
+import { useAuthContext } from 'auth'
 import { snack, useTable, useFilter, getComparator, useSettingContext } from 'hook'
 import { Table, Typography, Grid, Box } from '@mui/material'
 import { GStyledTableHeaderBox, GStyledSpanBox } from 'theme/style'
-import { useGetUserQuery, getMachines, resetMachines } from 'store/slice'
+import { useGetUserQuery, getMachines, resetMachines, getSecurityUser, resetSecurityUser } from 'store/slice'
 import { ChangeMachinePage, ChangeMachineRowsPerPage, setMachineFilterBy } from 'store/slice/product'
 import { MotionLazyContainer } from 'component/animate'
 import { SearchBox } from 'component/search'
@@ -12,15 +12,14 @@ import { TableNoData } from 'component'
 import { SkeletonTable } from 'component/skeleton'
 import { MachineTable, MachineHeader, MachineListPagination } from 'section/product'
 import { MARGIN, TABLE } from 'config'
-import { COLOR, KEY, TITLE, RESPONSE } from 'constant'
+import { COLOR, KEY, TITLE, RESPONSE, FLEX, FLEX_DIR } from 'constant'
 import { StyledScrollTableContainer } from './style'
 
 const MachineListSection = () => {
   const [tableData, setTableData] = useState([])
-  const { machines, initial, isLoading, machinePage, machineRowsPerPage, machineFilterBy, responseMessage } = useSelector((state) => state.machine)
-  const { userId } = useSelector((state) => state.auth)
-  const { data: userDetail, isLoading: isUserFetching, error, refetch } = useGetUserQuery(userId)
-  // const { data: allMachineData, isLoading, error: allMachineError, refetch: refetchAllMachine } = useGetAllMachineQuery()
+  const { machines, initial, isLoading, machinePage, machineRowsPerPage } = useSelector((state) => state.machine)
+  const { userId } = useAuthContext()
+  const { securityUser } = useSelector((state) => state.user)
 
   const { themeMode } = useSettingContext()
   const denseHeight = TABLE.DENSE_HEIGHT
@@ -34,7 +33,7 @@ const MachineListSection = () => {
     onSelectAllRows,
     onSort
   } = useTable({
-    defaultOrderBy: 'createdAt',
+    defaultOrderBy: KEY.CREATED_AT,
     defaultOrder: KEY.DESC
   })
 
@@ -45,6 +44,12 @@ const MachineListSection = () => {
     ChangeMachinePage,
     setMachineFilterBy
   )
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(getSecurityUser(userId))
+    }
+  }, [dispatch, userId])
 
   useEffect(() => {
     dispatch(getMachines(null, null, false))
@@ -71,17 +76,17 @@ const MachineListSection = () => {
   const isNotFound = !isLoading && !filteredData.length
 
   return (
-    <MotionLazyContainer display="flex">
+    <MotionLazyContainer display={FLEX.FLEX}>
       <GStyledSpanBox>
         <Typography variant="h3" color={themeMode === KEY.LIGHT ? 'common.black' : 'common.white'}>
-          {userDetail?.customer?.name.toUpperCase() || TITLE.MACHINE} &nbsp;
+          {securityUser?.customer?.name.toUpperCase() || TITLE.ORGANIZATION} &nbsp;
         </Typography>
         <Typography variant="h3" color={themeMode === KEY.LIGHT ? 'grey.200' : 'howick.bronze'}>
           / {TITLE.MACHINE_LIST}
         </Typography>
       </GStyledSpanBox>
       <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} />
-      <Grid container flexDirection="row" {...MARGIN.PAGE_PROP}>
+      <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
         <Grid item lg={12}>
           <Grid container mb={2}>
             <Grid item lg={12} sm={12} mb={2} bgcolor="background.paper">
