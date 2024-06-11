@@ -30,10 +30,18 @@ const typography = {
   fontWeightMedium: 600,
   fontWeightBold: 700,
   h0: {
-    fontWeight: 700,
-    lineHeight: 1.5,
+    fontFamily: FONT_PRIMARY,
+    fontWeight: 800,
+    lineHeight: 80 / 64,
     fontSize: pxToRem(48),
     ...responsiveFontSizes({ sm: 60, md: 72, lg: 120 })
+  },
+  h: {
+    fontFamily: FONT_PRIMARY,
+    fontWeight: 800,
+    lineHeight: 80 / 80,
+    fontSize: pxToRem(42),
+    ...responsiveFontSizes({ sm: 60, md: 70, lg: 90 })
   },
   h1: {
     fontWeight: 800,
