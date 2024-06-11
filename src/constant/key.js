@@ -1,11 +1,24 @@
 import { FLEX, FLEX_DIR } from './flex'
 import { VIEW_FORM } from './view-form'
-import { VARIANT } from './variant'
+import { VARIANT, FONT_WEIGHT } from './variant'
 import { SZ } from './size'
 
 const ORIENTATION = {
   HORIZONTAL: 'horizontal',
   VERTICAL: 'vertical'
+}
+
+const MODULES = {
+  CRM: 'crm',
+  PRODUCT: 'product',
+  PRODUCTS: 'products',
+  CUSTOMER: 'customer',
+  CUSTOMERS: 'customers',
+  MACHINE: 'machine',
+  MACHINES: 'machines',
+  SITES: 'sites',
+  CONTACTS: 'contacts',
+  SUPPORT: 'support'
 }
 
 /**
@@ -32,26 +45,20 @@ const KEY = {
   CURRENT_PASSWORD: 'current-password',
 
   // default
+  AUTO: 'auto',
+  IMG: 'img',
   END: 'end',
   ACTIVE: 'active',
   INACTIVE: 'inactive',
   PRODUCTION: 'production',
+  SERIAL_NO: 'serialNo',
+  CREATED_AT: 'createdAt',
   FULL_PERCENT: '100%',
   BLANK: '_blank',
 
   // configurations keys/related
   CONFIGURATIONS: 'configurations',
   ERROR_PAGES: 'ERROR-PAGES',
-
-  // modules
-  CRM: 'crm',
-  PRODUCT: 'product',
-  PRODUCTS: 'products',
-  CUSTOMER: 'customer',
-  CUSTOMERS: 'customers',
-  MACHINE: 'machine',
-  MACHINES: 'machines',
-  SERIAL_NO: 'serialNo',
 
   // @redux keys
   REDUX_STORE: 'store',
@@ -68,12 +75,14 @@ const KEY = {
   LEFT: 'left',
   RIGHT: 'right',
   CENTER: 'center',
+  ...MODULES,
   ...VIEW_FORM,
   ...ORIENTATION,
   ...VARIANT,
   ...SZ,
   ...FLEX,
-  ...FLEX_DIR
+  ...FLEX_DIR,
+  ...FONT_WEIGHT
 }
 
 export default KEY
