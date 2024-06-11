@@ -147,8 +147,8 @@ const MachineLayout = () => {
               <Grid container px={1.5}>
                 <Grid item lg={8}>
                   <GStyledSpanBox my={2}>
-                    <ViewFormField heading={' '} isLoading={isLoading} variant={TYPOGRAPHY.H2} gridSize={8} isMachineView>
-                      {defaultValues?.serialNo} &nbsp;
+                    <ViewFormField heading={' '} isLoading={isLoading} gridSize={8} isMachineView>
+                      <Typography variant={TYPOGRAPHY.H2}> {defaultValues?.serialNo} &nbsp;</Typography>
                       <Typography variant={TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.bronze}>
                         {defaultValues?.machineModel}
                       </Typography>
