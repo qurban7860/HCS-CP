@@ -24,6 +24,10 @@ function _getWebIcon(icon) {
   return `mdi:${icon}`
 }
 
+function _getAnimatedIcon(icon) {
+  return `line-md:${icon}`
+}
+
 // add icons that are from MDI
 const ICON_WEB = {
   ACTIVE: _getWebIcon('checkbox-marked-circle'),
@@ -33,6 +37,7 @@ const ICON_WEB = {
   CLOSE: _getWebIcon('close'),
   CHEVRON_RIGHT: _getWebIcon('chevron-right'),
   BACK: _getWebIcon('chevron-left'),
+  A_BACK: _getAnimatedIcon('chevron-small-left'),
   CHECK_CIRCLE: _getWebIcon('checkbox-marked-circle'),
   CHECK_CICLE_OUTLINE: _getWebIcon('check-circle-outline'),
   CONTRAST_BOX: _getWebIcon('contrast-box'),
@@ -94,6 +99,7 @@ export const ICON_WEB_NAME = {
   ALERT_OUTLINE: 'ALERT_OUTLINE',
   ALERT_OCTAGON: 'ALERT_OCTAGON',
   BACK: 'BACK',
+  A_BACK: 'A_BACK',
   BLUR_ON: 'BLUR_ON',
   CLOSE: 'CLOSE',
   CHEVRON_RIGHT: 'CHEVRON_RIGHT',
