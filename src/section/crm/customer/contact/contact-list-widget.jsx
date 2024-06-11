@@ -95,7 +95,7 @@ const ContactListWidget = ({ value, handleContactDialog }) => {
                     />
                   </GStyledSpanBox>
                 </Grid>
-                {index !== contacts.length - 1 && <Divider variant="fullWidth" style={{ width: '100%', marginBottom: '10px' }} />}
+                {index !== contacts.length - 1 && <Divider variant={VARIANT.FULL_WIDTH} style={{ width: '100%', marginBottom: '10px' }} />}
               </Fragment>
             ))
           ) : (
