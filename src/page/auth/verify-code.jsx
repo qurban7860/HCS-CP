@@ -8,10 +8,6 @@ import { EmailInboxIcon } from 'theme/icon'
 export default function VerifyCodePage() {
   return (
     <>
-      {/* <Helmet>
-        <title> Verify Code | {GLOBAL.APP_TITLE} </title>
-      </Helmet> */}
-
       <EmailInboxIcon sx={{ mb: 5, height: 96 }} />
 
       <Typography variant="h3" paragraph>
@@ -19,8 +15,7 @@ export default function VerifyCodePage() {
       </Typography>
 
       <Typography sx={{ color: 'text.secondary', mb: 5 }}>
-        We have emailed a 6-digit confirmation code to acb@domain, please enter the code in below
-        box to verify your email.
+        We have emailed a 6-digit confirmation code to acb@domain, please enter the code in below box to verify your email.
       </Typography>
 
       <AuthVerifyCodeForm />
@@ -38,9 +33,8 @@ export default function VerifyCodePage() {
         sx={{
           mx: 'auto',
           alignItems: 'center',
-          display: 'inline-flex',
-        }}
-      >
+          display: 'inline-flex'
+        }}>
         <Iconify icon="eva:chevron-left-fill" width={16} />
         Return to sign in
       </Link>
