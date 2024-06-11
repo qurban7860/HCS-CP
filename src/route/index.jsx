@@ -23,6 +23,7 @@ import {
   //  crm:
   CustomerPage,
   CustomerListPage,
+  ContactPage,
   // fallback:
   BlankPage,
   FallbackPage,
@@ -144,7 +145,8 @@ export default function Router() {
           path: 'customers', // might changed to organizations later
           children: [
             { path: 'list', element: <CustomerListPage /> },
-            { path: ':id/view', element: <CustomerPage /> }
+            { path: ':id/view', element: <CustomerPage /> },
+            { path: ':id/contacts', children: [{ path: ':contactId/view', element: <ContactPage /> }] }
           ]
         }
       ]
