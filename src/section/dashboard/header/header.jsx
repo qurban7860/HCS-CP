@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { useOffSetTop, useResponsive, Clock, useSettingContext } from 'hook'
 import { useAuthContext } from 'auth'
 import { Stack, AppBar, Toolbar, IconButton, Badge, Typography } from '@mui/material'
@@ -11,7 +12,6 @@ import ModeOption from './mode-option'
 import AccountPopover from './account-popover'
 import NotificationPopover from './notification-popover'
 import { KEY, TIMEZONE } from 'constant'
-import { useEffect } from 'react'
 
 function Header() {
   const { user, logout } = useAuthContext()
@@ -33,7 +33,7 @@ function Header() {
   // }, [sendJsonMessage])
 
   const renderContent = (
-    <>
+    <Fragment>
       <Stack direction="row" justifyContent="flex-start">
         {isDesktop && (
           <Badge
@@ -67,7 +67,7 @@ function Header() {
         <NotificationPopover />
         <AccountPopover />
       </Stack>
-    </>
+    </Fragment>
   )
 
   return (
