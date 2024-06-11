@@ -8,7 +8,7 @@ const BRAND = {
 
 const BASE = {
   white: '#F2EED8',
-  black: '#000'
+  black: '#0E0E10'
 }
 
 const GREY = {
