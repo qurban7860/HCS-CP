@@ -20,7 +20,7 @@ export const GStyledWelcomeTitle = styled(({ themeMode, ...other }) => <Typograp
 
 export const GStyledWelcomeDescription = styled(({ themeMode, ...other }) => <Typography {...other} />)(({ theme, themeMode }) => {
   return {
-    color: themeMode === KEY.LIGHT ? theme.palette.success.main : theme.palette.common.white
+    color: themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.common.white
   }
 })
 export const GStyledWelcomeContainerDiv = styled('div')(({ theme }) => ({
@@ -123,7 +123,7 @@ export const GStyledLoadingScreenDiv = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: theme.palette.background.default
+  backgroundColor: 'transparent'
 }))
 
 export const GStyledRoot = styled('div')(({ theme }) => ({
@@ -406,6 +406,14 @@ export const GStyledSiteMapBox = styled(Box)(({ theme }) => ({
   overflow: 'hidden'
 }))
 
+export const GStyledHeaderCardContainer = styled(Card)(({ theme }) => ({
+  marginBottom: theme.spacing(1),
+  height: 160,
+  position: 'sticky',
+  top: '60px',
+  zIndex: 2
+}))
+
 /**
  * @options components props --------------------------------------------------------------------------------------------
  */
@@ -453,5 +461,67 @@ export const GCardOption = (mode) => {
       backgroundSize: 'cover',
       backgroundSize: '150%'
     }
+  }
+}
+
+export const GStickyHeaderCardOption = (mode) => {
+  return {
+    margin: 2,
+    margintop: 10,
+    paddingtop: 2,
+
+    sx: {
+      // backgroundColor: mode === KEY.LIGHT ? 'background.paper' : 'background.default',
+      // backgroundImage: `url(${mode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
+      // backgroundSize: 'cover',
+      // backgroundSize: '150%',
+      height: '160px',
+      position: 'sticky',
+      top: '60px',
+      zIndex: '2'
+    }
+  }
+}
+
+/**
+ * Returns the styles for the GTabContainerOption component.
+ *
+ * @param {Object} theme - The theme object.
+ * @param {Object} tabsClasses - The classes object for the tabs.
+ * @param {string} currentTab - The currently selected tab value.
+ * @param {Function} setCurrentTab - The function to set the current tab value.
+ * @returns {Object} - The styles object for the GTabContainerOption component.
+ */
+export const GTabContainerOption = (theme, tabsClasses, currentTab, setCurrentTab, ...other) => {
+  return {
+    value: currentTab,
+    onChange: (event, newValue) => setCurrentTab(newValue),
+    sx: {
+      [`& .${tabsClasses.scrollButtons}`]: {
+        '&.Mui-disabled': { opacity: 0.3 }
+      },
+      width: 1,
+      bottom: 0,
+      zIndex: 9,
+      display: 'flex',
+      position: 'absolute',
+      backgroundColor: theme.palette.background.paper,
+      '& .MuiTabs-scrollButtons': {
+        width: 20,
+        '&:hover': {
+          backgroundColor: theme.palette.howick.darkBlue
+        }
+      },
+      '& .MuiButtonBase-root': {
+        marginRight: '0px !important'
+      },
+      '& .MuiIconButton-root': {
+        mr: '5px  !important'
+      },
+      '& .Mui-selected': {
+        pr: 1
+      }
+    },
+    ...other
   }
 }
