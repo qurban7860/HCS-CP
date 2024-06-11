@@ -21,6 +21,7 @@ const initialState = {
   newMachineCustomer: null,
   customerFilterBy: '',
   verified: 'all',
+  customerTab: 1,
   excludeReporting: 'included',
   customerPage: 0,
   customerRowsPerPage: 10
@@ -123,6 +124,9 @@ const customerSlice = createSlice({
       state.responseMessage = null
       state.success = false
       state.isLoading = false
+    },
+    setCustomerTab(state, action) {
+      state.customerTab = action.payload
     },
     setVerified(state, action) {
       state.verified = action.payload
