@@ -21,6 +21,28 @@ const MODULES = {
   SUPPORT: 'support'
 }
 
+const CSS = {
+  // @position
+  START: 'start',
+  END: 'end',
+  POSITION: 'position',
+  ABSOLUTE: 'absolute',
+  FIXED: 'fixed',
+  STICKY: 'sticky',
+  // @display
+  DISPLAY: 'display',
+  BLOCK: 'block',
+  INLINE_BLOCK: 'inline-block',
+  INLINE: 'inline',
+  GRID: 'grid',
+  // @overflow
+  OVERFLOW: 'overflow',
+  OVERFLOW_X: 'overflow-x',
+  OVERFLOW_Y: 'overflow-y',
+  SCROLL: 'scroll',
+  HIDDEN: 'hidden'
+}
+
 /**
  * @description - important keys to the applications are stored here
  */
@@ -75,6 +97,8 @@ const KEY = {
   LEFT: 'left',
   RIGHT: 'right',
   CENTER: 'center',
+  RELATIVE: 'relative',
+  ...CSS,
   ...MODULES,
   ...VIEW_FORM,
   ...ORIENTATION,
