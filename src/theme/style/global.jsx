@@ -1,8 +1,8 @@
+import { m } from 'framer-motion'
 import { styled, alpha } from '@mui/material/styles'
 import { Popover, ListItemText, Card, Chip, Grid, Divider, Container, Skeleton, Box, Typography, IconButton } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
-import { m } from 'framer-motion'
 import { bgBlur } from 'theme/style'
 import { RADIUS, ASSET } from 'config'
 import { PATH_AUTH } from 'route/path'
@@ -56,6 +56,34 @@ export const GStyledBgMain = styled(({ mode, theme, ...other }) => <main {...oth
   width: '100%',
   height: '100vh'
 }))
+
+export const GStyledContactCard = styled(({ theme, selectedCardId, c, mode, ...other }) => <Card {...other} />)(
+  ({ theme, selectedCardId, c, mode }) => ({
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    marginLeft: selectedCardId === c._id ? theme.spacing(2) : theme.spacing(0),
+    width: '100%',
+    cursor: 'pointer',
+    borderRight: selectedCardId === c._id && `5px solid ${mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}`,
+    backgroundColor:
+      selectedCardId === c._id
+        ? mode === KEY.LIGHT
+          ? theme.palette.grey[300]
+          : theme.palette.howick.darkGrey
+        : mode === KEY.LIGHT
+        ? theme.palette.grey[200]
+        : theme.palette.grey[800],
+    '&:hover': {
+      backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.howick.darkGrey,
+      marginLeft: theme.spacing(2)
+    },
+    transition: 'ease-in-out 0.2s'
+  })
+)
 
 // :components ____________________________________________________________________________________________
 
@@ -175,7 +203,7 @@ export const GStyledTooltip = styled(({ className, mode, green, disabled, ...pro
       mode === KEY.LIGHT
         ? theme.palette.common.black
         : green && mode !== KEY.LIGHT
-        ? theme.palette.grey[800]
+        ? theme.palette.burnIn.contrastText
         : disabled
         ? theme.palette.action.disabledText
         : theme.palette.common.white
