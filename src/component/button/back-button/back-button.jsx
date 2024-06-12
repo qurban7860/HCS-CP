@@ -69,14 +69,7 @@ const BackButton = ({ alongTab, width = 50 }) => {
   return (
     <Fragment>
       {alongTab ? (
-        <IconTooltip
-          title={LABEL.GO_BACK}
-          icon={ICON_NAME.A_BACK}
-          color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]}
-          onClick={handleClick}
-          cursor
-          iconOnly
-        />
+        <IconTooltip title={LABEL.GO_BACK} icon={ICON_NAME.A_BACK} color={theme.palette.grey[600]} onClick={handleClick} cursor iconOnly />
       ) : (
         <Fragment>
           <StyledBackIconButton
