@@ -21,7 +21,7 @@ const initialState = {
   newMachineCustomer: null,
   customerFilterBy: '',
   verified: 'all',
-  customerTab: 1,
+  customerRenderTab: 0,
   excludeReporting: 'included',
   customerPage: 0,
   customerRowsPerPage: 10
@@ -41,8 +41,8 @@ const customerSlice = createSlice({
     setNewMachineCustomer(state, action) {
       state.newMachineCustomer = action.payload
     },
-    setCustomerTab(state, action) {
-      state.customerTab = action.payload
+    setCustomerRenderTab(state, action) {
+      state.customerRenderTab = action.payload
     },
     setCustomerDialog(state, action) {
       state.customerDialog = action.payload
@@ -150,7 +150,7 @@ export default customerSlice.reducer
 
 export const {
   setNewMachineCustomer,
-  setCustomerTab,
+  setCustomerRenderTab,
   setCustomerEditFormVisibility,
   resetCustomer,
   resetCustomers,
