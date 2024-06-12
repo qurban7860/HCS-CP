@@ -12,25 +12,13 @@ import { userDefaultValues, ProfileAvatar } from 'section/security'
 import { Box, Badge, Divider, Grid, Chip, Card, Link } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GCardOption, GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox } from 'theme/style'
-import {
-  MotionLazyContainer,
-  BadgeCardMedia,
-  ViewFormField,
-  IconTooltip,
-  CustomAvatar,
-  GridViewTitle,
-  GridViewField,
-  AuditBox,
-  CustomerDialog
-} from 'component'
+import { MotionLazyContainer, BadgeCardMedia, ViewFormField, IconTooltip, GridViewTitle, GridViewField, AuditBox, CustomerDialog } from 'component'
 import FormProvider from 'component/hook-form'
 import { MARGIN, RADIUS } from 'config'
 import { KEY, TITLE, FLEX, TYPOGRAPHY, VIEW_FORM, FLEX_DIR, LABEL, VARIANT } from 'constant'
 import { truncate } from 'util/truncate'
 
 const UserProfileLayout = () => {
-  const [hoverAvatar, setHoverAvatar] = useState(false)
-  const [isNotEditState, setIsNotEditState] = useState(true)
   const { customer, customerDialog } = useSelector((state) => state.customer)
   const { securityUser, initial, isLoading } = useSelector((state) => state.user)
   const { user, userId } = useAuthContext()
@@ -41,7 +29,6 @@ const UserProfileLayout = () => {
   useEffect(() => {
     if (userId) {
       dispatch(getSecurityUser(userId))
-      console.log('USER: ', securityUser)
     }
   }, [dispatch, userId])
 
