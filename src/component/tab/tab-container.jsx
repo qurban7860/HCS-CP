@@ -33,10 +33,10 @@ function TabContainer({ tabsClasses, currentTab = 0, setCurrentTab = () => {}, c
       },
       '& .MuiIconButton-root': {
         mr: '5px  !important'
-      },
-      '& .Mui-selected': {
-        pr: 1
       }
+      // '& .Mui-selected': {
+      //   pr: 1
+      // }
     },
     ...other
   }
