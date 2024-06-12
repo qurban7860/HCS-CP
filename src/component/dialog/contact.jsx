@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
+import { memo } from 'react'
 import { dispatch, useSelector } from 'store'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSettingContext } from 'hook'
 import { PATH_CUSTOMER } from 'route/path'
-import { setContactDialog, getCustomer, getContact } from 'store/slice'
+import { setContactDialog, resetSelectedContactCard, setSelectedContactCard, setFromDialog, getContact } from 'store/slice'
 import { ICON_NAME } from 'hook'
 import { contactDefaultValues } from 'section/crm'
 import { Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
@@ -27,7 +27,11 @@ const ContactDialog = ({ contact }) => {
 
   const handleContactOverview = () => {
     dispatch(setContactDialog(false))
-    navigate(PATH_CUSTOMER.customers.contacts.view(id, defaultValues?.id))
+    dispatch(resetSelectedContactCard())
+    navigate(PATH_CUSTOMER.customers.contacts.view(id))
+    dispatch(setFromDialog(true))
+    dispatch(setSelectedContactCard(defaultValues?.id))
+    dispatch(getContact(id, defaultValues?.id))
   }
 
   return (
@@ -110,4 +114,4 @@ const ContactDialog = ({ contact }) => {
   )
 }
 
-export default ContactDialog
+export default memo(ContactDialog)
