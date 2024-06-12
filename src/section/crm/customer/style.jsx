@@ -51,6 +51,6 @@ export const StyledTab = styled(({ theme, mode, ...other }) => <Tab {...other} /
   '&.Mui-focusVisible': {
     backgroundColor: 'howick.darkBlue'
   },
-  marginRight: theme.spacing(2),
-  marginLeft: theme.spacing(2)
+  paddingRight: theme.spacing(2),
+  paddingLeft: theme.spacing(2)
 }))

@@ -1,3 +1,6 @@
+import { ICON_NAME } from 'hook'
+import { KEY } from 'constant'
+
 /**
  * Represents the tabs for the customer section.
  * @typedef {Object} Tab
@@ -11,35 +14,32 @@
  * 3 - support
  */
 
-import { KEY } from 'constant'
-
 /**
  * An array of tabs for the customer section.
  * @type {Tab[]}
  */
-export const TABS = [
+export const TABS = (value) => [
   {
     id: 0,
-    value: KEY.CUSTOMER,
-    label: 'Customer Overview'
-    // icon: ICONS.CUSTOMER.icon
+    label: 'Customer',
+    icon: ICON_NAME.CUSTOMER,
+    disabled: false
   },
   {
     id: 1,
-    value: KEY.CONTACTS,
-    label: 'Contacts'
-    // icon: ICONS.CONTACTS.icon
+    label: 'Contacts',
+    icon: ICON_NAME.CONTACTS,
+    disabled: value?.contacts?.length === 0
   },
   {
     id: 2,
-    value: KEY.SITES,
-    label: 'Sites'
-    // icon: ICONS.SITES.icon
+    label: 'Sites',
+    icon: ICON_NAME.SITES,
+    disabled: value?.mainSite === null
   },
   {
     id: 3,
-    value: KEY.SUPPORT,
-    label: 'Support'
-    // icon: ICONS.SITES.icon
+    label: 'Support',
+    icon: ICON_NAME.SUPPORT
   }
 ]
