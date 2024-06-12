@@ -21,7 +21,7 @@ import { ContactCard } from 'section/crm/contact'
 import { MARGIN } from 'config'
 import { KEY, TITLE, FLEX, TYPOGRAPHY, VIEW_FORM, FLEX_DIR, LABEL, VARIANT, ADDRESS } from 'constant'
 
-const ContactLayout = () => {
+const ContactTab = () => {
   const { id } = useParams()
   const { contact, contacts, initial, isLoading, selectedContactCard, fromDialog } = useSelector((state) => state.contact)
   const { customer, customerDialog } = useSelector((state) => state.customer)
@@ -156,4 +156,4 @@ const ContactLayout = () => {
   )
 }
 
-export default memo(ContactLayout)
+export default memo(ContactTab)

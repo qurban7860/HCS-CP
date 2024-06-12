@@ -14,7 +14,7 @@ import {
   setFromDialog
 } from 'store/slice'
 import { Typography } from '@mui/material'
-import { ContactLayout, customerDefaultValues } from 'section/crm'
+import { ContactTab, customerDefaultValues } from 'section/crm'
 import { MachineDialog, SiteDialog, ContactDialog } from 'component'
 import { MotionLazyContainer } from 'component/animate'
 import { FLEX } from 'constant'
@@ -73,7 +73,7 @@ const CustomerLayout = ({ tab = 0 }) => {
       {renderedTab === 0 ? (
         <CustomerTab />
       ) : renderedTab === 1 ? (
-        <ContactLayout />
+        <ContactTab />
       ) : renderedTab === 2 ? (
         <Typography variant="h0">{'SITE PAGE'}</Typography>
       ) : renderedTab === 3 ? (
