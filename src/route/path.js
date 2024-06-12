@@ -67,7 +67,7 @@ export const PATH_CUSTOMER = {
     new: conNex(ROOTS_CRM, SUB_CUSTOMERS, 'new'),
     view: (id) => conNex(ROOTS_CRM, SUB_CUSTOMERS, id, 'view'),
     contacts: {
-      view: (customerId, id) => conNex(ROOTS_CRM, 'customers', customerId, 'contacts', id, 'view')
+      view: (customerId) => conNex(ROOTS_CRM, 'customers', customerId, 'contacts')
     }
   }
 }
