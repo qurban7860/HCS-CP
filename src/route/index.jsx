@@ -25,6 +25,7 @@ import {
   CustomerPage,
   CustomerListPage,
   ContactPage,
+  SitePage,
   // fallback:
   BlankPage,
   FallbackPage,
@@ -35,7 +36,7 @@ export default function Router() {
   const { themeMode } = useSettingContext()
   return useRoutes([
     {
-      // Auth
+      // auth
       path: 'auth',
       children: [
         {
@@ -162,7 +163,12 @@ export default function Router() {
             },
             {
               path: ':id/sites',
-              children: [{ element: <CustomerLayout />, index: true }]
+              children: [
+                {
+                  element: <SitePage />,
+                  index: true
+                }
+              ]
             }
           ]
         }
