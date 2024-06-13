@@ -197,7 +197,11 @@ export function getCustomer(id) {
   return async (dispatch) => {
     dispatch(customerSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.detail(id))
+      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.detail(id), {
+        params: {
+          flag: 'basic'
+        }
+      })
 
       dispatch(customerSlice.actions.getCustomerSuccess(response.data))
     } catch (error) {
