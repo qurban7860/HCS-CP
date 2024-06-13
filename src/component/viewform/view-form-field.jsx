@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles'
 import { GStyledSpanBox, GStyledPopover, GStyledTooltip } from 'theme/style'
 import { SvgFlagIcon } from 'component'
 import { SkeletonViewFormField } from 'component/skeleton'
-import { SIZE, VARIANT, KEY, LABEL } from 'constant'
+import { SIZE, VARIANT, KEY, LABEL, FLEX } from 'constant'
 import { StyledDefaultTypography, StyledFieldGrid, StyledChipGrid, StyledFieldChip, StyledFlagBox } from './style'
 
 const { TYPOGRAPHY } = VARIANT
@@ -93,7 +93,7 @@ const ViewFormField = ({
               </GStyledTooltip>
             </GStyledSpanBox>
           ) : customerLink ? (
-            <GStyledSpanBox style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <GStyledSpanBox style={{ display: FLEX.FLEX, alignItems: 'center', justifyContent: 'space-between' }}>
               <GStyledSpanBox>
                 <StyledDefaultTypography variant={variant}> &nbsp; {children} </StyledDefaultTypography> &nbsp;
                 <GStyledTooltip
