@@ -3,7 +3,7 @@ import { KEY } from 'constant'
 
 const BRAND = {
   background: '#63738114',
-  title: '#FFF'
+  title: '#F2EED8'
 }
 
 const BASE = {
@@ -189,7 +189,7 @@ export default function palette(themeMode) {
     ...COMMON,
     mode: KEY.DARK,
     text: {
-      primary: GREY[100],
+      primary: BASE.white,
       secondary: GREY[500],
       disabled: GREY[200],
       no: GREY[500]
