@@ -1,19 +1,18 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { TextField, InputAdornment, Button, Box } from '@mui/material'
-import { useIcon, ICON_NAME } from 'hook'
-import { BUTTON, KEY, SIZE, VARIANT } from 'constant'
+import { Icon, ICON_NAME } from 'hook'
+import { BUTTON, COLOR, FLEX, KEY, LABEL, SIZE, VARIANT } from 'constant'
 
-const SearchBox = ({ term, handleSearch, mode }) => {
+const SearchBox = ({ term, handleSearch, mode, mt = 5 }) => {
   const [isSearchEmpty, setIsSearchEmpty] = useState(true)
-  const { Icon: WebIcon, iconSrc: searchSrc } = useIcon(ICON_NAME.SEARCH)
 
   const handleInputChange = (event) => {
     setIsSearchEmpty(event.target.value === '')
   }
 
   return (
-    <Box display="flex" alignItems="center">
+    <Box display={FLEX.FLEX} alignItems={KEY.CENTER}>
       <TextField
         variant={VARIANT.FILLED}
         value={term}
@@ -23,20 +22,21 @@ const SearchBox = ({ term, handleSearch, mode }) => {
           handleSearch(e)
           handleInputChange(e)
         }}
-        placeholder="Search..."
+        placeholder={''}
+        // placeholder={LABEL.SEARCH}
         InputProps={{
           startAdornment: (
-            <InputAdornment position="start">
-              <WebIcon icon={searchSrc} />
+            <InputAdornment position={KEY.START}>
+              <Icon icon={ICON_NAME.SEARCH} />
             </InputAdornment>
           ),
 
           endAdornment: !isSearchEmpty && (
-            <InputAdornment position="end">
+            <InputAdornment position={KEY.END}>
               <Button
-                variant="filled"
-                color="primary"
-                size="small"
+                variant={VARIANT.FILLED}
+                color={COLOR.PRIMARY}
+                size={SIZE.SMALL}
                 onClick={() => {
                   handleSearch({
                     target: {
@@ -49,17 +49,22 @@ const SearchBox = ({ term, handleSearch, mode }) => {
               </Button>
             </InputAdornment>
           ),
-          style: {
-            backgroundColor: mode === KEY.LIGHT ? 'common.white' : 'howick.bronze',
+          sx: {
             color: mode === KEY.LIGHT ? 'common.black' : 'common.white',
             padding: '0px 10px'
           }
         }}
         sx={{
-          backgroundColor: mode === KEY.LIGHT ? 'common.white' : 'grey.700',
-          marginTop: 5,
+          backgroundColor: mode === KEY.LIGHT ? 'grey.200' : 'grey.700',
+          color: mode === KEY.LIGHT ? 'common.black' : 'common.white',
+          marginTop: mt,
           marginBottom: 0,
-          width: '300px'
+          width: '500px',
+          '&.MuiInputBase-root': {
+            '&.MuiInputBase-adornedStart': {
+              color: mode === KEY.LIGHT ? 'common.black' : 'common.white'
+            }
+          }
         }}
       />
     </Box>
@@ -68,7 +73,9 @@ const SearchBox = ({ term, handleSearch, mode }) => {
 
 SearchBox.propTypes = {
   term: PropTypes.string,
-  handleSearch: PropTypes.func
+  handleSearch: PropTypes.func,
+  mode: PropTypes.string,
+  mt: PropTypes.number
 }
 
 export default SearchBox

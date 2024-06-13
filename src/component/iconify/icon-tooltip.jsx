@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useIcon, useSettingContext } from 'hook'
-import { Button, alpha } from '@mui/material'
+import { Button, alpha, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTooltip } from 'theme/style'
 import { ICON } from 'config/layout'
@@ -20,7 +20,8 @@ export default function IconTooltip({
   disabled,
   dimension = TOOLTIP,
   noHoverAction,
-  cursor = false
+  cursor = false,
+  alongTab
 }) {
   const { Icon, iconSrc } = useIcon(icon)
   const { themeMode } = useSettingContext()
@@ -79,6 +80,28 @@ export default function IconTooltip({
             disabled={disabled}
           />
         </GStyledTooltip>
+      ) : alongTab ? (
+        <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={color} color={color} green={isActiveIcon}>
+          <IconButton
+            sx={{
+              color: 'red',
+              borderColor: 'red',
+              ':hover': { borderColor: convertToAlpha(color, 0.5) }
+            }}>
+            <Icon
+              color={color}
+              sx={{
+                height: dimension,
+                width: dimension,
+                margin: 0.5,
+                cursor: cursor ? 'pointer' : 'arrow',
+                ':hover': { color: noHoverAction ? color : convertToAlpha(color, 0.5), borderRadius: 1 }
+              }}
+              icon={iconSrc}
+              onClick={onClick}
+            />
+          </IconButton>
+        </GStyledTooltip>
       ) : (
         <Button
           onClick={onClick}
@@ -108,7 +131,8 @@ IconTooltip.propTypes = {
   icon: PropTypes.string,
   iconOnly: PropTypes.bool,
   isActiveIcon: PropTypes.bool,
-  cursor: PropTypes.bool
+  cursor: PropTypes.bool,
+  alongTab: PropTypes.bool
 }
 
 IconTooltip.defaultProps = {

@@ -24,6 +24,10 @@ function _getWebIcon(icon) {
   return `mdi:${icon}`
 }
 
+function _getAnimatedIcon(icon) {
+  return `line-md:${icon}`
+}
+
 // add icons that are from MDI
 const ICON_WEB = {
   ACTIVE: _getWebIcon('checkbox-marked-circle'),
@@ -33,11 +37,13 @@ const ICON_WEB = {
   CLOSE: _getWebIcon('close'),
   CHEVRON_RIGHT: _getWebIcon('chevron-right'),
   BACK: _getWebIcon('chevron-left'),
+  A_BACK: _getAnimatedIcon('chevron-small-left'),
   CHECK_CIRCLE: _getWebIcon('checkbox-marked-circle'),
   CHECK_CICLE_OUTLINE: _getWebIcon('check-circle-outline'),
   CONTRAST_BOX: _getWebIcon('contrast-box'),
   CONTRAST_ON: _getWebIcon('select-inverse'),
   CONTRAST_OFF: _getWebIcon('select-off'),
+  CURRENTLY_EMPLOYED: _getWebIcon('person-badge'),
   DANGER: _getWebIcon('dangerous'),
   EYE: _getWebIcon('eye'),
   EYE_OFF: _getWebIcon('eye-off'),
@@ -52,6 +58,7 @@ const ICON_WEB = {
   MANUFACTURE: _getWebIcon('factory'),
   MAGNIFY_IN: _getWebIcon('magnify-plus'),
   MAGNIFY_OUT: _getWebIcon('magnify-minus'),
+  NOT_EMPLOYED: _getWebIcon('person-badge-alert'),
   OPEN_IN_NEW: _getWebIcon('open-in-new'),
   PHONE: _getWebIcon('phone'),
   REFRESH: _getWebIcon('refresh'),
@@ -60,6 +67,7 @@ const ICON_WEB = {
   SETTING: _getWebIcon('cog'),
   STATUS: _getWebIcon('arrow-up-bold-circle-outline'),
   SHIPPING: _getWebIcon('airplane'),
+  SUPPORT: _getWebIcon('support'),
   PURCHASED: _getWebIcon('store'),
   TRAFFIC_CONE: _getWebIcon('traffic-cone'),
   TRANSFER: _getWebIcon('transfer'),
@@ -94,6 +102,7 @@ export const ICON_WEB_NAME = {
   ALERT_OUTLINE: 'ALERT_OUTLINE',
   ALERT_OCTAGON: 'ALERT_OCTAGON',
   BACK: 'BACK',
+  A_BACK: 'A_BACK',
   BLUR_ON: 'BLUR_ON',
   CLOSE: 'CLOSE',
   CHEVRON_RIGHT: 'CHEVRON_RIGHT',
@@ -103,6 +112,7 @@ export const ICON_WEB_NAME = {
   CONTRAST_BOX: 'CONTRAST_BOX',
   CONTRAST_ON: 'CONTRAST_ON',
   CONTRAST_OFF: 'CONTRAST_OFF',
+  CURRENTLY_EMPLOYED: 'CURRENTLY_EMPLOYED',
   DANGER: 'DANGER',
   EDIT: 'EDIT',
   EYE: 'EYE',
@@ -116,6 +126,7 @@ export const ICON_WEB_NAME = {
   MANUFACTURE: 'MANUFACTURE',
   MAGNIFY_IN: 'MAGNIFY_IN',
   MAGNIFY_OUT: 'MAGNIFY_OUT',
+  NOT_EMPLOYED: 'NOT_EMPLOYED',
   OPEN_IN_NEW: 'OPEN_IN_NEW',
   PHONE: 'PHONE',
   REFRESH: 'REFRESH',
@@ -124,6 +135,7 @@ export const ICON_WEB_NAME = {
   STATUS: 'STATUS',
   SETTING: 'SETTING',
   SHIPPING: 'SHIPPING',
+  SUPPORT: 'SUPPORT',
   PURCHASED: 'PURCHASED',
   TRAFFIC_CONE: 'TRAFFIC_CONE',
   TRANSFER: 'TRANSFER',

@@ -24,8 +24,8 @@ const BadgeCardMedia = ({ dimension }) => {
     <m.div>
       <input accept="image/*" type="file" ref={fileInput} style={{ display: 'none' }} onChange={handleFileChange} />
       <Badge
-        onMouseEnter={handleHoverBadge}
-        onMouseLeave={handleHoverBadge}
+        // onMouseEnter={handleHoverBadge}
+        // onMouseLeave={handleHoverBadge}
         overlap="circular"
         anchorOrigin={{ vertical: KEY.TOP, horizontal: KEY.RIGHT }}
         badgeContent={

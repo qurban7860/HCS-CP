@@ -7,7 +7,7 @@ export const StyledRoot = styled(({ theme, mode, ...other }) => <main {...other}
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[900]
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[900]
   // position: 'relative',
 }))
 

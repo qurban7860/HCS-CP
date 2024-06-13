@@ -1,12 +1,11 @@
-import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
 import { useSettingContext } from 'hook'
 import { setCustomerDialog } from 'store/slice'
 import { customerDefaultValues } from 'section/crm'
-import { useIcon, ICON_NAME } from 'hook'
-import { Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
-import { GStyledTopBorderDivider, GStyledFlexEndBox, GStyledSpanBox } from 'theme/style'
+import { ICON_NAME } from 'hook'
+import { Dialog, DialogContent, DialogTitle, Divider, Typography, Grid } from '@mui/material'
+import { GStyledTopBorderDivider, GStyledSpanBox } from 'theme/style'
 import { GridViewField, GridViewTitle, Button, BadgeCardMedia } from 'component'
 import { HowickResources } from 'section/common'
 import { VIEW_FORM, TITLE, TYPOGRAPHY, KEY, BUTTON, FLEX } from 'constant'
@@ -26,13 +25,14 @@ const CustomerDialog = () => {
     dispatch(setCustomerDialog(false))
     navigate(PATH_CUSTOMER.customers.view(defaultValues?.id))
   }
+
   return (
     <Dialog disableEnforceFocus maxWidth="lg" open={customerDialog} onClose={handleCustomerDialog} aria-describedby="alert-dialog-slide-description">
       <GStyledTopBorderDivider mode={themeMode} />
       <DialogTitle>
         <GStyledSpanBox
           sx={{
-            justifyContent: 'space-between'
+            justifyContent: FLEX.SPACE_BETWEEN
           }}>
           <Typography variant={TYPOGRAPHY.H3}>{customer?.name?.toUpperCase()}</Typography> &nbsp;
           <BadgeCardMedia dimension={40} />

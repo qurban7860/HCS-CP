@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
 import { Box, TablePagination } from '@mui/material'
 import { StyledTablePagination } from './style'
-import { LABEL } from 'constant'
+import { KEY, LABEL } from 'constant'
 
 const CustomerListPagination = ({
   rowsPerPageOptions = [10, 20, 40, 50, 100],
@@ -18,7 +18,7 @@ const CustomerListPagination = ({
   return (
     <Box
       sx={{
-        position: 'relative'
+        position: KEY.RELATIVE
       }}>
       <StyledTablePagination
         count={data?.length ?? 0}

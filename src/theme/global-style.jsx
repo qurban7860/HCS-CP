@@ -10,7 +10,9 @@ function GlobalStyle() {
       styles={{
         '*': {
           boxSizing: 'border-box',
-          borderRadius: 0.4
+          borderRadius: 0.4,
+          scrollBehavior: 'smooth',
+          scrollbarWidth: 'thin'
         },
         html: {
           margin: 0,

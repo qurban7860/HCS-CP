@@ -15,6 +15,7 @@ export default function contactDefaultValues(contact, customer) {
       lastName: contact?.lastName || '',
       fullName: contact?.firstName && contact?.lastName ? `${contact.firstName} ${contact.lastName}` : '',
       email: contact?.email || '',
+      title: contact?.title || '',
       customer: customer || null,
       customerName: contact?.customer?.name || '',
       customerId: contact?.customer?._id || '',

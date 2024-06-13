@@ -3,12 +3,12 @@ import { KEY } from 'constant'
 
 const BRAND = {
   background: '#63738114',
-  title: '#FFF'
+  title: '#F2EED8'
 }
 
 const BASE = {
   white: '#F2EED8',
-  black: '#000'
+  black: '#0E0E10'
 }
 
 const GREY = {
@@ -113,7 +113,7 @@ const HOWICKBURNIN = {
   darker: '#8A8400',
   alt: '#18ED34',
   altDark: '#32C600',
-  contrastText: '#000'
+  contrastText: BASE.black
 }
 
 const HOWICK = {
@@ -132,12 +132,12 @@ const HOWICK = {
 const ACTION = {
   hover: alpha(GREY[500], 0.08),
   selected: alpha(GREY[500], 0.16),
-  disabled: alpha(GREY[400], 1),
-  disabledText: alpha(GREY[700], 0.46),
+  disabled: alpha(GREY[200], 0.48),
+  disabledText: alpha(GREY[400], 0.46),
   disabledBackground: alpha(GREY[700], 1),
   focus: alpha(GREY[500], 0.24),
   hoverOpacity: 0.08,
-  disabledOpacity: 0.78
+  disabledOpacity: 0.4
 }
 
 const TABLE = {
@@ -174,7 +174,7 @@ export default function palette(themeMode) {
     text: {
       primary: GREY[800],
       secondary: GREY[600],
-      disabled: GREY[500],
+      disabled: GREY[200],
       no: GREY[800]
     },
     background: { paper: GREY[200], default: GREY[400], neutral: GREY[500] },
@@ -189,7 +189,7 @@ export default function palette(themeMode) {
     ...COMMON,
     mode: KEY.DARK,
     text: {
-      primary: GREY[100],
+      primary: BASE.white,
       secondary: GREY[500],
       disabled: GREY[200],
       no: GREY[500]

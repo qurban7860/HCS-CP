@@ -19,6 +19,8 @@ const initialState = {
   spContacts: [],
   activeSpContacts: [],
   contactDialog: false,
+  fromDialog: false,
+  selectedContactCard: null,
   contact: null,
   contactFilterBy: '',
   contactPage: 0,
@@ -74,6 +76,9 @@ const contactSlice = createSlice({
       state.success = false
       state.isLoading = false
     },
+    resetSelectedContactCard(state) {
+      state.selectedContactCard = null
+    },
     resetContactFormsVisiblity(state) {
       state.contactEditFormVisibility = false
       state.contactMoveFormVisibility = false
@@ -121,6 +126,12 @@ const contactSlice = createSlice({
       state.success = true
       state.initial = true
     },
+    setFromDialog(state, action) {
+      state.fromDialog = action.payload
+    },
+    setSelectedContactCard(state, action) {
+      state.selectedContactCard = action.payload
+    },
     setContactFilterBy(state, action) {
       state.contactFilterBy = action.payload
     },
@@ -140,12 +151,15 @@ export const {
   setContactEditFormVisibility,
   setContactMoveFormVisibility,
   setCardActiveIndex,
+  setSelectedContactCard,
   setIsExpanded,
+  setFromDialog,
   resetContact,
   resetContacts,
   resetActiveContacts,
   resetActiveSPContacts,
   resetContactFormsVisiblity,
+  resetSelectedContactCard,
   setResponseMessage,
   setContactFilterBy,
   ChangeContactRowsPerPage,
@@ -155,11 +169,24 @@ export const {
 
 // : thunks
 
-export function getContacts(customerID) {
+export function getContacts(customerId, isCustomerArchived = false) {
   return async (dispatch) => {
     dispatch(contactSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.listContact(customerID))
+      const params = {
+        orderBy: {
+          createdAt: -1
+        }
+      }
+
+      if (isCustomerArchived) {
+        params.archivedByCustomer = true
+        params.isArchived = true
+      } else {
+        params.isArchived = false
+      }
+
+      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.listContact(customerId), { params })
       dispatch(contactSlice.actions.getContactsSuccess(response.data))
       dispatch(contactSlice.actions.setResponseMessage('Contacts loaded'))
     } catch (error) {
@@ -170,11 +197,11 @@ export function getContacts(customerID) {
   }
 }
 
-export function getContact(customerID, id) {
+export function getContact(customerId, id) {
   return async (dispatch) => {
     dispatch(contactSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.contactDetail(customerID, id))
+      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.contactDetail(customerId, id))
       dispatch(contactSlice.actions.getContactSuccess(response.data))
     } catch (error) {
       console.error(error)

@@ -13,7 +13,7 @@ export const HEADER = {
 
 export const MARGIN = {
   PAGE_PROP: {
-    my: 5
+    my: 2.5
   },
   PAGE: {
     marginTop: 2.5,

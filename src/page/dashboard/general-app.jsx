@@ -11,7 +11,7 @@ function GeneralAppPage() {
     <Grid container>
       <Grid container spacing={3} mt={2}>
         <Grid item xs={12}>
-          <Welcome title={toTitleCase(GLOBAL.APP_BRANCH)} description={GLOBAL.APP_CUSTOMER_TAGLINE} />
+          <Welcome title={toTitleCase(GLOBAL.APP_TAGLINE)} description={GLOBAL.APP_CUSTOMER_TAGLINE} />
         </Grid>
       </Grid>
     </Grid>

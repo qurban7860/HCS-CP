@@ -23,9 +23,10 @@ export const StyledStatusChip = styled(({ theme, isActive, ...other }) => <Chip 
   fontWeight: 'bold'
 }))
 
-export const StyledSiteTabs = styled(({ theme, mode, ...other }) => <Tabs {...other} />)(({ theme, mode }) => ({
+export const StyledTabs = styled(({ theme, mode, ...other }) => <Tabs {...other} />)(({ theme, mode }) => ({
   '& .MuiTabs-root': {
-    padding: 0
+    padding: 0,
+    marginLeft: 2
   },
   '& .MuiTabs-indicator': {
     display: 'flex',
@@ -37,17 +38,19 @@ export const StyledSiteTabs = styled(({ theme, mode, ...other }) => <Tabs {...ot
   }
 }))
 
-export const StyledSiteTabBox = styled(Box)(({ theme }) => ({
+export const StyledTabBox = styled(Box)(({ theme }) => ({
   borderBottom: `${theme.spacing(0.05)} solid`,
   borderColor: alpha(theme.palette.grey[500], 0.5)
 }))
 
-export const StyledSiteTab = styled(({ theme, mode, ...other }) => <Tab {...other} />)(({ theme, mode }) => ({
+export const StyledTab = styled(({ theme, mode, ...other }) => <Tab {...other} />)(({ theme, mode }) => ({
   '&.Mui-selected': {
     color: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
     fontWeight: 'bold'
   },
   '&.Mui-focusVisible': {
     backgroundColor: 'howick.darkBlue'
-  }
+  },
+  paddingRight: theme.spacing(2),
+  paddingLeft: theme.spacing(2)
 }))

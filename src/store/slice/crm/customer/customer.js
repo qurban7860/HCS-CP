@@ -21,6 +21,7 @@ const initialState = {
   newMachineCustomer: null,
   customerFilterBy: '',
   verified: 'all',
+  customerRenderTab: 0,
   excludeReporting: 'included',
   customerPage: 0,
   customerRowsPerPage: 10
@@ -40,8 +41,8 @@ const customerSlice = createSlice({
     setNewMachineCustomer(state, action) {
       state.newMachineCustomer = action.payload
     },
-    setCustomerTab(state, action) {
-      state.customerTab = action.payload
+    setCustomerRenderTab(state, action) {
+      state.customerRenderTab = action.payload
     },
     setCustomerDialog(state, action) {
       state.customerDialog = action.payload
@@ -124,6 +125,9 @@ const customerSlice = createSlice({
       state.success = false
       state.isLoading = false
     },
+    setCustomerTab(state, action) {
+      state.customerTab = action.payload
+    },
     setVerified(state, action) {
       state.verified = action.payload
     },
@@ -146,7 +150,7 @@ export default customerSlice.reducer
 
 export const {
   setNewMachineCustomer,
-  setCustomerTab,
+  setCustomerRenderTab,
   setCustomerEditFormVisibility,
   resetCustomer,
   resetCustomers,
@@ -193,7 +197,11 @@ export function getCustomer(id) {
   return async (dispatch) => {
     dispatch(customerSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.detail(id))
+      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.detail(id), {
+        params: {
+          flag: 'basic'
+        }
+      })
 
       dispatch(customerSlice.actions.getCustomerSuccess(response.data))
     } catch (error) {
