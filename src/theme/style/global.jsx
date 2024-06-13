@@ -131,7 +131,10 @@ export const GStyledTableChip = styled(({ theme, ...other }) => <Chip {...other}
 export const GStyledTopBorderDivider = styled(({ theme, mode, ...other }) => <Divider {...other} />)(({ theme, mode }) => ({
   height: 2,
   borderStyle: 'solid',
-  borderColor: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.grey[400],
+  borderImage:
+    mode === KEY.LIGHT
+      ? `linear-gradient(to right, ${theme.palette.howick.darkBlue}, ${theme.palette.howick.blue}) 1` // Replace with your actual hex values
+      : `linear-gradient(to right,  ${theme.palette.grey[500]},  ${theme.palette.grey[800]}) 1`, // Replace with your actual hex values
   borderWidth: 5
 }))
 
