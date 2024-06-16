@@ -325,7 +325,7 @@ export function getConnectedMachineDialog(id) {
   }
 }
 
-export function getMachinesSiteDialog(id) {
+export function getMachineSiteDialogData(id) {
   return async (dispatch) => {
     dispatch(machineSlice.actions.startLoading())
     try {
