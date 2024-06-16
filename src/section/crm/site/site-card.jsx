@@ -2,82 +2,65 @@ import PropTypes from 'prop-types'
 import { useSettingContext, ICON_NAME } from 'hook'
 import { Box, Grid, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledContactCard, GStyledListItemText, GStyledSpanBox } from 'theme/style'
+import { GStyledSiteCard, GStyledListItemText, GStyledSpanBox } from 'theme/style'
 import { IconTooltip } from 'component'
 import { LABEL, TYPOGRAPHY, KEY, FLEX } from 'constant'
+import { truncate } from 'util'
 
-const SiteCard = ({ selectedCardId, value, handleContactCard, c }) => {
+const SiteCard = ({ isMain, selectedCardId, value, handleSiteCard, s }) => {
   const theme = useTheme()
   const { themeMode } = useSettingContext()
 
-  const fullName = (contact) => contact?.firstName + ' ' + contact?.lastName
-  const notEmployed = value?.formerEmployee === true
-  const getContactTitleOrEmail = (c) => {
-    const hasValidTitle = c?.title
-    const hasValidEmail = c?.email && c?.email.length <= 18
-    const shouldShowSeparator = hasValidTitle && hasValidEmail
+  const getCityAndCountry = (s) => {
+    const hasValidCity = s?.address?.city
+    const hasValidCountry = s?.address?.country && s?.address?.country.length <= 18
+    const shouldShowSeparator = hasValidCity && hasValidCountry
 
-    return `${hasValidTitle ? c.title : ''}${shouldShowSeparator ? ' / ' : ''}${
-      hasValidTitle && hasValidTitle.length <= 20 && hasValidEmail ? c.email : ''
+    return `${hasValidCity ? s.address.city : ''}${shouldShowSeparator ? ', ' : ''}${
+      hasValidCity && hasValidCity.length <= 20 && hasValidCountry ? s.address.country : ''
     }`
   }
   return (
-    <GStyledContactCard onClick={(event) => handleContactCard(event, c._id)} selectedCardId={selectedCardId} c={c} mode={themeMode}>
+    <GStyledSiteCard onClick={(event) => handleSiteCard(event, s._id)} selectedCardId={selectedCardId} s={s} mode={themeMode}>
       <Grid item xs={10}>
         <Box height={50}>
           <GStyledListItemText
             primary={
-              c && (
+              s && (
                 <GStyledSpanBox>
                   <Typography
                     color={themeMode === KEY.LIGHT ? 'common.black' : 'grey.400'}
                     variant={TYPOGRAPHY.H5}
                     sx={{
-                      opacity: selectedCardId === c._id ? 0.7 : 1
+                      opacity: selectedCardId === s._id ? 0.7 : 1
                     }}>
-                    {fullName(c)}
+                    {truncate(s?.name)}
                   </Typography>
                 </GStyledSpanBox>
               )
             }
             secondary={
               <Typography variant={TYPOGRAPHY.BODY2} color="text.secondary">
-                {getContactTitleOrEmail(c)}
+                {getCityAndCountry(s)}
               </Typography>
             }
           />
         </Box>
       </Grid>
       <Grid item xs={2} flex={1} justifyContent={FLEX.FLEX_END} alignContent={KEY.RIGHT}>
-        <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1}>
-          <IconTooltip
-            title={LABEL.CONTACT_THIS(c.firstName, c.phone)}
-            icon={ICON_NAME.PHONE}
-            color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
-            dimension={18}
-            disabled={!c.phone}
-            isActiveIcon
-            iconOnly
-            cursor={c.phone !== null}
-          />
-          <IconTooltip
-            title={notEmployed ? LABEL.NOT_EMPLOYED : LABEL.CURRENTLY_EMPLOYED}
-            icon={notEmployed ? ICON_NAME.NOT_EMPLOYED : ICON_NAME.CURRENTLY_EMPLOYED}
-            color={
-              notEmployed
-                ? theme.palette.error.dark
-                : !notEmployed && themeMode === KEY.LIGHT
-                ? theme.palette.burnIn.altDark
-                : theme.palette.burnIn.main
-            }
-            dimension={18}
-            disabled={!c.phone}
-            isActiveIcon
-            iconOnly
-          />
+        <GStyledSpanBox justifyContent={FLEX.FLEX_END}>
+          {isMain && (
+            <IconTooltip
+              title={LABEL.MAIN_SITE}
+              icon={ICON_NAME.MAIN_SITE}
+              color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}
+              dimension={20}
+              iconOnly
+            />
+          )}
         </GStyledSpanBox>
       </Grid>
-    </GStyledContactCard>
+    </GStyledSiteCard>
   )
 }
 
@@ -86,7 +69,7 @@ SiteCard.propTypes = {
   value: PropTypes.any,
   handleContactCard: PropTypes.func,
   contact: PropTypes.any,
-  c: PropTypes.any
+  s: PropTypes.any
 }
 
 export default SiteCard

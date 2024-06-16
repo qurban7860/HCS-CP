@@ -11,14 +11,11 @@ export default function siteDefaultValues(site, customer) {
   return useMemo(() => {
     return {
       id: site?._id || '',
-      firstName: site?.firstName || '',
-      lastName: site?.lastName || '',
-      fullName: site?.firstName && site?.lastName ? `${site.firstName} ${site.lastName}` : '',
-      email: site?.email || '',
-      title: site?.title || '',
+      name: site?.name || '',
       customer: customer || null,
       customerName: site?.customer?.name || '',
       customerId: site?.customer?._id || '',
+      customerMainSiteId: customer?.mainSite?._id || '',
       customerCountry: customer?.mainSite?.address?.country || '',
       address: parseAddress(site?.address) || '',
       street: site?.address?.street || '',
@@ -28,10 +25,20 @@ export default function siteDefaultValues(site, customer) {
       city: site?.address?.city || '',
       state: site?.address?.state || '',
       country: site?.address?.country || '',
-      phone: site?.phone || '',
-      phoneNumbers: site?.phoneNumbers || [],
-      formerEmployee: site?.formerEmployee || false,
-      archivedByCustomer: site?.archivedByCustomer || false,
+      phone: site?.phoneNumbers || '',
+      website: site?.website || '',
+      primaryTechnicalContact: site?.primaryTechnicalContact || '',
+      primaryTechnicalContactId: site?.primaryTechnicalContact?._id || '',
+      primaryTechnicalContactFullName: site?.primaryTechnicalContact
+        ? `${site.primaryTechnicalContact.firstName} ${site.primaryTechnicalContact.lastName}`
+        : '',
+      primaryBillingContact: site?.primaryBillingContact || '',
+      primaryBillingContactId: site?.primaryBillingContact?._id || '',
+      primaryBillingContactFullName: site?.primaryBillingContact
+        ? `${site.primaryBillingContact.firstName} ${site.primaryBillingContact.lastName}`
+        : '',
+      lat: site?.lat || '',
+      long: site?.long || '',
       isActive: site?.isActive || false,
       isArchived: site?.isArchived || false,
       contactTypes: site?.contactTypes,

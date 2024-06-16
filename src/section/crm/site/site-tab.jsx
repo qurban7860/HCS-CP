@@ -1,31 +1,45 @@
-import { useEffect, memo } from 'react'
+import { useState, useEffect, useMemo, memo } from 'react'
 import { useParams } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
-import { useSettingContext, useFilter, useTable, getComparator } from 'hook'
+import { useSettingContext, useFilter, useTable, getComparator, ICON_NAME } from 'hook'
 import {
   getCustomer,
-  setSelectedContactCard,
-  resetContact,
-  getContact,
-  getContacts,
-  ChangeContactPage,
-  setContactFilterBy,
-  setFromDialog,
-  resetSelectedContactCard
+  getSite,
+  getSites,
+  setFromSiteDialog,
+  setSelectedSiteCard,
+  setValidCoordinates,
+  setSiteFilterBy,
+  ChangeSitePage,
+  resetSites,
+  resetSite,
+  resetSelectedSiteCard,
+  resetValidCoordinates
 } from 'store/slice'
-import { contactDefaultValues } from 'section/crm'
 import { Divider, Grid, Card, Typography } from '@mui/material'
-import { GCardOption, GStyledTopBorderDivider, GStyledFlexEndBox } from 'theme/style'
-import { MotionLazyContainer, GridViewTitle, GridViewField, AuditBox, CustomerDialog, SearchBox } from 'component'
-import { SiteCard } from 'section/crm/site'
+import { useTheme } from '@mui/material/styles'
+import { GCardOption, GStyledTopBorderDivider, GStyledFlexEndBox, GStyledSiteMapBox, GStyledSpanBox } from 'theme/style'
+import {
+  MotionLazyContainer,
+  GridViewTitle,
+  GridViewField,
+  AuditBox,
+  CustomerDialog,
+  SearchBox,
+  GoogleMaps,
+  NothingProvided,
+  IconTooltip
+} from 'component'
+import { SiteCard, siteDefaultValues } from 'section/crm/site'
 import { MARGIN } from 'config'
-import { KEY, TITLE, FLEX, TYPOGRAPHY, VIEW_FORM, FLEX_DIR, LABEL, VARIANT, ADDRESS } from 'constant'
+import { KEY, TITLE, FLEX, TYPOGRAPHY, SNACK, FLEX_DIR, LABEL, VARIANT, ADDRESS, VIEW_FORM, CUSTOMER } from 'constant'
 
 const SiteTab = () => {
   const { id } = useParams()
-  const { contact, contacts, initial, isLoading, selectedContactCard, fromDialog } = useSelector((state) => state.contact)
+  const { site, sites, initial, isLoading, selectedSiteCard, fromSiteDialog, validCoordinates } = useSelector((state) => state.site)
   const { customer, customerDialog } = useSelector((state) => state.customer)
 
+  const theme = useTheme()
   const { themeMode } = useSettingContext()
   const { order, orderBy } = useTable({
     defaultOrderBy: KEY.CREATED_AT,
@@ -35,109 +49,184 @@ const SiteTab = () => {
   useEffect(() => {
     if (id) {
       dispatch(getCustomer(id))
-      dispatch(getContacts(id, customer?.isArchived))
+      dispatch(getSites(id, customer?.isArchived))
+      dispatch(setFromSiteDialog(false))
     }
   }, [id, dispatch])
 
-  const defaultValues = contactDefaultValues(contact, customer)
+  const defaultValues = siteDefaultValues(site, customer)
+  const isMain = (s) => defaultValues?.customerMainSiteId === s?._id
 
   useEffect(() => {
-    if (contacts.length > 0 && !fromDialog) {
-      dispatch(resetSelectedContactCard())
-      dispatch(getContact(id, contacts[0]?._id))
-      dispatch(setSelectedContactCard(contacts[0]?._id))
+    if (sites.length > 0 && !fromSiteDialog) {
+      dispatch(resetSelectedSiteCard())
+      dispatch(resetValidCoordinates())
+      dispatch(getSite(id, sites[0]?._id))
+      dispatch(setSelectedSiteCard(sites[0]?._id))
     }
-  }, [dispatch, contacts])
+  }, [dispatch, sites])
 
   useEffect(() => {
-    if (contacts.length > 0 && fromDialog) {
-      dispatch(getContact(id, selectedContactCard))
-      dispatch(setSelectedContactCard(selectedContactCard))
+    if (sites.length > 0 && fromSiteDialog) {
+      console.log('selectedSiteCard', selectedSiteCard)
+      dispatch(getSite(id, selectedSiteCard))
+      dispatch(setSelectedSiteCard(selectedSiteCard))
     }
-  }, [dispatch, contacts])
+  }, [dispatch, sites])
 
-  const { filterName, handleFilterName, filteredData } = useFilter(
-    getComparator(order, orderBy),
-    contacts,
-    initial,
-    ChangeContactPage,
-    setContactFilterBy
+  const { filterName, handleFilterName, filteredData } = useFilter(getComparator(order, orderBy), sites, initial, ChangeSitePage, setSiteFilterBy)
+
+  const latLong = useMemo(
+    () => [
+      {
+        lat: defaultValues?.lat || '',
+        long: defaultValues?.long || ''
+      }
+    ],
+    [defaultValues]
   )
 
-  const handleContactCard = (event, contactId) => {
+  useEffect(() => {
+    dispatch(resetValidCoordinates())
+  }, [])
+
+  useEffect(() => {
+    if (defaultValues?.lat && defaultValues?.long) {
+      dispatch(setValidCoordinates(true))
+    }
+  }, [defaultValues])
+
+  const handleSiteCard = (event, siteId) => {
     event.preventDefault()
-    dispatch(setSelectedContactCard(contactId))
-    dispatch(resetContact())
-    dispatch(getContact(id, contactId))
+    console.log('selectedSiteCard handle', selectedSiteCard)
+    dispatch(setSelectedSiteCard(siteId))
+    dispatch(resetSite())
+    dispatch(getSite(id, siteId))
   }
 
   return (
     <MotionLazyContainer display={FLEX.FLEX}>
       {/*  TODO: Make responsive */}
-      <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
-        <Grid item xs={12} sm={3} sx={{ height: '600px', overflow: KEY.AUTO, scrollBehavior: 'smooth' }}>
-          <Grid container mb={2}>
-            <Grid item lg={12} sm={12} mb={2}>
-              {contacts.length >= 5 && (
+      <Grid container spacing={2} flexDirection={FLEX_DIR.COLUMN} {...MARGIN.PAGE_PROP}>
+        <Grid item xs={12} sm={12} sx={{ overflow: KEY.AUTO, scrollBehavior: 'smooth' }}>
+          <Grid container gap={2}>
+            <Grid item lg={12} sm={12}>
+              {siteDefaultValues.length >= 5 && (
                 <Grid item sm={12} pb={2}>
                   <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
                 </Grid>
               )}
-              <Grid container p={1}>
-                {customer?.contacts?.length > 0 ? (
-                  filteredData.map((c, index) => (
+              <Grid container gap={2} p={1} height={100}>
+                {sites?.length > 0 ? (
+                  filteredData.map((s, index) => (
                     <SiteCard
                       key={index}
-                      selectedCardId={selectedContactCard || index}
+                      selectedCardId={selectedSiteCard || index}
                       value={defaultValues}
-                      handleContactCard={handleContactCard}
-                      c={c}
+                      handleSiteCard={handleSiteCard}
+                      isMain={isMain(s)}
+                      s={s}
                     />
                   ))
                 ) : (
                   <Typography variant={TYPOGRAPHY.OVERLINE1} color="text.no">
-                    {LABEL.NO_CONTACT_FOUND}
+                    {LABEL.NO_SITE_FOUND}
                   </Typography>
                 )}
               </Grid>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item sm={12} lg={9}>
+        <Grid item sm={12} lg={12}>
           <Grid container>
             <Grid item sm={12}>
               <Card {...GCardOption}>
                 <GStyledTopBorderDivider mode={themeMode} />
-                <Grid container spacing={2} px={1.5} mb={10}>
+                <Grid container px={1}>
                   <Grid item lg={12}>
-                    <GridViewTitle title={TITLE.PERSONAL_INFO} />
+                    <GridViewTitle title={TITLE.SITE_INFO} />
                     <Divider variant={VARIANT.MIDDLE} style={{ width: '100%', marginBottom: 5 }} />
                   </Grid>
                   <Grid item lg={12} sm={12}>
-                    <Grid container spacing={2} p={2} pb={2}>
-                      <GridViewField heading={VIEW_FORM.FIRST_NAME} isLoading={isLoading} children={defaultValues?.firstName} />
-                      <GridViewField heading={VIEW_FORM.LAST_NAME} isLoading={isLoading} children={defaultValues?.lastName} />
-                      <GridViewField heading={VIEW_FORM.TITLE} isLoading={isLoading} children={defaultValues?.title} />
-                      <GridViewField heading={VIEW_FORM.HEADING_EMAIL} isLoading={isLoading} children={defaultValues?.loginEmail} />
-                      <GridViewField heading={VIEW_FORM.PHONE} isLoading={isLoading} children={defaultValues?.phone} />
-                      <GridViewField heading={VIEW_FORM.DEPARTMENT} isLoading={isLoading} children={defaultValues?.firstName} />
-                      <GridViewField heading={VIEW_FORM.CONTACT_TYPES} isLoading={isLoading} userRolesChip={defaultValues?.contactTypes} />
-                      <GridViewField heading={VIEW_FORM.REPORT_TO} isLoading={isLoading} children={defaultValues?.loginEmail} />
+                    <Grid container flexDirection={FLEX_DIR.ROW}>
+                      <Grid item xs={12} sm={6}>
+                        <Grid container spacing={1} p={2}>
+                          <GridViewField
+                            variant={TYPOGRAPHY.H2}
+                            heading={''}
+                            isLoading={isLoading}
+                            children={defaultValues?.name}
+                            gridSize={12}
+                            noBreakSpace
+                            isNoBg
+                          />
+                          <Grid item xs={12} sm={12}>
+                            <GStyledSpanBox>
+                              {defaultValues?.isActive ? (
+                                <IconTooltip
+                                  title={LABEL.ACTIVE}
+                                  icon={ICON_NAME.ACTIVE}
+                                  color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+                                  isActiveIcon
+                                  iconOnly
+                                />
+                              ) : (
+                                <IconTooltip title={LABEL.INACTIVE} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} />
+                              )}
+                              {isMain(site) && (
+                                <IconTooltip
+                                  title={LABEL.MAIN_SITE}
+                                  icon={ICON_NAME.MAIN_SITE}
+                                  color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}
+                                  dimension={20}
+                                  iconOnly
+                                />
+                              )}
+                            </GStyledSpanBox>
+                          </Grid>
+                          <GridViewField heading={VIEW_FORM.PHONE_NUMBERS} isLoading={isLoading} phoneChips={defaultValues?.phone} isNoBg />
+                          <GridViewField
+                            heading={VIEW_FORM.WEBSITE}
+                            isLoading={isLoading}
+                            link={defaultValues?.website}
+                            variant={TYPOGRAPHY.BODY2}
+                            gridSize={12}
+                            isNoBg
+                          />
+                          <GridViewField heading={ADDRESS.LONG} isLoading={isLoading} children={defaultValues?.long} isNoBg />
+                          <GridViewField heading={ADDRESS.LAT} isLoading={isLoading} children={defaultValues?.lat} isNoBg />
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Grid container spacing={1} p={2} flexDirection={FLEX_DIR.ROW_REVERSE}>
+                          <GridViewField
+                            heading={CUSTOMER.PRIMARY_BILLING_CONTACT}
+                            isLoading={isLoading}
+                            primaryContact={defaultValues?.primaryBillingContactFullName}
+                          />
+                          <GridViewField
+                            heading={CUSTOMER.PRIMARY_TECHNICAL_CONTACT}
+                            isLoading={isLoading}
+                            primaryContact={defaultValues?.primaryTechnicalContactFullName}
+                          />
+                          <GridViewField heading={ADDRESS.CITY} isLoading={isLoading} children={defaultValues?.city} />
+                          <GridViewField heading={ADDRESS.STREET} isLoading={isLoading} children={defaultValues?.street} />
+                          <GridViewField heading={ADDRESS.REGION} isLoading={isLoading} children={defaultValues?.region} />
+                          <GridViewField heading={ADDRESS.POST_CODE} isLoading={isLoading} children={defaultValues?.postCode} />
+                          <GridViewField heading={ADDRESS.COUNTRY} isLoading={isLoading} children={defaultValues?.country} />
+                        </Grid>
+                      </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item lg={12}>
-                    <GridViewTitle title={TITLE.ADDRESS_INFO} />
-                    <Divider variant={VARIANT.MIDDLE} style={{ width: '100%', marginBottom: 5 }} />
-                  </Grid>
-                  <Grid item lg={12} sm={12}>
-                    <Grid container spacing={2} p={2} pb={2}>
-                      <GridViewField heading={ADDRESS.STREET} isLoading={isLoading} children={defaultValues?.street} />
-                      <GridViewField heading={ADDRESS.CITY} isLoading={isLoading} children={contact?.city} />
-                      <GridViewField heading={ADDRESS.REGION} isLoading={isLoading} children={defaultValues?.region} />
-                      <GridViewField heading={ADDRESS.POST_CODE} isLoading={isLoading} children={defaultValues?.postCode} />
-                      <GridViewField heading={ADDRESS.COUNTRY} isLoading={isLoading} children={defaultValues?.country} />
-                    </Grid>
-                  </Grid>
+                </Grid>
+                <Grid item sm={12} p={3}>
+                  <GStyledSiteMapBox>
+                    {validCoordinates ? (
+                      <GoogleMaps machineView latlongArr={latLong} mapHeight={500} />
+                    ) : (
+                      <NothingProvided content={SNACK.NO_COORIDNATES} />
+                    )}
+                  </GStyledSiteMapBox>
                 </Grid>
 
                 <Grid item sm={12} p={2}>
