@@ -8,17 +8,18 @@ import {
   setContactDialog,
   setMachineDialog,
   setMachineSiteDialog,
+  setFromDialog,
+  setFromSiteDialog,
   resetMachine,
   resetContact,
-  resetMachineSiteDialogData,
-  setFromDialog
+  resetMachineSiteDialogData
 } from 'store/slice'
 import { Typography } from '@mui/material'
-import { ContactTab, customerDefaultValues } from 'section/crm'
+import { CustomerNav, CustomerTab } from 'section/crm/customer'
+import { ContactTab, SiteTab, customerDefaultValues } from 'section/crm'
 import { MachineDialog, SiteDialog, ContactDialog } from 'component'
 import { MotionLazyContainer } from 'component/animate'
 import { FLEX } from 'constant'
-import { CustomerNav, CustomerTab } from 'section/crm/customer'
 import { PATH_CUSTOMER } from 'route/path'
 
 const CustomerLayout = ({ tab = 0 }) => {
@@ -56,10 +57,15 @@ const CustomerLayout = ({ tab = 0 }) => {
     if (tab === 0 && id) {
       navigate(PATH_CUSTOMER.customers.view(id))
       dispatch(setFromDialog(false))
+      dispatch(setFromSiteDialog(false))
     } else if (tab === 1 && id) {
       navigate(PATH_CUSTOMER.customers.contacts.view(id))
       dispatch(setFromDialog(false))
+      dispatch(setFromSiteDialog(false))
     } else if (tab === 2 && id) {
+      navigate(PATH_CUSTOMER.customers.sites.view(id))
+      dispatch(setFromDialog(false))
+      dispatch(setFromSiteDialog(false))
     } else if (tab === 3 && id) {
     }
   }
@@ -75,7 +81,7 @@ const CustomerLayout = ({ tab = 0 }) => {
       ) : renderedTab === 1 ? (
         <ContactTab />
       ) : renderedTab === 2 ? (
-        <Typography variant="h0">{'SITE PAGE'}</Typography>
+        <SiteTab />
       ) : renderedTab === 3 ? (
         <Typography variant="h0">{'MACHINE PAGE'}</Typography>
       ) : renderedTab === 3 ? (
