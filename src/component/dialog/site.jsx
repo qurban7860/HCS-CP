@@ -1,7 +1,9 @@
 import { useState, useMemo, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
-import { setMachineSiteDialog } from 'store/slice'
+import { setMachineSiteDialog, resetSelectedSiteCard, setFromSiteDialog, setSelectedSiteCard, getSite, resetValidCoordinates } from 'store/slice'
 import { ICON_NAME, Clock, useSettingContext } from 'hook'
+import { PATH_CUSTOMER } from 'route/path'
 import { machineDefaultValues } from 'section/product'
 import { Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
@@ -10,11 +12,13 @@ import { GridViewField, GridViewTitle, GoogleMaps, IconTooltip, NothingProvided,
 import { VIEW_FORM, SNACK, TITLE, TYPOGRAPHY, FLEX, LABEL, KEY, DECOILER_TYPE_ARR, FLEX_DIR, VARIANT, BUTTON } from 'constant'
 
 const SiteDialog = () => {
+  const { id } = useParams()
   const [validCoordinates, setValidCoordinates] = useState(false)
   const { machineSiteDialogData, machineSiteDialog, isLoading } = useSelector((state) => state.machine)
   const { customer } = useSelector((state) => state.customer)
 
   const theme = useTheme()
+  const navigate = useNavigate()
   const { themeMode } = useSettingContext()
   const defaultValues = machineDefaultValues(machineSiteDialogData, customer)
 
@@ -40,6 +44,16 @@ const SiteDialog = () => {
 
   const { SITE, ADDRESS } = VIEW_FORM
   const handleDialog = () => dispatch(setMachineSiteDialog(false))
+
+  const handleSiteOverview = () => {
+    dispatch(setMachineSiteDialog(false))
+    dispatch(resetSelectedSiteCard())
+    dispatch(resetValidCoordinates())
+    navigate(PATH_CUSTOMER.customers.sites.view(customer?._id))
+    dispatch(setFromSiteDialog(true))
+    dispatch(setSelectedSiteCard(defaultValues?.id))
+    dispatch(getSite(customer?._id, defaultValues?.id))
+  }
 
   return (
     <Dialog disableEnforceFocus maxWidth={KEY.LG} open={machineSiteDialog} onClose={handleDialog} aria-describedby="alert-dialog-slide-description">
@@ -95,6 +109,8 @@ const SiteDialog = () => {
               <GridViewTitle title={TITLE.SITE_INFO} />
               <Grid container spacing={1} pb={1}>
                 <GridViewField heading={SITE.SITE_NAME} isLoading={isLoading} children={defaultValues?.installationSiteName} gridSize={12} />
+                <GridViewField heading={ADDRESS.LAT} isLoading={isLoading} children={defaultValues?.installationSiteLat} />
+                <GridViewField heading={ADDRESS.LONG} isLoading={isLoading} children={defaultValues?.installationSiteLong} />
                 <GridViewField heading={ADDRESS.STREET} isLoading={isLoading} children={defaultValues?.installationSiteStreet} gridSize={8} />
                 <GridViewField heading={ADDRESS.SUBURB} isLoading={isLoading} children={defaultValues?.installationSiteSuburb} gridSize={4} />
                 <GridViewField heading={ADDRESS.CITY} isLoading={isLoading} children={defaultValues?.installationSiteCity} />
@@ -116,7 +132,7 @@ const SiteDialog = () => {
           </Grid>
           <Grid item sm={12}>
             <Grid container justifyContent={FLEX.FLEX_END}>
-              <Button label={BUTTON.SITE_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} />
+              <Button label={BUTTON.SITE_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleSiteOverview} />
             </Grid>
           </Grid>
         </Grid>
