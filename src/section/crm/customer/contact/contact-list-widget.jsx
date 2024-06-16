@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useParams } from 'react-router-dom'
 import { ICON_NAME, useSettingContext } from 'hook'
@@ -14,30 +14,27 @@ import { VARIANT, SIZE, LABEL, KEY, FLEX } from 'constant'
 const { TYPOGRAPHY } = VARIANT
 
 const ContactListWidget = ({ value, handleContactDialog }) => {
-  const [icon, setIcon] = useState(null)
-
   const theme = useTheme()
   const { id } = useParams()
   const { themeMode } = useSettingContext()
   const { contacts } = useSelector((state) => state.contact)
 
   const fullName = (contact) => contact?.firstName + ' ' + contact?.lastName
-
+  const notEmployed = (c) => c?.formerEmployee === true
   const getContactTitleOrEmail = (c) => {
     const hasValidTitle = c?.title
     const hasValidEmail = c?.email && c?.email.length <= 18
     const shouldShowSeparator = hasValidTitle && hasValidEmail
-
     return `${hasValidTitle ? c.title : ''}${shouldShowSeparator ? ' / ' : ''}${
       hasValidTitle && hasValidTitle.length <= 20 && hasValidEmail ? c.email : ''
     }`
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (id) {
       dispatch(getContacts(id))
     }
-  }, [dispatch])
+  }, [dispatch, id])
 
   return (
     <Grid container mb={2}>
@@ -93,9 +90,24 @@ const ContactListWidget = ({ value, handleContactDialog }) => {
                       iconOnly
                       cursor
                     />
+                    <IconTooltip
+                      title={notEmployed(c) ? LABEL.NOT_EMPLOYED : LABEL.CURRENTLY_EMPLOYED}
+                      icon={notEmployed(c) ? ICON_NAME.NOT_EMPLOYED : ICON_NAME.CURRENTLY_EMPLOYED}
+                      color={
+                        notEmployed(c)
+                          ? theme.palette.error.dark
+                          : !notEmployed(c) && themeMode === KEY.LIGHT
+                          ? theme.palette.burnIn.altDark
+                          : theme.palette.burnIn.main
+                      }
+                      dimension={18}
+                      disabled={!c.phone}
+                      isActiveIcon
+                      iconOnly
+                    />
                   </GStyledSpanBox>
                 </Grid>
-                {index !== contacts.length - 1 && <Divider variant="fullWidth" style={{ width: '100%', marginBottom: '10px' }} />}
+                {index !== contacts.length - 1 && <Divider variant={VARIANT.FULL_WIDTH} style={{ width: '100%', marginBottom: '10px' }} />}
               </Fragment>
             ))
           ) : (

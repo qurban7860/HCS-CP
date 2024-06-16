@@ -4,7 +4,7 @@ import LoginForm from './login-form'
 
 export default function Login() {
   return (
-    <LoginLayout title={GLOBAL.APP_BRANCH}>
+    <LoginLayout title={GLOBAL.APP_BRANDING}>
       <LoginForm />
     </LoginLayout>
   )

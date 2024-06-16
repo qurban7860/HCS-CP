@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
+import { dispatch } from 'store'
 import { useSettingContext } from 'hook'
+import { resetMachineSiteDialogData, getMachineSiteDialogData, setMachineSiteDialog } from 'store/slice'
 import { Grid, Box, Typography } from '@mui/material'
 import { FormHeader } from 'component'
 import { LABEL, VIEW_FORM, VARIANT, DIV_ROLE, KEY } from 'constant'
@@ -17,7 +19,7 @@ function TabPanel({ children, value, index, ...other }) {
   )
 }
 
-const MachineSiteWidget = ({ value, isLoading }) => {
+const MachineSiteWidget = ({ value, isLoading, handleSiteWidgetDialog }) => {
   const [tab, setTab] = useState(1)
   const { themeMode } = useSettingContext()
 
@@ -35,15 +37,25 @@ const MachineSiteWidget = ({ value, isLoading }) => {
 
         <StyledSiteTabBox>
           <StyledSiteTabs value={tab} onChange={handleChange} variant={VARIANT.FULL_WIDTH} centered>
-            <StyledSiteTab label={<Typography variant={TYPOGRAPHY.OVERLINE1}>{INSTALLATION}</Typography>} {...a11yProps(1)} mode={themeMode} />
-            <StyledSiteTab label={<Typography variant={TYPOGRAPHY.OVERLINE1}>{BILLING}</Typography>} {...a11yProps(2)} mode={themeMode} />
+            <StyledSiteTab
+              disabled={value.installationSiteObj === ''}
+              label={<Typography variant={TYPOGRAPHY.OVERLINE1}>{INSTALLATION}</Typography>}
+              {...a11yProps(1)}
+              mode={themeMode}
+            />
+            <StyledSiteTab
+              disabled={value.billingSiteObj === ''}
+              label={<Typography variant={TYPOGRAPHY.OVERLINE1}>{BILLING}</Typography>}
+              {...a11yProps(2)}
+              mode={themeMode}
+            />
           </StyledSiteTabs>
         </StyledSiteTabBox>
         <TabPanel value={1} index={1} hidden={tab !== 1}>
-          <SiteTab value={value} isLoading={isLoading} isBilling={false} />
+          <SiteTab value={value} isLoading={isLoading} isBilling={false} handleSiteWidgetDialog={handleSiteWidgetDialog} />
         </TabPanel>
         <TabPanel value={2} index={2} hidden={tab !== 2}>
-          <SiteTab value={value} isLoading={isLoading} isBilling />
+          <SiteTab value={value} isLoading={isLoading} isBilling handleSiteWidgetDialog={handleSiteWidgetDialog} />
         </TabPanel>
       </Grid>
     </Grid>
@@ -52,7 +64,8 @@ const MachineSiteWidget = ({ value, isLoading }) => {
 
 MachineSiteWidget.propTypes = {
   value: PropTypes.object,
-  isLoading: PropTypes.bool
+  isLoading: PropTypes.bool,
+  handleSiteDialog: PropTypes.func
 }
 
 export default MachineSiteWidget

@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types'
 import { useSettingContext } from 'hook'
 import { Stack } from '@mui/material'
-import { GStyledWelcomeTitle, GStyledWelcomeContainerDiv, GStyledWelcomeDescription } from 'theme/style'
+import { GStyledWelcomeTitle, GStyledWelcomeContainerDiv, GStyledWelcomeDescription, GStyledSpanBox } from 'theme/style'
 import { useTheme } from '@mui/material/styles'
+import { KEY, TYPOGRAPHY } from 'constant'
+import { ASSET } from 'config'
 
 Welcome.propTypes = {
   img: PropTypes.node,
@@ -19,14 +21,15 @@ function Welcome({ title, description, action, img, ...other }) {
       <Stack
         flexGrow={1}
         sx={{
-          textAlign: { xs: 'center', md: 'left' },
+          textAlign: { xs: KEY.CENTER, md: KEY.LEFT },
           mb: { xs: 5, md: 10 },
           mt: { xs: 0, md: 5 }
         }}>
-        <GStyledWelcomeTitle variant="h0" fontWeight="bold" themeMode={themeMode}>
-          {title}
-        </GStyledWelcomeTitle>
-        <GStyledWelcomeDescription variant="subtitle0" themeMode={themeMode}>
+        {/* keep for branding  */}
+        <GStyledSpanBox gap={2} my={2}>
+          <img alt="logo" src={themeMode === KEY.DARK ? ASSET.HOWICK_PORTAL_DARK : ASSET.HOWICK_PORTAL} width={900} />
+        </GStyledSpanBox>
+        <GStyledWelcomeDescription variant={TYPOGRAPHY.SUBTITLE0} themeMode={themeMode}>
           {description}
         </GStyledWelcomeDescription>
         {action && action}

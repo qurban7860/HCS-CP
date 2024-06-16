@@ -14,16 +14,16 @@ LoginLayout.propTypes = {
 
 function LoginLayout({ children, illustration, title }) {
   const { themeMode } = useSettingContext()
-  title = title || GLOBAL.APP_BRANCH
+  title = title || GLOBAL.APP_BRANDING
   return (
     <StyledRoot mode={themeMode}>
       <StyledContent>
-        <Grid sx={{ display: FLEX.FLEX, justifyContent: KEY.CENTER, mb: -3 }} alignItems="center" spacing={2} container>
+        <Grid sx={{ display: FLEX.FLEX, justifyContent: KEY.CENTER, mb: -3 }} alignItems={KEY.CENTER} spacing={2} container>
           <Grid item>
             <Logo sx={{ width: '100%', p: 1, pointerEvents: KEY.NONE }} />
-            <Stack sx={{ alignItems: 'center' }}>
-              <Typography variant={TYPOGRAPHY.H2} sx={{ mt: -2 }}>
-                {title}
+            <Stack sx={{ alignItems: KEY.CENTER }}>
+              <Typography variant={TYPOGRAPHY.H} sx={{ mt: -2 }}>
+                {title.toUpperCase()}
               </Typography>
             </Stack>
             <Stack sx={{ alignItems: KEY.END }}>

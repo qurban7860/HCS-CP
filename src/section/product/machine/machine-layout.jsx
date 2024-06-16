@@ -17,7 +17,7 @@ import {
   getMachine,
   setCustomerDialog,
   getConnectedMachineDialog,
-  getMachinesSiteDialog,
+  getMachineSiteDialogData,
   setMachineDialog,
   setMachineSiteDialog,
   resetCustomer,
@@ -115,15 +115,22 @@ const MachineLayout = () => {
   const handleMachineSiteDialog = (event, machineId) => {
     event.preventDefault()
     dispatch(resetMachineSiteDialogData())
-    dispatch(getMachinesSiteDialog(machineId))
+    dispatch(getMachineSiteDialogData(machineId))
     dispatch(setMachineSiteDialog(true))
   }
+
+  const handleSiteWidgetDialog = (e, machineId) => {
+    e.preventDefault()
+    dispatch(resetMachineSiteDialogData())
+    dispatch(getMachineSiteDialogData(machineId))
+    dispatch(setMachineSiteDialog(true))
+  }
+
   // TODO: #HPS-1062 when JIRA api integated, replace this mock data
 
   return (
-    <MotionLazyContainer display="flex">
+    <MotionLazyContainer display={FLEX.FLEX}>
       {/*  TODO: HPS-1240 Make responsive */}
-      {/* <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}> */}
       <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
         <Grid container>
           <Grid item sm={12}>
@@ -137,7 +144,7 @@ const MachineLayout = () => {
             handleConnectedMachineDialog={handleConnectedMachineDialog}
             handleMachineSiteDialog={handleMachineSiteDialog}
           />
-          <MachineSiteWidget value={defaultValues} />
+          <MachineSiteWidget value={defaultValues} handleSiteWidgetDialog={handleSiteWidgetDialog} />
         </Grid>
 
         <Grid item sm={12} lg={9}>
@@ -147,8 +154,8 @@ const MachineLayout = () => {
               <Grid container px={1.5}>
                 <Grid item lg={8}>
                   <GStyledSpanBox my={2}>
-                    <ViewFormField heading={' '} isLoading={isLoading} variant={TYPOGRAPHY.H2} gridSize={8} isMachineView>
-                      {defaultValues?.serialNo} &nbsp;
+                    <ViewFormField heading={' '} isLoading={isLoading} gridSize={8} isMachineView>
+                      <Typography variant={TYPOGRAPHY.H2}> {defaultValues?.serialNo} &nbsp;</Typography>
                       <Typography variant={TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.bronze}>
                         {defaultValues?.machineModel}
                       </Typography>
@@ -166,8 +173,8 @@ const MachineLayout = () => {
                           <IconTooltip
                             title={LABEL.DECOILER(defaultValues?.machineModel)}
                             icon={decoilerIcon}
-                            iconOnly
                             color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]}
+                            iconOnly
                           />
                         )}
                         {defaultValues?.isActive ? (
@@ -268,7 +275,6 @@ const MachineLayout = () => {
           </Box>
         </Grid>
       </Grid>
-      {/* </FormProvider> */}
       {customerDialog && <CustomerDialog />}
       {machineSiteDialogData && <SiteDialog />}
       {connectedMachineDialog && <MachineDialog />}

@@ -4,8 +4,17 @@ export const BUTTON_VARIANT = {
   TEXT: 'text'
 }
 
+export const FONT_WEIGHT = {
+  LIGHT: 'light',
+  REGULAR: 'regular',
+  MEDIUM: 'medium',
+  BOLD: 'bold',
+  BLACK: 'black'
+}
+
 export const TYPOGRAPHY = {
   H0: 'h0',
+  H: 'h',
   H1: 'h1',
   H2: 'h2',
   H3: 'h3',
@@ -13,6 +22,7 @@ export const TYPOGRAPHY = {
   H5: 'h5',
   H6: 'h6',
   H7: 'h7',
+  SUBTITLE0: 'subtitle0',
   SUBTITLE1: 'subtitle1',
   SUBTITLE2: 'subtitle2',
   BODY0: 'body0',
@@ -39,6 +49,7 @@ export const VARIANT = {
   COVER: 'cover',
   FULL_WIDTH: 'fullWidth',
   MIDDLE: 'middle',
+  SCROLLABLE: 'scrollable',
   SKELETON: {
     RECTANGULAR: 'rectangular',
     CIRCULAR: 'circular',

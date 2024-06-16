@@ -2,6 +2,7 @@ import { Navigate, useRoutes } from 'react-router-dom'
 import { AuthGuard, GuestGuard } from 'auth'
 import DashboardLayout from 'section/dashboard'
 import { useSettingContext } from 'hook'
+import { CustomerLayout } from 'section/crm/customer'
 import { PATH_AFTER_LOGIN } from 'global'
 import { FALLBACK } from 'constant'
 import {
@@ -23,6 +24,8 @@ import {
   //  crm:
   CustomerPage,
   CustomerListPage,
+  ContactPage,
+  SitePage,
   // fallback:
   BlankPage,
   FallbackPage,
@@ -33,7 +36,7 @@ export default function Router() {
   const { themeMode } = useSettingContext()
   return useRoutes([
     {
-      // Auth
+      // auth
       path: 'auth',
       children: [
         {
@@ -144,7 +147,29 @@ export default function Router() {
           path: 'customers', // might changed to organizations later
           children: [
             { path: 'list', element: <CustomerListPage /> },
-            { path: ':id/view', element: <CustomerPage /> }
+            { path: ':id/view', element: <CustomerPage /> },
+            {
+              path: ':id/contacts',
+              children: [
+                {
+                  element: <ContactPage />,
+                  index: true
+                },
+                {
+                  path: ':contactId/view',
+                  element: <ContactPage />
+                }
+              ]
+            },
+            {
+              path: ':id/sites',
+              children: [
+                {
+                  element: <SitePage />,
+                  index: true
+                }
+              ]
+            }
           ]
         }
       ]

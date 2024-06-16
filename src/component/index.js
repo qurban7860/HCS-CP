@@ -39,6 +39,8 @@ export { default as GridViewField } from './viewform/grid-view-field'
 // @skeleton
 export { default as SkeletonViewFormField } from './skeleton/view-form-field'
 export { default as SkeletonTable } from './skeleton/table'
+// @tab
+export { default as TabContainer } from './tab/tab-container'
 // @table
 export { default as TableNoData } from './table/no-data'
 // @audit

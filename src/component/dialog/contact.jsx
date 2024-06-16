@@ -1,34 +1,45 @@
-import { useState, useMemo, useEffect } from 'react'
+import { memo } from 'react'
 import { dispatch, useSelector } from 'store'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useSettingContext } from 'hook'
 import { PATH_CUSTOMER } from 'route/path'
-import { setContactDialog } from 'store/slice'
-import { ICON_NAME, Clock } from 'hook'
+import { setContactDialog, resetSelectedContactCard, setSelectedContactCard, setFromDialog, getContact } from 'store/slice'
+import { ICON_NAME } from 'hook'
 import { contactDefaultValues } from 'section/crm'
 import { Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledSiteMapBox, GStyledSpanBox } from 'theme/style'
-import { GridViewField, GridViewTitle, IconTooltip, NothingProvided, Button } from 'component'
-import { VIEW_FORM, SNACK, TITLE, TYPOGRAPHY, FLEX, LABEL, KEY, DECOILER_TYPE_ARR, FLEX_DIR, VARIANT, BUTTON } from 'constant'
-import { truncate } from 'util/truncate'
+import { GStyledTopBorderDivider, GStyledSpanBox } from 'theme/style'
+import { GridViewField, GridViewTitle, IconTooltip, Button } from 'component'
+import { VIEW_FORM, TITLE, TYPOGRAPHY, FLEX, LABEL, KEY, FLEX_DIR, BUTTON } from 'constant'
 
-const ContactDialog = () => {
-  const { contact, isLoading, contactDialog } = useSelector((state) => state.contact)
+const ContactDialog = ({ contact }) => {
+  const { id } = useParams()
+  const theme = useTheme()
+  const navigate = useNavigate()
+  const { themeMode } = useSettingContext()
+  const { isLoading, contactDialog } = useSelector((state) => state.contact)
   const { customer } = useSelector((state) => state.customer)
 
-  const theme = useTheme()
-  const { themeMode } = useSettingContext()
   const defaultValues = contactDefaultValues(contact, customer)
 
   const { ADDRESS } = VIEW_FORM
   const handleDialog = () => dispatch(setContactDialog(false))
+
+  const handleContactOverview = () => {
+    dispatch(setContactDialog(false))
+    dispatch(resetSelectedContactCard())
+    navigate(PATH_CUSTOMER.customers.contacts.view(id))
+    dispatch(setFromDialog(true))
+    dispatch(setSelectedContactCard(defaultValues?.id))
+    dispatch(getContact(id, defaultValues?.id))
+  }
 
   return (
     <Dialog disableEnforceFocus maxWidth={KEY.LG} open={contactDialog} onClose={handleDialog} aria-describedby="alert-dialog-slide-description">
       <GStyledTopBorderDivider mode={themeMode} />
       <DialogTitle>
         <GStyledSpanBox>
-          <Grid container flexDirection={FLEX_DIR.ROW} justifyContent="space-between">
+          <Grid container flexDirection={FLEX_DIR.ROW} justifyContent={FLEX.SPACE_BETWEEN}>
             <Grid item sm={6}>
               <GStyledSpanBox>
                 <Typography variant={TYPOGRAPHY.H3}>{defaultValues?.fullName} &nbsp;</Typography>
@@ -78,7 +89,7 @@ const ContactDialog = () => {
             </Grid>
           </Grid>
           <Grid item sm={12}>
-            <Grid container flexDirection="row">
+            <Grid container flexDirection={FLEX_DIR.ROW}>
               <GridViewTitle title={TITLE.ADDRESS_INFO} />
               <Grid container spacing={1} pb={1}>
                 <GridViewField heading={ADDRESS.STREET} isLoading={isLoading} children={defaultValues?.street} gridSize={8} />
@@ -94,7 +105,7 @@ const ContactDialog = () => {
 
           <Grid item sm={12}>
             <Grid container justifyContent={FLEX.FLEX_END}>
-              <Button label={BUTTON.CONTACT_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} />
+              <Button label={BUTTON.CONTACT_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleContactOverview} />
             </Grid>
           </Grid>
         </Grid>
@@ -103,4 +114,4 @@ const ContactDialog = () => {
   )
 }
 
-export default ContactDialog
+export default memo(ContactDialog)

@@ -1,8 +1,8 @@
+import { m } from 'framer-motion'
 import { styled, alpha } from '@mui/material/styles'
 import { Popover, ListItemText, Card, Chip, Grid, Divider, Container, Skeleton, Box, Typography, IconButton } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
-import { m } from 'framer-motion'
 import { bgBlur } from 'theme/style'
 import { RADIUS, ASSET } from 'config'
 import { PATH_AUTH } from 'route/path'
@@ -20,7 +20,7 @@ export const GStyledWelcomeTitle = styled(({ themeMode, ...other }) => <Typograp
 
 export const GStyledWelcomeDescription = styled(({ themeMode, ...other }) => <Typography {...other} />)(({ theme, themeMode }) => {
   return {
-    color: themeMode === KEY.LIGHT ? theme.palette.success.main : theme.palette.common.white
+    color: themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.common.white
   }
 })
 export const GStyledWelcomeContainerDiv = styled('div')(({ theme }) => ({
@@ -56,6 +56,61 @@ export const GStyledBgMain = styled(({ mode, theme, ...other }) => <main {...oth
   width: '100%',
   height: '100vh'
 }))
+
+export const GStyledContactCard = styled(({ theme, selectedCardId, c, mode, ...other }) => <Card {...other} />)(
+  ({ theme, selectedCardId, c, mode }) => ({
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    marginLeft: selectedCardId === c._id ? theme.spacing(2) : theme.spacing(0),
+    width: '100%',
+    cursor: 'pointer',
+    borderRight: selectedCardId === c._id && `9px solid ${mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}`,
+    backgroundColor:
+      selectedCardId === c._id
+        ? mode === KEY.LIGHT
+          ? theme.palette.grey[300]
+          : theme.palette.howick.darkGrey
+        : mode === KEY.LIGHT
+        ? theme.palette.grey[200]
+        : theme.palette.grey[800],
+    '&:hover': {
+      backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.howick.darkGrey,
+      marginLeft: theme.spacing(2)
+    },
+    transition: 'ease-in-out 0.2s'
+  })
+)
+
+export const GStyledSiteCard = styled(({ theme, selectedCardId, s, mode, ...other }) => <Card {...other} />)(
+  ({ theme, selectedCardId, s, mode }) => ({
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: theme.spacing(1),
+    marginBottom: selectedCardId === s._id ? theme.spacing(2) : theme.spacing(0),
+    width: '300px',
+    cursor: 'pointer',
+    borderBottom: selectedCardId === s._id && `9px solid ${mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}`,
+    backgroundColor:
+      selectedCardId === s._id
+        ? mode === KEY.LIGHT
+          ? theme.palette.grey[300]
+          : theme.palette.howick.darkGrey
+        : mode === KEY.LIGHT
+        ? theme.palette.grey[200]
+        : theme.palette.grey[800],
+    '&:hover': {
+      backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.howick.darkGrey,
+      marginBottom: theme.spacing(2)
+    },
+    transition: 'ease-in-out 0.2s'
+  })
+)
 
 // :components ____________________________________________________________________________________________
 
@@ -103,7 +158,10 @@ export const GStyledTableChip = styled(({ theme, ...other }) => <Chip {...other}
 export const GStyledTopBorderDivider = styled(({ theme, mode, ...other }) => <Divider {...other} />)(({ theme, mode }) => ({
   height: 2,
   borderStyle: 'solid',
-  borderColor: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.grey[400],
+  borderImage:
+    mode === KEY.LIGHT
+      ? `linear-gradient(to right, ${theme.palette.howick.darkBlue}, ${theme.palette.howick.blue}) 1` // Replace with your actual hex values
+      : `linear-gradient(to right,  ${theme.palette.grey[500]},  ${theme.palette.grey[800]}) 1`, // Replace with your actual hex values
   borderWidth: 5
 }))
 
@@ -123,7 +181,7 @@ export const GStyledLoadingScreenDiv = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: theme.palette.background.default
+  backgroundColor: 'transparent'
 }))
 
 export const GStyledRoot = styled('div')(({ theme }) => ({
@@ -175,7 +233,7 @@ export const GStyledTooltip = styled(({ className, mode, green, disabled, ...pro
       mode === KEY.LIGHT
         ? theme.palette.common.black
         : green && mode !== KEY.LIGHT
-        ? theme.palette.grey[800]
+        ? theme.palette.burnIn.contrastText
         : disabled
         ? theme.palette.action.disabledText
         : theme.palette.common.white
@@ -406,6 +464,14 @@ export const GStyledSiteMapBox = styled(Box)(({ theme }) => ({
   overflow: 'hidden'
 }))
 
+export const GStyledHeaderCardContainer = styled(Card)(({ theme }) => ({
+  marginBottom: theme.spacing(1),
+  height: 160,
+  position: 'sticky',
+  top: '60px',
+  zIndex: 2
+}))
+
 /**
  * @options components props --------------------------------------------------------------------------------------------
  */
@@ -453,5 +519,67 @@ export const GCardOption = (mode) => {
       backgroundSize: 'cover',
       backgroundSize: '150%'
     }
+  }
+}
+
+export const GStickyHeaderCardOption = (mode) => {
+  return {
+    margin: 2,
+    margintop: 10,
+    paddingtop: 2,
+
+    sx: {
+      // backgroundColor: mode === KEY.LIGHT ? 'background.paper' : 'background.default',
+      // backgroundImage: `url(${mode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
+      // backgroundSize: 'cover',
+      // backgroundSize: '150%',
+      height: '160px',
+      position: 'sticky',
+      top: '60px',
+      zIndex: '2'
+    }
+  }
+}
+
+/**
+ * Returns the styles for the GTabContainerOption component.
+ *
+ * @param {Object} theme - The theme object.
+ * @param {Object} tabsClasses - The classes object for the tabs.
+ * @param {string} currentTab - The currently selected tab value.
+ * @param {Function} setCurrentTab - The function to set the current tab value.
+ * @returns {Object} - The styles object for the GTabContainerOption component.
+ */
+export const GTabContainerOption = (theme, tabsClasses, currentTab, setCurrentTab, ...other) => {
+  return {
+    value: currentTab,
+    onChange: (event, newValue) => setCurrentTab(newValue),
+    sx: {
+      [`& .${tabsClasses.scrollButtons}`]: {
+        '&.Mui-disabled': { opacity: 0.3 }
+      },
+      width: 1,
+      bottom: 0,
+      zIndex: 9,
+      display: 'flex',
+      position: 'absolute',
+      backgroundColor: theme.palette.background.paper,
+      '& .MuiTabs-scrollButtons': {
+        width: 20,
+        '&:hover': {
+          backgroundColor: theme.palette.howick.darkBlue
+        }
+      },
+      '& .MuiButtonBase-root': {
+        marginRight: '0px !important'
+      },
+      '& .MuiIconButton-root': {
+        mr: '5px  !important'
+      },
+      '& .Mui-selected': {
+        pr: 1
+      }
+    },
+    ...other
   }
 }

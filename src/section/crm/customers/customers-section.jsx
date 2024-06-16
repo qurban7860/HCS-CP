@@ -11,7 +11,7 @@ import { TableNoData } from 'component'
 import { SkeletonTable } from 'component/skeleton'
 import { CustomerTable, CustomerHeader, CustomerListPagination } from 'section/crm'
 import { MARGIN, TABLE } from 'config'
-import { COLOR, KEY, TITLE, RESPONSE, VARIANT } from 'constant'
+import { KEY, TITLE, VARIANT, FLEX_DIR } from 'constant'
 import { StyledScrollTableContainer } from './style'
 
 const { TYPOGRAPHY } = VARIANT
@@ -75,7 +75,7 @@ const CustomerListSection = () => {
         </Typography>
       </GStyledSpanBox>
       <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} />
-      <Grid container flexDirection="row" {...MARGIN.PAGE_PROP}>
+      <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
         <Grid item lg={12}>
           <Grid container mb={2}>
             <Grid item lg={12} sm={12} mb={2} bgcolor="background.paper">

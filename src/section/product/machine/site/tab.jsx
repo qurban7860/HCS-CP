@@ -1,15 +1,17 @@
 import { useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Grid, Box, Typography } from '@mui/material'
-import { GStyledListItemText, GStyledSiteMapBox } from 'theme/style'
-import { ViewFormField, NothingProvided } from 'component'
+import { Grid, Button } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { GStyledListItemText, GStyledSiteMapBox, GStyledSpanBox } from 'theme/style'
+import { ViewFormField, NothingProvided, IconTooltip } from 'component'
 import { GoogleMaps } from 'component/google-maps'
-import { VARIANT, KEY, FLEX_DIR, VIEW_FORM, SNACK } from 'constant'
+import { VARIANT, KEY, FLEX_DIR, VIEW_FORM, SNACK, LABEL } from 'constant'
 import { MAP } from 'config/layout'
-import { hasValidArray } from './util'
+import { ICON_NAME } from 'hook'
 
-const SiteTab = ({ value, isBilling, isLoading }) => {
+const SiteTab = ({ value, isBilling, isLoading, handleSiteWidgetDialog }) => {
   const [validCoordinates, setValidCoordinates] = useState(false)
+  const theme = useTheme()
   const { TYPOGRAPHY } = VARIANT
   const { ADDRESS, MACHINE } = VIEW_FORM
 
@@ -56,7 +58,16 @@ const SiteTab = ({ value, isBilling, isLoading }) => {
   return (
     <Grid container p={2} alignItems={KEY.CENTER} justifyContent={KEY.CENTER} flexDirection={FLEX_DIR.ROW} gap={2}>
       <Grid item xs={12}>
-        <GStyledListItemText secondary={ADDRESS.COUNTRY} primary={country} />
+        <GStyledSpanBox height={60}>
+          <GStyledListItemText secondary={ADDRESS.COUNTRY} primary={country ? country : '\u00A0'} />
+          <IconTooltip
+            title={LABEL.SITE_MORE}
+            icon={ICON_NAME.READ_MORE}
+            color={theme.palette.howick.bronze}
+            dimension={20}
+            onClick={(e) => handleSiteWidgetDialog(e, value.id)}
+          />
+        </GStyledSpanBox>
       </Grid>
       <ViewFormField gridSize={12} heading={ADDRESS.ADDRESS} isLoading={isLoading} variant={TYPOGRAPHY.BODY1} isWidget>
         {site}
@@ -84,7 +95,8 @@ const SiteTab = ({ value, isBilling, isLoading }) => {
 SiteTab.propTypes = {
   value: PropTypes.object,
   isBilling: PropTypes.bool,
-  isLoading: PropTypes.bool
+  isLoading: PropTypes.bool,
+  handleSiteWidgetDialog: PropTypes.func
 }
 
 export default SiteTab

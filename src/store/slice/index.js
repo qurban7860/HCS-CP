@@ -26,3 +26,7 @@ export { default as customerReducer } from './crm/customer/customer'
 // crm/contact
 export * from './crm/contact'
 export { default as contactReducer } from './crm/contact/contact'
+
+// crm/site
+export * from './crm/site'
+export { default as siteReducer } from './crm/site/site'
