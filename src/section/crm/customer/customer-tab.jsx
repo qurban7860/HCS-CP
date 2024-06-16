@@ -9,7 +9,7 @@ import {
   setContactDialog,
   setMachineDialog,
   setMachineSiteDialog,
-  getMachinesSiteDialog,
+  getMachineSiteDialogData,
   resetMachine,
   resetContact,
   resetMachineSiteDialogData
@@ -64,7 +64,7 @@ const CustomerTab = () => {
   const handleMachineSiteDialog = (event, machineId) => {
     event.preventDefault()
     dispatch(resetMachineSiteDialogData())
-    dispatch(getMachinesSiteDialog(machineId))
+    dispatch(getMachineSiteDialogData(machineId))
     dispatch(setMachineSiteDialog(true))
   }
 
