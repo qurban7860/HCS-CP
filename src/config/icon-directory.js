@@ -28,14 +28,19 @@ function _getAnimatedIcon(icon) {
   return `line-md:${icon}`
 }
 
+function _getMeteoIcon(icon) {
+  return `meteocons:${icon}`
+}
+
 // add icons that are from MDI
 const ICON_WEB = {
   ACTIVE: _getWebIcon('checkbox-marked-circle'),
   ALERT_OUTLINE: _getWebIcon('alert-triangle-outline'),
   ALERT_OCTAGON: _getWebIcon('alert-octagon'),
   BLUR_ON: _getWebIcon('blur'),
-  CLOSE: _getWebIcon('close'),
   CHEVRON_RIGHT: _getWebIcon('chevron-right'),
+  CLOSE: _getWebIcon('close'),
+  CONTACT: _getWebIcon('contacts'),
   BACK: _getWebIcon('chevron-left'),
   A_BACK: _getAnimatedIcon('chevron-small-left'),
   CHECK_CIRCLE: _getWebIcon('checkbox-marked-circle'),
@@ -58,6 +63,10 @@ const ICON_WEB = {
   MANUFACTURE: _getWebIcon('factory'),
   MAGNIFY_IN: _getWebIcon('magnify-plus'),
   MAGNIFY_OUT: _getWebIcon('magnify-minus'),
+  MAIN_SITE: _getWebIcon('office-building'),
+  MODE_LIGHT_A: _getMeteoIcon('clear-day-fill'),
+  MODE_DARK_A: _getMeteoIcon('clear-night-fill'),
+  READ_MORE: _getWebIcon('read-more'),
   NOT_EMPLOYED: _getWebIcon('person-badge-alert'),
   OPEN_IN_NEW: _getWebIcon('open-in-new'),
   PHONE: _getWebIcon('phone'),
@@ -77,6 +86,7 @@ const ICON_WEB = {
 
 // add icons that are saved locally
 const ICON_LOC = {
+  BILLING_CONTACT: _getIcon('contact-billing'),
   DECOILER_DEF: _getIcon('decoiler-def'),
   DECOILER_1_5T: _getIcon('decoiler_1-5t'),
   DECOILER_3T: _getIcon('decoiler_3t'),
@@ -112,6 +122,7 @@ export const ICON_WEB_NAME = {
   CONTRAST_BOX: 'CONTRAST_BOX',
   CONTRAST_ON: 'CONTRAST_ON',
   CONTRAST_OFF: 'CONTRAST_OFF',
+  CONTACT: 'CONTACT',
   CURRENTLY_EMPLOYED: 'CURRENTLY_EMPLOYED',
   DANGER: 'DANGER',
   EDIT: 'EDIT',
@@ -123,12 +134,16 @@ export const ICON_WEB_NAME = {
   INSTALL: 'INSTALL',
   FULLSCREEN: 'FULLSCREEN',
   FULLSCREEN_EXIT: 'FULLSCREEN_EXIT',
+  MAIN_SITE: 'MAIN_SITE',
   MANUFACTURE: 'MANUFACTURE',
   MAGNIFY_IN: 'MAGNIFY_IN',
   MAGNIFY_OUT: 'MAGNIFY_OUT',
+  MODE_LIGHT_A: 'MODE_LIGHT_A',
+  MODE_DARK_A: 'MODE_DARK_A',
   NOT_EMPLOYED: 'NOT_EMPLOYED',
   OPEN_IN_NEW: 'OPEN_IN_NEW',
   PHONE: 'PHONE',
+  READ_MORE: 'READ_MORE',
   REFRESH: 'REFRESH',
   SAVE: 'SAVE',
   SEARCH: 'SEARCH',
@@ -145,6 +160,7 @@ export const ICON_WEB_NAME = {
 
 export const ICON_LOC_NAME = {
   // @local
+  BILLING_CONTACT: 'BILLING_CONTACT',
   DECOILER_1_5T: 'DECOILER_1_5T',
   DECOILER_3T: 'DECOILER_3T',
   DECOILER_5T: 'DECOILER_5T',
