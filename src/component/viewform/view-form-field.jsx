@@ -16,7 +16,6 @@ const { TYPOGRAPHY } = VARIANT
 const ViewFormField = ({
   children,
   primaryContact,
-  billingContact,
   node,
   heading,
   variant,
