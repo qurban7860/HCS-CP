@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { Grid } from '@mui/material'
 import { ViewFormField } from 'component/viewform'
 
-const GridViewField = ({ heading, isLoading, children, gridSize = 6, chip, isOrg, isLink, userRolesChip, ...other }) => {
+const GridViewField = ({ heading, isLoading, isNoBg, noBreakSpace, children, gridSize = 6, chip, isOrg, isLink, userRolesChip, ...other }) => {
   return (
     <Grid item xs={12} sm={gridSize}>
       <ViewFormField
@@ -10,7 +10,10 @@ const GridViewField = ({ heading, isLoading, children, gridSize = 6, chip, isOrg
         isLoading={isLoading}
         chip={chip && chip}
         isOrg={isOrg}
+        isNoBg={isNoBg}
+        noBreakSpace={noBreakSpace}
         userRolesChip={userRolesChip && userRolesChip}
+        phoneChips={children}
         {...other}>
         {children}
       </ViewFormField>
@@ -23,6 +26,10 @@ GridViewField.propTypes = {
   isLoading: PropTypes.bool,
   children: PropTypes.node,
   gridSize: PropTypes.number,
+  isOrg: PropTypes.bool,
+  isLink: PropTypes.bool,
+  isNoBg: PropTypes.bool,
+  noBreakSpace: PropTypes.bool,
   chip: PropTypes.oneOfType([PropTypes.array, PropTypes.string])
 }
 

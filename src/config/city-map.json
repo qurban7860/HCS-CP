@@ -1,5 +1,17 @@
 [
     {
+        "city": "Wimborne",
+        "city_ascii": "Dorset",
+        "lat": 50.7487635,
+        "lng": -2.344478,
+        "pop": null,
+        "country": "United Kingdom",
+        "iso2": "GB",
+        "iso3": "GBR",
+        "province": "Dorset",
+        "timezone": "Europe/London"
+    },
+    {
         "city": "Hull",
         "city_ascii": "Kingston upon Hull",
         "lat": 53.75042584,

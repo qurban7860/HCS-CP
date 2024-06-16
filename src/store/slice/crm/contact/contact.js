@@ -46,9 +46,6 @@ const contactSlice = createSlice({
     setContactEditFormVisibility(state, action) {
       state.contactEditFormVisibility = action.payload
     },
-    setCardActiveIndex(state, action) {
-      state.activeCardIndex = action.payload
-    },
     setIsExpanded(state, action) {
       state.isExpanded = action.payload
     },

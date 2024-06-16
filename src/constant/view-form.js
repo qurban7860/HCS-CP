@@ -4,6 +4,8 @@
 
 export const ADDRESS = {
   ADDRESS: 'Address',
+  LAT: 'ϕ Latitude',
+  LONG: 'λ  Longitude',
   STREET: 'Street',
   SUBURB: 'Suburb',
   CITY: 'City',
@@ -55,6 +57,7 @@ export const VIEW_FORM = {
   CONTACT_TYPES: 'Contact Types',
   COUNTRIES: 'Countries',
   PHONE: 'Phone',
+  PHONE_NUMBERS: 'Phone Numbers',
   DEPARTMENT: 'Department',
   DESCRIPTION: 'Description',
   FIRST_NAME: 'First Name',

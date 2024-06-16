@@ -70,10 +70,14 @@ export const PATH_SERVER = {
       detail: (customerId) => _url('crm', 'customers', customerId),
       // /customer
       list: _url('crm', 'customers'),
-      // /customer/:id/contact
+      // /customer/:id/contacts
       listContact: (customerId) => _url('crm', 'customers', customerId, 'contacts'),
-      // /customer/:id/contact/:contactId
+      // /customer/:id/contacts/:contactId
       contactDetail: (customerId, contactId) => _url('crm', 'customers', customerId, 'contacts', contactId),
+      // /customer/:id/sites
+      listSite: (customerId) => _url('crm', 'customers', customerId, 'sites'),
+      // /customer/:id/sites/:siteId
+      siteDetail: (customerId, siteId) => _url('crm', 'customers', customerId, 'sites', siteId),
       // /customer/:id/machine
       listMachine: (customerId) => _url('crm', 'customers', customerId, 'machine')
     }

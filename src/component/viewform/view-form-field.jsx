@@ -1,12 +1,12 @@
 import { useState, useEffect, memo, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
-import { useIcon, ICON_NAME, useSettingContext } from 'hook'
+import { useIcon, Icon, ICON_NAME, useSettingContext } from 'hook'
 import { useLocation } from 'react-router-dom'
 import { Typography, Chip, IconButton, Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledSpanBox, GStyledPopover, GStyledTooltip } from 'theme/style'
-import { SvgFlagIcon } from 'component'
+import { SvgFlagIcon, IconTooltip } from 'component'
 import { SkeletonViewFormField } from 'component/skeleton'
 import { SIZE, VARIANT, KEY, LABEL, FLEX } from 'constant'
 import { StyledDefaultTypography, StyledFieldGrid, StyledChipGrid, StyledFieldChip, StyledFlagBox } from './style'
@@ -15,6 +15,7 @@ const { TYPOGRAPHY } = VARIANT
 
 const ViewFormField = ({
   children,
+  primaryContact,
   node,
   heading,
   variant,
@@ -22,10 +23,11 @@ const ViewFormField = ({
   gridSize,
   contact,
   isWidget,
-  isOrg,
+  noBreakSpace,
   userRolesChip,
   isNoBg,
   chip,
+  phoneChips,
   link,
   isMachineView,
   customerLink,
@@ -95,7 +97,8 @@ const ViewFormField = ({
           ) : customerLink ? (
             <GStyledSpanBox style={{ display: FLEX.FLEX, alignItems: 'center', justifyContent: 'space-between' }}>
               <GStyledSpanBox>
-                <StyledDefaultTypography variant={variant}> &nbsp; {children} </StyledDefaultTypography> &nbsp;
+                <StyledDefaultTypography variant={variant}>&nbsp;{children}</StyledDefaultTypography>
+
                 <GStyledTooltip
                   title={LABEL.VIEW_IN_NEW_TAB}
                   placement={KEY.RIGHT}
@@ -128,7 +131,9 @@ const ViewFormField = ({
               </StyledFlagBox>
             </GStyledSpanBox>
           ) : (
-            <StyledDefaultTypography variant={variant}>&nbsp; {children}</StyledDefaultTypography>
+            <StyledDefaultTypography variant={variant}>
+              {noBreakSpace ? '' : '\u00A0'} {children}
+            </StyledDefaultTypography>
           )}
 
           {contact && typeof contact === 'object' && contact.length > 0 ? (
@@ -156,6 +161,42 @@ const ViewFormField = ({
             chip && typeof chip === 'string' && <Chip label={chip} sx={{ m: 0.2 }} />
           )}
 
+          {Array.isArray(phoneChips) && (
+            <StyledChipGrid container>
+              {phoneChips?.map((p, index) => (
+                <StyledFieldChip
+                  key={index}
+                  mode={themeMode}
+                  label={
+                    <GStyledSpanBox>
+                      {p.type && (
+                        <Typography variant={TYPOGRAPHY.OVERLINE2} fontWeight="bold">
+                          {p?.type} &nbsp;
+                        </Typography>
+                      )}
+                      <Typography variant={TYPOGRAPHY.BODY2}>
+                        {p?.countryCode && `+${p?.countryCode} `} {p.contactNumber && p.contactNumber}
+                        {p.extensions && `(${p.extensions})`}
+                      </Typography>
+                    </GStyledSpanBox>
+                  }
+                  size={SIZE.SMALL}
+                />
+              ))}
+            </StyledChipGrid>
+          )}
+          {primaryContact && (
+            <StyledChipGrid container>
+              <IconTooltip
+                icon={ICON_NAME.CONTACT}
+                color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.darkGray}
+                iconOnly
+                dimension={15}
+              />
+              {primaryContact}
+            </StyledChipGrid>
+          )}
+
           {userRolesChip && typeof userRolesChip === 'object' && userRolesChip.length > 0 ? (
             <StyledChipGrid container>
               {userRolesChip?.map((r, index) => (
@@ -177,24 +218,28 @@ const ViewFormField = ({
 }
 
 ViewFormField.propTypes = {
-  gridSize: PropTypes.number,
+  heading: PropTypes.string,
   children: PropTypes.node,
   node: PropTypes.node,
-  heading: PropTypes.string,
+  gridSize: PropTypes.number,
   isLoading: PropTypes.bool,
   isWidget: PropTypes.bool,
   isNoBg: PropTypes.bool,
+  noBreakSpace: PropTypes.bool,
+  variant: PropTypes.oneOf(Object.values(TYPOGRAPHY)),
   contact: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
   chip: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
+  phoneChips: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
   userRolesChip: PropTypes.array,
-  variant: PropTypes.oneOf(Object.values(TYPOGRAPHY)),
   link: PropTypes.string,
-  customerLink: PropTypes.string
+  customerLink: PropTypes.string,
+  primaryContact: PropTypes.any
 }
 
 ViewFormField.defaultProps = {
   gridSize: 12,
   children: null,
+  noBreakSpace: false,
   node: null,
   heading: null,
   isLoading: false,
