@@ -35,6 +35,12 @@ const CustomerTable = ({ customer, mode, index }) => {
     address.push((customer?.mainSite?.address?.country).trim())
   }
 
+  const openInNewPage = (id) => {
+    // dispatch(setMachineTab('info'))
+    const url = PATH_CUSTOMER.customers.view(id)
+    window.open(url, '_blank')
+  }
+
   return (
     <Fragment>
       <TableBody>
@@ -44,6 +50,7 @@ const CustomerTable = ({ customer, mode, index }) => {
             onClick={() => {
               handleOnClick(customer?._id)
             }}
+            openInNewTab={() => openInNewPage(customer?._id)}
           />
           <TableCell>
             <Box>{customer?.clientCode}</Box>

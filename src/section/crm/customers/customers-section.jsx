@@ -1,17 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useLayoutEffect, memo } from 'react'
 import { useSelector, dispatch } from 'store'
 import { useSettingContext, useTable, useFilter, getComparator } from 'hook'
 import { Table, Typography, Grid } from '@mui/material'
 import { GStyledTableHeaderBox, GStyledSpanBox } from 'theme/style'
-import { getCustomers, resetCustomers } from 'store/slice'
-import { ChangeCustomerPage, ChangeCustomerRowsPerPage, setCustomerFilterBy } from 'store/slice/crm'
+import { getCustomers, resetCustomers, ChangeCustomerPage, ChangeCustomerRowsPerPage, setCustomerFilterBy } from 'store/slice'
 import { MotionLazyContainer } from 'component/animate'
 import { SearchBox } from 'component/search'
 import { TableNoData } from 'component'
 import { SkeletonTable } from 'component/skeleton'
 import { CustomerTable, CustomerHeader, CustomerListPagination } from 'section/crm'
 import { MARGIN, TABLE } from 'config'
-import { KEY, TITLE, VARIANT, FLEX_DIR } from 'constant'
+import { KEY, TITLE, VARIANT, FLEX_DIR, FLEX } from 'constant'
 import { StyledScrollTableContainer } from './style'
 
 const { TYPOGRAPHY } = VARIANT
@@ -26,15 +25,16 @@ const CustomerListSection = () => {
   const {
     order,
     orderBy,
-    setPage: setTablePage,
-    selected,
-    onSelectRow,
-    onSelectAllRows,
-    onSort
+    setPage: setTablePage
   } = useTable({
-    defaultOrderBy: 'createdAt',
+    defaultOrderBy: KEY.CREATED_AT,
     defaultOrder: KEY.DESC
   })
+
+  useLayoutEffect(() => {
+    dispatch(resetCustomers())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch])
 
   const { filterName, handleFilterName, filteredData } = useFilter(
     getComparator(order, orderBy),
@@ -46,14 +46,7 @@ const CustomerListSection = () => {
 
   useEffect(() => {
     dispatch(getCustomers(null, null, false))
-    return () => {
-      dispatch(resetCustomers())
-    }
   }, [dispatch])
-
-  useEffect(() => {
-    setTableData(customers || [])
-  }, [customers])
 
   const handleChangePage = (event, newPage) => {
     if (newPage < Math.ceil(filteredData.length / customerRowsPerPage)) {
@@ -68,7 +61,7 @@ const CustomerListSection = () => {
   const isNotFound = !isLoading && !filteredData.length
 
   return (
-    <MotionLazyContainer display="flex">
+    <MotionLazyContainer display={FLEX.FLEX}>
       <GStyledSpanBox>
         <Typography variant={TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? 'grey.200' : 'howick.bronze'}>
           {TITLE.ORGANIZATIONS.toUpperCase()}
@@ -111,4 +104,4 @@ const CustomerListSection = () => {
   )
 }
 
-export default CustomerListSection
+export default memo(CustomerListSection)
