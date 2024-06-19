@@ -2,6 +2,7 @@ import { memo } from 'react'
 import PropTypes from 'prop-types'
 import { useTheme } from '@mui/material/styles'
 import { AppBar, Box, Toolbar } from '@mui/material'
+import { KEY } from 'constant'
 
 function Navbar() {
   const theme = useTheme()
@@ -33,8 +34,8 @@ function Shadow({ sx, ...other }) {
         height: 24,
         zIndex: -1,
         width: 1,
-        m: 'auto',
-        position: 'absolute',
+        m: KEY.AUTO,
+        position: KEY.ABSOLUTE,
         boxShadow: (theme) => theme.customShadow.z8,
         ...sx
       }}
