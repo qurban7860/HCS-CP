@@ -1,1 +1,1 @@
-export { default as machineSchema } from './default-values'
+export { default as machineDefaultValues } from './default-values'
