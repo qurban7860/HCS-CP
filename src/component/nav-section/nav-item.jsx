@@ -1,34 +1,40 @@
 import { forwardRef } from 'react'
 import PropTypes from 'prop-types'
 import { Link as RouterLink } from 'react-router-dom'
+import { Icon, ICON_NAME } from 'hook'
 import { Box, Tooltip, ListItemText, Link } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useLocale } from 'locale'
 import { RoleBasedGuard } from 'auth'
 import { Iconify } from 'component/iconify'
 import { StyledItem, StyledIcon } from './style'
+import { KEY, TYPOGRAPHY } from 'constant'
 
 const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...other }, ref) => {
   const { translate } = useLocale()
-  const theme = useTheme()
   const { title, path, icon, info, children, disabled, caption, roles } = item
+  const theme = useTheme()
 
   const subItem = depth !== 1
 
   const renderContent = (
     <StyledItem ref={ref} open={open} depth={depth} active={active} disabled={disabled} {...other}>
-      {icon && <StyledIcon>{icon}</StyledIcon>}
+      {icon && (
+        <StyledIcon>
+          <Icon icon={icon}></Icon>
+        </StyledIcon>
+      )}
 
       <ListItemText
         primary={`${translate(title)}`}
+        disabled={disabled}
         primaryTypographyProps={{
           noWrap: true,
           component: 'span',
-          variant: active ? 'h6' : 'h5',
-          fontWeight: active && 'bold',
-          color: theme.palette.text.primary,
+          variant: TYPOGRAPHY.BODY1,
+          fontWeight: active && KEY.BOLD,
+          color: theme.palette.text.primary
         }}
-        sx={{ margin: 0.5 }}
       />
 
       {info && (
@@ -40,7 +46,7 @@ const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...othe
       {caption && (
         <Tooltip title={`${translate(caption)}`} arrow>
           <Box component="span" sx={{ ml: 0.5, lineHeight: 0 }}>
-            <Iconify icon="eva:info-outline" width={16} />
+            <Icon icon={ICON_NAME.INFO} width={16} />
           </Box>
         </Tooltip>
       )}
@@ -50,17 +56,21 @@ const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...othe
   )
 
   const renderItem = () => {
-    // ExternalLink
     if (isExternalLink)
       return (
-        <Link href={path} target="_blank" rel="noopener" underline="none">
+        <Link href={path} target="_blank" rel="noopener" underline={KEY.NONE}>
           {renderContent}
         </Link>
       )
 
-    // Default
     return (
-      <Link component={RouterLink} to={path} underline="none">
+      <Link
+        component={RouterLink}
+        to={!disabled && path}
+        underline={KEY.NONE}
+        sx={{
+          cursor: disabled && 'not-allowed'
+        }}>
         {renderContent}
       </Link>
     )
@@ -71,10 +81,10 @@ const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...othe
 
 NavItem.propTypes = {
   open: PropTypes.bool,
-  active: PropTypes.bool,
+  active: PropTypes.any,
   item: PropTypes.object,
   depth: PropTypes.number,
-  isExternalLink: PropTypes.bool,
+  isExternalLink: PropTypes.bool
 }
 
 export default NavItem
