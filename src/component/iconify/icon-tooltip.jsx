@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { useIcon, useSettingContext } from 'hook'
 import { Button, alpha, IconButton } from '@mui/material'
@@ -21,6 +22,7 @@ export default function IconTooltip({
   dimension = TOOLTIP,
   noHoverAction,
   cursor = false,
+  noTitle,
   alongTab
 }) {
   const { Icon, iconSrc } = useIcon(icon)
@@ -35,7 +37,7 @@ export default function IconTooltip({
   }
 
   return (
-    <>
+    <Fragment>
       {disabled && !iconOnly ? (
         <Button
           variant={VARIANT.FILLED}
@@ -117,7 +119,7 @@ export default function IconTooltip({
           </GStyledTooltip>
         </Button>
       )}
-    </>
+    </Fragment>
   )
 }
 
