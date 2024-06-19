@@ -11,6 +11,7 @@ const LABEL = {
   FULLSCREEN_EXIT: 'Exit Fullscreen',
   HEADER: ' Form Header',
   ROWS: 'Rows:',
+  LAT_LONG: '00.0000000',
   LOGIN_EMAIL: 'Login / Email address',
   LOGIN_PASSWORD: 'Password',
   USER_PROFILE_TIX: 'Your Ticket/s',
