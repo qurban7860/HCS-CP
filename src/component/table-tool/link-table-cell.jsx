@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
-import { TableCell } from '@mui/material'
-import { alpha, createTheme } from '@mui/material/styles'
-import { green } from '@mui/material/colors'
-import { GStyledTooltip } from 'theme/style'
-import { Iconify } from 'component/iconify'
-import { ICON } from 'constant/icon'
-import { useLimitString } from 'hook'
+import { useSettingContext } from 'hook'
+import { TableCell, Link } from '@mui/material'
+import { alpha, createTheme, useTheme } from '@mui/material/styles'
+import { GStyledTooltip, GStyledSpanBox } from 'theme/style'
+import { IconTooltip } from 'component'
+import { ICON_NAME, Icon, useLimitString } from 'hook'
+import { KEY, LABEL } from 'constant'
 
 LinkTableCell.propTypes = {
   align: PropTypes.string,
@@ -15,17 +15,13 @@ LinkTableCell.propTypes = {
   isDefault: PropTypes.bool
 }
 
-function LinkTableCell({ align, onClick, param, stringLength, isDefault }) {
-  const theme = createTheme({
-    palette: {
-      success: green
-    }
-  })
+function LinkTableCell({ align, onClick, param, stringLength, isDefault, openInNewTab }) {
+  const theme = useTheme()
+  const { themeMode } = useSettingContext()
 
   return (
     <TableCell
       className="ellipsis-cell"
-      onClick={onClick}
       align={align}
       color="inherit"
       sx={{
@@ -37,21 +33,26 @@ function LinkTableCell({ align, onClick, param, stringLength, isDefault }) {
         textOverflow: 'ellipsis',
         maxWidth: '400px',
         '&:hover': {
-          color: () => alpha(theme.palette.info.main, 0.98)
+          color: () => alpha(theme.palette.grey[500], 0.98)
         }
       }}>
-      {useLimitString(param, stringLength || 30)}
-      {isDefault && (
-        <GStyledTooltip onClick={onClick} title={ICON.DEFAULT.heading} placement="top" disableFocusListener tooltipcolor={theme.palette.primary.main}>
-          <Iconify
-            icon={ICON.DEFAULT.icon}
-            color={theme.palette.primary.main}
-            width="17px"
-            height="17px"
-            sx={{ mb: -0.3, ml: 0.5, cursor: 'pointer' }}
+      <GStyledSpanBox gap={1}>
+        <Link onClick={onClick} sx={{ color: themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange }}>
+          {useLimitString(param, stringLength || 30)}
+        </Link>
+        {openInNewTab && (
+          <IconTooltip
+            onClick={openInNewTab}
+            title={LABEL.VIEW_IN_NEW_TAB}
+            icon={ICON_NAME.OPEN_IN_NEW}
+            placement={KEY.RIGHT}
+            color={theme.palette.grey[500]}
+            dimension={15}
+            px={0}
+            iconOnly
           />
-        </GStyledTooltip>
-      )}
+        )}
+      </GStyledSpanBox>
     </TableCell>
   )
 }

@@ -12,8 +12,8 @@ const TITLE = {
   NO_SITELOC: 'No site location was provided',
   NOT_PROVIDED: 'Not Provided',
   // @machine - MachineList
-  MACHINE_LIST: 'MACHINE LIST',
-  CUSTOMER_LIST: 'CUSTOMER LIST',
+  MACHINE_LIST: 'MACHINES',
+  CUSTOMER_LIST: 'CUSTOMERS',
   ORGANIZATIONS: 'Organizations',
   // :contact
   // @user - UserProfile - user

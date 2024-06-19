@@ -72,7 +72,11 @@ const SiteDialog = () => {
             <Grid item sm={6}>
               <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
                 {defaultValues?.installationSiteCity && defaultValues?.installationSiteCountry !== 'New Zealand' && (
-                  <Clock city={defaultValues?.installationSiteCity} country={defaultValues?.installationSiteCountry} />
+                  <Clock
+                    city={defaultValues?.installationSiteCity}
+                    country={defaultValues?.installationSiteCountry}
+                    region={defaultValues?.installationSiteRegion && defaultValues?.installationSiteRegion}
+                  />
                 )}
                 {DECOILER_TYPE_ARR.some((type) => defaultValues?.machineModel?.includes(type)) && (
                   <IconTooltip

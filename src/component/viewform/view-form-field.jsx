@@ -185,16 +185,27 @@ const ViewFormField = ({
               ))}
             </StyledChipGrid>
           )}
-          {primaryContact && (
-            <StyledChipGrid container>
+          {primaryContact && primaryContact !== '' ? (
+            <StyledChipGrid container gap={1}>
               <IconTooltip
                 icon={ICON_NAME.CONTACT}
-                color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.darkGray}
+                color={themeMode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[500]}
                 iconOnly
                 dimension={15}
               />
               {primaryContact}
             </StyledChipGrid>
+          ) : (
+            primaryContact === '' && (
+              <StyledChipGrid container>
+                <IconTooltip
+                  icon={ICON_NAME.CONTACT}
+                  color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.darkGray}
+                  iconOnly
+                  dimension={15}
+                />
+              </StyledChipGrid>
+            )
           )}
 
           {userRolesChip && typeof userRolesChip === 'object' && userRolesChip.length > 0 ? (

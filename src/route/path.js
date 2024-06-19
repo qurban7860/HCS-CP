@@ -63,7 +63,7 @@ export const PATH_CUSTOMER = {
   root: ROOTS_CRM,
   permissionDenied: path(ROOTS_CRM, '/permission-denied'),
   customers: {
-    list: conNex(ROOTS_CRM, SUB_CUSTOMERS, 'list'),
+    list: conNex(ROOTS_CRM, SUB_CUSTOMERS),
     new: conNex(ROOTS_CRM, SUB_CUSTOMERS, 'new'),
     view: (id) => conNex(ROOTS_CRM, SUB_CUSTOMERS, id, 'view'),
     contacts: {
@@ -81,7 +81,7 @@ export const PATH_MACHINE = {
   permissionDenied: path(ROOTS_PRODUCTS, '/permission-denied'),
   machines: {
     root: conNex(ROOTS_PRODUCTS, SUB_MACHINES),
-    list: conNex(ROOTS_PRODUCTS, SUB_MACHINES, 'list'),
+    list: conNex(ROOTS_PRODUCTS, SUB_MACHINES),
     view: (id) => conNex(ROOTS_PRODUCTS, SUB_MACHINES, id, 'view')
   }
 }

@@ -4,7 +4,7 @@ import { bgBlur } from 'theme/style'
 import { NAV, ICON } from 'config'
 
 export const StyledItem = styled(ListItemButton, {
-  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'open',
+  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'open'
 })(({ active, disabled, open, depth, theme }) => {
   const isLight = theme.palette.mode === 'light'
 
@@ -14,18 +14,19 @@ export const StyledItem = styled(ListItemButton, {
     color: theme.palette.primary.main,
     backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
     ...(!isLight && {
-      color: theme.palette.primary.light,
-    }),
+      color: theme.palette.primary.light
+    })
   }
 
   const activeSubStyle = {
     color: theme.palette.text.primary,
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent'
   }
 
   const hoverStyle = {
     color: theme.palette.text.primary,
-    backgroundColor: theme.palette.action.hover,
+    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.hoverOpacity),
+    borderRadius: theme.shape.borderRadius
   }
 
   return {
@@ -42,31 +43,31 @@ export const StyledItem = styled(ListItemButton, {
       width: '100%',
       margin: 0,
       paddingRight: 0,
-      paddingLeft: theme.spacing(1),
+      paddingLeft: theme.spacing(1)
     }),
     // Active item
     ...(active && {
       ...activeStyle,
       '&:hover': {
-        ...activeStyle,
-      },
+        ...activeStyle
+      }
     }),
     // Active sub item
     ...(subItem &&
       active && {
         ...activeSubStyle,
         '&:hover': {
-          ...activeSubStyle,
-        },
+          ...activeSubStyle
+        }
       }),
     // Open
     ...(open && !active && hoverStyle),
     // Disabled
     ...(disabled && {
       '&.Mui-disabled': {
-        opacity: 0.64,
-      },
-    }),
+        opacity: 0.64
+      }
+    })
   }
 })
 
@@ -76,7 +77,7 @@ export const StyledIcon = styled(ListItemIcon)({
   marginRight: 8,
   flexShrink: 0,
   width: ICON.NAV_ITEM_HORIZONTAL,
-  height: ICON.NAV_ITEM_HORIZONTAL,
+  height: ICON.NAV_ITEM_HORIZONTAL
 })
 
 // ----------------------------------------------------------------------
@@ -90,6 +91,6 @@ export const GStyledPopover = styled(Popover)(({ theme }) => ({
     marginTop: theme.spacing(0.5),
     boxShadow: theme.customShadows.dropdown,
     borderRadius: Number(theme.shape.borderRadius),
-    ...bgBlur({ color: theme.palette.background.default }),
-  },
+    ...bgBlur({ color: theme.palette.background.default })
+  }
 }))
