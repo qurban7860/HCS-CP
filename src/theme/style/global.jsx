@@ -1,6 +1,6 @@
 import { m } from 'framer-motion'
 import { styled, alpha } from '@mui/material/styles'
-import { Popover, ListItemText, Card, Chip, Grid, Divider, Container, Skeleton, Box, Typography, IconButton } from '@mui/material'
+import { Popover, ListItemText, Card, Chip, Grid, Divider, Container, Skeleton, Box, Typography, IconButton, Tab, Tabs } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { bgBlur } from 'theme/style'
@@ -238,6 +238,38 @@ export const GStyledTooltip = styled(({ className, mode, green, disabled, ...pro
         ? theme.palette.action.disabledText
         : theme.palette.common.white
   }
+}))
+
+export const GStyledTabs = styled(({ theme, mode, ...other }) => <Tabs {...other} />)(({ theme, mode }) => ({
+  '& .MuiTabs-root': {
+    padding: 0,
+    marginLeft: 2
+  },
+  '& .MuiTabs-indicator': {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  '&:hover': {
+    color: '#40a9ff',
+    opacity: 1
+  }
+}))
+
+export const GStyledTabBox = styled(Box)(({ theme }) => ({
+  borderBottom: `${theme.spacing(0.05)} solid`,
+  borderColor: alpha(theme.palette.grey[500], 0.5)
+}))
+
+export const GStyledTab = styled(({ theme, mode, ...other }) => <Tab {...other} />)(({ theme, mode }) => ({
+  '&.Mui-selected': {
+    color: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
+    fontWeight: 'bold'
+  },
+  '&.Mui-focusVisible': {
+    backgroundColor: 'howick.darkBlue'
+  },
+  paddingRight: theme.spacing(2),
+  paddingLeft: theme.spacing(2)
 }))
 
 export const GStyledTooltipSliding = styled(({ className, ...props }) => <Tooltip {...props} arrow classes={{ popper: className }} />)(
