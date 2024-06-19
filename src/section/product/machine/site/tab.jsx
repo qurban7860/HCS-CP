@@ -66,6 +66,7 @@ const SiteTab = ({ value, isBilling, isLoading, handleSiteWidgetDialog }) => {
             color={theme.palette.howick.bronze}
             dimension={20}
             onClick={(e) => handleSiteWidgetDialog(e, value.id)}
+            disabled={isLoading || !value.installationSite}
           />
         </GStyledSpanBox>
       </Grid>
