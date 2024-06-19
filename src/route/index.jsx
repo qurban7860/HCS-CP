@@ -127,7 +127,7 @@ export default function Router() {
         {
           path: 'machines',
           children: [
-            { path: 'list', element: <MachinesListPage /> },
+            { element: <MachinesListPage />, index: true },
             { path: ':id/view', element: <MachinePage /> }
           ]
         }
@@ -146,7 +146,7 @@ export default function Router() {
         {
           path: 'customers', // might changed to organizations later
           children: [
-            { path: 'list', element: <CustomerListPage /> },
+            { element: <CustomerListPage />, index: true },
             { path: ':id/view', element: <CustomerPage /> },
             {
               path: ':id/contacts',

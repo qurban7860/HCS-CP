@@ -21,7 +21,7 @@ import { KEY } from 'constant'
 export const TABS = (value) => [
   {
     id: 0,
-    label: 'Customer',
+    label: 'Customer Overview',
     icon: ICON_NAME.CUSTOMER,
     disabled: false
   },
@@ -40,6 +40,7 @@ export const TABS = (value) => [
   {
     id: 3,
     label: 'Support',
-    icon: ICON_NAME.SUPPORT
+    icon: ICON_NAME.SUPPORT,
+    disabled: true
   }
 ]

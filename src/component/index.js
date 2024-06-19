@@ -43,6 +43,7 @@ export { default as SkeletonTable } from './skeleton/table'
 export { default as TabContainer } from './tab/tab-container'
 // @table
 export { default as TableNoData } from './table/no-data'
+export { default as TableTitleBox } from './table/title-box'
 // @audit
 export { default as AuditBox } from './audit/audit-box'
 // @svg

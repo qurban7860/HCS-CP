@@ -1,19 +1,22 @@
+import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { useLocation } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
-import { useActiveLink } from 'hook'
+import { useActiveLink, useSettingContext } from 'hook'
 import { GStyledPopover } from './style'
 import NavItem from './nav-item'
+import { KEY } from 'constant'
 
 NavList.propTypes = {
-  data: PropTypes.object,
-  depth: PropTypes.number,
-  hasChild: PropTypes.bool,
+  data: PropTypes.object.isRequired,
+  depth: PropTypes.number.isRequired,
+  hasChild: PropTypes.bool
 }
 
 function NavList({ data, depth, hasChild }) {
   const [open, setOpen] = useState(false)
   const navRef = useRef(null)
+  const { themeMode } = useSettingContext()
   const { pathname } = useLocation()
   const { active, isExternalLink } = useActiveLink(data.path)
 
@@ -25,12 +28,9 @@ function NavList({ data, depth, hasChild }) {
 
   useEffect(() => {
     const appBarEl = Array.from(document.querySelectorAll('.MuiAppBar-root'))
-
-    // Reset styles when hover
     const styles = () => {
       document.body.style.overflow = ''
       document.body.style.padding = ''
-      // Apply for Window
       appBarEl.forEach((elem) => {
         elem.style.padding = ''
       })
@@ -52,7 +52,7 @@ function NavList({ data, depth, hasChild }) {
   }
 
   return (
-    <>
+    <Fragment>
       <NavItem
         ref={navRef}
         item={data}
@@ -63,12 +63,15 @@ function NavList({ data, depth, hasChild }) {
         onMouseEnter={handleOpen}
         onMouseLeave={handleClose}
         sx={{
+          transition: 'background-color 0.3s',
+          backgroundColor: themeMode === KEY.LIGHT ? (active ? 'primary.main' : 'transparent') : active && 'howick.orange',
           '& .MuiTypography-root': {
+            color: themeMode === KEY.LIGHT ? (active ? 'common.white' : 'grey.900') : active && 'common.black',
             fontWeight: active ? 'bold' : 'normal',
-            '&: hover': {
-              fontWeight: 'bold',
-            },
-          },
+            '&:hover': {
+              color: themeMode === KEY.LIGHT ? 'common.black' : 'common.white'
+            }
+          }
         }}
       />
 
@@ -80,28 +83,27 @@ function NavList({ data, depth, hasChild }) {
           transformOrigin={depth === 1 ? { vertical: 'top', horizontal: 'left' } : { vertical: 'center', horizontal: 'left' }}
           PaperProps={{
             onMouseEnter: handleOpen,
-            onMouseLeave: handleClose,
-          }}
-        >
+            onMouseLeave: handleClose
+          }}>
           <NavSubList data={data.children} depth={depth} />
         </GStyledPopover>
       )}
-    </>
+    </Fragment>
   )
 }
 
 NavSubList.propTypes = {
-  data: PropTypes.array,
-  depth: PropTypes.number,
+  data: PropTypes.array.isRequired,
+  depth: PropTypes.number.isRequired
 }
 
 function NavSubList({ data, depth }) {
   return (
-    <>
+    <Fragment>
       {data.map((list) => (
-        <NavList key={list.title + list.path} data={list} depth={depth + 1} hasChild={!!list.children} />
+        <NavList key={list.title + list.path} data={list} depth={depth + 1} hasChild={!!list.children} disabled={list.disabled} />
       ))}
-    </>
+    </Fragment>
   )
 }
 

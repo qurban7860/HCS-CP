@@ -11,10 +11,9 @@ import { NavSection } from 'component/nav-section'
 import ModeOption from './mode-option'
 import AccountPopover from './account-popover'
 import NotificationPopover from './notification-popover'
-import { KEY, TIMEZONE } from 'constant'
+import { FLEX, FLEX_DIR, KEY, TIMEZONE } from 'constant'
 
 function Header() {
-  const { user, logout } = useAuthContext()
   const theme = useTheme()
   const navConfig = NavConfiguration()
   const { themeLayout } = useSettingContext()
@@ -34,11 +33,11 @@ function Header() {
 
   const renderContent = (
     <Fragment>
-      <Stack direction="row" justifyContent="flex-start">
+      <Stack direction={FLEX_DIR.ROW} justifyContent={FLEX.FLEX_START}>
         {isDesktop && (
           <Badge
             overlap="circular"
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            anchorOrigin={{ vertical: KEY.BOTTOM, horizontal: KEY.RIGHT }}
             color="primary"
             variant="dot"
             badgeContent={GLOBAL.VERSION}
@@ -57,10 +56,10 @@ function Header() {
           <Iconify icon="eva:menu-2-fill" />
         </IconButton>
       )}
-      <Stack flexGrow={1} direction="row" alignItems="center" justifyContent="flex-start" spacing={{ xs: 0.5, sm: 4 }} ml={5}>
+      <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_START} spacing={{ xs: 0.5, sm: 4 }} ml={5}>
         <NavSection data={navConfig} />
       </Stack>
-      <Stack flexGrow={1} direction="row" alignItems="center" justifyContent="flex-end" spacing={{ xs: 0.5, sm: 2 }}>
+      <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_END} spacing={{ xs: 0.5, sm: 2 }}>
         {localTimeZone !== aucklandTimeZone && <Clock local={localTimeZone} />}
         <Clock main city={KEY.AUCKLAND} />
         <ModeOption />
@@ -73,7 +72,7 @@ function Header() {
   return (
     <AppBar
       sx={{
-        boxShadow: 'none',
+        boxShadow: KEY.NONE,
         height: HEADER.H_MOBILE,
         position: 'fixed',
         top: 0,

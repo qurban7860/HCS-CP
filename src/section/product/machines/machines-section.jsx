@@ -1,15 +1,19 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, memo, useLayoutEffect } from 'react'
 import { useSelector, dispatch } from 'store'
 import { useAuthContext } from 'auth'
 import { snack, useTable, useFilter, getComparator, useSettingContext } from 'hook'
+import {
+  getMachines,
+  getSecurityUser,
+  setMachineFilterBy,
+  ChangeMachinePage,
+  ChangeMachineRowsPerPage,
+  resetMachines,
+  resetSecurityUser
+} from 'store/slice'
 import { Table, Typography, Grid, Box } from '@mui/material'
 import { GStyledTableHeaderBox, GStyledSpanBox } from 'theme/style'
-import { useGetUserQuery, getMachines, resetMachines, getSecurityUser, resetSecurityUser } from 'store/slice'
-import { ChangeMachinePage, ChangeMachineRowsPerPage, setMachineFilterBy } from 'store/slice/product'
-import { MotionLazyContainer } from 'component/animate'
-import { SearchBox } from 'component/search'
-import { TableNoData } from 'component'
-import { SkeletonTable } from 'component/skeleton'
+import { TableNoData, MotionLazyContainer, SkeletonTable, SearchBox, TableTitleBox } from 'component'
 import { MachineTable, MachineHeader, MachineListPagination } from 'section/product'
 import { MARGIN, TABLE } from 'config'
 import { COLOR, KEY, TITLE, RESPONSE, FLEX, FLEX_DIR } from 'constant'
@@ -27,15 +31,17 @@ const MachineListSection = () => {
   const {
     order,
     orderBy,
-    setPage: setTablePage,
-    selected,
-    onSelectRow,
-    onSelectAllRows,
-    onSort
+    setPage: setTablePage
   } = useTable({
     defaultOrderBy: KEY.CREATED_AT,
     defaultOrder: KEY.DESC
   })
+
+  useLayoutEffect(() => {
+    dispatch(resetMachines())
+    dispatch(resetSecurityUser())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch])
 
   const { filterName, handleFilterName, filteredData } = useFilter(
     getComparator(order, orderBy),
@@ -53,9 +59,6 @@ const MachineListSection = () => {
 
   useEffect(() => {
     dispatch(getMachines(null, null, false))
-    return () => {
-      dispatch(resetMachines())
-    }
   }, [dispatch])
 
   useEffect(() => {
@@ -77,14 +80,7 @@ const MachineListSection = () => {
 
   return (
     <MotionLazyContainer display={FLEX.FLEX}>
-      <GStyledSpanBox>
-        <Typography variant="h3" color={themeMode === KEY.LIGHT ? 'common.black' : 'common.white'}>
-          {securityUser?.customer?.name.toUpperCase() || TITLE.ORGANIZATION} &nbsp;
-        </Typography>
-        <Typography variant="h3" color={themeMode === KEY.LIGHT ? 'grey.200' : 'howick.bronze'}>
-          / {TITLE.MACHINE_LIST}
-        </Typography>
-      </GStyledSpanBox>
+      <TableTitleBox title={TITLE.MACHINE_LIST} user={securityUser} />
       <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} />
       <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
         <Grid item lg={12}>
@@ -122,4 +118,4 @@ const MachineListSection = () => {
   )
 }
 
-export default MachineListSection
+export default memo(MachineListSection)

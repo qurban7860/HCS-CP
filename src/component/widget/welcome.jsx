@@ -27,7 +27,12 @@ function Welcome({ title, description, action, img, ...other }) {
         }}>
         {/* keep for branding  */}
         <GStyledSpanBox gap={2} my={2}>
-          <img alt="logo" src={themeMode === KEY.DARK ? ASSET.HOWICK_PORTAL_DARK : ASSET.HOWICK_PORTAL} width={900} />
+          <img
+            alt="logo"
+            src={themeMode === KEY.DARK ? ASSET.HOWICK_PORTAL_DARK : ASSET.HOWICK_PORTAL}
+            width={900}
+            style={{ pointerEvents: KEY.NONE }}
+          />
         </GStyledSpanBox>
         <GStyledWelcomeDescription variant={TYPOGRAPHY.SUBTITLE0} themeMode={themeMode}>
           {description}

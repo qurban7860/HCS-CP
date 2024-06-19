@@ -193,10 +193,23 @@ const SiteTab = () => {
                             gridSize={12}
                             isNoBg
                           />
-                          <GridViewField heading={ADDRESS.LONG} isLoading={isLoading} children={defaultValues?.long} isNoBg />
-                          <GridViewField heading={ADDRESS.LAT} isLoading={isLoading} children={defaultValues?.lat} isNoBg />
+                          <GridViewField
+                            heading={ADDRESS.LONG}
+                            isLoading={isLoading}
+                            children={defaultValues?.long ? defaultValues.long : LABEL.LAT_LONG}
+                            placeholder={LABEL.LAT_LONG}
+                            isNoBg
+                            sx={{ color: themeMode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[500] }}
+                          />
+                          <GridViewField
+                            heading={ADDRESS.LAT}
+                            isLoading={isLoading}
+                            children={defaultValues?.lat ? defaultValues.lat : LABEL.LAT_LONG}
+                            isNoBg
+                          />
                         </Grid>
                       </Grid>
+
                       <Grid item xs={12} sm={6}>
                         <Grid container spacing={1} p={2} flexDirection={FLEX_DIR.ROW_REVERSE}>
                           <GridViewField

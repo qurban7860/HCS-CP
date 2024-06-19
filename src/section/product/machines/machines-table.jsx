@@ -24,6 +24,12 @@ const MachineTable = ({ machine, mode, index }) => {
     navigate(PATH_MACHINE.machines.view(id))
   }
 
+  const openInNewPage = (id) => {
+    // dispatch(setMachineTab('info'))
+    const url = PATH_MACHINE.machines.view(id)
+    window.open(url, '_blank')
+  }
+
   return (
     <Fragment>
       <TableBody>
@@ -33,6 +39,7 @@ const MachineTable = ({ machine, mode, index }) => {
             onClick={() => {
               handleOnClick(machine?._id)
             }}
+            openInNewTab={() => openInNewPage(machine?._id)}
           />
           <TableCell>{machine?.name}</TableCell>
           <TableCell>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Stack } from '@mui/material'
 import { hideScrollbarY } from 'theme/style'
 import NavList from './nav-list'
+import { FLEX_DIR, KEY } from 'constant'
 
 NavSection.propTypes = {
   sx: PropTypes.object,
@@ -12,10 +13,10 @@ NavSection.propTypes = {
 function NavSection({ data, sx, ...other }) {
   return (
     <Stack
-      direction="row"
-      spacing={1}
+      direction={FLEX_DIR.ROW}
+      spacing={2}
       sx={{
-        mx: 'auto',
+        mx: KEY.AUTO,
         ...hideScrollbarY,
         ...sx
       }}

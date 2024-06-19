@@ -7,16 +7,24 @@ import cityMapping from 'config/city-map.json'
  * @param {string} city - The name of the city.
  * @returns {Array} - An array of timezone objects matching the given city.
  */
-export function huntTimezone(city, country) {
+export function huntTimezone(city, country, region) {
   const normalizedCity = sanitizeCityName(city)
+  const normalizedRegion = sanitizeCityName(region && region)
+  const normalizedCountry = sanitizeCityName(country)
 
   const cityLookups = cityMapping.filter((o) => o.city.toLowerCase() === normalizedCity.toLowerCase())
-  if ((cityLookups.length > 1 && country) || (cityLookups.length === 0 && country)) {
-    const countryLookup = cityLookups.find((o) => o.country.toLowerCase() === country.toLowerCase())
+  if (cityLookups.length === 0 && normalizedCountry && normalizedRegion && normalizedCity) {
+    const countryLookup = cityLookups.find((o) => o.country.toLowerCase() === normalizedCountry.toLowerCase())
+    const regionLookup = cityMapping.find((o) => o.province.toLowerCase() === normalizedRegion.toLowerCase())
+    if (regionLookup && countryLookup) {
+      console.log(city, country, region, normalizedCity)
+      return regionLookup
+    }
+
     return countryLookup ? countryLookup : {}
-  } else if (cityLookups.length > 0) {
+  } else if (cityLookups.length >= 1) {
     return cityLookups[0]
-  } else if (!cityLookups && country) {
+  } else if (!cityLookups && country && region) {
     const partialLookup = findPartialMatch(cityMapping, normalizedCity)
     if (partialLookup) {
       const cityLookup = _.filter(cityMapping, function (o) {

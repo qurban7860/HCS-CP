@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { PATH_DASHBOARD, PATH_CUSTOMER, PATH_MACHINE } from 'route/path'
 
 function NavConfiguration() {
@@ -6,14 +6,20 @@ function NavConfiguration() {
     {
       subheader: 'general',
       items: [
-        { title: 'Home', path: PATH_DASHBOARD.general.app, children: null },
-        { title: 'Machine', path: PATH_MACHINE.machines.list, children: null },
-        { title: 'Organization', path: PATH_CUSTOMER.customers.list, children: null },
-        { title: 'Document', path: '/documents', children: null },
-        { title: 'Support', path: '/support', children: null }
+        { title: 'Home', path: PATH_DASHBOARD.general.app },
+        { title: 'Machine', path: PATH_MACHINE.machines.list },
+        { title: 'Organization', path: PATH_CUSTOMER.customers.list },
+        { title: 'Document', path: '/documents', children: null, disabled: true },
+        { title: 'Support', path: '/support', children: null, disabled: true }
       ]
     }
   ])
+
+  useEffect(() => {
+    const updatedNavConfig = [...navConfig]
+
+    return setNavConfig(updatedNavConfig)
+  }, [])
 
   return navConfig
 }
