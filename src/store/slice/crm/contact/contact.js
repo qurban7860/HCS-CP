@@ -8,7 +8,7 @@ const initialState = {
   formVisibility: false,
   contactEditFormVisibility: false,
   contactMoveFormVisibility: false,
-  responseMessage: null,
+  contactResponseMessage: null,
   activeCardIndex: '',
   isExpanded: false,
   success: false,
@@ -117,8 +117,8 @@ const contactSlice = createSlice({
       state.contact = action.payload
       state.initial = true
     },
-    setResponseMessage(state, action) {
-      state.responseMessage = action.payload
+    setContactResponseMessage(state, action) {
+      state.contactResponseMessage = action.payload
       state.isLoading = false
       state.success = true
       state.initial = true
@@ -157,7 +157,7 @@ export const {
   resetActiveSPContacts,
   resetContactFormsVisiblity,
   resetSelectedContactCard,
-  setResponseMessage,
+  setContactResponseMessage,
   setContactFilterBy,
   ChangeContactRowsPerPage,
   ChangeContactPage,
@@ -185,7 +185,7 @@ export function getContacts(customerId, isCustomerArchived = false) {
 
       const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.listContact(customerId), { params })
       dispatch(contactSlice.actions.getContactsSuccess(response.data))
-      dispatch(contactSlice.actions.setResponseMessage('Contacts loaded'))
+      dispatch(contactSlice.actions.setContactResponseMessage('Contacts loaded'))
     } catch (error) {
       console.log(error)
       dispatch(contactSlice.actions.hasError(error.Message))
