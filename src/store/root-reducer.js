@@ -10,7 +10,8 @@ import {
   contactReducer,
   siteReducer,
   machineModelReducer,
-  roleReducer
+  roleReducer,
+  ticketReducer
 } from './slice'
 
 export const apiPersistConfig = {
@@ -83,16 +84,29 @@ export const machineModelPersistConfig = {
   blacklist: ['error', 'initial', 'responseMessage']
 }
 
+export const ticketPersistConfig = {
+  key: 'ticket',
+  storage,
+  keyPrefix: 'redux-',
+  blacklist: ['error', 'initial', 'responseMessage']
+}
+
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: persistReducer(apiPersistConfig, apiSlice.reducer),
+  // security
+  user: persistReducer(userPersistConfig, userReducer),
+  role: persistReducer(rolePersistConfig, roleReducer),
+  // auth
   auth: persistReducer(authPersistConfig, authReducer),
-  machine: persistReducer(machinePersistConfig, machineReducer),
+  // crm
   customer: persistReducer(customerPersistConfig, customerReducer),
   contact: persistReducer(contactPersistConfig, contactReducer),
   site: persistReducer(sitePersistConfig, siteReducer),
+  // product
+  machine: persistReducer(machinePersistConfig, machineReducer),
   machinemodel: persistReducer(machineModelPersistConfig, machineModelReducer),
-  user: persistReducer(userPersistConfig, userReducer),
-  role: persistReducer(rolePersistConfig, roleReducer)
+  // support
+  ticket: persistReducer(ticketPersistConfig, ticketReducer)
 })
 
 export default rootReducer

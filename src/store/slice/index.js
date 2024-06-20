@@ -30,3 +30,7 @@ export { default as contactReducer } from './crm/contact/contact'
 // crm/site
 export * from './crm/site'
 export { default as siteReducer } from './crm/site/site'
+
+// support(jira)/ticket
+export * from './support/ticket'
+export { default as ticketReducer } from './support/ticket/ticket'
