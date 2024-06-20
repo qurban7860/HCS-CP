@@ -15,7 +15,7 @@ LinkTableCell.propTypes = {
   isDefault: PropTypes.bool
 }
 
-function LinkTableCell({ align, onClick, param, stringLength, isDefault, openInNewTab }) {
+function LinkTableCell({ align, onClick, param, stringLength, tooltipTitle, openInNewTab, icon }) {
   const theme = useTheme()
   const { themeMode } = useSettingContext()
 
@@ -43,8 +43,8 @@ function LinkTableCell({ align, onClick, param, stringLength, isDefault, openInN
         {openInNewTab && (
           <IconTooltip
             onClick={openInNewTab}
-            title={LABEL.VIEW_IN_NEW_TAB}
-            icon={ICON_NAME.OPEN_IN_NEW}
+            title={tooltipTitle || LABEL.VIEW_IN_NEW_TAB}
+            icon={icon || ICON_NAME.OPEN_IN_NEW}
             placement={KEY.RIGHT}
             color={theme.palette.grey[500]}
             dimension={15}
