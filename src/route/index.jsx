@@ -26,6 +26,8 @@ import {
   CustomerListPage,
   ContactPage,
   SitePage,
+  // support:
+  TicketsListPage,
   // fallback:
   BlankPage,
   FallbackPage,
@@ -191,17 +193,17 @@ export default function Router() {
       ]
     },
     {
-      // support
+      // support (jira)
       path: 'support',
       element: (
         <AuthGuard>
-          <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
+          <DashboardLayout />
         </AuthGuard>
       ),
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
+        { path: 'tickets', element: <TicketsListPage /> },
         {
-          path: 'list',
           element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
           children: [
             // { path: 'password', element: <ChangePasswordPage /> },

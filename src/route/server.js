@@ -66,20 +66,29 @@ export const PATH_SERVER = {
   // /crm
   CRM: {
     CUSTOMER: {
-      // /customer/:id
+      // /customers/:id
       detail: (customerId) => _url('crm', 'customers', customerId),
       // /customer
       list: _url('crm', 'customers'),
-      // /customer/:id/contacts
+      // /customers/:id/contacts
       listContact: (customerId) => _url('crm', 'customers', customerId, 'contacts'),
-      // /customer/:id/contacts/:contactId
+      // /customers/:id/contacts/:contactId
       contactDetail: (customerId, contactId) => _url('crm', 'customers', customerId, 'contacts', contactId),
-      // /customer/:id/sites
+      // /customers/:id/sites
       listSite: (customerId) => _url('crm', 'customers', customerId, 'sites'),
-      // /customer/:id/sites/:siteId
+      // /customers/:id/sites/:siteId
       siteDetail: (customerId, siteId) => _url('crm', 'customers', customerId, 'sites', siteId),
-      // /customer/:id/machine
+      // /customers/:id/machine
       listMachine: (customerId) => _url('crm', 'customers', customerId, 'machine')
     }
+  },
+
+  // [NOTE] this is current under the name jira module
+  // /support (jira)
+  SUPPORT: {
+    // /tickets
+    TICKETS: _url('jira', 'tickets'),
+    // /support/tickets/:id
+    TICKET: (ticketId) => _url('jira', ticketId)
   }
 }

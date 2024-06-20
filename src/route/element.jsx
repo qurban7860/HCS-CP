@@ -32,11 +32,14 @@ export const ContactPage = Loadable(lazy(() => import('page/crm/contact/contact'
 // site
 export const SitePage = Loadable(lazy(() => import('page/crm/site/site')))
 
+// support
+export const TicketsListPage = Loadable(lazy(() => import('page/support/tickets/tickets')))
+
 // user Invitations List
 export const { UserInvitationList } = Loadable(lazy(() => import('page/security/user/user')))
 export const { UserInvitationView } = Loadable(lazy(() => import('page/security')))
 
-// User
+// user
 export const UserProfilePage = Loadable(lazy(() => import('page/security/user/user')))
 
 // dashboard: settings
