@@ -47,7 +47,7 @@ const CSS = {
  * @description - important keys to the applications are stored here
  */
 const KEY = {
-  // @config
+  // config
   DEV: 'dev',
   DEVELOPMENT: 'development',
   LIGHT: 'light',
@@ -77,6 +77,14 @@ const KEY = {
   CREATED_AT: 'createdAt',
   FULL_PERCENT: '100%',
   BLANK: '_blank',
+  // support/tickets header keys
+  FIELDS_CREATED: 'fields.created',
+  FIELDS_KEY: 'key',
+  FIELDS_SUMMARY: 'fields.summary',
+  FIELDS_ORGANIZATION: 'fields.customfield_10078',
+  FIELDS_MACHINE: 'fields.customfield_10069',
+  FIELDS_MODEL: 'fields.customfield_10070.value',
+  FIELDS_STATUS: 'fields?.status?.statusCategory?.name',
 
   // configurations keys/related
   CONFIGURATIONS: 'configurations',
