@@ -8,13 +8,12 @@ const TITLE = {
   FORGOT_DESC: 'Enter your email address below and we will send you instructions on how to reset your password.',
   FORGOT_RETURN: 'Return to sign in',
   FORGOT_REQUEST: 'Send Request',
-  // @root -MachineViewForm - site location
   NO_SITELOC: 'No site location was provided',
   NOT_PROVIDED: 'Not Provided',
-  // @machine - MachineList
   MACHINE_LIST: 'MACHINES',
-  CUSTOMER_LIST: 'CUSTOMERS',
   ORGANIZATIONS: 'Organizations',
+  CUSTOMER_LIST: 'CUSTOMERS',
+  SUPPORT_TICKETS: 'Support Tickets',
   // :contact
   // @user - UserProfile - user
   PERSONAL_INFO: 'Personal Information',
