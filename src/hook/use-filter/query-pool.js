@@ -94,7 +94,7 @@ export const moduleFilter = (inputSub, filterName) => {
       filterParams?.fields?.customfield_10078?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
       filterParams?.fields?.customfield_10069?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
       filterParams?.fields?.customfield_10070?.value?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
-      fDateTime(filterParams?.fields?.created)?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
+      fDate(filterParams?.fields?.created)?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
       filterParams?.fields?.summary?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
       filterParams?.fields?.status?.name?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0
   )
