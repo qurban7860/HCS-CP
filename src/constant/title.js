@@ -27,6 +27,7 @@ const TITLE = {
   ADDRESS_INFO: 'Address Information',
   HOWICK_RESOURCES: 'Howick Resources',
   MACHINE: 'Machine',
+  MACHINE_QUICK_SPECS: 'Machine Quick Specs',
   // @root - AccountPopover - settings drawer
   DISPLAY_SETTING: 'Display setting',
   LANGUAGE: 'Language',
@@ -40,6 +41,7 @@ const TITLE = {
   },
   CONTRAST: 'Contrast',
   ORGANIZATION: 'Organization',
+  QUICK_SPECS: 'Quick Specs',
   CONSTRAST: {
     title: 'Contrast',
     tooltip: 'Toggle contrast mode'
