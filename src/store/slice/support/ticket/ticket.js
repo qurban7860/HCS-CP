@@ -129,7 +129,7 @@ export function getSupportTicket(id) {
     try {
       const response = await axios.get(PATH_SERVER.SUPPORT.TICKET(id))
       if (regEx.test(response.status)) {
-        dispatch(supportSlice.actions.getJiraTicketSuccess(response.data))
+        dispatch(supportSlice.actions.getTicketSuccess(response.data))
       }
       return response
     } catch (error) {
