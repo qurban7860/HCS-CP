@@ -21,6 +21,14 @@ const MODULES = {
   SUPPORT: 'support'
 }
 
+const SUPPORT_TICKET_DESC_TYPES = {
+  TEXT: 'text',
+  PARAGRAPH: 'paragraph',
+  BULLET_LIST: 'bulletList',
+  ORDERED_LIST: 'orderedList',
+  HEADING: 'heading'
+}
+
 const CSS = {
   // @position
   START: 'start',
