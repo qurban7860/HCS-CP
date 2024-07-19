@@ -28,6 +28,7 @@ const CustomerTab = () => {
   const { themeMode } = useSettingContext()
   const { customerMachines } = useSelector((state) => state.machine)
   const { customer, isLoading } = useSelector((state) => state.customer)
+  const { contacts } = useSelector((state) => state.contact)
 
   const { CUSTOMER, SITE, ADDRESS } = VIEW_FORM
 
@@ -52,7 +53,7 @@ const CustomerTab = () => {
     dispatch(resetMachineSiteDialogData())
   }, [dispatch])
 
-  const defaultValues = customerDefaultValues(customer, customerMachines)
+  const defaultValues = customerDefaultValues(customer, customerMachines, contacts)
 
   const handleConnectedMachineDialog = (event, machineId) => {
     event.preventDefault()
