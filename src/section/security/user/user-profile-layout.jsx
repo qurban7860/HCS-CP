@@ -41,9 +41,9 @@ const UserProfileLayout = () => {
   })
 
   useEffect(() => {
-    if (defaultValues?.customer) {
+    if (defaultValues?.customerId) {
       dispatch(resetCustomer())
-      dispatch(getCustomer(defaultValues.customer?._id))
+      dispatch(getCustomer(defaultValues.customerId))
     }
   }, [dispatch, defaultValues?.customer])
 

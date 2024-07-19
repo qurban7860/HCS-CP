@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { useIcon, ICON_NAME } from 'hook'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
-import { getConnectedMachineDialog, setMachineParent, setMachineConnected, resetMachine, setMachineDialog, getCustomer } from 'store/slice'
-import { Grid, Typography, IconButton } from '@mui/material'
+import { setMachineDialog } from 'store/slice'
+import { Grid, Typography, IconButton, Divider } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTooltip } from 'theme/style'
 import { useSettingContext } from 'hook'
@@ -107,6 +107,7 @@ const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMa
                     )}
                   </GStyledSpanBox>
                 </Grid>
+                <Divider style={{ width: '100%', color: 'common.white', marginBottom: 5 }} />
               </Fragment>
             ))
           ) : value?.parentConnection?.length > 0 ? (

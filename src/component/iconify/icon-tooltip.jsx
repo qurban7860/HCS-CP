@@ -15,6 +15,9 @@ export default function IconTooltip({
   isActiveIcon = false,
   onClick,
   color,
+  textColor,
+  buttonColor,
+  variant,
   title,
   placement,
   icon,
@@ -107,14 +110,15 @@ export default function IconTooltip({
       ) : (
         <Button
           onClick={onClick}
-          variant={VARIANT.FILLED}
+          variant={variant}
           sx={{
             cursor: onClick ? 'pointer' : 'default',
-            color,
+            color: textColor,
+            backgroundColor: buttonColor,
             borderColor: color,
-            ':hover': { borderColor: convertToAlpha(color, 0.5) }
+            ':hover': { borderColor: convertToAlpha(color, 0.7), backgroundColor: buttonColor && convertToAlpha(buttonColor, 0.7) }
           }}>
-          <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={color} color={color}>
+          <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={buttonColor} color={textColor}>
             <Icon color={color} sx={{ height: dimension, width: dimension }} icon={iconSrc} />
           </GStyledTooltip>
         </Button>
@@ -128,8 +132,11 @@ IconTooltip.propTypes = {
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
   color: PropTypes.string,
-  title: PropTypes.string,
+  title: PropTypes.any,
+  textColor: PropTypes.string,
+  buttonColor: PropTypes.string,
   placement: PropTypes.string,
+  variant: PropTypes.string,
   icon: PropTypes.string,
   iconOnly: PropTypes.bool,
   isActiveIcon: PropTypes.bool,

@@ -132,7 +132,7 @@ const HOWICK = {
 const ACTION = {
   hover: alpha(GREY[500], 0.08),
   selected: alpha(GREY[500], 0.16),
-  disabled: alpha(GREY[200], 0.48),
+  disabled: alpha(GREY[300], 0.48),
   disabledText: alpha(GREY[400], 0.46),
   disabledBackground: alpha(GREY[700], 1),
   focus: alpha(GREY[500], 0.24),
@@ -174,7 +174,7 @@ export default function palette(themeMode) {
     text: {
       primary: GREY[800],
       secondary: GREY[600],
-      disabled: GREY[200],
+      disabled: GREY[600],
       no: GREY[800]
     },
     background: { paper: GREY[200], default: GREY[400], neutral: GREY[500] },

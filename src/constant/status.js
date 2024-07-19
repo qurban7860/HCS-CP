@@ -8,3 +8,16 @@ export const STATUS = {
   TRANSFERRED: 'transferred',
   STATUS: 'status'
 }
+
+export const SUPPORT_STATUS = {
+  OPEN: 'open',
+  IN_PROGRESS: 'in progress',
+  WAITING_FOR_CUSTOMER: 'waiting for customer',
+  WAITING_FOR_SUPPORT: 'waiting for support',
+  UNDER_REVIEW: 'under review',
+  UNDER_INVESTIGATION: 'under investigation',
+  PENDING: 'pending',
+  RESOLVED: 'resolved',
+  CANCELLED: 'canceled', // wrong spelling
+  COMPLETED: 'completed'
+}

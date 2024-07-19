@@ -115,6 +115,7 @@ function LoginForm() {
       <RHFCheckbox name={KEY.REMEMBER} label={BUTTON.REMEMBER_ME} />
       <GStyledLoadingButton
         fullWidth
+        isLoading={isSubmitting}
         color={KEY.INHERIT}
         size={SIZE.LARGE}
         type={KEY.SUBMIT}

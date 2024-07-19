@@ -7,7 +7,7 @@ import { fDate, parseAddress } from 'util'
  * @param {Array} machines - The machines array.
  * @returns {Object} - The default values object.
  */
-export default function customerDefaultValues(customerData, machines) {
+export default function customerDefaultValues(customerData, machines, contacts) {
   return useMemo(() => {
     return {
       id: customerData?._id || '',
@@ -16,7 +16,7 @@ export default function customerDefaultValues(customerData, machines) {
       ref: customerData?.ref || '',
       website: customerData?.mainSite?.website || '',
       tradingName: customerData?.tradingName || '',
-      contacts: customerData?.contacts || [],
+      contacts: contacts || [],
       accountManager: customerData?.accountManager || [],
       projectManager: customerData?.projectManager || [],
       supportManager: customerData?.supportManager || [],

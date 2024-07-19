@@ -9,13 +9,13 @@ import cityMapping from 'config/city-map.json'
  */
 export function huntTimezone(city, country, region) {
   const normalizedCity = sanitizeCityName(city)
-  const normalizedRegion = sanitizeCityName(region && region)
+  const normalizedRegion = sanitizeCityName(region)
   const normalizedCountry = sanitizeCityName(country)
 
   const cityLookups = cityMapping.filter((o) => o.city.toLowerCase() === normalizedCity.toLowerCase())
   if (cityLookups.length === 0 && normalizedCountry && normalizedRegion && normalizedCity) {
     const countryLookup = cityLookups.find((o) => o.country.toLowerCase() === normalizedCountry.toLowerCase())
-    const regionLookup = cityMapping.find((o) => o.province.toLowerCase() === normalizedRegion.toLowerCase())
+    const regionLookup = cityMapping.find((o) => o.province?.toLowerCase() === normalizedRegion?.toLowerCase())
     if (regionLookup && countryLookup) {
       console.log(city, country, region, normalizedCity)
       return regionLookup

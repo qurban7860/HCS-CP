@@ -1,18 +1,22 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-import { TextField, InputAdornment, Button, Box } from '@mui/material'
 import { Icon, ICON_NAME } from 'hook'
+import { TextField, InputAdornment, Button, Box } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { IconTooltip } from 'component'
+import { GStyledSpanBox } from 'theme/style'
 import { BUTTON, COLOR, FLEX, KEY, LABEL, SIZE, VARIANT } from 'constant'
 
-const SearchBox = ({ term, handleSearch, mode, mt = 5 }) => {
+const SearchBox = ({ term, handleSearch, mode, onReload, mt = 5 }) => {
   const [isSearchEmpty, setIsSearchEmpty] = useState(true)
+  const theme = useTheme()
 
   const handleInputChange = (event) => {
     setIsSearchEmpty(event.target.value === '')
   }
 
   return (
-    <Box display={FLEX.FLEX} alignItems={KEY.CENTER}>
+    <Box display={FLEX.FLEX} justifyContent={FLEX.SPACE_BETWEEN} mt={mt}>
       <TextField
         variant={VARIANT.FILLED}
         value={term}
@@ -57,7 +61,6 @@ const SearchBox = ({ term, handleSearch, mode, mt = 5 }) => {
         sx={{
           backgroundColor: mode === KEY.LIGHT ? 'grey.200' : 'grey.700',
           color: mode === KEY.LIGHT ? 'common.black' : 'common.white',
-          marginTop: mt,
           marginBottom: 0,
           width: '500px',
           '&.MuiInputBase-root': {
@@ -67,6 +70,18 @@ const SearchBox = ({ term, handleSearch, mode, mt = 5 }) => {
           }
         }}
       />
+      {onReload && (
+        <IconTooltip
+          icon={ICON_NAME.REFRESH}
+          title={LABEL.RELOAD}
+          placement={KEY.TOP}
+          variant={VARIANT.CONTAINED}
+          buttonColor={mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze}
+          color={mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black}
+          dimension={25}
+          onClick={onReload}
+        />
+      )}
     </Box>
   )
 }
@@ -75,7 +90,8 @@ SearchBox.propTypes = {
   term: PropTypes.string,
   handleSearch: PropTypes.func,
   mode: PropTypes.string,
-  mt: PropTypes.number
+  mt: PropTypes.number,
+  onReload: PropTypes.func
 }
 
 export default SearchBox

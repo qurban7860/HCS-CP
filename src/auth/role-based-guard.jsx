@@ -7,7 +7,7 @@ import useAuthContext from './use-auth-context'
 RoleBasedGuard.propTypes = {
   children: PropTypes.node,
   hasContent: PropTypes.bool,
-  roles: PropTypes.arrayOf(PropTypes.string),
+  roles: PropTypes.arrayOf(PropTypes.string)
 }
 
 function RoleBasedGuard({ hasContent, roles, children }) {
@@ -25,9 +25,7 @@ function RoleBasedGuard({ hasContent, roles, children }) {
         </m.div>
 
         <m.div variants={varBounce().in}>
-          <Typography sx={{ color: 'text.secondary' }}>
-            You do not have permission to access this page
-          </Typography>
+          <Typography sx={{ color: 'text.secondary' }}>You do not have permission to access this page</Typography>
         </m.div>
 
         <m.div variants={varBounce().in}>

@@ -1,5 +1,3 @@
-// import conNex from 'util/connex'
-
 function path(root, sublink) {
   return `${root}${sublink}`
 }
@@ -12,8 +10,12 @@ const ROOTS_DASHBOARD = 'dashboard'
 
 const ROOTS_CRM = 'crm'
 const SUB_CUSTOMERS = 'customers'
+
 const ROOTS_PRODUCTS = 'products'
 const SUB_MACHINES = 'machines'
+
+const ROOTS_SUPPORT = 'support'
+const SUB_TICKETS = 'tickets'
 
 const ROOTS_EMAIL = '/email'
 const ROOTS_SECURITY = '/security'
@@ -71,6 +73,9 @@ export const PATH_CUSTOMER = {
     },
     sites: {
       view: (customerId) => conNex(ROOTS_CRM, 'customers', customerId, 'sites')
+    },
+    support: {
+      list: (id) => conNex(ROOTS_CRM, SUB_CUSTOMERS, id, 'support')
     }
   }
 }
@@ -82,7 +87,19 @@ export const PATH_MACHINE = {
   machines: {
     root: conNex(ROOTS_PRODUCTS, SUB_MACHINES),
     list: conNex(ROOTS_PRODUCTS, SUB_MACHINES),
-    view: (id) => conNex(ROOTS_PRODUCTS, SUB_MACHINES, id, 'view')
+    view: (id) => conNex(ROOTS_PRODUCTS, SUB_MACHINES, id, 'view'),
+    support: {
+      list: (id) => conNex(ROOTS_PRODUCTS, SUB_MACHINES, id, 'support')
+    }
+  }
+}
+
+// :machine
+export const PATH_SUPPORT = {
+  root: ROOTS_SUPPORT,
+  tickets: {
+    list: conNex(ROOTS_SUPPORT, SUB_TICKETS),
+    view: (id) => conNex(ROOTS_SUPPORT, SUB_TICKETS, id, 'view')
   }
 }
 

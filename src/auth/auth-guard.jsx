@@ -19,13 +19,12 @@ export default function AuthGuard({ children }) {
   if (!isInitialized) {
     return <LoadingScreen />
   }
-  // TODO: use context
-  // if (!isAuthenticated) {
-  //   if (pathname !== requestedLocation) {
-  //     setRequestedLocation(pathname)
-  //   }
-  //   return <Login />
-  // }
+  if (!isAuthenticated) {
+    if (pathname !== requestedLocation) {
+      setRequestedLocation(pathname)
+    }
+    return <Login />
+  }
 
   if (requestedLocation && pathname !== requestedLocation) {
     setRequestedLocation(null)

@@ -52,6 +52,19 @@ export const HOWICK_RESOURCES = {
   SUPPORT_MANAGER: 'Support Manager'
 }
 
+export const SUPPORT_TICKET = {
+  PLC_VERSION: 'PLC Version',
+  PLC_FIRMWARE_VERSION: 'PLC Firmware Version',
+  HMI_VERSION: 'HMI / HLC Version',
+  ASSIGNEE: 'Assignee',
+  REPORTER: 'Reporter',
+  APPROVERS: 'Approvers',
+  PROGRESS: 'Progress',
+  SUPPORT_CASE_CODE: 'Support Case Code',
+  PRIORITY: 'Priority',
+  URGENCY: 'Urgency'
+}
+
 export const VIEW_FORM = {
   CONTACT: 'Contact',
   CONTACT_TYPES: 'Contact Types',
@@ -76,7 +89,7 @@ export const VIEW_FORM = {
   STATUS: 'Status',
   TITLE: 'Title',
   WEBSITE: 'Website',
-
+  ...{ SUPPORT_TICKET },
   ...{ ADDRESS },
   ...{ CUSTOMER },
   ...{ SITE },

@@ -45,6 +45,8 @@ export const VARIANT = {
   RECTANGULAR: 'rectangular',
   CIRCULAR: 'circular',
   OUTLINED: 'outlined',
+  CONTAINED: 'contained',
+  STANDARD: 'standard',
   FILLED: 'filled',
   COVER: 'cover',
   FULL_WIDTH: 'fullWidth',

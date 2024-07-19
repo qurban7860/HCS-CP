@@ -48,6 +48,12 @@ export default function useFilter(comparator, params, initial, ChangePage, setFi
     }, 500)
   )
 
+  useEffect(() => {
+    if (initial) {
+      setTableData(params)
+    }
+  }, [params, initial])
+
   // filterFunction is a callback function that is used to filter the data, normalizing the parameters
   const filterFunction = useCallback(
     (filterParameter, filterValue, properties) => {
@@ -77,12 +83,6 @@ export default function useFilter(comparator, params, initial, ChangePage, setFi
     },
     [filterName]
   )
-
-  useEffect(() => {
-    if (initial) {
-      setTableData(params)
-    }
-  }, [params, initial])
 
   const handleFilterName = (event) => {
     debouncedSearch.current(event.target.value)

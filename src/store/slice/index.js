@@ -19,6 +19,10 @@ export * from './product/machine'
 export { default as machineModelReducer } from './product/model/model'
 export * from './product/model'
 
+// product/machine-ticket
+export { default as machineTicketReducer } from './product/machine-ticket/machine-ticket'
+export * from './product/machine-ticket'
+
 // crm/customer
 export * from './crm/customer'
 export { default as customerReducer } from './crm/customer/customer'
@@ -30,3 +34,11 @@ export { default as contactReducer } from './crm/contact/contact'
 // crm/site
 export * from './crm/site'
 export { default as siteReducer } from './crm/site/site'
+
+// crm/customer-ticket
+export { default as customerTicketReducer } from './crm/customer-ticket/customer-ticket'
+export * from './crm/customer-ticket'
+
+// support(jira)/ticket
+export * from './support/ticket'
+export { default as ticketReducer } from './support/ticket/ticket'

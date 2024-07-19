@@ -7,10 +7,13 @@ import {
   userReducer,
   machineReducer,
   customerReducer,
+  customerTicketReducer,
   contactReducer,
   siteReducer,
   machineModelReducer,
-  roleReducer
+  machineTicketReducer,
+  roleReducer,
+  ticketReducer
 } from './slice'
 
 export const apiPersistConfig = {
@@ -76,6 +79,13 @@ export const sitePersistConfig = {
   blacklist: ['error', 'initial', 'responseMessage']
 }
 
+export const customerTicketPersistConfig = {
+  key: 'customerTicket',
+  storage,
+  keyPrefix: 'redux-',
+  blacklist: ['error', 'initial', 'responseMessage']
+}
+
 export const machineModelPersistConfig = {
   key: 'machinemodel',
   storage,
@@ -83,16 +93,38 @@ export const machineModelPersistConfig = {
   blacklist: ['error', 'initial', 'responseMessage']
 }
 
+export const machineTicketPersistConfig = {
+  key: 'machineTicket',
+  storage,
+  keyPrefix: 'redux-',
+  blacklist: ['error', 'initial', 'responseMessage']
+}
+
+export const ticketPersistConfig = {
+  key: 'ticket',
+  storage,
+  keyPrefix: 'redux-',
+  blacklist: ['error', 'initial', 'responseMessage']
+}
+
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: persistReducer(apiPersistConfig, apiSlice.reducer),
+  // security
+  user: persistReducer(userPersistConfig, userReducer),
+  role: persistReducer(rolePersistConfig, roleReducer),
+  // auth
   auth: persistReducer(authPersistConfig, authReducer),
-  machine: persistReducer(machinePersistConfig, machineReducer),
+  // crm
   customer: persistReducer(customerPersistConfig, customerReducer),
   contact: persistReducer(contactPersistConfig, contactReducer),
   site: persistReducer(sitePersistConfig, siteReducer),
+  customerTicket: persistReducer(customerTicketPersistConfig, customerTicketReducer),
+  // product
+  machine: persistReducer(machinePersistConfig, machineReducer),
   machinemodel: persistReducer(machineModelPersistConfig, machineModelReducer),
-  user: persistReducer(userPersistConfig, userReducer),
-  role: persistReducer(rolePersistConfig, roleReducer)
+  machineTicket: persistReducer(machineTicketPersistConfig, machineTicketReducer),
+  // support
+  ticket: persistReducer(ticketPersistConfig, ticketReducer)
 })
 
 export default rootReducer

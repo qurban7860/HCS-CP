@@ -21,11 +21,15 @@ import {
   // product:
   MachinePage,
   MachinesListPage,
+  MachineSupportTicketsPage,
   //  crm:
   CustomerPage,
   CustomerListPage,
   ContactPage,
   SitePage,
+  CustomerSupportTicketsPage,
+  // support:
+  TicketsListPage,
   // fallback:
   BlankPage,
   FallbackPage,
@@ -128,7 +132,20 @@ export default function Router() {
           path: 'machines',
           children: [
             { element: <MachinesListPage />, index: true },
-            { path: ':id/view', element: <MachinePage /> }
+            { path: ':id/view', element: <MachinePage /> },
+            {
+              path: ':id/support',
+              children: [
+                {
+                  element: <MachineSupportTicketsPage />,
+                  index: true
+                },
+                {
+                  path: ':supportId/view',
+                  element: <MachineSupportTicketsPage />
+                }
+              ]
+            }
           ]
         }
       ]
@@ -169,6 +186,19 @@ export default function Router() {
                   index: true
                 }
               ]
+            },
+            {
+              path: ':id/support',
+              children: [
+                {
+                  element: <CustomerSupportTicketsPage />,
+                  index: true
+                },
+                {
+                  path: ':supportId/view',
+                  element: <CustomerSupportTicketsPage />
+                }
+              ]
             }
           ]
         }
@@ -191,17 +221,17 @@ export default function Router() {
       ]
     },
     {
-      // support
+      // support (jira)
       path: 'support',
       element: (
         <AuthGuard>
-          <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
+          <DashboardLayout />
         </AuthGuard>
       ),
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
+        { path: 'tickets', element: <TicketsListPage /> },
         {
-          path: 'list',
           element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
           children: [
             // { path: 'password', element: <ChangePasswordPage /> },
