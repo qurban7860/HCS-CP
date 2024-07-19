@@ -7,9 +7,11 @@ import {
   userReducer,
   machineReducer,
   customerReducer,
+  customerTicketReducer,
   contactReducer,
   siteReducer,
   machineModelReducer,
+  machineTicketReducer,
   roleReducer,
   ticketReducer
 } from './slice'
@@ -77,8 +79,22 @@ export const sitePersistConfig = {
   blacklist: ['error', 'initial', 'responseMessage']
 }
 
+export const customerTicketPersistConfig = {
+  key: 'customerTicket',
+  storage,
+  keyPrefix: 'redux-',
+  blacklist: ['error', 'initial', 'responseMessage']
+}
+
 export const machineModelPersistConfig = {
   key: 'machinemodel',
+  storage,
+  keyPrefix: 'redux-',
+  blacklist: ['error', 'initial', 'responseMessage']
+}
+
+export const machineTicketPersistConfig = {
+  key: 'machineTicket',
   storage,
   keyPrefix: 'redux-',
   blacklist: ['error', 'initial', 'responseMessage']
@@ -102,9 +118,11 @@ const rootReducer = combineReducers({
   customer: persistReducer(customerPersistConfig, customerReducer),
   contact: persistReducer(contactPersistConfig, contactReducer),
   site: persistReducer(sitePersistConfig, siteReducer),
+  customerTicket: persistReducer(customerTicketPersistConfig, customerTicketReducer),
   // product
   machine: persistReducer(machinePersistConfig, machineReducer),
   machinemodel: persistReducer(machineModelPersistConfig, machineModelReducer),
+  machineTicket: persistReducer(machineTicketPersistConfig, machineTicketReducer),
   // support
   ticket: persistReducer(ticketPersistConfig, ticketReducer)
 })
