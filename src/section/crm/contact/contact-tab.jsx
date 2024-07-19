@@ -85,7 +85,7 @@ const ContactTab = () => {
                 </Grid>
               )}
               <Grid container p={1}>
-                {customer?.contacts?.length > 0 ? (
+                {contacts?.length > 0 ? (
                   filteredData.map((c, index) => (
                     <ContactCard
                       key={index}
