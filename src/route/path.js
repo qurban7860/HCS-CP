@@ -73,6 +73,9 @@ export const PATH_CUSTOMER = {
     },
     sites: {
       view: (customerId) => conNex(ROOTS_CRM, 'customers', customerId, 'sites')
+    },
+    support: {
+      list: (id) => conNex(ROOTS_CRM, SUB_CUSTOMERS, id, 'support')
     }
   }
 }
@@ -84,7 +87,10 @@ export const PATH_MACHINE = {
   machines: {
     root: conNex(ROOTS_PRODUCTS, SUB_MACHINES),
     list: conNex(ROOTS_PRODUCTS, SUB_MACHINES),
-    view: (id) => conNex(ROOTS_PRODUCTS, SUB_MACHINES, id, 'view')
+    view: (id) => conNex(ROOTS_PRODUCTS, SUB_MACHINES, id, 'view'),
+    support: {
+      list: (id) => conNex(ROOTS_PRODUCTS, SUB_MACHINES, id, 'support')
+    }
   }
 }
 

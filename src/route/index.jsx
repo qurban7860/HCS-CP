@@ -21,11 +21,13 @@ import {
   // product:
   MachinePage,
   MachinesListPage,
+  MachineSupportTicketsPage,
   //  crm:
   CustomerPage,
   CustomerListPage,
   ContactPage,
   SitePage,
+  CustomerSupportTicketsPage,
   // support:
   TicketsListPage,
   // fallback:
@@ -130,7 +132,20 @@ export default function Router() {
           path: 'machines',
           children: [
             { element: <MachinesListPage />, index: true },
-            { path: ':id/view', element: <MachinePage /> }
+            { path: ':id/view', element: <MachinePage /> },
+            {
+              path: ':id/support',
+              children: [
+                {
+                  element: <MachineSupportTicketsPage />,
+                  index: true
+                },
+                {
+                  path: ':supportId/view',
+                  element: <MachineSupportTicketsPage />
+                }
+              ]
+            }
           ]
         }
       ]
@@ -169,6 +184,19 @@ export default function Router() {
                 {
                   element: <SitePage />,
                   index: true
+                }
+              ]
+            },
+            {
+              path: ':id/support',
+              children: [
+                {
+                  element: <CustomerSupportTicketsPage />,
+                  index: true
+                },
+                {
+                  path: ':supportId/view',
+                  element: <CustomerSupportTicketsPage />
                 }
               ]
             }

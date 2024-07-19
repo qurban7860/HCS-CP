@@ -88,7 +88,7 @@ export const PATH_SERVER = {
   SUPPORT: {
     // /tickets
     TICKETS: _url('jira', 'tickets'),
-    // /support/tickets/:id
-    TICKET: (ticketId) => _url('jira', ticketId)
+    // /tickets/:ticketId
+    TICKET: (ticketId) => _url('jira', 'tickets', ticketId)
   }
 }
