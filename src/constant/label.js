@@ -32,6 +32,7 @@ const LABEL = {
   NO_MACHINE_FOUND: 'No Machine Record Found',
   NO_PHONE_PROVIDED: 'No contact number provided',
   NO_PROVIDED: 'No data provided',
+  NO_SUPPORT_TICKET: 'No Support Ticket',
   NOT_EMPLOYED: 'Not Employed',
   RELOAD: 'Reload',
   PURCHASED: 'Purchased',
