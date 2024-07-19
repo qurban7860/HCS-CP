@@ -1,7 +1,7 @@
 import { memo, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, dispatch } from 'store'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { ICON_NAME, useSettingContext } from 'hook'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -11,6 +11,7 @@ import { useTheme } from '@mui/material/styles'
 import {
   setDecoilerIcon,
   getMachineModels,
+  getMachineTickets,
   resetDecoilerIcon,
   getCustomer,
   getMachine,
@@ -21,7 +22,7 @@ import {
   resetConnectedMachineDialog,
   resetMachineSiteDialogData
 } from 'store/slice'
-import { machineDefaultValues } from 'section/product'
+import { machineDefaultValues, TicketsTab } from 'section/product'
 import { MotionLazyContainer, CustomerDialog, MachineDialog, SiteDialog } from 'component'
 import { VIEW_FORM, VARIANT, FLEX, DECOILER } from 'constant'
 import { MachineNav, MachineTab } from 'section/product/machine'
@@ -31,11 +32,14 @@ const { ONE_HALF_T, THREE_T, FIVE_T, SIX_T } = DECOILER
 const MachineLayout = ({ tab = 0 }) => {
   const [renderedTab, setRenderedTab] = useState(tab)
   const { id } = useParams()
+  const navigate = useNavigate()
   const { machine, isLoading, connectedMachineDialog, machineSiteDialogData } = useSelector((state) => state.machine)
   const { customer, customerDialog } = useSelector((state) => state.customer)
+  const { machineTickets } = useSelector((state) => state.machineTicket)
 
   useEffect(() => {
     dispatch(getMachine(id))
+    dispatch(getMachineTickets(machine.serialNo))
   }, [id])
 
   useEffect(() => {
@@ -53,7 +57,7 @@ const MachineLayout = ({ tab = 0 }) => {
     dispatch(resetMachineSiteDialogData())
   }, [dispatch])
 
-  const defaultValues = machineDefaultValues(machine, customer)
+  const defaultValues = machineDefaultValues(machine, customer, machineTickets)
 
   useEffect(() => {
     dispatch(getMachineModels())
@@ -92,7 +96,8 @@ const MachineLayout = ({ tab = 0 }) => {
       // navigate(PATH_CUSTOMER.customers.sites.view(id))
       // dispatch(setFromDialog(false))
       // dispatch(setFromSiteDialog(false))
-    } else if (tab === 3 && id) {
+    } else if (tab === 6 && id) {
+      navigate(PATH_MACHINE.machines.support.list(id))
     }
   }
 
@@ -105,13 +110,17 @@ const MachineLayout = ({ tab = 0 }) => {
       {renderedTab === 0 ? (
         <MachineTab />
       ) : renderedTab === 1 ? (
-        <ContactTab />
+        <Typography variant="h0">{'LICENSE PAGE'}</Typography>
       ) : renderedTab === 2 ? (
-        <SiteTab />
+        <Typography variant="h0">{'TOOLS PAGE'}</Typography>
       ) : renderedTab === 3 ? (
-        <Typography variant="h0">{'MACHINE PAGE'}</Typography>
+        <Typography variant="h0">{'PROFILES PAGE'}</Typography>
       ) : renderedTab === 4 ? (
-        <Typography variant="h0">{'SUPPORT PAGE'}</Typography>
+        <Typography variant="h0">{'SETTINGS PAGE'}</Typography>
+      ) : renderedTab === 5 ? (
+        <Typography variant="h0">{'SERVICE RECORDS PAGE'}</Typography>
+      ) : renderedTab === 6 ? (
+        <TicketsTab />
       ) : null}
       {customerDialog && <CustomerDialog />}
       {machineSiteDialogData && <SiteDialog />}

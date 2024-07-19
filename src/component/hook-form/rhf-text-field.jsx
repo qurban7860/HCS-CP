@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types'
 import { useFormContext, Controller } from 'react-hook-form'
+import { useTheme } from '@mui/material/styles'
 import { TextField } from '@mui/material'
 import { useSettingContext } from 'hook'
+import { KEY } from 'constant'
 
 RHFTextField.propTypes = {
   name: PropTypes.string,
@@ -12,6 +14,7 @@ RHFTextField.propTypes = {
 export default function RHFTextField({ name, helperText, Error, ...other }) {
   const { control } = useFormContext()
   const { themeMode } = useSettingContext()
+  const theme = useTheme()
 
   return (
     <Controller
@@ -26,36 +29,38 @@ export default function RHFTextField({ name, helperText, Error, ...other }) {
           helperText={error ? error?.message : helperText}
           {...other}
           sx={{
-            '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: 'grey.600',
-              borderRadius: 0.4,
-              color: themeMode === 'light' ? 'grey.900' : 'grey.0'
+            '& .MuiInputLabel-root': {
+              ...theme.typography.overline1
             },
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderRadius: 0.4,
+              color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
+            },
+
             '& .MuiInputBase-root': {
               '&:hover': {
                 '& .MuiOutlinedInput-notchedOutline': {
                   borderColor: 'common.white'
                 },
                 '& .MuiInputBase-input': {
-                  color: themeMode === 'light' ? 'grey.900' : 'grey.0'
+                  color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
                 }
               },
-              // color of text when disabled
               '& .MuiInputBase-input': {
-                color: themeMode === 'light' ? 'grey.900' : 'grey.0'
+                color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
               },
               '&.Mui-focused': {
                 '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'primary.main'
-                }
+                  borderColor: 'common.white'
+                },
+                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
               },
               // disabled
               '&.Mui-disabled': {
-                color: themeMode === 'light' ? 'grey.800' : 'grey.200',
+                color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.200',
                 '& .MuiOutlinedInput-notchedOutline': {
                   borderColor: 'bronze.main'
-                },
-                '& .MuiInputBase-input': {}
+                }
               }
             }
           }}

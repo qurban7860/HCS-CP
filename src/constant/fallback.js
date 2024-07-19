@@ -27,6 +27,11 @@ const FALLBACK = {
     code: HTTP_CODE.NO_DATA,
     title: 'No Data Found',
     description: 'The data you are looking for is not found. Try to use a different keyword.'
+  },
+  NO_TICKET: {
+    code: HTTP_CODE.NO_DATA,
+    title: 'No Ticket/s Found',
+    description: 'No tickets has been issued.'
   }
 }
 

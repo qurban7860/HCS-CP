@@ -12,7 +12,7 @@ const TableTitleBox = ({ user, title }) => {
         {user?.customer?.name.toUpperCase() || TITLE.ORGANIZATION.toUpperCase()} &nbsp;
       </Typography>
       <Typography variant="h3" color={themeMode === KEY.LIGHT ? 'grey.200' : 'howick.bronze'}>
-        / {title}
+        / {title?.toUpperCase()}
       </Typography>
     </GStyledSpanBox>
   )

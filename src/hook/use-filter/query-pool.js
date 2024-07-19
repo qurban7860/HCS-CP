@@ -47,7 +47,7 @@ export const moduleFilter = (inputSub, filterName) => {
   // eslint-disable-next-line no-unused-vars
   const hello = 'something to write'
 
-  return inputSub.filter(
+  return inputSub?.filter(
     (filterParams) =>
       filterParams?.name?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
       filterParams?.serialNo?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
@@ -86,6 +86,16 @@ export const moduleFilter = (inputSub, filterName) => {
         .indexOf(filterName.toLowerCase()) >= 0 ||
       fDate(filterParams?.createdAt)?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
       fDate(filterParams?.installationDate)?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
-      fDate(filterParams?.shippingDate)?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0
+      fDate(filterParams?.shippingDate)?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
+      // support
+      filterParams?.id?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
+      filterParams?.key?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
+      filterParams?.expand?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
+      filterParams?.fields?.customfield_10078?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
+      filterParams?.fields?.customfield_10069?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
+      filterParams?.fields?.customfield_10070?.value?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
+      fDate(filterParams?.fields?.created)?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
+      filterParams?.fields?.summary?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
+      filterParams?.fields?.status?.name?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0
   )
 }

@@ -9,11 +9,9 @@ import { Box, Grid, Card, Divider, Link } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledFlexEndBox, GCardOption } from 'theme/style'
 import {
-  setDecoilerIcon,
-  getMachineModels,
-  resetDecoilerIcon,
   getCustomer,
   getMachine,
+  getMachineTickets,
   setCustomerDialog,
   getConnectedMachineDialog,
   getMachineSiteDialogData,
@@ -31,18 +29,15 @@ import { KEY, TITLE, VIEW_FORM, VARIANT, FLEX_DIR, DECOILER } from 'constant'
 import { MachineConnectionWidget, MachineSiteWidget, MachineHistoryWidget } from 'section/product/machine'
 import { truncate } from 'util/truncate'
 
-const { ONE_HALF_T, THREE_T, FIVE_T, SIX_T } = DECOILER
-
 const MachineTab = () => {
   const { id } = useParams()
-  const { machine, isLoading, connectedMachineDialog, machineSiteDialogData } = useSelector((state) => state.machine)
+  const { machine, isLoading } = useSelector((state) => state.machine)
   const { customer, customerDialog } = useSelector((state) => state.customer)
 
   const theme = useTheme()
   const { themeMode } = useSettingContext()
 
   const { MACHINE } = VIEW_FORM
-  const { TYPOGRAPHY } = VARIANT
 
   useEffect(() => {
     dispatch(getMachine(id))
@@ -69,30 +64,6 @@ const MachineTab = () => {
     resolver: yupResolver(machineDefaultValues),
     defaultValues
   })
-
-  useEffect(() => {
-    dispatch(getMachineModels())
-    if (defaultValues?.machineModel?.includes(ONE_HALF_T.toUpperCase())) {
-      dispatch(setDecoilerIcon(ICON_NAME.DECOILER_1_5T))
-    }
-
-    if (defaultValues?.machineModel?.includes(THREE_T.toUpperCase())) {
-      dispatch(setDecoilerIcon(ICON_NAME.DECOILER_3T))
-    }
-
-    if (defaultValues?.machineModel?.includes(FIVE_T.toUpperCase())) {
-      dispatch(setDecoilerIcon(ICON_NAME.DECOILER_1_5T))
-    }
-
-    if (defaultValues?.machineModel?.includes(SIX_T.toUpperCase())) {
-      dispatch(setDecoilerIcon(ICON_NAME.DECOILER_1_5T))
-    }
-
-    return () => {
-      // dispatch(resetMachineModels())
-      dispatch(resetDecoilerIcon())
-    }
-  }, [dispatch, defaultValues?.machineModel])
 
   const handleCustomerDialog = (event, customerId) => {
     event.preventDefault()
@@ -124,7 +95,7 @@ const MachineTab = () => {
   return (
     <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
       <Grid item lg={3}>
-        <MachineHistoryWidget value={defaultValues} />
+        {/* <MachineHistoryWidget value={defaultValues} /> */}
         <MachineConnectionWidget
           value={defaultValues}
           handleConnectedMachineDialog={handleConnectedMachineDialog}

@@ -1,3 +1,5 @@
+import { GLOBAL } from './global'
+import { normalizer } from 'util/format/normalizer'
 /**
  * This offers hybrid way to get the icon.
  * It can be used for both MDI and custom icon.
@@ -18,6 +20,11 @@ function _getCountryIcon(icon) {
 
 function _getBrandIcon(icon) {
   return `/asset/brand/${icon}.svg`
+}
+
+function _getSvgPriorityIconByUrl(priority) {
+  const normalizerpriority = normalizer(priority)
+  return `${GLOBAL.JIRA_PRIORITY_ICON_URL}/${normalizerpriority}.svg`
 }
 
 function _getWebIcon(icon) {
@@ -60,6 +67,8 @@ const ICON_WEB = {
   INFO: _getWebIcon('info-outline'),
   INACTIVE: _getWebIcon('minus-circle'),
   INSTALL: _getWebIcon('hammer-wrench'),
+  JIRA: _getWebIcon('jira'),
+  PRIORITY: (priority) => _getSvgPriorityIconByUrl(priority),
   MANUFACTURE: _getWebIcon('factory'),
   MAGNIFY_IN: _getWebIcon('magnify-plus'),
   MAGNIFY_OUT: _getWebIcon('magnify-minus'),
@@ -69,6 +78,7 @@ const ICON_WEB = {
   READ_MORE: _getWebIcon('read-more'),
   NOT_EMPLOYED: _getWebIcon('person-badge-alert'),
   OPEN_IN_NEW: _getWebIcon('open-in-new'),
+  QUICK: _getWebIcon('lightning-bolt'),
   PHONE: _getWebIcon('phone'),
   REFRESH: _getWebIcon('refresh'),
   SAVE: _getWebIcon('content-save'),
@@ -132,6 +142,7 @@ export const ICON_WEB_NAME = {
   INFO: 'INFO',
   INACTIVE: 'INACTIVE',
   INSTALL: 'INSTALL',
+  JIRA: 'JIRA',
   FULLSCREEN: 'FULLSCREEN',
   FULLSCREEN_EXIT: 'FULLSCREEN_EXIT',
   MAIN_SITE: 'MAIN_SITE',
@@ -142,6 +153,7 @@ export const ICON_WEB_NAME = {
   MODE_DARK_A: 'MODE_DARK_A',
   NOT_EMPLOYED: 'NOT_EMPLOYED',
   OPEN_IN_NEW: 'OPEN_IN_NEW',
+  QUICK: 'QUICK',
   PHONE: 'PHONE',
   READ_MORE: 'READ_MORE',
   REFRESH: 'REFRESH',

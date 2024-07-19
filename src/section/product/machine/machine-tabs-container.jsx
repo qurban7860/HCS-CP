@@ -8,7 +8,7 @@ import { TYPOGRAPHY } from 'constant'
 import { a11yProps } from 'util/a11y.js'
 import 'swiper/css'
 
-const MachineTabsContainer = ({ value, renderedTab, disableTab, navigatePage }) => {
+const MachineTabsContainer = ({ value, renderedTab, disableTab, navigatePage, isLoading }) => {
   const { themeMode } = useSettingContext()
 
   return (

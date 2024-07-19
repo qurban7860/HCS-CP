@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Icon, ICON_NAME } from 'hook'
+import { Icon, ICON_NAME, useSettingContext } from 'hook'
 import { useFormContext, Controller } from 'react-hook-form'
 import { TextField, InputAdornment, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
@@ -14,8 +14,9 @@ RHFPasswordField.propTypes = {
 
 export default function RHFPasswordField({ name, helperText, Error, ...other }) {
   const [showPassword, setShowPassword] = useState(false)
-  const theme = useTheme()
   const { control } = useFormContext()
+  const { themeMode } = useSettingContext()
+  const theme = useTheme()
 
   return (
     <Controller
@@ -39,6 +40,42 @@ export default function RHFPasswordField({ name, helperText, Error, ...other }) 
           error={!!error || !!Error}
           helperText={error ? error?.message : helperText}
           {...other}
+          sx={{
+            '& .MuiInputLabel-root': {
+              ...theme.typography.overline1
+            },
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderRadius: 0.4,
+              color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
+            },
+
+            '& .MuiInputBase-root': {
+              '&:hover': {
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'common.white'
+                },
+                '& .MuiInputBase-input': {
+                  color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
+                }
+              },
+              '& .MuiInputBase-input': {
+                color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
+              },
+              '&.Mui-focused': {
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'common.white'
+                },
+                backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
+              },
+              // disabled
+              '&.Mui-disabled': {
+                color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.200',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'bronze.main'
+                }
+              }
+            }
+          }}
         />
       )}
     />

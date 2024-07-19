@@ -6,8 +6,9 @@ import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { bgBlur } from 'theme/style'
 import { RADIUS, ASSET } from 'config'
 import { PATH_AUTH } from 'route/path'
-import { KEY } from 'constant'
+import { KEY, SUPPORT_STATUS } from 'constant'
 import { SvgColor } from 'component/svg-color'
+import { normalizer } from 'util'
 
 // :branding __________________________________________________________________________________________________
 // dashboard - welcome
@@ -65,12 +66,15 @@ export const GStyledContactCard = styled(({ theme, selectedCardId, c, mode, ...o
     alignItems: 'center',
     padding: theme.spacing(1),
     marginBottom: theme.spacing(2),
-    marginLeft: selectedCardId === c._id ? theme.spacing(2) : theme.spacing(0),
+    marginLeft: selectedCardId === c._id || selectedCardId === c.key ? theme.spacing(2) : theme.spacing(0),
     width: '100%',
     cursor: 'pointer',
-    borderRight: selectedCardId === c._id && `9px solid ${mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}`,
+    borderRight:
+      selectedCardId === c._id || selectedCardId === c.key
+        ? `9px solid ${mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}`
+        : '',
     backgroundColor:
-      selectedCardId === c._id
+      selectedCardId === c._id || selectedCardId === c.key
         ? mode === KEY.LIGHT
           ? theme.palette.grey[300]
           : theme.palette.howick.darkGrey
@@ -160,15 +164,18 @@ export const GStyledTopBorderDivider = styled(({ theme, mode, ...other }) => <Di
   borderStyle: 'solid',
   borderImage:
     mode === KEY.LIGHT
-      ? `linear-gradient(to right, ${theme.palette.howick.darkBlue}, ${theme.palette.howick.blue}) 1` // Replace with your actual hex values
-      : `linear-gradient(to right,  ${theme.palette.grey[500]},  ${theme.palette.grey[800]}) 1`, // Replace with your actual hex values
+      ? `linear-gradient(to right, ${theme.palette.howick.darkBlue}, ${theme.palette.howick.blue}) 1`
+      : `linear-gradient(to right,  ${theme.palette.grey[500]},  ${theme.palette.grey[800]}) 1`,
   borderWidth: 5
 }))
 
-export const GStyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.dark,
+export const GStyledLoadingButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
+  backgroundColor: isLoading === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.darkBlue,
   color: 'white',
-  '&:hover': { backgroundColor: theme.palette.secondary.main }
+  '&:hover': { backgroundColor: theme.palette.secondary.main },
+  '&.MuiButton-root.Mui-disabled': {
+    backgroundColor: theme.palette.howick.darkBlue
+  }
 }))
 
 export const GStyledLoadingScreenDiv = styled('div')(({ theme }) => ({
@@ -258,6 +265,33 @@ export const GStyledTabs = styled(({ theme, mode, ...other }) => <Tabs {...other
 export const GStyledTabBox = styled(Box)(({ theme }) => ({
   borderBottom: `${theme.spacing(0.05)} solid`,
   borderColor: alpha(theme.palette.grey[500], 0.5)
+}))
+
+export const GStyledSupportStatusFieldChip = styled(({ theme, status, ...other }) => <Chip {...other} />)(({ theme, status, mode }) => ({
+  margin: theme.spacing(0.2),
+  borderRadius: theme.spacing(0.4),
+  color: status === SUPPORT_STATUS.OPEN || status === SUPPORT_STATUS.UNDER_REVIEW ? theme.palette.common.black : theme.palette.common.white,
+  backgroundColor:
+    status === SUPPORT_STATUS.OPEN || status === SUPPORT_STATUS.UNDER_REVIEW
+      ? theme.palette.grey[400]
+      : status === SUPPORT_STATUS.WAITING_FOR_CUSTOMER || status === SUPPORT_STATUS.UNDER_INVESTIGATION || status === SUPPORT_STATUS.PENDING
+      ? theme.palette.howick.midBlue
+      : status === SUPPORT_STATUS.IN_PROGRESS
+      ? theme.palette.howick.orange
+      : status === SUPPORT_STATUS.WAITING_FOR_SUPPORT
+      ? theme.palette.grey[500]
+      : status === SUPPORT_STATUS.CANCELLED || status === SUPPORT_STATUS.CLOSED
+      ? theme.palette.error.main
+      : status === SUPPORT_STATUS.RESOLVED || status === SUPPORT_STATUS.COMPLETED
+      ? theme.palette.burnIn.altDark
+      : theme.palette.howick.lightGray
+}))
+
+export const GStyledFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
+  margin: theme.spacing(0.2),
+  borderRadius: theme.spacing(0.4),
+  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
 }))
 
 export const GStyledTab = styled(({ theme, mode, ...other }) => <Tab {...other} />)(({ theme, mode }) => ({

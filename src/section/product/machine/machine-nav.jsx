@@ -30,9 +30,11 @@ const MachineNav = ({ renderedTab, navigatePage, value, isLoading }) => {
           <Grid container justifyContent={FLEX.FLEX_END} flexDirection={FLEX_DIR.COLUMN} alignContent={FLEX.FLEX_END}>
             <Grid item xs={12} justifyContent={FLEX.FLEX_END} mt={2}>
               <Grid container justifyContent={FLEX.FLEX_END} gap={3}>
-                {value?.installationSiteCity && (
-                  <Clock city={value?.installationSiteCity} country={value?.installationSiteCountry} region={value?.installationSiteRegion} />
-                )}
+                <Clock city={value?.installationSiteCity} country={value?.installationSiteCountry} region={value?.installationSiteRegion} />
+                {/* {value?.installationSiteCity ||
+                  (value?.installationSiteRegion && (
+                    <Clock city={value?.installationSiteCity} country={value?.installationSiteCountry} region={value?.installationSiteRegion} />
+                  ))} */}
                 {DECOILER_TYPE_ARR.some((type) => value?.machineModel?.includes(type)) && (
                   <IconTooltip
                     title={LABEL.DECOILER(value?.machineModel)}
@@ -57,7 +59,7 @@ const MachineNav = ({ renderedTab, navigatePage, value, isLoading }) => {
         </Grid>
       </Grid>
       <Grid item sm={12} px={2}>
-        <MachineTabsContainer value={value} renderedTab={renderedTab} navigatePage={navigatePage} />
+        <MachineTabsContainer value={value} renderedTab={renderedTab} navigatePage={navigatePage} isLoading={isLoading} />
       </Grid>
     </GStyledHeaderCardContainer>
   )

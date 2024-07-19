@@ -33,7 +33,7 @@ const AuditBox = ({ value }) => {
 }
 
 AuditBox.propTypes = {
-  value: PropTypes.object
+  value: PropTypes.any
 }
 
 export default AuditBox

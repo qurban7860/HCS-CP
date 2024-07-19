@@ -39,8 +39,14 @@ export const TABS = (value) => [
   },
   {
     id: 3,
-    label: 'Support',
+    label: 'Machines',
     icon: ICON_NAME.SUPPORT,
     disabled: true
+  },
+  {
+    id: 4,
+    label: 'Support Tickets',
+    icon: ICON_NAME.SUPPORT,
+    disabled: false
   }
 ]

@@ -23,6 +23,8 @@ export const GeneralAppPage = Loadable(lazy(() => import('page/dashboard/general
 // machine
 export const MachinePage = Loadable(lazy(() => import('page/product/machine/machine')))
 export const MachinesListPage = Loadable(lazy(() => import('page/product/machines/machines')))
+// machine-support
+export const MachineSupportTicketsPage = Loadable(lazy(() => import('page/product/support/tickets')))
 
 // customer
 export const CustomerPage = Loadable(lazy(() => import('page/crm/customer/customer')))
@@ -31,12 +33,17 @@ export const CustomerListPage = Loadable(lazy(() => import('page/crm/customers/c
 export const ContactPage = Loadable(lazy(() => import('page/crm/contact/contact')))
 // site
 export const SitePage = Loadable(lazy(() => import('page/crm/site/site')))
+// customer-support
+export const CustomerSupportTicketsPage = Loadable(lazy(() => import('page/crm/support/tickets')))
+
+// support
+export const TicketsListPage = Loadable(lazy(() => import('page/support/tickets/tickets')))
 
 // user Invitations List
 export const { UserInvitationList } = Loadable(lazy(() => import('page/security/user/user')))
 export const { UserInvitationView } = Loadable(lazy(() => import('page/security')))
 
-// User
+// user
 export const UserProfilePage = Loadable(lazy(() => import('page/security/user/user')))
 
 // dashboard: settings

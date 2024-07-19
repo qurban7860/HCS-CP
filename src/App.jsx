@@ -30,7 +30,6 @@ function App() {
 
   return (
     // <WebSocketProvider>
-    //   <PersistGate loading={null} persistor={persistor}>
     // <LocalizationProvider dateAdapter={AdapterDateFns}>
     <AuthProvider>
       <HelmetProvider>
@@ -61,7 +60,6 @@ function App() {
       </HelmetProvider>
     </AuthProvider>
     // </LocalizationProvider>
-    //   </PersistGate>
     // </WebSocketProvider>
   )
 }

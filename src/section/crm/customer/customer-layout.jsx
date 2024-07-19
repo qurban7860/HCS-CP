@@ -5,6 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import {
   getCustomerMachines,
   getCustomer,
+  getContacts,
   setContactDialog,
   setMachineDialog,
   setMachineSiteDialog,
@@ -16,7 +17,7 @@ import {
 } from 'store/slice'
 import { Typography } from '@mui/material'
 import { CustomerNav, CustomerTab } from 'section/crm/customer'
-import { ContactTab, SiteTab, customerDefaultValues } from 'section/crm'
+import { ContactTab, SiteTab, customerDefaultValues, TicketsTab } from 'section/crm'
 import { MachineDialog, SiteDialog, ContactDialog } from 'component'
 import { MotionLazyContainer } from 'component/animate'
 import { FLEX } from 'constant'
@@ -27,7 +28,7 @@ const CustomerLayout = ({ tab = 0 }) => {
   const navigate = useNavigate()
   const { id } = useParams()
   const { customerMachines, connectedMachineDialog, machineSiteDialogData } = useSelector((state) => state.machine)
-  const { contact, contactDialog } = useSelector((state) => state.contact)
+  const { contact, contacts, contactDialog } = useSelector((state) => state.contact)
   const { customer, isLoading, customerRenderTab } = useSelector((state) => state.customer)
 
   useEffect(() => {
@@ -46,12 +47,13 @@ const CustomerLayout = ({ tab = 0 }) => {
     dispatch(setMachineDialog(false))
     dispatch(setMachineSiteDialog(false))
     dispatch(setContactDialog(false))
+    dispatch(getContacts(id, customer?.isArchived))
     dispatch(resetMachine())
     dispatch(resetContact())
     dispatch(resetMachineSiteDialogData())
   }, [dispatch])
 
-  const defaultValues = customerDefaultValues(customer, customerMachines)
+  const defaultValues = customerDefaultValues(customer, customerMachines, contacts)
 
   const navigatePage = (tab) => {
     if (tab === 0 && id) {
@@ -67,6 +69,10 @@ const CustomerLayout = ({ tab = 0 }) => {
       dispatch(setFromDialog(false))
       dispatch(setFromSiteDialog(false))
     } else if (tab === 3 && id) {
+    } else if (tab === 4 && id) {
+      navigate(PATH_CUSTOMER.customers.support.list(id))
+      // dispatch(setFromDialog(false))
+      // dispatch(setFromSiteDialog(false))
     }
   }
 
@@ -84,8 +90,8 @@ const CustomerLayout = ({ tab = 0 }) => {
         <SiteTab />
       ) : renderedTab === 3 ? (
         <Typography variant="h0">{'MACHINE PAGE'}</Typography>
-      ) : renderedTab === 3 ? (
-        <Typography variant="h0">{'SUPPORT PAGE'}</Typography>
+      ) : renderedTab === 4 ? (
+        <TicketsTab />
       ) : null}
       {contactDialog && <ContactDialog contact={contact} />}
       {machineSiteDialogData && <SiteDialog />}
