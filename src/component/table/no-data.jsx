@@ -4,7 +4,7 @@ import { TableBody, TableCell, TableRow } from '@mui/material'
 import { EmptyContent } from 'component'
 import { FALLBACK } from 'constant'
 
-const TableNoData = ({ isNotFound }) => {
+const TableNoData = ({ isNotFound, ticketNotFound }) => {
   const { themeMode } = useSettingContext()
   return (
     <>
@@ -14,6 +14,19 @@ const TableNoData = ({ isNotFound }) => {
             <TableCell colSpan={12}>
               <EmptyContent
                 {...FALLBACK.NO_DATA}
+                sx={{
+                  color: themeMode === 'dark' ? 'text.secondary' : 'grey.700'
+                }}
+              />
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      ) : ticketNotFound ? (
+        <TableBody>
+          <TableRow>
+            <TableCell colSpan={12}>
+              <EmptyContent
+                {...FALLBACK.NO_TICKET}
                 sx={{
                   color: themeMode === 'dark' ? 'text.secondary' : 'grey.700'
                 }}
