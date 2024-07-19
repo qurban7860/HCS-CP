@@ -74,7 +74,7 @@ export const StyledHeaderTableCell = styled(({ theme, mode, item, ...other }) =>
       ? '30%'
       : item.key === KEY.FIELDS_CREATED
       ? '10%'
-      : item.key === 'Status'
+      : item.key === 'fields.customfield_10069'
       ? '15%'
       : `calc(100% / ${HEADER.length})`
 }))

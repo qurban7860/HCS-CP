@@ -9,6 +9,7 @@ import { PATH_MACHINE } from 'route/path'
 import { fDate } from 'util'
 import { KEY, LABEL } from 'constant'
 import { StyledIconListItemText, StyledTableRow } from './style'
+import { GLOBAL } from 'config/global'
 
 const TicketsTable = ({ ticket, mode, index }) => {
   const theme = useTheme()
@@ -17,13 +18,14 @@ const TicketsTable = ({ ticket, mode, index }) => {
   const activeColor = mode === KEY.DARK ? theme.palette.howick.burnIn : theme.palette.burnIn.altDark
   const inactiveColor = theme.palette.howick.error
 
+  // implement when page view for tickets is ready
   const handleOnClick = (id) => {
     navigate(PATH_MACHINE.machines.view(id))
   }
 
-  const openInNewPage = (id) => {
+  const openInNewPage = (jiraKey) => {
     // dispatch(setMachineTab('info'))
-    const url = PATH_MACHINE.machines.view(id)
+    const url = GLOBAL.JIRA_URL + jiraKey
     window.open(url, '_blank')
   }
 
@@ -37,9 +39,9 @@ const TicketsTable = ({ ticket, mode, index }) => {
           <LinkTableCell
             param={key}
             onClick={() => {
-              handleOnClick(self)
+              openInNewPage(key)
             }}
-            openInNewTab={() => openInNewPage(self)}
+            openInNewTab={() => openInNewPage(key)}
             tooltipTitle={LABEL.VIEW_IN_JIRA}
             icon={ICON_NAME.JIRA}
           />
