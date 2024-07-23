@@ -1,4 +1,5 @@
 import { useEffect, useState, memo, useLayoutEffect } from 'react'
+import axios from 'axios'
 import { useSelector, dispatch } from 'store'
 import { useAuthContext } from 'auth'
 import { snack, useTable, useFilter, getComparator, useSettingContext } from 'hook'
@@ -8,6 +9,7 @@ import {
   setMachineFilterBy,
   ChangeMachinePage,
   ChangeMachineRowsPerPage,
+  resetMachine,
   resetMachines,
   resetSecurityUser
 } from 'store/slice'
@@ -19,14 +21,17 @@ import { MARGIN, TABLE } from 'config'
 import { COLOR, KEY, TITLE, RESPONSE, FLEX, FLEX_DIR } from 'constant'
 import { StyledScrollTableContainer } from './style'
 
-const MachineListSection = () => {
+const MachineListSection = ({ isArchived }) => {
   const [tableData, setTableData] = useState([])
-  const { machines, initial, isLoading, machinePage, machineRowsPerPage } = useSelector((state) => state.machine)
+  const { machines, error, initial, isLoading, responseMessage, machinePage, machineRowsPerPage } = useSelector((state) => state.machine)
   const { userId } = useAuthContext()
   const { securityUser } = useSelector((state) => state.user)
 
   const { themeMode } = useSettingContext()
   const denseHeight = TABLE.DENSE_HEIGHT
+
+  const axiosToken = () => axios.CancelToken.source()
+  const cancelTokenSource = axiosToken()
 
   const {
     order,
@@ -38,18 +43,10 @@ const MachineListSection = () => {
   })
 
   useLayoutEffect(() => {
+    dispatch(resetMachine())
     dispatch(resetMachines())
     dispatch(resetSecurityUser())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch])
-
-  const { filterName, handleFilterName, filteredData } = useFilter(
-    getComparator(order, orderBy),
-    machines,
-    initial,
-    ChangeMachinePage,
-    setMachineFilterBy
-  )
 
   useEffect(() => {
     if (userId) {
@@ -58,12 +55,25 @@ const MachineListSection = () => {
   }, [dispatch, userId])
 
   useEffect(() => {
-    dispatch(getMachines(null, null, false))
-  }, [dispatch])
+    dispatch(getMachines(null, null, isArchived, cancelTokenSource))
+    // return () => {
+    //   cancelTokenSource.cancel()
+    // }
+  }, [dispatch, machinePage, machineRowsPerPage, isArchived])
 
   useEffect(() => {
-    setTableData(machines || [])
-  }, [machines])
+    if (initial) {
+      setTableData(machines || [])
+    }
+  }, [machines, error, responseMessage, initial])
+
+  const { filterName, handleFilterName, filteredData } = useFilter(
+    getComparator(order, orderBy),
+    tableData,
+    initial,
+    ChangeMachinePage,
+    setMachineFilterBy
+  )
 
   const handleChangePage = (event, newPage) => {
     if (newPage < Math.ceil(filteredData.length / machineRowsPerPage)) {
@@ -118,4 +128,4 @@ const MachineListSection = () => {
   )
 }
 
-export default memo(MachineListSection)
+export default MachineListSection
