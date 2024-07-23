@@ -17,10 +17,8 @@ import { truncate } from 'util/truncate'
 const { TYPOGRAPHY } = VARIANT
 
 const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMachineSiteDialog }) => {
-  const [icon, setIcon] = useState(null)
   const theme = useTheme()
   const { themeMode } = useSettingContext()
-  const { machine, machineDialog, isParent, isConnected } = useSelector((state) => state.machine)
 
   useEffect(() => {
     dispatch(setMachineDialog(false))
