@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import axiosInstance from 'util/axios'
-import { GLOBAL } from 'config/global'
+import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
 
 const initialState = {
@@ -171,7 +170,7 @@ export function getCustomers(page, pageSize, isArchived) {
   return async (dispatch) => {
     dispatch(customerSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.list, {
+      const response = await axios.get(PATH_SERVER.CRM.CUSTOMER.list, {
         params: {
           isArchived: isArchived || false,
           orderBy: {
@@ -197,7 +196,7 @@ export function getCustomer(id) {
   return async (dispatch) => {
     dispatch(customerSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.detail(id), {
+      const response = await axios.get(PATH_SERVER.CRM.CUSTOMER.detail(id), {
         params: {
           flag: 'basic'
         }

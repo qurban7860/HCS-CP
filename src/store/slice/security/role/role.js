@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
+import axios from 'util/axios'
 import { roleTypes } from 'config/role-types'
 import { PATH_SERVER } from 'route/server'
 import { DEBUG } from 'constant'
-import axiosInstance from 'util/axios'
 
 const regEx = /^[^2]*/
 const initialState = {
@@ -108,7 +108,7 @@ export function getRoles() {
   return async (dispatch) => {
     dispatch(roleSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.SECURITY.ROLES.list, {
+      const response = await axios.get(PATH_SERVER.SECURITY.ROLES.list, {
         params: {
           isArchived: false
         }
@@ -126,7 +126,7 @@ export function getActiveRoles() {
   return async (dispatch) => {
     dispatch(roleSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.SECURITY.ROLES.list, {
+      const response = await axios.get(PATH_SERVER.SECURITY.ROLES.list, {
         params: {
           isArchived: false,
           isActive: true
@@ -145,7 +145,7 @@ export function getRole(id) {
   return async (dispatch) => {
     dispatch(roleSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.SECURITY.ROLES.detail(id))
+      const response = await axios.get(PATH_SERVER.SECURITY.ROLES.detail(id))
       dispatch(roleSlice.actions.getRoleSuccess(response.data))
     } catch (error) {
       console.error(DEBUG.GET_ACTIVE_ROLES, error)

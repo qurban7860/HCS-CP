@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import axiosInstance from 'util/axios'
+import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
 
 const regEx = /^[2][0-9][0-9]$/
@@ -113,7 +113,7 @@ export function getMachineModels() {
   return async (dispatch) => {
     dispatch(modelSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.PRODUCT.MODEL.list, {
+      const response = await axios.get(PATH_SERVER.PRODUCT.MODEL.list, {
         params: {
           isArchived: false
         }
@@ -133,7 +133,7 @@ export function getActiveMachineModels(categoryId) {
   return async (dispatch) => {
     dispatch(modelSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(`${CONFIG.SERVER_URL}products/models`, {
+      const response = await axios.get(`${CONFIG.SERVER_URL}products/models`, {
         params: {
           isActive: true,
           isArchived: false,
@@ -155,7 +155,7 @@ export function getMachineModel(id) {
   return async (dispatch) => {
     dispatch(modelSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.PRODUCT.MODEL.detail(id))
+      const response = await axios.get(PATH_SERVER.PRODUCT.MODEL.detail(id))
       if (regEx.test(response.status)) {
         dispatch(modelSlice.actions.getMachinemodelSuccess(response.data))
       }

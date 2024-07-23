@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import axiosInstance from 'util/axios'
+import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
 import { DEBUG, RESPONSE } from 'constant'
 
@@ -166,7 +166,7 @@ export function getSecurityUsers() {
   return async (dispatch) => {
     dispatch(userSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.SECURITY.USER.list, {
+      const response = await axios.get(PATH_SERVER.SECURITY.USER.list, {
         params: {
           isArchived: false
         }
@@ -186,7 +186,7 @@ export function getSecurityUser(id) {
   return async (dispatch) => {
     dispatch(userSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.SECURITY.USER.detail(id))
+      const response = await axios.get(PATH_SERVER.SECURITY.USER.detail(id))
       if (regEx.test(response.status)) {
         dispatch(userSlice.actions.getSecurityUserSuccess(response.data))
       }
@@ -212,7 +212,7 @@ export function SecurityUserPasswordUpdate(data, Id, isAdmin) {
         data.isAdmin = true
       }
 
-      const response = await axiosInstance.patch(PATH_SERVER.SECURITY.USER.updatePassword(Id), data)
+      const response = await axios.patch(PATH_SERVER.SECURITY.USER.updatePassword(Id), data)
       if (regEx.test(response.status)) {
         dispatch(userSlice.actions.setResponseMessage(response.data))
       }
@@ -228,7 +228,7 @@ export function getSignInLogs(id) {
   return async (dispatch) => {
     dispatch(userSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.SECURITY.USER.signInLogs(id))
+      const response = await axios.get(PATH_SERVER.SECURITY.USER.signInLogs(id))
       dispatch(userSlice.actions.getSignInLogsSuccess(response.data))
     } catch (error) {
       console.error(DEBUG.GET_SIGN_IN_LOGS_ERROR, error)
@@ -242,7 +242,7 @@ export function sendUserInvite(Id) {
   return async (dispatch) => {
     dispatch(userSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.SECURITY.SEND_USER_INVITE(Id))
+      const response = await axios.get(PATH_SERVER.SECURITY.SEND_USER_INVITE(Id))
       dispatch(userSlice.actions.setResponseMessage(response.data))
       return response // eslint-disable-line
     } catch (error) {

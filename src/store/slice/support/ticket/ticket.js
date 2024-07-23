@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import axiosInstance from 'util/axios'
+import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
 import { fDate } from 'util/format'
 
@@ -111,7 +111,7 @@ export function getTickets(period) {
         params.startDate = fDate(startDate, 'yyyy-MM-dd')
       }
 
-      const response = await axiosInstance.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+      const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
       if (regEx.test(response.status)) {
         dispatch(supportSlice.actions.getTicketsSuccess(response.data))
       }
