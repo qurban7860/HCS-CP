@@ -1,4 +1,4 @@
-import axiosInstance from 'util/axios'
+import axios from 'util/axios'
 import { LOCAL_STORAGE_KEY } from 'constant'
 
 export const getAuthToken = () => {
@@ -56,7 +56,7 @@ export const setSession = (accessToken) => {
   if (accessToken) {
     localStorage.setItem('accessToken', accessToken)
 
-    axiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
 
     // This function below will handle when token is expired
     const { exp } = jwtDecode(accessToken) // ~3 days by minimals server
@@ -64,7 +64,7 @@ export const setSession = (accessToken) => {
   } else {
     localStorage.removeItem('accessToken')
 
-    delete axiosInstance.defaults.headers.common.Authorization
+    delete axios.defaults.headers.common.Authorization
   }
 }
 

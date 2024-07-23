@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import storage from 'redux-persist/lib/storage'
 import localStorageSpace from 'util/local-storage-space'
 import { snack } from 'hook'
-import axiosInstance from 'util/axios'
+import axios from 'util/axios'
 import { PATH_AUTH } from 'route/path'
 import { PATH_SERVER } from 'route/server'
 import { initialState, reducer, REDUCER_KEY } from 'auth/initial-state'
@@ -139,7 +139,7 @@ export function AuthProvider({ children }) {
 
   // :get configurations
   async function getConfigs() {
-    const configsResponse = await axiosInstance.get(PATH_SERVER.CONFIG, { params: { isActive: true, isArchived: false } })
+    const configsResponse = await axios.get(PATH_SERVER.CONFIG, { params: { isActive: true, isArchived: false } })
     if (configsResponse && Array.isArray(configsResponse.data) && configsResponse.data.length > 0) {
       const configs = configsResponse.data.map((c) => ({ name: c.name, type: c.type, value: c.value, notes: c.notes }))
       localStorage.setItem(LOCAL_STORAGE_KEY.CONFIGURATION, JSON.stringify(configs))
@@ -149,7 +149,7 @@ export function AuthProvider({ children }) {
   // :login
   const login = useCallback(async (email, password) => {
     await dispatch(clearAllPersistedStates())
-    const response = await axiosInstance.post(PATH_SERVER.SECURITY.LOGIN, { email, password })
+    const response = await axios.post(PATH_SERVER.SECURITY.LOGIN, { email, password })
 
     if (response?.data?.multiFactorAuthentication) {
       localStorage.setItem(LOCAL_STORAGE_KEY.USER_ID, response.data.userId)
@@ -210,7 +210,7 @@ export function AuthProvider({ children }) {
 
   // :multi-factor code
   const muliFactorAuthentication = useCallback(async (code, userID) => {
-    const response = await axiosInstance.post(PATH_SERVER.SECURITY.MFA, {
+    const response = await axios.post(PATH_SERVER.SECURITY.MFA, {
       code,
       userID
     })
@@ -263,7 +263,7 @@ export function AuthProvider({ children }) {
 
   // :register --disabled
   const register = useCallback(async (firstName, lastName, email, password) => {
-    const response = await axiosInstance.post(PATH_SERVER.SECURITY.REGISTER, {
+    const response = await axios.post(PATH_SERVER.SECURITY.REGISTER, {
       firstName,
       lastName,
       email,
@@ -286,7 +286,7 @@ export function AuthProvider({ children }) {
     const id = initialState.userId
     try {
       await dispatch(clearStorageAndNaviagteToLogin())
-      await axiosInstance.post(PATH_SERVER.SECURITY.LOGOUT(userId))
+      await axios.post(PATH_SERVER.SECURITY.LOGOUT(userId))
       snack(RESPONSE.success.LOGOUT, { variant: COLOR.SUCCESS })
     } catch (error) {
       console.error(error)
