@@ -24,6 +24,7 @@ import { KEY, TITLE, FLEX, TYPOGRAPHY, VIEW_FORM, SUPPORT_TICKET, FLEX_DIR, LABE
 
 const TicketsTab = () => {
   const [tableData, setTableData] = useState([])
+  const [filterPeriodOption, setFilterPeriodOption] = useState(3)
   const { customerTicket, customerTickets, initial, isLoading, selectedCustomerTicketCard } = useSelector((state) => state.customerTicket)
   const { customer, customerDialog } = useSelector((state) => state.customer)
 
@@ -35,8 +36,7 @@ const TicketsTab = () => {
   })
   useEffect(() => {
     if (customer?.ref) {
-      dispatch(getCustomerTickets(customer?.ref))
-      console.log('customerTickets', customerTickets)
+      dispatch(getCustomerTickets(customer?.ref, filterPeriodOption))
     }
     return () => {
       dispatch(resetCustomerTicketRecords())
@@ -53,7 +53,6 @@ const TicketsTab = () => {
     if (customerTickets?.issues?.length > 0) {
       dispatch(setSelectedCustomerTicketCard(customerTickets?.issues[0]?.key))
       dispatch(getCustomerTicketByKey(customer.ref, selectedCustomerTicketCard))
-      console.log('customerTicket', customerTicket)
     }
   }, [customerTickets, dispatch])
 
@@ -89,11 +88,12 @@ const TicketsTab = () => {
                 </Grid>
               )}
               <Grid container p={1}>
+                {/* TODO: table filters */}
                 {filteredData?.length > 0 && !isLoading ? (
                   defaultValues?.map((t, index) => (
                     <TicketCard
                       key={index}
-                      selectedCardId={selectedCustomerTicketCard || index}
+                      selectedCardId={selectedCustomerTicketCard}
                       value={t}
                       handleCustomerTicketCard={handleCustomerTicketKey}
                       t={t}
