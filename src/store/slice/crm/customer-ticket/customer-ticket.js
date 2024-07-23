@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import axiosInstance from 'util/axios'
+import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
+import { fDate } from 'util'
 // import goodlog from 'good-logs'
 
 const TAG = 'customer-ticket'
@@ -11,7 +12,7 @@ const initialState = {
   success: false,
   isLoading: false,
   error: null,
-  selectedcustomerTicketCard: null,
+  selectedCustomerTicketCard: null,
   customerTicket: {},
   customerTickets: [],
   customerTicketTotalCount: 0,
@@ -70,7 +71,7 @@ const customerTicketSlice = createSlice({
       // state.isLoading = false;
     },
     setSelectedCustomerTicketCard(state, action) {
-      state.selectedcustomerTicketCard = action.payload
+      state.selectedCustomerTicketCard = action.payload
     },
     setCustomerTicketFilterBy(state, action) {
       state.customerTicketFilterBy = action.payload
@@ -116,7 +117,7 @@ export function getCustomerTicket(ref, page, pageSize) {
         page,
         pageSize
       }
-      const response = await axiosInstance.get(PATH_SERVER.SUPPORT.TICKET(id), { params })
+      const response = await axios.get(PATH_SERVER.SUPPORT.TICKET(id), { params })
       dispatch(customerTicketSlice.actions.getCustomerTicketRecordSuccess(response.data))
     } catch (error) {
       console.log(error)
@@ -126,7 +127,36 @@ export function getCustomerTicket(ref, page, pageSize) {
   }
 }
 
-export function getCustomerTickets(ref) {
+export function getAllCustomerTickets(customers, page, pageSize) {
+  return async (dispatch) => {
+    dispatch(customerTicketSlice.actions.startLoading())
+    try {
+      const customerRefs = customers?.map((customer) => customer.ref)
+
+      let responseData = []
+
+      for (let i = 0; i < customerRefs.length; i++) {
+        const params = {
+          ref: customerRefs[i]
+        }
+        params.pagination = {
+          page,
+          pageSize
+        }
+        const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+        responseData.push(response.data)
+      }
+
+      dispatch(customerTicketSlice.actions.getCustomerTicketRecordsSuccess(responseData))
+    } catch (error) {
+      console.log(error)
+      dispatch(customerTicketSlice.actions.hasError(error.Message))
+      throw error
+    }
+  }
+}
+
+export function getCustomerTickets(ref, period) {
   return async (dispatch) => {
     dispatch(customerTicketSlice.actions.startLoading())
     try {
@@ -135,7 +165,13 @@ export function getCustomerTickets(ref) {
         startAt: 0
       }
 
-      const response = await axiosInstance.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+      if (period) {
+        const startDate = new Date()
+        startDate.setMonth(startDate.getMonth() - period)
+        params.startDate = fDate(startDate, 'yyyy-MM-dd')
+      }
+
+      const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
       response.data.issues.sort((a, b) => {
         if (a.fields.status.name === 'Completed') {
           return 1
@@ -157,7 +193,6 @@ export function getCustomerTickets(ref) {
         }
         return 0
       })
-      console.log('customerTickets', response.data)
       dispatch(customerTicketSlice.actions.getCustomerTicketRecordsSuccess(response.data))
     } catch (error) {
       console.log(error)
@@ -175,7 +210,7 @@ export function getCustomerTicketByKey(ref, key) {
         ref
       }
 
-      const response = await axiosInstance.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+      const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
       let customerTicket = response.data.issues.find((ticket) => ticket.key === key)
 
       dispatch(customerTicketSlice.actions.getCustomerTicketRecordSuccess(customerTicket))
