@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types'
-import { useSelector } from 'store'
 import { Clock, ICON_NAME, useSettingContext } from 'hook'
 import { Grid, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
