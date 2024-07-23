@@ -89,6 +89,34 @@ export const GStyledContactCard = styled(({ theme, selectedCardId, c, mode, ...o
   })
 )
 
+export const GStyledSupportCard = styled(({ theme, selectedCardId, s, mode, ...other }) => <Card {...other} />)(
+  ({ theme, selectedCardId, s, mode }) => ({
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    marginLeft: selectedCardId === s.key ? theme.spacing(2) : theme.spacing(0),
+    width: '100%',
+    cursor: 'pointer',
+    borderRight: selectedCardId === s.key ? `9px solid ${mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}` : '',
+    backgroundColor:
+      selectedCardId === s.key
+        ? mode === KEY.LIGHT
+          ? theme.palette.grey[300]
+          : theme.palette.howick.darkGrey
+        : mode === KEY.LIGHT
+        ? theme.palette.grey[200]
+        : theme.palette.grey[800],
+    '&:hover': {
+      backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.howick.darkGrey,
+      marginLeft: theme.spacing(2)
+    },
+    transition: 'ease-in-out 0.2s'
+  })
+)
+
 export const GStyledSiteCard = styled(({ theme, selectedCardId, s, mode, ...other }) => <Card {...other} />)(
   ({ theme, selectedCardId, s, mode }) => ({
     display: 'flex',
