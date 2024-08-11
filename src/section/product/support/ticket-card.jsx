@@ -2,13 +2,13 @@ import PropTypes from 'prop-types'
 import { useSettingContext, ICON_NAME } from 'hook'
 import { Box, CardMedia, Grid, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledContactCard, GStyledListItemText, GStyledSpanBox, GStyledSupportStatusFieldChip } from 'theme/style'
-import { IconTooltip, SvgColor } from 'component'
+import { GStyledSupportCard, GStyledListItemText, GStyledSpanBox, GStyledSupportStatusFieldChip } from 'theme/style'
+import { IconTooltip } from 'component'
 import { GLOBAL } from 'config/global'
 import { LABEL, TYPOGRAPHY, KEY, FLEX, SIZE } from 'constant'
 import { normalizer } from 'util/format'
 
-const TicketCard = ({ selectedCardId, value, handleCustomerTicketCard, t }) => {
+const TicketCard = ({ selectedCardId, value, handleMachineTicketCard, t }) => {
   const theme = useTheme()
   const { themeMode } = useSettingContext()
 
@@ -18,7 +18,7 @@ const TicketCard = ({ selectedCardId, value, handleCustomerTicketCard, t }) => {
   }
 
   return (
-    <GStyledContactCard onClick={(event) => handleCustomerTicketCard(event, t.key)} selectedCardId={selectedCardId} c={t} mode={themeMode}>
+    <GStyledSupportCard onClick={(event) => handleMachineTicketCard(event, t.key)} selectedCardId={selectedCardId} s={t} mode={themeMode}>
       <Grid item xs={10}>
         <Box height={80}>
           <GStyledListItemText
@@ -64,15 +64,14 @@ const TicketCard = ({ selectedCardId, value, handleCustomerTicketCard, t }) => {
           />
         </GStyledSpanBox>
       </Grid>
-    </GStyledContactCard>
+    </GStyledSupportCard>
   )
 }
 
 TicketCard.propTypes = {
-  handleCustomerTicketCard: PropTypes.func,
   selectedCardId: PropTypes.any,
   value: PropTypes.any,
-  handleContactCard: PropTypes.func,
+  handleMachineTicketCard: PropTypes.func,
   contact: PropTypes.any,
   t: PropTypes.any
 }

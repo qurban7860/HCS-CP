@@ -1,18 +1,21 @@
-import { useEffect, useState, memo, useLayoutEffect } from 'react'
+import { useEffect, useState, memo, useLayoutEffect, useCallback } from 'react'
 import { useSelector, dispatch } from 'store'
 import { useAuthContext } from 'auth'
-import { snack, useTable, useFilter, getComparator, useSettingContext } from 'hook'
+import { useTable, useFilter, getComparator, useSettingContext } from 'hook'
 import {
   getTickets,
   getSecurityUser,
-  setTicketFilterBy,
-  ChangeTicketPage,
-  ChangeTicketRowsPerPage,
-  resetTickets,
-  resetSecurityUser
+  setCustomerTicketFilterBy,
+  ChangeCustomerTicketPage,
+  ChangeCustomerTicketRowsPerPage,
+  getCustomerTickets,
+  getAllCustomerTickets,
+  getMachineTickets,
+  getCustomer,
+  resetCustomerTicketRecords
 } from 'store/slice'
-import { Table, Typography, Grid, Box } from '@mui/material'
-import { GStyledTableHeaderBox, GStyledSpanBox } from 'theme/style'
+import { Table, Grid } from '@mui/material'
+import { GStyledTableHeaderBox } from 'theme/style'
 import { TableNoData, MotionLazyContainer, SkeletonTable, SearchBox, TableTitleBox } from 'component'
 import { TicketsTable, TicketsTableHeader, TicketsListPagination } from 'section/support'
 import { MARGIN, TABLE } from 'config'
@@ -22,8 +25,10 @@ import { StyledScrollTableContainer } from './style'
 const TicketsListSection = () => {
   const [tableData, setTableData] = useState([])
   const [filterPeriodOption, setFilterPeriodOption] = useState(3)
-  const { tickets, initial, isLoading, ticketRowsPerPage, ticketPage } = useSelector((state) => state.ticket)
   const { userId } = useAuthContext()
+  const { customer } = useSelector((state) => state.customer)
+  const { customerTickets, initial, isLoading, customerTicketRowsPerPage, customerTicketPage } = useSelector((state) => state.customerTicket)
+  const { machineTickets } = useSelector((state) => state.machineTicket)
   const { securityUser } = useSelector((state) => state.user)
 
   const { themeMode } = useSettingContext()
@@ -38,49 +43,49 @@ const TicketsListSection = () => {
     defaultOrder: KEY.DESC
   })
 
-  useEffect(() => {
-    dispatch(getTickets(filterPeriodOption))
-  }, [filterPeriodOption])
-
-  const onRefresh = () => {
-    dispatch(getTickets(filterPeriodOption))
-  }
-
-  useEffect(() => {
-    if (initial) {
-      setTableData(tickets.issues || [])
-    }
-  }, [tickets.issues])
-
+  // populate with only tix for certain org by ref, or machine by serialNo
   useEffect(() => {
     if (userId) {
       dispatch(getSecurityUser(userId))
     }
   }, [dispatch, userId])
 
+  useEffect(() => {
+    if (securityUser?.customers) {
+      dispatch(getCustomerTickets(securityUser?.customers[1]?.ref, filterPeriodOption))
+      return () => {
+        dispatch(resetCustomerTicketRecords())
+      }
+    }
+  }, [dispatch, securityUser?.customers, filterPeriodOption])
+
+  const onRefresh = () => {
+    dispatch(getCustomerTickets(customer?.ref, filterPeriodOption))
+  }
+
+  useEffect(() => {
+    if (initial) {
+      setTableData(customerTickets?.issues || [])
+    }
+  }, [customerTickets?.issues])
+
   const { filterName, handleFilterName, filteredData } = useFilter(
     getComparator(order, orderBy),
     tableData,
     initial,
-    ChangeTicketPage,
-    setTicketFilterBy
+    ChangeCustomerTicketPage,
+    setCustomerTicketFilterBy
   )
 
-  const handleFilterStatus = (event) => {
-    // debouncedStatus.current(event.target.value)
-    setFilterStatusOption(event.target.value)
-    ChangeTicketPage(0)
-  }
-
   const handleChangePage = (event, newPage) => {
-    if (newPage < Math.ceil(filteredData.length / ticketRowsPerPage)) {
-      dispatch(ChangeTicketPage(newPage))
+    if (newPage < Math.ceil(filteredData.length / customerTicketRowsPerPage)) {
+      dispatch(ChangeCustomerTicketPage(newPage))
     }
   }
 
   const handleChangeRowsPerPage = (event) => {
-    dispatch(ChangeTicketPage(0))
-    dispatch(ChangeTicketRowsPerPage(parseInt(event.target.value, 10)))
+    dispatch(ChangeCustomerTicketPage(0))
+    dispatch(ChangeCustomerTicketRowsPerPage(parseInt(event.target.value, 10)))
   }
 
   const isNotFound = !isLoading && !filteredData?.length
@@ -97,16 +102,16 @@ const TicketsListSection = () => {
               <TicketsListPagination
                 mode={themeMode}
                 data={filteredData}
-                page={ticketPage}
-                rowsPerPage={ticketRowsPerPage}
+                page={customerTicketPage}
+                rowsPerPage={customerTicketRowsPerPage}
                 handleChangePage={handleChangePage}
                 handleChangeRowsPerPage={handleChangeRowsPerPage}
               />
               <StyledScrollTableContainer>
                 <Table>
                   <TicketsTableHeader mode={themeMode} />
-                  {(isLoading ? [...Array(ticketRowsPerPage)] : filteredData)
-                    .slice(ticketPage * ticketRowsPerPage, ticketPage * ticketRowsPerPage + ticketRowsPerPage)
+                  {(isLoading ? [...Array(customerTicketRowsPerPage)] : filteredData)
+                    .slice(customerTicketPage * customerTicketRowsPerPage, customerTicketPage * customerTicketRowsPerPage + customerTicketRowsPerPage)
                     .map((row, index) =>
                       row ? (
                         <TicketsTable key={row.key} ticket={row} mode={themeMode} index={index} />

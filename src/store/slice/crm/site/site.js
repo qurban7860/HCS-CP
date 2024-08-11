@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import axiosInstance from 'util/axios'
+import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
 
 const initialState = {
@@ -156,7 +156,7 @@ export function getSites(customerId, isCustomerArchived = false) {
         params.isArchived = false
       }
 
-      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.listSite(customerId), { params })
+      const response = await axios.get(PATH_SERVER.CRM.CUSTOMER.listSite(customerId), { params })
       dispatch(siteSlice.actions.getSitesSuccess(response.data))
     } catch (error) {
       console.log(error)
@@ -170,7 +170,7 @@ export function getSite(customerId, id) {
   return async (dispatch) => {
     dispatch(siteSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.siteDetail(customerId, id))
+      const response = await axios.get(PATH_SERVER.CRM.CUSTOMER.siteDetail(customerId, id))
       dispatch(siteSlice.actions.getSiteSuccess(response.data))
     } catch (error) {
       console.error(error)

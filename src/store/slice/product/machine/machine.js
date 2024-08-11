@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import axiosInstance from 'util/axios'
+import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
 import { RESPONSE } from 'constant'
 
@@ -261,7 +261,7 @@ export function getMachine(id) {
   return async (dispatch) => {
     dispatch(machineSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.PRODUCT.MACHINE.detail(id))
+      const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.detail(id))
       dispatch(machineSlice.actions.getMachineSuccess(response.data))
     } catch (error) {
       console.error(error)
@@ -271,28 +271,31 @@ export function getMachine(id) {
   }
 }
 
-export function getMachines(page, pageSize, isArchived) {
+export function getMachines(page, pageSize, isArchived, cancelToken) {
   return async (dispatch) => {
     dispatch(machineSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.PRODUCT.MACHINE.list, {
-        params: {
-          isArchived: isArchived || false,
-          orderBy: {
-            createdAt: -1
-          },
-          pagination: {
-            page,
-            pageSize
-          }
+      const params = {
+        isArchived: isArchived || false,
+        pagination: {
+          page,
+          pageSize
         }
+      }
+      if (isArchived) {
+        params.orderBy = { updatedBy: -1 }
+      } else {
+        params.orderBy = { createdAt: -1 }
+      }
+      const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.list, {
+        params,
+        cancelToken: cancelToken?.token
       })
       dispatch(machineSlice.actions.getMachinesSuccess(response.data))
-      dispatch(machineSlice.actions.setResponseMessage(RESPONSE.success.FETCH))
+      // dispatch(machineSlice.actions.setResponseMessage(RESPONSE.success.FETCH))
     } catch (error) {
       console.error(error)
       dispatch(machineSlice.actions.hasError(error.Message))
-      dispatch(machineSlice.actions.setResponseMessage(RESPONSE.error.FETCH))
     }
   }
 }
@@ -301,7 +304,7 @@ export function getCustomerMachines(id) {
   return async (dispatch) => {
     dispatch(machineSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.PRODUCT.MACHINE.viaCustomer(id, false))
+      const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.viaCustomer(id, false))
       dispatch(machineSlice.actions.getCustomerMachinesSuccess(response.data))
     } catch (error) {
       console.error(error)
@@ -315,7 +318,7 @@ export function getConnectedMachineDialog(id) {
   return async (dispatch) => {
     dispatch(machineSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.PRODUCT.MACHINE.detail(id))
+      const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.detail(id))
       dispatch(machineSlice.actions.getConnecetedMachineDialogSuccess(response.data))
     } catch (error) {
       console.error(error)
@@ -329,7 +332,7 @@ export function getMachineSiteDialogData(id) {
   return async (dispatch) => {
     dispatch(machineSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.PRODUCT.MACHINE.detail(id))
+      const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.detail(id))
       dispatch(machineSlice.actions.getMachineSiteDialogSuccess(response.data))
     } catch (error) {
       console.error(error)

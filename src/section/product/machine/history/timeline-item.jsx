@@ -9,7 +9,6 @@ import { normalizer } from 'util/format'
 const { TYPOGRAPHY } = VARIANT
 
 const HistoryTimelineItem = ({ date, status, icon, story, color, transferredTo }) => {
-  // const { Icon: IconTo, iconSrc } = useIcon(icon)
   const { Icon: RightIcon, iconSrc: rightSrc } = useIcon(ICON_NAME.CHEVRON_RIGHT)
 
   switch (icon) {

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, memo } from 'react'
 import { useSelector, dispatch } from 'store'
 import { useParams } from 'react-router-dom'
 import { ICON_NAME, useSettingContext } from 'hook'
@@ -26,13 +26,13 @@ import { HowickResources } from 'section/common'
 import { AuditBox, GridViewField, GridViewTitle } from 'component'
 import { MARGIN } from 'config'
 import { KEY, TITLE, VIEW_FORM, VARIANT, FLEX_DIR, DECOILER } from 'constant'
-import { MachineConnectionWidget, MachineSiteWidget, MachineHistoryWidget } from 'section/product/machine'
+import { MachineConnectionWidget, MachineSiteWidget } from 'section/product/machine'
 import { truncate } from 'util/truncate'
 
 const MachineTab = () => {
   const { id } = useParams()
   const { machine, isLoading } = useSelector((state) => state.machine)
-  const { customer, customerDialog } = useSelector((state) => state.customer)
+  const { customer } = useSelector((state) => state.customer)
 
   const theme = useTheme()
   const { themeMode } = useSettingContext()
@@ -59,11 +59,6 @@ const MachineTab = () => {
   }, [dispatch])
 
   const defaultValues = machineDefaultValues(machine, customer)
-
-  const methods = useForm({
-    resolver: yupResolver(machineDefaultValues),
-    defaultValues
-  })
 
   const handleCustomerDialog = (event, customerId) => {
     event.preventDefault()
@@ -193,4 +188,4 @@ const MachineTab = () => {
   )
 }
 
-export default MachineTab
+export default memo(MachineTab)

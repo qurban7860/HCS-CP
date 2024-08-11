@@ -1,4 +1,4 @@
-import { combineReducers } from '@reduxjs/toolkit'
+import { combineReducers } from 'redux'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import {
@@ -16,18 +16,11 @@ import {
   ticketReducer
 } from './slice'
 
-export const apiPersistConfig = {
-  key: 'api',
-  storage,
-  keyPrefix: 'redux-',
-  blacklist: ['endpoints']
-}
-
 export const rootPersistConfig = {
   key: 'root',
   storage,
   keyPrefix: 'redux-',
-  blacklist: ['auth', 'user']
+  whitelist: []
 }
 
 export const authPersistConfig = {
@@ -55,60 +48,63 @@ export const machinePersistConfig = {
   key: 'machine',
   storage,
   keyPrefix: 'redux-',
-  blacklist: ['error', 'initial', 'responseMessage']
+  blacklist: ['error', 'initial', 'responseMessage', 'machines']
 }
 
 export const customerPersistConfig = {
   key: 'customer',
   storage,
   keyPrefix: 'redux-',
-  blacklist: ['error', 'initial', 'responseMessage']
+  blacklist: ['error', 'initial', 'responseMessage', 'customers']
 }
 
 export const contactPersistConfig = {
   key: 'contact',
   storage,
   keyPrefix: 'redux-',
-  blacklist: ['error', 'initial', 'responseMessage']
+  blacklist: ['error', 'initial', 'responseMessage', 'contacts']
 }
 
 export const sitePersistConfig = {
   key: 'site',
   storage,
   keyPrefix: 'redux-',
-  blacklist: ['error', 'initial', 'responseMessage']
+  blacklist: ['error', 'initial', 'responseMessage', 'sites']
 }
 
 export const customerTicketPersistConfig = {
   key: 'customerTicket',
   storage,
   keyPrefix: 'redux-',
-  blacklist: ['error', 'initial', 'responseMessage']
+  blacklist: ['error', 'initial', 'responseMessage'],
+  whitelist: ['customerTickets']
 }
 
 export const machineModelPersistConfig = {
   key: 'machinemodel',
   storage,
   keyPrefix: 'redux-',
-  blacklist: ['error', 'initial', 'responseMessage']
+  blacklist: ['error', 'initial', 'responseMessage'],
+  whitelist: ['machineModels']
 }
 
 export const machineTicketPersistConfig = {
   key: 'machineTicket',
   storage,
   keyPrefix: 'redux-',
-  blacklist: ['error', 'initial', 'responseMessage']
+  blacklist: ['error', 'initial', 'responseMessage'],
+  whitelist: ['machineTickets']
 }
 
 export const ticketPersistConfig = {
   key: 'ticket',
   storage,
   keyPrefix: 'redux-',
-  blacklist: ['error', 'initial', 'responseMessage']
+  blacklist: ['error', 'initial', 'responseMessage'],
+  whitelist: ['tickets']
 }
 
 const rootReducer = combineReducers({
-  [apiSlice.reducerPath]: persistReducer(apiPersistConfig, apiSlice.reducer),
   // security
   user: persistReducer(userPersistConfig, userReducer),
   role: persistReducer(rolePersistConfig, roleReducer),

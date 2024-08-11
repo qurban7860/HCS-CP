@@ -1,33 +1,13 @@
-import { memo, useState, useEffect } from 'react'
+import { memo, useState } from 'react'
 import PropTypes from 'prop-types'
-import { useSelector, dispatch } from 'store'
+import { useSelector } from 'store'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ICON_NAME, useSettingContext } from 'hook'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { PATH_MACHINE } from 'route/path'
 import { Typography } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import {
-  setDecoilerIcon,
-  getMachineModels,
-  getMachineTickets,
-  resetDecoilerIcon,
-  getCustomer,
-  getMachine,
-  setCustomerDialog,
-  setMachineDialog,
-  setMachineSiteDialog,
-  resetCustomer,
-  resetConnectedMachineDialog,
-  resetMachineSiteDialogData
-} from 'store/slice'
 import { machineDefaultValues, TicketsTab } from 'section/product'
 import { MotionLazyContainer, CustomerDialog, MachineDialog, SiteDialog } from 'component'
-import { VIEW_FORM, VARIANT, FLEX, DECOILER } from 'constant'
+import { FLEX } from 'constant'
 import { MachineNav, MachineTab } from 'section/product/machine'
-
-const { ONE_HALF_T, THREE_T, FIVE_T, SIX_T } = DECOILER
 
 const MachineLayout = ({ tab = 0 }) => {
   const [renderedTab, setRenderedTab] = useState(tab)
@@ -35,53 +15,8 @@ const MachineLayout = ({ tab = 0 }) => {
   const navigate = useNavigate()
   const { machine, isLoading, connectedMachineDialog, machineSiteDialogData } = useSelector((state) => state.machine)
   const { customer, customerDialog } = useSelector((state) => state.customer)
-  const { machineTickets } = useSelector((state) => state.machineTicket)
 
-  useEffect(() => {
-    dispatch(getMachine(id))
-    dispatch(getMachineTickets(machine.serialNo))
-  }, [id])
-
-  useEffect(() => {
-    if (machine?.customer) {
-      dispatch(getCustomer(machine?.customer._id))
-    }
-  }, [dispatch, machine?.customer])
-
-  useEffect(() => {
-    dispatch(setCustomerDialog(false))
-    dispatch(setMachineDialog(false))
-    dispatch(setMachineSiteDialog(false))
-    dispatch(resetCustomer())
-    dispatch(resetConnectedMachineDialog())
-    dispatch(resetMachineSiteDialogData())
-  }, [dispatch])
-
-  const defaultValues = machineDefaultValues(machine, customer, machineTickets)
-
-  useEffect(() => {
-    dispatch(getMachineModels())
-    if (defaultValues?.machineModel?.includes(ONE_HALF_T.toUpperCase())) {
-      dispatch(setDecoilerIcon(ICON_NAME.DECOILER_1_5T))
-    }
-
-    if (defaultValues?.machineModel?.includes(THREE_T.toUpperCase())) {
-      dispatch(setDecoilerIcon(ICON_NAME.DECOILER_3T))
-    }
-
-    if (defaultValues?.machineModel?.includes(FIVE_T.toUpperCase())) {
-      dispatch(setDecoilerIcon(ICON_NAME.DECOILER_1_5T))
-    }
-
-    if (defaultValues?.machineModel?.includes(SIX_T.toUpperCase())) {
-      dispatch(setDecoilerIcon(ICON_NAME.DECOILER_1_5T))
-    }
-
-    return () => {
-      // dispatch(resetMachineModels())
-      dispatch(resetDecoilerIcon())
-    }
-  }, [dispatch, defaultValues?.machineModel])
+  const defaultValues = machineDefaultValues(machine, customer)
 
   const navigatePage = (tab) => {
     if (tab === 0 && id) {

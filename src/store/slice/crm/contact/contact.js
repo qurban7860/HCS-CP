@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import axiosInstance from 'util/axios'
+import axios from 'util/axios'
 import { GLOBAL } from 'config/global'
 import { PATH_SERVER } from 'route/server'
 
@@ -183,7 +183,7 @@ export function getContacts(customerId, isCustomerArchived = false) {
         params.isArchived = false
       }
 
-      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.listContact(customerId), { params })
+      const response = await axios.get(PATH_SERVER.CRM.CUSTOMER.listContact(customerId), { params })
       dispatch(contactSlice.actions.getContactsSuccess(response.data))
       dispatch(contactSlice.actions.setContactResponseMessage('Contacts loaded'))
     } catch (error) {
@@ -198,7 +198,7 @@ export function getContact(customerId, id) {
   return async (dispatch) => {
     dispatch(contactSlice.actions.startLoading())
     try {
-      const response = await axiosInstance.get(PATH_SERVER.CRM.CUSTOMER.contactDetail(customerId, id))
+      const response = await axios.get(PATH_SERVER.CRM.CUSTOMER.contactDetail(customerId, id))
       dispatch(contactSlice.actions.getContactSuccess(response.data))
     } catch (error) {
       console.error(error)

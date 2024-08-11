@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import axiosInstance from 'util/axios'
+import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
 // import goodlog from 'good-logs'
 
@@ -116,7 +116,7 @@ export function getMachineTicket(machineId, page, pageSize) {
         page,
         pageSize
       }
-      const response = await axiosInstance.get(PATH_SERVER.SUPPORT.TICKET(id), { params })
+      const response = await axios.get(PATH_SERVER.SUPPORT.TICKET(id), { params })
       dispatch(machineTicketSlice.actions.getMachineTicketRecordSuccess(response.data))
     } catch (error) {
       console.log(error)
@@ -134,7 +134,7 @@ export function getMachineTickets(serialNo) {
         serialNo
       }
 
-      const response = await axiosInstance.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+      const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
       response.data.issues.sort((a, b) => {
         if (a.fields.status.name === 'Completed') {
           return 1
@@ -174,7 +174,7 @@ export function getMachineTicketByKey(serialNo, key) {
         serialNo
       }
 
-      const response = await axiosInstance.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+      const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
       let machineTicket = response.data.issues.find((ticket) => ticket.key === key)
 
       dispatch(machineTicketSlice.actions.getMachineTicketRecordSuccess(machineTicket))
