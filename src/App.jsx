@@ -29,38 +29,38 @@ function App() {
   }, [])
 
   return (
-    // <WebSocketProvider>
     // <LocalizationProvider dateAdapter={AdapterDateFns}>
     <AuthProvider>
-      <HelmetProvider>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <SettingProvider>
-              <BrowserRouter>
-                <MotionLazyContainer>
-                  <ThemeProvider>
-                    <ThemeSettings>
-                      <ErrorBoundary fallback={<Fallback {...FALLBACK.INTERNAL_SERVER_ERROR} />}>
-                        <ScrollToTop />
-                        <ThemeLocalization>
-                          <SnackProvider>
-                            {/* <StyledChart /> */}
-                            {/* <IdleManager /> */}
-                            <Router />
-                          </SnackProvider>
-                        </ThemeLocalization>
-                      </ErrorBoundary>
-                    </ThemeSettings>
-                  </ThemeProvider>
-                </MotionLazyContainer>
-              </BrowserRouter>
-            </SettingProvider>
-          </PersistGate>
-        </Provider>
-      </HelmetProvider>
+      <WebSocketProvider>
+        <HelmetProvider>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <SettingProvider>
+                <BrowserRouter>
+                  <MotionLazyContainer>
+                    <ThemeProvider>
+                      <ThemeSettings>
+                        <ErrorBoundary fallback={<Fallback {...FALLBACK.INTERNAL_SERVER_ERROR} />}>
+                          <ScrollToTop />
+                          <ThemeLocalization>
+                            <SnackProvider>
+                              {/* <StyledChart /> */}
+                              {/* <IdleManager /> */}
+                              <Router />
+                            </SnackProvider>
+                          </ThemeLocalization>
+                        </ErrorBoundary>
+                      </ThemeSettings>
+                    </ThemeProvider>
+                  </MotionLazyContainer>
+                </BrowserRouter>
+              </SettingProvider>
+            </PersistGate>
+          </Provider>
+        </HelmetProvider>
+      </WebSocketProvider>
     </AuthProvider>
     // </LocalizationProvider>
-    // </WebSocketProvider>
   )
 }
 
