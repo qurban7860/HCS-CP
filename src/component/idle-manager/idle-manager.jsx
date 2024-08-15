@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { LoadingButton } from '@mui/lab'
 import { useIdleTimer } from 'react-idle-timer'
 import { useAuthContext } from 'auth'
-import { GLOBAL } from 'global'
+import { GLOBAL } from 'config/global'
 import { ConfirmDialog } from 'component/dialog'
 
 const IdleManager = () => {
@@ -11,7 +11,7 @@ const IdleManager = () => {
   const [showStay, setShowStay] = useState(true)
   const [countdown, setCountdown] = useState(10)
 
-  const idleTimeout = 1000 * GLOBAL.IDLE_TIME
+  const idleTimeout = 30 * GLOBAL.IDLE_TIME
 
   const handleIdle = () => {
     setOpenModal(true)
@@ -22,10 +22,9 @@ const IdleManager = () => {
     promptBeforeIdle: GLOBAL.IDLE_TIME,
     onPrompt: handleIdle,
     debounce: 500,
-    disabled: !isAuthenticated,
+    disabled: !isAuthenticated
   })
 
-  /* eslint-disable */
   useEffect(() => {
     if (openModal && showStay) {
       const timer = setInterval(() => {
@@ -42,7 +41,6 @@ const IdleManager = () => {
       return () => clearInterval(timer)
     }
   }, [openModal, showStay, countdown])
-  /* eslint-enable */
 
   const resetCountdown = () => {
     setShowStay(true)
@@ -66,9 +64,7 @@ const IdleManager = () => {
       open={openModal}
       onClose={handleLogout}
       title="Session Inactivity"
-      content={`You are about to be logged out! ${
-        showStay ? `Please stay or you'll be logged out in ${countdown} seconds.` : ''
-      }`}
+      content={`You are about to be logged out! ${showStay ? `Please stay or you'll be logged out in ${countdown} seconds.` : ''}`}
       SubButton="Logout"
       action={
         showStay ? (
