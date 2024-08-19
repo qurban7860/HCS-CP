@@ -17,6 +17,8 @@ export { default as Breadcrumb } from './breadcrumb/breadcrumb'
 // @iconify
 export { default as Iconify } from './iconify/iconify'
 export { default as IconTooltip } from './iconify/icon-tooltip'
+// @idle-manager
+export { default as IdleManager } from './idle-manager/idle-manager'
 // @image
 export { default as Image } from './image/image'
 // @search

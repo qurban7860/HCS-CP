@@ -19,7 +19,7 @@ const IdleManager = () => {
 
   const { activate } = useIdleTimer({
     timeout: idleTimeout,
-    promptBeforeIdle: GLOBAL.IDLE_TIME,
+    promptBeforeIdle: GLOBAL.IDLE_TIME * 2,
     onPrompt: handleIdle,
     debounce: 500,
     disabled: !isAuthenticated
@@ -61,6 +61,7 @@ const IdleManager = () => {
 
   return (
     <ConfirmDialog
+      key={openModal}
       open={openModal}
       onClose={handleLogout}
       title="Session Inactivity"
