@@ -5,6 +5,8 @@ export { default as IconButtonAnimate } from './animate/icon-button-animate'
 // @avatar
 export { default as Avatar } from './avatar/avatar'
 export { default as CustomAvatar } from './avatar/custom-avatar'
+// @chart
+export { default as ChartStyleOverlay } from './chart/chart-style-overlay'
 // @back-button
 export { default as Button } from './button/button'
 export { default as BackButton } from './button/back-button/back-button'
