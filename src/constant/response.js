@@ -12,6 +12,7 @@ const RESPONSE = {
   error: {
     REDUX_PERSIST: 'Error clearing persisted states:',
     AUTH_CONTEXT: 'useAuthContext context must be use inside AuthProvider',
+    WEBSOCKET_CONTEXT: 'useWebSocketContext context must be use inside WebSocketProvider',
     INVALID_CREDENTIALS: 'Invalid Credentials',
     LOGOUT: 'Unable to logout',
     FETCH: 'Failed to fetch data'
