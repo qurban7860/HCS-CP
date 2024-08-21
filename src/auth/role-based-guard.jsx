@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
 import { Container, Typography } from '@mui/material'
 import { MotionContainer, varBounce } from 'component/animate'
-import useAuthContext from './use-auth-context'
+import {useAuthContext} from './use-auth-context'
 
 RoleBasedGuard.propTypes = {
   children: PropTypes.node,

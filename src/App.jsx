@@ -8,18 +8,17 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 import { store, persistor } from 'store'
-import ErrorBoundary from 'util/error-boundary'
 import Router from 'route'
 import { HelmetProvider } from 'react-helmet-async'
 import { ThemeProvider } from 'theme'
 import { ThemeLocalization } from 'locale'
 import { ThemeSettings, SettingProvider, SnackProvider } from 'hook'
+import { Fallback } from 'page/fallback'
+import { IdleManager, ChartStyleOverlay } from 'component'
 import { ScrollToTop } from 'component/scroll-to-top'
 import { MotionLazyContainer } from 'component/animate'
-import { IdleManager } from 'component/idle-manager'
-import { Fallback } from 'page/fallback'
-import { AuthProvider } from 'auth/auth-provider'
-import { WebSocketProvider } from 'auth/web-socket-context'
+import { AuthProvider, WebSocketProvider } from 'auth'
+import ErrorBoundary from 'util/error-boundary'
 import { GLOBAL } from 'config'
 import { FALLBACK } from 'constant'
 
@@ -29,38 +28,38 @@ function App() {
   }, [])
 
   return (
-    // <WebSocketProvider>
     // <LocalizationProvider dateAdapter={AdapterDateFns}>
     <AuthProvider>
-      <HelmetProvider>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <SettingProvider>
-              <BrowserRouter>
-                <MotionLazyContainer>
-                  <ThemeProvider>
-                    <ThemeSettings>
-                      <ErrorBoundary fallback={<Fallback {...FALLBACK.INTERNAL_SERVER_ERROR} />}>
-                        <ScrollToTop />
-                        <ThemeLocalization>
-                          <SnackProvider>
-                            {/* <StyledChart /> */}
-                            {/* <IdleManager /> */}
-                            <Router />
-                          </SnackProvider>
-                        </ThemeLocalization>
-                      </ErrorBoundary>
-                    </ThemeSettings>
-                  </ThemeProvider>
-                </MotionLazyContainer>
-              </BrowserRouter>
-            </SettingProvider>
-          </PersistGate>
-        </Provider>
-      </HelmetProvider>
+      <WebSocketProvider>
+        <HelmetProvider>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <SettingProvider>
+                <BrowserRouter>
+                  <MotionLazyContainer>
+                    <ThemeProvider>
+                      <ThemeSettings>
+                        <ErrorBoundary fallback={<Fallback {...FALLBACK.INTERNAL_SERVER_ERROR} />}>
+                          <ScrollToTop />
+                          <ThemeLocalization>
+                            <SnackProvider>
+                              <ChartStyleOverlay />
+                              <IdleManager />
+                              <Router />
+                            </SnackProvider>
+                          </ThemeLocalization>
+                        </ErrorBoundary>
+                      </ThemeSettings>
+                    </ThemeProvider>
+                  </MotionLazyContainer>
+                </BrowserRouter>
+              </SettingProvider>
+            </PersistGate>
+          </Provider>
+        </HelmetProvider>
+      </WebSocketProvider>
     </AuthProvider>
     // </LocalizationProvider>
-    // </WebSocketProvider>
   )
 }
 

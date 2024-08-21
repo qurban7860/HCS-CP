@@ -1,6 +1,5 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { useOffSetTop, useResponsive, Clock, useSettingContext } from 'hook'
-import { useAuthContext } from 'auth'
 import { Stack, AppBar, Toolbar, IconButton, Badge, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { bgBlur } from 'theme/style'
@@ -11,6 +10,7 @@ import { NavSection } from 'component/nav-section'
 import ModeOption from './mode-option'
 import AccountPopover from './account-popover'
 import NotificationPopover from './notification-popover'
+import { useWebSocketContext } from 'auth/websocket-provider'
 import { FLEX, FLEX_DIR, KEY, TIMEZONE } from 'constant'
 
 function Header() {
@@ -23,13 +23,11 @@ function Header() {
 
   const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
   const aucklandTimeZone = TIMEZONE.AUCKLAND.timeZone
+  const { sendJsonMessage } = useWebSocketContext()
 
-  // TODO: HPS-1224: Uncomment this when the websocket is ready
-  // const { sendJsonMessage } = useWebSocketContext()
-
-  // useEffect(() => {
-  //   sendJsonMessage({ eventName: 'getNotifications' })
-  // }, [sendJsonMessage])
+  useEffect(() => {
+    sendJsonMessage({ eventName: 'getNotifications' })
+  }, [sendJsonMessage])
 
   const renderContent = (
     <Fragment>
