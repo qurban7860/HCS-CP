@@ -1,6 +1,6 @@
 import { Link as RouterLink } from 'react-router-dom'
 import { Link, Typography } from '@mui/material'
-import { PATH_AUTH } from 'route/paths'
+import { PATH_AUTH } from 'route/path'
 import { Iconify } from 'component/iconify'
 import { AuthVerifyCodeForm } from 'section/auth'
 import { EmailInboxIcon } from 'theme/icon'
