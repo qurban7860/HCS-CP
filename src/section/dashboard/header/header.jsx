@@ -1,6 +1,5 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { useOffSetTop, useResponsive, Clock, useSettingContext } from 'hook'
-import { useAuthContext } from 'auth'
 import { Stack, AppBar, Toolbar, IconButton, Badge, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { bgBlur } from 'theme/style'
