@@ -5,7 +5,6 @@ import { PATH_AUTH } from 'route/path'
 import { Iconify } from 'component/iconify'
 import { Logo } from 'component/logo'
 import { AuthResetPasswordForm } from 'section/auth'
-import { PasswordIcon } from 'theme/asset/jsx'
 import { MotionContainer } from 'component/animate'
 import { TITLE } from 'constant'
 
@@ -20,15 +19,6 @@ function ResetPasswordPage() {
             filter: 'grayscale(100%) opacity(30%)',
             pointerEvents: 'none',
             padding: '3rem 0'
-          }}
-        />
-        <PasswordIcon
-          sx={{
-            position: 'absolute',
-            width: '10%',
-            top: '100px',
-            right: '100px',
-            transform: 'rotate(30deg)'
           }}
         />
       </Box>

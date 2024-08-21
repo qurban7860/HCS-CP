@@ -9,19 +9,19 @@ export const GLOBAL = {
   APP_NAME: import.meta.env.VITE_NAME,
   SERVER_URL: import.meta.env.VITE_SERVER_URL,
   SERVER_DEV_URL: import.meta.env.VITE_SERVER_DEV_URL,
+  SOCKET_URL: import.meta.env.VITE_SOCKET_URL,
   ENV: import.meta.env.VITE_ENV,
   VERSION: import.meta.env.VITE_APP_VERSION,
   SERVER_VERSION: import.meta.env.VITE_APP_SERVER_VERSION,
   DEV_COLOR: import.meta.env.VITE_DEV_COLOR,
   TEST_COLOR: import.meta.env.VITE_TEST_COLOR,
   LIVE_COLOR: import.meta.env.VITE_LIVE_COLOR,
-  SOCKET_URL: import.meta.env.VITE_SOCKET_URL,
   JIRA_URL: 'https://howickltd.atlassian.net/jira/servicedesk/projects/HWKSC/queues/custom/3/',
   JIRA_PRIORITY_ICON_URL: import.meta.env.VITE_APP_PRIORITY_ICON_URL,
   MESSAGE_REGISTER_USER: import.meta.env.VITE_MESSAGE_REGISTER_USER,
   MESSAGE_LOGIN_USER: import.meta.env.VITE_MESSAGE_LOGIN_USER,
   GOOGLE_MAPS_API_KEY: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-  IDLE_TIME: import.meta.env.VITE_IDLE_TIME,
+  IDLE_TIME: import.meta.env.VITE_APP_IDLE_TIME,
   COMPOSITE_TOOL_CONFIG_MAX_LENGTH: (import.meta.env.COMPOSITE_TOOL_CONFIG_MAX_LENGTH = 10)
 }
 

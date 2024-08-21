@@ -12,7 +12,6 @@ import {
   LoginPage,
   RegisterPage,
   VerifyCodePage,
-  NewPasswordPage,
   ResetPasswordPage,
   // dashboard: general
   GeneralAppPage,
