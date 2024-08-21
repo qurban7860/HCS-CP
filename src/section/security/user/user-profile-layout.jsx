@@ -2,8 +2,9 @@ import { useState, useRef, useEffect, memo } from 'react'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
 import { useAuthContext } from 'auth'
+import { useWebSocketContext } from 'auth/websocket-provider'
 import { Icon, ICON_NAME, useSettingContext } from 'hook'
-import { getSecurityUser, getCustomer, resetCustomer, setCustomerDialog } from 'store/slice'
+import { getSecurityUser, getCustomer, resetCustomer, getSecurityUsers, setCustomerDialog } from 'store/slice'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { editUserSchema } from 'schema'
 import { useForm } from 'react-hook-form'
@@ -20,8 +21,9 @@ import { truncate } from 'util/truncate'
 
 const UserProfileLayout = () => {
   const { customer, customerDialog } = useSelector((state) => state.customer)
-  const { securityUser, initial, isLoading } = useSelector((state) => state.user)
+  const { securityUser, isLoading } = useSelector((state) => state.user)
   const { user, userId } = useAuthContext()
+  const { onlineUsers } = useWebSocketContext()
 
   const theme = useTheme()
   const { themeMode } = useSettingContext()
@@ -29,6 +31,7 @@ const UserProfileLayout = () => {
   useEffect(() => {
     if (userId) {
       dispatch(getSecurityUser(userId))
+      console.log('online users:', onlineUsers) // TOBE REMOVED: for testing only
     }
   }, [dispatch, userId])
 
