@@ -1,9 +1,10 @@
-import { createContext, useContext, useMemo, useEffect, useState } from 'react'
+import React, { createContext, useContext, useMemo, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
+import useWebSocket from 'react-use-websocket'
 import { GLOBAL } from 'config/global'
 import { useAuthContext } from './use-auth-context'
 
-export const WebSocketContext = createContext()
+const WebSocketContext = createContext()
 
 export function useWebSocketContext() {
   return useContext(WebSocketContext)
@@ -12,14 +13,63 @@ export function useWebSocketContext() {
 WebSocketProvider.propTypes = {
   children: PropTypes.node
 }
+// TODO: do some housekeeping here
 
 export function WebSocketProvider({ children }) {
   const { isAuthenticated, clearAllPersistedStates } = useAuthContext()
   const [token, setToken] = useState(null)
-  const WS_URL = token ? `${GLOBAL.SOCKET_URL}/?accessToken=${token}` : 'ws://localhost:5173/ws'
-  const [onlineUsers, setOnlineUsers] = useState([])
-  const [notifications, setNotifications] = useState([])
-  const [socket, setSocket] = useState(null)
+  const WS_URL = token ? `${GLOBAL.SOCKET_URL}/?accessToken=${token}` : null
+  const [onlineUsers, setOnlineUsers] = useState(0)
+  const [notifications, setNotifications] = useState(null)
+
+  // check if this is needed
+  const ws = new WebSocket(WS_URL, 'protocol')
+
+  const { sendMessage, sendJsonMessage, lastMessage, lastJsonMessage, readyState } = useWebSocket(WS_URL, {
+    onMessage: (event) => {
+      if (event.data instanceof Blob) {
+        console.log('Received Blob:', event.data)
+        getJsonFromBlob(event.data)
+          .then((json) => {
+            console.log('Received JSON:', json)
+            if (json.eventName === 'newUserLogin' || json.eventName === 'newNotification') {
+              sendJsonMessage({ eventName: 'getNotifications' })
+            }
+
+            if (json.eventName === 'logout') {
+              clearAllPersistedStates()
+            }
+
+            if (json.eventName === 'newNotification') {
+              const updatedNotifications = [json, ...notifications]
+              setNotifications(updatedNotifications)
+            }
+
+            // why does that in my client react app, i have initiator named 'ws' coming from 'webpack', and in my client vite app, i dont have that initiator?
+            if (json.eventName === 'onlineUsers') {
+              setOnlineUsers(json?.userIds)
+            }
+
+            if (json.eventName === 'notificationsSent') {
+              setNotifications(json.data)
+            }
+
+            if (json.eventName === 'userLoggedOut') {
+              sendJsonMessage({ eventName: 'getOnlineUsers' })
+            }
+          })
+          .catch((error) => {
+            console.error('Error parsing JSON from Blob:', error)
+          })
+      } else {
+        console.error('Error parsing WebSocket message:')
+      }
+    },
+    share: true,
+    filter: () => true,
+    retryOnError: true,
+    shouldReconnect: () => true
+  })
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -28,76 +78,12 @@ export function WebSocketProvider({ children }) {
     }
   }, [isAuthenticated])
 
-  useEffect(() => {
-    console.log('WebSocket URL:', WS_URL)
-    if (WS_URL) {
-      const socketInstance = new WebSocket(WS_URL)
-      setSocket(socketInstance)
-
-      socketInstance.onopen = () => {
-        console.log('WebSocket connected')
-      }
-
-      socketInstance.onmessage = (event) => {
-        console.log('WebSocket message:', event.data)
-        handleWebSocketMessage(event)
-      }
-
-      socketInstance.onerror = (error) => {
-        console.error('WebSocket error:', error)
-      }
-
-      socketInstance.onclose = () => {
-        console.log('WebSocket disconnected')
-      }
-
-      return () => {
-        socketInstance.close()
-      }
-    }
-  }, [WS_URL])
-
-  const handleWebSocketMessage = (event) => {
-    console.log('Received WebSocket message:', event.data)
-
-    if (event.data instanceof Blob) {
-      getJsonFromBlob(event.data)
-        .then((json) => {
-          if (json.eventName === 'newUserLogin' || json.eventName === 'newNotification') {
-            socket.send(JSON.stringify({ eventName: 'getNotifications' }))
-          }
-
-          if (json.eventName === 'logout') {
-            clearAllPersistedStates()
-          }
-
-          if (json.eventName === 'newNotification') {
-            const updatedNotifications = [json, ...notifications]
-            setNotifications(updatedNotifications)
-          }
-
-          if (json.eventName === 'onlineUsers') {
-            setOnlineUsers(json?.userIds)
-          }
-
-          if (json.eventName === 'notificationsSent') {
-            setNotifications(json.data)
-          }
-
-          if (json.eventName === 'userLoggedOut') {
-            socket.send(JSON.stringify({ eventName: 'getOnlineUsers' }))
-          }
-        })
-        .catch((error) => {
-          console.error('Error parsing JSON from Blob:', error)
-        })
-    } else {
-      console.error('Error parsing WebSocket message:', event.data)
-    }
-  }
-
   function getJsonFromBlob(blob) {
     return new Promise((resolve, reject) => {
+      if (!(blob instanceof Blob)) {
+        reject(new Error('Invalid argument: Not a Blob.'))
+        return
+      }
       const reader = new FileReader()
       reader.onload = () => {
         try {
@@ -107,30 +93,24 @@ export function WebSocketProvider({ children }) {
           reject(error)
         }
       }
-
       reader.onerror = () => {
         reject(new Error('Error reading the Blob.'))
       }
-
       reader.readAsText(blob)
     })
-  }
-
-  const sendMessage = (message) => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(message)
-    } else {
-      console.error('WebSocket is not open. Unable to send message.')
-    }
   }
 
   const contextValue = useMemo(
     () => ({
       sendMessage,
+      sendJsonMessage,
+      lastMessage,
+      lastJsonMessage,
+      readyState,
       onlineUsers,
       notifications
     }),
-    [sendMessage, onlineUsers, notifications]
+    [sendMessage, sendJsonMessage, lastMessage, lastJsonMessage, readyState, onlineUsers, notifications]
   )
 
   return <WebSocketContext.Provider value={contextValue}>{children}</WebSocketContext.Provider>
