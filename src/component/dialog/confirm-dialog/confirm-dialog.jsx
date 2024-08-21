@@ -3,24 +3,24 @@ import { Dialog, Button, DialogTitle, DialogActions, DialogContent, Divider } fr
 
 ConfirmDialog.propTypes = {
   open: PropTypes.bool,
-  title: PropTypes.node,
+  title: PropTypes.string,
   action: PropTypes.node,
-  content: PropTypes.node,
+  content: PropTypes.string,
   onClose: PropTypes.func,
-  SubButton: PropTypes.node,
+  SubButton: PropTypes.string
 }
 
 ConfirmDialog.defaultProps = {
-  SubButton: 'Cancel',
+  SubButton: 'Cancel'
 }
 
 function ConfirmDialog({ title, content, action, open, onClose, SubButton, ...other }) {
   return (
-    <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose} {...other}>
+    <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
       <DialogTitle variant="h4" sx={{ pb: 1, pt: 2 }}>
         {title}
       </DialogTitle>
-      <Divider orientation="horizontal" flexItem />
+      {/* <Divider orientation="horizontal" flexItem /> */}
       {content && <DialogContent sx={{ typography: 'body2', pt: 2 }}> {content} </DialogContent>}
       <DialogActions>
         <Button variant="outlined" color="inherit" onClick={onClose}>
