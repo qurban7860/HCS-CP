@@ -12,7 +12,6 @@ const Loadable = (Component) => (props) =>
 export const LoginPage = Loadable(lazy(() => import('page/auth/login')))
 export const RegisterPage = Loadable(lazy(() => import('page/auth/register')))
 export const VerifyCodePage = Loadable(lazy(() => import('page/auth/verify-code')))
-export const NewPasswordPage = Loadable(lazy(() => import('page/auth/new-password')))
 export const ResetPasswordPage = Loadable(lazy(() => import('page/auth/reset-password')))
 export const Login = Loadable(lazy(() => import('section/auth/login')))
 
