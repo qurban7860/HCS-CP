@@ -8,18 +8,17 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 import { store, persistor } from 'store'
-import ErrorBoundary from 'util/error-boundary'
 import Router from 'route'
 import { HelmetProvider } from 'react-helmet-async'
 import { ThemeProvider } from 'theme'
 import { ThemeLocalization } from 'locale'
 import { ThemeSettings, SettingProvider, SnackProvider } from 'hook'
+import { Fallback } from 'page/fallback'
+import { IdleManager, ChartStyleOverlay } from 'component'
 import { ScrollToTop } from 'component/scroll-to-top'
 import { MotionLazyContainer } from 'component/animate'
-import { IdleManager } from 'component'
-import { Fallback } from 'page/fallback'
-import { AuthProvider } from 'auth/auth-provider'
-import { WebSocketProvider } from 'auth/websocket-provider'
+import { AuthProvider, WebSocketProvider } from 'auth'
+import ErrorBoundary from 'util/error-boundary'
 import { GLOBAL } from 'config'
 import { FALLBACK } from 'constant'
 
@@ -44,7 +43,7 @@ function App() {
                           <ScrollToTop />
                           <ThemeLocalization>
                             <SnackProvider>
-                              {/* <StyledChart /> */}
+                              <ChartStyleOverlay />
                               <IdleManager />
                               <Router />
                             </SnackProvider>
