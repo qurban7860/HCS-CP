@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useMemo, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import useWebSocket from 'react-use-websocket'
-import { GLOBAL } from 'config/global'
 import { useAuthContext } from './use-auth-context'
+import { GLOBAL } from 'config/global'
+import { RESPONSE, KEY, WEBSOCKET_EVENT } from 'constant'
 
 const WebSocketContext = createContext()
 
@@ -13,56 +14,27 @@ export function useWebSocketContext() {
 WebSocketProvider.propTypes = {
   children: PropTypes.node
 }
-// TODO: do some housekeeping here
 
 export function WebSocketProvider({ children }) {
-  const { isAuthenticated, clearAllPersistedStates } = useAuthContext()
   const [token, setToken] = useState(null)
-  const WS_URL = token ? `${GLOBAL.SOCKET_URL}/?accessToken=${token}` : null
   const [onlineUsers, setOnlineUsers] = useState(0)
   const [notifications, setNotifications] = useState(null)
+  const { isAuthenticated, clearAllPersistedStates } = useAuthContext()
 
-  // check if this is needed
-  const ws = new WebSocket(WS_URL, 'protocol')
+  const WS_URL = token ? `${GLOBAL.SOCKET_URL}/?accessToken=${token}` : null
 
   const { sendMessage, sendJsonMessage, lastMessage, lastJsonMessage, readyState } = useWebSocket(WS_URL, {
     onMessage: (event) => {
       if (event.data instanceof Blob) {
-        console.log('Received Blob:', event.data)
         getJsonFromBlob(event.data)
           .then((json) => {
-            console.log('Received JSON:', json)
-            if (json.eventName === 'newUserLogin' || json.eventName === 'newNotification') {
-              sendJsonMessage({ eventName: 'getNotifications' })
-            }
-
-            if (json.eventName === 'logout') {
-              clearAllPersistedStates()
-            }
-
-            if (json.eventName === 'newNotification') {
-              const updatedNotifications = [json, ...notifications]
-              setNotifications(updatedNotifications)
-            }
-
-            // why does that in my client react app, i have initiator named 'ws' coming from 'webpack', and in my client vite app, i dont have that initiator?
-            if (json.eventName === 'onlineUsers') {
-              setOnlineUsers(json?.userIds)
-            }
-
-            if (json.eventName === 'notificationsSent') {
-              setNotifications(json.data)
-            }
-
-            if (json.eventName === 'userLoggedOut') {
-              sendJsonMessage({ eventName: 'getOnlineUsers' })
-            }
+            handleWebSocketMessage(json)
           })
           .catch((error) => {
-            console.error('Error parsing JSON from Blob:', error)
+            console.error(RESPONSE.error.PARSING_JSON(error))
           })
       } else {
-        console.error('Error parsing WebSocket message:')
+        console.error(RESPONSE.error.PARSING_WEBSOCKET(event.data))
       }
     },
     share: true,
@@ -71,9 +43,36 @@ export function WebSocketProvider({ children }) {
     shouldReconnect: () => true
   })
 
+  const handleWebSocketMessage = (json) => {
+    if (json.eventName === WEBSOCKET_EVENT.NEW_USER_LOGIN || json.eventName === WEBSOCKET_EVENT.NEW_NOTIFICATION) {
+      sendJsonMessage({ eventName: WEBSOCKET_EVENT.GET_NOTIFICATIONS })
+    }
+
+    if (json.eventName === WEBSOCKET_EVENT.LOGOUT) {
+      clearAllPersistedStates()
+    }
+
+    if (json.eventName === WEBSOCKET_EVENT.NEW_NOTIFICATION) {
+      const updatedNotifications = [json, ...notifications]
+      setNotifications(updatedNotifications)
+    }
+
+    if (json.eventName === WEBSOCKET_EVENT.ONLINE_USERS) {
+      setOnlineUsers(json?.userIds)
+    }
+
+    if (json.eventName === WEBSOCKET_EVENT.NOTIFICATIONS_SENT) {
+      setNotifications(json.data)
+    }
+
+    if (json.eventName === WEBSOCKET_EVENT.USER_LOGGED_OUT) {
+      sendJsonMessage({ eventName: WEBSOCKET_EVENT.GET_ONLINE_USERS })
+    }
+  }
+
   useEffect(() => {
     if (isAuthenticated) {
-      const accessToken = localStorage.getItem('accessToken')
+      const accessToken = localStorage.getItem(KEY.ACCESS_TOKEN)
       setToken(accessToken)
     }
   }, [isAuthenticated])
@@ -81,7 +80,7 @@ export function WebSocketProvider({ children }) {
   function getJsonFromBlob(blob) {
     return new Promise((resolve, reject) => {
       if (!(blob instanceof Blob)) {
-        reject(new Error('Invalid argument: Not a Blob.'))
+        reject(new Error(RESPONSE.error.INVALID_ARG_NOT_BLOB))
         return
       }
       const reader = new FileReader()
@@ -94,7 +93,7 @@ export function WebSocketProvider({ children }) {
         }
       }
       reader.onerror = () => {
-        reject(new Error('Error reading the Blob.'))
+        reject(new Error(RESPONSE.error.ERR_READ_BLOB))
       }
       reader.readAsText(blob)
     })
