@@ -16,10 +16,10 @@ import { ThemeLocalization } from 'locale'
 import { ThemeSettings, SettingProvider, SnackProvider } from 'hook'
 import { ScrollToTop } from 'component/scroll-to-top'
 import { MotionLazyContainer } from 'component/animate'
-import { IdleManager } from 'component/idle-manager'
+import { IdleManager } from 'component'
 import { Fallback } from 'page/fallback'
 import { AuthProvider } from 'auth/auth-provider'
-import { WebSocketProvider } from 'auth/web-socket-context'
+import { WebSocketProvider } from 'auth/websocket-provider'
 import { GLOBAL } from 'config'
 import { FALLBACK } from 'constant'
 
@@ -45,7 +45,7 @@ function App() {
                           <ThemeLocalization>
                             <SnackProvider>
                               {/* <StyledChart /> */}
-                              {/* <IdleManager /> */}
+                              <IdleManager />
                               <Router />
                             </SnackProvider>
                           </ThemeLocalization>
