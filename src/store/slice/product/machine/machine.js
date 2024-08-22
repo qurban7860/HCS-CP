@@ -44,6 +44,11 @@ const machineSlice = createSlice({
     startLoading(state) {
       state.isLoading = true
     },
+    hasError(state, action) {
+      state.isLoading = false
+      state.error = action.payload
+      state.initial = true
+    },
     stopLoading(state) {
       state.isLoading = false
     },
@@ -73,11 +78,6 @@ const machineSlice = createSlice({
     },
     setIsDecoiler(state, action) {
       state.isDecoiler = action.payload
-    },
-    hasError(state, action) {
-      state.isLoading = false
-      state.error = action.payload
-      state.initial = true
     },
     getMachineSuccess(state, action) {
       state.isLoading = false
@@ -157,7 +157,7 @@ const machineSlice = createSlice({
       state.machineGallery = action.payload
       state.initial = true
     },
-    setResponseMessage(state, action) {
+    setMachineResponseMessage(state, action) {
       state.responseMessage = action.payload
       state.isLoading = false
       state.success = true
@@ -244,7 +244,7 @@ export const {
   resetAllMachines,
   resetMachineSiteDialogData,
   resetConnectedMachineDialog,
-  setResponseMessage,
+  setMachineResponseMessage,
   setTransferDialogBoxVisibility,
   setAccountManager,
   setSupportManager,
@@ -292,7 +292,7 @@ export function getMachines(page, pageSize, isArchived, cancelToken) {
         cancelToken: cancelToken?.token
       })
       dispatch(machineSlice.actions.getMachinesSuccess(response.data))
-      // dispatch(machineSlice.actions.setResponseMessage(RESPONSE.success.FETCH))
+      // dispatch(machineSlice.actions.setMachineResponseMessage(RESPONSE.success.FETCH))
     } catch (error) {
       console.error(error)
       dispatch(machineSlice.actions.hasError(error.Message))
