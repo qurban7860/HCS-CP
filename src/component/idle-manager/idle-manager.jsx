@@ -11,7 +11,7 @@ const IdleManager = () => {
   const [showStay, setShowStay] = useState(true)
   const [countdown, setCountdown] = useState(10)
 
-  const idleTimeout = 30 * GLOBAL.IDLE_TIME
+  const idleTimeout = 15 * GLOBAL.IDLE_TIME
 
   const handleIdle = () => {
     setOpenModal(true)
