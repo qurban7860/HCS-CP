@@ -3,6 +3,10 @@ export { default as apiSlice } from './api'
 export { default as authReducer } from './auth/auth'
 export * from './auth/endpoint'
 
+// dashboard/count
+export { default as countReducer } from './dashboard/count'
+export * from './dashboard/count'
+
 // security/user
 export { default as userReducer } from './security/user/user'
 export * from './security/user'

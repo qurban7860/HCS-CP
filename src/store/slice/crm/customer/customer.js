@@ -11,8 +11,6 @@ const initialState = {
   success: false,
   isLoading: false,
   error: null,
-  //delete this after: HPS-1362
-  machinesByCountry: [],
   customers: [],
   activeCustomers: [],
   financialCompanies: [],
@@ -88,13 +86,6 @@ const customerSlice = createSlice({
       state.isLoading = false
       state.success = true
       state.customer = action.payload
-      state.initial = true
-    },
-    // temporariy: go to dashboard to emit websocket event
-    getMachinesByCountrySuccess(state, action) {
-      state.isLoading = false
-      state.success = true
-      state.machinesByCountry = action.payload
       state.initial = true
     },
     setResponseMessage(state, action) {
@@ -215,22 +206,6 @@ export function getCustomer(id) {
     } catch (error) {
       dispatch(customerSlice.actions.hasError(error.Message))
       throw error
-    }
-  }
-}
-
-// temporary: go to dashboard to emit websocket event
-export function getMachinesByCountry(category, year, model, allRecords) {
-  return async (dispatch) => {
-    dispatch(customerSlice.actions.startLoading())
-    try {
-      const response = await axios.get(
-        `${GLOBAL.SERVER_URL}/dashboard/machineCountries?category=${category}&year=${year}&model=${model}&allRecords=${allRecords}`
-      )
-      dispatch(customerSlice.actions.getMachinesByCountrySuccess(response.data))
-    } catch (error) {
-      console.log(error)
-      dispatch(customerSlice.actions.hasError(error.Message))
     }
   }
 }
