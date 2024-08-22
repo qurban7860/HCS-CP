@@ -1,23 +1,23 @@
-import { useSettingContext } from 'hook'
-import { useSelector } from 'react-redux'
+// import { useSettingContext } from 'hook'
+// import { useSelector } from 'react-redux'
+
+// import {
+//   getMachinesByCountry,
+//   getSecurityUsers,
+//   getCustomerTickets,
+//   getCustomer,
+//   resetCustomer,
+//   resetCustomerMachines,
+//   resetCustomerTicketRecords
+// } from 'store/slice'
+import { useEffect } from 'react'
+import { useAuthContext } from 'auth'
 import { dispatch } from 'store'
 import { getSecurityUser } from 'store/slice'
-import {
-  getMachinesByCountry,
-  getSecurityUsers,
-  getCustomerTickets,
-  getCustomer,
-  resetCustomer,
-  resetCustomerMachines,
-  resetCustomerTicketRecords
-} from 'store/slice'
-import { Card, Grid, Typography } from '@mui/material'
-import { Welcome, DashboardWidget } from 'component/widget'
+import { Grid } from '@mui/material'
+import { Welcome } from 'component/widget'
 import { GLOBAL } from 'config'
 import { toTitleCase } from 'util'
-import { useEffect, useLayoutEffect } from 'react'
-import { useAuthContext } from 'auth'
-import { useWebSocketContext } from 'auth/websocket-provider'
 
 function GeneralAppPage() {
   const { userId } = useAuthContext()
