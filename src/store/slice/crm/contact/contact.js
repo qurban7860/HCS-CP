@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'util/axios'
-import { GLOBAL } from 'config/global'
 import { PATH_SERVER } from 'route/server'
 
 const initialState = {

@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage'
 import {
   apiSlice,
   authReducer,
+  countReducer,
   userReducer,
   machineReducer,
   customerReducer,
@@ -30,6 +31,14 @@ export const authPersistConfig = {
   blacklist: ['error', 'initial', 'responseMessage']
 }
 
+export const countPersistConfig = {
+  key: 'count',
+  storage,
+  keyPrefix: 'redux-',
+  blacklist: ['error', 'initial', 'responseMessage'],
+  whitelist: ['count']
+}
+
 export const userPersistConfig = {
   key: 'user',
   storage,
@@ -41,35 +50,40 @@ export const rolePersistConfig = {
   key: 'role',
   storage,
   keyPrefix: 'redux-',
-  blacklist: ['error', 'initial', 'responseMessage']
+  blacklist: ['error', 'initial', 'responseMessage'],
+  whitelist: ['role']
 }
 
 export const machinePersistConfig = {
   key: 'machine',
   storage,
   keyPrefix: 'redux-',
-  blacklist: ['error', 'initial', 'responseMessage', 'machines']
+  blacklist: ['error', 'initial', 'responseMessage'],
+  whitelist: ['machine']
 }
 
 export const customerPersistConfig = {
   key: 'customer',
   storage,
   keyPrefix: 'redux-',
-  blacklist: ['error', 'initial', 'responseMessage', 'customers']
+  blacklist: ['error', 'initial', 'responseMessage'],
+  whitelist: ['customer']
 }
 
 export const contactPersistConfig = {
   key: 'contact',
   storage,
   keyPrefix: 'redux-',
-  blacklist: ['error', 'initial', 'responseMessage', 'contacts']
+  blacklist: ['error', 'initial', 'responseMessage', 'contacts'],
+  whitelist: ['contact']
 }
 
 export const sitePersistConfig = {
   key: 'site',
   storage,
   keyPrefix: 'redux-',
-  blacklist: ['error', 'initial', 'responseMessage', 'sites']
+  blacklist: ['error', 'initial', 'responseMessage', 'sites'],
+  site: ['site']
 }
 
 export const customerTicketPersistConfig = {
@@ -77,7 +91,7 @@ export const customerTicketPersistConfig = {
   storage,
   keyPrefix: 'redux-',
   blacklist: ['error', 'initial', 'responseMessage'],
-  whitelist: ['customerTickets']
+  whitelist: ['customerTicket']
 }
 
 export const machineModelPersistConfig = {
@@ -85,7 +99,7 @@ export const machineModelPersistConfig = {
   storage,
   keyPrefix: 'redux-',
   blacklist: ['error', 'initial', 'responseMessage'],
-  whitelist: ['machineModels']
+  whitelist: ['machineModel']
 }
 
 export const machineTicketPersistConfig = {
@@ -93,7 +107,7 @@ export const machineTicketPersistConfig = {
   storage,
   keyPrefix: 'redux-',
   blacklist: ['error', 'initial', 'responseMessage'],
-  whitelist: ['machineTickets']
+  whitelist: ['machineTicket']
 }
 
 export const ticketPersistConfig = {
@@ -101,10 +115,12 @@ export const ticketPersistConfig = {
   storage,
   keyPrefix: 'redux-',
   blacklist: ['error', 'initial', 'responseMessage'],
-  whitelist: ['tickets']
+  whitelist: ['ticket']
 }
 
 const rootReducer = combineReducers({
+  //dashboard
+  count: persistReducer(countPersistConfig, countReducer),
   // security
   user: persistReducer(userPersistConfig, userReducer),
   role: persistReducer(rolePersistConfig, roleReducer),

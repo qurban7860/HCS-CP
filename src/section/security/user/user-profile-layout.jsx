@@ -3,14 +3,14 @@ import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
 import { useAuthContext } from 'auth'
 import { useWebSocketContext } from 'auth/websocket-provider'
-import { Icon, ICON_NAME, useSettingContext } from 'hook'
+import { ICON_NAME, useSettingContext } from 'hook'
 import { getSecurityUser, getCustomer, resetCustomer, getSecurityUsers, setCustomerDialog } from 'store/slice'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { editUserSchema } from 'schema'
 import { useForm } from 'react-hook-form'
 import { PATH_CUSTOMER } from 'route/path'
 import { userDefaultValues, ProfileAvatar } from 'section/security'
-import { Box, Badge, Divider, Grid, Chip, Card, Link } from '@mui/material'
+import { Divider, Grid, Card, Link } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GCardOption, GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox } from 'theme/style'
 import { MotionLazyContainer, BadgeCardMedia, ViewFormField, IconTooltip, GridViewTitle, GridViewField, AuditBox, CustomerDialog } from 'component'
@@ -22,7 +22,7 @@ import { truncate } from 'util/truncate'
 const UserProfileLayout = () => {
   const { customer, customerDialog } = useSelector((state) => state.customer)
   const { securityUser, isLoading } = useSelector((state) => state.user)
-  const { user, userId } = useAuthContext()
+  const { userId } = useAuthContext()
   const { onlineUsers } = useWebSocketContext()
 
   const theme = useTheme()
