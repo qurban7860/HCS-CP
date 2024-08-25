@@ -1,9 +1,7 @@
 import { useEffect, memo } from 'react'
 import { useSelector, dispatch } from 'store'
 import { useParams } from 'react-router-dom'
-import { ICON_NAME, useSettingContext } from 'hook'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { useSettingContext } from 'hook'
 import { PATH_CUSTOMER } from 'route/path'
 import { Box, Grid, Card, Divider, Link } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
@@ -11,7 +9,6 @@ import { GStyledTopBorderDivider, GStyledFlexEndBox, GCardOption } from 'theme/s
 import {
   getCustomer,
   getMachine,
-  getMachineTickets,
   setCustomerDialog,
   getConnectedMachineDialog,
   getMachineSiteDialogData,
@@ -24,9 +21,9 @@ import {
 import { machineDefaultValues } from 'section/product'
 import { HowickResources } from 'section/common'
 import { AuditBox, GridViewField, GridViewTitle } from 'component'
-import { MARGIN } from 'config'
-import { KEY, TITLE, VIEW_FORM, VARIANT, FLEX_DIR, DECOILER } from 'constant'
 import { MachineConnectionWidget, MachineSiteWidget } from 'section/product/machine'
+import { MARGIN } from 'config'
+import { KEY, TITLE, VIEW_FORM, VARIANT, FLEX_DIR } from 'constant'
 import { truncate } from 'util/truncate'
 
 const MachineTab = () => {
@@ -40,14 +37,16 @@ const MachineTab = () => {
   const { MACHINE } = VIEW_FORM
 
   useEffect(() => {
-    dispatch(getMachine(id))
+    if (id !== machine?._id) {
+      dispatch(getMachine(id))
+    }
   }, [id])
 
   useEffect(() => {
-    if (machine?.customer) {
+    if (machine?.customer && machine?.customer._id !== customer?._id) {
       dispatch(getCustomer(machine?.customer._id))
     }
-  }, [dispatch, machine?.customer])
+  }, [machine?.customer, customer?._id])
 
   useEffect(() => {
     dispatch(setCustomerDialog(false))
@@ -90,7 +89,6 @@ const MachineTab = () => {
   return (
     <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
       <Grid item lg={3}>
-        {/* <MachineHistoryWidget value={defaultValues} /> */}
         <MachineConnectionWidget
           value={defaultValues}
           handleConnectedMachineDialog={handleConnectedMachineDialog}
@@ -104,7 +102,7 @@ const MachineTab = () => {
             <GStyledTopBorderDivider mode={themeMode} />
             <Grid container spacing={2} px={1.5} mb={5}>
               <GridViewTitle title={TITLE.MACHINE_KEY_DETAILS} />
-              <Divider variant="middle" style={{ width: '100%', marginBottom: '20px' }} />
+              <Divider variant={VARIANT.MIDDLE} style={{ width: '100%', marginBottom: '20px' }} />
               <Grid item lg={12} sm={12}>
                 <Grid container spacing={2} p={2} pb={5}>
                   <GridViewField heading={MACHINE.SERIAL_NO} isLoading={isLoading} children={defaultValues?.serialNo} gridSize={4} />

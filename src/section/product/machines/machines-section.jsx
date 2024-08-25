@@ -1,29 +1,29 @@
-import { useEffect, useState, memo, useLayoutEffect } from 'react'
+import { useEffect, useState, memo, useLayoutEffect, useRef } from 'react'
 import axios from 'axios'
 import { useSelector, dispatch } from 'store'
 import { useAuthContext } from 'auth'
-import { snack, useTable, useFilter, getComparator, useSettingContext } from 'hook'
+import { useTable, useFilter, getComparator, useSettingContext } from 'hook'
 import {
   getMachines,
   getSecurityUser,
   setMachineFilterBy,
   ChangeMachinePage,
   ChangeMachineRowsPerPage,
-  resetMachine,
   resetMachines,
   resetSecurityUser
 } from 'store/slice'
-import { Table, Typography, Grid, Box } from '@mui/material'
-import { GStyledTableHeaderBox, GStyledSpanBox } from 'theme/style'
+import _ from 'lodash'
+import { Table, Grid } from '@mui/material'
+import { GStyledTableHeaderBox } from 'theme/style'
 import { TableNoData, MotionLazyContainer, SkeletonTable, SearchBox, TableTitleBox } from 'component'
 import { MachineTable, MachineHeader, MachineListPagination } from 'section/product'
 import { MARGIN, TABLE } from 'config'
-import { COLOR, KEY, TITLE, RESPONSE, FLEX, FLEX_DIR } from 'constant'
+import { KEY, TITLE, FLEX, FLEX_DIR } from 'constant'
 import { StyledScrollTableContainer } from './style'
 
 const MachineListSection = ({ isArchived }) => {
   const [tableData, setTableData] = useState([])
-  const { machines, error, initial, isLoading, responseMessage, machinePage, machineRowsPerPage } = useSelector((state) => state.machine)
+  const { machines, initial, isLoading, machinePage, machineRowsPerPage } = useSelector((state) => state.machine)
   const { userId } = useAuthContext()
   const { securityUser } = useSelector((state) => state.user)
 
@@ -43,29 +43,34 @@ const MachineListSection = ({ isArchived }) => {
   })
 
   useLayoutEffect(() => {
-    dispatch(resetMachine())
     dispatch(resetMachines())
-    dispatch(resetSecurityUser())
-  }, [dispatch])
+
+    if (userId !== securityUser?._id) {
+      dispatch(resetSecurityUser())
+    }
+  }, [userId])
 
   useEffect(() => {
-    if (userId) {
+    if (userId !== securityUser?._id) {
       dispatch(getSecurityUser(userId))
     }
-  }, [dispatch, userId])
+  }, [userId])
 
   useEffect(() => {
-    dispatch(getMachines(null, null, isArchived, cancelTokenSource))
-    // return () => {
-    //   cancelTokenSource.cancel()
-    // }
+    const debouncedDispatch = _.debounce(() => {
+      dispatch(getMachines(null, null, isArchived, cancelTokenSource))
+    }, 300)
+
+    debouncedDispatch()
+
+    return () => debouncedDispatch.cancel()
   }, [dispatch, machinePage, machineRowsPerPage, isArchived])
 
   useEffect(() => {
     if (initial) {
       setTableData(machines || [])
     }
-  }, [machines, error, responseMessage, initial])
+  }, [machines, initial])
 
   const { filterName, handleFilterName, filteredData } = useFilter(
     getComparator(order, orderBy),
@@ -128,4 +133,4 @@ const MachineListSection = ({ isArchived }) => {
   )
 }
 
-export default MachineListSection
+export default memo(MachineListSection)
