@@ -1,18 +1,21 @@
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector, dispatch } from 'store'
+import _ from 'lodash'
 import {
   getCustomerMachines,
   getConnectedMachineDialog,
   getCustomer,
+  getContacts,
   getContact,
   setContactDialog,
   setMachineDialog,
   setMachineSiteDialog,
   getMachineSiteDialogData,
   resetMachine,
-  resetContact,
-  resetMachineSiteDialogData
+  resetMachineSiteDialogData,
+  resetCustomerMachines,
+  resetContact
 } from 'store/slice'
 import { useSettingContext } from 'hook'
 import { Grid, Box, Card, Divider } from '@mui/material'
@@ -33,22 +36,33 @@ const CustomerTab = () => {
   const { CUSTOMER, SITE, ADDRESS } = VIEW_FORM
 
   useEffect(() => {
-    if (id) {
-      dispatch(getCustomer(id))
-    }
-  }, [dispatch, id])
+    const debounce = _.debounce(() => {
+      if (id !== customer?._id) {
+        dispatch(getCustomer(id))
+      }
+    }, 300)
+
+    debounce()
+
+    return () => debounce.cancel()
+  }, [id])
 
   useEffect(() => {
-    if (id) {
+    const debounce = _.debounce(() => {
       dispatch(getCustomerMachines(id))
-    }
-  }, [id, dispatch])
+      dispatch(getContacts(id))
+    }, 300)
 
-  useEffect(() => {
+    debounce()
+
+    return () => debounce.cancel()
+  }, [id])
+
+  useLayoutEffect(() => {
     dispatch(setMachineDialog(false))
     dispatch(setMachineSiteDialog(false))
     dispatch(setContactDialog(false))
-    dispatch(resetMachine())
+    dispatch(resetCustomerMachines())
     dispatch(resetContact())
     dispatch(resetMachineSiteDialogData())
   }, [dispatch])

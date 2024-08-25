@@ -1,5 +1,7 @@
 import { useEffect, useState, useLayoutEffect, memo } from 'react'
 import { useSelector, dispatch } from 'store'
+import axios from 'axios'
+import _ from 'lodash'
 import { useSettingContext, useTable, useFilter, getComparator } from 'hook'
 import { Table, Typography, Grid } from '@mui/material'
 import { GStyledTableHeaderBox, GStyledSpanBox } from 'theme/style'
@@ -15,12 +17,14 @@ import { StyledScrollTableContainer } from './style'
 
 const { TYPOGRAPHY } = VARIANT
 
-const CustomerListSection = () => {
-  const [tableData, setTableData] = useState([])
-  const { customers, initial, isLoading, customerPage, customerRowsPerPage, responseMessage } = useSelector((state) => state.customer)
+const CustomerListSection = ({ isArchived }) => {
+  const { customers, initial, isLoading, customerPage, customerRowsPerPage } = useSelector((state) => state.customer)
 
   const { themeMode } = useSettingContext()
   const denseHeight = TABLE.DENSE_HEIGHT
+
+  const axiosToken = () => axios.CancelToken.source()
+  const cancelTokenSource = axiosToken()
 
   const {
     order,
@@ -33,7 +37,6 @@ const CustomerListSection = () => {
 
   useLayoutEffect(() => {
     dispatch(resetCustomers())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch])
 
   const { filterName, handleFilterName, filteredData } = useFilter(
@@ -45,7 +48,13 @@ const CustomerListSection = () => {
   )
 
   useEffect(() => {
-    dispatch(getCustomers(null, null, false))
+    const debouncedDispatch = _.debounce(() => {
+      dispatch(getCustomers(null, null, isArchived, cancelTokenSource))
+    }, 300)
+
+    debouncedDispatch()
+
+    return () => debouncedDispatch.cancel()
   }, [dispatch])
 
   const handleChangePage = (event, newPage) => {

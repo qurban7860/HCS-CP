@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, current } from '@reduxjs/toolkit'
 import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
 import { GLOBAL } from 'config/global'
@@ -143,6 +143,26 @@ const customerSlice = createSlice({
       state.customerPage = action.payload
     }
   }
+  // extraReducers: (builder) => {
+  //   builder.addCase('persist/REHYDRATE', (state, action) => {
+  //     // Example of selectively rehydrating state
+  //     // Check if action.payload.machine exists to avoid errors
+  //     if (action.payload && action.payload.machine) {
+  //       // Use current(state) if you need to log or debug the current state
+  //       console.log('Current state before rehydrate:', current(state))
+
+  //       // Merge the persisted state into the current state
+  //       // This is a simple merge and might need adjustment based on your state structure
+  //       return {
+  //         ...state, // Keep the current state
+  //         ...action.payload.machine // Merge the persisted state
+  //         // You can add more logic here if you need to merge deeply nested structures
+  //       }
+  //     }
+  //     // Return the current state if there's no machine state in the payload
+  //     return state
+  //   })
+  // }
 })
 
 export default customerSlice.reducer

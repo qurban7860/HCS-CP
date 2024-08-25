@@ -1,6 +1,5 @@
 // import { useSettingContext } from 'hook'
 // import { useSelector } from 'react-redux'
-
 // import {
 //   getMachinesByCountry,
 //   getSecurityUsers,
@@ -20,14 +19,6 @@ import { GLOBAL } from 'config'
 import { toTitleCase } from 'util'
 
 function GeneralAppPage() {
-  const { userId } = useAuthContext()
-
-  useEffect(() => {
-    if (userId) {
-      dispatch(getSecurityUser(userId))
-    }
-  }, [dispatch, userId])
-
   // TODO: enable when charts are scoped
   // const { customerMachines } = useSelector((state) => state.machine)
   // const { customer } = useSelector((state) => state.customer)
