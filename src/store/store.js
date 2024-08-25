@@ -12,7 +12,7 @@ const store = configureStore({
       serializableCheck: GLOBAL.ENV === KEY.PRODUCTION ? undefined : false,
       immutableCheck: false
     }),
-  devTools: true
+  devTools: GLOBAL.ENV !== KEY.PRODUCTION ? true : false
 })
 
 const persistor = persistStore(store)
