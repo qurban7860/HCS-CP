@@ -1,5 +1,6 @@
-import { useState, useEffect, useMemo, memo } from 'react'
+import { useEffect, useMemo, memo, useLayoutEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import _ from 'lodash'
 import { dispatch, useSelector } from 'store'
 import { useSettingContext, useFilter, useTable, getComparator, ICON_NAME } from 'hook'
 import {
@@ -11,7 +12,6 @@ import {
   setValidCoordinates,
   setSiteFilterBy,
   ChangeSitePage,
-  resetSites,
   resetSite,
   resetSelectedSiteCard,
   resetValidCoordinates
@@ -46,12 +46,25 @@ const SiteTab = () => {
     defaultOrder: KEY.DESC
   })
 
+  useLayoutEffect(() => {
+    dispatch(setFromSiteDialog(false))
+    dispatch(resetValidCoordinates())
+  }, [dispatch])
+
   useEffect(() => {
-    if (id) {
+    if (id !== customer?._id) {
       dispatch(getCustomer(id))
-      dispatch(getSites(id, customer?.isArchived))
-      dispatch(setFromSiteDialog(false))
     }
+  }, [id, dispatch])
+
+  useEffect(() => {
+    const debouncedDispatch = _.debounce(() => {
+      dispatch(getSites(id, customer?.isArchived))
+    }, 300)
+
+    debouncedDispatch()
+
+    return () => debouncedDispatch.cancel()
   }, [id, dispatch])
 
   const defaultValues = siteDefaultValues(site, customer)
@@ -68,7 +81,6 @@ const SiteTab = () => {
 
   useEffect(() => {
     if (sites.length > 0 && fromSiteDialog) {
-      console.log('selectedSiteCard', selectedSiteCard)
       dispatch(getSite(id, selectedSiteCard))
       dispatch(setSelectedSiteCard(selectedSiteCard))
     }
@@ -87,10 +99,6 @@ const SiteTab = () => {
   )
 
   useEffect(() => {
-    dispatch(resetValidCoordinates())
-  }, [])
-
-  useEffect(() => {
     if (defaultValues?.lat && defaultValues?.long) {
       dispatch(setValidCoordinates(true))
     }
@@ -98,7 +106,6 @@ const SiteTab = () => {
 
   const handleSiteCard = (event, siteId) => {
     event.preventDefault()
-    console.log('selectedSiteCard handle', selectedSiteCard)
     dispatch(setSelectedSiteCard(siteId))
     dispatch(resetSite())
     dispatch(getSite(id, siteId))
