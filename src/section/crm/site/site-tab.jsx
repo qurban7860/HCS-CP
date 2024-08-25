@@ -99,10 +99,12 @@ const SiteTab = () => {
   )
 
   useEffect(() => {
-    if (defaultValues?.lat && defaultValues?.long) {
+    if (latLong[0].lat !== '' && latLong[0].long !== '') {
       dispatch(setValidCoordinates(true))
+    } else {
+      dispatch(setValidCoordinates(false))
     }
-  }, [defaultValues])
+  }, [defaultValues?.lat, defaultValues?.long])
 
   const handleSiteCard = (event, siteId) => {
     event.preventDefault()
