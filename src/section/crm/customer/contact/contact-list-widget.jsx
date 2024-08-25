@@ -1,10 +1,10 @@
-import { Fragment, useEffect, useLayoutEffect } from 'react'
+import { Fragment, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { useParams } from 'react-router-dom'
+import _ from 'lodash'
 import { ICON_NAME, useSettingContext } from 'hook'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
-import { getContacts } from 'store/slice'
+import { setContactDialog } from 'store/slice'
 import { Grid, Typography, IconButton, Divider, Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { FormHeader, IconTooltip } from 'component'
@@ -14,10 +14,13 @@ import { VARIANT, SIZE, LABEL, KEY, FLEX } from 'constant'
 const { TYPOGRAPHY } = VARIANT
 
 const ContactListWidget = ({ value, handleContactDialog }) => {
-  const theme = useTheme()
-  const { id } = useParams()
-  const { themeMode } = useSettingContext()
   const { contacts } = useSelector((state) => state.contact)
+  const theme = useTheme()
+  const { themeMode } = useSettingContext()
+
+  useEffect(() => {
+    dispatch(setContactDialog(false))
+  }, [dispatch])
 
   const fullName = (contact) => contact?.firstName + ' ' + contact?.lastName
   const notEmployed = (c) => c?.formerEmployee === true
@@ -30,12 +33,6 @@ const ContactListWidget = ({ value, handleContactDialog }) => {
     }`
   }
 
-  useLayoutEffect(() => {
-    if (id) {
-      dispatch(getContacts(id))
-    }
-  }, [dispatch, id])
-
   return (
     <Grid container mb={2}>
       <Grid item lg={12} sm={12} mb={2} bgcolor="background.paper">
@@ -44,7 +41,7 @@ const ContactListWidget = ({ value, handleContactDialog }) => {
         </GStyledSpanBox>
 
         <Grid container p={2}>
-          {value?.contacts?.length > 0 ? (
+          {contacts?.length > 0 ? (
             contacts.map((c, index) => (
               <Fragment key={index}>
                 <Grid item xs={10}>
