@@ -1,20 +1,8 @@
-import { memo, useEffect, useState, Fragment } from 'react'
+import { memo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, dispatch } from 'store'
 import { useParams, useNavigate } from 'react-router-dom'
-import {
-  getCustomerMachines,
-  getCustomer,
-  getContacts,
-  setContactDialog,
-  setMachineDialog,
-  setMachineSiteDialog,
-  setFromDialog,
-  setFromSiteDialog,
-  resetMachine,
-  resetContact,
-  resetMachineSiteDialogData
-} from 'store/slice'
+import { setFromDialog, setFromSiteDialog } from 'store/slice'
 import { Typography } from '@mui/material'
 import { CustomerNav, CustomerTab } from 'section/crm/customer'
 import { ContactTab, SiteTab, customerDefaultValues, TicketsTab } from 'section/crm'
@@ -27,31 +15,9 @@ const CustomerLayout = ({ tab = 0 }) => {
   const [renderedTab, setRenderedTab] = useState(tab)
   const navigate = useNavigate()
   const { id } = useParams()
+  const { customer, isLoading } = useSelector((state) => state.customer)
   const { customerMachines, connectedMachineDialog, machineSiteDialogData } = useSelector((state) => state.machine)
   const { contact, contacts, contactDialog } = useSelector((state) => state.contact)
-  const { customer, isLoading, customerRenderTab } = useSelector((state) => state.customer)
-
-  useEffect(() => {
-    if (id) {
-      dispatch(getCustomer(id))
-    }
-  }, [dispatch, id])
-
-  useEffect(() => {
-    if (id) {
-      dispatch(getCustomerMachines(id))
-    }
-  }, [id, dispatch])
-
-  useEffect(() => {
-    dispatch(setMachineDialog(false))
-    dispatch(setMachineSiteDialog(false))
-    dispatch(setContactDialog(false))
-    dispatch(getContacts(id, customer?.isArchived))
-    dispatch(resetMachine())
-    dispatch(resetContact())
-    dispatch(resetMachineSiteDialogData())
-  }, [dispatch])
 
   const defaultValues = customerDefaultValues(customer, customerMachines, contacts)
 
@@ -71,12 +37,10 @@ const CustomerLayout = ({ tab = 0 }) => {
     } else if (tab === 3 && id) {
     } else if (tab === 4 && id) {
       navigate(PATH_CUSTOMER.customers.support.list(id))
-      // dispatch(setFromDialog(false))
-      // dispatch(setFromSiteDialog(false))
+      dispatch(setFromDialog(false))
+      dispatch(setFromSiteDialog(false))
     }
   }
-
-  // TODO: #HPS-1062 when JIRA api integated, replace this mock data
 
   return (
     <MotionLazyContainer display={FLEX.FLEX}>

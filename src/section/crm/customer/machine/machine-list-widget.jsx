@@ -16,26 +16,15 @@ import { VARIANT, SIZE, LABEL, KEY, DECOILER_TYPE_ARR, FLEX } from 'constant'
 const { TYPOGRAPHY } = VARIANT
 
 const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog }) => {
-  const { id } = useParams()
   const [loading, setLoading] = useState(false)
+  const { customerMachines } = useSelector((state) => state.machine)
   const theme = useTheme()
   const { themeMode } = useSettingContext()
-  const { customerMachines, isLoading } = useSelector((state) => state.machine)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true)
-      await dispatch(getCustomerMachines(id))
-      setLoading(false)
-    }
-    fetchData()
-  }, [dispatch, id])
 
   const { Icon: LocIcon, iconSrc } = useIcon(ICON_NAME.DECOILER_DEF)
 
-  // TODO: [HouseKeeping]
   const sxProp =
-    value?.machines?.length < 5
+    customerMachines?.length < 5
       ? {}
       : {
           position: 'relative',
@@ -72,7 +61,7 @@ const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog
             scrollBehavior: 'smooth'
           }}>
           <Grid container p={2}>
-            {value?.machines.length > 0 ? (
+            {customerMachines.length > 0 ? (
               customerMachines.map((mach, index) => (
                 <Fragment key={index}>
                   <Grid item xs={8}>
@@ -150,8 +139,7 @@ const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog
                       )}
                     </GStyledSpanBox>
                   </Grid>
-                  {/* if in the last index dont add divider */}
-                  {index !== customerMachines?.length - 1 && <Divider variant="fullWidth" style={{ width: '100%', marginBottom: '10px' }} />}
+                  {index !== customerMachines.length - 1 && <Divider variant="fullWidth" style={{ width: '100%', marginBottom: '10px' }} />}
                 </Fragment>
               ))
             ) : loading ? (

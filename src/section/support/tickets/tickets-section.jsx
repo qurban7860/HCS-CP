@@ -1,17 +1,14 @@
 import { useEffect, useState, memo, useLayoutEffect, useCallback } from 'react'
+import _ from 'lodash'
 import { useSelector, dispatch } from 'store'
 import { useAuthContext } from 'auth'
 import { useTable, useFilter, getComparator, useSettingContext } from 'hook'
 import {
-  getTickets,
   getSecurityUser,
   setCustomerTicketFilterBy,
   ChangeCustomerTicketPage,
   ChangeCustomerTicketRowsPerPage,
   getCustomerTickets,
-  getAllCustomerTickets,
-  getMachineTickets,
-  getCustomer,
   resetCustomerTicketRecords
 } from 'store/slice'
 import { Table, Grid } from '@mui/material'
@@ -19,7 +16,7 @@ import { GStyledTableHeaderBox } from 'theme/style'
 import { TableNoData, MotionLazyContainer, SkeletonTable, SearchBox, TableTitleBox } from 'component'
 import { TicketsTable, TicketsTableHeader, TicketsListPagination } from 'section/support'
 import { MARGIN, TABLE } from 'config'
-import { COLOR, KEY, TITLE, RESPONSE, FLEX, FLEX_DIR } from 'constant'
+import { KEY, TITLE, FLEX, FLEX_DIR } from 'constant'
 import { StyledScrollTableContainer } from './style'
 
 const TicketsListSection = () => {
@@ -28,7 +25,6 @@ const TicketsListSection = () => {
   const { userId } = useAuthContext()
   const { customer } = useSelector((state) => state.customer)
   const { customerTickets, initial, isLoading, customerTicketRowsPerPage, customerTicketPage } = useSelector((state) => state.customerTicket)
-  const { machineTickets } = useSelector((state) => state.machineTicket)
   const { securityUser } = useSelector((state) => state.user)
 
   const { themeMode } = useSettingContext()
@@ -45,17 +41,23 @@ const TicketsListSection = () => {
 
   // populate with only tix for certain org by ref, or machine by serialNo
   useEffect(() => {
-    if (userId) {
+    if (userId !== securityUser?._id) {
       dispatch(getSecurityUser(userId))
     }
   }, [dispatch, userId])
 
   useEffect(() => {
-    if (securityUser?.customers) {
-      dispatch(getCustomerTickets(securityUser?.customers[1]?.ref, filterPeriodOption))
-      return () => {
-        dispatch(resetCustomerTicketRecords())
+    const debouncedDispatch = _.debounce(() => {
+      if (securityUser?.customers) {
+        dispatch(getCustomerTickets(securityUser?.customers[1]?.ref, filterPeriodOption))
       }
+    }, 300)
+
+    debouncedDispatch()
+
+    return () => {
+      debouncedDispatch.cancel()
+      dispatch(resetCustomerTicketRecords())
     }
   }, [dispatch, securityUser?.customers, filterPeriodOption])
 
@@ -67,7 +69,7 @@ const TicketsListSection = () => {
     if (initial) {
       setTableData(customerTickets?.issues || [])
     }
-  }, [customerTickets?.issues])
+  }, [customerTickets, initial])
 
   const { filterName, handleFilterName, filteredData } = useFilter(
     getComparator(order, orderBy),
