@@ -1,10 +1,10 @@
-import { useState, useRef, useEffect, memo } from 'react'
+import { useRef, useEffect, memo, useLayoutEffect } from 'react'
 import { useSelector } from 'react-redux'
+import _ from 'lodash'
 import { dispatch } from 'store'
 import { useAuthContext } from 'auth'
-import { useWebSocketContext } from 'auth/websocket-provider'
 import { ICON_NAME, useSettingContext } from 'hook'
-import { getSecurityUser, getCustomer, resetCustomer, getSecurityUsers, setCustomerDialog } from 'store/slice'
+import { getSecurityUser, getCustomer, resetCustomer, setCustomerDialog } from 'store/slice'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { editUserSchema } from 'schema'
 import { useForm } from 'react-hook-form'
@@ -15,7 +15,7 @@ import { useTheme } from '@mui/material/styles'
 import { GCardOption, GStyledTopBorderDivider, GStyledSpanBox, GStyledFlexEndBox } from 'theme/style'
 import { MotionLazyContainer, BadgeCardMedia, ViewFormField, IconTooltip, GridViewTitle, GridViewField, AuditBox, CustomerDialog } from 'component'
 import FormProvider from 'component/hook-form'
-import { MARGIN, RADIUS } from 'config'
+import { MARGIN } from 'config'
 import { KEY, TITLE, FLEX, TYPOGRAPHY, VIEW_FORM, FLEX_DIR, LABEL, VARIANT } from 'constant'
 import { truncate } from 'util/truncate'
 
@@ -23,15 +23,17 @@ const UserProfileLayout = () => {
   const { customer, customerDialog } = useSelector((state) => state.customer)
   const { securityUser, isLoading } = useSelector((state) => state.user)
   const { userId } = useAuthContext()
-  const { onlineUsers } = useWebSocketContext()
 
   const theme = useTheme()
   const { themeMode } = useSettingContext()
 
+  useLayoutEffect(() => {
+    dispatch(resetCustomer())
+  }, [dispatch])
+
   useEffect(() => {
-    if (userId) {
+    if (userId !== securityUser?._id) {
       dispatch(getSecurityUser(userId))
-      console.log('online users:', onlineUsers) // TOBE REMOVED: for testing only
     }
   }, [dispatch, userId])
 
@@ -44,11 +46,16 @@ const UserProfileLayout = () => {
   })
 
   useEffect(() => {
-    if (defaultValues?.customerId) {
-      dispatch(resetCustomer())
-      dispatch(getCustomer(defaultValues.customerId))
-    }
-  }, [dispatch, defaultValues?.customer])
+    const debouncedDispatch = _.debounce(() => {
+      if (defaultValues?.customerId) {
+        dispatch(getCustomer(defaultValues.customerId))
+      }
+    }, 300)
+
+    debouncedDispatch()
+
+    return () => debouncedDispatch.cancel()
+  }, [dispatch, defaultValues?.customerId])
 
   const handleCustomerDialog = (event, customerId) => {
     event.preventDefault()
@@ -60,7 +67,6 @@ const UserProfileLayout = () => {
   return (
     <MotionLazyContainer display="flex">
       {/*  TODO: Make responsive */}
-      {/* {TODO: refactor  */}
       <FormProvider methods={methods} onSubmit={() => {}}>
         <Grid container spacing={2} flexDirection="row" {...MARGIN.PAGE_PROP}>
           <Grid item sm={12} lg={12}>
