@@ -6,6 +6,7 @@ import { GStyledContainer } from 'theme/style'
 import { useSettingContext } from 'hook'
 import Main from './main'
 import Header, { Navbar } from './header'
+import { SZ } from 'constant'
 
 function DashboardLayout() {
   const { themeMode } = useSettingContext()
@@ -40,7 +41,7 @@ function DashboardLayout() {
     <Fragment>
       {progress}
       <Header />
-      <GStyledContainer maxWidth="xl" themeMode={themeMode}>
+      <GStyledContainer maxWidth={SZ.XL} themeMode={themeMode}>
         <Navbar />
         <Main>
           <Outlet />
