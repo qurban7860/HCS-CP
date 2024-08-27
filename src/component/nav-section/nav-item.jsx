@@ -11,7 +11,7 @@ import { StyledItem, StyledIcon } from './style'
 import { KEY, TYPOGRAPHY } from 'constant'
 
 const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...other }, ref) => {
-  const { translate } = useLocale()
+  const { t } = useLocale()
   const { title, path, icon, info, children, disabled, caption, roles } = item
   const theme = useTheme()
 
@@ -26,7 +26,7 @@ const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...othe
       )}
 
       <ListItemText
-        primary={`${translate(title)}`}
+        primary={`${t(title)}`}
         disabled={disabled}
         primaryTypographyProps={{
           noWrap: true,
@@ -44,7 +44,7 @@ const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...othe
       )}
 
       {caption && (
-        <Tooltip title={`${translate(caption)}`} arrow>
+        <Tooltip title={`${t(caption)}`} arrow>
           <Box component="span" sx={{ ml: 0.5, lineHeight: 0 }}>
             <Icon icon={ICON_NAME.INFO} width={16} />
           </Box>
