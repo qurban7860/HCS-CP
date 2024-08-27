@@ -1,0 +1,8 @@
+export { default as vn } from './vn'
+export { default as en } from './en'
+export { default as fr } from './fr'
+export { default as cn } from './cn'
+export { default as ar } from './ar'
+export { default as ru } from './ru'
+export { default as kr } from './kr'
+export { default as pt } from './pt'
