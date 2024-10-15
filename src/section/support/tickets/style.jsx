@@ -74,8 +74,8 @@ export const StyledHeaderTableCell = styled(({ theme, mode, item, ...other }) =>
       ? '30%'
       : item.key === KEY.FIELDS_CREATED
       ? '10%'
-      : item.key === 'fields.customfield_10069'
-      ? '15%'
+      : item.key === 'fields.status.statusCategory.name'
+      ? '25%'
       : `calc(100% / ${HEADER.length})`
 }))
 
@@ -105,7 +105,7 @@ export const StyledTableRow = styled(({ theme, mode, index, fields, key, ...othe
     '&:hover': {
       backgroundColor: mode === KEY.DARK ? theme.palette.grey[700] : theme.palette.common.white
     },
-    width: fields?.summary ? '30%' : fields?.created ? '10%' : fields?.status?.statusCategory?.name ? '15%' : `calc(100% / ${HEADER.length})`
+    width: fields?.summary ? '30%' : fields?.created ? '10%' : fields?.status?.statusCategory?.name ? '25%' : `calc(100% / ${HEADER.length})`
   })
 )
 
