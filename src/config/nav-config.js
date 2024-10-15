@@ -8,11 +8,11 @@ function NavConfiguration() {
     {
       subheader: 'general',
       items: [
-        { title: t('home'), path: PATH_DASHBOARD.general.app },
-        { title: 'Machine', path: PATH_MACHINE.machines.list },
-        { title: 'Organization', path: PATH_CUSTOMER.customers.list },
-        { title: 'Document', path: '/documents', children: null, disabled: true },
-        { title: 'Support', path: PATH_SUPPORT.tickets.list }
+        { title: 'home.label', path: PATH_DASHBOARD.general.app },
+        { title: 'machine.label', path: PATH_MACHINE.machines.list },
+        { title: 'organization.label', path: PATH_CUSTOMER.customers.list },
+        { title: 'document.label', path: '/documents', children: null, disabled: true },
+        { title: 'support.label', path: PATH_SUPPORT.tickets.list }
       ]
     }
   ])
