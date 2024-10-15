@@ -14,7 +14,7 @@ const initialState = {
   tickets: [],
   ticketFilterBy: '',
   ticketPage: 0,
-  ticketRowsPerPage: 100,
+  ticketRowsPerPage: 10,
   totalRows: 0,
   filterStatus: 'Open',
   filterPeriod: 3

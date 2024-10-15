@@ -1,6 +1,7 @@
 import { useEffect, useState, useLayoutEffect, memo } from 'react'
 import { useSelector, dispatch } from 'store'
 import axios from 'axios'
+import {t } from 'i18next'
 import _ from 'lodash'
 import { useSettingContext, useTable, useFilter, getComparator } from 'hook'
 import { Table, Typography, Grid } from '@mui/material'
@@ -19,7 +20,6 @@ const { TYPOGRAPHY } = VARIANT
 
 const CustomerListSection = ({ isArchived }) => {
   const { customers, initial, isLoading, customerPage, customerRowsPerPage } = useSelector((state) => state.customer)
-
   const { themeMode } = useSettingContext()
   const denseHeight = TABLE.DENSE_HEIGHT
 
@@ -73,7 +73,7 @@ const CustomerListSection = ({ isArchived }) => {
     <MotionLazyContainer display={FLEX.FLEX}>
       <GStyledSpanBox>
         <Typography variant={TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? 'grey.200' : 'howick.bronze'}>
-          {TITLE.ORGANIZATIONS.toUpperCase()}
+          {t('organizations.label').toUpperCase()}
         </Typography>
       </GStyledSpanBox>
       <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} />

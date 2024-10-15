@@ -7,6 +7,10 @@ import { useEffect } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/lib/integration/react'
+
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+
 import { store, persistor } from 'store'
 import Router from 'route'
 import { HelmetProvider } from 'react-helmet-async'
@@ -28,38 +32,38 @@ function App() {
   }, [])
 
   return (
-    // <LocalizationProvider dateAdapter={AdapterDateFns}>
-    <AuthProvider>
-      <WebSocketProvider>
-        <HelmetProvider>
-          <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-              <SettingProvider>
-                <BrowserRouter>
-                  <MotionLazyContainer>
-                    <ThemeProvider>
-                      <ThemeSettings>
-                        <ErrorBoundary fallback={<Fallback {...FALLBACK.INTERNAL_SERVER_ERROR} />}>
-                          <ScrollToTop />
-                          <ThemeLocalization>
-                            <SnackProvider>
-                              <ChartStyleOverlay />
-                              <IdleManager />
-                              <Router />
-                            </SnackProvider>
-                          </ThemeLocalization>
-                        </ErrorBoundary>
-                      </ThemeSettings>
-                    </ThemeProvider>
-                  </MotionLazyContainer>
-                </BrowserRouter>
-              </SettingProvider>
-            </PersistGate>
-          </Provider>
-        </HelmetProvider>
-      </WebSocketProvider>
-    </AuthProvider>
-    // </LocalizationProvider>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <AuthProvider>
+        <WebSocketProvider>
+          <HelmetProvider>
+            <Provider store={store}>
+              <PersistGate loading={null} persistor={persistor}>
+                <SettingProvider>
+                  <BrowserRouter>
+                    <MotionLazyContainer>
+                      <ThemeProvider>
+                        <ThemeSettings>
+                          <ErrorBoundary fallback={<Fallback {...FALLBACK.INTERNAL_SERVER_ERROR} />}>
+                            <ScrollToTop />
+                            <ThemeLocalization>
+                              <SnackProvider>
+                                <ChartStyleOverlay />
+                                <IdleManager />
+                                <Router />
+                              </SnackProvider>
+                            </ThemeLocalization>
+                          </ErrorBoundary>
+                        </ThemeSettings>
+                      </ThemeProvider>
+                    </MotionLazyContainer>
+                  </BrowserRouter>
+                </SettingProvider>
+              </PersistGate>
+            </Provider>
+          </HelmetProvider>
+        </WebSocketProvider>
+      </AuthProvider>
+    </LocalizationProvider>
   )
 }
 

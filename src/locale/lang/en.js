@@ -1,16 +1,4 @@
-// IF THIS TRANSLATION IS INCORRECT PLEASE IGNORE THIS AS THIS TRANSLATION IS FOR DEMO PURPOSES ONLY
-// We are happy if you can help improve the translation by sending an email to support@minimals.cc.
-
 const en = {
-  demo: {
-    title: `English`,
-    introduction: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
-  },
-  docs: {
-    hi: `Hi`,
-    description: `Need help? \n Please check our docs.`,
-    documentation: `documentation`,
-  },
   app: `app`,
   user: `user`,
   list: `list`,
@@ -23,11 +11,80 @@ const en = {
   cards: `cards`,
   posts: `posts`,
   create: `create`,
+  change_password: {
+    label: `Change Password`
+  },
+  customer: {
+    label: `Customer`
+  },
+  customer_group: {
+    label: `Customer Group`
+  },
+  home: {
+    local: `home`,
+    label: `Home`
+  },
+  machine: {
+    local: `machine`,
+    label: `Machine`
+  },
+  organization: {
+    local: `organization`,
+    label: `Organization`
+  },
+  organizations: {
+    local: `organizations`,
+    label: `Organizations`
+  },
+  document: {
+    local: `document`,
+    label: `Document`
+  },
+  support: {
+    local: `support`,
+    label: `Support`
+  },
+  portal: {
+    local: `portal`,
+    label: `Portal`
+  },
+  support_tickets:{
+    local: `support_tickets`,
+    label: `Support Tickets`
+  },
+  sites:{
+    local: `sites`,
+    label: `Sites`
+  },
+  contacts: {
+    local: `contacts`,
+    label: `Contacts`
+  },
+  customer_overview: {
+    local: `customer_overview`,
+    label: `Customer Overview`
+  },
   kanban: `kanban`,
   general: `general`,
   banking: `banking`,
   booking: `booking`,
-  profile: `profile`,
+  profile: {
+    local: `profile`,
+    label: `Profile`
+  },
+  display_settings: {
+    label: `Display Settings`
+  },
+  logout: {
+    label: `Logout`
+  },
+  language: {
+    label: `Language`
+  },
+  notifications: {
+    label: `Notifications`,
+    no_notif: `You have no new notifications`
+  },
   account: `account`,
   product: `product`,
   invoice: `invoice`,
@@ -52,6 +109,7 @@ const en = {
   other_cases: `other cases`,
   item_by_roles: `item by roles`,
   only_admin_can_see_this_item: `Only admin can see this item`,
+  app_customer_tagline: `Portal for convenient and efficient management of machines, their updates and support.`
 }
 
 export default en

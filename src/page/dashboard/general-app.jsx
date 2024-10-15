@@ -17,6 +17,7 @@ import { Grid } from '@mui/material'
 import { Welcome } from 'component/widget'
 import { GLOBAL } from 'config'
 import { toTitleCase } from 'util'
+import { useLocale } from '../../locale'
 
 function GeneralAppPage() {
   // TODO: enable when charts are scoped
@@ -39,15 +40,13 @@ function GeneralAppPage() {
   //   dispatch(getCustomerTickets(customer?.ref))
   // }, [customer?._id, customer?.ref, securityUser?.customer?._id])
 
-  // useEffect(() => {
-  //   console.log('onlineUsers', onlineUsers)
-  // }, [onlineUsers])
+  const { t } = useLocale()
 
   return (
     <Grid container>
       <Grid container spacing={3} mt={2}>
         <Grid item xs={12}>
-          <Welcome title={toTitleCase(GLOBAL.APP_TAGLINE)} description={GLOBAL.APP_CUSTOMER_TAGLINE} />
+          <Welcome title={toTitleCase(GLOBAL.APP_TAGLINE)} description={t('app_customer_tagline')} />
         </Grid>
       </Grid>
     </Grid>

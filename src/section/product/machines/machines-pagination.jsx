@@ -6,7 +6,7 @@ import { StyledTablePagination } from './style'
 import { LABEL } from 'constant'
 
 const MachineListPagination = ({
-  rowsPerPageOptions = [10, 20, 40, 50, 100],
+  rowsPerPageOptions = [5, 10, 15, 20, 30, 50],
   data,
   page,
   mode,

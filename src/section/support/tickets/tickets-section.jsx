@@ -1,9 +1,11 @@
 import { useEffect, useState, memo, useLayoutEffect, useCallback } from 'react'
 import _ from 'lodash'
+import { t } from 'i18next'
 import { useSelector, dispatch } from 'store'
 import { useAuthContext } from 'auth'
 import { useTable, useFilter, getComparator, useSettingContext } from 'hook'
 import {
+  getCustomer,
   getSecurityUser,
   setCustomerTicketFilterBy,
   ChangeCustomerTicketPage,
@@ -49,7 +51,8 @@ const TicketsListSection = () => {
   useEffect(() => {
     const debouncedDispatch = _.debounce(() => {
       if (securityUser?.customers) {
-        dispatch(getCustomerTickets(securityUser?.customers[1]?.ref, filterPeriodOption))
+        dispatch(getCustomer(securityUser?.customer?._id))
+        dispatch(getCustomerTickets(securityUser?.customers[0]?.ref, filterPeriodOption))
       }
     }, 300)
 
@@ -94,7 +97,7 @@ const TicketsListSection = () => {
 
   return (
     <MotionLazyContainer display={FLEX.FLEX}>
-      <TableTitleBox title={TITLE.SUPPORT_TICKETS} user={securityUser} />
+      <TableTitleBox title={t('support_tickets.label')} user={securityUser} />
       <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} onReload={onRefresh} />
       <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
         <Grid item lg={12}>

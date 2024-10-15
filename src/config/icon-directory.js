@@ -68,13 +68,14 @@ const ICON_WEB = {
   INACTIVE: _getWebIcon('minus-circle'),
   INSTALL: _getWebIcon('hammer-wrench'),
   JIRA: _getWebIcon('jira'),
-  PRIORITY: (priority) => _getSvgPriorityIconByUrl(priority),
+  LOGOUT: _getWebIcon('logout'),
   MANUFACTURE: _getWebIcon('factory'),
   MAGNIFY_IN: _getWebIcon('magnify-plus'),
   MAGNIFY_OUT: _getWebIcon('magnify-minus'),
   MAIN_SITE: _getWebIcon('office-building'),
   MODE_LIGHT_A: _getMeteoIcon('clear-day-fill'),
   MODE_DARK_A: _getMeteoIcon('clear-night-fill'),
+  PRIORITY: (priority) => _getSvgPriorityIconByUrl(priority),
   READ_MORE: _getWebIcon('read-more'),
   NOT_EMPLOYED: _getWebIcon('person-badge-alert'),
   OPEN_IN_NEW: _getWebIcon('open-in-new'),
@@ -113,11 +114,9 @@ const ICON_LOC = {
   MODE_DARK: _getIcon('moon'),
   PARENT: _getIcon('parent'),
   SETTING: _getIcon('setting'),
-  // country icons
   US: _getCountryIcon('usa')
 }
 
-// constant for icon name values
 export const ICON_WEB_NAME = {
   // @web
   ALERT_OUTLINE: 'ALERT_OUTLINE',
@@ -146,6 +145,7 @@ export const ICON_WEB_NAME = {
   JIRA: 'JIRA',
   FULLSCREEN: 'FULLSCREEN',
   FULLSCREEN_EXIT: 'FULLSCREEN_EXIT',
+  LOGOUT: 'LOGOUT',
   MAIN_SITE: 'MAIN_SITE',
   MANUFACTURE: 'MANUFACTURE',
   MAGNIFY_IN: 'MAGNIFY_IN',

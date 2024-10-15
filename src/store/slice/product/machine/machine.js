@@ -33,7 +33,7 @@ const initialState = {
   supportManager: null,
   machineFilterBy: '',
   machinePage: 0,
-  machineRowsPerPage: 100
+  machineRowsPerPage: 10
 }
 
 const machineSlice = createSlice({
