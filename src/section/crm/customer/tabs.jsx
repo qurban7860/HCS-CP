@@ -1,5 +1,6 @@
 import { ICON_NAME } from 'hook'
 import { KEY } from 'constant'
+import { t } from 'i18next'
 
 /**
  * Represents the tabs for the customer section.
@@ -21,31 +22,31 @@ import { KEY } from 'constant'
 export const TABS = (value) => [
   {
     id: 0,
-    label: 'Customer Overview',
+    label: t('customer_overview.label'),
     icon: ICON_NAME.CUSTOMER,
     disabled: false
   },
   {
     id: 1,
-    label: 'Contacts',
+    label: t('contacts.label'),
     icon: ICON_NAME.CONTACTS,
-    disabled: value?.contacts?.length === 0
+    disabled: false
   },
   {
     id: 2,
-    label: 'Sites',
+    label: t('sites.label'),
     icon: ICON_NAME.SITES,
-    disabled: value?.mainSite === null
+    disabled: false
   },
-  {
-    id: 3,
-    label: 'Machines',
-    icon: ICON_NAME.SUPPORT,
-    disabled: true
-  },
+  // {
+  //   id: 3,
+  //   label: 'Machines',
+  //   icon: ICON_NAME.SUPPORT,
+  //   disabled: true
+  // },
   {
     id: 4,
-    label: 'Support Tickets',
+    label:  t('support_tickets.label'),
     icon: ICON_NAME.SUPPORT,
     disabled: false
   }

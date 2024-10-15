@@ -8,10 +8,12 @@ import { themePreset } from 'theme'
 import { SNACK, TITLE, TYPOGRAPHY } from 'constant'
 import { OPTION } from './util'
 import LanguagePopover from './language-popover'
+import { useLocale } from 'locale'
 
 export default function AccountPopover() {
-  const navigate = useNavigate()
   const { user, logout } = useAuthContext()
+  const { t } = useLocale()
+  const navigate = useNavigate()
   const email = localStorage.getItem('user')
 
   const [openPopover, setOpenPopover] = useState(null)
@@ -110,16 +112,16 @@ export default function AccountPopover() {
         </Box>
         <Divider sx={{ borderStyle: 'solid' }} />
         <Stack sx={{ p: 1 }}>
-          {OPTION.map((option) => (
+          {OPTION(t).map((option) => (
             <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>
               <Link underline="none" color="inherit" to={option.linkTo} component={RouterLink}>
                 {option.label}
               </Link>
             </MenuItem>
           ))}
-          <MenuItem onClick={() => {}} onClose={handleClose}>
+          <MenuItem onClick={() => {}} onClose={handleClose} disabled>
             <Typography variant={TYPOGRAPHY.BODY2} noWrap>
-              {TITLE.ORGANIZATION}
+              {t('customer_group.label')}
             </Typography>
           </MenuItem>
           <Divider />
@@ -129,7 +131,7 @@ export default function AccountPopover() {
             }}
             onClose={handleClose}>
             <Typography variant={TYPOGRAPHY.BODY2} noWrap>
-              {TITLE.DISPLAY_SETTING}
+              {t('display_settings.label')}
             </Typography>
           </MenuItem>
           <LanguagePopover />
@@ -139,7 +141,7 @@ export default function AccountPopover() {
         <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
           <Icon icon={ICON_NAME.LOGOUT} />
           <Typography variant={TYPOGRAPHY.BODY2} noWrap>
-            {TITLE.LOGOUT}
+            {t('logout.label')}
           </Typography>
         </MenuItem>
       </MenuPopover>

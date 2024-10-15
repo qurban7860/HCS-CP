@@ -1,6 +1,6 @@
-import { useState, useRef, Fragment } from 'react'
-import { MenuItem, Stack, Typography } from '@mui/material'
+import { useState, Fragment } from 'react'
 import { useLocale } from 'locale'
+import { MenuItem, Stack, Typography } from '@mui/material'
 import { Image, IconButtonAnimate, MenuPopover } from 'component'
 import { TITLE } from 'constant'
 import shadow from 'theme/shadow'
@@ -8,6 +8,7 @@ import shadow from 'theme/shadow'
 export default function LanguagePopover() {
   const { allLang, currentLang, onChangeLang } = useLocale()
   const [openPopover, setOpenPopover] = useState(null)
+  const { t } = useLocale()
 
   const handleOpenPopover = (event) => {
     setOpenPopover(event.currentTarget)
@@ -32,7 +33,7 @@ export default function LanguagePopover() {
         sx={{
           justifyContent: 'space-between'
         }}>
-        <Typography variant="body2">{TITLE.LANGUAGE}</Typography>
+        <Typography variant="body2">{t('language.label')}</Typography>
 
         <Image
           disabledEffect
@@ -41,7 +42,6 @@ export default function LanguagePopover() {
           sx={{
             width: 25,
             height: 15,
-            // drop the opacity to 10
             opacity: 0.9
           }}
           borderRadius={'15'}

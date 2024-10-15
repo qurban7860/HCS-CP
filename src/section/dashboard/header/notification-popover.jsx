@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import { noCase } from 'change-case'
 import { useState, memo } from 'react'
 import { useNavigate } from 'react-router'
+import { useLocale } from 'locale'
 import { Box, List, Badge, Avatar, Divider, Typography, ListItemText, ListItemAvatar, ListItemButton, Tooltip, IconButton, Grid } from '@mui/material'
 import { fDateTime, fToNow } from 'util'
 import { Iconify } from 'component/iconify'
@@ -13,9 +14,10 @@ import { ICON } from 'constant/icon'
 function NotificationPopover() {
   const userId = localStorage.getItem('userId')
   const [openPopover, setOpenPopover] = useState(null)
-  // const { notifications, sendJsonMessage } = useWebSocketContext()
   const [totalUnRead, setTotalUnRead] = useState(0)
+  // const { notifications, sendJsonMessage } = useWebSocketContext()
   const navigate = useNavigate()
+  const { t } = useLocale()
 
   const handleOpenPopover = (event) => {
     setOpenPopover(event.currentTarget)
@@ -48,9 +50,9 @@ function NotificationPopover() {
       <MenuPopover open={openPopover} onClose={handleClosePopover} sx={{ width: 360, p: 0 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', py: 2, px: 2.5 }}>
           <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="subtitle1">Notifications</Typography>
+            <Typography variant="subtitle1">{t('notifications.label')}</Typography>
             <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-              You have {totalUnRead || 'no'} unread {totalUnRead > 1 ? 'messages' : 'message'}
+              {t('notifications.no_notif')}
             </Typography>
           </Box>
 
