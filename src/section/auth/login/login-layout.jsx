@@ -4,7 +4,7 @@ import { Typography, Stack, Grid } from '@mui/material'
 import { Logo } from 'component/logo'
 import { GLOBAL } from 'global'
 import { FLEX, KEY, TYPOGRAPHY } from 'constant'
-import { StyledRoot, StyledContent } from './style'
+import { StyledRoot, StyledContent } from '../style'
 
 LoginLayout.propTypes = {
   title: PropTypes.string,

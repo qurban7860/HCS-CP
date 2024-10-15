@@ -1,4 +1,5 @@
 import { styled, alpha } from '@mui/material/styles'
+import { Tabs, Tab, Box } from '@mui/material'
 import { KEY } from 'constant'
 import { bgGradient } from 'theme/style'
 
@@ -47,5 +48,34 @@ export const StyledContent = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     flexShrink: 0,
     padding: theme.spacing(20, 8, 0, 8)
+  }
+}))
+
+export const StyledTabs = styled(({ theme, mode, ...other }) => <Tabs {...other} />)(({ theme, mode }) => ({
+  '& .MuiTabs-root': {
+    padding: 0
+  },
+  '& .MuiTabs-indicator': {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  '&:hover': {
+    color: '#40a9ff',
+    opacity: 1
+  }
+}))
+
+export const StyledTabBox = styled(Box)(({ theme }) => ({
+  borderBottom: `${theme.spacing(0.05)} solid`,
+  borderColor: alpha(theme.palette.grey[500], 0.5)
+}))
+
+export const StyledTab = styled(({ theme, mode, ...other }) => <Tab {...other} />)(({ theme, mode }) => ({
+  '&.Mui-selected': {
+    color: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
+    fontWeight: 'bold'
+  },
+  '&.Mui-focusVisible': {
+    backgroundColor: 'howick.darkBlue'
   }
 }))
