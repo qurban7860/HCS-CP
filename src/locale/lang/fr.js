@@ -12,11 +12,48 @@ const fr = {
   user: `utilisateur`,
   list: `liste`,
   edit: `éditer`,
-  machine: `machine`,
-  organization: `organisation`,
-  document: `document`,
-  support: `soutien`,
-
+  change_password: {
+    label: `Changer le mot de passe`
+  },
+  customer: {
+    label: `Client`
+  },
+  customer_group: {
+    label: `Groupe de clients`
+  },
+  machine: {
+    local: `machine`,
+    label: `Machine`
+  },
+  organization: {
+    local: `organisation`,
+    label: `Organisation`
+  },
+  organizations: {
+    local: `organisations`,
+    label: `Organisations`
+  },
+  document: {
+    local: `document`,
+    label: `Document`
+  },
+  support: {
+    local: `soutien`,
+    label: `Soutien`
+  },
+  display_settings: {
+    label: `Paramètres d'affichage`
+  },
+  logout: {
+    label: `Se déconnecter`
+  },
+  language: {
+    label: `Langue`
+  },
+  notifications: {
+    label: `Notifications`,
+    no_notif: `Pas de notifications`
+  },
   chat: `discuter`,
   cards: `cartes`,
   posts: `des postes`,
@@ -25,7 +62,26 @@ const fr = {
   general: `général`,
   banking: `bancaire`,
   booking: `réservation`,
-  profile: `profil`,
+  profile: {
+    local: `profil`,
+    label: `Profil`
+  },
+  support_tickets:{
+    local: `tickets_de_support`,
+    label: `Tickets de support`
+  },
+  sites:{
+    local: `sites`,
+    label: `Sites`
+  },
+  contacts: {
+    local: `contacts`,
+    label: `Contacts`
+  },
+  customer_overview: {
+    local: `aperçu_client`,
+    label: `Aperçu client`
+  },
   account: `compte`,
   product: `produit`,
   invoice: `facture`,

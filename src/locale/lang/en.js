@@ -1,9 +1,4 @@
 const en = {
-  docs: {
-    hi: `Hi`,
-    description: `Need help? \n Please check our docs.`,
-    documentation: `documentation`
-  },
   app: `app`,
   user: `user`,
   list: `list`,
@@ -16,17 +11,80 @@ const en = {
   cards: `cards`,
   posts: `posts`,
   create: `create`,
-  home: `home`,
-  machine: `machine`,
-  organization: `organization`,
-  document: `document`,
-  support: `support`,
-  portal: `portal`,
+  change_password: {
+    label: `Change Password`
+  },
+  customer: {
+    label: `Customer`
+  },
+  customer_group: {
+    label: `Customer Group`
+  },
+  home: {
+    local: `home`,
+    label: `Home`
+  },
+  machine: {
+    local: `machine`,
+    label: `Machine`
+  },
+  organization: {
+    local: `organization`,
+    label: `Organization`
+  },
+  organizations: {
+    local: `organizations`,
+    label: `Organizations`
+  },
+  document: {
+    local: `document`,
+    label: `Document`
+  },
+  support: {
+    local: `support`,
+    label: `Support`
+  },
+  portal: {
+    local: `portal`,
+    label: `Portal`
+  },
+  support_tickets:{
+    local: `support_tickets`,
+    label: `Support Tickets`
+  },
+  sites:{
+    local: `sites`,
+    label: `Sites`
+  },
+  contacts: {
+    local: `contacts`,
+    label: `Contacts`
+  },
+  customer_overview: {
+    local: `customer_overview`,
+    label: `Customer Overview`
+  },
   kanban: `kanban`,
   general: `general`,
   banking: `banking`,
   booking: `booking`,
-  profile: `profile`,
+  profile: {
+    local: `profile`,
+    label: `Profile`
+  },
+  display_settings: {
+    label: `Display Settings`
+  },
+  logout: {
+    label: `Logout`
+  },
+  language: {
+    label: `Language`
+  },
+  notifications: {
+    label: `Notifications`,
+    no_notif: `You have no new notifications`
+  },
   account: `account`,
   product: `product`,
   invoice: `invoice`,
