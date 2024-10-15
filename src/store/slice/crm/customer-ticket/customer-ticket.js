@@ -19,7 +19,7 @@ const initialState = {
   customerTicketFilterBy: '',
   customerTicketFilterStatus: 'Open',
   customerTicketPage: 0,
-  customerTicketRowsPerPage: 100,
+  customerTicketRowsPerPage: 10,
   customerTicketTotalRows: 0
 }
 

@@ -6,7 +6,8 @@ import { StyledTablePagination } from './style'
 import { KEY, LABEL } from 'constant'
 
 const TicketsListPagination = ({
-  rowsPerPageOptions = [10, 20, 40, 50, 100],
+  // check if how many max rows per page can be displayed from the data, and round it up to the nearest 5
+  rowsPerPageOptions = [5, 10, 15, 20, 30],
   data,
   page,
   mode,
