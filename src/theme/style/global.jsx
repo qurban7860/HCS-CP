@@ -322,6 +322,14 @@ export const GStyledFieldChip = styled(({ theme, ...other }) => <Chip {...other}
   backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
 }))
 
+export const GStyledMachineChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
+  margin: theme.spacing(0.2),
+  borderRadius: theme.spacing(0.4),
+  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
+  color: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange
+}))
+
 export const GStyledTab = styled(({ theme, mode, ...other }) => <Tab {...other} />)(({ theme, mode }) => ({
   '&.Mui-selected': {
     color: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
