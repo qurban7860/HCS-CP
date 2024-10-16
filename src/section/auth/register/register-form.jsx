@@ -8,7 +8,7 @@ import { ICON_NAME, Icon, snack, useSettingContext } from 'hook'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoginSchema } from 'schema'
-import { Typography, Stack, Alert, Button, Grid, Box, Autocomplete, TextField, Chip } from '@mui/material'
+import { Typography, Stack, Alert, Button, Grid, Box, Autocomplete, TextField, Divider } from '@mui/material'
 import FormProvider, { RHFPhoneInput, RHFTextField, RHFCountryAutocomplete, RHFCheckbox, RHFAutocompleteLableName } from 'component/hook-form'
 import { FormHeader } from 'component'
 import { PATH_AUTH } from 'route/path'
@@ -16,7 +16,7 @@ import { RADIUS } from 'config'
 import { DIV_ROLE, REGEX, LOCAL_STORAGE_KEY, RESPONSE, KEY, LABEL, VARIANT, SNACK, SIZE, COLOR, DEBUG } from 'constant'
 import { a11yProps } from 'util'
 import { useTheme } from '@mui/material/styles'
-import { GStyledSpanBox, GStyledMachineChip, GStyledLoadingButton } from 'theme/style'
+import { GStyledSpanBox, GStyledMachineChip, GStyledLoadingButton, GStyledTopBorderDivider } from 'theme/style'
 import { StyledTabBox, StyledTabs, StyledTab } from '../style'
 
 const { TYPOGRAPHY } = VARIANT
@@ -253,7 +253,7 @@ function RegisterForm() {
  return (
   <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
    {/* <FormHeader label={'Registration'} />bab */}
-   <StyledTabBox>
+   {/* <StyledTabBox>
     <StyledTabs value={tab} onChange={handleChange} variant={VARIANT.FULL_WIDTH} centered>
      <StyledTab label={<Typography variant={TYPOGRAPHY.OVERLINE1}>{'Basic Info'}</Typography>} {...a11yProps(1)} mode={themeMode} isComplete={isInfoComplete} />
      <StyledTab label={<Typography variant={TYPOGRAPHY.OVERLINE1}>{'Site'}</Typography>} {...a11yProps(2)} mode={themeMode} isComplete={isSiteComplete} disabled={!isInfoComplete} />
@@ -274,7 +274,47 @@ function RegisterForm() {
    </TabPanel>
    <TabPanel value={3} index={3} hidden={tab !== 3}>
     {renderMachineList()}
-   </TabPanel>
+   </TabPanel> */}
+   <Stack spacing={3} sx={{ mt: 2, mb: 2 }}>
+    {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity="error">{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
+    <RHFTextField type="text" name="name" label="Name" autoComplete={LABEL.NAME} aria-label={LABEL.NAME} required />
+    <RHFTextField type="text" name="contactName" label="Contact Name" autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText="Your organization name" required />
+    <RHFTextField type={KEY.EMAIL} name={KEY.EMAIL} label="Email" autoComplete={KEY.EMAIL} aria-label={LABEL.LOGIN_EMAIL} required />
+    <RHFPhoneInput name="phone" label="Phone" autoComplete={KEY.PHONE} aria-label="phone" />
+    {/* divider */}
+    <Divider />
+    <RHFTextField name="address" label="Address" />
+    <RHFCountryAutocomplete name="country" label="Country" />
+    <Divider />
+    <Stack spacing={3} sx={{ mt: 2, mb: 2 }}>
+     <Autocomplete
+      multiple
+      freeSolo
+      options={[]}
+      value={machineList}
+      onChange={(event, newValue) => {
+       setMachineList(newValue)
+      }}
+      renderTags={(value, getTagProps) =>
+       value.map((option, index) => <GStyledMachineChip label={<Typography variant={TYPOGRAPHY.H4}>{option}</Typography>} mode={themeMode} {...getTagProps({ index })} />)
+      }
+      option
+      renderInput={(params) => <TextField {...params} variant="outlined" label="Machines" placeholder="Enter machine Serial Numbers" helperText="Press enter at the end of each serial number" />}
+     />
+    </Stack>
+   </Stack>
+   <GStyledLoadingButton
+    fullWidth
+    isLoading={isSubmitting}
+    color={KEY.INHERIT}
+    size={SIZE.LARGE}
+    type={KEY.SUBMIT}
+    variant={KEY.CONTAINED}
+    loading={isSubmitSuccessful || isSubmitting}
+    disabled={machineList.length === 0}
+    sx={RADIUS.BORDER}>
+    {'REGISTER'}
+   </GStyledLoadingButton>
   </FormProvider>
  )
 }
