@@ -1,5 +1,4 @@
 export { default as AuthLoginForm } from './login/login-form'
-export { default as AuthRegisterForm } from './auth-register-form'
 export { default as AuthResetPasswordForm } from './auth-reset-password-form'
 export { default as AuthWithSocial } from './auth-social'
 export { default as AuthVerifyCodeForm } from './auth-verify-code-form'
