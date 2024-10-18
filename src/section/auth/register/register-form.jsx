@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useState } from 'react'
+import { useMemo, useEffect, useState, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import * as yup from 'yup'
 import { Trans } from 'react-i18next'
@@ -23,7 +23,6 @@ const { TYPOGRAPHY } = VARIANT
  * @returns {JSX.Element}
  */
 function RegisterForm() {
- const [machineList, setMachineList] = useState([])
  const [isFormComplete, setIsFormComplete] = useState(false)
  const [isTyping, setIsTyping] = useState(false)
  const { contacts } = useSelector((state) => state.contact)
@@ -74,7 +73,7 @@ function RegisterForm() {
 
  const RegisterSchema = yup.object().shape({
   customerName: yup.string().required('Organization name is required'),
-  machines: yup.array().of(yup.string().matches(serialNoRegEx, 'Invalid serial number')).required('Machines is required'),
+  machines: yup.array().of(yup.string().matches(serialNoRegEx, 'Invalid serial number').length(5, 'Serial number must be 5 characters long')).min(1, 'At least one machine is required'),
   address: yup.string().required('Address is required'),
   country: yup.object().label('Country').nullable(),
   contactName: yup.string().required('Contact name is required'),
@@ -102,29 +101,23 @@ function RegisterForm() {
 
  const {
   reset,
+  getValues,
   setError,
   setValue,
   watch,
   handleSubmit,
-  formState: { errors, isSubmitting, isSubmitSuccessful }
+  formState: { errors, isSubmitting, isSubmitSuccessful },
+  clearErrors
  } = methods
  const { customerName, machines, address, country, contactName, email, phone } = watch()
 
- const checkFormCompletion = () => {
-  setIsFormComplete(!!customerName && !!machines && !!address && !!country && !!contactName && !!email && !!phone)
- }
+ const checkFormCompletion = useCallback(() => {
+  setIsFormComplete(!!customerName && !!contactName && !!address && !!country && !!email && !!phone && machines.length > 0)
+ }, [customerName, machines, address, country, contactName, email, phone])
 
  useEffect(() => {
-  const subscription = methods.watch(() => {
-   checkFormCompletion()
-  })
-  return () => subscription.unsubscribe()
- }, [methods, machineList])
-
- const addContactNumber = () => {
-  const updatedPhone = { ...phone, countryCode: country?.phone?.replace(/[^0-9]/g, '') }
-  setValue('phone', updatedPhone)
- }
+  checkFormCompletion()
+ }, [checkFormCompletion])
 
  useEffect(() => {
   if (!phone || phone === undefined) {
@@ -134,6 +127,7 @@ function RegisterForm() {
 
  useEffect(() => {
   getUserLocation()
+  console.log('errors', errors)
  }, [])
 
  useEffect(() => {
@@ -151,23 +145,57 @@ function RegisterForm() {
   } catch (error) {
    if (regEx.test(error.MessageCode)) {
     snack('error in sending form', { variant: COLOR.ERROR })
-    setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
-     ...error,
-     message: error
-    })
+    setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, { ...error, message: error })
    } else {
     console.error('unable to read error message', error || '')
     snack('unable to read error message', { variant: COLOR.ERROR })
-    setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
-     ...error,
-     message: error
-    })
+    setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, { ...error, message: error })
    }
   }
  }
 
- const handleInputChange = (event, value) => {
-  setIsTyping(value.length > 0)
+ const validateSerialNumber = (serialNumber) => {
+  return serialNumber.length === 5 && serialNoRegEx.test(serialNumber)
+ }
+
+ //  const handleValidateSerialNumbers = (event, value) => {
+ //   setIsTyping(value.length > 0)
+ //   //   snack('validateSerialNumbers(value): ' + validateSerialNumbers(value))
+ //   if (validateSerialNumber(value)) {
+ //    return setValue('machines', [...value])
+ //   } else {
+ //    snack('Serial Number provided is invalid', { variant: COLOR.ERROR })
+ //    return []
+ //   }
+ //  }
+
+ useEffect(() => {
+  if (machines.length > 0 && machines[machines.length - 1].length === 5) {
+   setValue(
+    'machines',
+    machines.filter((serialNumber) => validateSerialNumber(serialNumber))
+   )
+  }
+ }, [machines])
+
+ const handleValidateSerialNumbers = (event, newValue, reason, details) => {
+  if (event.target.value?.length > 0) {
+   setIsTyping(true)
+  }
+  if (reason === 'createOption') {
+   const serialNumber = details.option
+   if (validateSerialNumber(serialNumber)) {
+    const currentMachines = getValues('machines')
+    setValue('machines', [...currentMachines, serialNumber])
+   } else {
+    snack('Serial Number provided is invalid', { variant: COLOR.ERROR })
+    setError('machines', { message: 'Serial Number provided is invalid' })
+    return getValues('machines')
+   }
+  }
+  clearErrors('machines')
+  setIsTyping(false)
+  setValue('machines', newValue)
  }
 
  return (
@@ -191,15 +219,15 @@ function RegisterForm() {
       />
       <RHFCustomPhoneInput name="phone" value={phone} label={'Contact Number'} error={!!errors.phone} helperText={errors.phone ? errors.phone.message : ''} isRegister />
       <AutocompleteScrollChipContainer
-       list={machineList}
-       setList={setMachineList}
-       handleInputChange={handleInputChange}
+       setValue={setValue}
+       handleInputChange={handleValidateSerialNumbers}
        renderInput={(params) => (
         <RHFTextField
          {...params}
          name="machines"
          label="Machines"
          type="text"
+         onChange={(event) => setIsTyping(event.target.value.length > 0)}
          helperText={errors.machines ? errors.machines.message : 'Press enter at the end of each serial number'}
          FormHelperTextProps={{ sx: { display: isTyping ? 'block' : 'none' } }}
         />
@@ -238,9 +266,7 @@ function RegisterForm() {
       <Grid item sm={12} mt={2}>
        <AutocompleteScrollChipContainer
         fullWidth
-        list={machineList}
-        setList={setMachineList}
-        handleInputChange={handleInputChange}
+        handleInputChange={handleValidateSerialNumbers}
         renderInput={(params) => (
          <RHFTextField
           {...params}
@@ -248,6 +274,7 @@ function RegisterForm() {
           name="machines"
           label="Machines"
           placeholder="Enter Machine serial number"
+          onChange={(event) => setIsTyping(event.target.value.length > 0)}
           helperText={errors.machines ? errors.machines.message : 'Press enter at the end of each serial number'}
           FormHelperTextProps={{ sx: { display: isTyping ? 'block' : 'none' } }}
          />
@@ -272,7 +299,7 @@ function RegisterForm() {
       type={KEY.SUBMIT}
       variant={KEY.CONTAINED}
       loading={isSubmitSuccessful || isSubmitting}
-      disabled={!errors}
+      disabled={Object.keys(errors).length > 0 || !isFormComplete}
       sx={RADIUS.BORDER}>
       {'REGISTER'}
      </GStyledLoadingButton>
