@@ -55,7 +55,6 @@ export default function RHFCustomPhoneInput({ name, value, index, label, isRegis
           </Fragment>
          )}
          <TextField
-          //   name={`${name}.countryCode`}
           value={value?.countryCode || ''}
           variant="standard"
           InputProps={{

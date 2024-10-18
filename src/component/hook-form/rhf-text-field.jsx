@@ -38,8 +38,7 @@ export default function RHFTextField({ name, helperText, Error, ...other }) {
       },
 
       '& .MuiInputBase-root': {
-       height: '4rem',
-       fontSize: '3rem',
+       height: '5rem',
        '&:hover': {
         '& .MuiOutlinedInput-notchedOutline': {
          borderColor: 'common.white'
