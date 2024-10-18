@@ -1,3 +1,5 @@
 export { default } from './header'
-export { default as NotificationPopover } from './notification-popover'
 export { default as Navbar } from './navbar'
+export { default as NotificationPopover } from './notification-popover'
+export { default as AccountPopover } from './account-popover'
+export { default as LanguagePopover } from './language-popover'

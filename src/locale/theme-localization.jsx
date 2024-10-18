@@ -3,7 +3,7 @@ import { ThemeProvider, createTheme, useTheme } from '@mui/material/styles'
 import useLocale from './use-locale'
 
 ThemeLocalization.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 }
 
 export default function ThemeLocalization({ children }) {

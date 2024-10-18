@@ -13,7 +13,7 @@ const initialState = {
   // Direction
   onToggleDirection: () => {},
   onChangeDirection: () => {},
-  onChangeDirectionByLang: () => {},
+  onToggleLanguage: () => {},
   // Layout
   onToggleLayout: () => {},
   onChangeLayout: () => {},
@@ -22,7 +22,7 @@ const initialState = {
   onChangeContrast: () => {},
   presetOption: [],
   // Reset
-  onResetSetting: () => {},
+  onResetSetting: () => {}
 }
 
 export const SettingContext = createContext(initialState)
@@ -36,7 +36,7 @@ export const useSettingContext = () => {
 }
 
 SettingProvider.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 }
 
 export function SettingProvider({ children }) {
@@ -70,6 +70,11 @@ export function SettingProvider({ children }) {
     [setSettings, settings]
   )
 
+  const onToggleLanguage = useCallback(() => {
+    const themeLanguage = settings.themeLanguage === 'en' ? 'ar' : 'en'
+    setSettings({ ...settings, themeLanguage })
+  }, [setSettings, settings, langStorage])
+
   const onResetSetting = useCallback(() => {
     setSettings(themePreset)
   }, [setSettings])
@@ -79,9 +84,10 @@ export function SettingProvider({ children }) {
       ...settings,
       onToggleMode,
       onChangeMode,
+      onToggleLanguage,
       onChangeContrast,
       onToggleContrast,
-      onResetSetting,
+      onResetSetting
     }),
     [settings, onToggleMode, onChangeMode, onToggleContrast, onResetSetting]
   )

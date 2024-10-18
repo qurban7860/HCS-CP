@@ -143,19 +143,7 @@ const UserProfileLayout = () => {
                     <Grid item lg={4} sm={12}>
                       <ProfileAvatar value={defaultValues} />
                     </Grid>
-                    <Grid item sm={12}>
-                      <Grid item lg={12}>
-                        <GridViewTitle title={TITLE.ACCESSIBILITY} />
-                        <Divider variant={VARIANT.MIDDLE} style={{ width: '100%', marginBottom: '20px' }} />
-                      </Grid>
-                      <Grid container spacing={2} p={2} pb={5}>
-                        <GridViewField heading={VIEW_FORM.REGIONS} isLoading={isLoading} chip={defaultValues?.regions} />
-                        <GridViewField heading={VIEW_FORM.COUNTRIES} isLoading={isLoading} chip={defaultValues?.customers} />
-                        <GridViewField heading={VIEW_FORM.MACHINES} isLoading={isLoading} chip={defaultValues?.machines} />
-                      </Grid>
-                    </Grid>
                   </Grid>
-
                   <Grid item sm={12} p={2}>
                     <GStyledFlexEndBox>
                       <AuditBox value={defaultValues} />

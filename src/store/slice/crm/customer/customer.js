@@ -24,7 +24,7 @@ const initialState = {
   customerRenderTab: 0,
   excludeReporting: 'included',
   customerPage: 0,
-  customerRowsPerPage: 10
+  customerRowsPerPage: 5
 }
 
 const customerSlice = createSlice({

@@ -1,12 +1,12 @@
 import { memo } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
-import { Box, TablePagination } from '@mui/material'
+import { Box } from '@mui/material'
 import { StyledTablePagination } from './style'
 import { KEY, LABEL } from 'constant'
 
 const CustomerListPagination = ({
-  rowsPerPageOptions = [10, 20, 40, 50, 100],
+  rowsPerPageOptions = [5, 10, 15, 20],
   data,
   page,
   mode,

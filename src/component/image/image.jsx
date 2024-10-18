@@ -5,14 +5,14 @@ import { Box } from '@mui/material'
 import { getRatio } from './utility'
 import { ASSET } from 'config'
 
-const Image = forwardRef(({ ratio, disabledEffect = false, effect = 'blur', sx, ...other }, ref) => {
+const Image = forwardRef(({ ratio, disabledEffect = false, effect = 'blur', sx, borderRadius = '0px 0px 40px 40px', ...other }, ref) => {
   const content = (
     <Box
       component={LazyLoadImage}
       wrapperClassName="wrapper"
       effect={disabledEffect ? undefined : effect}
       placeholderSrc={disabledEffect ? ASSET.TRANSPARENT : ASSET.PLACEHOLDER}
-      sx={{ width: 1, height: 1, objectFit: 'cover', borderRadius: '0px 0px 40px 40px' }}
+      sx={{ width: 1, height: 1, objectFit: 'cover', borderRadius }}
       {...other}
     />
   )

@@ -1,20 +1,23 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { useNavigate, Link as RouterLink } from 'react-router-dom'
 import { useAuthContext } from 'auth'
-import { useSettingContext, DisplayDialog, snack } from 'hook'
+import { useSettingContext, DisplayDialog, snack, Icon, ICON_NAME } from 'hook'
 import { Box, Divider, Dialog, Typography, Stack, MenuItem, Link } from '@mui/material'
 import { CustomAvatar, MenuPopover, IconButtonAnimate } from 'component'
 import { themePreset } from 'theme'
 import { SNACK, TITLE, TYPOGRAPHY } from 'constant'
 import { OPTION } from './util'
-import { mockUser } from '_mock'
+import LanguagePopover from './language-popover'
+import { useLocale } from 'locale'
 
 export default function AccountPopover() {
-  const navigate = useNavigate()
   const { user, logout } = useAuthContext()
+  const { t } = useLocale()
+  const navigate = useNavigate()
   const email = localStorage.getItem('user')
 
   const [openPopover, setOpenPopover] = useState(null)
+  const [openLang, setOpenLang] = useState(false)
   const [open, setOpen] = useState(false)
   const { themeMode, themeLayout, themeStretch, themeContrast, themeDirection, themeColorPreset, onResetSetting } = useSettingContext()
 
@@ -35,6 +38,14 @@ export default function AccountPopover() {
       console.error(error)
       snack(SNACK.ERROR.UNABLE_LOGOUT, { variant: COLOR.ERROR })
     }
+  }
+
+  const handleLang = () => {
+    setOpenLang(!openLang)
+  }
+
+  const handleCloseLang = () => {
+    setOpenLang(false)
   }
 
   const handleToggle = () => {
@@ -60,7 +71,7 @@ export default function AccountPopover() {
     themeColorPreset !== themePreset.themeColorPreset
 
   return (
-    <>
+    <Fragment>
       <IconButtonAnimate
         onClick={handleOpenPopover}
         sx={{
@@ -76,7 +87,7 @@ export default function AccountPopover() {
             }
           })
         }}>
-        <CustomAvatar /**src={mockUser[0]?.photoURL}  */ alt={mockUser[0]?.name} name={user?.displayName} />
+        <CustomAvatar /**src={mockUser[0]?.photoURL}  */ alt={'display name'} name={user?.displayName} />
       </IconButtonAnimate>
 
       <MenuPopover
@@ -101,20 +112,16 @@ export default function AccountPopover() {
         </Box>
         <Divider sx={{ borderStyle: 'solid' }} />
         <Stack sx={{ p: 1 }}>
-          {OPTION.map((option) => (
+          {OPTION(t).map((option) => (
             <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>
               <Link underline="none" color="inherit" to={option.linkTo} component={RouterLink}>
                 {option.label}
               </Link>
             </MenuItem>
           ))}
-          <MenuItem
-            onClick={() => {
-              // handleToggle()
-            }}
-            onClose={handleClose}>
-            <Typography variant="body2" noWrap>
-              {TITLE.ORGANIZATION}
+          <MenuItem onClick={() => {}} onClose={handleClose} disabled>
+            <Typography variant={TYPOGRAPHY.BODY2} noWrap>
+              {t('customer_group.label')}
             </Typography>
           </MenuItem>
           <Divider />
@@ -123,26 +130,25 @@ export default function AccountPopover() {
               handleToggle()
             }}
             onClose={handleClose}>
-            <Typography variant="body2" noWrap>
-              {TITLE.DISPLAY_SETTING}
+            <Typography variant={TYPOGRAPHY.BODY2} noWrap>
+              {t('display_settings.label')}
             </Typography>
           </MenuItem>
-          <MenuItem>
-            <Typography variant="body2" noWrap>
-              {TITLE.LANGUAGE}
-            </Typography>
-          </MenuItem>
+          <LanguagePopover />
         </Stack>
         <Divider />
 
         <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
-          {TITLE.LOGOUT}
+          <Icon icon={ICON_NAME.LOGOUT} />
+          <Typography variant={TYPOGRAPHY.BODY2} noWrap>
+            {t('logout.label')}
+          </Typography>
         </MenuItem>
       </MenuPopover>
-      <>
+      <Fragment>
         {!open && <Dialog open={open} notDefault={notDefault} onToggle={handleToggle} />}
         <DisplayDialog open={open} handleClose={handleClose} onResetSetting={onResetSetting} />
-      </>
-    </>
+      </Fragment>
+    </Fragment>
   )
 }

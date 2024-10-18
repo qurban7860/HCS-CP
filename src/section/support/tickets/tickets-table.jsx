@@ -1,22 +1,45 @@
 import { Fragment } from 'react'
-import { m } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ICON_NAME, Icon } from 'hook'
-import { Box, TableBody, TableCell } from '@mui/material'
+import { Box, TableBody, TableCell, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import { useSettingContext } from 'hook'
+import { GStyledTableChip } from 'theme/style'
 import { LinkTableCell } from 'component/table-tool'
 import { PATH_MACHINE } from 'route/path'
 import { fDate } from 'util'
-import { KEY, LABEL } from 'constant'
-import { StyledIconListItemText, StyledTableRow } from './style'
+import { KEY, LABEL, TYPOGRAPHY } from 'constant'
+import { StyledTableRow } from './style'
 import { GLOBAL } from 'config/global'
+import { normalizer } from 'util'
 
 const TicketsTable = ({ ticket, mode, index }) => {
   const theme = useTheme()
   const navigate = useNavigate()
+  const { themeMode } = useSettingContext()
 
-  const activeColor = mode === KEY.DARK ? theme.palette.howick.burnIn : theme.palette.burnIn.altDark
-  const inactiveColor = theme.palette.howick.error
+  const renderStatus = (status) => {
+    const statusColorSwitch = (status) =>
+      normalizer(status) === 'done'
+        ? theme.palette.howick.burnIn
+        : normalizer(status) === 'in progress'
+        ? theme.palette.howick.orange
+        : theme.palette.grey[500]
+
+    return (
+      <GStyledTableChip
+        mode={themeMode}
+        sx={{
+          backgroundColor: statusColorSwitch(status)
+        }}
+        label={
+          <Typography variant={TYPOGRAPHY.BODY2} color={theme.palette.common.black}>
+            {status}
+          </Typography>
+        }
+      />
+    )
+  }
 
   // implement when page view for tickets is ready
   const handleOnClick = (id) => {
@@ -51,7 +74,9 @@ const TicketsTable = ({ ticket, mode, index }) => {
           </TableCell>
           <TableCell>{fields?.customfield_10069}</TableCell>
           <TableCell>{fields?.customfield_10070?.value}</TableCell>
-          <TableCell>{fields?.status?.statusCategory?.name}</TableCell>
+          <TableCell>
+            {renderStatus(fields?.status?.statusCategory?.name)}
+          </TableCell>
         </StyledTableRow>
       </TableBody>
     </Fragment>

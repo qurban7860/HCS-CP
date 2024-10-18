@@ -12,11 +12,7 @@ ConfirmDialog.propTypes = {
   SubButton: PropTypes.string
 }
 
-ConfirmDialog.defaultProps = {
-  SubButton: 'Cancel'
-}
-
-function ConfirmDialog({ title, content, action, open, onClose, SubButton, ...other }) {
+function ConfirmDialog({ title, content, action, open, onClose, SubButton = 'Cancel', ...other }) {
   const { themeMode } = useSettingContext()
   return (
     <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose} {...other}>
