@@ -1,57 +1,81 @@
-import { Fragment, useEffect, useState } from 'react'
+import { useMemo, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import * as yup from 'yup'
 import { m } from 'framer-motion'
-import { t } from 'i18next'
+import { Trans } from 'react-i18next'
 import { useAuthContext } from 'auth'
 import { useNavigate } from 'react-router-dom'
-import { ICON_NAME, Icon, snack, useSettingContext } from 'hook'
-import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import useResponsive, { useScreenSize } from 'hook/use-responsive'
+import { snack, useSettingContext, useClock } from 'hook'
+import { useForm } from 'react-hook-form'
 import { LoginSchema } from 'schema'
-import { Typography, Stack, Alert, Button, Grid, Box, Autocomplete, TextField, Divider } from '@mui/material'
-import FormProvider, { RHFPhoneInput, RHFTextField, RHFCountryAutocomplete, RHFCheckbox, RHFAutocompleteLableName } from 'component/hook-form'
-import { FormHeader } from 'component'
+import { Typography, Alert, Grid, Box, Link, Autocomplete } from '@mui/material'
+import { AutocompleteScrollChipContainer } from 'component'
+import FormProvider, { RHFPhoneInput, RHFTextField, RHFCountryAutocomplete, RHFCustomPhoneInput } from 'component/hook-form'
 import { PATH_AUTH } from 'route/path'
+import { GLOBAL } from 'config/global'
 import { RADIUS } from 'config'
-import { DIV_ROLE, REGEX, LOCAL_STORAGE_KEY, RESPONSE, KEY, LABEL, VARIANT, SNACK, SIZE, COLOR, DEBUG } from 'constant'
 import { a11yProps } from 'util'
-import { useTheme } from '@mui/material/styles'
-import { GStyledSpanBox, GStyledMachineChip, GStyledLoadingButton, GStyledTopBorderDivider } from 'theme/style'
-import { StyledTabBox, StyledTabs, StyledTab } from '../style'
+import { DIV_ROLE, REGEX, LOCAL_STORAGE_KEY, RESPONSE, KEY, LABEL, VARIANT, SNACK, SIZE, COLOR, DEBUG, COUNTRY } from 'constant'
+import { GStyledLoadingButton, GStyledMachineChip, GStyledScrollChipBox } from 'theme/style'
 
 const { TYPOGRAPHY } = VARIANT
 
-function TabPanel({ children, value, index, ...other }) {
- return (
-  <m.div role={DIV_ROLE.TAB_PANEL} hidden={value !== index} {...a11yProps(index)} {...other}>
-   {value === index && <Box>{children}</Box>}
-  </m.div>
- )
-}
-
 function RegisterForm() {
  const { contacts } = useSelector((state) => state.contact)
- const [tab, setTab] = useState(1)
  const [machineList, setMachineList] = useState([])
- const [isInfoComplete, setIsInfoComplete] = useState(false)
- const [isSiteComplete, setIsSiteComplete] = useState(false)
- const [isMachineListComplete, setIsMachineListComplete] = useState(false)
- const [provideSite, setProvideSite] = useState(false)
- const { themeMode } = useSettingContext()
+ const [isFormComplete, setIsFormComplete] = useState(false)
+ const [isTyping, setIsTyping] = useState(false)
  const navigate = useNavigate()
  const { login } = useAuthContext()
  const regEx = new RegExp(REGEX.ERROR_CODE)
+ const serialNoRegEx = new RegExp(REGEX.SERIAL_NO)
 
- const defaultValues = {
-  name: '',
-  email: '',
-  contacts: contacts,
-  site: {},
-  machines: []
+ const isMobile = useResponsive('down', 'sm')
+ const isMdScreen = useResponsive('between', 'md')
+ const isLgScreen = useResponsive('up', 'lg')
+
+ const getCountryCodeByLocale = () => {
+  const locale = Intl.DateTimeFormat().resolvedOptions().locale || 'en-US'
+  const countryCode = locale.split('-')[1]?.toLowerCase()
+  const foundCountry = COUNTRY.find((country) => country?.code?.toLowerCase() === countryCode)
+  return foundCountry ? foundCountry.phone : '64'
+ }
+ const getCountryByLocale = () => {
+  const locale = Intl.DateTimeFormat().resolvedOptions().locale || 'en-US'
+  const countryCode = locale.split('-')[1]?.toLowerCase()
+  const foundCountry = COUNTRY.find((country) => country?.code?.toLowerCase() === countryCode)
+  return foundCountry ? foundCountry : { code: 'NZ', label: 'New Zealand', phone: '64' }
  }
 
+ const userLocale = getCountryByLocale()
+
+ const RegisterSchema = yup.object().shape({
+  organizationName: yup.string().required('Organization name is required'),
+  machines: yup.array().of(yup.string().matches(serialNoRegEx, 'Invalid serial number')).required('Machines is required'),
+  address: yup.string().required('Address is required'),
+  country: yup.object().label('Country').nullable(),
+  contactName: yup.string().required('Contact name is required'),
+  email: yup.string().email('Invalid email format').required('Email is required')
+  //   phone: yup.object().required('Phone number is required')
+ })
+
+ const defaultValues = useMemo(
+  () => ({
+   organizationName: '',
+   contactName: '',
+   address: '',
+   country: userLocale,
+   email: '',
+   phone: { type: 'Work', countryCode: userLocale.phone, number: '' },
+   machines: []
+  }),
+  [userLocale]
+ )
+
  const methods = useForm({
-  resolver: yupResolver(LoginSchema),
+  resolver: yupResolver(RegisterSchema),
   defaultValues
  })
 
@@ -64,44 +88,38 @@ function RegisterForm() {
   formState: { errors, isSubmitting, isSubmitSuccessful }
  } = methods
 
- const { email } = watch()
+ const { organizationName, machines, address, country, contactName, email, phone } = watch()
 
- const checkInfoCompletion = () => {
-  const { name, contactName, email, phone } = methods.getValues()
-  setIsInfoComplete(!!name && !!contactName && !!email)
- }
-
- const checkSiteCompletion = () => {
-  const { street, suburb, city, region, postcode, country } = methods.getValues()
-  setIsSiteComplete(!!street && !!suburb && !!city && !!region && !!postcode && !!country)
- }
-
- const checkMachineListCompletion = () => {
-  setIsMachineListComplete(machineList.length > 0)
+ const checkFormCompletion = () => {
+  // const { organizationName, machines, address, country, contactName, email, phone } = methods.getValues()
+  setIsFormComplete(!!organizationName && !!machines && !!address && !!country && !!contactName && !!email && !!phone)
  }
 
  useEffect(() => {
   const subscription = methods.watch(() => {
-   checkInfoCompletion()
-   checkSiteCompletion()
-   checkMachineListCompletion()
+   checkFormCompletion()
   })
   return () => subscription.unsubscribe()
  }, [methods, machineList])
 
- useEffect(() => {
-  const storedHowickUserData = localStorage.getItem(LOCAL_STORAGE_KEY.HOWICK_USER_DATA)
-  if (storedHowickUserData) {
-   const { email, remember } = JSON.parse(storedHowickUserData)
-   setValue(KEY.EMAIL, email)
-   setValue(KEY.REMEMBER, remember)
-  }
- }, [])
-
- const handleChange = (event, newValue) => {
-  setTab(newValue)
+ const addContactNumber = () => {
+  const updatedPhone = { ...phone, countryCode: country?.phone?.replace(/[^0-9]/g, '') }
+  setValue('phone', updatedPhone)
  }
 
+ useEffect(() => {
+  if (!phone || phone === undefined) {
+   //    addContactNumber()
+   setValue(`phone.countryCode`, country?.phone?.replace(/[^0-9]/g, ''))
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+ }, [country])
+
+ const updateCountryCode = () => {
+  setValue(`phone.countryCode`, country?.phone?.replace(/[^0-9]/g, ''))
+ }
+
+ //  TODO: implement this when endpoint is ready from the server
  const onSubmit = async (data) => {
   try {
    if (remember) {
@@ -136,185 +154,172 @@ function RegisterForm() {
   }
  }
 
- const validateSerialNumbers = (value) => {
-  const serialNumbers = value.split(',')
-  let isValid = true
-
-  serialNumbers.forEach((serialNumber) => {
-   if (serialNumber.length !== 5) {
-    isValid = false
-   }
-  })
-  return isValid
- }
-
- const handleMachineList = (event) => {
-  const { value } = event.target
-  const characterCount = value ? Array.from(value).length : 0
-  if (characterCount === 5) {
-   setMachineList([...machineList, value])
-  } else {
-   setMachineList([...machineList])
-  }
- }
-
- const handleProvideSiteToggle = (event) => {
-  setProvideSite(event.target.checked)
- }
-
- const handleNextButton = (isCompleted) => {
-  isCompleted && setTab(tab + 1)
- }
-
- const renderInfo = () => {
-  return (
-   <Fragment>
-    <Stack spacing={3} sx={{ mt: 2, mb: 2 }}>
-     {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity="error">{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
-     <RHFTextField type="text" name="name" label="Name" autoComplete={LABEL.NAME} aria-label={LABEL.NAME} required />
-     <RHFTextField type="text" name="contactName" label="Contact Name" autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText="Your organization name" required />
-     <RHFTextField type={KEY.EMAIL} name={KEY.EMAIL} label="Email" autoComplete={KEY.EMAIL} aria-label={LABEL.LOGIN_EMAIL} required />
-     <RHFPhoneInput name="phone" label="Phone" autoComplete={KEY.PHONE} aria-label="phone" />
-    </Stack>
-    <Grid container justifyContent={'flex-end'}>
-     <Grid item sm={2}>
-      <Button onClick={() => handleNextButton(isInfoComplete)} disabled={!isInfoComplete}>
-       <Icon icon={ICON_NAME.CHEVRON_RIGHT} width={42} />
-      </Button>
-     </Grid>
-    </Grid>
-   </Fragment>
-  )
- }
-
- const renderSite = () => {
-  return (
-   <Fragment>
-    <Stack spacing={3} sx={{ mt: 2, mb: 2 }}>
-     {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity="error">{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
-     <RHFCheckbox name="dontProvideSite" label="I Don't want to provide site information" onChange={handleProvideSiteToggle} />
-     <RHFAutocompleteLableName name="siteType" label="Site Type" options={['Billing', 'Shipping', 'Main']} disabled={provideSite} />
-     <RHFTextField name="street" label="Street" disabled={provideSite} />
-     <RHFTextField name="suburb" label="Suburb" disabled={provideSite} />
-     <RHFTextField name="city" label="City" disabled={provideSite} />
-     <GStyledSpanBox>
-      <RHFTextField name="region" label="Region" disabled={provideSite} />
-      <RHFTextField name="postcode" label="Post Code" disabled={provideSite} />
-     </GStyledSpanBox>
-     <RHFCountryAutocomplete name="country" label="Country" disabled={provideSite} />
-    </Stack>
-    <Grid container justifyContent={'flex-end'}>
-     <Grid item sm={2}>
-      <Button onClick={() => handleNextButton(isSiteComplete)} disabled={!isSiteComplete || provideSite}>
-       <Icon icon={ICON_NAME.CHEVRON_RIGHT} width={42} />
-      </Button>
-     </Grid>
-    </Grid>
-   </Fragment>
-  )
- }
-
- const renderMachineList = () => {
-  return (
-   <Fragment>
-    <Stack spacing={3} sx={{ mt: 2, mb: 2 }}>
-     {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity="error">{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
-     <Autocomplete
-      multiple
-      freeSolo
-      options={[]}
-      value={machineList}
-      onChange={(event, newValue) => {
-       setMachineList(newValue)
-      }}
-      renderTags={(value, getTagProps) =>
-       value.map((option, index) => <GStyledMachineChip label={<Typography variant={TYPOGRAPHY.H4}>{option}</Typography>} mode={themeMode} {...getTagProps({ index })} />)
-      }
-      option
-      renderInput={(params) => <TextField {...params} variant="outlined" label="Machines" placeholder="Enter machine Serial Numbers" helperText="Press enter at the end of each serial number" />}
-     />
-    </Stack>
-    <GStyledLoadingButton
-     fullWidth
-     isLoading={isSubmitting}
-     color={KEY.INHERIT}
-     size={SIZE.LARGE}
-     type={KEY.SUBMIT}
-     variant={KEY.CONTAINED}
-     loading={isSubmitSuccessful || isSubmitting}
-     disabled={machineList.length === 0}
-     sx={RADIUS.BORDER}>
-     {'REGISTER'}
-    </GStyledLoadingButton>
-   </Fragment>
-  )
+ const handleInputChange = (event, value) => {
+  setIsTyping(value.length > 0)
  }
 
  return (
   <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-   {/* <FormHeader label={'Registration'} />bab */}
-   {/* <StyledTabBox>
-    <StyledTabs value={tab} onChange={handleChange} variant={VARIANT.FULL_WIDTH} centered>
-     <StyledTab label={<Typography variant={TYPOGRAPHY.OVERLINE1}>{'Basic Info'}</Typography>} {...a11yProps(1)} mode={themeMode} isComplete={isInfoComplete} />
-     <StyledTab label={<Typography variant={TYPOGRAPHY.OVERLINE1}>{'Site'}</Typography>} {...a11yProps(2)} mode={themeMode} isComplete={isSiteComplete} disabled={!isInfoComplete} />
-     <StyledTab
-      label={<Typography variant={TYPOGRAPHY.OVERLINE1}>{'Machines'}</Typography>}
-      {...a11yProps(3)}
-      mode={themeMode}
-      isComplete={isMachineListComplete}
-      disabled={!isSiteComplete || !provideSite}
-     />
-    </StyledTabs>
-   </StyledTabBox>
-   <TabPanel value={1} index={1} hidden={tab !== 1}>
-    {renderInfo()}
-   </TabPanel>
-   <TabPanel value={2} index={2} hidden={tab !== 2}>
-    {renderSite()}
-   </TabPanel>
-   <TabPanel value={3} index={3} hidden={tab !== 3}>
-    {renderMachineList()}
-   </TabPanel> */}
-   <Stack spacing={3} sx={{ mt: 2, mb: 2 }}>
-    {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity="error">{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
-    <RHFTextField type="text" name="name" label="Name" autoComplete={LABEL.NAME} aria-label={LABEL.NAME} required />
-    <RHFTextField type="text" name="contactName" label="Contact Name" autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText="Your organization name" required />
-    <RHFTextField type={KEY.EMAIL} name={KEY.EMAIL} label="Email" autoComplete={KEY.EMAIL} aria-label={LABEL.LOGIN_EMAIL} required />
-    <RHFPhoneInput name="phone" label="Phone" autoComplete={KEY.PHONE} aria-label="phone" />
-    {/* divider */}
-    <Divider />
-    <RHFTextField name="address" label="Address" />
-    <RHFCountryAutocomplete name="country" label="Country" />
-    <Divider />
-    <Stack spacing={3} sx={{ mt: 2, mb: 2 }}>
-     <Autocomplete
-      multiple
-      freeSolo
-      options={[]}
-      value={machineList}
-      onChange={(event, newValue) => {
-       setMachineList(newValue)
-      }}
-      renderTags={(value, getTagProps) =>
-       value.map((option, index) => <GStyledMachineChip label={<Typography variant={TYPOGRAPHY.H4}>{option}</Typography>} mode={themeMode} {...getTagProps({ index })} />)
-      }
-      option
-      renderInput={(params) => <TextField {...params} variant="outlined" label="Machines" placeholder="Enter machine Serial Numbers" helperText="Press enter at the end of each serial number" />}
-     />
-    </Stack>
-   </Stack>
-   <GStyledLoadingButton
-    fullWidth
-    isLoading={isSubmitting}
-    color={KEY.INHERIT}
-    size={SIZE.LARGE}
-    type={KEY.SUBMIT}
-    variant={KEY.CONTAINED}
-    loading={isSubmitSuccessful || isSubmitting}
-    disabled={machineList.length === 0}
-    sx={RADIUS.BORDER}>
-    {'REGISTER'}
-   </GStyledLoadingButton>
+   {isMobile && (
+    <Grid container spacing={2} mb={4} gap={2}>
+     {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity="error">{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
+     <Grid container gap={4}>
+      <RHFTextField
+       required
+       name="organizationName"
+       label="Organization Name"
+       type="text"
+       autoComplete={LABEL.NAME}
+       aria-label={LABEL.NAME}
+       error={!!errors.organizationName}
+       helperText={errors.organizationName ? errors.organizationName.message : ''}
+      />
+      <RHFTextField
+       required
+       name="contactName"
+       type="text"
+       label="Contact name"
+       autoComplete={LABEL.NAME}
+       aria-label={LABEL.NAME}
+       error={!!errors.contactName}
+       helperText={errors.contactName ? errors.contactName.message : ''}
+      />
+      <RHFTextField name="address" label="Organization Address" error={!!errors.address} helperText={errors.address ? errors.address.message : ''} />
+      <RHFCountryAutocomplete required name="country" label="Country" error={!!errors.country} helperText={errors.country ? errors.country.message : ''} fullWidth />
+      <RHFTextField
+       required
+       name={KEY.EMAIL}
+       type={KEY.EMAIL}
+       label="Email"
+       autoComplete={KEY.EMAIL}
+       aria-label={LABEL.LOGIN_EMAIL}
+       error={!!errors.email}
+       helperText={errors.email ? errors.email.message : ''}
+      />
+      {/* <RHFPhoneInput name="phone" label="Phone" autoComplete={KEY.PHONE} aria-label="phone" error={!!errors.phone} helperText={errors.phone ? errors.phone.message : ''} /> */}
+      <AutocompleteScrollChipContainer
+       list={machineList}
+       setList={setMachineList}
+       handleInputChange={handleInputChange}
+       renderInput={(params) => (
+        <RHFTextField
+         {...params}
+         required
+         name="machines"
+         label="Machines"
+         type="text"
+         error={!!errors.machines}
+         helperText={errors.machines ? errors.machines.message : 'Press enter at the end of each serial number'}
+         FormHelperTextProps={{ sx: { display: isTyping ? 'block' : 'none' } }}
+        />
+       )}
+      />
+     </Grid>
+    </Grid>
+   )}
+
+   {isMdScreen ||
+    (isLgScreen && (
+     <Grid container spacing={2} mb={4}>
+      {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity="error">{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
+      <Grid item sm={6}>
+       <Grid container gap={4}>
+        <RHFTextField
+         required
+         name="organizationName"
+         label="Organization Name"
+         type="text"
+         autoComplete={LABEL.NAME}
+         aria-label={LABEL.NAME}
+         error={!!errors.organizationName}
+         helperText={errors.organizationName ? errors.organizationName.message : ''}
+        />
+        <RHFTextField name="address" label="Organization Address" autoComplete="address" error={!!errors.address} helperText={errors.address ? errors.address.message : ''} />
+        <RHFTextField
+         required
+         name={KEY.EMAIL}
+         label="Email"
+         type={KEY.EMAIL}
+         autoComplete={KEY.EMAIL}
+         aria-label={LABEL.LOGIN_EMAIL}
+         error={!!errors.email}
+         helperText={errors.email ? errors.email.message : ''}
+        />
+       </Grid>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+       <Grid container gap={4}>
+        <RHFTextField
+         required
+         name="contactName"
+         label="Contact name"
+         type="text"
+         autoComplete={LABEL.NAME}
+         aria-label={LABEL.NAME}
+         error={!!errors.contactName}
+         helperText={errors.contactName ? errors.contactName.message : ''}
+        />
+        <RHFCountryAutocomplete required fullWidth name="country" label="Country" error={!!errors.country} helperText={errors.country ? errors.country.message : ''} />
+
+        <RHFCustomPhoneInput name="phone" value={phone} label={phone.type || 'Contact Number'} error={!!errors.phone} helperText={errors.phone ? errors.phone.message : ''} isRegister />
+        {/* <RHFPhoneInput
+         name="phone"
+         label="Phone"
+         autoComplete={KEY.PHONE}
+         value={phone}
+         aria-label="phone"
+         //  flagSize={'large'}
+         onChange={addContactNumber}
+         error={!!errors.phone}
+         helperText={errors.phone ? errors.phone.message : 'Press enter at the end of each serial number'}
+        /> */}
+       </Grid>
+      </Grid>
+      <Grid item sm={12} mt={2}>
+       <AutocompleteScrollChipContainer
+        fullWidth
+        required
+        list={machineList}
+        setList={setMachineList}
+        handleInputChange={handleInputChange}
+        renderInput={(params) => (
+         <RHFTextField
+          {...params}
+          type="text"
+          name="machines"
+          label="Machines"
+          placeholder="Enter Machine serial number"
+          error={!!errors.machines}
+          helperText={errors.machines ? errors.machines.message : 'Press enter at the end of each serial number'}
+          FormHelperTextProps={{ sx: { display: isTyping ? 'block' : 'none' } }}
+         />
+        )}
+       />
+      </Grid>
+     </Grid>
+    ))}
+
+   <Grid container flex justifyContent="center">
+    <Grid container flex justifyContent="center" gap={2} mb={2}>
+     <Typography variant={TYPOGRAPHY.BODY2}>
+      <Trans i18nKey="register_agreement" components={{ 1: <Link href={GLOBAL.PRIVACY_POLICY_URL} /> }} />
+     </Typography>
+    </Grid>
+    <Grid item xs={12} sm={4}>
+     <GStyledLoadingButton
+      fullWidth
+      isLoading={isSubmitting}
+      color={KEY.INHERIT}
+      size={SIZE.LARGE}
+      type={KEY.SUBMIT}
+      variant={KEY.CONTAINED}
+      loading={isSubmitSuccessful || isSubmitting}
+      disabled={!errors}
+      sx={RADIUS.BORDER}>
+      {'REGISTER'}
+     </GStyledLoadingButton>
+    </Grid>
+   </Grid>
   </FormProvider>
  )
 }
