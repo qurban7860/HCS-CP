@@ -40,8 +40,8 @@ export const StyledContent = styled('div')(({ theme }) => ({
  margin: 'auto',
  display: 'flex',
  flexDirection: 'column',
- minHeight: '100%',
- padding: { xs: theme.spacing(4, 2), md: theme.spacing(20, 2) }
+ minHeight: '100%'
+ //  padding: { xs: theme.spacing(4, 2), md: theme.spacing(20, 2) }
  //  [theme.breakpoints.up('md')]: {
  //   //   flexShrink: 0
  //   padding: theme.spacing(8, 8, 12, 8)
