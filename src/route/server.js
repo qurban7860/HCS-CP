@@ -56,9 +56,13 @@ export const PATH_SERVER = {
       detail: (roleId) => _url('security', 'roles', roleId)
     },
     /**
+     * login endpoint for customers
+     */
+    CUSTOMER_LOGIN: _url('security', 'getCustomerToken'),
+    /**
      * /security/getToken
      */
-    LOGIN: _url('security', 'getToken'),
+    LOGIN: _url('security', 'getCustomerToken'),
     /**
      * /security/multifactorverifyCode
      */

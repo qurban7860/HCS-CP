@@ -10,6 +10,8 @@ export { default as ChartStyleOverlay } from './chart/chart-style-overlay'
 // @back-button
 export { default as Button } from './button/button'
 export { default as BackButton } from './button/back-button/back-button'
+// @chip
+export { default as AutocompleteScrollChipContainer } from './chip/autocomplete-scroll'
 // @scroll to top
 export { default as ScrollToTop } from './scroll-to-top/scroll-to-top'
 // @scrollbar

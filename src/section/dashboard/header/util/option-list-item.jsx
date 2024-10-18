@@ -1,12 +1,12 @@
 import { PATH_SECURITY } from 'route/path'
 
-const OPTION = [
+const OPTION = (t) => [
   {
-    label: 'Profile',
+    label: t('profile.label'),
     linkTo: PATH_SECURITY.users.profile
   },
   {
-    label: 'Change Password',
+    label: t('change_password.label'),
     linkTo: PATH_SECURITY.users.password
   }
 ]
