@@ -1,12 +1,12 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useCallback } from 'react'
 import { useSettingContext, snack } from 'hook'
-import { Autocomplete, Box, Typography } from '@mui/material'
+import { Autocomplete, Box, Typography, Chip } from '@mui/material'
 import { RHFTextField } from 'component/hook-form'
 import { useTheme } from '@mui/material/styles'
 import { GStyledMachineChip, GStyledScrollChipBox } from 'theme/style'
 import { TYPOGRAPHY, KEY, REGEX, RESPONSE, COLOR } from 'constant'
 
-const AutocompleteScrollChipContainer = ({ list, setList, handleInputChange, renderInput }) => {
+const AutocompleteScrollChipContainer = ({ name, list, handleInputChange, renderInput }) => {
  const chipContainerRef = useRef(null)
  const { themeMode } = useSettingContext()
  const theme = useTheme()
@@ -18,28 +18,14 @@ const AutocompleteScrollChipContainer = ({ list, setList, handleInputChange, ren
   }
  }, [list])
 
- const validateSerialNumbers = (value) => {
-  return value.every((serialNumber) => serialNumber.length === 5 && serialNoRegEx.test(serialNumber))
- }
-
- const handleValidateSerialNumbers = (event, value) => {
-  if (validateSerialNumbers(value)) {
-   return setList(value)
-  } else {
-   snack('Serial Number provided is invalid', { variant: COLOR.ERROR })
-   return []
-  }
- }
-
  return (
   <Box sx={{ width: '100%' }}>
    <Autocomplete
     multiple
     freeSolo
     options={[]}
-    value={list}
-    onChange={handleValidateSerialNumbers}
-    onInputChange={handleInputChange}
+    name={name}
+    onChange={handleInputChange}
     renderTags={(value, getTagProps) => (
      <Box
       ref={chipContainerRef}
@@ -59,7 +45,17 @@ const AutocompleteScrollChipContainer = ({ list, setList, handleInputChange, ren
        padding: '4px'
       }}>
       {value.map((option, index) => (
-       <GStyledMachineChip key={index + 1} label={<Typography variant={TYPOGRAPHY.H6}>{option}</Typography>} mode={themeMode} {...getTagProps({ index })} />
+       <Chip
+        key={index}
+        label={<Typography variant={TYPOGRAPHY.H6}>{option}</Typography>}
+        {...getTagProps({ index })}
+        sx={{
+         margin: theme.spacing(0.2),
+         borderRadius: theme.spacing(0.4),
+         color: themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
+         backgroundColor: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[300]
+        }}
+       />
       ))}
      </Box>
     )}
