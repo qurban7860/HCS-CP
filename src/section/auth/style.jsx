@@ -30,10 +30,8 @@ export const StyledSectionBg = styled('div')(({ theme }) => ({
  }),
  top: 0,
  left: 0,
- // zIndex: -1,
  width: '100%',
  height: '100%',
- // position: 'absolute',
  transform: 'scaleX(-1)'
 }))
 
@@ -42,13 +40,12 @@ export const StyledContent = styled('div')(({ theme }) => ({
  margin: 'auto',
  display: 'flex',
  flexDirection: 'column',
- minHeight: '100vh',
- // justifyContent: 'center',
- padding: theme.spacing(15, 2),
- [theme.breakpoints.up('md')]: {
-  flexShrink: 0,
-  padding: theme.spacing(20, 8, 0, 8)
- }
+ minHeight: '100%',
+ padding: { xs: theme.spacing(4, 2), md: theme.spacing(20, 2) }
+ //  [theme.breakpoints.up('md')]: {
+ //   //   flexShrink: 0
+ //   padding: theme.spacing(8, 8, 12, 8)
+ //  }
 }))
 
 export const StyledTabs = styled(({ theme, mode, ...other }) => <Tabs {...other} />)(({ theme, mode }) => ({
