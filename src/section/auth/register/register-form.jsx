@@ -12,8 +12,7 @@ import { AutocompleteScrollChipContainer } from 'component'
 import FormProvider, { RHFTextField, RHFCountryAutocomplete, RHFCustomPhoneInput } from 'component/hook-form'
 import { GLOBAL } from 'config/global'
 import { RADIUS } from 'config'
-import { a11yProps } from 'util'
-import { DIV_ROLE, REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, VARIANT, SNACK, SIZE, COLOR, COUNTRY } from 'constant'
+import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, VARIANT, SNACK, SIZE, COLOR, COUNTRY } from 'constant'
 import { GStyledLoadingButton } from 'theme/style'
 
 const { TYPOGRAPHY } = VARIANT
@@ -25,7 +24,7 @@ const { TYPOGRAPHY } = VARIANT
 function RegisterForm() {
  const [isFormComplete, setIsFormComplete] = useState(false)
  const [isTyping, setIsTyping] = useState(false)
- const { contacts } = useSelector((state) => state.contact)
+ const { contacts } = useSelector(state => state.contact)
  const navigate = useNavigate()
 
  const regEx = new RegExp(REGEX.ERROR_CODE)
@@ -38,11 +37,11 @@ function RegisterForm() {
  const getCountryByLocale = () => {
   const locale = Intl.DateTimeFormat().resolvedOptions().locale || 'en-NZ'
   const countryCode = locale.split('-')[1]?.toLowerCase()
-  const foundCountry = COUNTRY.find((country) => country?.code?.toLowerCase() === countryCode)
+  const foundCountry = COUNTRY.find(country => country?.code?.toLowerCase() === countryCode)
   return foundCountry ? foundCountry : { code: 'NZ', label: 'New Zealand', phone: '64' }
  }
 
- const updatePhoneCountryCode = (country) => {
+ const updatePhoneCountryCode = country => {
   const countryCode = country?.phone?.replace(/[^0-9]/g, '')
   setValue('phone.countryCode', countryCode)
  }
@@ -50,12 +49,12 @@ function RegisterForm() {
  const getUserLocation = () => {
   if (navigator.geolocation) {
    navigator.geolocation.getCurrentPosition(
-    (position) => {
+    position => {
      const userCountry = getCountryByLocale()
      setValue('country', userCountry)
      updatePhoneCountryCode(userCountry)
     },
-    (error) => {
+    error => {
      console.error('Error getting user location:', error)
      const userCountry = getCountryByLocale()
      setValue('country', userCountry)
@@ -127,7 +126,6 @@ function RegisterForm() {
 
  useEffect(() => {
   getUserLocation()
-  console.log('errors', errors)
  }, [])
 
  useEffect(() => {
@@ -137,7 +135,7 @@ function RegisterForm() {
  }, [country])
 
  //  TODO: implement this when endpoint is ready from the server
- const onSubmit = async (data) => {
+ const onSubmit = async data => {
   try {
    console.log('data', data)
    reset()
@@ -154,26 +152,15 @@ function RegisterForm() {
   }
  }
 
- const validateSerialNumber = (serialNumber) => {
+ const validateSerialNumber = serialNumber => {
   return serialNumber.length === 5 && serialNoRegEx.test(serialNumber)
  }
-
- //  const handleValidateSerialNumbers = (event, value) => {
- //   setIsTyping(value.length > 0)
- //   //   snack('validateSerialNumbers(value): ' + validateSerialNumbers(value))
- //   if (validateSerialNumber(value)) {
- //    return setValue('machines', [...value])
- //   } else {
- //    snack('Serial Number provided is invalid', { variant: COLOR.ERROR })
- //    return []
- //   }
- //  }
 
  useEffect(() => {
   if (machines.length > 0 && machines[machines.length - 1].length === 5) {
    setValue(
     'machines',
-    machines.filter((serialNumber) => validateSerialNumber(serialNumber))
+    machines.filter(serialNumber => validateSerialNumber(serialNumber))
    )
   }
  }, [machines])
@@ -202,32 +189,32 @@ function RegisterForm() {
   <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
    {isMobile && (
     <Grid container spacing={2} mb={4} gap={2}>
-     {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity="error">{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
+     {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
      <Grid container gap={4}>
-      <RHFTextField name="customerName" label="Organization Name" type="text" autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText={errors.customerName ? errors.customerName.message : ''} />
-      <RHFTextField name="contactName" type="text" label="Contact name" autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText={errors.contactName ? errors.contactName.message : ''} />
-      <RHFTextField name="address" label="Organization Address" helperText={errors.address ? errors.address.message : ''} />
-      <RHFCountryAutocomplete name="country" label="Country" helperText={errors.country ? errors.country.message : ''} fullWidth />
+      <RHFTextField name='customerName' label='Organization Name' type='text' autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText={errors.customerName ? errors.customerName.message : ''} />
+      <RHFTextField name='contactName' type='text' label='Contact name' autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText={errors.contactName ? errors.contactName.message : ''} />
+      <RHFTextField name='address' label='Organization Address' helperText={errors.address ? errors.address.message : ''} />
+      <RHFCountryAutocomplete name='country' label='Country' helperText={errors.country ? errors.country.message : ''} fullWidth />
       <RHFTextField
        name={KEY.EMAIL}
        type={KEY.EMAIL}
-       label="Email"
+       label='Email'
        autoComplete={KEY.EMAIL}
        aria-label={LABEL.LOGIN_EMAIL}
        error={!!errors.email}
        helperText={errors.email ? errors.email.message : ''}
       />
-      <RHFCustomPhoneInput name="phone" value={phone} label={'Contact Number'} error={!!errors.phone} helperText={errors.phone ? errors.phone.message : ''} isRegister />
+      <RHFCustomPhoneInput name='phone' value={phone} label={'Contact Number'} error={!!errors.phone} helperText={errors.phone ? errors.phone.message : ''} isRegister />
       <AutocompleteScrollChipContainer
        setValue={setValue}
        handleInputChange={handleValidateSerialNumbers}
-       renderInput={(params) => (
+       renderInput={params => (
         <RHFTextField
          {...params}
-         name="machines"
-         label="Machines"
-         type="text"
-         onChange={(event) => setIsTyping(event.target.value.length > 0)}
+         name='machines'
+         label='Machines'
+         type='text'
+         onChange={event => setIsTyping(event.target.value.length > 0)}
          helperText={errors.machines ? errors.machines.message : 'Press enter at the end of each serial number'}
          FormHelperTextProps={{ sx: { display: isTyping ? 'block' : 'none' } }}
         />
@@ -240,14 +227,14 @@ function RegisterForm() {
    {isMdScreen ||
     (isLgScreen && (
      <Grid container spacing={2} mb={4}>
-      {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity="error">{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
+      {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
       <Grid item sm={6}>
        <Grid container gap={4}>
-        <RHFTextField name="customerName" label="Organization Name" type="text" autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText={errors.customerName ? errors.customerName.message : ''} />
-        <RHFTextField name="address" label="Organization Address" autoComplete="address" helperText={errors.address ? errors.address.message : ''} />
+        <RHFTextField name='customerName' label='Organization Name' type='text' autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText={errors.customerName ? errors.customerName.message : ''} />
+        <RHFTextField name='address' label='Organization Address' autoComplete='address' helperText={errors.address ? errors.address.message : ''} />
         <RHFTextField
          name={KEY.EMAIL}
-         label="Email"
+         label='Email'
          type={KEY.EMAIL}
          autoComplete={KEY.EMAIL}
          aria-label={LABEL.LOGIN_EMAIL}
@@ -258,23 +245,23 @@ function RegisterForm() {
       </Grid>
       <Grid item xs={12} sm={6}>
        <Grid container gap={4}>
-        <RHFTextField name="contactName" label="Contact name" type="text" autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText={errors.contactName ? errors.contactName.message : ''} />
-        <RHFCountryAutocomplete fullWidth name="country" label="Country" helperText={errors.country ? errors.country.message : ''} />
-        <RHFCustomPhoneInput name="phone" value={phone} label={'Contact Number'} helperText={errors.phone ? errors.phone.message : ''} isRegister />
+        <RHFTextField name='contactName' label='Contact name' type='text' autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText={errors.contactName ? errors.contactName.message : ''} />
+        <RHFCountryAutocomplete fullWidth name='country' label='Country' helperText={errors.country ? errors.country.message : ''} />
+        <RHFCustomPhoneInput name='phone' value={phone} label={'Contact Number'} helperText={errors.phone ? errors.phone.message : ''} isRegister />
        </Grid>
       </Grid>
       <Grid item sm={12} mt={2}>
        <AutocompleteScrollChipContainer
         fullWidth
         handleInputChange={handleValidateSerialNumbers}
-        renderInput={(params) => (
+        renderInput={params => (
          <RHFTextField
           {...params}
-          type="text"
-          name="machines"
-          label="Machines"
-          placeholder="Enter Machine serial number"
-          onChange={(event) => setIsTyping(event.target.value.length > 0)}
+          type='text'
+          name='machines'
+          label='Machines'
+          placeholder='Enter Machine serial number'
+          onChange={event => setIsTyping(event.target.value.length > 0)}
           helperText={errors.machines ? errors.machines.message : 'Press enter at the end of each serial number'}
           FormHelperTextProps={{ sx: { display: isTyping ? 'block' : 'none' } }}
          />
@@ -284,10 +271,10 @@ function RegisterForm() {
      </Grid>
     ))}
 
-   <Grid container flex justifyContent="center">
-    <Grid container flex justifyContent="center" gap={2} mb={2}>
+   <Grid container flex justifyContent='center'>
+    <Grid container flex justifyContent='center' gap={2} mb={2}>
      <Typography variant={TYPOGRAPHY.BODY2}>
-      <Trans i18nKey="register_agreement" components={{ 1: <Link href={GLOBAL.PRIVACY_POLICY_URL} /> }} />
+      <Trans i18nKey='register_agreement' components={{ 1: <Link href={GLOBAL.PRIVACY_POLICY_URL} /> }} />
      </Typography>
     </Grid>
     <Grid item xs={12} sm={4}>
