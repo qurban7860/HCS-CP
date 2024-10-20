@@ -1,6 +1,9 @@
 import { useMemo, useEffect, useState, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import * as yup from 'yup'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Trans } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -16,6 +19,7 @@ import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, VARIANT, SNACK, SIZE, COLOR, COUN
 import { GStyledLoadingButton } from 'theme/style'
 
 const { TYPOGRAPHY } = VARIANT
+// gsap.registerPlugin(useGSAP)
 
 /**
  * [!Note]: This will be refined
@@ -191,11 +195,28 @@ function RegisterForm() {
     <Grid container spacing={2} mb={4} gap={2}>
      {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
      <Grid container gap={4}>
-      <RHFTextField name='customerName' label='Organization Name' type='text' autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText={errors.customerName ? errors.customerName.message : ''} />
-      <RHFTextField name='contactName' type='text' label='Contact name' autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText={errors.contactName ? errors.contactName.message : ''} />
-      <RHFTextField name='address' label='Organization Address' helperText={errors.address ? errors.address.message : ''} />
-      <RHFCountryAutocomplete name='country' label='Country' helperText={errors.country ? errors.country.message : ''} fullWidth />
       <RHFTextField
+       className={'portal-rhftextfield'}
+       name='customerName'
+       label='Organization Name'
+       type='text'
+       autoComplete={LABEL.NAME}
+       aria-label={LABEL.NAME}
+       helperText={errors.customerName ? errors.customerName.message : ''}
+      />
+      <RHFTextField
+       className={'portal-rhftextfield'}
+       name='contactName'
+       type='text'
+       label='Contact name'
+       autoComplete={LABEL.NAME}
+       aria-label={LABEL.NAME}
+       helperText={errors.contactName ? errors.contactName.message : ''}
+      />
+      <RHFTextField className={'portal-rhftextfield'} name='address' label='Organization Address' helperText={errors.address ? errors.address.message : ''} />
+      <RHFCountryAutocomplete className={'portal-rhftextfield'} name='country' label='Country' helperText={errors.country ? errors.country.message : ''} fullWidth />
+      <RHFTextField
+       className={'portal-rhftextfield'}
        name={KEY.EMAIL}
        type={KEY.EMAIL}
        label='Email'
