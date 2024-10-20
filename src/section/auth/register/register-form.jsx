@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import useResponsive from 'hook/use-responsive'
 import { snack } from 'hook'
 import { useForm } from 'react-hook-form'
-import { Typography, Alert, Grid, Link } from '@mui/material'
+import { Typography, Alert, Grid, Link, Box } from '@mui/material'
 import { AutocompleteScrollChipContainer } from 'component'
 import FormProvider, { RHFTextField, RHFCountryAutocomplete, RHFCustomPhoneInput } from 'component/hook-form'
 import { GLOBAL } from 'config/global'
@@ -312,6 +312,8 @@ function RegisterForm() {
       {'REGISTER'}
      </GStyledLoadingButton>
     </Grid>
+    {/* keep for now  */}
+    <Box height={100} />
    </Grid>
   </FormProvider>
  )
