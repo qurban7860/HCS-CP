@@ -36,6 +36,8 @@ export { default as FormHeader } from './header/form'
 export { default as GoogleMaps } from './google-maps/google-maps'
 // @logo
 export { default as Logo } from './logo/logo'
+export { default as LogoIcon } from './logo/logo-icon'
+export { default as PortalLogo } from './logo/portal-logo'
 // @menu-popover
 export { default as MenuPopover } from './menu-popover/menu-popover'
 // @viewform
