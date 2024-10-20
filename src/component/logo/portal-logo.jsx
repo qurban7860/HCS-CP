@@ -5,8 +5,8 @@ import { Link as RouterLink } from 'react-router-dom'
 import { ASSET } from 'config/asset-directory'
 import { BRAND } from 'config/layout'
 
-const Logo = forwardRef(({ width = BRAND.NAV_ICON, disabledLink = false, sx, src = ASSET.LOGO, className, ...other }, ref) => {
- const logo = <Box className={className} component='img' src={src} sx={{ width, height: { xs: 60, sm: 70, md: 80, lg: 90 }, cursor: 'pointer', ...sx }} />
+const PortalLogo = forwardRef(({ width = BRAND.NAV_ICON, disabledLink = false, sx, src = ASSET.PORTAL, className, ...other }, ref) => {
+ const logo = <Box className={className} component='img' src={src} sx={{ width, pointerEvents: 'none', ...sx }} />
  if (disabledLink) {
   return logo
  }
@@ -18,7 +18,7 @@ const Logo = forwardRef(({ width = BRAND.NAV_ICON, disabledLink = false, sx, src
  )
 })
 
-Logo.propTypes = {
+PortalLogo.propTypes = {
  sx: PropTypes.object,
  disabledLink: PropTypes.bool,
  src: PropTypes.string,
@@ -26,4 +26,4 @@ Logo.propTypes = {
  disableHeight: PropTypes.bool
 }
 
-export default Logo
+export default PortalLogo
