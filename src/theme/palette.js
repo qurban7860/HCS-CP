@@ -174,7 +174,7 @@ export default function palette(themeMode) {
   text: {
    primary: GREY[800],
    secondary: GREY[600],
-   disabled: GREY[600],
+   disabled: GREY[500],
    no: GREY[800]
   },
   background: { paper: GREY[200], default: GREY[400], neutral: GREY[500] },
