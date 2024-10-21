@@ -61,7 +61,7 @@ export default function RHFTextField({ name, helperText, Error, ...other }) {
        '&.Mui-disabled': {
         color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.200',
         '& .MuiOutlinedInput-notchedOutline': {
-         borderColor: 'bronze.main'
+         borderColor: themeMode === KEY.LIGHT ? 'transparent' : 'bronze.main'
         }
        },
        '& .MuiAutocomplete-inputRoot': {
