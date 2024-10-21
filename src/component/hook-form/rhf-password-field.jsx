@@ -42,11 +42,12 @@ export default function RHFPasswordField({ name, helperText, Error, ...other }) 
      {...other}
      sx={{
       '& .MuiInputLabel-root': {
-       ...theme.typography.overline1
+       ...theme.typography.overline2
       },
       '& .MuiOutlinedInput-notchedOutline': {
        borderRadius: 0.4,
-       color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
+       color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0',
+       ...theme.typography.overline2
       },
 
       '& .MuiInputBase-root': {
@@ -71,7 +72,7 @@ export default function RHFPasswordField({ name, helperText, Error, ...other }) 
        '&.Mui-disabled': {
         color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.200',
         '& .MuiOutlinedInput-notchedOutline': {
-         borderColor: 'bronze.main'
+         borderColor: themeMode === KEY.LIGHT ? 'transparent' : 'bronze.main'
         }
        }
       }

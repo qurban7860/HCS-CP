@@ -30,15 +30,15 @@ export default function RHFTextField({ name, helperText, Error, ...other }) {
      {...other}
      sx={{
       '& .MuiInputLabel-root': {
-       ...theme.typography.overline2
+       bgcolor: themeMode === KEY.LIGHT ? 'grey.400' : 'grey.800',
+       ...theme.typography.overline1
       },
       '& .MuiOutlinedInput-notchedOutline': {
        borderRadius: 0.4,
-       color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
+       color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0',
+       ...theme.typography.overline1
       },
-
       '& .MuiInputBase-root': {
-       height: '5rem',
        '&:hover': {
         '& .MuiOutlinedInput-notchedOutline': {
          borderColor: 'common.white'
@@ -48,8 +48,7 @@ export default function RHFTextField({ name, helperText, Error, ...other }) {
         }
        },
        '& .MuiInputBase-input': {
-        color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0',
-        fontSize: '1rem'
+        color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
        },
        '&.Mui-focused': {
         '& .MuiOutlinedInput-notchedOutline': {
@@ -57,7 +56,6 @@ export default function RHFTextField({ name, helperText, Error, ...other }) {
         },
         backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
        },
-       // disabled
        '&.Mui-disabled': {
         color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.200',
         '& .MuiOutlinedInput-notchedOutline': {
