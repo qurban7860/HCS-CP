@@ -1,10 +1,12 @@
 import { useSettingContext } from 'hook'
+import useResponsive from 'hook/use-responsive'
 import { GlobalStyles } from '@mui/material'
 import { ASSET } from 'config'
 import { KEY } from 'constant'
 
 function GlobalStyle() {
  const { themeMode } = useSettingContext()
+ const isMobile = useResponsive('down', 'sm')
  const inputGlobalStyle = (
   <GlobalStyles
    styles={{
