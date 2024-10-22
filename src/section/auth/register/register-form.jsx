@@ -19,7 +19,7 @@ import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, VARIANT, SNACK, SIZE, COLOR, COUN
 import { GStyledLoadingButton } from 'theme/style'
 
 const { TYPOGRAPHY } = VARIANT
-// gsap.registerPlugin(useGSAP)
+gsap.registerPlugin(useGSAP)
 
 /**
  * [!Note]: This will be refined
@@ -37,6 +37,14 @@ function RegisterForm() {
  const isMobile = useResponsive('down', 'sm')
  const isMdScreen = useResponsive('between', 'md')
  const isLgScreen = useResponsive('up', 'lg')
+
+ useGSAP(() => {
+  const introTl = gsap.timeline()
+  introTl.from('.portal-rhftextfield', {
+   opacity: 0,
+   y: 10
+  })
+ })
 
  const getCountryByLocale = () => {
   const locale = Intl.DateTimeFormat().resolvedOptions().locale || 'en-NZ'
@@ -196,7 +204,7 @@ function RegisterForm() {
      {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
      <Grid container gap={4}>
       <RHFTextField
-       className={'portal-rhftextfield'}
+       className='portal-rhftextfield'
        name='customerName'
        label='Organization Name'
        type='text'
@@ -205,7 +213,7 @@ function RegisterForm() {
        helperText={errors.customerName ? errors.customerName.message : ''}
       />
       <RHFTextField
-       className={'portal-rhftextfield'}
+       className='portal-rhftextfield'
        name='contactName'
        type='text'
        label='Contact name'
@@ -216,7 +224,7 @@ function RegisterForm() {
       <RHFTextField className={'portal-rhftextfield'} name='address' label='Organization Address' helperText={errors.address ? errors.address.message : ''} />
       <RHFCountryAutocomplete className={'portal-rhftextfield'} name='country' label='Country' helperText={errors.country ? errors.country.message : ''} fullWidth />
       <RHFTextField
-       className={'portal-rhftextfield'}
+       className='portal-rhftextfield'
        name={KEY.EMAIL}
        type={KEY.EMAIL}
        label='Email'

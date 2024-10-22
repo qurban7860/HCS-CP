@@ -50,7 +50,7 @@ function RegisterLayout({ children, illustration, title }) {
     <Grid sx={{ display: FLEX.FLEX, justifyContent: KEY.CENTER, mt: 2, mb: 1 }} alignItems={KEY.CENTER} spacing={2} container>
      <Grid item>
       <Grid container flex={1} justifyContent='center'>
-       <Logo className={'howick-logo'} sx={{ width: { xs: '80px', sm: '120px', md: '150px' }, pointerEvents: KEY.NONE }} />
+       <Logo className='howick-logo' sx={{ width: { xs: '80px', sm: '120px', md: '150px' }, pointerEvents: KEY.NONE }} />
       </Grid>
       <Stack sx={{ alignItems: KEY.CENTER }}>
        <PortalLogo className='portal-header' sx={{ width: { xs: '100px', sm: '140px', md: '250px' }, mt: { xs: -2, lg: -3 } }} />
