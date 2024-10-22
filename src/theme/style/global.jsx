@@ -341,7 +341,7 @@ export const GStyledTooltipSliding = styled(({ className, ...props }) => <Toolti
 }))
 
 export const GStyledIconButton = styled(IconButton, {
- shouldForwardProp: (prop) => prop !== 'filled' && prop !== 'hasChildren' && prop !== 'shape'
+ shouldForwardProp: prop => prop !== 'filled' && prop !== 'hasChildren' && prop !== 'shape'
 })(({ filled, shape, hasChildren, theme }) => ({
  color: 'inherit',
  transition: theme.transitions.create('all', {
@@ -395,8 +395,8 @@ export const GStyledPopover = styled(Popover)(({ theme }) => ({
 
 // :landing __________________________________________________________________________________________________
 
-export const GStyledBrandOverlayBox = styled(Box)(({ theme, themeMode }) => ({
- width: 100,
+export const GStyledBrandOverlayBox = styled(Box)(({ theme, themeMode, isMobile }) => ({
+ width: isMobile ? 50 : 100,
  margin: theme.spacing(1),
  marginRight: theme.spacing(1),
  marginLeft: theme.spacing(1),
@@ -414,40 +414,84 @@ export const GStyledBrandOverlayBox = styled(Box)(({ theme, themeMode }) => ({
  }
 }))
 
-export const GStyledTopPolygonDiv = styled('div')(({ theme }) => ({
- position: 'absolute',
- top: -150,
- right: 150,
- width: 0,
- height: 0,
- borderTop: '200px solid transparent',
- borderRight: `200px solid ${theme.palette.success.main}`,
- borderBottom: '200px solid transparent',
- zIndex: 1,
- rotate: '-90deg'
-}))
+// export const GStyledTopPolygonDiv = styled('div')(({ theme }) => ({
+//  position: 'absolute',
+//  top: -150,
+//  right: 150,
+//  width: 0,
+//  height: 0,
+//  borderTop: '200px solid transparent',
+//  borderRight: `200px solid ${theme.palette.success.main}`,
+//  borderBottom: '200px solid transparent',
+//  zIndex: 1,
+//  rotate: '-90deg'
+// }))
 
-export const GStyledBottomPolygonDiv = styled('div')(({ theme }) => ({
- position: 'absolute',
- bottom: -150,
- left: 150,
- width: 0,
- height: 0,
- borderTop: '200px solid transparent',
- borderRight: `200px solid ${theme.palette.secondary.main}`,
- borderBottom: '200px solid transparent',
- zIndex: 1,
- rotate: '90deg'
-}))
+export const GStyledTopPolygonDiv = styled(({ themeMode, isMobile, isMd, ...other }) => <div {...other} />)(({ theme, themeMode, isMobile, isTablet, isMd }) => {
+ return {
+  display: isMd || isTablet ? 'none' : 'block',
+  position: 'absolute',
+  top: isMobile || isTablet ? -500 : -550,
+  right: isMobile ? 150 : 500,
+  width: 0,
+  height: 0,
+  borderTop: '800px solid transparent',
+  borderRight: `200px solid ${theme.palette.grey[300]}`,
+  borderBottom: '400px solid transparent',
+  zIndex: 0,
+  rotate: '-90deg'
+ }
+})
 
-export const StylendLandingContainerBox = styled(Box)(({ theme }) => ({
+// export const GStyledBottomPolygonDiv = styled('div')(({ theme }) => ({
+//  position: 'absolute',
+//  bottom: -150,
+//  left: 150,
+//  width: 0,
+//  height: 0,
+//  borderTop: '200px solid transparent',
+//  borderRight: `200px solid ${theme.palette.secondary.main}`,
+//  borderBottom: '200px solid transparent',
+//  zIndex: 1,
+//  rotate: '90deg'
+// }))
+
+export const GStyledBottomPolygonDiv = styled(({ themeMode, isMobile, isMd, ...other }) => <div {...other} />)(({ theme, themeMode, isMobile, isTablet, isMd }) => {
+ return {
+  display: isMd || isTablet ? 'none' : 'block',
+  position: 'absolute',
+  bottom: isMobile || isTablet ? -500 : -550,
+  left: isMobile ? 150 : 500,
+  width: 0,
+  height: 0,
+  borderTop: '800px solid transparent',
+  borderRight: `200px solid ${theme.palette.grey[300]}`,
+  borderBottom: '400px solid transparent',
+  zIndex: 0,
+  rotate: '90deg'
+ }
+})
+
+export const StylendLandingContainerBox = styled(Box)(({ theme, isTablet, isMobile }) => ({
  backgroundColor: theme.palette.background.default,
- height: '100vh',
+ backgroundImage: `url(${ASSET.BG_STROKE_LOGO})`,
+ backgroundSize: 'cover',
+ backgroundPositionY: 'center',
+ backgroundSize: isMobile ? '250%' : '150%',
+ backgroundBlendMode: 'screen',
+ backgroundOpacity: 0.2,
+ backgroundColor: alpha(theme.palette.background.default, 0.8),
+ display: 'flex',
+ height: '100%',
  flexDirection: 'column',
  alignItems: 'center',
  display: 'flex',
  justifyContent: 'center',
- position: 'relative'
+ position: 'relative',
+ overflow: 'hidden',
+ [theme.breakpoints.up('md')]: {
+  flexDirection: 'row'
+ }
 }))
 
 export const ButtonProps = {
@@ -593,7 +637,7 @@ export const iconPropsOption = {
  }
 }
 
-export const GCardOption = (mode) => {
+export const GCardOption = mode => {
  return {
   height: '100vh',
   margin: 2,
@@ -609,7 +653,7 @@ export const GCardOption = (mode) => {
  }
 }
 
-export const GStickyHeaderCardOption = (mode) => {
+export const GStickyHeaderCardOption = mode => {
  return {
   margin: 2,
   margintop: 10,
