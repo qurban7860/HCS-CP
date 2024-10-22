@@ -8,14 +8,14 @@ import { GLOBAL } from 'global'
 import { FLEX, KEY, TYPOGRAPHY } from 'constant'
 import { StyledRoot, StyledContent } from '../style'
 
-LoginLayout.propTypes = {
+SetPasswordLayout.propTypes = {
  title: PropTypes.string,
  children: PropTypes.node,
  illustration: PropTypes.string
 }
 
 gsap.registerPlugin(useGSAP)
-function LoginLayout({ children, illustration, title }) {
+function SetPasswordLayout({ children, illustration, title }) {
  const { themeMode } = useSettingContext()
  title = title || GLOBAL.APP_BRANDING
 
@@ -61,4 +61,4 @@ function LoginLayout({ children, illustration, title }) {
  )
 }
 
-export default LoginLayout
+export default SetPasswordLayout

@@ -19,6 +19,7 @@ export default function RHFCustomPhoneInput({ name, value, index, label, isRegis
  return (
   <Controller
    name={name}
+   value={value}
    control={control}
    render={({ field, fieldState: { error } }) => (
     <RHFTextField
@@ -39,7 +40,6 @@ export default function RHFCustomPhoneInput({ name, value, index, label, isRegis
          {!isRegister && (
           <Fragment>
            <Autocomplete
-            // freeSolo
             disableClearable
             defaultValue={value?.type || 'PHONE'}
             size="small"
@@ -55,7 +55,6 @@ export default function RHFCustomPhoneInput({ name, value, index, label, isRegis
           </Fragment>
          )}
          <TextField
-          //   name={`${name}.countryCode`}
           value={value?.countryCode || ''}
           variant="standard"
           InputProps={{

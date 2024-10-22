@@ -110,7 +110,7 @@ const typography = {
  },
  body2: {
   fontFamily: FONT_SECONDARY,
-  lineHeight: 22 / 14,
+  lineHeight: 14 / 14,
   fontSize: pxToRem(14)
  },
  caption: {
@@ -138,14 +138,14 @@ const typography = {
  },
  overline2: {
   fontWeight: 700,
-  lineHeight: 24 / 14,
+  lineHeight: 10 / 10,
   fontSize: pxToRem(16),
   textTransform: 'uppercase'
  },
  button: {
   fontFamily: FONT_SECONDARY,
   fontWeight: 700,
-  lineHeight: 24 / 14,
+  lineHeight: 12 / 12,
   fontSize: pxToRem(14),
   textTransform: 'capitalize'
  }
