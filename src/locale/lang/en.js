@@ -12,6 +12,9 @@ const en = {
  cards: `cards`,
  posts: `posts`,
  create: `create`,
+ group: {
+  label: `Group`
+ },
  change_password: {
   label: `Change Password`
  },
@@ -20,6 +23,12 @@ const en = {
  },
  customer_group: {
   label: `Customer Group`
+ },
+ log: {
+  label: `Log`,
+  logs: {
+   label: `Logs`
+  }
  },
  home: {
   local: `home`,
