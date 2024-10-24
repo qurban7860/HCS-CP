@@ -38,6 +38,10 @@ function RegisterLayout({ children, illustration, title }) {
     opacity: 0,
     y: 10
    })
+   .from('.portal-rhf-textfield', {
+    opacity: 0,
+    y: 10
+   })
  })
 
  const isMobile = useResponsive('down', 'sm')
@@ -53,7 +57,7 @@ function RegisterLayout({ children, illustration, title }) {
        <Logo className='howick-logo' sx={{ width: { xs: '80px', sm: '120px', md: '150px' }, pointerEvents: KEY.NONE }} />
       </Grid>
       <Stack sx={{ alignItems: KEY.CENTER }}>
-       <PortalLogo className='portal-header' sx={{ width: { xs: '100px', sm: '140px', md: '250px' }, mt: { xs: -2, lg: -3 } }} />
+       <PortalLogo className='portal-header' sx={{ width: { xs: '150px', sm: '170px', md: '250px' }, mt: { xs: -2, lg: -3 } }} />
       </Stack>
       <Stack sx={{ alignItems: KEY.END }}>
        <Typography className='portal-version' variant={TYPOGRAPHY.BODY2} sx={{ mb: 5, mt: 1 }}>
@@ -64,7 +68,11 @@ function RegisterLayout({ children, illustration, title }) {
     </Grid>
     {isMobile && <Box sx={{ width: { xs: '350px' }, height: { xs: '100vh', md: 'auto' } }}>{children}</Box>}
     {isMid && <Box sx={{ width: { sm: '600px' }, height: { xs: '100vh', md: 'auto' } }}>{children}</Box>}
-    {isLarge && <Box sx={{ width: { lg: '900px' }, height: { xs: '100vh', md: 'auto' } }}>{children}</Box>}
+    {isLarge && (
+     <Box sx={{ width: { lg: '900px' }, height: { xs: '100vh', md: 'auto' } }}>
+      <div>{children}</div>
+     </Box>
+    )}
    </StyledContent>
   </StyledRoot>
  )
