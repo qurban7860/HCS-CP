@@ -1,3 +1,5 @@
+import { get } from 'react-hook-form'
+
 const en = {
  register_agreement: 'By clicking "Register" you agree to our <1>Privacy Policy</1>.',
  app: `app`,
@@ -12,6 +14,12 @@ const en = {
  cards: `cards`,
  posts: `posts`,
  create: `create`,
+ column: {
+  label: `Column`,
+  columns: {
+   label: `Columns`
+  }
+ },
  group: {
   label: `Group`
  },
@@ -28,6 +36,12 @@ const en = {
   label: `Log`,
   logs: {
    label: `Logs`
+  },
+  button: {
+   get_logs: `Get Logs`
+  },
+  period: {
+   label: `Period`
   }
  },
  home: {
