@@ -75,7 +75,6 @@ function LoginForm() {
    if (regEx.test(error.MessageCode)) {
     console.error(DEBUG.AUTH_LOGIN_ERROR, error?.Message || '')
     snack(RESPONSE.error.INVALID_CREDENTIALS, { variant: COLOR.ERROR })
-    reset()
     setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
      ...error,
      message: error.Message
@@ -95,13 +94,13 @@ function LoginForm() {
   <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
    <Stack spacing={3} sx={{ mt: 1 }}>
     {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
-    <RHFTextField type={KEY.EMAIL} name={KEY.EMAIL} label={LABEL.LOGIN_EMAIL} autoComplete={KEY.USERNAME} aria-label={LABEL.LOGIN_EMAIL} required />
-    <RHFPasswordField name={KEY.PASSWORD} id={KEY.PASSWORD} label={LABEL.LOGIN_PASSWORD} autoComplete={KEY.CURRENT_PASSWORD} aria-label={LABEL.LOGIN_PASSWORD} />
+    <RHFTextField className='portal-rhf-textfield' type={KEY.EMAIL} name={KEY.EMAIL} label={LABEL.LOGIN_EMAIL} autoComplete={KEY.USERNAME} aria-label={LABEL.LOGIN_EMAIL} required />
+    <RHFPasswordField className='portal-rhf-password' name={KEY.PASSWORD} id={KEY.PASSWORD} label={LABEL.LOGIN_PASSWORD} autoComplete={KEY.CURRENT_PASSWORD} aria-label={LABEL.LOGIN_PASSWORD} />
    </Stack>
-
-   <RHFCheckbox name={KEY.REMEMBER} label={BUTTON.REMEMBER_ME} />
+   <RHFCheckbox className='portal-checkbox' name={KEY.REMEMBER} label={BUTTON.REMEMBER_ME} />
    <GStyledLoadingButton
     fullWidth
+    className='portal-button'
     isLoading={isSubmitting}
     color={KEY.INHERIT}
     size={SIZE.LARGE}
@@ -112,7 +111,7 @@ function LoginForm() {
     {BUTTON.LOGIN}
    </GStyledLoadingButton>
    <Stack alignItems={FLEX.FLEX_END} sx={{ my: 2 }}>
-    <Link component={RouterLink} to={PATH_AUTH.resetPassword} variant={TYPOGRAPHY.BODY2} color={KEY.INHERIT} underline={KEY.NONE}>
+    <Link className='portal-forgot' component={RouterLink} to={PATH_AUTH.resetPassword} variant={TYPOGRAPHY.BODY2} color={KEY.INHERIT} underline={KEY.NONE}>
      {BUTTON.FORGOT_PASSWORD}
     </Link>
    </Stack>

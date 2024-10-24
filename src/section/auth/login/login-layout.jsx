@@ -23,7 +23,7 @@ function LoginLayout({ children, illustration, title }) {
   const introTl = gsap.timeline()
 
   introTl
-   .set('.howick-logo', { opacity: 1 })
+   .set('.howick-logo', { opacity: 1, duration: 0.5 })
    .from('.portal-header', {
     scale: 1,
     opacity: 0,
@@ -34,6 +34,32 @@ function LoginLayout({ children, illustration, title }) {
    .from('.portal-version', {
     opacity: 0,
     y: 10
+   })
+   .from('.portal-rhf-textfield', {
+    opacity: 0,
+    y: 10
+   })
+   .from('.portal-rhf-password', {
+    opacity: 0,
+    y: 20
+   })
+   .from('.portal-button', {
+    opacity: 0,
+    y: 10
+   })
+   .from('.portal-checkbox', {
+    scale: 1,
+    opacity: 0,
+    ease: 'power4.in',
+    delay: 0.3,
+    stagger: 1
+   })
+   .from('.portal-forgot', {
+    scale: 1,
+    opacity: 0,
+    ease: 'power4.in',
+    delay: 0.3,
+    stagger: 1
    })
  })
 
@@ -46,7 +72,7 @@ function LoginLayout({ children, illustration, title }) {
        <Logo sx={{ width: { xs: '80px', sm: '120px', md: '150px' }, pointerEvents: KEY.NONE }} />
       </Grid>
       <Stack sx={{ alignItems: KEY.CENTER }}>
-       <PortalLogo className='portal-header' sx={{ width: { xs: '100px', sm: '140px', md: '250px' }, mt: { xs: -2, lg: -3 } }} />
+       <PortalLogo className='portal-header' sx={{ width: { xs: '150px', sm: '170px', md: '250px' }, mt: { xs: -2, lg: -3 } }} />
       </Stack>
       <Stack sx={{ alignItems: KEY.END }}>
        <Typography className='portal-version' variant={TYPOGRAPHY.BODY2} sx={{ mb: 5, mt: 1 }}>
@@ -55,7 +81,7 @@ function LoginLayout({ children, illustration, title }) {
       </Stack>
      </Grid>
     </Grid>
-    <Box sx={{ width: { xs: '300px', sm: '400px' } }}> {children} </Box>
+    <Box sx={{ width: { xs: '300px', sm: '400px' } }}>{children}</Box>
    </StyledContent>
   </StyledRoot>
  )
