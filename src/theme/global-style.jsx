@@ -1,12 +1,19 @@
+import React, { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useSettingContext } from 'hook'
 import useResponsive from 'hook/use-responsive'
 import { GlobalStyles } from '@mui/material'
-import { ASSET } from 'config'
+import { alpha, useTheme } from '@mui/material/styles'
+import { ASSET } from 'config/asset-directory'
 import { KEY } from 'constant'
 
 function GlobalStyle() {
  const { themeMode } = useSettingContext()
+ const location = useLocation()
+ const theme = useTheme()
  const isMobile = useResponsive('down', 'sm')
+ const isRootPage = location.pathname === '/'
+
  const inputGlobalStyle = (
   <GlobalStyles
    styles={{
@@ -23,11 +30,16 @@ function GlobalStyle() {
      WebkitOverflowScrolling: 'touch'
     },
     body: {
-     //  backgroundImage: themeMode === KEY.LIGHT ? `url(${ASSET.BG_LOGO})` : `url(${ASSET.BG_DARK_LOGO})`,
+     backgroundColor: theme.palette.background.default,
+     backgroundImage: themeMode === KEY.LIGHT ? (isRootPage ? null : `url(${ASSET.BG_STROKE_DARKGREY_LOGO})`) : isRootPage ? null : `url(${ASSET.BG_STROKE_BRONZE_LOGO})`,
+     backgroundSize: 'cover',
+     backgroundSize: isMobile ? '250%' : '150%',
+     backgroundOpacity: 0.2,
+     backgroundColor: alpha(theme.palette.background.default, 0.8),
      backgroundRepeat: 'no-repeat',
      backgroundPositionY: 'center',
-     backgroundPositionX: 'right',
-     backgroundSize: '50%',
+     backgroundPositionX: 'left',
+     //  backgroundSize: '50%',
      backgroundOpacity: 0.9,
      backgroundAttachment: 'fixed',
      margin: 0,
