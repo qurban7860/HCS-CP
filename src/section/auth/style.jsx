@@ -3,7 +3,7 @@ import { Tabs, Tab, Box } from '@mui/material'
 import { KEY } from 'constant'
 import { bgGradient } from 'theme/style'
 
-export const StyledRoot = styled(({ theme, mode, ...other }) => <main {...other} />)(({ theme, mode }) => ({
+export const StyledRoot = styled(({ ...other }) => <main {...other} />)(({ theme, mode }) => ({
  height: '100%',
  display: 'flex',
  flexDirection: 'column',
