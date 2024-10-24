@@ -2,8 +2,8 @@
     <defs>
         <linearGradient id="P" gradientUnits="userSpaceOnUse" />
         <linearGradient id="g1" x2="1" href="#P" gradientTransform="matrix(413.1,0,0,413.1,28,235.95)">
-            <stop stop-color="#0084c9" />
-            <stop offset="1" stop-color="#0940b2" />
+            <stop stop-color="#D4D4D4" />
+            <stop offset="1" stop-color="#F2EED8" />
         </linearGradient>
     </defs>
     <style>
