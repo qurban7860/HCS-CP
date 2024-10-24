@@ -179,31 +179,35 @@ export const PATH_SERVER = {
    detail: customerId => _url(_CRM, 'customers', customerId),
    /**
     * /crm/customers/:customerId/contacts
-    * @param {*} customerId - string
+    * @param {string} customerId - string
     */
    listContact: customerId => _url(_CRM, 'customers', customerId, 'contacts'),
    /**
     * /crm/customers/:customerId/contacts/:contactId
-    * @param {*} customerId - string
-    * @param {*} contactId - string
+    * @param {string} customerId - string
+    * @param {string} contactId - string
     */
    contactDetail: (customerId, contactId) => _url(_CRM, 'customers', customerId, 'contacts', contactId),
    /**
     * /crm/customers/:customerId/sites
-    * @param {*} customerId - string
+    * @param {string} customerId - string
     */
    listSite: customerId => _url(_CRM, 'customers', customerId, 'sites'),
    /**
     * /crm/customers/:customerId/sites/:siteId
-    * @param {*} customerId - string
-    * @param {*} siteId - string
+    * @param {string} customerId - string
+    * @param {string} siteId - string
     */
    siteDetail: (customerId, siteId) => _url(_CRM, 'customers', customerId, 'sites', siteId),
    /**
     * /crm/customers/:customerId/machine
-    * @param {*} customerId - string
+    * @param {string} customerId - string
     */
-   listMachine: customerId => _url(_CRM, 'customers', customerId, 'machine')
+   listMachine: customerId => _url(_CRM, 'customers', customerId, 'machine'),
+   /**
+    * /crm/customers/register
+    */
+   register: _url(_CRM, 'customers', 'register')
   }
  },
  /**

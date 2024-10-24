@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react'
 import { LoadingScreen } from 'component/loading-screen'
 
+// eslint-disable-next-line react/display-name
 const Loadable = Component => props =>
  (
   <Suspense fallback={<LoadingScreen />}>
@@ -35,6 +36,9 @@ export const ContactPage = Loadable(lazy(() => import('page/crm/contact/contact'
 export const SitePage = Loadable(lazy(() => import('page/crm/site/site')))
 // customer-support
 export const CustomerSupportTicketsPage = Loadable(lazy(() => import('page/crm/support/tickets')))
+
+//log
+export const LogListPage = Loadable(lazy(() => import('page/log/logs')))
 
 // support
 export const TicketsListPage = Loadable(lazy(() => import('page/support/tickets/tickets')))

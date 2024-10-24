@@ -30,6 +30,8 @@ import {
  CustomerSupportTicketsPage,
  // support:
  TicketsListPage,
+ // log:
+ LogListPage,
  // fallback:
  BlankPage,
  FallbackPage,
@@ -244,6 +246,25 @@ export default function Router() {
    children: [
     { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
     { path: 'tickets', element: <TicketsListPage /> },
+    {
+     element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
+     children: [
+      // { path: 'password', element: <ChangePasswordPage /> },
+     ]
+    }
+   ]
+  },
+  {
+   // logs
+   path: 'logs',
+   element: (
+    <AuthGuard>
+     <DashboardLayout />
+    </AuthGuard>
+   ),
+   children: [
+    { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
+    { path: 'machines', element: <LogListPage /> },
     {
      element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
      children: [

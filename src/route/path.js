@@ -17,6 +17,9 @@ const SUB_MACHINES = 'machines'
 const ROOTS_SUPPORT = 'support'
 const SUB_TICKETS = 'tickets'
 
+const ROOTS_LOGS = 'logs'
+const SUB_MACHINE_LOGS = 'machines'
+
 const ROOTS_EMAIL = '/email'
 const ROOTS_SECURITY = '/security'
 const ROOTS_SETTING = '/settings'
@@ -95,12 +98,21 @@ export const PATH_MACHINE = {
  }
 }
 
-// :machine
+// :support
 export const PATH_SUPPORT = {
  root: ROOTS_SUPPORT,
  tickets: {
   list: conNex(ROOTS_SUPPORT, SUB_TICKETS),
   view: id => conNex(ROOTS_SUPPORT, SUB_TICKETS, id, 'view')
+ }
+}
+
+// :logs
+export const PATH_LOGS = {
+ root: ROOTS_LOGS,
+ machines: {
+  list: conNex(ROOTS_LOGS, SUB_MACHINE_LOGS)
+  //   view: id => conNex(ROOTS_SUPPORT, SUB_TICKETS, id, 'view')
  }
 }
 
