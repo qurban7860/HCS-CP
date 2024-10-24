@@ -3,7 +3,6 @@ export * from './rhf-select'
 export * from './rhf-checkbox'
 
 export { default } from './form-provider'
-
 export { default as RHFCodes } from './rhf-code'
 export { default as RHFSwitch } from './rhf-switch'
 export { default as RHFEditor } from './rhf-editor'
@@ -20,3 +19,4 @@ export { default as RHFCustomPhoneInput } from './rhf-custom-phone-input'
 export { default as RHFChipsInput } from './rhf-chip-input'
 export { default as RHFPasswordField } from './rhf-password-field'
 export { default as RHFCountryAutocomplete } from './rhf-country-autocomplete'
+export { default as RHFFilteredSearchBar } from './rhf-filtered-searchbar'
