@@ -1,4 +1,5 @@
 import { Fragment } from 'react'
+import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ICON_NAME, useIcon, useSettingContext } from 'hook'
@@ -14,69 +15,75 @@ import { StyledIconListItemText, StyledTableRow } from './style'
 const { BODY2 } = VARIANT.TYPOGRAPHY
 
 const CustomerTable = ({ customer, mode, index }) => {
-  const theme = useTheme()
-  const { themeMode } = useSettingContext()
-  const navigate = useNavigate()
-  const { Icon, iconSrc: activeSrc } = useIcon(ICON_NAME.ACTIVE)
-  const { iconSrc: inactiveSrc } = useIcon(ICON_NAME.INACTIVE)
+ const theme = useTheme()
+ const { themeMode } = useSettingContext()
+ const navigate = useNavigate()
+ const { Icon, iconSrc: activeSrc } = useIcon(ICON_NAME.ACTIVE)
+ const { iconSrc: inactiveSrc } = useIcon(ICON_NAME.INACTIVE)
 
-  const activeColor = mode === KEY.DARK ? theme.palette.howick.burnIn : theme.palette.burnIn.altDark
-  const inactiveColor = theme.palette.howick.error
+ const activeColor = mode === KEY.DARK ? theme.palette.howick.burnIn : theme.palette.burnIn.altDark
+ const inactiveColor = theme.palette.howick.error
 
-  const handleOnClick = (id) => {
-    navigate(PATH_CUSTOMER.customers.view(id))
-  }
+ const handleOnClick = id => {
+  navigate(PATH_CUSTOMER.customers.view(id))
+ }
 
-  const address = []
-  if (customer?.mainSite?.address?.city) {
-    address.push((customer?.mainSite?.address?.city).trim())
-  }
-  if (customer?.address?.country) {
-    address.push((customer?.mainSite?.address?.country).trim())
-  }
+ const address = []
+ if (customer?.mainSite?.address?.city) {
+  address.push((customer?.mainSite?.address?.city ?? '').trim())
+ }
+ if (customer?.address?.country) {
+  address.push((customer?.mainSite?.address?.country ?? '').trim())
+ }
 
-  const openInNewPage = (id) => {
-    // dispatch(setMachineTab('info'))
-    const url = PATH_CUSTOMER.customers.view(id)
-    window.open(url, '_blank')
-  }
+ const openInNewPage = id => {
+  // dispatch(setMachineTab('info'))
+  const url = PATH_CUSTOMER.customers.view(id)
+  window.open(url, '_blank')
+ }
 
-  return (
-    <Fragment>
-      <TableBody>
-        <StyledTableRow index={index} mode={mode} customer={customer}>
-          <LinkTableCell
-            param={customer?.name}
-            onClick={() => {
-              handleOnClick(customer?._id)
-            }}
-            openInNewTab={() => openInNewPage(customer?._id)}
-          />
-          <TableCell>
-            <Box>{customer?.clientCode}</Box>
-          </TableCell>
-          <TableCell>
-            {customer?.tradingName?.map((alias, index) => (
-              <GStyledTableChip key={index} mode={themeMode} size={SIZE.SMALL} label={<Typography variant={BODY2}>{alias}</Typography>} />
-            ))}
-          </TableCell>
-          <TableCell>
-            {Object.values(address ?? {})
-              .reverse()
-              .map((value) => (typeof value === 'string' ? value.trim() : ''))
-              .filter((value) => value !== '')
-              .join(', ')}
-          </TableCell>
-          <TableCell>{fDate(customer?.createdAt)}</TableCell>
-          <TableCell>
-            <StyledIconListItemText inActive={customer?.isActive}>
-              <m.div>{customer?.isActive ? <Icon icon={activeSrc} color={activeColor} /> : <Icon icon={inactiveSrc} color={inactiveColor} />}</m.div>
-            </StyledIconListItemText>
-          </TableCell>
-        </StyledTableRow>
-      </TableBody>
-    </Fragment>
-  )
+ return (
+  <Fragment>
+   <TableBody>
+    <StyledTableRow index={index} mode={mode} customer={customer}>
+     <LinkTableCell
+      param={customer?.name}
+      onClick={() => {
+       handleOnClick(customer?._id)
+      }}
+      openInNewTab={() => openInNewPage(customer?._id)}
+     />
+     <TableCell>
+      <Box>{customer?.clientCode}</Box>
+     </TableCell>
+     <TableCell>
+      {customer?.tradingName?.map((alias, index) => (
+       <GStyledTableChip key={index} mode={themeMode} size={SIZE.SMALL} label={<Typography variant={BODY2}>{alias}</Typography>} />
+      ))}
+     </TableCell>
+     <TableCell>
+      {Object.values(address ?? {})
+       .reverse()
+       .map(value => (typeof value === 'string' ? value.trim() : ''))
+       .filter(value => value !== '')
+       .join(', ')}
+     </TableCell>
+     <TableCell>{fDate(customer?.createdAt)}</TableCell>
+     <TableCell>
+      <StyledIconListItemText inActive={customer?.isActive}>
+       <m.div>{customer?.isActive ? <Icon icon={activeSrc} color={activeColor} /> : <Icon icon={inactiveSrc} color={inactiveColor} />}</m.div>
+      </StyledIconListItemText>
+     </TableCell>
+    </StyledTableRow>
+   </TableBody>
+  </Fragment>
+ )
+}
+
+CustomerTable.propTypes = {
+ customer: PropTypes.object.isRequired,
+ index: PropTypes.number.isRequired,
+ mode: PropTypes.string.isRequired
 }
 
 export default CustomerTable
