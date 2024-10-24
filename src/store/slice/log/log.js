@@ -79,20 +79,20 @@ const logSlice = createSlice({
    state.success = true
    state.initial = true
   },
-  resetGraphData(state) {
-   state.machineLogsGraphData = []
+  resetLogsGraphData(state) {
+   state.logsGraphData = []
    state.responseMessage = null
    state.success = false
    state.isLoading = false
   },
   resetLogRecord(state) {
-   state.machineErpLog = {}
+   state.log = {}
    state.responseMessage = null
    state.success = false
    state.isLoading = false
   },
   resetLogRecords(state) {
-   state.machineErpLogs = []
+   state.logs = []
    state.responseMessage = null
    state.success = false
    state.machineErpLogstotalCount = 0
@@ -137,7 +137,7 @@ export const {
 
 export function getLogGraphData(customerId, machineId, type = 'erp', periodType, logGraphType) {
  return async dispatch => {
-  dispatch(slice.actions.startLoading())
+  dispatch(logSlice.actions.startLoading())
   try {
    const params = {
     customer: customerId,
