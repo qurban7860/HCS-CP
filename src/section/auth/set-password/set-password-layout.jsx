@@ -15,9 +15,8 @@ SetPasswordLayout.propTypes = {
 }
 
 gsap.registerPlugin(useGSAP)
-function SetPasswordLayout({ children, illustration, title }) {
+function SetPasswordLayout({ children, title }) {
  const { themeMode } = useSettingContext()
- title = title || GLOBAL.APP_BRANDING
 
  useGSAP(() => {
   const introTl = gsap.timeline()
