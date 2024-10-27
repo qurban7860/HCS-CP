@@ -13,7 +13,7 @@ const initialState = {
  log: {},
  logs: [],
  logsGraphData: [],
- logTotalCount: 0,
+ logsTotalCount: 0,
  dateFrom: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
  dateTo: new Date(Date.now()).toISOString().split('T')[0],
  logFilterBy: '',
@@ -54,17 +54,17 @@ const logSlice = createSlice({
    state.error = action.payload
    state.initial = true
   },
-  getLogRecordSuccess(state, action) {
+  getLogSuccess(state, action) {
    state.isLoading = false
    state.success = true
    state.log = action.payload
    state.initial = true
   },
-  getLogRecordsSuccess(state, action) {
+  getLogsSuccess(state, action) {
    state.isLoading = false
    state.success = true
    state.logs = action.payload
-   state.logTotalCount = action?.payload?.totalCount
+   state.logsTotalCount = action?.payload?.totalCount
    state.initial = true
   },
   setResponseMessage(state, action) {
@@ -85,17 +85,17 @@ const logSlice = createSlice({
    state.success = false
    state.isLoading = false
   },
-  resetLogRecord(state) {
+  resetLog(state) {
    state.log = {}
    state.responseMessage = null
    state.success = false
    state.isLoading = false
   },
-  resetLogRecords(state) {
+  resetLogs(state) {
    state.logs = []
    state.responseMessage = null
    state.success = false
-   state.machineErpLogstotalCount = 0
+   state.logsTotalCount = 0
   },
   resetLogDates(state) {
    state.dateFrom = new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
@@ -122,8 +122,8 @@ export const {
  setSelectedLogType,
  setDateTo,
  setAllVisibilityFalse,
- resetLogRecords,
- resetLogRecord,
+ resetLogs,
+ resetLog,
  resetLogsGraphData,
  resetLogDates,
  setResponseMessage,
@@ -163,7 +163,7 @@ export function getLogGraphData(customerId, machineId, type = 'erp', periodType,
  }
 }
 
-export function getLogRecord(machineId, id, logType) {
+export function getLog(machineId, id, logType) {
  return async dispatch => {
   dispatch(logSlice.actions.startLoading())
   try {
@@ -173,7 +173,7 @@ export function getLogRecord(machineId, id, logType) {
      machine: machineId
     }
    })
-   dispatch(logSlice.actions.getLogRecordSuccess(response.data))
+   dispatch(logSlice.actions.getLogSuccess(response.data))
   } catch (error) {
    console.error(error)
    dispatch(logSlice.actions.hasError(error.Message))
@@ -182,7 +182,7 @@ export function getLogRecord(machineId, id, logType) {
  }
 }
 
-export function getLogRecords({ customerId = undefined, machineId, page, pageSize, fromDate, toDate, isCreatedAt, isMachineArchived, selectedLogType, isArchived, searchKey, searchColumn }) {
+export function getLogs({ customerId = undefined, machineId, page, pageSize, fromDate, toDate, isCreatedAt, isMachineArchived, selectedLogType, isArchived, searchKey, searchColumn }) {
  return async dispatch => {
   dispatch(logSlice.actions.startLoading())
   try {
@@ -193,23 +193,22 @@ export function getLogRecords({ customerId = undefined, machineId, page, pageSiz
     fromDate,
     toDate,
     isArchived,
-    pagination: { page: 0, pageSize: 200 },
+    pagination: { page, pageSize },
     ...(isMachineArchived && { archivedByMachine: true }),
     ...(!!isCreatedAt && { isCreatedAt }),
     ...(searchKey?.length > 0 && { searchKey, searchColumn })
    }
    const response = await axios.get(PATH_SERVER.LOG.list, { params })
-   console.log('response', response.data)
-   dispatch(logSlice.actions.getLogRecordsSuccess(response.data))
+   dispatch(logSlice.actions.getLogsSuccess(response.data))
   } catch (error) {
-   console.error('Error fetching machine log records:', error)
+   console.error('Error fetching logs:', error)
    dispatch(logSlice.actions.hasError(error.message || 'An error occurred'))
    throw error
   }
  }
 }
 
-export function updateLogRecord(id, logType, logData) {
+export function updateLog(id, logType, logData) {
  return async dispatch => {
   dispatch(logSlice.actions.startLoading())
   try {
@@ -218,7 +217,7 @@ export function updateLogRecord(id, logType, logData) {
     ...logData
    }
    const response = await axios.patch(PATH_SERVER.LOG.detail(id), data)
-   dispatch(logSlice.actions.getLogRecordSuccess(response.data))
+   dispatch(logSlice.actions.getLogSuccess(response.data))
    return {
     success: response.status === 202,
     message: 'Log updated'
@@ -231,7 +230,7 @@ export function updateLogRecord(id, logType, logData) {
  }
 }
 
-export function deleteLogRecord(id, logType) {
+export function deleteLog(id, logType) {
  return async dispatch => {
   dispatch(logSlice.actions.startLoading())
   try {
