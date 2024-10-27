@@ -1,4 +1,3 @@
-export { default as SearchBarCombo } from './search-bar-combo'
 export { default as LinkDialogTableCell } from './link-dialog-table-cell'
 export { default as LinkTableCellButton } from './link-table-cell-button'
 export { default as LinkTableCellWithIconTarget } from './link-table-cell-icon-target'
