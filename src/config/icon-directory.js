@@ -31,6 +31,10 @@ function _getWebIcon(icon) {
  return `mdi:${icon}`
 }
 
+function _getAnyWebIcon(icon) {
+ return `${icon}`
+}
+
 function _getAnimatedIcon(icon) {
  return `line-md:${icon}`
 }
@@ -57,6 +61,7 @@ const ICON_WEB = {
  CONTRAST_OFF: _getWebIcon('select-off'),
  CURRENTLY_EMPLOYED: _getWebIcon('person-badge'),
  DANGER: _getWebIcon('dangerous'),
+ CALENDAR_CLOCK: _getAnyWebIcon('fluent-mdl2:date-time'),
  EYE: _getWebIcon('eye'),
  EYE_OFF: _getWebIcon('eye-off'),
  EDIT: _getWebIcon('pencil'),
@@ -69,6 +74,7 @@ const ICON_WEB = {
  INACTIVE: _getWebIcon('minus-circle'),
  INSTALL: _getWebIcon('hammer-wrench'),
  JIRA: _getWebIcon('jira'),
+ LEGEND: _getAnyWebIcon('carbon:legend'),
  LOGOUT: _getWebIcon('logout'),
  MANUFACTURE: _getWebIcon('factory'),
  MAGNIFY_IN: _getWebIcon('magnify-plus'),
@@ -126,6 +132,7 @@ export const ICON_WEB_NAME = {
  BACK: 'BACK',
  A_BACK: 'A_BACK',
  BLUR_ON: 'BLUR_ON',
+ CALENDAR_CLOCK: 'CALENDAR_CLOCK',
  CLOSE: 'CLOSE',
  CHEVRON_RIGHT: 'CHEVRON_RIGHT',
  CHECK_CIRCLE: 'CHECK_CIRCLE',
@@ -148,6 +155,7 @@ export const ICON_WEB_NAME = {
  JIRA: 'JIRA',
  FULLSCREEN: 'FULLSCREEN',
  FULLSCREEN_EXIT: 'FULLSCREEN_EXIT',
+ LEGEND: 'LEGEND',
  LOGOUT: 'LOGOUT',
  MAIN_SITE: 'MAIN_SITE',
  MANUFACTURE: 'MANUFACTURE',
