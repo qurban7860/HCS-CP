@@ -1,15 +1,12 @@
 import { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { useNavigate } from 'react-router-dom'
-import { ICON_NAME, useIcon, useSettingContext } from 'hook'
-import { Box, TableBody, TableCell, TableSortLabel, TableRow } from '@mui/material'
+import { useSettingContext } from 'hook'
+import { TableBody, TableCell } from '@mui/material'
 import { LinkTableCell } from 'component'
-import { useTheme } from '@mui/material/styles'
-import { fDate, fDateTime } from 'util'
-import { KEY } from 'constant'
-import { StyledIconListItemText, StyledTableRow } from './style'
+import { fDateTime } from 'util'
+import { StyledTableRow } from './style'
 
-const LogsTable = ({ index, onViewRow, columns, row, order, onSort }) => {
+const LogsTable = ({ index, onViewRow, columns, row, selected, order, onSort }) => {
  const { themeMode } = useSettingContext()
 
  row = { ...row, machineSerialNo: row?.machine?.serialNo }
@@ -22,7 +19,7 @@ const LogsTable = ({ index, onViewRow, columns, row, order, onSort }) => {
  return (
   <Fragment>
    <TableBody>
-    <StyledTableRow index={index} mode={themeMode}>
+    <StyledTableRow index={index} mode={themeMode} selected={selected}>
      <LinkTableCell align='left' onClick={onViewRow} param={fDateTime(date)} />
      {columns?.map((column, index) => {
       if (['date', 'createdBy.name', 'createdAt'].includes(column.id) || !column?.checked) return null
@@ -48,7 +45,8 @@ LogsTable.propTypes = {
  columns: PropTypes.array,
  order: PropTypes.string,
  onSort: PropTypes.func,
- row: PropTypes.object
+ row: PropTypes.object,
+ selected: PropTypes.bool
 }
 
 export default LogsTable

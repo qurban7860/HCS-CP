@@ -3,15 +3,12 @@ import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
 import { Box } from '@mui/material'
 import { TablePaginationCustom } from 'component'
-import { StyledTablePagination } from './style'
-import { applySort } from 'util'
 import { LABEL } from 'constant'
 
 const LogsPagination = ({
  rowsPerPageOptions = [10, 20, 40, 80, 100],
  data,
  page,
- mode,
  rowsPerPage,
  handleChangePage,
  handleChangeRowsPerPage,
@@ -28,9 +25,8 @@ const LogsPagination = ({
     count={data?.length ?? 0}
     component={m.div}
     colSpan={2}
-    data={data}
-    mode={mode}
     page={page}
+    data={data}
     labelRowsPerPage={LABEL.ROWS}
     rowsPerPageOptions={rowsPerPageOptions}
     onPageChange={handleChangePage}
@@ -49,7 +45,6 @@ const LogsPagination = ({
 LogsPagination.propTypes = {
  rowsPerPageOptions: PropTypes.array,
  data: PropTypes.array,
- mode: PropTypes.string,
  page: PropTypes.number,
  rowsPerPage: PropTypes.number,
  handleChangePage: PropTypes.func,
