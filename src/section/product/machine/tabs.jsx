@@ -57,7 +57,7 @@ export const TABS = value => [
   id: 5,
   label: t('log.logs.label'),
   icon: ICON_NAME.SUPPORT,
-  disabled: true
+  disabled: false
  },
  {
   id: 6,
