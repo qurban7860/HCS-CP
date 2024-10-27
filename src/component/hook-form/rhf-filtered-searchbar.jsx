@@ -1,9 +1,10 @@
-import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
+import { t } from 'i18next'
 import { useFormContext, Controller } from 'react-hook-form'
 import { TextField, Select, MenuItem, InputAdornment, useTheme, useMediaQuery, Box, Typography, Stack, Button } from '@mui/material'
 import { Icon, ICON_NAME } from 'hook'
-import { BUTTON } from 'constant'
+import { BUTTON, TYPOGRAPHY } from 'constant'
 // import { BUTTONS } from '../../constants/default-constants';
 
 RHFFilteredSearchBar.propTypes = {
@@ -46,7 +47,7 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
       placeholder={placeholder}
       error={!!fieldError}
       size={size}
-      label='Search'
+      label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{t('search.label')}</Typography>}
       disabled={!selectedFilter}
       sx={{
        flexDirection: isMobile ? 'column' : 'row',
@@ -105,7 +106,7 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
            }
           }}>
           <MenuItem dense value='' disabled sx={{ color: 'text.secondary' }}>
-           Select filter
+           {t('select_filter.label')}
           </MenuItem>
           {filterOptions?.map(option => (
            <MenuItem key={option?.id} value={option?.id}>

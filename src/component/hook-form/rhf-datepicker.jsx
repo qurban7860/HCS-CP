@@ -1,49 +1,74 @@
 import PropTypes from 'prop-types'
 import { useFormContext, Controller } from 'react-hook-form'
-import { DatePicker } from '@mui/x-date-pickers'
-import { Typography } from '@mui/material'
-import { useSettingContext } from 'hook'
-import { useTheme } from '@mui/material/styles'
-import RHFTextField from './rhf-text-field'
-import { TYPOGRAPHY, KEY } from 'constant'
+import { DatePicker } from 'antd'
+import enUS from 'antd/locale/en_US'
+import dayjs from 'dayjs'
+import { ConfigProvider } from 'antd'
+import { AntDSDatePickerWrapper } from './style'
 
-export default function RHFDatePicker({ name, label, size, value, helperText, Error, ...other }) {
+ConfigProvider.config({
+ theme: {
+  components: {
+   DatePicker: {
+    dateFormat: 'DD/MM/YYYY'
+   }
+  }
+ }
+})
+
+export default function RHFDatePicker({ name, label, defaultValue, helperText, error, size = 'large', variant = 'filled', ...other }) {
  const { control } = useFormContext()
- const { themeMode } = useSettingContext()
- const theme = useTheme()
+
+ const convertToDateObject = value => {
+  if (!value) return null
+  if (dayjs.isDayjs(value)) return value
+  return dayjs(value)
+ }
+
+ const theme = {
+  components: {
+   DatePicker: {
+    fontSize: '14px',
+    fontFamily: 'Yantramanav, sans-serif'
+   }
+  }
+ }
 
  return (
-  <Controller
-   name={name}
-   control={control}
-   render={({ field, fieldState: { error } }) => (
-    <DatePicker
-     {...field}
-     name='serviceDate'
-     value={value}
-     label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{label}</Typography>}
-     onChange={newValue => field.onChange(newValue)}
-     renderInput={params => <RHFTextField {...params} size={size} error={!!error || !!Error} helperText={error ? error?.message : helperText} />}
-     {...other}
-     sx={{
-      '& .MuiInputLabel-root': {
-       ...theme.typography.overline2
-      },
-      '& .MuiOutlinedInput-notchedOutline': {
-       borderRadius: 0.4,
-       color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0',
-       ...theme.typography.overline2,
-       padding: '0'
-      },
-      '& .MuiInputBase-root': {
-       '& .MuiInputBase-input': {
-        padding: '10px 14px'
-       }
-      }
-     }}
-    />
-   )}
-  />
+  <ConfigProvider locale={enUS} theme={theme}>
+   <AntDSDatePickerWrapper>
+    <div className='w-full'>
+     <Controller
+      name={name}
+      control={control}
+      defaultValue={null}
+      render={({ field }) => (
+       <div>
+        <DatePicker
+         {...field}
+         size={size}
+         variant={variant}
+         label={label}
+         placeholder={label}
+         style={{
+          width: '100%',
+          borderRadius: '2px'
+         }}
+         status={error ? 'error' : undefined}
+         onChange={date => {
+          field.onChange(date ? date.toDate() : null)
+         }}
+         value={convertToDateObject(field.value)}
+         format='DD/MM/YYYY'
+         {...other}
+        />
+        {(error || helperText) && <div style={{ marginTop: 1, color: error ? theme.palette.error.main : theme.palette.grey[400] }}>{error?.message || helperText}</div>}
+       </div>
+      )}
+     />
+    </div>
+   </AntDSDatePickerWrapper>
+  </ConfigProvider>
  )
 }
 
@@ -51,7 +76,9 @@ RHFDatePicker.propTypes = {
  name: PropTypes.string,
  label: PropTypes.string,
  size: PropTypes.string,
+ variant: PropTypes.string,
+ defaultValue: PropTypes.any,
  helperText: PropTypes.node,
- Error: PropTypes.bool,
+ error: PropTypes.object,
  value: PropTypes.any
 }
