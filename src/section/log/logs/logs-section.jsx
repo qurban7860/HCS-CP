@@ -2,23 +2,19 @@ import { Fragment, useEffect, useState, memo, useLayoutEffect, useCallback } fro
 import PropTypes from 'prop-types'
 import axios from 'axios'
 import _ from 'lodash'
-import { t } from 'i18next'
 import { useSearchParams } from 'react-router-dom'
 import { useSelector, dispatch } from 'store'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { useAuthContext } from 'auth'
-import { useSettingContext } from 'hook'
 import { getCustomers, getLogGraphData, getSecurityUser, getLogs, ChangeLogPage, resetLogsGraphData, resetLogs, resetSecurityUser, getCustomerMachines, resetCustomerMachines } from 'store/slice'
-import { Grid, Box, Card, Stack } from '@mui/material'
+import { Grid } from '@mui/material'
 import { MotionLazyContainer, TableTitleBox } from 'component'
-import FormProvider, { RHFAutocomplete } from 'component/hook-form'
+import FormProvider from 'component/hook-form'
 import { LogsTableController, useLogDefaultValues } from 'section/log'
 import { MachineLogsTab } from 'section/product'
 import { addLogSchema } from 'schema'
-import { useTheme } from '@mui/material/styles'
-import { TABLE, LOG_TYPE_CONFIG } from 'config'
-import { KEY, FLEX } from 'constant'
+import { FLEX } from 'constant'
 
 const LogsSection = ({ isArchived }) => {
  const [selectedSearchFilter, setSelectedSearchFilter] = useState('')
@@ -183,27 +179,29 @@ const LogsSection = ({ isArchived }) => {
  }
 
  return (
-  <MotionLazyContainer display={FLEX.FLEX}>
-   <TableTitleBox title={'Logs'} user={securityUser} />
-   <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
-    <Grid container spacing={2} mt={3}>
-     <Grid item xs={12} sm={12}>
-      <LogsTableController
-       customers={customers}
-       handleCustomerChange={handleCustomerChange}
-       customerMachines={customerMachines}
-       handleMachineChange={handleMachineChange}
-       handleLogTypeChange={handleLogTypeChange}
-       isGraphPage={isGraphPage}
-       methods={methods}
-       onGetLogs={onGetLogs}
-      />
+  <Fragment>
+   <MotionLazyContainer display={FLEX.FLEX}>
+    <TableTitleBox title={'Logs'} user={securityUser} />
+    <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
+     <Grid container spacing={2} mt={3}>
+      <Grid item xs={12} sm={12}>
+       <LogsTableController
+        customers={customers}
+        handleCustomerChange={handleCustomerChange}
+        customerMachines={customerMachines}
+        handleMachineChange={handleMachineChange}
+        handleLogTypeChange={handleLogTypeChange}
+        isGraphPage={isGraphPage}
+        methods={methods}
+        onGetLogs={onGetLogs}
+       />
+      </Grid>
      </Grid>
-    </Grid>
-   </FormProvider>
+    </FormProvider>
 
-   <MachineLogsTab isLogsPage logType={logType} payload={payload} />
-  </MotionLazyContainer>
+    <MachineLogsTab isLogsPage logType={logType} payload={payload} />
+   </MotionLazyContainer>
+  </Fragment>
  )
 }
 
