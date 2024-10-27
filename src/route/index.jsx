@@ -21,6 +21,7 @@ import {
  // product:
  MachinePage,
  MachinesListPage,
+ MachinesLogsPage,
  MachineSupportTicketsPage,
  //  crm:
  CustomerPage,
@@ -149,6 +150,15 @@ export default function Router() {
       { element: <MachinesListPage />, index: true },
       { path: ':id/view', element: <MachinePage /> },
       {
+       path: ':id/logs',
+       children: [
+        {
+         element: <MachinesLogsPage />,
+         index: true
+        }
+       ]
+      },
+      {
        path: ':id/support',
        children: [
         {
@@ -264,7 +274,7 @@ export default function Router() {
    ),
    children: [
     { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
-    { path: 'machines', element: <LogListPage /> },
+    { path: 'machine', element: <LogListPage /> },
     {
      element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
      children: [
