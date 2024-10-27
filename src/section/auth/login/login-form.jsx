@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
+import { t } from 'i18next'
 import { useAuthContext } from 'auth'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
-import { snack } from 'hook'
+import { snack, useSettingContext } from 'hook'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoginSchema } from 'schema'
@@ -18,6 +19,8 @@ function LoginForm() {
  const navigate = useNavigate()
  const { login } = useAuthContext()
  const regEx = new RegExp(REGEX.ERROR_CODE)
+
+ const { themeMode } = useSettingContext()
 
  const defaultValues = {
   email: '',
@@ -94,24 +97,24 @@ function LoginForm() {
   <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
    <Stack spacing={3} sx={{ mt: 1 }}>
     {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
-    <RHFTextField className='portal-rhf-textfield' type={KEY.EMAIL} name={KEY.EMAIL} label={LABEL.LOGIN_EMAIL} autoComplete={KEY.USERNAME} aria-label={LABEL.LOGIN_EMAIL} required />
-    <RHFPasswordField className='portal-rhf-password' name={KEY.PASSWORD} id={KEY.PASSWORD} label={LABEL.LOGIN_PASSWORD} autoComplete={KEY.CURRENT_PASSWORD} aria-label={LABEL.LOGIN_PASSWORD} />
+    <RHFTextField type={KEY.EMAIL} name={KEY.EMAIL} label={LABEL.LOGIN_EMAIL} autoComplete={KEY.USERNAME} aria-label={LABEL.LOGIN_EMAIL} required />
+    <RHFPasswordField name={KEY.PASSWORD} id={KEY.PASSWORD} label={LABEL.LOGIN_PASSWORD} autoComplete={KEY.CURRENT_PASSWORD} aria-label={LABEL.LOGIN_PASSWORD} />
    </Stack>
-   <RHFCheckbox className='portal-checkbox' name={KEY.REMEMBER} label={BUTTON.REMEMBER_ME} />
+   <RHFCheckbox name={KEY.REMEMBER} label={BUTTON.REMEMBER_ME} />
    <GStyledLoadingButton
     fullWidth
     className='portal-button'
     isLoading={isSubmitting}
-    color={KEY.INHERIT}
     size={SIZE.LARGE}
     type={KEY.SUBMIT}
+    mode={themeMode}
     variant={KEY.CONTAINED}
     loading={isSubmitSuccessful || isSubmitting}
     sx={RADIUS.BORDER}>
-    {BUTTON.LOGIN}
+    {t('login.label').toUpperCase()}
    </GStyledLoadingButton>
    <Stack alignItems={FLEX.FLEX_END} sx={{ my: 2 }}>
-    <Link className='portal-forgot' component={RouterLink} to={PATH_AUTH.resetPassword} variant={TYPOGRAPHY.BODY2} color={KEY.INHERIT} underline={KEY.NONE}>
+    <Link component={RouterLink} to={PATH_AUTH.resetPassword} variant={TYPOGRAPHY.BODY2} color={KEY.INHERIT} underline={KEY.NONE}>
      {BUTTON.FORGOT_PASSWORD}
     </Link>
    </Stack>
