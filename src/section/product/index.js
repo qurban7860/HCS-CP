@@ -10,3 +10,6 @@ export { default as TicketsTab } from './support/tickets-tab'
 export { default as TicketCard } from './support/ticket-card'
 export { default as ticketsDefaultValues } from './support/default-values/default-values'
 export * from './support/default-values/default-values'
+
+// :log
+export * from './machine-logs'
