@@ -401,7 +401,7 @@ const LogsSection = ({ isArchived }) => {
     </Grid>
    </FormProvider>
 
-   <MachineLogsTab isLogsPage logType={logType} dataForApi={payload} />
+   <MachineLogsTab isLogsPage logType={logType} payload={payload} />
   </MotionLazyContainer>
  )
 }
