@@ -1,11 +1,11 @@
 import { useState, useEffect, memo, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
-import { useIcon, Icon, ICON_NAME, useSettingContext } from 'hook'
+import { useIcon, ICON_NAME, useSettingContext } from 'hook'
 import { useLocation } from 'react-router-dom'
-import { Typography, Chip, IconButton, Box } from '@mui/material'
+import { Typography, Chip, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledSpanBox, GStyledPopover, GStyledTooltip } from 'theme/style'
+import { GStyledSpanBox, GStyledTooltip } from 'theme/style'
 import { SvgFlagIcon, IconTooltip } from 'component'
 import { SkeletonViewFormField } from 'component/skeleton'
 import { SIZE, VARIANT, KEY, LABEL, FLEX } from 'constant'
@@ -14,16 +14,15 @@ import { StyledDefaultTypography, StyledFieldGrid, StyledChipGrid, StyledFieldCh
 const { TYPOGRAPHY } = VARIANT
 
 const ViewFormField = ({
- children,
+ children = null,
  primaryContact,
- node,
- heading,
- variant,
- isLoading,
- gridSize,
- contact,
- isWidget,
- noBreakSpace,
+ heading = null,
+ variant = TYPOGRAPHY.BODY1,
+ isLoading = false,
+ gridSize = 12,
+ contact = null,
+ isWidget = false,
+ noBreakSpace = false,
  userRolesChip,
  isNoBg,
  chip,
@@ -209,19 +208,9 @@ ViewFormField.propTypes = {
  userRolesChip: PropTypes.array,
  link: PropTypes.string,
  customerLink: PropTypes.string,
- primaryContact: PropTypes.any
-}
-
-ViewFormField.defaultProps = {
- gridSize: 12,
- children: null,
- noBreakSpace: false,
- node: null,
- heading: null,
- isLoading: false,
- contact: null,
- isWidget: false,
- variant: TYPOGRAPHY.BODY1
+ primaryContact: PropTypes.any,
+ isMachineView: PropTypes.bool,
+ country: PropTypes.string
 }
 
 export default memo(ViewFormField)
