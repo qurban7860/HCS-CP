@@ -1,0 +1,150 @@
+import { useEffect, useReducer, useState } from 'react'
+import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
+import { dispatch } from 'store'
+import { useTable, getComparator, useSettingContext } from 'hook'
+import { ChangeLogPage, ChangeLogRowsPerPage, getLogs } from 'store/slice'
+import { Grid, Table } from '@mui/material'
+import { TableNoData, SkeletonTable } from 'component'
+import { StyledScrollTableContainer, LogsHeader, LogsTable, LogsPagination, tableColumnsReducer } from 'section/log/logs'
+import { GStyledTableHeaderBox } from 'theme/style'
+import { MARGIN } from 'config'
+import { getLogTypeConfigForGenerationAndType, logGraphTypes } from 'config/log-types'
+import { FLEX_DIR, KEY } from 'constant'
+import { applySort } from 'util'
+
+const MachineLogsTab = ({ logType, isLogsPage, payload }) => {
+ const [openLogDetailsDialog, setOpenLogDetailsDialog] = useState(false)
+ const [selectedLog, setSelectedLog] = useState(null)
+ const [tableData, setTableData] = useState([])
+ const { logs, logPage, logsTotalCount, isLoading, logRowsPerPage } = useSelector(state => state.log)
+ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, getLogTypeConfigForGenerationAndType(5, 'ERP').tableColumns)
+ const { themeMode } = useSettingContext()
+
+ useEffect(() => {
+  dispatch(
+   getLogs({
+    ...payload,
+    page: logPage,
+    pageSize: logRowsPerPage
+   })
+  )
+ }, [logPage, logRowsPerPage])
+
+ useEffect(() => {
+  setTableData(logs?.data || [])
+ }, [logs])
+
+ useEffect(() => {
+  const newColumns = logType?.tableColumns
+  if (newColumns) {
+   dispatchTableColumns({
+    type: 'handleLogTypeChange',
+    newColumns,
+    allMachineLogsPage: isLogsPage
+   })
+  }
+ }, [logType])
+
+ const { order, orderBy, selected, onSort } = useTable({
+  defaultOrderBy: KEY.CREATED_AT,
+  defaultOrder: KEY.DESC
+ })
+
+ const dataFiltered = applySort({
+  inputData: tableData,
+  comparator: getComparator(order, orderBy)
+ })
+
+ const handleChangePage = (event, newPage) => {
+  dispatch(ChangeLogPage(newPage))
+ }
+
+ const handleChangeRowsPerPage = event => {
+  dispatch(ChangeLogPage(0))
+  dispatch(ChangeLogRowsPerPage(parseInt(event.target.value, 10)))
+ }
+
+ const handleColumnButtonClick = (columnId, newCheckState) => {
+  dispatchTableColumns({ type: 'updateColumnCheck', columnId, newCheckState })
+ }
+
+ const handleViewRow = id => {
+  const log = dataFiltered.find(item => item._id === id)
+  setSelectedLog({
+   ...log,
+   customer: log.customer?.name || '',
+   machine: log.machine?.serialNo || '',
+   createdBy: log.createdBy?.name || '',
+   updatedBy: log.updatedBy?.name || ''
+  })
+  setOpenLogDetailsDialog(true)
+ }
+
+ const refreshLogsList = () => {
+  dispatch(
+   getLogs({
+    ...payload,
+    page: logPage,
+    pageSize: logRowsPerPage
+   })
+  )
+ }
+
+ const isNotFound = !isLoading && !dataFiltered.length
+
+ return (
+  <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+   <Grid item lg={12}>
+    <Grid container mb={2}>
+     <Grid item lg={12} sm={12} mb={2} bgcolor='background.paper'>
+      <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
+      <LogsPagination
+       count={logsTotalCount || 0}
+       data={logsTotalCount}
+       page={logPage}
+       rowsPerPage={logRowsPerPage}
+       handleChangePage={handleChangePage}
+       handleChangeRowsPerPage={handleChangeRowsPerPage}
+       columnFilterButtonData={tableColumns}
+       handleColumnButtonClick={handleColumnButtonClick}
+      />
+      <StyledScrollTableContainer>
+       <Table>
+        <LogsHeader columns={tableColumns} dataFiltered={dataFiltered} orderBy={orderBy} order={order} onSort={onSort} />
+        {(isLoading ? [...Array(logRowsPerPage)] : dataFiltered).map((row, index) =>
+         row ? (
+          <LogsTable
+           key={row._id}
+           row={row}
+           columns={tableColumns}
+           onViewRow={() => handleViewRow(row._id)}
+           mode={themeMode}
+           index={index}
+           dataFiltered={dataFiltered}
+           onSort={onSort}
+           order={order}
+           orderBy={orderBy}
+           selected={selected.includes(row._id)}
+          />
+         ) : (
+          !isNotFound && <SkeletonTable key={index} sx={{ height: 60 }} />
+         )
+        )}
+        <TableNoData isNotFound={isNotFound} />
+       </Table>
+      </StyledScrollTableContainer>
+     </Grid>
+    </Grid>
+   </Grid>
+  </Grid>
+ )
+}
+
+MachineLogsTab.propTypes = {
+ logType: PropTypes.object,
+ isLogsPage: PropTypes.bool,
+ payload: PropTypes.object
+}
+
+export default MachineLogsTab
