@@ -64,6 +64,9 @@ const en = {
   local: `document`,
   label: `Document`
  },
+ login: {
+  label: `Login`
+ },
  support: {
   local: `support`,
   label: `Support`
@@ -105,9 +108,21 @@ const en = {
  language: {
   label: `Language`
  },
+ legend: {
+  label: `Legend`,
+  legends: {
+   label: `Legends`
+  }
+ },
  notifications: {
   label: `Notifications`,
   no_notif: `You have no new notifications`
+ },
+ search: {
+  label: `Search`
+ },
+ select_filter: {
+  label: `Select Filter`
  },
  account: `account`,
  product: `product`,
