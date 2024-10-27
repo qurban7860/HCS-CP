@@ -178,7 +178,7 @@ export const GStyledTablePaginationCustom = styled(TablePagination)(({ theme, mo
     },
     '&:nth-of-type(3)': {
      color:
-      page === Math.ceil((data?.length ?? 0) / rowsPerPage) - 1
+      page === Math.ceil((typeof data === 'number' ? data : data?.length ?? 0) / rowsPerPage) - 1
        ? mode === KEY.LIGHT
          ? theme.palette.grey[300]
          : theme.palette.grey[700]
@@ -188,7 +188,7 @@ export const GStyledTablePaginationCustom = styled(TablePagination)(({ theme, mo
     },
     '&:last-of-type': {
      color:
-      page === Math.ceil((data?.length ?? 0) / rowsPerPage) - 1
+      page === Math.ceil((typeof data === 'number' ? data : data?.length ?? 0) / rowsPerPage) - 1
        ? mode === KEY.LIGHT
          ? theme.palette.grey[300]
          : theme.palette.grey[700]
@@ -215,12 +215,12 @@ export const GStyledTopBorderDivider = styled(({ theme, mode, ...other }) => <Di
 export const GStyledLoadingButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
  backgroundColor: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
  color: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
- '&:hover': { backgroundColor: KEY.LIGHT ? theme.palette.howick.orange : theme.palette.howick.darkBlue },
- '&.MuiButton-root.Mui-disabled': {
-  backgroundColor: theme.palette.grey[200],
-  color: theme.palette.grey[600],
-  opacity: 0.5
- }
+ '&:hover': { backgroundColor: KEY.LIGHT ? theme.palette.howick.orange : theme.palette.howick.darkBlue }
+ //  '&.MuiButton-root.Mui-disabled': {
+ //   backgroundColor: theme.palette.grey[200],
+ //   color: theme.palette.grey[600],
+ //   opacity: 0.5
+ //  }
 }))
 
 export const GStyledLoadingScreenDiv = styled('div')(({ theme }) => ({
