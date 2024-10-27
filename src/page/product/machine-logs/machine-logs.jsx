@@ -1,0 +1,11 @@
+import { MachineLayout, MachineLogsTab } from 'section/product'
+
+const MachineLogs = () => {
+ return (
+  <MachineLayout tab={5}>
+   <MachineLogsTab />
+  </MachineLayout>
+ )
+}
+
+export default MachineLogs
