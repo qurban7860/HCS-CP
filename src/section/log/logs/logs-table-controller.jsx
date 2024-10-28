@@ -9,7 +9,7 @@ import { GStyledLoadingButton } from 'theme/style'
 import { LOG_TYPE_CONFIG } from 'config'
 import { KEY } from 'constant'
 
-const LogsTableController = ({ customers, handleCustomerChange, customerMachines, handleMachineChange, handleLogTypeChange, isGraphPage, methods, onGetLogs }) => {
+const LogsTableController = ({ customers, handleCustomerChange, customerMachines, handleMachineChange, handleLogTypeChange, isLogsPage, isGraphPage, methods, onGetLogs }) => {
  const [selectedSearchFilter, setSelectedSearchFilter] = useState('')
  const [graphLabels, setGraphLabels] = useState({ yaxis: 'Cumulative Total Value', xaxis: 'Months' })
 
@@ -52,33 +52,36 @@ const LogsTableController = ({ customers, handleCustomerChange, customerMachines
  return (
   <Card sx={{ p: 3, background: themeMode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[800], color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white }}>
    <Stack spacing={2}>
-    <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }}>
-     <RHFAutocomplete
-      required
-      name='customer'
-      label={t('customer.label')}
-      options={customers || []}
-      isOptionEqualToValue={(option, value) => option._id === value._id}
-      getOptionLabel={option => `${option?.name || ''}`}
-      renderOption={(props, option) => (
-       <li {...props} key={option?._id}>
-        {option?.name || ''}{' '}
-       </li>
-      )}
-      onChange={(e, newValue) => handleCustomerChange(newValue)}
-      size='small'
-     />
-     <RHFAutocomplete
-      name='machine'
-      label={t('machine.label')}
-      options={customerMachines || []}
-      isOptionEqualToValue={(option, value) => option._id === value._id}
-      getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
-      renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
-      onChange={(e, newValue) => handleMachineChange(newValue)}
-      size='small'
-     />
-    </Box>
+    {isLogsPage && (
+     <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }}>
+      <RHFAutocomplete
+       required
+       name='customer'
+       label={t('customer.label')}
+       options={customers || []}
+       isOptionEqualToValue={(option, value) => option._id === value._id}
+       getOptionLabel={option => `${option?.name || ''}`}
+       renderOption={(props, option) => (
+        <li {...props} key={option?._id}>
+         {option?.name || ''}{' '}
+        </li>
+       )}
+       onChange={(e, newValue) => handleCustomerChange(newValue)}
+       size='small'
+      />
+      <RHFAutocomplete
+       name='machine'
+       label={t('machine.label')}
+       options={customerMachines || []}
+       isOptionEqualToValue={(option, value) => option._id === value._id}
+       getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
+       renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
+       onChange={(e, newValue) => handleMachineChange(newValue)}
+       size='small'
+      />
+     </Box>
+    )}
+
     {!isGraphPage() && (
      <Fragment>
       <Box display='grid' gap={2} gridTemplateColumns={{ xs: '1fr', sm: 'repeat(2, 1fr)' }} sx={{ flexGrow: 1 }}>
@@ -181,6 +184,7 @@ LogsTableController.propTypes = {
  customerMachines: PropTypes.array,
  handleMachineChange: PropTypes.func,
  handleLogTypeChange: PropTypes.func,
+ isLogsPage: PropTypes.bool,
  isGraphPage: PropTypes.func,
  methods: PropTypes.object,
  onGetLogs: PropTypes.func

@@ -1,4 +1,4 @@
-const PAGE = 'logs'
+const PAGE = 'logsPage'
 export function tableColumnsReducer(state, action) {
  switch (action.type) {
   case 'setUpInitialColumns': {

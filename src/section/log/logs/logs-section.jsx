@@ -12,14 +12,12 @@ import { Grid } from '@mui/material'
 import { MotionLazyContainer, TableTitleBox } from 'component'
 import FormProvider from 'component/hook-form'
 import { LogsTableController, useLogDefaultValues } from 'section/log'
-import { MachineLogsTab } from 'section/product'
+import { MachineLogsTable } from 'section/product'
 import { addLogSchema } from 'schema'
 import { FLEX } from 'constant'
 
 const LogsSection = ({ isArchived }) => {
  const [selectedSearchFilter, setSelectedSearchFilter] = useState('')
- const [selectedLog, setSelectedLog] = useState(null)
- const [openLogDetailsDialog, setOpenLogDetailsDialog] = useState(false)
  const [graphLabels, setGraphLabels] = useState({ yaxis: 'Cumulative Total Value', xaxis: 'Months' })
  const { customerMachines } = useSelector(state => state.machine)
  const { logs, logPage, isLoading, logRowsPerPage } = useSelector(state => state.log)
@@ -191,6 +189,7 @@ const LogsSection = ({ isArchived }) => {
         customerMachines={customerMachines}
         handleMachineChange={handleMachineChange}
         handleLogTypeChange={handleLogTypeChange}
+        isLogsPage={true}
         isGraphPage={isGraphPage}
         methods={methods}
         onGetLogs={onGetLogs}
@@ -199,7 +198,7 @@ const LogsSection = ({ isArchived }) => {
      </Grid>
     </FormProvider>
 
-    <MachineLogsTab isLogsPage logType={logType} payload={payload} />
+    <MachineLogsTable isLogsPage logType={logType} payload={payload} />
    </MotionLazyContainer>
   </Fragment>
  )
