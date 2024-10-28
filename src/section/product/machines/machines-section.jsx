@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { useSelector, dispatch } from 'store'
 import { useAuthContext } from 'auth'
 import { useTable, useFilter, getComparator, useSettingContext } from 'hook'
-import { getMachines, getSecurityUser, setMachineFilterBy, ChangeMachinePage, ChangeMachineRowsPerPage, resetMachines, resetSecurityUser } from 'store/slice'
+import { getMachines, getSecurityUser, setMachineFilterBy, ChangeMachinePage, ChangeMachineRowsPerPage, resetMachine, resetMachines, resetSecurityUser } from 'store/slice'
 import { Table, Grid } from '@mui/material'
 import { GStyledTableHeaderBox } from 'theme/style'
 import { TableNoData, MotionLazyContainer, SkeletonTable, SearchBox, TableTitleBox } from 'component'
@@ -36,6 +36,7 @@ const MachineListSection = ({ isArchived }) => {
  })
 
  useLayoutEffect(() => {
+  dispatch(resetMachine())
   dispatch(resetMachines())
 
   if (userId !== securityUser?._id) {
@@ -53,9 +54,7 @@ const MachineListSection = ({ isArchived }) => {
   const debouncedDispatch = _.debounce(() => {
    dispatch(getMachines(null, null, isArchived, cancelTokenSource))
   }, 300)
-
   debouncedDispatch()
-
   return () => debouncedDispatch.cancel()
  }, [dispatch, machinePage, machineRowsPerPage, isArchived])
 
