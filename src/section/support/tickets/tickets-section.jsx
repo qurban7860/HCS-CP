@@ -90,16 +90,14 @@ const TicketsListSection = () => {
      <Grid container mb={2}>
       <Grid item lg={12} sm={12} mb={2} bgcolor='background.paper'>
        <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
-       {!isNotFound && (
-        <TicketsListPagination
-         mode={themeMode}
-         data={filteredData}
-         page={customerTicketPage}
-         rowsPerPage={customerTicketRowsPerPage}
-         handleChangePage={handleChangePage}
-         handleChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-       )}
+       <TicketsListPagination
+        mode={themeMode}
+        data={filteredData}
+        page={customerTicketPage}
+        rowsPerPage={customerTicketRowsPerPage}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+       />
        <StyledScrollTableContainer>
         <Table>
          <TicketsTableHeader mode={themeMode} />
