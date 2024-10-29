@@ -126,6 +126,10 @@ const en = {
  },
  account: `account`,
  product: `product`,
+ production: {
+  label: `Production`,
+  production_total: { label: `Production Total` }
+ },
  invoice: `invoice`,
  details: `details`,
  checkout: `checkout`,
