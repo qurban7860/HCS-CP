@@ -5,11 +5,13 @@ import { useGSAP } from '@gsap/react'
 import { TextPlugin } from 'gsap/TextPlugin'
 import { Typography, Grid, Button, Box, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import { HowickLoader } from 'component'
 import { GStyledBrandOverlayBox, StylendLandingContainerBox, ButtonProps } from 'theme/style'
 import { useAuthContext } from 'auth'
 import { ASSET, BRAND_RESP } from 'config'
 import { GLOBAL } from 'config/global'
 import { LABEL, PRODUCT, COMPANY, BUTTON, TYPOGRAPHY, KEY, FLEX_DIR, FLEX } from 'constant'
+import zIndex from '@mui/material/styles/zIndex'
 
 gsap.registerPlugin(useGSAP, TextPlugin)
 const Landing = () => {
@@ -123,6 +125,7 @@ const Landing = () => {
      )}
     </Grid>
    </Grid>
+   {/* <HowickLoader style={{ display: 'absolute', zIndex: -1 }} /> */}
   </StylendLandingContainerBox>
  )
 }

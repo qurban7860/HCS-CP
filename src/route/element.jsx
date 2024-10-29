@@ -1,10 +1,10 @@
 import { Suspense, lazy } from 'react'
-import { LoadingScreen } from 'component/loading-screen'
+import { FramingLoader } from 'component'
 
 // eslint-disable-next-line react/display-name
 const Loadable = Component => props =>
  (
-  <Suspense fallback={<LoadingScreen />}>
+  <Suspense fallback={<FramingLoader />}>
    <Component {...props} />
   </Suspense>
  )
