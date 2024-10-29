@@ -1,0 +1,171 @@
+import PropTypes from 'prop-types'
+import { useState, useEffect, Fragment } from 'react'
+import { useSelector } from 'react-redux'
+import { t } from 'i18next'
+import { useSettingContext } from 'hook'
+import { Typography, Card, Grid, Box, LinearProgress } from '@mui/material'
+import { FramingLoader } from 'component'
+import { useTheme } from '@mui/material/styles'
+import { GStyledFieldChip, GStyledMachineChip, GStyledSpanBox, GStyledCenterBox } from 'theme/style'
+import { LogStackedChart, HowickLoader } from 'component'
+import { TYPOGRAPHY, KEY, FLEX } from 'constant'
+
+const ERPProductionTotal = ({ timePeriod, customer, graphLabels }) => {
+ const [graphData, setGraphData] = useState([])
+ const { isLoading, logsGraphData } = useSelector(state => state.log)
+
+ const { themeMode } = useSettingContext()
+ const theme = useTheme()
+
+ useEffect(() => {
+  if (logsGraphData) {
+   const convertedDataToMeters = logsGraphData.map(item => ({
+    ...item,
+    componentLength: item.componentLength / 1000,
+    waste: item.waste / 1000
+   }))
+   setGraphData(convertedDataToMeters)
+  }
+ }, [logsGraphData])
+
+ const processGraphData = () => {
+  if (!graphData || graphData.length === 0) {
+   return null
+  }
+
+  const sortedData = [...graphData].sort((a, b) => a._id.localeCompare(b._id))
+  let labels = sortedData.map(item => item._id)
+
+  switch (timePeriod) {
+   case 'Daily':
+    sortedData.sort((a, b) => new Date(a._id) - new Date(b._id))
+    labels = Array.from({ length: 7 }, (_, i) => {
+     const date = new Date()
+     date.setDate(date.getDate() - i)
+     const month = String(date.getMonth() + 1).padStart(2, '0')
+     const day = String(date.getDate()).padStart(2, '0')
+     return `${month}/${day}`
+    }).reverse()
+    break
+   case 'Monthly':
+    sortedData.sort((a, b) => {
+     const [yearA, monthA] = a._id.split('-')
+     const [yearB, monthB] = b._id.split('-')
+     return new Date(yearA, monthA - 1) - new Date(yearB, monthB - 1)
+    })
+    labels = Array.from({ length: 12 }, (_, i) => {
+     const date = new Date()
+     date.setMonth(date.getMonth() - i)
+     const year = date.getFullYear()
+     const month = String(date.getMonth() + 1).padStart(2, '0')
+     return `${year}-${month}`
+    }).reverse()
+    break
+   case 'Quarterly':
+    sortedData.sort((a, b) => {
+     const [yearA, qtrA] = a._id.split('-')
+     const [yearB, qtrB] = b._id.split('-')
+     return yearA === yearB ? qtrA.localeCompare(qtrB) : yearA.localeCompare(yearB)
+    })
+    labels = Array.from({ length: 4 }, (_, i) => {
+     const date = new Date()
+     date.setMonth(date.getMonth() - i * 3)
+     const year = date.getFullYear()
+     const quarter = Math.floor(date.getMonth() / 3) + 1
+     return `${year}-Q${quarter}`
+    }).reverse()
+    break
+   case 'Yearly':
+    sortedData.sort((a, b) => a._id.localeCompare(b._id))
+    labels = Array.from({ length: 5 }, (_, i) => {
+     const date = new Date()
+     date.setFullYear(date.getFullYear() - i)
+     return date.getFullYear().toString()
+    }).reverse()
+    break
+   default:
+    labels = sortedData.map(item => item._id)
+  }
+
+  const producedLength = labels.map(label => {
+   const dataPoint = sortedData.find(item => item._id.includes(label))
+   return dataPoint ? dataPoint.componentLength : 0
+  })
+  const wasteLength = labels.map(label => {
+   const dataPoint = sortedData.find(item => item._id.includes(label))
+   return dataPoint ? dataPoint.waste : 0
+  })
+
+  return {
+   categories: labels,
+   series: [
+    { name: 'Produced Length (m)', data: producedLength },
+    { name: 'Waste Length (m)', data: wasteLength }
+   ]
+  }
+ }
+
+ const chartData = processGraphData()
+
+ const getDataRangeText = () => {
+  switch (timePeriod) {
+   case 'Daily':
+    return 'last 7 Days'
+   case 'Monthly':
+    return 'last 12 Months'
+   case 'Quarterly':
+    return 'last 4 Quarters'
+   case 'Yearly':
+    return 'last 5 Years'
+   default:
+    return ''
+  }
+ }
+
+ return (
+  <Grid xs={12} sm={12} md={12} lg={10} xl={6} sx={{ mt: 3 }}>
+   <GStyledSpanBox alignItems={'center'} my={2} sx={{ display: 'flex', justifyContent: FLEX.SPACE_BETWEEN }}>
+    <Typography variant={TYPOGRAPHY.H4} gutterBottom>
+     {t('production.production_total.label').toUpperCase()}
+    </Typography>
+    &nbsp;
+    <GStyledMachineChip
+     label={
+      <Typography variant={TYPOGRAPHY.H4} p={0}>
+       {getDataRangeText().toUpperCase()}
+      </Typography>
+     }
+     mode={themeMode}
+    />
+   </GStyledSpanBox>
+   <Card sx={{ p: 3, background: themeMode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[800], color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white }}>
+    {isLoading && (
+     <Fragment>
+      <GStyledCenterBox height={500}>
+       {/* <LinearProgress style={{ width: '100%', height: 10 }} /> */}
+       <HowickLoader height={300} width={303} mode={themeMode} />
+      </GStyledCenterBox>
+     </Fragment>
+    )}
+    {!isLoading && (
+     <Fragment>
+      {graphData?.length > 0 && <Fragment>{chartData && <LogStackedChart chart={chartData} graphLabels={graphLabels} />}</Fragment>}
+      {graphData?.length === 0 && (
+       <Typography variant='body1' color='textSecondary'>
+        {customer?._id ? `No data available for the ${getDataRangeText()}.` : 'Please Select a customer to view the graph.'}
+       </Typography>
+      )}
+     </Fragment>
+    )}
+   </Card>
+  </Grid>
+ )
+}
+
+ERPProductionTotal.propTypes = {
+ timePeriod: PropTypes.string,
+ customer: PropTypes.object,
+ graphLabels: PropTypes.object
+}
+
+export default ERPProductionTotal

@@ -4,5 +4,7 @@ export { default as LogsTable } from './logs/logs-table'
 export { default as LogsHeader } from './logs/logs-header'
 export { default as LogsPagination } from './logs/logs-pagination'
 export { default as LogsTableController } from './logs/logs-table-controller'
+
+export * from './erp'
 export * from './default-values/default-values'
 export * from './logs/table-columns-reducer'

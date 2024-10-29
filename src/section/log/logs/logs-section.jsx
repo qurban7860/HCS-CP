@@ -1,23 +1,29 @@
-import { Fragment, useEffect, useState, memo, useLayoutEffect, useCallback } from 'react'
+import { Fragment, useEffect, useState, memo, useLayoutEffect, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 import _ from 'lodash'
 import { useSearchParams } from 'react-router-dom'
+import { Icon, ICON_NAME, useResponsive, useSettingContext } from 'hook'
 import { useSelector, dispatch } from 'store'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { useAuthContext } from 'auth'
 import { getCustomers, getLogGraphData, getSecurityUser, getLogs, ChangeLogPage, resetLogsGraphData, resetLogs, resetSecurityUser, getCustomerMachines, resetCustomerMachines } from 'store/slice'
-import { Grid } from '@mui/material'
+import { useTheme, Grid, Button, Typography } from '@mui/material'
 import { MotionLazyContainer, TableTitleBox } from 'component'
 import FormProvider from 'component/hook-form'
-import { LogsTableController, useLogDefaultValues } from 'section/log'
+import { LogsTableController, ERPProductionTotal, useLogDefaultValues } from 'section/log'
 import { MachineLogsTable } from 'section/product'
 import { addLogSchema } from 'schema'
-import { FLEX } from 'constant'
+import { FLEX, KEY, TYPOGRAPHY } from 'constant'
 
 const LogsSection = ({ isArchived }) => {
  const [selectedSearchFilter, setSelectedSearchFilter] = useState('')
+ const [pageType, setPageType] = useState('')
+
+ const [expandedButton, setExpandedButton] = useState(null)
+ const [searchParams, setSearchParams] = useSearchParams()
+ const [showGraph, setShowGraph] = useState(false)
  const [graphLabels, setGraphLabels] = useState({ yaxis: 'Cumulative Total Value', xaxis: 'Months' })
  const { customerMachines } = useSelector(state => state.machine)
  const { logs, logPage, isLoading, logRowsPerPage } = useSelector(state => state.log)
@@ -25,11 +31,13 @@ const LogsSection = ({ isArchived }) => {
  const { securityUser } = useSelector(state => state.user)
 
  const { userId, user } = useAuthContext()
- const [searchParams] = useSearchParams()
+ const { themeMode } = useSettingContext()
+ const theme = useTheme()
+ const isMobile = useResponsive('down', 'sm')
 
  const axiosToken = () => axios.CancelToken.source()
  const cancelTokenSource = axiosToken()
- const isGraphPage = () => searchParams.get('type') === 'erpGraph'
+ const isGraphPage = () => searchParams.get('type') === 'graph'
 
  const defaultValues = useLogDefaultValues(customers[0], customerMachines[0])
  const methods = useForm({
@@ -61,6 +69,10 @@ const LogsSection = ({ isArchived }) => {
    dispatch(resetCustomerMachines())
   }
  }, [dispatch, customer])
+
+ useEffect(() => {
+  setPageType(searchParams.get('type'))
+ }, [searchParams])
 
  useEffect(() => {
   if (isGraphPage() && customer && logPeriod && logGraphType) {
@@ -132,35 +144,30 @@ const LogsSection = ({ isArchived }) => {
   [setValue, trigger]
  )
 
- const handlePeriodChange = useCallback(
-  newPeriod => {
-   setValue('logPeriod', newPeriod)
-   switch (newPeriod) {
-    case 'Monthly':
-     setGraphLabels(prev => ({ ...prev, xaxis: 'Months' }))
-     break
-    case 'Daily':
-     setGraphLabels(prev => ({ ...prev, xaxis: 'Days' }))
-     break
-    case 'Quarterly':
-     setGraphLabels(prev => ({ ...prev, xaxis: 'Quarters' }))
-     break
-    case 'Yearly':
-     setGraphLabels(prev => ({ ...prev, xaxis: 'Years' }))
-     break
-    default:
-     break
-   }
-  },
-  [setValue]
- )
-
  const handleGraphTypeChange = useCallback(
   newGraphType => {
    setValue('logGraphType', newGraphType)
   },
   [setValue]
  )
+
+ const handleClick = buttonId => {
+  setExpandedButton(prev => (prev === buttonId ? null : buttonId))
+ }
+
+ const handleOnClick = async (buttonId, action) => {
+  if (isMobile) {
+   handleClick(buttonId)
+   await new Promise(resolve => setTimeout(resolve, 300))
+   action()
+  } else {
+   action()
+  }
+ }
+
+ const handleErpLogToggle = () => {
+  setSearchParams({ type: pageType === 'graph' ? 'logs' : 'graph' })
+ }
 
  const payload = {
   customerId: machine?.customer?._id,
@@ -179,7 +186,22 @@ const LogsSection = ({ isArchived }) => {
  return (
   <Fragment>
    <MotionLazyContainer display={FLEX.FLEX}>
-    <TableTitleBox title={'Logs'} user={securityUser} />
+    <Grid container sx={{ display: 'flex', justifyContent: FLEX.SPACE_BETWEEN }}>
+     <TableTitleBox title={'Logs'} user={securityUser} />
+     <Button
+      size='small'
+      startIcon={<Icon icon={pageType === 'graph' ? ICON_NAME.LIST : ICON_NAME.GRAPH} sx={{ mr: 0.3 }} />}
+      variant='outlined'
+      sx={{
+       mr: 1,
+       color: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
+       borderColor: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
+      }}
+      onClick={() => handleOnClick('erpLog', handleErpLogToggle)}>
+      {(!isMobile || expandedButton === 'erpLog') && <Typography variant={TYPOGRAPHY.BODY0}>{pageType === 'graph' ? 'Machine Logs' : 'See Graph'}</Typography>}
+     </Button>
+    </Grid>
+
     <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
      <Grid container spacing={2} mt={3}>
       <Grid item xs={12} sm={12}>
@@ -197,8 +219,16 @@ const LogsSection = ({ isArchived }) => {
       </Grid>
      </Grid>
     </FormProvider>
-
-    <MachineLogsTable isLogsPage logType={logType} payload={payload} />
+    {!isGraphPage() && <MachineLogsTable isLogsPage logType={logType} payload={payload} />}
+    {isGraphPage() && (
+     <Fragment>
+      {logGraphType.key === 'production_total' ? (
+       <ERPProductionTotal timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} />
+      ) : (
+       <ERPProductionTotal timePeriod={logPeriod} customer={machine?.customer} />
+      )}
+     </Fragment>
+    )}
    </MotionLazyContainer>
   </Fragment>
  )

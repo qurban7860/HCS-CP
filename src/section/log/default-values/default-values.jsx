@@ -13,7 +13,7 @@ export function useLogDefaultValues(customerId, machineId) {
    logType: getLogTypeConfigForGenerationAndType(5, 'ERP') || null,
    dateFrom: null,
    dateTo: null,
-   logPeriod: 'Monthly',
+   logPeriod: 'Daily',
    logGraphType: logGraphTypes[0]
   }
  }, [])
