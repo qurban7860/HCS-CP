@@ -155,6 +155,10 @@ export default function Router() {
         {
          element: <MachinesLogsPage />,
          index: true
+        },
+        {
+         path: 'graph'
+         // element:<MachinesLogsPage/>
         }
        ]
       },
