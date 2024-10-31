@@ -6,45 +6,20 @@ import { Box, Card, Stack } from '@mui/material'
 import { RHFAutocomplete, RHFDatePicker, RHFFilteredSearchBar } from 'component/hook-form'
 import { useTheme } from '@mui/material/styles'
 import { GStyledLoadingButton } from 'theme/style'
-import { LOG_TYPE_CONFIG } from 'config'
+import { LOG_TYPE_CONFIG, logGraphTypes } from 'config'
 import { KEY } from 'constant'
 
-const LogsTableController = ({ customers, handleCustomerChange, customerMachines, handleMachineChange, handleLogTypeChange, isLogsPage, isGraphPage, methods, onGetLogs }) => {
+const LogsTableController = ({ customers, handleCustomerChange, customerMachines, handleMachineChange, handleLogTypeChange, handlePeriodChange, isLogsPage, isGraphPage, methods, onGetLogs }) => {
  const [selectedSearchFilter, setSelectedSearchFilter] = useState('')
- const [graphLabels, setGraphLabels] = useState({ yaxis: 'Cumulative Total Value', xaxis: 'Months' })
-
  const { themeMode } = useSettingContext()
  const theme = useTheme()
 
  const { watch, setValue, handleSubmit, trigger } = methods
- const { customer, machine, dateFrom, dateTo, logType, filteredSearchKey, logPeriod, logGraphType } = watch()
+ const { dateFrom, dateTo, logType } = watch()
 
  const handleGraphTypeChange = useCallback(
   newGraphType => {
    setValue('logGraphType', newGraphType)
-  },
-  [setValue]
- )
-
- const handlePeriodChange = useCallback(
-  newPeriod => {
-   setValue('logPeriod', newPeriod)
-   switch (newPeriod) {
-    case 'Monthly':
-     setGraphLabels(prev => ({ ...prev, xaxis: 'Months' }))
-     break
-    case 'Daily':
-     setGraphLabels(prev => ({ ...prev, xaxis: 'Days' }))
-     break
-    case 'Quarterly':
-     setGraphLabels(prev => ({ ...prev, xaxis: 'Quarters' }))
-     break
-    case 'Yearly':
-     setGraphLabels(prev => ({ ...prev, xaxis: 'Years' }))
-     break
-    default:
-     break
-   }
   },
   [setValue]
  )
@@ -158,7 +133,7 @@ const LogsTableController = ({ customers, handleCustomerChange, customerMachines
        <RHFAutocomplete
         name='logGraphType'
         label='Graph Type*'
-        options={logGraphType}
+        options={logGraphTypes}
         onChange={(e, newValue) => handleGraphTypeChange(newValue)}
         getOptionLabel={option => option.name || ''}
         isOptionEqualToValue={(option, value) => option?.key === value?.key}
@@ -184,6 +159,7 @@ LogsTableController.propTypes = {
  customerMachines: PropTypes.array,
  handleMachineChange: PropTypes.func,
  handleLogTypeChange: PropTypes.func,
+ handlePeriodChange: PropTypes.func,
  isLogsPage: PropTypes.bool,
  isGraphPage: PropTypes.func,
  methods: PropTypes.object,
