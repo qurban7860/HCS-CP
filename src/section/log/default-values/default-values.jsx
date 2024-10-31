@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { getLogTypeConfigForGenerationAndType, logGraphTypes } from 'config/log-types'
 
-export function useLogDefaultValues(customerId, machineId) {
+export function useLogDefaultValues() {
  return useMemo(() => {
   const today = new Date()
   const thirtyDaysAgo = new Date(today)
