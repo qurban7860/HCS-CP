@@ -92,6 +92,9 @@ export const PATH_MACHINE = {
   root: conNex(ROOTS_PRODUCTS, SUB_MACHINES),
   list: conNex(ROOTS_PRODUCTS, SUB_MACHINES),
   view: id => conNex(ROOTS_PRODUCTS, SUB_MACHINES, id, 'view'),
+  graph: {
+   view: id => conNex(ROOTS_PRODUCTS, SUB_MACHINES, id, 'graphs')
+  },
   log: {
    list: id => conNex(ROOTS_PRODUCTS, SUB_MACHINES, id, 'logs')
   },

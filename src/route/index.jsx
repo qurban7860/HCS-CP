@@ -22,6 +22,7 @@ import {
  MachinePage,
  MachinesListPage,
  MachinesLogsPage,
+ MachinesGraphsPage,
  MachineSupportTicketsPage,
  //  crm:
  CustomerPage,
@@ -155,13 +156,10 @@ export default function Router() {
         {
          element: <MachinesLogsPage />,
          index: true
-        },
-        {
-         path: 'graph'
-         // element:<MachinesLogsPage/>
         }
        ]
       },
+      { path: ':id/graphs', element: <MachinesGraphsPage /> },
       {
        path: ':id/support',
        children: [

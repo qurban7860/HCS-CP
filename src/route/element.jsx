@@ -25,6 +25,7 @@ export const GeneralAppPage = Loadable(lazy(() => import('page/dashboard/general
 export const MachinePage = Loadable(lazy(() => import('page/product/machine/machine')))
 export const MachinesListPage = Loadable(lazy(() => import('page/product/machines/machines')))
 export const MachinesLogsPage = Loadable(lazy(() => import('page/product/machine-logs/machine-logs')))
+export const MachinesGraphsPage = Loadable(lazy(() => import('page/product/machine-graphs/machine-graphs')))
 // machine-support
 export const MachineSupportTicketsPage = Loadable(lazy(() => import('page/product/support/tickets')))
 
