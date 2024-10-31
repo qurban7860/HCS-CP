@@ -18,8 +18,8 @@ const HowickLoader = ({ height = '465', width = '467', mode, strokeColor }) => {
 }
 
 HowickLoader.propTypes = {
- height: PropTypes.string,
- width: PropTypes.string,
+ height: PropTypes.number,
+ width: PropTypes.number,
  mode: PropTypes.string,
  strokeColor: PropTypes.string
 }
