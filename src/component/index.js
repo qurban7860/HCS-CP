@@ -9,6 +9,7 @@ export { default as CustomAvatar } from './avatar/custom-avatar'
 export { default as Chart } from './chart'
 export { default as useChart } from './chart/use-chart'
 export { default as LogStackedChart } from './chart/log/log-stacked-chart'
+export { default as LogLineChart } from './chart/log/log-line-chart'
 export { default as ChartStyleOverlay } from './chart/chart-style-overlay'
 // @back-button
 export { default as Button } from './button/button'
