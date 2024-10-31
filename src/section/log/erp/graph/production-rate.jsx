@@ -4,13 +4,13 @@ import { useSelector } from 'react-redux'
 import { t } from 'i18next'
 import { useSettingContext } from 'hook'
 import { Typography, Card, Grid } from '@mui/material'
-import { LogStackedChart, HowickLoader } from 'component'
+import { LogLineChart, HowickLoader } from 'component'
 import { useTheme } from '@mui/material/styles'
 import { getTimePeriodDesc } from 'section/log'
 import { GStyledMachineChip, GStyledSpanBox, GStyledCenterBox } from 'theme/style'
 import { TYPOGRAPHY, KEY, FLEX } from 'constant'
 
-const ERPProductionTotal = ({ timePeriod, customer, graphLabels }) => {
+const ERPProductionRate = ({ timePeriod, customer, graphLabels }) => {
  const [graphData, setGraphData] = useState([])
  const { isLoading, logsGraphData } = useSelector(state => state.log)
 
@@ -19,12 +19,11 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels }) => {
 
  useEffect(() => {
   if (logsGraphData) {
-   const convertedDataToMeters = logsGraphData.map(item => ({
+   const convertedData = logsGraphData.map(item => ({
     ...item,
-    componentLength: item.componentLength / 1000,
-    waste: item.waste / 1000
+    productionRate: item.componentLength / 1000 / (item.time / 3600000)
    }))
-   setGraphData(convertedDataToMeters)
+   setGraphData(convertedData)
   }
  }, [logsGraphData])
 
@@ -32,8 +31,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels }) => {
   if (!graphData || graphData.length === 0) {
    return null
   }
-
-  const sortedData = [...graphData].sort((a, b) => a._id.localeCompare(b._id))
+  const sortedData = [...graphData]
   let labels = sortedData.map(item => item._id)
 
   switch (timePeriod) {
@@ -86,21 +84,23 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels }) => {
    default:
     labels = sortedData.map(item => item._id)
   }
+  const productionRate = labels.map(label => {
+   const dataPoint = sortedData.find(item => item._id.includes(label))
+   return dataPoint ? dataPoint.productionRate : 0
+  })
 
-  const producedLength = labels.map(label => {
-   const dataPoint = sortedData.find(item => item._id.includes(label))
-   return dataPoint ? dataPoint.componentLength : 0
-  })
-  const wasteLength = labels.map(label => {
-   const dataPoint = sortedData.find(item => item._id.includes(label))
-   return dataPoint ? dataPoint.waste : 0
-  })
+  console.log('productionRate', productionRate)
 
   return {
    categories: labels,
    series: [
-    { name: 'Produced Length (m)', data: producedLength },
-    { name: 'Waste Length (m)', data: wasteLength }
+    {
+     label: 'Production Rate (m/hr)',
+     data: productionRate,
+     //  borderColor: '#4CAF50',
+     //  backgroundColor: 'rgba(76, 175, 80, 0.1)',
+     tension: 0.1
+    }
    ]
   }
  }
@@ -108,10 +108,10 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels }) => {
  const chartData = processGraphData()
 
  return (
-  <Grid xs={12} sm={12} md={12} lg={10} xl={6} sx={{ mt: 3 }}>
+  <Grid item xs={12} sm={12} md={12} lg={10} xl={6} sx={{ mt: 3 }}>
    <GStyledSpanBox alignItems={'center'} my={2} sx={{ display: 'flex', justifyContent: FLEX.SPACE_BETWEEN }}>
     <Typography variant={TYPOGRAPHY.H4} gutterBottom>
-     {t('production.production_total.label').toUpperCase()}
+     {t('production.production_rate.label').toUpperCase()}
     </Typography>
     &nbsp;
     <GStyledMachineChip
@@ -134,7 +134,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels }) => {
     )}
     {!isLoading && (
      <Fragment>
-      {graphData?.length > 0 && <Fragment>{chartData && <LogStackedChart chart={chartData} graphLabels={graphLabels} />}</Fragment>}
+      {graphData?.length > 0 && <Fragment>{chartData && <LogLineChart chart={chartData} graphLabels={graphLabels} />}</Fragment>}
       {graphData?.length === 0 && (
        <Typography variant='body1' color='textSecondary'>
         {customer?._id ? `No data available for the ${getTimePeriodDesc(timePeriod)}.` : 'Please Select a customer to view the graph.'}
@@ -147,10 +147,10 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels }) => {
  )
 }
 
-ERPProductionTotal.propTypes = {
+ERPProductionRate.propTypes = {
  timePeriod: PropTypes.string,
  customer: PropTypes.object,
  graphLabels: PropTypes.object
 }
 
-export default ERPProductionTotal
+export default ERPProductionRate
