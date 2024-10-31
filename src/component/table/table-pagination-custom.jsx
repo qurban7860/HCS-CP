@@ -143,7 +143,7 @@ function TablePaginationCustom({
 
 TablePaginationCustom.propTypes = {
  sx: PropTypes.object,
- data: PropTypes.array,
+ data: PropTypes.number,
  count: PropTypes.number,
  dense: PropTypes.bool,
  component: PropTypes.elementType,
