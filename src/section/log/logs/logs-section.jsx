@@ -10,9 +10,9 @@ import { useForm } from 'react-hook-form'
 import { useAuthContext } from 'auth'
 import { getCustomers, getLogGraphData, getSecurityUser, getLogs, ChangeLogPage, resetLogsGraphData, resetLogs, resetSecurityUser, getCustomerMachines, resetCustomerMachines } from 'store/slice'
 import { useTheme, Grid, Button, Typography } from '@mui/material'
-import { MotionLazyContainer, TableTitleBox } from 'component'
+import { HowickLoader, MotionLazyContainer, TableTitleBox } from 'component'
 import FormProvider from 'component/hook-form'
-import { LogsTableController, ERPProductionTotal, useLogDefaultValues } from 'section/log'
+import { LogsTableController, ERPProductionTotal, ERPProductionRate, useLogDefaultValues } from 'section/log'
 import { MachineLogsTable } from 'section/product'
 import { addLogSchema } from 'schema'
 import { FLEX, KEY, TYPOGRAPHY } from 'constant'
@@ -20,11 +20,8 @@ import { FLEX, KEY, TYPOGRAPHY } from 'constant'
 const LogsSection = ({ isArchived }) => {
  const [selectedSearchFilter, setSelectedSearchFilter] = useState('')
  const [pageType, setPageType] = useState('')
-
  const [expandedButton, setExpandedButton] = useState(null)
  const [searchParams, setSearchParams] = useSearchParams()
- const [showGraph, setShowGraph] = useState(false)
- const [graphLabels, setGraphLabels] = useState({ yaxis: 'Cumulative Total Value', xaxis: 'Months' })
  const { customerMachines } = useSelector(state => state.machine)
  const { logs, logPage, isLoading, logRowsPerPage } = useSelector(state => state.log)
  const { customers } = useSelector(state => state.customer)
@@ -39,7 +36,7 @@ const LogsSection = ({ isArchived }) => {
  const cancelTokenSource = axiosToken()
  const isGraphPage = () => searchParams.get('type') === 'graph'
 
- const defaultValues = useLogDefaultValues(customers[0], customerMachines[0])
+ const defaultValues = useLogDefaultValues()
  const methods = useForm({
   resolver: yupResolver(addLogSchema),
   defaultValues
@@ -47,6 +44,7 @@ const LogsSection = ({ isArchived }) => {
 
  const { watch, setValue, handleSubmit, trigger } = methods
  const { customer, machine, dateFrom, dateTo, logType, filteredSearchKey, logPeriod, logGraphType } = watch()
+ const [graphLabels, setGraphLabels] = useState({ yaxis: 'Cumulative Total Value', xaxis: logPeriod })
 
  useEffect(() => {
   const debouncedDispatch = _.debounce(() => {
@@ -136,19 +134,35 @@ const LogsSection = ({ isArchived }) => {
   [dispatch, setValue, trigger]
  )
 
+ const handlePeriodChange = useCallback(
+  newPeriod => {
+   setValue('logPeriod', newPeriod)
+   switch (newPeriod) {
+    case 'Monthly':
+     setGraphLabels(prev => ({ ...prev, xaxis: 'Months' }))
+     break
+    case 'Daily':
+     setGraphLabels(prev => ({ ...prev, xaxis: 'Days' }))
+     break
+    case 'Quarterly':
+     setGraphLabels(prev => ({ ...prev, xaxis: 'Quarters' }))
+     break
+    case 'Yearly':
+     setGraphLabels(prev => ({ ...prev, xaxis: 'Years' }))
+     break
+    default:
+     break
+   }
+  },
+  [setValue]
+ )
+
  const handleLogTypeChange = useCallback(
   newLogType => {
    setValue('logType', newLogType)
    trigger('logType')
   },
   [setValue, trigger]
- )
-
- const handleGraphTypeChange = useCallback(
-  newGraphType => {
-   setValue('logGraphType', newGraphType)
-  },
-  [setValue]
  )
 
  const handleClick = buttonId => {
@@ -211,6 +225,7 @@ const LogsSection = ({ isArchived }) => {
         customerMachines={customerMachines}
         handleMachineChange={handleMachineChange}
         handleLogTypeChange={handleLogTypeChange}
+        handlePeriodChange={handlePeriodChange}
         isLogsPage={true}
         isGraphPage={isGraphPage}
         methods={methods}
@@ -222,10 +237,12 @@ const LogsSection = ({ isArchived }) => {
     {!isGraphPage() && <MachineLogsTable isLogsPage logType={logType} payload={payload} />}
     {isGraphPage() && (
      <Fragment>
-      {logGraphType.key === 'production_total' ? (
+      {isLoading ? (
+       <HowickLoader height={300} width={303} mode={themeMode} />
+      ) : logGraphType.key === 'production_total' ? (
        <ERPProductionTotal timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} />
       ) : (
-       <ERPProductionTotal timePeriod={logPeriod} customer={machine?.customer} />
+       <ERPProductionRate timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} />
       )}
      </Fragment>
     )}
