@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSettingContext } from 'hook'
 import { useTheme } from '@mui/material/styles'
@@ -6,86 +6,56 @@ import { Chart } from 'component'
 import { fShortenNumber } from 'util/format'
 import { KEY } from 'constant'
 
-function LogStackedChart({ chart, graphLabels }) {
+const formatNumber = num => {
+ if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`
+ if (num >= 1000) return `${(num / 1000).toFixed(1)}k`
+ return num.toFixed(1)
+}
+
+function LogLineChart({ chart, graphLabels }) {
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  const { categories, series } = chart
  const colors = [theme.palette.howick.darkBlue, theme.palette.howick.orange]
- const colorsDarkMode = [theme.palette.howick.bronze, theme.palette.howick.burnIn]
+ const colorsDarkMode = [theme.palette.howick.orange, theme.palette.howick.lightGray]
 
  const menuBackgroundColor = themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.grey[800]
  const menuTextColor = themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
 
+ const [isVisible, setIsVisible] = useState(true)
+
+ useEffect(() => {
+  if (!chart.categories || chart.categories.length === 0) {
+   console.warn('No categories provided for xaxis.')
+   setIsVisible(false)
+  }
+  if (!chart.series || chart.series.length === 0) {
+   console.warn('No series data provided.')
+   setIsVisible(false)
+  }
+ }, [chart])
+
  const chartOptions = {
   chart: {
-   type: 'bar',
+   type: 'line',
    height: 500,
    foreColor: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400],
-   menubar: {
-    style: {
-     foreColor: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
-     cssClass: 'apexcharts-menu'
-    }
-   },
-
-   toolbar: {
-    show: true
-   },
-   stacked: true,
-   animations: {
-    enabled: true
-   },
-   events: {
-    dataPointSelection: true
-   }
-  },
-  colors: themeMode === KEY.LIGHT ? colors : colorsDarkMode,
-  plotOptions: {
-   bar: {
-    horizontal: false,
-    dataLabels: {
-     position: 'top'
-    }
-   },
-   colors: {
-    ranges: [
-     {
-      from: 0,
-      to: Infinity,
-      color: colors
-     }
-    ],
-    backgroundBarColors: colors,
-    backgroundBarOpacity: 1
-   }
+   //  toolbar: { show: true },
+   animations: { enabled: true }
   },
   responsive: [
    {
-    breakpoint: 400,
+    breakpoint: 1000,
     options: {
-     legend: {
-      position: 'bottom',
-      offsetX: -10,
-      offsetY: 0
-     }
+     chart: { width: '100%' },
+     legend: { position: 'bottom' }
     }
    }
   ],
-  grid: {
-   borderColor: themeMode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700],
-   opacity: 0.3
-  },
-  dataLabels: {
-   enabled: true,
-   formatter(val, { seriesIndex, dataPointIndex, w }) {
-    if (seriesIndex === 1) return ''
-    return `${(Number(val) + Number(w.config.series[1].data[dataPointIndex])).toFixed(2)}`
-   },
-   offsetY: -25,
-   style: {
-    fontSize: '12px',
-    colors: [themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400]]
-   }
+  colors: themeMode === KEY.LIGHT ? colors : colorsDarkMode,
+  stroke: {
+   curve: 'straight',
+   width: 3
   },
   xaxis: {
    categories,
@@ -105,9 +75,6 @@ function LogStackedChart({ chart, graphLabels }) {
    }
   },
   yaxis: {
-   axisBorder: { show: false },
-   axisTicks: { show: false },
-   labels: { formatter: value => fShortenNumber(value), style: { fontSize: '12px', color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400] } },
    title: {
     text: graphLabels?.yaxis,
     offsetX: 0,
@@ -118,12 +85,8 @@ function LogStackedChart({ chart, graphLabels }) {
      cssClass: 'apexcharts-yaxis-title',
      color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400]
     }
-   }
-  },
-  legend: {
-   onItemClick: {
-    toggleDataSeries: false
-   }
+   },
+   labels: { formatter: value => fShortenNumber(value), style: { fontSize: '12px', color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400] } }
   },
   tooltip: {
    custom: ({ series: tooltipSeries, seriesIndex, dataPointIndex, w }) => {
@@ -142,8 +105,40 @@ function LogStackedChart({ chart, graphLabels }) {
     tooltipContent += `</div>`
     return tooltipContent
    }
+  },
+  legend: {
+   show: true,
+   position: 'top',
+   fontSize: '14px',
+   labels: { colors: '#424242' },
+   onItemClick: {
+    toggleDataSeries: false
+   }
+  },
+  grid: {
+   borderColor: themeMode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700],
+   opacity: 0.3
+  },
+  // dataLabels: {
+  //  enabled: true,
+  //  formatter(val, { seriesIndex, dataPointIndex, w }) {
+  //   if (seriesIndex === 1) return ''
+  //   return `${(Number(val) + Number(w.config.series[1].data[dataPointIndex])).toFixed(2)}`
+  //  },
+  //  offsetY: -25,
+  //  style: {
+  //   fontSize: '12px',
+  //   colors: [themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400]]
+  //  }
+  // },
+  markers: {
+   size: 4
+  },
+  fill: {
+   type: 'gradient'
   }
  }
+
  return (
   <Fragment>
    <style>{`
@@ -154,11 +149,11 @@ function LogStackedChart({ chart, graphLabels }) {
         border: 1px solid ${menuBackgroundColor};
       }
     `}</style>
-   <Chart type='bar' series={series} options={chartOptions} height={chartOptions.chart.height} />
+   <Chart type='line' series={series} options={chartOptions} height={chartOptions.chart.height} />
   </Fragment>
  )
 }
 
-LogStackedChart.propTypes = { chart: PropTypes.object, graphLabels: PropTypes.object }
+LogLineChart.propTypes = { chart: PropTypes.object, graphLabels: PropTypes.object, timePeriod: PropTypes.array }
 
-export default LogStackedChart
+export default LogLineChart
