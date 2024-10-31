@@ -289,7 +289,8 @@ export function getMachines(page, pageSize, isArchived, cancelToken) {
   dispatch(machineSlice.actions.startLoading())
   try {
    const params = {
-    isArchived: isArchived || false,
+    isActive: true,
+    isArchived: false,
     pagination: {
      page,
      pageSize
@@ -317,7 +318,14 @@ export function getCustomerMachines(id) {
  return async dispatch => {
   dispatch(machineSlice.actions.startLoading())
   try {
-   const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.viaCustomer(id, false))
+   const params = {
+    customer: id,
+    isActive: true,
+    isArchived: false
+   }
+   const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.viaCustomer(id, false), {
+    params
+   })
    dispatch(machineSlice.actions.getCustomerMachinesSuccess(response.data))
   } catch (error) {
    console.error(error)
