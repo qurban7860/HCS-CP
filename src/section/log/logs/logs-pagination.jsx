@@ -44,7 +44,7 @@ const LogsPagination = ({
 
 LogsPagination.propTypes = {
  rowsPerPageOptions: PropTypes.array,
- data: PropTypes.array,
+ data: PropTypes.number,
  page: PropTypes.number,
  rowsPerPage: PropTypes.number,
  handleChangePage: PropTypes.func,
