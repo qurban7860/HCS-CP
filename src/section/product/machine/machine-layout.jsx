@@ -4,7 +4,7 @@ import { useSelector } from 'store'
 import { useParams, useNavigate } from 'react-router-dom'
 import { PATH_MACHINE } from 'route/path'
 import { Typography } from '@mui/material'
-import { machineDefaultValues, TicketsTab, MachineLogsTab } from 'section/product'
+import { machineDefaultValues, TicketsTab, MachineLogsTab, MachineGraphsTab } from 'section/product'
 import { MotionLazyContainer, CustomerDialog, MachineDialog, SiteDialog } from 'component'
 import { FLEX } from 'constant'
 import { MachineNav, MachineTab } from 'section/product/machine'
@@ -27,8 +27,10 @@ const MachineLayout = ({ tab = 0 }) => {
    // navigate(PATH_CUSTOMER.customers.contacts.view(id))
    // dispatch(setFromDialog(false))
    // dispatch(setFromSiteDialog(false))
-  } else if (tab === 5 && id) {
+  } else if (tab === 4 && id) {
    navigate(PATH_MACHINE.machines.log.list(id))
+  } else if (tab === 5 && id) {
+   navigate(PATH_MACHINE.machines.graph.view(id))
   } else if (tab === 6 && id) {
    navigate(PATH_MACHINE.machines.support.list(id))
   }
@@ -46,9 +48,9 @@ const MachineLayout = ({ tab = 0 }) => {
    ) : renderedTab === 3 ? (
     <Typography variant='h0'>{'PROFILES PAGE'}</Typography>
    ) : renderedTab === 4 ? (
-    <Typography variant='h0'>{'SETTINGS PAGE'}</Typography>
-   ) : renderedTab === 5 ? (
     <MachineLogsTab />
+   ) : renderedTab === 5 ? (
+    <MachineGraphsTab />
    ) : renderedTab === 6 ? (
     <TicketsTab />
    ) : null}
