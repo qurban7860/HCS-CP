@@ -1,44 +1,26 @@
-import { Fragment, useEffect, useReducer, useState, useCallback, useLayoutEffect } from 'react'
+import { Fragment, useEffect, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
 import { useSearchParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { useAuthContext } from 'auth'
-import { useTable, getComparator, useSettingContext } from 'hook'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { getCustomers, getSecurityUser, getLogs, ChangeLogPage, ChangeLogRowsPerPage, resetLogs, resetSecurityUser } from 'store/slice'
+import { getLogs, ChangeLogPage, resetLogs } from 'store/slice'
 import { addLogSchema } from 'schema'
-import { Grid, Table } from '@mui/material'
-import { MotionLazyContainer, TableTitleBox, TableNoData, SkeletonTable, LogDetailsDialog } from 'component'
+import { Grid } from '@mui/material'
+import { MotionLazyContainer } from 'component'
 import FormProvider from 'component/hook-form'
-import { LogsTableController, useLogDefaultValues, LogsTable, LogsPagination, tableColumnsReducer } from 'section/log/logs'
+import { LogsTableController, useLogDefaultValues } from 'section/log/logs'
 import { MachineLogsTable } from 'section/product'
-import { GStyledTableHeaderBox } from 'theme/style'
-import { MARGIN } from 'config'
-import { getLogTypeConfigForGenerationAndType, logGraphTypes } from 'config/log-types'
-import { FLEX, FLEX_DIR, KEY } from 'constant'
-import { applySort, fDateTime } from 'util'
+import { FLEX } from 'constant'
 
 const MachineLogsTab = () => {
  const [selectedSearchFilter, setSelectedSearchFilter] = useState('')
- const [openLogDetailsDialog, setOpenLogDetailsDialog] = useState(false)
- const [selectedLog, setSelectedLog] = useState(null)
- const [logComponentTitle, setLogComponentTitle] = useState({ date: '', componentLabel: '' })
- const [tableData, setTableData] = useState([])
- const { logs, logPage, logsTotalCount, isLoading, logRowsPerPage } = useSelector(state => state.log)
- const { securityUser } = useSelector(state => state.user)
+ const { logPage, logRowsPerPage } = useSelector(state => state.log)
  const { customers } = useSelector(state => state.customer)
  const { customerMachines } = useSelector(state => state.machine)
- const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, getLogTypeConfigForGenerationAndType(5, 'ERP').tableColumns)
 
- const { userId, user } = useAuthContext()
- const { themeMode } = useSettingContext()
  const [searchParams] = useSearchParams()
-
- const axiosToken = () => axios.CancelToken.source()
- const cancelTokenSource = axiosToken()
  const isGraphPage = () => searchParams.get('type') === 'erpGraph'
 
  const defaultValues = useLogDefaultValues(customers[0], customerMachines[0])
@@ -48,7 +30,7 @@ const MachineLogsTab = () => {
  })
 
  const { watch, setValue, handleSubmit, trigger } = methods
- const { customer, machine, dateFrom, dateTo, logType, filteredSearchKey, logPeriod, logGraphType } = watch()
+ const { customer, machine, dateFrom, dateTo, logType, filteredSearchKey } = watch()
 
  useEffect(() => {
   dispatch(
@@ -59,67 +41,6 @@ const MachineLogsTab = () => {
    })
   )
  }, [logPage, logRowsPerPage])
-
- useEffect(() => {
-  setTableData(logs?.data || [])
- }, [logs])
-
- //  useEffect(() => {
- //   const newColumns = logType?.tableColumns
- //   if (newColumns) {
- //    dispatchTableColumns({
- //     type: 'handleLogTypeChange',
- //     newColumns,
- //     allMachineLogsPage: isLogsPage
- //    })
- //   }
- //  }, [logType])
-
- const { order, orderBy, selected, onSort } = useTable({
-  defaultOrderBy: KEY.CREATED_AT,
-  defaultOrder: KEY.DESC
- })
-
- const dataFiltered = applySort({
-  inputData: tableData,
-  comparator: getComparator(order, orderBy)
- })
-
- const handleChangePage = (event, newPage) => {
-  dispatch(ChangeLogPage(newPage))
- }
-
- const handleChangeRowsPerPage = event => {
-  dispatch(ChangeLogPage(0))
-  dispatch(ChangeLogRowsPerPage(parseInt(event.target.value, 10)))
- }
-
- const handleColumnButtonClick = (columnId, newCheckState) => {
-  dispatchTableColumns({ type: 'updateColumnCheck', columnId, newCheckState })
- }
-
- const handleViewRow = (id, row) => {
-  const log = dataFiltered.find(item => item._id === id)
-  setLogComponentTitle({ date: `${fDateTime(row?.date)}`, componentLabel: row?.componentLabel })
-  setSelectedLog({
-   ...log,
-   customer: log.customer?.name || '',
-   machine: log.machine?.serialNo || '',
-   createdBy: log.createdBy?.name || '',
-   updatedBy: log.updatedBy?.name || ''
-  })
-  setOpenLogDetailsDialog(true)
- }
-
- const refreshLogsList = () => {
-  dispatch(
-   getLogs({
-    ...payload,
-    page: logPage,
-    pageSize: logRowsPerPage
-   })
-  )
- }
 
  const onGetLogs = data => {
   const customerId = customer._id
@@ -202,7 +123,6 @@ const MachineLogsTab = () => {
       </Grid>
      </Grid>
     </FormProvider>
-
     <MachineLogsTable isLogsPage={false} logType={logType} payload={payload} />
    </MotionLazyContainer>
   </Fragment>
