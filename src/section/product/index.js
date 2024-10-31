@@ -13,3 +13,4 @@ export * from './support/default-values/default-values'
 
 // :log
 export * from './machine-logs'
+export * from './machine-graphs'
