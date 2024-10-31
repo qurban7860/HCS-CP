@@ -47,15 +47,15 @@ export const TABS = value => [
  //   icon: ICON_NAME.SUPPORT,
  //   disabled: true
  // },
- // {
- //   id: 4,
- //   label: 'Settings',
- //   icon: ICON_NAME.SUPPORT,
- //   disabled: true
- // },
+ {
+  id: 4,
+  label: t('log.logs.label'),
+  icon: ICON_NAME.SUPPORT,
+  disabled: false
+ },
  {
   id: 5,
-  label: t('log.logs.label'),
+  label: t('graph.graphs.label'),
   icon: ICON_NAME.SUPPORT,
   disabled: false
  },
