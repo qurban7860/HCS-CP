@@ -32,6 +32,12 @@ const en = {
  customer_group: {
   label: `Customer Group`
  },
+ graph: {
+  label: `Graph`,
+  graphs: {
+   label: `Graphs`
+  }
+ },
  log: {
   label: `Log`,
   logs: {
@@ -128,7 +134,8 @@ const en = {
  product: `product`,
  production: {
   label: `Production`,
-  production_total: { label: `Production Total` }
+  production_total: { label: `Production Total` },
+  production_rate: { label: `Production Rate` }
  },
  invoice: `invoice`,
  details: `details`,
