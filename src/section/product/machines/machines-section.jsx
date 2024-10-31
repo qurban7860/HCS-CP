@@ -52,11 +52,11 @@ const MachineListSection = ({ isArchived }) => {
 
  useEffect(() => {
   const debouncedDispatch = _.debounce(() => {
-   dispatch(getMachines(null, null, isArchived, cancelTokenSource))
+   dispatch(getMachines(null, null, false, cancelTokenSource))
   }, 300)
   debouncedDispatch()
   return () => debouncedDispatch.cancel()
- }, [dispatch, machinePage, machineRowsPerPage, isArchived])
+ }, [dispatch, machinePage, machineRowsPerPage])
 
  useEffect(() => {
   if (initial) {
@@ -101,7 +101,9 @@ const MachineListSection = ({ isArchived }) => {
          <MachineHeader mode={themeMode} />
          {(isLoading ? [...Array(machineRowsPerPage)] : filteredData)
           .slice(machinePage * machineRowsPerPage, machinePage * machineRowsPerPage + machineRowsPerPage)
-          .map((row, index) => (row ? <MachineTable key={row._id} machine={row} mode={themeMode} index={index} /> : !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />))}
+          .map((row, index) =>
+           row ? <MachineTable key={row._id} machine={row} mode={themeMode} index={index} isArchived={isArchived} /> : !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />
+          )}
          <TableNoData isNotFound={isNotFound} />
         </Table>
        </StyledScrollTableContainer>
