@@ -1,7 +1,9 @@
 import { Fragment, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
+import { useSelector } from 'react-redux'
 import { useSettingContext } from 'hook'
+import { setSelectedSearchFilter } from 'store/slice'
 import { Box, Card, Stack } from '@mui/material'
 import { RHFAutocomplete, RHFDatePicker, RHFFilteredSearchBar } from 'component/hook-form'
 import { useTheme } from '@mui/material/styles'
@@ -10,7 +12,7 @@ import { LOG_TYPE_CONFIG, logGraphTypes } from 'config'
 import { KEY } from 'constant'
 
 const LogsTableController = ({ customers, handleCustomerChange, customerMachines, handleMachineChange, handleLogTypeChange, handlePeriodChange, isLogsPage, isGraphPage, methods, onGetLogs }) => {
- const [selectedSearchFilter, setSelectedSearchFilter] = useState('')
+ const { selectedSearchFilter } = useSelector(state => state.log)
  const { themeMode } = useSettingContext()
  const theme = useTheme()
 
@@ -106,8 +108,8 @@ const LogsTableController = ({ customers, handleCustomerChange, customerMachines
          setSelectedFilter={setSelectedSearchFilter}
          selectedFilter={selectedSearchFilter}
          placeholder='Looking for something?...'
+         helperText={selectedSearchFilter === '_id' ? 'to search by ID, you must enter the complete Log ID' : ''}
          fullWidth
-         helperText={selectedSearchFilter === '_id' ? 'To search by ID, you must enter the complete Log ID' : ''}
         />
        </Box>
        <GStyledLoadingButton mode={themeMode} type='button' onClick={handleSubmit(onGetLogs)} variant='contained' size='small'>
