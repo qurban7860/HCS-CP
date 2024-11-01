@@ -6,10 +6,12 @@ import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import useResponsive from 'hook/use-responsive'
 import { snack } from 'hook'
-import { useForm } from 'react-hook-form'
 import { dispatch } from 'store'
+import { useForm } from 'react-hook-form'
 import { registerCustomer } from 'store/slice'
-import { Typography, Alert, Grid, Link, Box } from '@mui/material'
+import { RegisterSchema } from 'schema'
+import { useRegisterDefaultValues } from 'section/auth'
+import { Typography, Grid, Link, Box } from '@mui/material'
 import { AutocompleteScrollChipContainer } from 'component'
 import FormProvider, { RHFTextField, RHFCountryAutocomplete, RHFCustomPhoneInput } from 'component/hook-form'
 import { GLOBAL } from 'config/global'
@@ -72,29 +74,17 @@ function RegisterForm() {
 
  const userLocale = getCountryByLocale()
 
- const RegisterSchema = yup.object().shape({
-  customerName: yup.string().required('Organization name is required'),
-  contactPersonName: yup.string().required('Contact name is required'),
-  address: yup.string().required('Address is required'),
-  email: yup.string().email('Invalid email format').required('Email is required'),
-  machineSerialNos: yup.array().of(yup.string().matches(serialNoRegEx, 'Invalid serial number').length(5, 'Serial number must be 5 characters long')).min(1, 'At least one machine is required'),
-  country: yup.object().label('Country').nullable(),
-  customerNote: yup.string().max(500, 'Customer note must be less than 500 characters')
- })
+ //  const RegisterSchema = yup.object().shape({
+ //   customerName: yup.string().required('Organization name is required'),
+ //   contactPersonName: yup.string().required('Contact name is required'),
+ //   address: yup.string().required('Address is required'),
+ //   email: yup.string().email('Invalid email format').required('Email is required'),
+ //   machineSerialNos: yup.array().of(yup.string().matches(serialNoRegEx, 'Invalid serial number').length(5, 'Serial number must be 5 characters long')).min(1, 'At least one machine is required'),
+ //   country: yup.object().label('Country').nullable(),
+ //   customerNote: yup.string().max(500, 'Customer note must be less than 500 characters')
+ //  })
 
- const defaultValues = useMemo(
-  () => ({
-   customerName: '',
-   contactPersonName: '',
-   address: '',
-   country: userLocale,
-   email: '',
-   machineSerialNos: [],
-   phoneNumber: { type: 'Work', countryCode: userLocale.phone, number: '' },
-   customerNote: ''
-  }),
-  [userLocale]
- )
+ const defaultValues = useRegisterDefaultValues(userLocale)
 
  const methods = useForm({
   resolver: yupResolver(RegisterSchema),
@@ -137,24 +127,6 @@ function RegisterForm() {
   }
  }, [country])
 
- const onSubmit = async data => {
-  try {
-   const response = await dispatch(registerCustomer(data))
-   console.log(response)
-   reset()
-   snack('Registration request sent', { variant: COLOR.SUCCESS })
-  } catch (error) {
-   if (regEx.test(error.MessageCode)) {
-    snack('error in sending form', { variant: COLOR.ERROR })
-    setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, { ...error, message: error })
-   } else {
-    console.error('unable to read error message', error || '')
-    snack('unable to read error message', { variant: COLOR.ERROR })
-    setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, { ...error, message: error })
-   }
-  }
- }
-
  const validateSerialNumber = serialNumber => {
   return serialNumber.length === 5 && serialNoRegEx.test(serialNumber)
  }
@@ -188,35 +160,70 @@ function RegisterForm() {
   setValue('machineSerialNos', newValue)
  }
 
+ const handleSubmissionError = error => {
+  if (error?.errors) {
+   error.errors.forEach(({ field, message }) => {
+    setError(field, {
+     type: 'validation',
+     message
+    })
+   })
+   snack('Please check the form for errors', { variant: COLOR.ERROR })
+   return
+  }
+  if (error?.MessageCode && regEx.test(error.MessageCode)) {
+   snack('Error in sending form', { variant: COLOR.ERROR })
+   setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
+    type: 'submission',
+    message: error.MessageCode
+   })
+   return
+  }
+  console.error('Unexpected error:', error)
+  snack('Unable to process your request', { variant: COLOR.ERROR })
+  setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
+   type: 'unexpected',
+   message: error?.message || 'An unexpected error occurred'
+  })
+ }
+
+ const onSubmit = async data => {
+  try {
+   const response = await dispatch(registerCustomer(data))
+   console.log('Registration response:', response)
+   snack('Registration request sent')
+   reset()
+  } catch (error) {
+   handleSubmissionError(error)
+  }
+ }
+
  return (
   <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
    {isMobile && (
     <Grid container spacing={2} mb={4} gap={2}>
-     {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
+     {/* {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)} */}
      <Grid container gap={4}>
       <RHFTextField
-       className='portal-rhf-textfield'
        name='customerName'
        label={t('customer_name.label')}
-       type='text'
+       type={KEY.TEXT}
        autoComplete={LABEL.NAME}
        aria-label={LABEL.NAME}
        helperText={errors.customerName ? errors.customerName.message : ''}
        required
       />
       <RHFTextField
-       className='portal-rhf-textfield'
        name='contactPersonName'
-       type='text'
+       type={KEY.TEXT}
        label={t('contact_person_name.label')}
-       autoComplete={LABEL.NAME}
-       aria-label={LABEL.NAME}
+       autoComplete={KEY.NAME}
+       aria-label={KEY.NAME}
        helperText={errors.contactPersonName ? errors.contactPersonName.message : ''}
       />
       <RHFTextField className={'portal-rhftextfield'} name='address' label='Organization Address' helperText={errors.address ? errors.address.message : ''} />
       <RHFCountryAutocomplete className={'portal-rhftextfield'} name='country' label='Country' helperText={errors.country ? errors.country.message : ''} fullWidth />
       <RHFTextField
-       className='portal-rhf-textfield'
        name={KEY.EMAIL}
        type={KEY.EMAIL}
        label={t('email.label')}
@@ -234,7 +241,7 @@ function RegisterForm() {
          {...params}
          name='machineSerialNos'
          label={t('machine.machines.label')}
-         type='text'
+         type={KEY.TEXT}
          onChange={event => setIsTyping(event.target.value.length > 0)}
          helperText={errors.machineSerialNos ? errors.machineSerialNos.message : 'Press enter at the end of each serial number'}
          FormHelperTextProps={{ sx: { display: isTyping ? 'block' : 'none' } }}
@@ -244,7 +251,7 @@ function RegisterForm() {
       <RHFTextField
        name='customerNote'
        label={t('customer_note.label')}
-       type='text'
+       type={KEY.TEXT}
        autoComplete={LABEL.NAME}
        aria-label={LABEL.NAME}
        helperText={errors.customerNote ? errors.customerNote.message : ''}
@@ -262,13 +269,13 @@ function RegisterForm() {
    {isMdScreen ||
     (isLgScreen && (
      <Grid container spacing={2} mb={4}>
-      {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
+      {/* {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)} */}
       <Grid item sm={6}>
        <Grid container gap={4}>
         <RHFTextField
          name='customerName'
          label={t('customer_name.label')}
-         type='text'
+         type={KEY.TEXT}
          autoComplete={LABEL.NAME}
          aria-label={LABEL.NAME}
          helperText={errors.customerName ? errors.customerName.message : ''}
@@ -290,8 +297,8 @@ function RegisterForm() {
         <RHFTextField
          name='contactPersonName'
          label={t('contact_person_name.label')}
-         type='text'
-         autoComplete={LABEL.NAME}
+         type={KEY.TEXT}
+         autoComplete={KEY.NAME}
          aria-label={LABEL.NAME}
          helperText={errors.contactName ? errors.contactName.message : ''}
         />
@@ -307,7 +314,7 @@ function RegisterForm() {
          renderInput={params => (
           <RHFTextField
            {...params}
-           type='text'
+           type={KEY.TEXT}
            name='machineSerialNos'
            label={t('machine.machines.label')}
            placeholder='Enter Machine serial number'
@@ -320,8 +327,8 @@ function RegisterForm() {
         <RHFTextField
          name='customerNote'
          label={t('customer_note.label')}
-         type='text'
-         autoComplete={LABEL.NAME}
+         type={KEY.TEXT}
+         autoComplete={KEY.NAME}
          aria-label={LABEL.NAME}
          helperText={errors.customerNote ? errors.customerNote.message : ''}
          multiline

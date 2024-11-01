@@ -66,10 +66,18 @@ function RegisterLayout({ children, illustration, title }) {
       </Stack>
      </Grid>
     </Grid>
-    {isMobile && <Box sx={{ width: { xs: '350px' }, height: { xs: '100vh', md: 'auto' } }}>{children}</Box>}
-    {isMid && <Box sx={{ width: { sm: '600px' }, height: { xs: '100vh', md: 'auto' } }}>{children}</Box>}
+    {isMobile && (
+     <Box className={'portal-rhf-textfield'} sx={{ width: { xs: '350px' }, height: { xs: '100vh', md: 'auto' } }}>
+      {children}
+     </Box>
+    )}
+    {isMid && (
+     <Box className={'portal-rhf-textfield'} sx={{ width: { sm: '600px' }, height: { xs: '100vh', md: 'auto' } }}>
+      {children}
+     </Box>
+    )}
     {isLarge && (
-     <Box sx={{ width: { lg: '900px' }, height: { xs: '100vh', md: 'auto' } }}>
+     <Box className={'portal-rhf-textfield'} sx={{ width: { lg: '900px' }, height: { xs: '100vh', md: 'auto' } }}>
       <div>{children}</div>
      </Box>
     )}
