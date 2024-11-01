@@ -6,6 +6,9 @@ const en = {
  user: `user`,
  list: `list`,
  edit: `edit`,
+ email: {
+  label: `Email`
+ },
  shop: `shop`,
  blog: `blog`,
  post: `post`,
@@ -20,6 +23,9 @@ const en = {
    label: `Columns`
   }
  },
+ contact_person_name: {
+  label: `Contact Person Name`
+ },
  group: {
   label: `Group`
  },
@@ -29,8 +35,14 @@ const en = {
  customer: {
   label: `Customer`
  },
+ customer_name: {
+  label: `Customer Name`
+ },
  customer_group: {
   label: `Customer Group`
+ },
+ customer_note: {
+  label: `Customer Note (optional)`
  },
  graph: {
   label: `Graph`,
@@ -56,7 +68,10 @@ const en = {
  },
  machine: {
   local: `machine`,
-  label: `Machine`
+  label: `Machine`,
+  machines: {
+   label: `Machines`
+  }
  },
  organization: {
   local: `organization`,
@@ -138,6 +153,9 @@ const en = {
   production_rate: { label: `Production Rate` }
  },
  invoice: `invoice`,
+ register: {
+  label: `Register`
+ },
  details: `details`,
  checkout: `checkout`,
  calendar: `calendar`,

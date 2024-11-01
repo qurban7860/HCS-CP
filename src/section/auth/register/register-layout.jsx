@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types'
+import { t } from 'i18next'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useResponsive } from 'hook'
 import { useSettingContext } from 'hook'
 import { Typography, Stack, Grid, Box } from '@mui/material'
 import { Logo } from 'component/logo'
-import { PortalLogo } from 'component'
+import { PortalLogo, FormHeader } from 'component'
 import { GLOBAL } from 'global'
-import { FLEX, KEY, TYPOGRAPHY } from 'constant'
+import { FLEX, KEY, TYPOGRAPHY, LABEL } from 'constant'
 import { StyledRoot, StyledContent } from '../style'
-import { ASSET } from 'config/asset-directory'
 
 RegisterLayout.propTypes = {
  title: PropTypes.string,
@@ -61,7 +61,7 @@ function RegisterLayout({ children, illustration, title }) {
       </Stack>
       <Stack sx={{ alignItems: KEY.END }}>
        <Typography className='portal-version' variant={TYPOGRAPHY.BODY2} sx={{ mb: 5, mt: 1 }}>
-        {GLOBAL.ENV} {GLOBAL.VERSION}
+        {GLOBAL.ENV === KEY.DEV && GLOBAL.ENV} {GLOBAL.VERSION}
        </Typography>
       </Stack>
      </Grid>

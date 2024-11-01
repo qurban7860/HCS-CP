@@ -1,8 +1,6 @@
-import { useRef, useMemo, useEffect, useState, useCallback } from 'react'
-import { useSelector } from 'react-redux'
+import { useMemo, useEffect, useState, useCallback } from 'react'
+import { t } from 'i18next'
 import * as yup from 'yup'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { Trans } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -38,21 +36,11 @@ function RegisterForm() {
  const isMdScreen = useResponsive('between', 'md')
  const isLgScreen = useResponsive('up', 'lg')
 
- //  const textfieldRef = useRef(null)
-
- //  useGSAP(() => {
- //   const introTl = gsap.timeline()
- //   introTl.from(textfieldRef.current, {
- //    opacity: 0,
- //    y: 20
- //   })
- //  })
-
  const getCountryByLocale = () => {
   const locale = Intl.DateTimeFormat().resolvedOptions().locale || 'en-NZ'
   const countryCode = locale.split('-')[1]?.toLowerCase()
   const foundCountry = COUNTRY.find(country => country?.code?.toLowerCase() === countryCode)
-  return foundCountry ? foundCountry : { code: 'NZ', label: 'New Zealand', phone: '64' }
+  return foundCountry ? foundCountry : { code: '', label: '', phone: '64' }
  }
 
  const updatePhoneCountryCode = country => {
@@ -92,7 +80,6 @@ function RegisterForm() {
   machineSerialNos: yup.array().of(yup.string().matches(serialNoRegEx, 'Invalid serial number').length(5, 'Serial number must be 5 characters long')).min(1, 'At least one machine is required'),
   country: yup.object().label('Country').nullable(),
   customerNote: yup.string().max(500, 'Customer note must be less than 500 characters')
-  //   phone: yup.object().required('Phone number is required')
  })
 
  const defaultValues = useMemo(
@@ -151,9 +138,9 @@ function RegisterForm() {
  }, [country])
 
  const onSubmit = async data => {
-  console.log('data', data)
   try {
    const response = await dispatch(registerCustomer(data))
+   console.log(response)
    reset()
    snack('Registration request sent', { variant: COLOR.SUCCESS })
   } catch (error) {
@@ -210,7 +197,7 @@ function RegisterForm() {
       <RHFTextField
        className='portal-rhf-textfield'
        name='customerName'
-       label='Customer Name'
+       label={t('customer_name.label')}
        type='text'
        autoComplete={LABEL.NAME}
        aria-label={LABEL.NAME}
@@ -221,7 +208,7 @@ function RegisterForm() {
        className='portal-rhf-textfield'
        name='contactPersonName'
        type='text'
-       label='Contact name'
+       label={t('contact_person_name.label')}
        autoComplete={LABEL.NAME}
        aria-label={LABEL.NAME}
        helperText={errors.contactPersonName ? errors.contactPersonName.message : ''}
@@ -232,7 +219,7 @@ function RegisterForm() {
        className='portal-rhf-textfield'
        name={KEY.EMAIL}
        type={KEY.EMAIL}
-       label='Email'
+       label={t('email.label')}
        autoComplete={KEY.EMAIL}
        aria-label={LABEL.LOGIN_EMAIL}
        error={!!errors.email}
@@ -246,7 +233,7 @@ function RegisterForm() {
         <RHFTextField
          {...params}
          name='machineSerialNos'
-         label='Machines'
+         label={t('machine.machines.label')}
          type='text'
          onChange={event => setIsTyping(event.target.value.length > 0)}
          helperText={errors.machineSerialNos ? errors.machineSerialNos.message : 'Press enter at the end of each serial number'}
@@ -256,7 +243,7 @@ function RegisterForm() {
       />
       <RHFTextField
        name='customerNote'
-       label='Customer note (optional)'
+       label={t('customer_note.label')}
        type='text'
        autoComplete={LABEL.NAME}
        aria-label={LABEL.NAME}
@@ -278,11 +265,18 @@ function RegisterForm() {
       {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
       <Grid item sm={6}>
        <Grid container gap={4}>
-        <RHFTextField name='customerName' label='Customer Name' type='text' autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText={errors.customerName ? errors.customerName.message : ''} />
+        <RHFTextField
+         name='customerName'
+         label={t('customer_name.label')}
+         type='text'
+         autoComplete={LABEL.NAME}
+         aria-label={LABEL.NAME}
+         helperText={errors.customerName ? errors.customerName.message : ''}
+        />
         <RHFTextField name='address' label='Organization Address' autoComplete='address' helperText={errors.address ? errors.address.message : ''} />
         <RHFTextField
          name={KEY.EMAIL}
-         label='Email'
+         label={t('email.label')}
          type={KEY.EMAIL}
          autoComplete={KEY.EMAIL}
          aria-label={LABEL.LOGIN_EMAIL}
@@ -293,7 +287,14 @@ function RegisterForm() {
       </Grid>
       <Grid item xs={12} sm={6}>
        <Grid container gap={4}>
-        <RHFTextField name='contactPersonName' label='Contact name' type='text' autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText={errors.contactName ? errors.contactName.message : ''} />
+        <RHFTextField
+         name='contactPersonName'
+         label={t('contact_person_name.label')}
+         type='text'
+         autoComplete={LABEL.NAME}
+         aria-label={LABEL.NAME}
+         helperText={errors.contactName ? errors.contactName.message : ''}
+        />
         <RHFCountryAutocomplete fullWidth name='country' label='Country' helperText={errors.country ? errors.country.message : ''} />
         <RHFCustomPhoneInput name='phoneNumber' value={phoneNumber} label={'Contact Number'} helperText={errors.phoneNumber ? errors.phoneNumber.message : ''} isRegister />
        </Grid>
@@ -308,7 +309,7 @@ function RegisterForm() {
            {...params}
            type='text'
            name='machineSerialNos'
-           label='Machines'
+           label={t('machine.machines.label')}
            placeholder='Enter Machine serial number'
            onChange={event => setIsTyping(event.target.value.length > 0)}
            helperText={errors.machineSerialNos ? errors.machineSerialNos.message : 'Press enter at the end of each serial number'}
@@ -318,7 +319,7 @@ function RegisterForm() {
         />
         <RHFTextField
          name='customerNote'
-         label='Customer note (optional)'
+         label={t('customer_note.label')}
          type='text'
          autoComplete={LABEL.NAME}
          aria-label={LABEL.NAME}
@@ -326,8 +327,6 @@ function RegisterForm() {
          multiline
          maxRows={3}
          mt={2}
-         //  onFocus={() => rows !== 3 && setRows(3)}
-         //  onBlur={() => rows !== 1 && setRows(1)}
         />
        </Grid>
       </Grid>
@@ -351,7 +350,7 @@ function RegisterForm() {
       loading={isSubmitSuccessful || isSubmitting}
       disabled={Object.keys(errors).length > 0 || !isFormComplete}
       sx={RADIUS.BORDER}>
-      {'REGISTER'}
+      {t('register.label').toUpperCase()}
      </GStyledLoadingButton>
     </Grid>
     {/* keep for now  */}
