@@ -1,5 +1,6 @@
 import { ICON_NAME } from 'hook'
 import { KEY } from 'constant'
+import { t } from 'i18next'
 
 /**
  * Represents the tabs for the machine section.
@@ -21,47 +22,47 @@ import { KEY } from 'constant'
  * An array of tabs for the customer section.
  * @type {Tab[]}
  */
-export const TABS = (value) => [
-  {
-    id: 0,
-    label: 'Machine Overview',
-    icon: ICON_NAME.CUSTOMER,
-    disabled: false
-  },
-  {
-    id: 1,
-    label: 'License',
-    icon: ICON_NAME.SITES,
-    disabled: true
-  },
-  {
-    id: 2,
-    label: 'Tools',
-    icon: ICON_NAME.CONTACTS,
-    disabled: true
-  },
-  {
-    id: 3,
-    label: 'Profiles',
-    icon: ICON_NAME.SUPPORT,
-    disabled: true
-  },
-  {
-    id: 4,
-    label: 'Settings',
-    icon: ICON_NAME.SUPPORT,
-    disabled: true
-  },
-  {
-    id: 5,
-    label: 'Service Records',
-    icon: ICON_NAME.SUPPORT,
-    disabled: true
-  },
-  {
-    id: 6,
-    label: 'Support Tickets',
-    icon: ICON_NAME.SUPPORT,
-    disabled: false
-  }
+export const TABS = value => [
+ {
+  id: 0,
+  label: 'Machine Overview',
+  icon: ICON_NAME.CUSTOMER,
+  disabled: false
+ },
+ // {
+ //   id: 1,
+ //   label: 'License',
+ //   icon: ICON_NAME.SITES,
+ //   disabled: true
+ // },
+ // {
+ //   id: 2,
+ //   label: 'Tools',
+ //   icon: ICON_NAME.CONTACTS,
+ //   disabled: true
+ // },
+ // {
+ //   id: 3,
+ //   label: 'Profiles',
+ //   icon: ICON_NAME.SUPPORT,
+ //   disabled: true
+ // },
+ {
+  id: 4,
+  label: t('log.logs.label'),
+  icon: ICON_NAME.SUPPORT,
+  disabled: false
+ },
+ {
+  id: 5,
+  label: t('graph.graphs.label'),
+  icon: ICON_NAME.SUPPORT,
+  disabled: false
+ },
+ {
+  id: 6,
+  label: 'Support Tickets',
+  icon: ICON_NAME.SUPPORT,
+  disabled: false
+ }
 ]

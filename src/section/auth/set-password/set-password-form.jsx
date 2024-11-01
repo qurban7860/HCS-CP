@@ -119,10 +119,19 @@ function SetPasswordForm() {
     {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
     <GridViewField heading={VIEW_FORM.HEADING_EMAIL} children={defaultValues?.email} variant={TYPOGRAPHY.BODY1} />
     <RHFPasswordField name={KEY.PASSWORD} id={KEY.PASSWORD} label={LABEL.LOGIN_PASSWORD} autoComplete={KEY.CURRENT_PASSWORD} aria-label={LABEL.LOGIN_PASSWORD} />
-    <RHFPasswordField name={'confirmPassword'} id={KEY.PASSWORD} label={'Confirm Password'} autoComplete={KEY.CURRENT_PASSWORD} aria-label={LABEL.LOGIN_PASSWORD} />
+    <RHFPasswordField name={'confirmPassword'} id={'confirmPassword'} label={'Confirm Password'} autoComplete={KEY.CURRENT_PASSWORD} aria-label={LABEL.LOGIN_PASSWORD} />
    </Stack>
 
-   <GStyledLoadingButton fullWidth isLoading={isSubmitting} color={KEY.INHERIT} size={SIZE.LARGE} type={KEY.SUBMIT} variant={KEY.CONTAINED} loading={isSubmitSuccessful || isSubmitting} disabled={!isFormComplete} sx={RADIUS.BORDER}>
+   <GStyledLoadingButton
+    fullWidth
+    isLoading={isSubmitting}
+    color={KEY.INHERIT}
+    size={SIZE.LARGE}
+    type={KEY.SUBMIT}
+    variant={KEY.CONTAINED}
+    loading={isSubmitSuccessful || isSubmitting}
+    disabled={!isFormComplete}
+    sx={RADIUS.BORDER}>
     {'SET PASSWORD'}
    </GStyledLoadingButton>
   </FormProvider>

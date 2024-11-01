@@ -21,6 +21,8 @@ import {
  // product:
  MachinePage,
  MachinesListPage,
+ MachinesLogsPage,
+ MachinesGraphsPage,
  MachineSupportTicketsPage,
  //  crm:
  CustomerPage,
@@ -30,6 +32,8 @@ import {
  CustomerSupportTicketsPage,
  // support:
  TicketsListPage,
+ // log:
+ LogListPage,
  // fallback:
  BlankPage,
  FallbackPage,
@@ -147,6 +151,16 @@ export default function Router() {
       { element: <MachinesListPage />, index: true },
       { path: ':id/view', element: <MachinePage /> },
       {
+       path: ':id/logs',
+       children: [
+        {
+         element: <MachinesLogsPage />,
+         index: true
+        }
+       ]
+      },
+      { path: ':id/graphs', element: <MachinesGraphsPage /> },
+      {
        path: ':id/support',
        children: [
         {
@@ -244,6 +258,25 @@ export default function Router() {
    children: [
     { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
     { path: 'tickets', element: <TicketsListPage /> },
+    {
+     element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
+     children: [
+      // { path: 'password', element: <ChangePasswordPage /> },
+     ]
+    }
+   ]
+  },
+  {
+   // logs
+   path: 'logs',
+   element: (
+    <AuthGuard>
+     <DashboardLayout />
+    </AuthGuard>
+   ),
+   children: [
+    { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
+    { path: 'machine', element: <LogListPage /> },
     {
      element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
      children: [

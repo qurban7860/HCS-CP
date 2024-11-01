@@ -1,9 +1,10 @@
 import { Suspense, lazy } from 'react'
-import { LoadingScreen } from 'component/loading-screen'
+import { FramingLoader } from 'component'
 
+// eslint-disable-next-line react/display-name
 const Loadable = Component => props =>
  (
-  <Suspense fallback={<LoadingScreen />}>
+  <Suspense fallback={<FramingLoader />}>
    <Component {...props} />
   </Suspense>
  )
@@ -23,6 +24,8 @@ export const GeneralAppPage = Loadable(lazy(() => import('page/dashboard/general
 // machine
 export const MachinePage = Loadable(lazy(() => import('page/product/machine/machine')))
 export const MachinesListPage = Loadable(lazy(() => import('page/product/machines/machines')))
+export const MachinesLogsPage = Loadable(lazy(() => import('page/product/machine-logs/machine-logs')))
+export const MachinesGraphsPage = Loadable(lazy(() => import('page/product/machine-graphs/machine-graphs')))
 // machine-support
 export const MachineSupportTicketsPage = Loadable(lazy(() => import('page/product/support/tickets')))
 
@@ -35,6 +38,9 @@ export const ContactPage = Loadable(lazy(() => import('page/crm/contact/contact'
 export const SitePage = Loadable(lazy(() => import('page/crm/site/site')))
 // customer-support
 export const CustomerSupportTicketsPage = Loadable(lazy(() => import('page/crm/support/tickets')))
+
+//log
+export const LogListPage = Loadable(lazy(() => import('page/log/logs')))
 
 // support
 export const TicketsListPage = Loadable(lazy(() => import('page/support/tickets/tickets')))

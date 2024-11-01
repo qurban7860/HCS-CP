@@ -46,3 +46,7 @@ export * from './crm/customer-ticket'
 // support(jira)/ticket
 export * from './support/ticket'
 export { default as ticketReducer } from './support/ticket/ticket'
+
+// log
+export * from './log'
+export { default as logReducer } from './log/log'

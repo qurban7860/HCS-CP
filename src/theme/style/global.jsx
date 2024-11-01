@@ -1,6 +1,6 @@
 import { color, m } from 'framer-motion'
 import { styled, alpha } from '@mui/material/styles'
-import { Popover, ListItemText, Card, Chip, Grid, Divider, Container, Skeleton, Box, Typography, IconButton, Tab, Tabs } from '@mui/material'
+import { Popover, ListItemText, Card, Chip, Grid, Divider, Container, Skeleton, Box, Typography, IconButton, Tab, Tabs, TablePagination } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { bgBlur } from 'theme/style'
@@ -163,6 +163,44 @@ export const GStyledTableChip = styled(({ theme, ...other }) => <Chip {...other}
  whiteSpace: 'nowrap'
 }))
 
+export const GStyledTablePaginationCustom = styled(TablePagination)(({ theme, mode, page, data, rowsPerPage }) => ({
+ '.MuiTablePagination-toolbar': {
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.table.header : theme.palette.grey[800],
+  height: '5px',
+  width: '!important 200px',
+  '& .MuiTablePagination-actions': {
+   '& .MuiIconButton-root': {
+    '&:first-of-type': {
+     color: page <= 0 ? (mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]) : mode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.howick.orange
+    },
+    '&:nth-of-type(2)': {
+     color: page <= 0 ? (mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]) : mode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.howick.orange
+    },
+    '&:nth-of-type(3)': {
+     color:
+      page === Math.ceil((typeof data === 'number' ? data : data?.length ?? 0) / rowsPerPage) - 1
+       ? mode === KEY.LIGHT
+         ? theme.palette.grey[300]
+         : theme.palette.grey[700]
+       : mode === KEY.LIGHT
+       ? theme.palette.grey[800]
+       : theme.palette.howick.orange
+    },
+    '&:last-of-type': {
+     color:
+      page === Math.ceil((typeof data === 'number' ? data : data?.length ?? 0) / rowsPerPage) - 1
+       ? mode === KEY.LIGHT
+         ? theme.palette.grey[300]
+         : theme.palette.grey[700]
+       : mode === KEY.LIGHT
+       ? theme.palette.grey[800]
+       : theme.palette.howick.orange
+    }
+   }
+  }
+ }
+}))
+
 // :form top border divider
 export const GStyledTopBorderDivider = styled(({ theme, mode, ...other }) => <Divider {...other} />)(({ theme, mode }) => ({
  height: 2,
@@ -175,13 +213,14 @@ export const GStyledTopBorderDivider = styled(({ theme, mode, ...other }) => <Di
 }))
 
 export const GStyledLoadingButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
- backgroundColor: isLoading === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.darkBlue,
- color: 'white',
- '&:hover': { backgroundColor: theme.palette.secondary.main },
- '&.MuiButton-root.Mui-disabled': {
-  backgroundColor: theme.palette.grey[500],
-  color: theme.palette.grey[600]
- }
+ backgroundColor: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
+ color: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
+ '&:hover': { backgroundColor: KEY.LIGHT ? theme.palette.howick.orange : theme.palette.howick.darkBlue }
+ //  '&.MuiButton-root.Mui-disabled': {
+ //   backgroundColor: theme.palette.grey[200],
+ //   color: theme.palette.grey[600],
+ //   opacity: 0.5
+ //  }
 }))
 
 export const GStyledLoadingScreenDiv = styled('div')(({ theme }) => ({
@@ -395,7 +434,7 @@ export const GStyledPopover = styled(Popover)(({ theme }) => ({
 
 // :landing __________________________________________________________________________________________________
 
-export const GStyledBrandOverlayBox = styled(Box)(({ theme, themeMode, isMobile }) => ({
+export const GStyledBrandOverlayBox = styled(({ themeMode, isMobile, ...other }) => <Box {...other} />)(({ theme, themeMode, isMobile }) => ({
  width: isMobile ? 50 : 100,
  margin: theme.spacing(1),
  marginRight: theme.spacing(1),
@@ -411,6 +450,13 @@ export const GStyledBrandOverlayBox = styled(Box)(({ theme, themeMode, isMobile 
   backgroundColor: 'rgba(0, 0, 0, 0.8)',
   color: themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
   mixBlendMode: themeMode === KEY.LIGHT ? 'color' : 'color-dodge'
+ },
+ transition: 'transform 0.3s ease-in-out',
+ '&:hover': {
+  transform: 'scale(1.05)'
+ },
+ [theme.breakpoints.down('sm')]: {
+  margin: theme.spacing(1)
  }
 }))
 
@@ -477,18 +523,21 @@ export const StylendLandingContainerBox = styled(Box)(({ theme, isTablet, isMobi
  backgroundImage: `url(${ASSET.BG_STROKE_LOGO})`,
  backgroundSize: 'cover',
  backgroundPositionY: 'center',
- backgroundSize: isMobile ? '250%' : '150%',
+ //  backgroundSize: isMobile ? '250%' : '150%',
  backgroundBlendMode: 'screen',
  backgroundOpacity: 0.2,
- backgroundColor: alpha(theme.palette.background.default, 0.8),
+ //  backgroundColor: alpha(theme.palette.background.default, 0.8),
  display: 'flex',
  height: '100%',
  flexDirection: 'column',
  alignItems: 'center',
- display: 'flex',
  justifyContent: 'center',
  position: 'relative',
  overflow: 'hidden',
+ padding: theme.spacing(2),
+ [theme.breakpoints.up('md')]: {
+  padding: theme.spacing(4)
+ },
  [theme.breakpoints.up('md')]: {
   flexDirection: 'row'
  }
@@ -584,8 +633,8 @@ export const GStyledTableSkeleton = styled(({ theme, themeMode, ...other }) => <
 export const GStyledTableHeaderBox = styled(Box)(({ theme }) => ({
  backgroundImage: `url(${ASSET.BG_STROKE_LOGO})`,
  backgroundSize: 'cover',
- backgroundPositionY: 'center',
- backgroundSize: '150%'
+ backgroundPositionY: 'center'
+ //  backgroundSize: '150%'
 }))
 
 export const GStyledSiteMapBox = styled(Box)(({ theme }) => ({
@@ -647,8 +696,8 @@ export const GCardOption = mode => {
   sx: {
    backgroundColor: mode === KEY.LIGHT ? 'background.paper' : 'background.default',
    backgroundImage: `url(${mode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
-   backgroundSize: 'cover',
-   backgroundSize: '150%'
+   backgroundSize: 'cover'
+   //  backgroundSize: '150%'
   }
  }
 }

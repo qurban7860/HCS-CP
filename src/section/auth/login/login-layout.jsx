@@ -23,7 +23,7 @@ function LoginLayout({ children, illustration, title }) {
   const introTl = gsap.timeline()
 
   introTl
-   .set('.howick-logo', { opacity: 1 })
+   .set('.howick-logo', { opacity: 1, duration: 0.5 })
    .from('.portal-header', {
     scale: 1,
     opacity: 0,
@@ -35,6 +35,10 @@ function LoginLayout({ children, illustration, title }) {
     opacity: 0,
     y: 10
    })
+   .from('.portal-rhf-textfield', {
+    opacity: 0,
+    y: 10
+   })
  })
 
  return (
@@ -43,10 +47,10 @@ function LoginLayout({ children, illustration, title }) {
     <Grid sx={{ display: FLEX.FLEX, justifyContent: KEY.CENTER, mt: 2, mb: -3 }} alignItems={KEY.CENTER} spacing={2} container>
      <Grid item>
       <Grid container flex={1} justifyContent='center'>
-       <Logo sx={{ width: { xs: '80px', sm: '120px', md: '150px' }, pointerEvents: KEY.NONE }} />
+       <Logo className={'howick-logo'} sx={{ width: { xs: '80px', sm: '120px', md: '150px' }, pointerEvents: KEY.NONE }} />
       </Grid>
       <Stack sx={{ alignItems: KEY.CENTER }}>
-       <PortalLogo className='portal-header' sx={{ width: { xs: '100px', sm: '140px', md: '250px' }, mt: { xs: -2, lg: -3 } }} />
+       <PortalLogo className='portal-header' sx={{ width: { xs: '150px', sm: '170px', md: '250px' }, mt: { xs: -2, lg: -3 } }} />
       </Stack>
       <Stack sx={{ alignItems: KEY.END }}>
        <Typography className='portal-version' variant={TYPOGRAPHY.BODY2} sx={{ mb: 5, mt: 1 }}>
@@ -55,7 +59,9 @@ function LoginLayout({ children, illustration, title }) {
       </Stack>
      </Grid>
     </Grid>
-    <Box sx={{ width: { xs: '300px', sm: '400px' } }}> {children} </Box>
+    <Box sx={{ width: { xs: '300px', sm: '400px' } }} className={'portal-rhf-textfield'}>
+     {children}
+    </Box>
    </StyledContent>
   </StyledRoot>
  )

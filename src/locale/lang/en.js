@@ -1,3 +1,5 @@
+import { get } from 'react-hook-form'
+
 const en = {
  register_agreement: 'By clicking "Register" you agree to our <1>Privacy Policy</1>.',
  app: `app`,
@@ -12,6 +14,15 @@ const en = {
  cards: `cards`,
  posts: `posts`,
  create: `create`,
+ column: {
+  label: `Column`,
+  columns: {
+   label: `Columns`
+  }
+ },
+ group: {
+  label: `Group`
+ },
  change_password: {
   label: `Change Password`
  },
@@ -20,6 +31,24 @@ const en = {
  },
  customer_group: {
   label: `Customer Group`
+ },
+ graph: {
+  label: `Graph`,
+  graphs: {
+   label: `Graphs`
+  }
+ },
+ log: {
+  label: `Log`,
+  logs: {
+   label: `Logs`
+  },
+  button: {
+   get_logs: `Get Logs`
+  },
+  period: {
+   label: `Period`
+  }
  },
  home: {
   local: `home`,
@@ -40,6 +69,9 @@ const en = {
  document: {
   local: `document`,
   label: `Document`
+ },
+ login: {
+  label: `Login`
  },
  support: {
   local: `support`,
@@ -82,12 +114,29 @@ const en = {
  language: {
   label: `Language`
  },
+ legend: {
+  label: `Legend`,
+  legends: {
+   label: `Legends`
+  }
+ },
  notifications: {
   label: `Notifications`,
   no_notif: `You have no new notifications`
  },
+ search: {
+  label: `Search`
+ },
+ select_filter: {
+  label: `Select Filter`
+ },
  account: `account`,
  product: `product`,
+ production: {
+  label: `Production`,
+  production_total: { label: `Production Total` },
+  production_rate: { label: `Production Rate` }
+ },
  invoice: `invoice`,
  details: `details`,
  checkout: `checkout`,
