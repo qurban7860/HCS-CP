@@ -18,12 +18,11 @@ import { addLogSchema } from 'schema'
 import { FLEX, KEY, TYPOGRAPHY } from 'constant'
 
 const LogsSection = ({ isArchived }) => {
- const [selectedSearchFilter, setSelectedSearchFilter] = useState('')
  const [pageType, setPageType] = useState('')
  const [expandedButton, setExpandedButton] = useState(null)
  const [searchParams, setSearchParams] = useSearchParams()
  const { customerMachines } = useSelector(state => state.machine)
- const { logs, logPage, isLoading, logRowsPerPage } = useSelector(state => state.log)
+ const { logPage, isLoading, logRowsPerPage, logsGraphData, selectedSearchFilter } = useSelector(state => state.log)
  const { customers } = useSelector(state => state.customer)
  const { securityUser } = useSelector(state => state.user)
 
@@ -209,7 +208,7 @@ const LogsSection = ({ isArchived }) => {
       sx={{
        mr: 1,
        color: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
-       borderColor: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
+       borderColor: theme.palette.grey[500]
       }}
       onClick={() => handleOnClick('erpLog', handleErpLogToggle)}>
       {(!isMobile || expandedButton === 'erpLog') && <Typography variant={TYPOGRAPHY.BODY0}>{pageType === 'graph' ? 'Machine Logs' : 'See Graph'}</Typography>}
@@ -240,9 +239,9 @@ const LogsSection = ({ isArchived }) => {
       {isLoading ? (
        <HowickLoader height={300} width={303} mode={themeMode} />
       ) : logGraphType.key === 'production_total' ? (
-       <ERPProductionTotal timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} />
+       <ERPProductionTotal timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} />
       ) : (
-       <ERPProductionRate timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} />
+       <ERPProductionRate timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} />
       )}
      </Fragment>
     )}
