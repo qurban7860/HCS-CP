@@ -240,10 +240,10 @@ export function registerCustomer(params) {
     address: params?.address,
     email: params?.email,
     machineSerialNos: params?.machineSerialNos,
-    phoneNumber: params?.phoneNumber,
+    country: params?.country.label,
+    phoneNumber: params?.phoneNumber.number,
     status: 'PENDING',
-    customerNote: params?.customerNote,
-    internalNote: 'note'
+    customerNote: params?.customerNote
    }
    console.log(data)
    const response = await axios.post(PATH_SERVER.CRM.CUSTOMER.register, data)
