@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState, useCallback } from 'react'
+import { Fragment, useEffect, useState, useCallback, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -6,7 +6,7 @@ import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
 import { useSettingContext } from 'hook'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { getLogs, getLogGraphData, ChangeLogPage, resetLogs } from 'store/slice'
+import { getLogs, getLogGraphData, setSelectedSearchFilter, ChangeLogPage, resetLogs, resetLogsGraphData } from 'store/slice'
 import { addLogSchema } from 'schema'
 import { Grid } from '@mui/material'
 import { MotionLazyContainer, HowickLoader } from 'component'
@@ -16,22 +16,25 @@ import { ERPProductionTotal, ERPProductionRate } from 'section/log'
 import { FLEX } from 'constant'
 
 const MachineGraphsTab = () => {
- const [selectedSearchFilter, setSelectedSearchFilter] = useState('')
- const { logPage, logRowsPerPage, isLoading } = useSelector(state => state.log)
+ const { logPage, logRowsPerPage, isLoading, logsGraphData, selectedSearchFilter } = useSelector(state => state.log)
  const { customer, customers } = useSelector(state => state.customer)
- const { customerMachines } = useSelector(state => state.machine)
+ const { machine, customerMachines } = useSelector(state => state.machine)
 
  const { themeMode } = useSettingContext()
  const defaultValues = useLogDefaultValues()
- const { machineId } = useParams()
+ const { id } = useParams()
  const methods = useForm({
   resolver: yupResolver(addLogSchema),
   defaultValues
  })
 
  const { watch, setValue, handleSubmit, trigger } = methods
- const { machine, dateFrom, dateTo, logType, logPeriod, filteredSearchKey, logGraphType } = watch()
+ const { dateFrom, dateTo, logType, logPeriod, filteredSearchKey, logGraphType } = watch()
  const [graphLabels, setGraphLabels] = useState({ yaxis: 'Cumulative Total Value', xaxis: logPeriod })
+
+ useLayoutEffect(() => {
+  dispatch(resetLogsGraphData())
+ }, [dispatch])
 
  useEffect(() => {
   dispatch(
@@ -45,12 +48,11 @@ const MachineGraphsTab = () => {
 
  const onGetLogs = data => {
   const customerId = customer?._id
-  const machineId = machine?._id || undefined
   dispatch(ChangeLogPage(0))
   dispatch(
    getLogs({
     customerId,
-    machineId,
+    machineId: id,
     page: 0,
     pageSize: logRowsPerPage,
     fromDate: dateFrom,
@@ -118,13 +120,13 @@ const MachineGraphsTab = () => {
   if (logPeriod && logGraphType) {
    const customerId = machine?.customer?._id
    const LogType = 'erp'
-   dispatch(getLogGraphData(customerId, machineId, LogType, logPeriod, logGraphType?.key))
+   dispatch(getLogGraphData(customerId, id, LogType, logPeriod, logGraphType?.key))
   }
  }, [logPeriod, logGraphType])
 
  const payload = {
   customerId: customer?._id,
-  machineId: machine?._id || undefined,
+  machineId: id || undefined,
   page: logPage,
   pageSize: logRowsPerPage,
   fromDate: dateFrom,
@@ -149,6 +151,7 @@ const MachineGraphsTab = () => {
         handleMachineChange={handleMachineChange}
         handleLogTypeChange={handleLogTypeChange}
         handlePeriodChange={handlePeriodChange}
+        setSelectedFilter={setSelectedSearchFilter}
         isGraphPage={() => true}
         methods={methods}
         onGetLogs={onGetLogs}
@@ -159,9 +162,9 @@ const MachineGraphsTab = () => {
     {isLoading ? (
      <HowickLoader height={300} width={303} mode={themeMode} />
     ) : logGraphType.key === 'production_total' ? (
-     <ERPProductionTotal timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} />
+     <ERPProductionTotal timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} />
     ) : (
-     <ERPProductionRate timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} />
+     <ERPProductionRate timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} />
     )}
    </MotionLazyContainer>
   </Fragment>

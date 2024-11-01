@@ -14,6 +14,7 @@ const initialState = {
  logs: [],
  logsGraphData: [],
  logsTotalCount: 0,
+ selectedSearchFilter: '',
  dateFrom: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
  dateTo: new Date(Date.now()).toISOString().split('T')[0],
  logFilterBy: '',
@@ -48,6 +49,9 @@ const logSlice = createSlice({
   },
   setSelectedLogType(state, action) {
    state.selectedLogType = action.payload
+  },
+  setSelectedSearchFilter(state, action) {
+   state.selectedSearchFilter = action.payload
   },
   hasError(state, action) {
    state.isLoading = false
@@ -122,6 +126,7 @@ export const {
  setSelectedLogType,
  setDateTo,
  setAllVisibilityFalse,
+ setSelectedSearchFilter,
  resetLogs,
  resetLog,
  resetLogsGraphData,
