@@ -49,7 +49,7 @@ export default function IconTooltip({
      </GStyledTooltip>
     </Button>
    ) : iconOnly && !disabled ? (
-    <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={color} color={color} green={isActiveIcon}>
+    <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={tooltipColor} color={color} green={isActiveIcon}>
      <Icon
       color={color}
       sx={{
