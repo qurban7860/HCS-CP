@@ -20,145 +20,147 @@ import { KEY, TITLE, FLEX, TYPOGRAPHY, VIEW_FORM, FLEX_DIR, LABEL, VARIANT } fro
 import { truncate } from 'util/truncate'
 
 const UserProfileLayout = () => {
-  const { customer, customerDialog } = useSelector((state) => state.customer)
-  const { securityUser, isLoading } = useSelector((state) => state.user)
-  const { userId } = useAuthContext()
+ const { customer, customerDialog } = useSelector(state => state.customer)
+ const { securityUser, isLoading } = useSelector(state => state.user)
+ const { userId } = useAuthContext()
 
-  const theme = useTheme()
-  const { themeMode } = useSettingContext()
+ const theme = useTheme()
+ const { themeMode } = useSettingContext()
 
-  useLayoutEffect(() => {
-    dispatch(resetCustomer())
-  }, [dispatch])
+ useLayoutEffect(() => {
+  dispatch(resetCustomer())
+ }, [dispatch])
 
-  useEffect(() => {
-    if (userId !== securityUser?._id) {
-      dispatch(getSecurityUser(userId))
-    }
-  }, [dispatch, userId])
-
-  const fileInput = useRef(null)
-  const defaultValues = userDefaultValues(securityUser, customer)
-
-  const methods = useForm({
-    resolver: yupResolver(editUserSchema),
-    defaultValues
-  })
-
-  useEffect(() => {
-    const debouncedDispatch = _.debounce(() => {
-      if (defaultValues?.customerId) {
-        dispatch(getCustomer(defaultValues.customerId))
-      }
-    }, 300)
-
-    debouncedDispatch()
-
-    return () => debouncedDispatch.cancel()
-  }, [dispatch, defaultValues?.customerId])
-
-  const handleCustomerDialog = (event, customerId) => {
-    event.preventDefault()
-    dispatch(resetCustomer())
-    dispatch(getCustomer(customerId))
-    dispatch(setCustomerDialog(true))
+ useEffect(() => {
+  if (userId !== securityUser?._id) {
+   dispatch(getSecurityUser(userId))
   }
+ }, [dispatch, userId])
 
-  return (
-    <MotionLazyContainer display="flex">
-      {/*  TODO: Make responsive */}
-      <FormProvider methods={methods} onSubmit={() => {}}>
-        <Grid container spacing={2} flexDirection="row" {...MARGIN.PAGE_PROP}>
-          <Grid item sm={12} lg={12}>
-            <Grid container>
-              <Grid item sm={12} pb={5}>
-                <Card {...GCardOption}>
-                  <GStyledTopBorderDivider mode={themeMode} />
+ const fileInput = useRef(null)
+ const defaultValues = userDefaultValues(securityUser, customer)
 
-                  <Grid container mb={10} px={1.5}>
-                    <Grid item lg={8}>
-                      <GStyledSpanBox my={2}>
-                        <BadgeCardMedia />
-                        <ViewFormField variant={TYPOGRAPHY.H4} heading={VIEW_FORM.FULL_NAME} isLoading={isLoading} isMachineView>
-                          {truncate(defaultValues?.name, 50)}
-                        </ViewFormField>
-                      </GStyledSpanBox>
-                      <GridViewField heading={VIEW_FORM.ROLES} isLoading={isLoading} userRolesChip={defaultValues?.roles} isNoBg />
-                    </Grid>
-                    <Grid item lg={4}>
-                      <Grid container justifyContent={FLEX.FLEX_END} flexDirection={FLEX_DIR.COLUMN} alignContent={FLEX.FLEX_END}>
-                        <Grid item xs={12} justifyContent={FLEX.FLEX_END} mt={2}>
-                          <Grid container justifyContent={FLEX.FLEX_END} gap={1} alignItems={KEY.CENTER}>
-                            {defaultValues?.isActive ? (
-                              <IconTooltip
-                                title={LABEL.ACTIVE}
-                                icon={ICON_NAME.ACTIVE}
-                                color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
-                              />
-                            ) : (
-                              <IconTooltip title={LABEL.INACTIVE} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} />
-                            )}
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Card>
-              </Grid>
-              <Grid item sm={12}>
-                <Card {...GCardOption}>
-                  <GStyledTopBorderDivider mode={themeMode} />
-                  <Grid container spacing={2} px={1.5} mb={10}>
-                    <Grid item lg={12}>
-                      <GridViewTitle title={TITLE.PERSONAL_INFO} />
-                      <Divider variant={VARIANT.MIDDLE} style={{ width: '100%', marginBottom: '20px' }} />
-                    </Grid>
-                    <Grid item lg={8} sm={12}>
-                      <Grid container spacing={2} p={2} pb={5}>
-                        <GridViewField
-                          heading={VIEW_FORM.ORGANIZATION}
-                          isLoading={isLoading}
-                          children={
-                            defaultValues.customer && (
-                              <Link
-                                onClick={(event) => handleCustomerDialog(event, defaultValues?.customerId)}
-                                href="#"
-                                underline="none"
-                                color={themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.orange}>
-                                {truncate(defaultValues?.customerName, 21)}
-                              </Link>
-                            )
-                          }
-                          gridSize={6}
-                          country={defaultValues?.customerCountry}
-                          customerLink={PATH_CUSTOMER.customers.view(defaultValues?.customerId)}
-                          onClick={handleCustomerDialog}
-                        />
-                        <GridViewField heading={VIEW_FORM.CONTACT} isLoading={isLoading} children={defaultValues?.contactFullName} />
-                        <GridViewField heading={VIEW_FORM.HEADING_EMAIL} isLoading={isLoading} children={defaultValues?.email} />
-                        <GridViewField heading={VIEW_FORM.LOGIN} isLoading={isLoading} children={defaultValues?.loginEmail} />
-                        <GridViewField heading={VIEW_FORM.PHONE} isLoading={isLoading} children={defaultValues?.phone} />
-                      </Grid>
-                    </Grid>
-                    <Grid item lg={4} sm={12}>
-                      <ProfileAvatar value={defaultValues} />
-                    </Grid>
-                  </Grid>
-                  <Grid item sm={12} p={2}>
-                    <GStyledFlexEndBox>
-                      <AuditBox value={defaultValues} />
-                    </GStyledFlexEndBox>
-                  </Grid>
-                </Card>
-              </Grid>
-            </Grid>
+ const methods = useForm({
+  resolver: yupResolver(editUserSchema),
+  defaultValues
+ })
+
+ useEffect(() => {
+  const debouncedDispatch = _.debounce(() => {
+   if (defaultValues?.customerId) {
+    dispatch(getCustomer(defaultValues.customerId))
+   }
+  }, 300)
+
+  debouncedDispatch()
+
+  return () => debouncedDispatch.cancel()
+ }, [dispatch, defaultValues?.customerId])
+
+ const handleCustomerDialog = (event, customerId) => {
+  event.preventDefault()
+  dispatch(resetCustomer())
+  dispatch(getCustomer(customerId))
+  dispatch(setCustomerDialog(true))
+ }
+
+ return (
+  <MotionLazyContainer display='flex'>
+   {/*  TODO: Make responsive */}
+   <FormProvider methods={methods} onSubmit={() => {}}>
+    <Grid container spacing={2} flexDirection='row' {...MARGIN.PAGE_PROP}>
+     <Grid item sm={12} lg={12}>
+      <Grid container>
+       <Grid item sm={12} pb={5}>
+        <Card {...GCardOption}>
+         <GStyledTopBorderDivider mode={themeMode} />
+
+         <Grid container mb={10} px={1.5}>
+          <Grid item lg={8}>
+           <GStyledSpanBox my={2}>
+            <BadgeCardMedia />
+            <ViewFormField variant={TYPOGRAPHY.H4} heading={VIEW_FORM.FULL_NAME} isLoading={isLoading} isMachineView>
+             {truncate(defaultValues?.name, 50)}
+            </ViewFormField>
+           </GStyledSpanBox>
+           <GridViewField heading={VIEW_FORM.ROLES} isLoading={isLoading} userRolesChip={defaultValues?.roles} isNoBg />
           </Grid>
-        </Grid>
-      </FormProvider>
+          <Grid item lg={4}>
+           <Grid container justifyContent={FLEX.FLEX_END} flexDirection={FLEX_DIR.COLUMN} alignContent={FLEX.FLEX_END}>
+            <Grid item xs={12} justifyContent={FLEX.FLEX_END} mt={2}>
+             <Grid container justifyContent={FLEX.FLEX_END} gap={1} alignItems={KEY.CENTER}>
+              {defaultValues?.isActive ? (
+               <IconTooltip title={LABEL.ACTIVE} icon={ICON_NAME.ACTIVE} color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main} />
+              ) : (
+               <IconTooltip title={LABEL.INACTIVE} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} />
+              )}
+             </Grid>
+            </Grid>
+           </Grid>
+          </Grid>
+         </Grid>
+        </Card>
+       </Grid>
+       <Grid item sm={12}>
+        <Card {...GCardOption}>
+         <GStyledTopBorderDivider mode={themeMode} />
+         <Grid container spacing={2} px={1.5} mb={10}>
+          <Grid item lg={12}>
+           <GridViewTitle title={TITLE.PERSONAL_INFO} />
+           <Divider variant={VARIANT.MIDDLE} style={{ width: '100%', marginBottom: '20px' }} />
+          </Grid>
+          <Grid item lg={8} sm={12}>
+           <Grid container spacing={2} p={2} pb={5}>
+            <GridViewField
+             heading={VIEW_FORM.ORGANIZATION}
+             isLoading={isLoading}
+             gridSize={6}
+             country={defaultValues?.customerCountry}
+             customerLink={PATH_CUSTOMER.customers.view(defaultValues?.customerId)}
+             onClick={handleCustomerDialog}>
+             {defaultValues.customer && (
+              <Link
+               onClick={event => handleCustomerDialog(event, defaultValues?.customerId)}
+               href='#'
+               underline='none'
+               color={themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.orange}>
+               {truncate(defaultValues?.customerName, 21)}
+              </Link>
+             )}
+            </GridViewField>
+            <GridViewField heading={VIEW_FORM.CONTACT} isLoading={isLoading}>
+             {defaultValues?.contactFullName}
+            </GridViewField>
+            <GridViewField heading={VIEW_FORM.HEADING_EMAIL} isLoading={isLoading}>
+             {defaultValues?.email}
+            </GridViewField>
+            <GridViewField heading={VIEW_FORM.LOGIN} isLoading={isLoading}>
+             {defaultValues?.loginEmail}
+            </GridViewField>
+            <GridViewField heading={VIEW_FORM.PHONE} isLoading={isLoading}>
+             {defaultValues?.phone}
+            </GridViewField>
+           </Grid>
+          </Grid>
+          <Grid item lg={4} sm={12}>
+           <ProfileAvatar value={defaultValues} />
+          </Grid>
+         </Grid>
+         <Grid item sm={12} p={2}>
+          <GStyledFlexEndBox>
+           <AuditBox value={defaultValues} />
+          </GStyledFlexEndBox>
+         </Grid>
+        </Card>
+       </Grid>
+      </Grid>
+     </Grid>
+    </Grid>
+   </FormProvider>
 
-      {customerDialog && <CustomerDialog />}
-    </MotionLazyContainer>
-  )
+   {customerDialog && <CustomerDialog />}
+  </MotionLazyContainer>
+ )
 }
 
 export default memo(UserProfileLayout)
