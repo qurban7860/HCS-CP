@@ -40,7 +40,7 @@ function LogLineChart({ chart, graphLabels }) {
    type: 'line',
    height: 500,
    foreColor: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400],
-   //  toolbar: { show: true },
+   toolbar: { show: true, tools: { download: true, selection: false, zoom: false, zoomin: false, zoomout: false, pan: false, reset: true } },
    animations: { enabled: true }
   },
   responsive: [
@@ -92,7 +92,7 @@ function LogLineChart({ chart, graphLabels }) {
    custom: ({ series: tooltipSeries, seriesIndex, dataPointIndex, w }) => {
     let tooltipContent = `<div class="apexcharts-theme-light">`
     tooltipSeries.forEach((s, index) => {
-     const legend = w.globals.seriesNames[index]
+     const legend = 'Production Rate: '
      const color = w.globals.colors[index]
      const value = s[dataPointIndex].toFixed(2)
      tooltipContent += `<div class="apexcharts-tooltip-series-group apexcharts-active" style="order: 1; display: flex;">`
@@ -107,10 +107,6 @@ function LogLineChart({ chart, graphLabels }) {
    }
   },
   legend: {
-   show: true,
-   position: 'top',
-   fontSize: '14px',
-   labels: { colors: '#424242' },
    onItemClick: {
     toggleDataSeries: false
    }
@@ -119,18 +115,6 @@ function LogLineChart({ chart, graphLabels }) {
    borderColor: themeMode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700],
    opacity: 0.3
   },
-  // dataLabels: {
-  //  enabled: true,
-  //  formatter(val, { seriesIndex, dataPointIndex, w }) {
-  //   if (seriesIndex === 1) return ''
-  //   return `${(Number(val) + Number(w.config.series[1].data[dataPointIndex])).toFixed(2)}`
-  //  },
-  //  offsetY: -25,
-  //  style: {
-  //   fontSize: '12px',
-  //   colors: [themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400]]
-  //  }
-  // },
   markers: {
    size: 4
   },
