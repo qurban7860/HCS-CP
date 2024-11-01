@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types'
 import { useState, useEffect, Fragment } from 'react'
+import { dispatch } from 'store'
 import { useSelector } from 'react-redux'
 import { t } from 'i18next'
+import { resetLogsGraphData } from 'store/slice'
 import { useSettingContext } from 'hook'
 import { Typography, Card, Grid } from '@mui/material'
 import { LogLineChart, HowickLoader } from 'component'
@@ -10,12 +12,16 @@ import { getTimePeriodDesc } from 'section/log'
 import { GStyledMachineChip, GStyledSpanBox, GStyledCenterBox } from 'theme/style'
 import { TYPOGRAPHY, KEY, FLEX } from 'constant'
 
-const ERPProductionRate = ({ timePeriod, customer, graphLabels }) => {
+const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData }) => {
  const [graphData, setGraphData] = useState([])
- const { isLoading, logsGraphData } = useSelector(state => state.log)
+ const { isLoading } = useSelector(state => state.log)
 
  const { themeMode } = useSettingContext()
  const theme = useTheme()
+
+ useEffect(() => {
+  dispatch(resetLogsGraphData())
+ }, [dispatch])
 
  useEffect(() => {
   if (logsGraphData) {
@@ -32,7 +38,7 @@ const ERPProductionRate = ({ timePeriod, customer, graphLabels }) => {
    return null
   }
   const sortedData = [...graphData]
-  let labels = sortedData.map(item => item._id)
+  let labels = []
 
   switch (timePeriod) {
    case 'Daily':
@@ -89,16 +95,22 @@ const ERPProductionRate = ({ timePeriod, customer, graphLabels }) => {
    return dataPoint ? dataPoint.productionRate : 0
   })
 
-  console.log('productionRate', productionRate)
+  const filteredIndices = productionRate.reduce((acc, prod, index) => {
+   if (prod !== 0) {
+    acc.push(index)
+   }
+   return acc
+  }, [])
+
+  const filteredLabels = filteredIndices.map(i => labels[i])
+  const filteredProducedRate = filteredIndices.map(i => productionRate[i])
 
   return {
-   categories: labels,
+   categories: filteredLabels,
    series: [
     {
      label: 'Production Rate (m/hr)',
-     data: productionRate,
-     //  borderColor: '#4CAF50',
-     //  backgroundColor: 'rgba(76, 175, 80, 0.1)',
+     data: filteredProducedRate,
      tension: 0.1
     }
    ]
@@ -150,7 +162,8 @@ const ERPProductionRate = ({ timePeriod, customer, graphLabels }) => {
 ERPProductionRate.propTypes = {
  timePeriod: PropTypes.string,
  customer: PropTypes.object,
- graphLabels: PropTypes.object
+ graphLabels: PropTypes.object,
+ logsGraphData: PropTypes.array
 }
 
 export default ERPProductionRate

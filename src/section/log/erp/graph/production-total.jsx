@@ -2,7 +2,9 @@ import PropTypes from 'prop-types'
 import { useState, useEffect, Fragment } from 'react'
 import { useSelector } from 'react-redux'
 import { t } from 'i18next'
+import { dispatch } from 'store'
 import { useSettingContext } from 'hook'
+import { resetLogsGraphData } from 'store/slice'
 import { Typography, Card, Grid } from '@mui/material'
 import { LogStackedChart, HowickLoader } from 'component'
 import { useTheme } from '@mui/material/styles'
@@ -10,12 +12,16 @@ import { getTimePeriodDesc } from 'section/log'
 import { GStyledMachineChip, GStyledSpanBox, GStyledCenterBox } from 'theme/style'
 import { TYPOGRAPHY, KEY, FLEX } from 'constant'
 
-const ERPProductionTotal = ({ timePeriod, customer, graphLabels }) => {
+const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData }) => {
  const [graphData, setGraphData] = useState([])
- const { isLoading, logsGraphData } = useSelector(state => state.log)
+ const { isLoading } = useSelector(state => state.log)
 
  const { themeMode } = useSettingContext()
  const theme = useTheme()
+
+ useEffect(() => {
+  dispatch(resetLogsGraphData())
+ }, [dispatch])
 
  useEffect(() => {
   if (logsGraphData) {
@@ -32,9 +38,8 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels }) => {
   if (!graphData || graphData.length === 0) {
    return null
   }
-
   const sortedData = [...graphData].sort((a, b) => a._id.localeCompare(b._id))
-  let labels = sortedData.map(item => item._id)
+  let labels = []
 
   switch (timePeriod) {
    case 'Daily':
@@ -91,16 +96,28 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels }) => {
    const dataPoint = sortedData.find(item => item._id.includes(label))
    return dataPoint ? dataPoint.componentLength : 0
   })
+
   const wasteLength = labels.map(label => {
    const dataPoint = sortedData.find(item => item._id.includes(label))
    return dataPoint ? dataPoint.waste : 0
   })
 
+  const filteredIndices = producedLength.reduce((acc, prod, index) => {
+   if (prod !== 0 || wasteLength[index] !== 0) {
+    acc.push(index)
+   }
+   return acc
+  }, [])
+
+  const filteredLabels = filteredIndices.map(i => labels[i])
+  const filteredProduced = filteredIndices.map(i => producedLength[i])
+  const filteredWaste = filteredIndices.map(i => wasteLength[i])
+
   return {
-   categories: labels,
+   categories: filteredLabels,
    series: [
-    { name: 'Produced Length (m)', data: producedLength },
-    { name: 'Waste Length (m)', data: wasteLength }
+    { name: 'Produced Length (m)', data: filteredProduced },
+    { name: 'Waste Length (m)', data: filteredWaste }
    ]
   }
  }
@@ -108,7 +125,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels }) => {
  const chartData = processGraphData()
 
  return (
-  <Grid xs={12} sm={12} md={12} lg={10} xl={6} sx={{ mt: 3 }}>
+  <Grid item xs={12} sm={12} md={12} lg={10} xl={6} sx={{ mt: 3 }}>
    <GStyledSpanBox alignItems={'center'} my={2} sx={{ display: 'flex', justifyContent: FLEX.SPACE_BETWEEN }}>
     <Typography variant={TYPOGRAPHY.H4} gutterBottom>
      {t('production.production_total.label').toUpperCase()}
@@ -148,6 +165,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels }) => {
 }
 
 ERPProductionTotal.propTypes = {
+ logsGraphData: PropTypes.array,
  timePeriod: PropTypes.string,
  customer: PropTypes.object,
  graphLabels: PropTypes.object
