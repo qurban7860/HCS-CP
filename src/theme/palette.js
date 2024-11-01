@@ -132,9 +132,9 @@ const HOWICK = {
 const ACTION = {
  hover: alpha(GREY[500], 0.08),
  selected: alpha(GREY[500], 0.16),
- disabled: alpha(GREY[300], 0.48),
- disabledText: alpha(GREY[400], 0.46),
- disabledBackground: alpha(GREY[400], 1),
+ disabled: alpha(GREY[500], 0.48),
+ disabledText: alpha(GREY[600], 0.46),
+ disabledBackground: alpha(GREY[300], 1),
  focus: alpha(GREY[500], 0.24),
  hoverOpacity: 0.08,
  disabledOpacity: 0.4
