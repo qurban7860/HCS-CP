@@ -4,4 +4,6 @@ export { default as AuthWithSocial } from './auth-social'
 export { default as AuthVerifyCodeForm } from './auth-verify-code-form'
 export { default as Login } from './login/login'
 export { default as LoginLayout } from './login/login-layout'
+
+export * from './default-value/register'
 export * from './style'

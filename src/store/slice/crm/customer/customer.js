@@ -192,6 +192,7 @@ export function getCustomers(page, pageSize, isArchived) {
   try {
    const response = await axios.get(PATH_SERVER.CRM.CUSTOMER.list, {
     params: {
+     isActive: true,
      isArchived: isArchived || false,
      orderBy: {
       createdAt: -1
@@ -241,7 +242,7 @@ export function registerCustomer(params) {
     email: params?.email,
     machineSerialNos: params?.machineSerialNos,
     country: params?.country.label,
-    phoneNumber: params?.phoneNumber.number,
+    phoneNumber: params?.phoneNumber?.countryCode + params?.phoneNumber.number,
     status: 'PENDING',
     customerNote: params?.customerNote
    }
