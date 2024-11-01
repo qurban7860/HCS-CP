@@ -7,7 +7,6 @@ import { useFormContext, Controller } from 'react-hook-form'
 import { TextField, Select, MenuItem, InputAdornment, useTheme, useMediaQuery, Box, Typography, Stack, Button } from '@mui/material'
 import { Icon, ICON_NAME } from 'hook'
 import { BUTTON, TYPOGRAPHY, KEY } from 'constant'
-// import { BUTTONS } from '../../constants/default-constants';
 
 RHFFilteredSearchBar.propTypes = {
  name: PropTypes.string.isRequired,
@@ -70,6 +69,12 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
        },
        '& .MuiInputBase-input': {
         paddingLeft: isMobile ? '14px' : 'inherit'
+       },
+       '& .Mui-disabled .MuiOutlinedInput-notchedOutline': {
+        borderColor: themeMode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[500]
+       },
+       '& .Mui-disabled:hover .MuiOutlinedInput-notchedOutline': {
+        borderColor: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[400]
        }
       }}
       {...other}

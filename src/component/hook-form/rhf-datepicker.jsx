@@ -59,8 +59,7 @@ export default function RHFDatePicker({ name, label, defaultValue, helperText, e
           width: '100%',
           borderRadius: '2px',
           color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400],
-          backgroundColor: themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.grey[600],
-          //   icon color
+          backgroundColor: themeMode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[600],
           '& .ant-picker-suffix': {
            color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[200]
           }
