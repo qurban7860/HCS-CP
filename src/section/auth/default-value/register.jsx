@@ -1,21 +1,21 @@
 import { useMemo } from 'react'
-import { fDate, parseAddress } from 'util'
 
 /**
  * Returns the default values for register
  * @param {Object} userLocale - The customer data object.
  * @returns {Object} - The default values object.
  */
-export default function registerDefaultValues(userLocale) {
+export function useRegisterDefaultValues(userLocale) {
  return useMemo(() => {
   return {
    customerName: '',
-   contactName: '',
+   contactPersonName: '',
    address: '',
    country: userLocale,
    email: '',
-   phone: { type: 'Work', countryCode: userLocale.phone, number: '' },
-   machines: []
+   machineSerialNos: [],
+   phoneNumber: { type: 'Work', countryCode: userLocale.phone, number: '' },
+   customerNote: ''
   }
  }, [userLocale])
 }
