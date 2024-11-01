@@ -35,7 +35,7 @@ export default function RHFTextField({ name, helperText, Error, ...other }) {
       },
       '& .MuiOutlinedInput-notchedOutline': {
        borderRadius: 0.4,
-       color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0',
+       color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white,
        ...theme.typography.overline1
       },
       '& .MuiInputBase-root': {
@@ -44,7 +44,7 @@ export default function RHFTextField({ name, helperText, Error, ...other }) {
          borderColor: 'common.white'
         },
         '& .MuiInputBase-input': {
-         color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
+         color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white
         }
        },
        '& .MuiInputBase-input': {

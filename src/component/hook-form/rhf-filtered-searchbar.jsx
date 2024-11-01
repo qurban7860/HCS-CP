@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
+import { dispatch } from 'store'
+import { useSettingContext } from 'hook'
 import { useFormContext, Controller } from 'react-hook-form'
 import { TextField, Select, MenuItem, InputAdornment, useTheme, useMediaQuery, Box, Typography, Stack, Button } from '@mui/material'
 import { Icon, ICON_NAME } from 'hook'
-import { BUTTON, TYPOGRAPHY } from 'constant'
+import { BUTTON, TYPOGRAPHY, KEY } from 'constant'
 // import { BUTTONS } from '../../constants/default-constants';
 
 RHFFilteredSearchBar.propTypes = {
@@ -23,6 +25,7 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
 
  const searchKey = watch(name)
 
+ const { themeMode } = useSettingContext()
  const theme = useTheme()
  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
@@ -32,7 +35,7 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
 
  const clearSearchKey = () => {
   setValue(name, '')
-  setSelectedFilter('')
+  dispatch(setSelectedFilter(''))
  }
 
  return (
@@ -47,12 +50,19 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
       placeholder={placeholder}
       error={!!fieldError}
       size={size}
-      label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{t('search.label')}</Typography>}
+      label={
+       <Typography variant={TYPOGRAPHY.OVERLINE2} color={themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white}>
+        {t('search.label')}
+       </Typography>
+      }
       disabled={!selectedFilter}
       sx={{
        flexDirection: isMobile ? 'column' : 'row',
        '& .MuiInputBase-root': {
         flexDirection: isMobile ? 'column' : 'row'
+       },
+       '& .MuiInputBase-input::placeholder': {
+        color: 'text.secondary'
        },
        '& .MuiInputAdornment-root': {
         marginTop: isMobile ? 0 : 'auto',
@@ -69,7 +79,7 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
          <Select
           value={selectedFilter}
           onChange={e => {
-           setSelectedFilter(e.target.value)
+           dispatch(setSelectedFilter(e.target.value))
            setError('')
           }}
           displayEmpty

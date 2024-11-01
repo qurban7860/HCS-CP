@@ -4,6 +4,9 @@ import { DatePicker } from 'antd'
 import enUS from 'antd/locale/en_US'
 import dayjs from 'dayjs'
 import { ConfigProvider } from 'antd'
+import { useSettingContext } from 'hook'
+import { useTheme } from '@mui/material/styles'
+import { KEY } from 'constant'
 import { AntDSDatePickerWrapper } from './style'
 
 ConfigProvider.config({
@@ -18,6 +21,8 @@ ConfigProvider.config({
 
 export default function RHFDatePicker({ name, label, defaultValue, helperText, error, size = 'large', variant = 'filled', ...other }) {
  const { control } = useFormContext()
+ const { themeMode } = useSettingContext()
+ const theme = useTheme()
 
  const convertToDateObject = value => {
   if (!value) return null
@@ -25,7 +30,7 @@ export default function RHFDatePicker({ name, label, defaultValue, helperText, e
   return dayjs(value)
  }
 
- const theme = {
+ const antdTheme = {
   components: {
    DatePicker: {
     fontSize: '14px',
@@ -35,7 +40,7 @@ export default function RHFDatePicker({ name, label, defaultValue, helperText, e
  }
 
  return (
-  <ConfigProvider locale={enUS} theme={theme}>
+  <ConfigProvider locale={enUS} theme={antdTheme}>
    <AntDSDatePickerWrapper>
     <div className='w-full'>
      <Controller
@@ -52,7 +57,13 @@ export default function RHFDatePicker({ name, label, defaultValue, helperText, e
          placeholder={label}
          style={{
           width: '100%',
-          borderRadius: '2px'
+          borderRadius: '2px',
+          color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400],
+          backgroundColor: themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.grey[600],
+          //   icon color
+          '& .ant-picker-suffix': {
+           color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[200]
+          }
          }}
          status={error ? 'error' : undefined}
          onChange={date => {

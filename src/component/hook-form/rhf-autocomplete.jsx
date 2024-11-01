@@ -27,7 +27,16 @@ export default function RHFAutocomplete({ name, label, helperText, Error, ...oth
      {...field}
      onChange={(event, newValue) => setValue(name, newValue, { shouldValidate: true })}
      renderInput={params => (
-      <TextField label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{label}</Typography>} error={!!error || !!Error} helperText={error ? error?.message : helperText} {...params} />
+      <TextField
+       label={
+        <Typography variant={TYPOGRAPHY.OVERLINE2} color={themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white}>
+         {label}
+        </Typography>
+       }
+       error={!!error || !!Error}
+       helperText={error ? error?.message : helperText}
+       {...params}
+      />
      )}
      {...other}
      sx={{
