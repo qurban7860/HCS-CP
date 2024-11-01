@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
-import { Icon, ICON_NAME, useSettingContext } from 'hook'
+import { ICON_NAME, useSettingContext } from 'hook'
 import { TableHead, TableRow, TableSortLabel, Typography } from '@mui/material'
 import { IconTooltip } from 'component'
 import { useTheme } from '@mui/material/styles'
 import { GStyledMachineChip, GStyledTooltip } from 'theme/style'
 import { StyledHeaderTableCell } from './style'
 import { normalizer, charAtText } from 'util'
-import { TYPOGRAPHY } from 'constant'
+import { KEY, TYPOGRAPHY } from 'constant'
 
 const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
  const { themeMode } = useSettingContext()
@@ -27,15 +27,29 @@ const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
         {onSort ? (
          <TableSortLabel hideSortIcon active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : 'asc'} onClick={() => onSort(headCell.id)} sx={{ textTransform: 'capitalize' }}>
           {normalizer(headCell.label) === 'machine' ? (
-           <IconTooltip title={'Machine'} icon={ICON_NAME.FRAMA} color={theme.palette.grey[700]} iconOnly cursor />
+           <IconTooltip
+            title={'Machine'}
+            icon={ICON_NAME.FRAMA}
+            color={themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[300]}
+            tooltipColor={theme.palette.howick.midBlue}
+            iconOnly
+            cursor
+           />
           ) : normalizer(headCell.label) === 'date' ? (
-           <IconTooltip title={'Date'} icon={ICON_NAME.CALENDAR_CLOCK} color={theme.palette.grey[700]} iconOnly cursor />
+           <IconTooltip
+            title={'Date'}
+            icon={ICON_NAME.CALENDAR_CLOCK}
+            color={themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[300]}
+            tooltipColor={theme.palette.howick.midBlue}
+            iconOnly
+            cursor
+           />
           ) : (
            <GStyledMachineChip
             mode={themeMode}
             size='small'
             label={
-             <GStyledTooltip disableFocusListener title={headCell.label} tooltipcolor='#103996' placement={'top'}>
+             <GStyledTooltip disableFocusListener title={headCell.label} tooltipcolor={theme.palette.howick.midBlue} placement={'top'}>
               <Typography variant={TYPOGRAPHY.OVERLINE1} p={0}>
                {charAtText(headCell.label)}
               </Typography>
