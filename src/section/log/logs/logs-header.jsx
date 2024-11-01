@@ -30,7 +30,7 @@ const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
            <IconTooltip
             title={'Machine'}
             icon={ICON_NAME.FRAMA}
-            color={themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[300]}
+            color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[300]}
             tooltipColor={theme.palette.howick.midBlue}
             iconOnly
             cursor
@@ -39,7 +39,7 @@ const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
            <IconTooltip
             title={'Date'}
             icon={ICON_NAME.CALENDAR_CLOCK}
-            color={themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[300]}
+            color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[300]}
             tooltipColor={theme.palette.howick.midBlue}
             iconOnly
             cursor
