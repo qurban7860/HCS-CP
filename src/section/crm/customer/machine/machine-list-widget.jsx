@@ -45,7 +45,6 @@ const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog
     mb={2}
     bgcolor='background.paper'
     // TODO:if value?.machines?.length is more than 5, dont add the sx prop
-
     sx={sxProp}>
     <GStyledSpanBox>
      <FormHeader label={LABEL.MACHINE(value?.machines?.length)} />
