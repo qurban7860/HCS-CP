@@ -80,7 +80,7 @@ const Landing = () => {
  )
 
  return (
-  <StylendLandingContainerBox isMobile={isMobile}>
+  <StylendLandingContainerBox>
    <Grid container>
     <Grid container sx={{ marginRight: isMobile || isTablet || isMd ? 2 : 10 }}>
      <Grid item xs={12} sx={{ display: FLEX.FLEX, justifyContent: FLEX.FLEX_END }}>
