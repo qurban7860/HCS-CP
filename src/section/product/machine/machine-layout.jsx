@@ -4,7 +4,7 @@ import { useSelector } from 'store'
 import { useParams, useNavigate } from 'react-router-dom'
 import { PATH_MACHINE } from 'route/path'
 import { Typography } from '@mui/material'
-import { machineDefaultValues, TicketsTab, MachineLogsTab, MachineGraphsTab } from 'section/product'
+import { useMachineDefaultValues, TicketsTab, MachineLogsTab, MachineGraphsTab } from 'section/product'
 import { MotionLazyContainer, CustomerDialog, MachineDialog, SiteDialog } from 'component'
 import { FLEX } from 'constant'
 import { MachineNav, MachineTab } from 'section/product/machine'
@@ -16,7 +16,7 @@ const MachineLayout = ({ tab = 0 }) => {
  const { machine, isLoading, connectedMachineDialog, machineSiteDialogData } = useSelector(state => state.machine)
  const { customer, customerDialog } = useSelector(state => state.customer)
 
- const defaultValues = machineDefaultValues(machine, customer)
+ const defaultValues = useMachineDefaultValues(machine, customer)
 
  const navigatePage = tab => {
   if (tab === 0 && id) {

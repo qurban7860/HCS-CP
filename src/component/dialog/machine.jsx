@@ -4,7 +4,7 @@ import { useSettingContext } from 'hook'
 import { setMachineDialog } from 'store/slice'
 import { ICON_NAME, useIcon, Clock } from 'hook'
 import { PATH_CUSTOMER, PATH_MACHINE } from 'route/path'
-import { machineDefaultValues } from 'section/product'
+import { useMachineDefaultValues } from 'section/product'
 import { Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledFlexEndBox, GStyledSpanBox } from 'theme/style'
@@ -22,7 +22,7 @@ const MachineDialog = () => {
 
  const { MACHINE } = VIEW_FORM
 
- const defaultValues = machineDefaultValues(connectedMachineDialog, customer)
+ const defaultValues = useMachineDefaultValues(connectedMachineDialog, customer)
  const handleDialog = () => dispatch(setMachineDialog(false))
 
  const handleMachineOverview = () => {

@@ -18,7 +18,7 @@ import {
  resetConnectedMachineDialog,
  resetMachineSiteDialogData
 } from 'store/slice'
-import { machineDefaultValues } from 'section/product'
+import { useMachineDefaultValues } from 'section/product'
 import { HowickResources } from 'section/common'
 import { AuditBox, GridViewField, GridViewTitle } from 'component'
 import { MachineConnectionWidget, MachineSiteWidget } from 'section/product/machine'
@@ -57,7 +57,7 @@ const MachineTab = () => {
   dispatch(resetMachineSiteDialogData())
  }, [dispatch])
 
- const defaultValues = machineDefaultValues(machine, customer)
+ const defaultValues = useMachineDefaultValues(machine, customer)
 
  const handleCustomerDialog = (event, customerId) => {
   event.preventDefault()
