@@ -2,6 +2,9 @@ import { get } from 'react-hook-form'
 
 const en = {
  register_agreement: 'By clicking "Register" you agree to our <1>Privacy Policy</1>.',
+ address: {
+  label: `Address`
+ },
  app: `app`,
  user: `user`,
  list: `list`,
@@ -23,8 +26,17 @@ const en = {
    label: `Columns`
   }
  },
+ contact: {
+  label: `Contact`
+ },
+ contact_number: {
+  label: `Contact Number`
+ },
  contact_person_name: {
   label: `Contact Person Name`
+ },
+ country: {
+  label: `Country`
  },
  group: {
   label: `Group`
@@ -111,6 +123,10 @@ const en = {
  customer_overview: {
   local: `customer_overview`,
   label: `Customer Overview`
+ },
+ name: {
+  key: `name`,
+  label: `Name`
  },
  kanban: `kanban`,
  general: `general`,

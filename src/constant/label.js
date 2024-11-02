@@ -1,9 +1,11 @@
 const LABEL = {
  ACTIVE: 'Active',
+ ADDRESS: 'Address',
  GO_BACK: 'Go Back',
  INACTIVE: 'Inactive',
  OUR_PRODUCT: 'OUR PRODUCTS: ',
  OUR_COMPANY: 'OUR COMPANIES: ',
+ COUNTRY: 'Country',
  CURRENTLY_EMPLOYED: 'Currently Employed',
  ERROR_CODE: 'Error Code:',
  FULLSCREEN: 'Fullscreen',
