@@ -30,17 +30,13 @@ function GlobalStyle() {
      WebkitOverflowScrolling: 'touch'
     },
     body: {
-     backgroundColor: theme.palette.background.default,
      backgroundImage: themeMode === KEY.LIGHT ? (isRootPage ? null : `url(${ASSET.BG_STROKE_DARKGREY_LOGO})`) : isRootPage ? null : `url(${ASSET.BG_STROKE_BRONZE_LOGO})`,
-     backgroundSize: 'cover',
      backgroundSize: isMobile ? '250%' : '150%',
-     backgroundOpacity: 0.2,
      backgroundColor: alpha(theme.palette.background.default, 0.8),
      backgroundRepeat: 'no-repeat',
      backgroundPositionY: 'center',
      backgroundPositionX: 'left',
-     //  backgroundSize: '50%',
-     backgroundOpacity: 0.9,
+     backgroundOpacity: 0.2,
      backgroundAttachment: 'fixed',
      margin: 0,
      padding: 0,
