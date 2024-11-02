@@ -29,7 +29,6 @@ function RegisterForm() {
  const [isFormComplete, setIsFormComplete] = useState(false)
  const [isTyping, setIsTyping] = useState(false)
  const [rows, setRows] = useState(1)
- const navigate = useNavigate()
 
  const regEx = new RegExp(REGEX.ERROR_CODE)
  const serialNoRegEx = new RegExp(REGEX.SERIAL_NO)
@@ -73,17 +72,6 @@ function RegisterForm() {
  }
 
  const userLocale = getCountryByLocale()
-
- //  const RegisterSchema = yup.object().shape({
- //   customerName: yup.string().required('Organization name is required'),
- //   contactPersonName: yup.string().required('Contact name is required'),
- //   address: yup.string().required('Address is required'),
- //   email: yup.string().email('Invalid email format').required('Email is required'),
- //   machineSerialNos: yup.array().of(yup.string().matches(serialNoRegEx, 'Invalid serial number').length(5, 'Serial number must be 5 characters long')).min(1, 'At least one machine is required'),
- //   country: yup.object().label('Country').nullable(),
- //   customerNote: yup.string().max(500, 'Customer note must be less than 500 characters')
- //  })
-
  const defaultValues = useRegisterDefaultValues(userLocale)
 
  const methods = useForm({
@@ -207,22 +195,29 @@ function RegisterForm() {
       <RHFTextField
        name='customerName'
        label={t('customer_name.label')}
-       type={KEY.TEXT}
        autoComplete={LABEL.NAME}
-       aria-label={LABEL.NAME}
+       aria-label={t('customer_name.label')}
        helperText={errors.customerName ? errors.customerName.message : ''}
        required
       />
       <RHFTextField
        name='contactPersonName'
-       type={KEY.TEXT}
        label={t('contact_person_name.label')}
        autoComplete={KEY.NAME}
        aria-label={KEY.NAME}
        helperText={errors.contactPersonName ? errors.contactPersonName.message : ''}
       />
-      <RHFTextField className={'portal-rhftextfield'} name='address' label='Organization Address' helperText={errors.address ? errors.address.message : ''} />
-      <RHFCountryAutocomplete className={'portal-rhftextfield'} name='country' label='Country' helperText={errors.country ? errors.country.message : ''} fullWidth />
+      <RHFTextField
+       name='address'
+       label={t('address.label')}
+       autoComplete={'address'}
+       onChange={(event, value) => {
+        setIsTyping(event.target.value.length > 0)
+        setValue('country', value)
+       }}
+       helperText={errors.address ? errors.address.message : "Your organization's address"}
+      />
+      <RHFCountryAutocomplete fullWidth name='country' label={t('country.label')} helperText={errors.country ? errors.country.message : "Your organization's address"} />
       <RHFTextField
        name={KEY.EMAIL}
        type={KEY.EMAIL}
@@ -232,7 +227,16 @@ function RegisterForm() {
        error={!!errors.email}
        helperText={errors.email ? errors.email.message : ''}
       />
-      <RHFCustomPhoneInput name='phoneNumber' value={phoneNumber} label={'Contact Number'} error={!!errors.phoneNumber} helperText={errors.phoneNumber ? errors.phoneNumber.message : ''} isRegister />
+      <RHFCustomPhoneInput
+       name='phoneNumber'
+       value={phoneNumber}
+       label={t('contact_number.label')}
+       autoComplete={KEY.PHONE}
+       aria-label={t('contact_number.label')}
+       error={!!errors.phoneNumber}
+       helperText={errors.phoneNumber ? errors.phoneNumber.message : ''}
+       isRegister
+      />
       <AutocompleteScrollChipContainer
        setValue={setValue}
        handleInputChange={handleValidateSerialNumbers}
@@ -240,8 +244,8 @@ function RegisterForm() {
         <RHFTextField
          {...params}
          name='machineSerialNos'
-         label={t('machine.machines.label')}
          type={KEY.TEXT}
+         label={t('machine.machines.label')}
          onChange={event => setIsTyping(event.target.value.length > 0)}
          helperText={errors.machineSerialNos ? errors.machineSerialNos.message : 'Press enter at the end of each serial number'}
          FormHelperTextProps={{ sx: { display: isTyping ? 'block' : 'none' } }}
@@ -251,9 +255,9 @@ function RegisterForm() {
       <RHFTextField
        name='customerNote'
        label={t('customer_note.label')}
-       type={KEY.TEXT}
-       autoComplete={LABEL.NAME}
-       aria-label={LABEL.NAME}
+       autoComplete='customerNote'
+       aria-label='customerNote'
+       placeholder='Any additional notes?'
        helperText={errors.customerNote ? errors.customerNote.message : ''}
        multiline
        rows={rows}
@@ -272,21 +276,22 @@ function RegisterForm() {
       {/* {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)} */}
       <Grid item sm={6}>
        <Grid container gap={4}>
+        <RHFTextField name='customerName' label={t('name.label')} autoComplete='name' aria-label={t('customer_name.label')} helperText={errors.customerName ? errors.customerName.message : ''} />
         <RHFTextField
-         name='customerName'
-         label={t('customer_name.label')}
-         type={KEY.TEXT}
-         autoComplete={LABEL.NAME}
-         aria-label={LABEL.NAME}
-         helperText={errors.customerName ? errors.customerName.message : ''}
+         name='address'
+         label={t('address.label')}
+         autoComplete='address'
+         placeholder='Enter your organization address'
+         helperText={errors.address ? errors.address.message : ''}
+         FormHelperTextProps={{ sx: { display: isTyping ? 'block' : 'none' } }}
         />
-        <RHFTextField name='address' label='Organization Address' autoComplete='address' helperText={errors.address ? errors.address.message : ''} />
         <RHFTextField
          name={KEY.EMAIL}
-         label={t('email.label')}
          type={KEY.EMAIL}
+         label={t('email.label')}
+         placeholder='This will be your login email'
          autoComplete={KEY.EMAIL}
-         aria-label={LABEL.LOGIN_EMAIL}
+         aria-label={t('email.label')}
          error={!!errors.email}
          helperText={errors.email ? errors.email.message : ''}
         />
@@ -297,13 +302,12 @@ function RegisterForm() {
         <RHFTextField
          name='contactPersonName'
          label={t('contact_person_name.label')}
-         type={KEY.TEXT}
          autoComplete={KEY.NAME}
-         aria-label={LABEL.NAME}
+         aria-label={t('contact_person_name.label')}
          helperText={errors.contactName ? errors.contactName.message : ''}
         />
-        <RHFCountryAutocomplete fullWidth name='country' label='Country' helperText={errors.country ? errors.country.message : ''} />
-        <RHFCustomPhoneInput name='phoneNumber' value={phoneNumber} label={'Contact Number'} helperText={errors.phoneNumber ? errors.phoneNumber.message : ''} isRegister />
+        <RHFCountryAutocomplete fullWidth name='country' label={t('country.label')} helperText={errors.country ? errors.country.message : ''} />
+        <RHFCustomPhoneInput name='phoneNumber' value={phoneNumber} label={t('contact_number.label')} helperText={errors.phoneNumber ? errors.phoneNumber.message : ''} isRegister />
        </Grid>
       </Grid>
       <Grid item sm={12} mt={2}>
@@ -314,7 +318,6 @@ function RegisterForm() {
          renderInput={params => (
           <RHFTextField
            {...params}
-           type={KEY.TEXT}
            name='machineSerialNos'
            label={t('machine.machines.label')}
            placeholder='Enter Machine serial number'
@@ -327,9 +330,9 @@ function RegisterForm() {
         <RHFTextField
          name='customerNote'
          label={t('customer_note.label')}
-         type={KEY.TEXT}
-         autoComplete={KEY.NAME}
-         aria-label={LABEL.NAME}
+         autoComplete='customerNote'
+         aria-label='customerNote'
+         placeholder='Any additional notes?'
          helperText={errors.customerNote ? errors.customerNote.message : ''}
          multiline
          maxRows={3}
