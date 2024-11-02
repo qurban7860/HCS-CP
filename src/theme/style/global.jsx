@@ -518,7 +518,7 @@ export const GStyledBottomPolygonDiv = styled(({ themeMode, isMobile, isMd, ...o
  }
 })
 
-export const StylendLandingContainerBox = styled(Box)(({ theme, isTablet, isMobile }) => ({
+export const StylendLandingContainerBox = styled(Box)(({ theme, isTablet }) => ({
  backgroundColor: theme.palette.background.default,
  backgroundImage: `url(${ASSET.BG_STROKE_LOGO})`,
  backgroundSize: 'cover',
