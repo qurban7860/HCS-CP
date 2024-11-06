@@ -194,9 +194,9 @@ function RegisterForm() {
      <Grid container gap={4}>
       <RHFTextField
        name='customerName'
-       label={t('customer_name.label')}
+       label={t('organization_name.label')}
        autoComplete={LABEL.NAME}
-       aria-label={t('customer_name.label')}
+       aria-label={t('organization_name.label')}
        helperText={errors.customerName ? errors.customerName.message : ''}
        required
       />
@@ -276,7 +276,13 @@ function RegisterForm() {
       {/* {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)} */}
       <Grid item sm={6}>
        <Grid container gap={4}>
-        <RHFTextField name='customerName' label={t('name.label')} autoComplete='name' aria-label={t('customer_name.label')} helperText={errors.customerName ? errors.customerName.message : ''} />
+        <RHFTextField
+         name='customerName'
+         label={t('organization_name.label')}
+         autoComplete='name'
+         aria-label={t('organization_name.label')}
+         helperText={errors.customerName ? errors.customerName.message : ''}
+        />
         <RHFTextField
          name='address'
          label={t('address.label')}
@@ -357,7 +363,7 @@ function RegisterForm() {
       size={SIZE.LARGE}
       type={KEY.SUBMIT}
       variant={KEY.CONTAINED}
-      loading={isSubmitSuccessful || isSubmitting}
+      loading={isSubmitting}
       disabled={Object.keys(errors).length > 0 || !isFormComplete}
       sx={RADIUS.BORDER}>
       {t('register.label').toUpperCase()}

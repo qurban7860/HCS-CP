@@ -93,6 +93,9 @@ const en = {
   local: `organizations`,
   label: `Organizations`
  },
+ organization_name: {
+  label: `Organization Name`
+ },
  document: {
   local: `document`,
   label: `Document`

@@ -242,7 +242,7 @@ export function registerCustomer(params) {
     email: params?.email,
     machineSerialNos: params?.machineSerialNos,
     country: params?.country.label,
-    phoneNumber: params?.phoneNumber?.countryCode ? `+${params?.phoneNumber?.countryCode} ${params?.phoneNumber.number}` : params?.phoneNumber?.number,
+    phoneNumber: params?.phoneNumber?.countryCode ? `${params?.phoneNumber?.countryCode} ${params?.phoneNumber.number}` : params?.phoneNumber?.number,
     customerNote: params?.customerNote
    }
    console.log(data)
