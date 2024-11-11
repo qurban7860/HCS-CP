@@ -44,7 +44,7 @@ function TablePaginationCustom({
     justifyContent: 'flex-end',
     alignItems: 'center',
     color: themeMode === KEY.LIGHT ? theme.palette.grey[900] : theme.palette.grey[0],
-    background: themeMode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[800],
+    background: themeMode === KEY.LIGHT ? theme.palette.background.default : theme.palette.grey[800],
     ...sx
    }}>
    {columnFilterButtonData?.length > 0 && (
