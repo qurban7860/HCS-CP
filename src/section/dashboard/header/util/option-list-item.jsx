@@ -1,14 +1,19 @@
-import { PATH_SECURITY } from 'route/path'
+import { PATH_CUSTOMER, PATH_SECURITY } from 'route/path'
+import { t } from 'i18next'
 
-const OPTION = (t) => [
-  {
-    label: t('profile.label'),
-    linkTo: PATH_SECURITY.users.profile
-  },
-  {
-    label: t('change_password.label'),
-    linkTo: PATH_SECURITY.users.password
-  }
+const OPTION = user => [
+ {
+  label: t('organization.label'),
+  linkTo: PATH_CUSTOMER.customers.view(user?.customer)
+ },
+ {
+  label: t('profile.label'),
+  linkTo: PATH_SECURITY.users.profile
+ },
+ {
+  label: t('change_password.label'),
+  linkTo: PATH_SECURITY.users.password
+ }
 ]
 
 export default OPTION
