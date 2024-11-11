@@ -89,7 +89,7 @@ const Landing = () => {
       </Box>
      </Grid>
      <Grid item xs={12}>
-      <Typography ref={descriptionRef} variant={styles.heading.variant} color={theme.palette.common.white} align={KEY.RIGHT} gutterBottom>
+      <Typography ref={descriptionRef} variant={styles.heading.variant} color={theme.palette.howick.orange} align={KEY.RIGHT} gutterBottom>
        {GLOBAL.APP_TAGLINE.toUpperCase()}
       </Typography>
      </Grid>
