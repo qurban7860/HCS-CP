@@ -68,7 +68,8 @@ const CustomerListSection = ({ isArchived }) => {
   <MotionLazyContainer display={FLEX.FLEX}>
    <GStyledSpanBox>
     <Typography variant={TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? 'grey.200' : 'howick.bronze'}>
-     {t('group.label').toUpperCase()}
+     {/* TODO: 1511, Refactor Customer List as Switch Organization/Business */}
+     {/* {t('group.label').toUpperCase()}y */}
     </Typography>
    </GStyledSpanBox>
    <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} />
