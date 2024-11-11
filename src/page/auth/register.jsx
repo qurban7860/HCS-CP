@@ -1,5 +1,8 @@
+import { memo } from 'react'
 import { Register } from 'section/auth/register'
 
-export default function RegisterPage() {
-  return <Register />
+const RegisterPage = () => {
+ return <Register />
 }
+
+export default memo(RegisterPage)
