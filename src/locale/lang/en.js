@@ -30,10 +30,10 @@ const en = {
   label: `Contact`
  },
  contact_number: {
-  label: `Contact Number`
+  label: `Contact number`
  },
  contact_person_name: {
-  label: `Contact Person Name`
+  label: `Name of Contact Person`
  },
  country: {
   label: `Country`
@@ -54,7 +54,7 @@ const en = {
   label: `Customer Group`
  },
  customer_note: {
-  label: `Customer Note (optional)`
+  label: `Customer Note`
  },
  graph: {
   label: `Graph`,
@@ -89,12 +89,16 @@ const en = {
   local: `organization`,
   label: `Organization`
  },
+ organization_address: {
+  local: `organization`,
+  label: `Organization address`
+ },
  organizations: {
   local: `organizations`,
   label: `Organizations`
  },
  organization_name: {
-  label: `Organization Name`
+  label: `Organization name`
  },
  document: {
   local: `document`,
@@ -154,6 +158,9 @@ const en = {
    label: `Legends`
   }
  },
+ note: {
+  label: `Note`
+ },
  notifications: {
   label: `Notifications`,
   no_notif: `You have no new notifications`
@@ -174,6 +181,9 @@ const en = {
  invoice: `invoice`,
  register: {
   label: `Register`
+ },
+ required: {
+  label: `Required`
  },
  details: `details`,
  checkout: `checkout`,
