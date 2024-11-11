@@ -167,6 +167,12 @@ const COMMON = {
  background: BRAND.background
 }
 
+const BACKGROUND = {
+ paper: GREY[100],
+ default: '#F8F9FA',
+ neutral: GREY[500]
+}
+
 export default function palette(themeMode) {
  const light = {
   ...COMMON,
@@ -177,7 +183,7 @@ export default function palette(themeMode) {
    disabled: GREY[500],
    no: GREY[800]
   },
-  background: { paper: GREY[200], default: GREY[400], neutral: GREY[500] },
+  background: BACKGROUND,
   action: {
    ...COMMON.action,
    // hover: GREY[200],

@@ -53,7 +53,7 @@ export const GStyledFallbackWrapperGrid = styled(Grid)(({ theme }) => ({
 
 export const GStyledBgMain = styled(({ mode, theme, ...other }) => <main {...other} />)(({ theme, mode }) => ({
  display: 'flex',
- backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[900],
+ backgroundColor: mode === KEY.LIGHT ? theme.palette.background.default : theme.palette.grey[900],
  width: '100%',
  height: '100vh'
 }))
@@ -165,7 +165,7 @@ export const GStyledTableChip = styled(({ theme, ...other }) => <Chip {...other}
 
 export const GStyledTablePaginationCustom = styled(TablePagination)(({ theme, mode, page, data, rowsPerPage }) => ({
  '.MuiTablePagination-toolbar': {
-  backgroundColor: mode === KEY.LIGHT ? theme.palette.table.header : theme.palette.grey[800],
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.background.default : theme.palette.grey[800],
   height: '5px',
   width: '!important 200px',
   '& .MuiTablePagination-actions': {
@@ -447,14 +447,11 @@ export const GStyledBrandOverlayBox = styled(({ themeMode, isMobile, ...other })
   left: 0,
   right: 0,
   bottom: 0,
-  backgroundColor: 'rgba(0, 0, 0, 0.8)',
+  // backgroundColor: 'rgba(0, 0, 0, 0.8)',
   color: themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
   mixBlendMode: themeMode === KEY.LIGHT ? 'color' : 'color-dodge'
  },
  transition: 'transform 0.3s ease-in-out',
- '&:hover': {
-  transform: 'scale(1.05)'
- },
  [theme.breakpoints.down('sm')]: {
   margin: theme.spacing(1)
  }
@@ -520,11 +517,11 @@ export const GStyledBottomPolygonDiv = styled(({ themeMode, isMobile, isMd, ...o
 
 export const StylendLandingContainerBox = styled(Box)(({ theme, isTablet }) => ({
  backgroundColor: theme.palette.background.default,
- backgroundImage: `url(${ASSET.BG_STROKE_LOGO})`,
+ backgroundImage: `url(${ASSET.BG_STROKE_GREY_LOGO})`,
  backgroundSize: 'cover',
  backgroundPositionY: 'center',
  //  backgroundSize: isMobile ? '250%' : '150%',
- backgroundBlendMode: 'screen',
+ //  backgroundBlendMode: 'screen',
  backgroundOpacity: 0.2,
  //  backgroundColor: alpha(theme.palette.background.default, 0.8),
  display: 'flex',

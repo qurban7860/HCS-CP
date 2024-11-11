@@ -30,9 +30,9 @@ function GlobalStyle() {
      WebkitOverflowScrolling: 'touch'
     },
     body: {
-     backgroundImage: themeMode === KEY.LIGHT ? (isRootPage ? null : `url(${ASSET.BG_STROKE_DARKGREY_LOGO})`) : isRootPage ? null : `url(${ASSET.BG_STROKE_BRONZE_LOGO})`,
+     backgroundImage: themeMode === KEY.LIGHT ? (isRootPage ? null : `url(${ASSET.BG_STROKE_LIGHTGREY_LOGO})`) : isRootPage ? null : `url(${ASSET.BG_STROKE_BRONZE_LOGO})`,
      backgroundSize: isMobile ? '250%' : '150%',
-     backgroundColor: alpha(theme.palette.background.default, 0.8),
+     backgroundColor: alpha(theme.palette.background.default, 0.2),
      backgroundRepeat: 'no-repeat',
      backgroundPositionY: 'center',
      backgroundPositionX: 'left',
