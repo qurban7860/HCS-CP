@@ -5,6 +5,9 @@ const en = {
  address: {
   label: `Address`
  },
+ additional_notes: {
+  label: `Additional Notes`
+ },
  app: `app`,
  user: `user`,
  list: `list`,
@@ -83,6 +86,18 @@ const en = {
   label: `Machine`,
   machines: {
    label: `Machines`
+  }
+ },
+ next_step: {
+  label: `Next Step`,
+  next_steps: {
+   label: `Next Steps`
+  },
+  registration_process: {
+   title: 'Registration Request was submitted',
+   first: 'Our team will review your registration request',
+   second: 'You will receive further instructions within 12-48 hours',
+   last: 'Check your email for the invitation link'
   }
  },
  organization: {
@@ -184,6 +199,9 @@ const en = {
  },
  required: {
   label: `Required`
+ },
+ submitted_details: {
+  label: `Submitted Details`
  },
  details: `details`,
  checkout: `checkout`,
