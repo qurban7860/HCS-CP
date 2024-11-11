@@ -10,8 +10,8 @@ function NavConfiguration() {
    items: [
     { title: 'home.label', path: PATH_DASHBOARD.general.app },
     { title: 'machine.label', path: PATH_MACHINE.machines.list },
-    { title: 'organization.label', path: PATH_CUSTOMER.customers.list },
-    { title: 'document.label', path: '/documents', children: null, disabled: true },
+    // { title: 'organization.label', path: PATH_CUSTOMER.customers.list },
+    // { title: 'document.label', path: '/documents', children: null, disabled: true },
     { title: 'log.label', path: PATH_LOGS.machines.list },
     { title: 'support.label', path: PATH_SUPPORT.tickets.list }
    ]
