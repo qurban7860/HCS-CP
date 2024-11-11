@@ -27,7 +27,12 @@ const LogsTableController = ({ customers, handleCustomerChange, customerMachines
  )
 
  return (
-  <Card sx={{ p: 3, background: themeMode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[800], color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white }}>
+  <Card
+   sx={{
+    p: 3,
+    background: themeMode === KEY.LIGHT ? theme.palette.background.default : theme.palette.grey[800],
+    color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white
+   }}>
    <Stack spacing={2}>
     {isLogsPage && (
      <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }}>

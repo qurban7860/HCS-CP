@@ -24,7 +24,6 @@ const LogsSection = ({ isArchived }) => {
  const { customerMachines } = useSelector(state => state.machine)
  const { logPage, isLoading, logRowsPerPage, logsGraphData, selectedSearchFilter } = useSelector(state => state.log)
  const { customers } = useSelector(state => state.customer)
- const { securityUser } = useSelector(state => state.user)
 
  const { userId, user } = useAuthContext()
  const { themeMode } = useSettingContext()
@@ -101,18 +100,6 @@ const LogsSection = ({ isArchived }) => {
    })
   )
  }
-
- useLayoutEffect(() => {
-  if (userId !== securityUser?._id) {
-   dispatch(resetSecurityUser())
-  }
- }, [userId])
-
- useEffect(() => {
-  if (userId !== securityUser?._id) {
-   dispatch(getSecurityUser(userId))
-  }
- }, [userId])
 
  const handleCustomerChange = useCallback(
   newCustomer => {
@@ -200,7 +187,7 @@ const LogsSection = ({ isArchived }) => {
   <Fragment>
    <MotionLazyContainer display={FLEX.FLEX}>
     <Grid container sx={{ display: 'flex', justifyContent: FLEX.SPACE_BETWEEN }}>
-     <TableTitleBox title={'Logs'} user={securityUser} />
+     <TableTitleBox title={'Logs'} />
      <Button
       size='small'
       startIcon={<Icon icon={pageType === 'graph' ? ICON_NAME.LIST : ICON_NAME.GRAPH} sx={{ mr: 0.3 }} />}
