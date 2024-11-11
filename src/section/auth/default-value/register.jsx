@@ -14,7 +14,7 @@ export function useRegisterDefaultValues(userLocale) {
    country: userLocale,
    email: '',
    machineSerialNos: [],
-   phoneNumber: { type: 'Work', countryCode: userLocale.phone, number: '' },
+   phoneNumber: '',
    customerNote: ''
   }
  }, [userLocale])
