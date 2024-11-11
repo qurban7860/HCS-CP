@@ -9,10 +9,11 @@ RHFCountryAutocomplete.propTypes = {
  name: PropTypes.string,
  label: PropTypes.string,
  helperText: PropTypes.node,
- Error: PropTypes.bool
+ Error: PropTypes.bool,
+ required: PropTypes.bool
 }
 
-export default function RHFCountryAutocomplete({ name, label, helperText, Error, ...other }) {
+export default function RHFCountryAutocomplete({ name, label, helperText, Error, required, ...other }) {
  const { control, setValue } = useFormContext()
 
  useEffect(() => {
@@ -34,17 +35,17 @@ export default function RHFCountryAutocomplete({ name, label, helperText, Error,
      isOptionEqualToValue={(option, value) => option?.code === value?.code}
      getOptionLabel={option => {
       if (typeof option === 'string') return option
-      return `${option?.label || ''} (${option?.code || ''}) +${option?.phone || ''}`
+      return `${option?.label || ''} (${option?.code || ''})`
      }}
      renderOption={(props, option) => (
       <Box component='li' sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
        <img loading='lazy' width='20' srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`} src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`} alt='' />
-       {option.label} ({option.code}) +{option.phone}
+       {option.label} ({option.code})
       </Box>
      )}
      autoHighlight
      autoSelect
-     renderInput={params => <RHFTextField name={name} label={label} error={!!error || !!Error} helperText={error ? error?.message : helperText} {...params} />}
+     renderInput={params => <RHFTextField name={name} label={label} required={required} error={!!error || !!Error} helperText={error ? error?.message : helperText} {...params} />}
      {...other}
     />
    )}

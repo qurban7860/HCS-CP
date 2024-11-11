@@ -42,18 +42,18 @@ export default function RHFPasswordField({ name, helperText, Error, ...other }) 
      {...other}
      sx={{
       '& .MuiInputLabel-root': {
-       ...theme.typography.overline2
+       ...theme.typography.body1
       },
       '& .MuiOutlinedInput-notchedOutline': {
        borderRadius: 0.4,
        color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0',
-       ...theme.typography.overline2
+       ...theme.typography.body1
       },
 
       '& .MuiInputBase-root': {
        '&:hover': {
         '& .MuiOutlinedInput-notchedOutline': {
-         borderColor: 'common.white'
+         borderColor: 'howick.midBlue'
         },
         '& .MuiInputBase-input': {
          color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
@@ -62,12 +62,12 @@ export default function RHFPasswordField({ name, helperText, Error, ...other }) 
        '& .MuiInputBase-input': {
         color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
        },
-       '&.Mui-focused': {
-        '& .MuiOutlinedInput-notchedOutline': {
-         borderColor: 'common.white'
-        },
-        backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
-       },
+       //    '&.Mui-focused': {
+       //     '& .MuiOutlinedInput-notchedOutline': {
+       //      borderColor: 'common.white'
+       //     },
+       //     backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
+       //    },
        // disabled
        '&.Mui-disabled': {
         color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.200',

@@ -1,17 +1,19 @@
+import { Fragment } from 'react'
 import PropTypes from 'prop-types'
+import { Icon, ICON_NAME } from 'hook'
 import { useFormContext, Controller } from 'react-hook-form'
+import { TextField, InputAdornment, Autocomplete } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { TextField } from '@mui/material'
 import { useSettingContext } from 'hook'
 import { KEY } from 'constant'
 
-RHFTextField.propTypes = {
+RHFPhoneTextField.propTypes = {
  name: PropTypes.string,
  helperText: PropTypes.node,
  Error: PropTypes.bool
 }
 
-export default function RHFTextField({ name, helperText, Error, ...other }) {
+export default function RHFPhoneTextField({ name, helperText, Error, ...other }) {
  const { control } = useFormContext()
  const { themeMode } = useSettingContext()
  const theme = useTheme()
@@ -26,6 +28,13 @@ export default function RHFTextField({ name, helperText, Error, ...other }) {
      fullWidth
      value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
      error={!!error || !!Error}
+     InputProps={{
+      startAdornment: (
+       <InputAdornment position='start'>
+        <Icon icon={ICON_NAME.PHONE} sx={{ width: 25, height: 25 }} />
+       </InputAdornment>
+      )
+     }}
      helperText={error ? error?.message : helperText}
      {...other}
      sx={{
@@ -49,12 +58,6 @@ export default function RHFTextField({ name, helperText, Error, ...other }) {
        '& .MuiInputBase-input': {
         color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
        },
-       //    '&.Mui-focused': {
-       //     '& .MuiOutlinedInput-notchedOutline': {
-       //      borderColor: 'grey.400'
-       //     },
-       //     backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
-       //    },
        '&.Mui-disabled': {
         color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.200',
         '& .MuiOutlinedInput-notchedOutline': {
