@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { Icon, ICON_NAME } from 'hook'
 import { t } from 'i18next'
 import { useTheme, alpha, Box } from '@mui/material'
 
@@ -19,7 +18,7 @@ const RHFRequiredTextFieldWrapper = ({ condition, children }) => {
      borderRight: condition ? '.2em solid red' : `.2em solid ${theme.palette.burnIn.altDark}`,
      borderRadius: '0.2em'
     }}>
-    {condition ? t('required.label') : <Icon icon={ICON_NAME.CHECK_CIRCLE} color={theme.palette.burnIn.altDark} />}
+    {condition ? t('required.label') : ''}
    </Box>
   </Box>
  )
