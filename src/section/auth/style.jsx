@@ -8,7 +8,7 @@ export const StyledRoot = styled(({ ...other }) => <main {...other} />)(({ theme
  display: 'flex',
  flexDirection: 'column',
  justifyContent: 'center',
- backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[900]
+ backgroundColor: mode === KEY.LIGHT ? theme.palette.background.default : theme.palette.grey[900]
  // position: 'relative',
 }))
 

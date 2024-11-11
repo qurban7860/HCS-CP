@@ -6,4 +6,5 @@ export { default as Login } from './login/login'
 export { default as LoginLayout } from './login/login-layout'
 
 export * from './default-value/register'
+export * from './register'
 export * from './style'
