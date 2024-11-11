@@ -51,6 +51,8 @@ export { default as CodeRaw } from './code-mirror/code-raw'
 export { default as CodePopover } from './code-mirror/code-popover'
 // @menu-popover
 export { default as MenuPopover } from './menu-popover/menu-popover'
+// @rhfy
+export * from './hook-form'
 // @viewform
 export { default as ViewFormField } from './viewform/view-form-field'
 export { default as GridViewTitle } from './viewform/grid-view-title'
