@@ -5,22 +5,22 @@ import { HEADER } from './header'
 
 export const StyledTablePagination = styled(TablePagination)(({ theme, mode, page, data, rowsPerPage }) => ({
  '.MuiTablePagination-toolbar': {
-  backgroundColor: mode === KEY.LIGHT ? theme.palette.table.header : theme.palette.grey[800],
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.background.default : theme.palette.grey[800],
   height: '5px',
   width: '!important 200px',
   '& .MuiTablePagination-actions': {
    '& .MuiIconButton-root': {
     '&:first-of-type': {
-     color: page <= 0 ? (mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]) : mode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.howick.orange
+     color: page <= 0 ? (mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]) : mode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.howick.orange
     },
     '&:nth-of-type(2)': {
-     color: page <= 0 ? (mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]) : mode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.howick.orange
+     color: page <= 0 ? (mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]) : mode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.howick.orange
     },
     '&:nth-of-type(3)': {
      color:
       page >= Math.ceil((data?.length ?? 0) / rowsPerPage) - 1
        ? mode === KEY.LIGHT
-         ? theme.palette.grey[300]
+         ? theme.palette.grey[100]
          : theme.palette.grey[700]
        : mode === KEY.LIGHT
        ? theme.palette.grey[800]
@@ -30,7 +30,7 @@ export const StyledTablePagination = styled(TablePagination)(({ theme, mode, pag
      color:
       page >= Math.ceil((data?.length ?? 0) / rowsPerPage) - 1
        ? mode === KEY.LIGHT
-         ? theme.palette.grey[300]
+         ? theme.palette.grey[100]
          : theme.palette.grey[700]
        : mode === KEY.LIGHT
        ? theme.palette.grey[800]
@@ -42,7 +42,7 @@ export const StyledTablePagination = styled(TablePagination)(({ theme, mode, pag
 }))
 
 export const StyledHeaderTableCell = styled(({ theme, mode, item, ...other }) => <TableCell {...other} />)(({ theme, mode, item }) => ({
- backgroundColor: mode === KEY.LIGHT ? theme.palette.table.header : theme.palette.grey[800],
+ backgroundColor: mode === KEY.LIGHT ? theme.palette.background.default : theme.palette.grey[800],
  borderBottom: `2px solid ${mode === KEY.LIGHT ? theme.palette.howick.bronze : theme.palette.howick.blue} !important`,
  color: mode === KEY.DARK ? 'common.white' : 'common.black',
  fontWeight: 'bold',
