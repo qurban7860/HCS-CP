@@ -18,12 +18,15 @@ const PortalLogo = forwardRef(({ width = BRAND.NAV_ICON, disabledLink = false, s
  )
 })
 
+PortalLogo.displayName = 'PortalLogo'
+
 PortalLogo.propTypes = {
  sx: PropTypes.object,
  disabledLink: PropTypes.bool,
  src: PropTypes.string,
  width: PropTypes.number,
- disableHeight: PropTypes.bool
+ disableHeight: PropTypes.bool,
+ className: PropTypes.string
 }
 
 export default PortalLogo
