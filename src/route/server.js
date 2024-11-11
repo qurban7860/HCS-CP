@@ -205,9 +205,10 @@ export const PATH_SERVER = {
     */
    listMachine: customerId => _url(_CRM, 'customers', customerId, 'machine'),
    /**
+    * @access: PUBLIC
     * /crm/customers/register
     */
-   register: _url(_CRM, 'customers', 'register')
+   register: _url(_CRM, 'public', 'customers', 'register')
   }
  },
  /**
