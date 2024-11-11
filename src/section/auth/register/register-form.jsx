@@ -196,7 +196,10 @@ function RegisterForm() {
  }
 
  return isSubmitSuccessful && submittedData ? (
-  <RegisterSuccessCard submittedData={submittedData} />
+  <Fragment>
+   <RegisterSuccessCard submittedData={submittedData} />
+   <Box height={{ xs: 50, md: 100 }} />
+  </Fragment>
  ) : (
   <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
    <Fragment>

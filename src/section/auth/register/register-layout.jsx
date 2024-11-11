@@ -8,6 +8,7 @@ import { MotionViewport } from 'component/animate'
 import { PortalLogo, FormHeader } from 'component'
 import { Logo } from 'component/logo'
 import { GLOBAL } from 'global'
+import { ASSET } from 'config/asset-directory'
 import { FLEX, KEY, TYPOGRAPHY, LABEL } from 'constant'
 import { StyledRoot, StyledContent } from '../style'
 
@@ -53,7 +54,7 @@ function RegisterLayout({ children, illustration, title }) {
        <Logo className='howick-logo' sx={{ width: { xs: '80px', sm: '120px', md: '150px' }, pointerEvents: KEY.NONE }} />
       </Grid>
       <Stack sx={{ alignItems: KEY.CENTER }}>
-       <PortalLogo className='portal-header' sx={{ width: { xs: '150px', sm: '170px', md: '250px' }, mt: { xs: -2, lg: -3 } }} />
+       <PortalLogo className='portal-header' src={themeMode === KEY.LIGHT ? ASSET.PORTAL : ASSET.PORTAL_2} sx={{ width: { xs: '150px', sm: '170px', md: '250px' }, mt: { xs: -2, lg: -3 } }} />
       </Stack>
       <Stack sx={{ alignItems: KEY.END }}>
        <Typography className='portal-version' variant={TYPOGRAPHY.BODY2} sx={{ mb: 5, mt: 1 }}>
