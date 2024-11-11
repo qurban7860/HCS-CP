@@ -1,22 +1,17 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import { t } from 'i18next'
+import { Icon, ICON_NAME } from 'hook'
 import { Box, Card, CardContent, Typography, Grid, Paper, List, ListItem, ListItemIcon, ListItemText, Avatar, Chip, Stack } from '@mui/material'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import EmailIcon from '@mui/icons-material/Email'
-import ReviewsIcon from '@mui/icons-material/Reviews'
-import UpdateIcon from '@mui/icons-material/Update'
 import { TYPOGRAPHY } from 'constant'
 
 const RegisterSuccessCard = ({ submittedData }) => {
  if (!submittedData) return null
 
  return (
-  <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
+  <Box sx={{ maxWidth: 900, mx: 'auto', mt: 2 }}>
    <Card
     elevation={0}
     sx={{
-     //  bgcolor: theme => theme.palette.background.default,
      border: 1,
      borderColor: theme => theme.palette.divider,
      borderRadius: 1
@@ -31,82 +26,83 @@ const RegisterSuccessCard = ({ submittedData }) => {
         mx: 'auto',
         mb: 2
        }}>
-       <CheckCircleOutlineIcon sx={{ fontSize: 40 }} />
+       <Icon icon={ICON_NAME.CHECK_CICLE_OUTLINE} width={40} sx={{ color: theme => theme.palette.primary.contrastText }} />
       </Avatar>
       <Typography variant='h4' gutterBottom>
-       Registration Request was submitted
+       {t('next_step.registration_process.title')}
       </Typography>
      </Box>
 
      <Paper elevation={0} sx={{ p: 3, mb: 3 }}>
       <Typography variant='h6' gutterBottom>
-       Submitted Details:
+       {t('submitted_details.label')} :
       </Typography>
 
       <Grid container spacing={3}>
        <Grid item xs={12} md={6}>
-        <Typography color='text.secondary' variant='subtitle2'>
-         Organization Name
+        <Typography color='text.secondary' variant={TYPOGRAPHY.OVERLINE0}>
+         {t('organization_name.label')}
         </Typography>
-        <Typography variant='body1' sx={{ mb: 2 }}>
-         {submittedData.customerName}
-        </Typography>
-       </Grid>
-
-       <Grid item xs={12} md={6}>
-        <Typography color='text.secondary' variant='subtitle2'>
-         Contact Person
-        </Typography>
-        <Typography variant='body1' sx={{ mb: 2 }}>
-         {submittedData.contactPersonName}
+        <Typography variant={TYPOGRAPHY.BODY1} sx={{ mb: 2 }}>
+         &nbsp;{submittedData.customerName}
         </Typography>
        </Grid>
 
        <Grid item xs={12} md={6}>
-        <Typography color='text.secondary' variant='subtitle2'>
-         Email
+        <Typography color='text.secondary' variant={TYPOGRAPHY.OVERLINE0}>
+         {t('contact_person_name.label')}
         </Typography>
-        <Typography variant='body1' sx={{ mb: 2 }}>
-         {submittedData.email}
+        <Typography variant={TYPOGRAPHY.BODY1} sx={{ mb: 2 }}>
+         &nbsp;{submittedData.contactPersonName}
+        </Typography>
+       </Grid>
+
+       <Grid item xs={12} md={6}>
+        <Typography color='text.secondary' variant={TYPOGRAPHY.OVERLINE0}>
+         {t('email.label')}
+        </Typography>
+        <Typography variant={TYPOGRAPHY.BODY1} sx={{ mb: 2 }}>
+         &nbsp;{submittedData.email}
         </Typography>
        </Grid>
 
        {submittedData.phoneNumber && (
         <Grid item xs={12} md={6}>
-         <Typography color='text.secondary' variant='subtitle2'>
-          Phone Number
+         <Typography color='text.secondary' variant={TYPOGRAPHY.OVERLINE0}>
+          {t('contact_number.label')}
          </Typography>
-         <Typography variant='body1' sx={{ mb: 2 }}>
-          {submittedData.phoneNumber}
+         <Typography variant={TYPOGRAPHY.BODY1} sx={{ mb: 2 }}>
+          &nbsp;{submittedData.phoneNumber}
          </Typography>
         </Grid>
        )}
 
        {submittedData.address && (
         <Grid item xs={12} md={6}>
-         <Typography color='text.secondary' variant='subtitle2'>
-          Address
+         <Typography color='text.secondary' variant={TYPOGRAPHY.OVERLINE0}>
+          {t('address.label')}
          </Typography>
-         <Typography variant='body1' sx={{ mb: 2 }}>
-          {submittedData.address}
+         <Typography variant={TYPOGRAPHY.BODY1} sx={{ mb: 2 }}>
+          &nbsp;{submittedData.address}
          </Typography>
         </Grid>
        )}
 
        <Grid item xs={12} md={6}>
-        <Typography color='text.secondary' variant='subtitle2'>
-         Country
+        <Typography color='text.secondary' variant={TYPOGRAPHY.OVERLINE0}>
+         {t('country.label')}
         </Typography>
-        <Typography variant='body1' sx={{ mb: 2 }}>
-         {submittedData.country.label}
+        <Typography variant={TYPOGRAPHY.BODY1} sx={{ mb: 2 }}>
+         &nbsp;{submittedData.country.label}
         </Typography>
        </Grid>
 
        <Grid item xs={12}>
-        <Typography color='text.secondary' variant='subtitle2'>
-         Machine Serial Numbers
+        <Typography color='text.secondary' variant={TYPOGRAPHY.OVERLINE0}>
+         {submittedData.machineSerialNos.length > 1 ? t('machine.machines.label') : t('machine.label')}
         </Typography>
         <Stack direction='row' spacing={1} sx={{ mt: 1, flexWrap: 'wrap', gap: 1 }}>
+         &nbsp;
          {submittedData.machineSerialNos.map((serial, index) => (
           <Chip key={index} label={<Typography variant={TYPOGRAPHY.H6}>{serial}</Typography>} variant='outlined' size='small' sx={{ borderRadius: 0.2 }} />
          ))}
@@ -115,10 +111,10 @@ const RegisterSuccessCard = ({ submittedData }) => {
 
        {submittedData.customerNote && (
         <Grid item xs={12}>
-         <Typography color='text.secondary' variant='subtitle2'>
-          Additional Notes
+         <Typography color='text.secondary' variant={TYPOGRAPHY.OVERLINE0}>
+          {t('additional_notes.label')}
          </Typography>
-         <Typography variant='body1' sx={{ mb: 2 }}>
+         <Typography variant={TYPOGRAPHY.BODY1} sx={{ mb: 2 }}>
           {submittedData.customerNote}
          </Typography>
         </Grid>
@@ -133,27 +129,29 @@ const RegisterSuccessCard = ({ submittedData }) => {
        bgcolor: theme => theme.palette.primary.light,
        color: theme => theme.palette.primary.contrastText
       }}>
-      <Typography variant='h6' gutterBottom>
-       Next Steps:
+      <Typography variant={TYPOGRAPHY.H6} gutterBottom>
+       {t('next_step.next_steps.label')}
       </Typography>
       <List>
        <ListItem>
         <ListItemIcon>
-         <EmailIcon sx={{ color: theme => theme.palette.primary.contrastText }} />
+         <Icon icon={ICON_NAME.REVIEW} sx={{ color: theme => theme.palette.primary.contrastText }} />
         </ListItemIcon>
-        <ListItemText primary='Check your email for confirmation' />
+        <ListItemText primary={t('next_step.registration_process.first')} />
        </ListItem>
+
        <ListItem>
         <ListItemIcon>
-         <ReviewsIcon sx={{ color: theme => theme.palette.primary.contrastText }} />
+         <Icon icon={ICON_NAME.UPDATE} sx={{ color: theme => theme.palette.primary.contrastText }} />
         </ListItemIcon>
-        <ListItemText primary='Our team will review your registration request' />
+        <ListItemText primary={t('next_step.registration_process.second')} />
        </ListItem>
+
        <ListItem>
         <ListItemIcon>
-         <UpdateIcon sx={{ color: theme => theme.palette.primary.contrastText }} />
+         <Icon icon={ICON_NAME.EMAIL} sx={{ color: theme => theme.palette.primary.contrastText }} />
         </ListItemIcon>
-        <ListItemText primary='You will receive further instructions within 24-48 hours' />
+        <ListItemText primary={t('next_step.registration_process.last')} />
        </ListItem>
       </List>
      </Paper>
