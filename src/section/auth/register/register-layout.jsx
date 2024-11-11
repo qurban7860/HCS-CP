@@ -1,12 +1,12 @@
+import { memo } from 'react'
 import PropTypes from 'prop-types'
-import { t } from 'i18next'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { useResponsive } from 'hook'
 import { useSettingContext } from 'hook'
 import { Typography, Stack, Grid, Box } from '@mui/material'
-import { Logo } from 'component/logo'
+import { MotionViewport } from 'component/animate'
 import { PortalLogo, FormHeader } from 'component'
+import { Logo } from 'component/logo'
 import { GLOBAL } from 'global'
 import { FLEX, KEY, TYPOGRAPHY, LABEL } from 'constant'
 import { StyledRoot, StyledContent } from '../style'
@@ -44,10 +44,6 @@ function RegisterLayout({ children, illustration, title }) {
    })
  })
 
- const isMobile = useResponsive('down', 'sm')
- const isMid = useResponsive('between', 'md')
- const isLarge = useResponsive('up', 'lg')
-
  return (
   <StyledRoot mode={themeMode}>
    <StyledContent>
@@ -66,24 +62,14 @@ function RegisterLayout({ children, illustration, title }) {
       </Stack>
      </Grid>
     </Grid>
-    {isMobile && (
-     <Box className={'portal-rhf-textfield'} sx={{ width: { xs: '350px' }, height: { xs: '100vh', md: 'auto' } }}>
+    <MotionViewport>
+     <Box className={'portal-rhf-textfield'} sx={{ width: { xs: '350px', sm: '600px', md: '800px', lg: '900px' }, height: { xs: '100vh', md: 'auto' } }}>
       {children}
      </Box>
-    )}
-    {isMid && (
-     <Box className={'portal-rhf-textfield'} sx={{ width: { sm: '600px' }, height: { xs: '100vh', md: 'auto' } }}>
-      {children}
-     </Box>
-    )}
-    {isLarge && (
-     <Box className={'portal-rhf-textfield'} sx={{ width: { lg: '900px' }, height: { xs: '100vh', md: 'auto' } }}>
-      <div>{children}</div>
-     </Box>
-    )}
+    </MotionViewport>
    </StyledContent>
   </StyledRoot>
  )
 }
 
-export default RegisterLayout
+export default memo(RegisterLayout)
