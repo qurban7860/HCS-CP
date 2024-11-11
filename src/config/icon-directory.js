@@ -62,6 +62,7 @@ const ICON_WEB = {
  CURRENTLY_EMPLOYED: _getWebIcon('person-badge'),
  DANGER: _getWebIcon('dangerous'),
  CALENDAR_CLOCK: _getAnyWebIcon('fluent-mdl2:date-time'),
+ EMAIL: _getWebIcon('email-fast'),
  EYE: _getWebIcon('eye'),
  EYE_OFF: _getWebIcon('eye-off'),
  EDIT: _getWebIcon('pencil'),
@@ -91,6 +92,7 @@ const ICON_WEB = {
  QUICK: _getWebIcon('lightning-bolt'),
  PHONE: _getWebIcon('phone'),
  REFRESH: _getWebIcon('refresh'),
+ REVIEW: _getAnyWebIcon('fluent-mdl2:review-response-solid'),
  SAVE: _getWebIcon('content-save'),
  SEARCH: _getWebIcon('magnify'),
  SETTING: _getWebIcon('cog'),
@@ -103,6 +105,7 @@ const ICON_WEB = {
  TRASH: _getWebIcon('trash-can'),
  TRANSFER: _getWebIcon('transfer'),
  TIX_STATUS: _getWebIcon('chevron-up'),
+ UPDATE: _getWebIcon('update'),
  WARNING: _getWebIcon('warning')
 }
 
@@ -148,6 +151,7 @@ export const ICON_WEB_NAME = {
  CURRENTLY_EMPLOYED: 'CURRENTLY_EMPLOYED',
  DANGER: 'DANGER',
  EDIT: 'EDIT',
+ EMAIL: 'EMAIL',
  EYE: 'EYE',
  EYE_OFF: 'EYE_OFF',
  ERROR_OUTLINE: 'ERROR_OUTLINE',
@@ -173,6 +177,7 @@ export const ICON_WEB_NAME = {
  PHONE: 'PHONE',
  READ_MORE: 'READ_MORE',
  REFRESH: 'REFRESH',
+ REVIEW: 'REVIEW',
  SAVE: 'SAVE',
  SEARCH: 'SEARCH',
  STATUS: 'STATUS',
@@ -184,6 +189,7 @@ export const ICON_WEB_NAME = {
  TRAFFIC_CONE: 'TRAFFIC_CONE',
  TRANSFER: 'TRANSFER',
  TIX_STATUS: 'TIX_STATUS',
+ UPDATE: 'UPDATE',
  WARNING: 'WARNING'
 }
 

@@ -67,6 +67,7 @@ export const ASSET = {
  PARENT: _icon('parent.svg'),
  PLACEHOLDER: _image('placeholder.svg'),
  PORTAL: _brand('portal.svg'),
+ PORTAL_2: _brand('portal-2.svg'),
  OCTICON: icon => `/asset/octicon/${icon}.svg`,
  SVG: icon => `/asset/svg/${icon}.svg`
 }
