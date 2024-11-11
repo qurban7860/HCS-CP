@@ -1,10 +1,9 @@
 import { useRef, useEffect, useCallback } from 'react'
-import { useSettingContext, snack } from 'hook'
+import PropTypes from 'prop-types'
+import { useSettingContext } from 'hook'
 import { Autocomplete, Box, Typography, Chip } from '@mui/material'
-import { RHFTextField } from 'component/hook-form'
 import { useTheme } from '@mui/material/styles'
-import { GStyledMachineChip, GStyledScrollChipBox } from 'theme/style'
-import { TYPOGRAPHY, KEY, REGEX, RESPONSE, COLOR } from 'constant'
+import { TYPOGRAPHY, KEY, REGEX } from 'constant'
 
 const AutocompleteScrollChipContainer = ({ name, list, handleInputChange, renderInput }) => {
  const chipContainerRef = useRef(null)
@@ -41,28 +40,38 @@ const AutocompleteScrollChipContainer = ({ name, list, handleInputChange, render
        '&::-webkit-scrollbar-thumb': {
         backgroundColor: themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[900]
        },
-       border: `1px solid ${themeMode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[900]}`,
+       //    border: `1px solid ${themeMode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[900]}`,
        padding: '4px'
       }}>
-      {value.map((option, index) => (
-       <Chip
-        key={index}
-        label={<Typography variant={TYPOGRAPHY.H6}>{option}</Typography>}
-        {...getTagProps({ index })}
-        sx={{
-         margin: theme.spacing(0.2),
-         borderRadius: theme.spacing(0.4),
-         color: themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
-         backgroundColor: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[300]
-        }}
-       />
-      ))}
+      {value.map((option, index) => {
+       const { key, ...tagProps } = getTagProps({ index })
+       return (
+        <Chip
+         key={index + 1}
+         label={<Typography variant={TYPOGRAPHY.H6}>{option}</Typography>}
+         {...tagProps}
+         sx={{
+          margin: theme.spacing(0.2),
+          borderRadius: theme.spacing(0.4),
+          color: themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
+          backgroundColor: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[300]
+         }}
+        />
+       )
+      })}
      </Box>
     )}
     renderInput={renderInput}
    />
   </Box>
  )
+}
+
+AutocompleteScrollChipContainer.propTypes = {
+ name: PropTypes.string,
+ list: PropTypes.array,
+ handleInputChange: PropTypes.func,
+ renderInput: PropTypes.func
 }
 
 export default AutocompleteScrollChipContainer
