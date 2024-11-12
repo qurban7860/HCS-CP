@@ -63,11 +63,10 @@ export default function Router() {
       </GuestGuard>
      )
     },
-    {
-     path: 'set-password',
-     element: <SetPasswordPage />
-    },
-    // TODO: once server has the endpoint, implement this
+    // {
+    //  path: 'set-password',
+    //  element: <SetPasswordPage />
+    // },
     // {
     //  path: 'set-password/:token/:userId',
     //  element: (
@@ -290,10 +289,12 @@ export default function Router() {
    element: <LandingPage />,
    children: [{ element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true }]
   },
-  { path: 'invite/:id/:code/:expiry', element: <UserInviteLandingPage /> },
+  { path: 'invite/:id/:code/:expiry', element: <SetPasswordPage /> },
   { path: '500', element: <FallbackPage {...FALLBACK.INTERNAL_SERVER_ERROR} /> },
   { path: '403', element: <FallbackPage {...FALLBACK.FORBIDDEN} /> },
   { path: '404', element: <FallbackPage {...FALLBACK.NOT_FOUND} /> },
+  { path: '400', element: <FallbackPage {...FALLBACK.INVALID_REQUEST} /> },
+  { path: 'invitation-expired', element: <FallbackPage {...FALLBACK.INVITATION_EXPIRED} /> },
   { path: '*', element: <Navigate to='/404' replace /> }
  ])
 }
