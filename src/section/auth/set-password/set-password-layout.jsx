@@ -2,8 +2,11 @@ import PropTypes from 'prop-types'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSettingContext } from 'hook'
+import { SetPasswordSchema } from 'schema'
+import { useSetPasswordDefaultValues } from 'section/auth/default-value'
 import { Typography, Stack, Grid, Box } from '@mui/material'
 import { Logo, PortalLogo } from 'component'
+import { MotionViewport } from 'component/animate'
 import { GLOBAL } from 'global'
 import { FLEX, KEY, TYPOGRAPHY } from 'constant'
 import { StyledRoot, StyledContent } from '../style'
@@ -54,7 +57,11 @@ function SetPasswordLayout({ children, title }) {
       </Stack>
      </Grid>
     </Grid>
-    <Box sx={{ width: { xs: '300px', sm: '400px' } }}> {children} </Box>
+    <MotionViewport>
+     <Box className={'portal-rhf-textfield'} sx={{ width: { xs: '350px', sm: '600px', md: '800px', lg: '900px' }, height: { xs: '100vh', md: 'auto' } }}>
+      {children}
+     </Box>
+    </MotionViewport>
    </StyledContent>
   </StyledRoot>
  )
