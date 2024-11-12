@@ -113,12 +113,6 @@ function RegisterForm() {
   getUserLocation()
  }, [])
 
- //  useEffect(() => {
- //   if (country) {
- //    updatePhoneCountryCode(country)
- //   }
- //  }, [country])
-
  const validateSerialNumber = serialNumber => {
   return serialNumber.length === 5 && serialNoRegEx.test(serialNumber)
  }
@@ -267,17 +261,15 @@ function RegisterForm() {
         render={({ field: { onChange, value }, fieldState: { error } }) => (
          <AutocompleteScrollChipContainer
           value={value}
-          onChange={newValue => {
+          onChange={(_, newValue) => {
            onChange(newValue)
            setIsTyping(newValue.length > 0)
           }}
-          handleInputChange={(event, newValue, reason, details) => {
-           handleValidateSerialNumbers(event, newValue, reason, details)
-          }}
+          handleInputChange={handleValidateSerialNumbers}
           renderInput={params => (
            <RHFTextField
             {...params}
-            type={KEY.TEXT}
+            type='text'
             name='machineSerialNos'
             label={t('machine.machines.label')}
             onChange={event => setIsTyping(event.target.value.length > 0)}

@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
-import { useTheme, alpha, Box } from '@mui/material'
+import { Icon, ICON_NAME } from 'hook'
+import { useTheme, alpha, Box, Typography } from '@mui/material'
+import { TYPOGRAPHY } from 'constant'
 
 const RHFRequiredTextFieldWrapper = ({ condition, children }) => {
  const theme = useTheme()
@@ -16,9 +18,11 @@ const RHFRequiredTextFieldWrapper = ({ condition, children }) => {
      padding: '0.5em 0.5em',
      borderTop: condition ? '.2em solid red' : `.2em solid ${theme.palette.burnIn.altDark}`,
      borderRight: condition ? '.2em solid red' : `.2em solid ${theme.palette.burnIn.altDark}`,
+     //  color: 'common.white',
+     //  backgroundColor: condition ? theme.palette.error.main : theme.palette.burnIn.altDark,
      borderRadius: '0.2em'
     }}>
-    {condition ? t('required.label') : ''}
+    {condition ? <Typography variant={TYPOGRAPHY.OVERLINE0}>{t('required.label')}</Typography> : ''}
    </Box>
   </Box>
  )

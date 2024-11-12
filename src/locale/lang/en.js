@@ -1,6 +1,7 @@
 import { get } from 'react-hook-form'
 
 const en = {
+ account: `account`,
  register_agreement: 'By clicking "Register" you agree to our <1>Privacy Policy</1>.',
  address: {
   label: `Address`
@@ -65,6 +66,9 @@ const en = {
    label: `Graphs`
   }
  },
+ full_name: {
+  label: `Full Name`
+ },
  log: {
   label: `Log`,
   logs: {
@@ -121,6 +125,9 @@ const en = {
  },
  login: {
   label: `Login`
+ },
+ login_email: {
+  label: `Login Email`
  },
  support: {
   local: `support`,
@@ -186,7 +193,12 @@ const en = {
  select_filter: {
   label: `Select Filter`
  },
- account: `account`,
+ password: {
+  label: `Password`,
+  confirm_password: {
+   label: `Confirm Password`
+  }
+ },
  product: `product`,
  production: {
   label: `Production`,
@@ -199,6 +211,9 @@ const en = {
  },
  required: {
   label: `Required`
+ },
+ save: {
+  label: `Save`
  },
  submitted_details: {
   label: `Submitted Details`

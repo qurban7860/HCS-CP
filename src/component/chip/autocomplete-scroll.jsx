@@ -18,7 +18,15 @@ const AutocompleteScrollChipContainer = ({ name, list, handleInputChange, render
  }, [list])
 
  return (
-  <Box sx={{ width: '100%' }}>
+  <Box
+   sx={{
+    width: {
+     xs: '350px',
+     sm: '600px',
+     md: '800px',
+     lg: '900px'
+    }
+   }}>
    <Autocomplete
     multiple
     freeSolo

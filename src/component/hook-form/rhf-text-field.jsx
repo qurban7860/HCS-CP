@@ -56,14 +56,21 @@ export default function RHFTextField({ name, helperText, Error, ...other }) {
        //     backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
        //    },
        '&.Mui-disabled': {
-        color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.200',
+        backgroundColor: themeMode === KEY.LIGHT ? 'grey.100' : 'grey.800',
+        pointerEvents: 'none',
         '& .MuiOutlinedInput-notchedOutline': {
-         borderColor: themeMode === KEY.LIGHT ? 'transparent' : 'bronze.main'
+         color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.400'
         }
        },
        '& .MuiAutocomplete-inputRoot': {
         backgroundColor: themeMode === KEY.LIGHT ? 'grey.400' : 'grey.800'
        }
+      },
+      '& .MuiInputLabel-root.Mui-disabled': {
+       color: themeMode === KEY.LIGHT ? 'grey.500' : 'grey.300'
+      },
+      '& .MuiFormHelperText-root.Mui-disabled': {
+       color: themeMode === KEY.LIGHT ? 'grey.500' : 'grey.300'
       }
      }}
     />

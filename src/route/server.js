@@ -96,6 +96,18 @@ export const PATH_SERVER = {
    */
   SEND_USER_INVITE: userId => _url(_SECURITY, 'invites', 'sendUserInvite', userId),
   /**
+   * @access PUBLIC
+   * /security/invites/verifyInviteCode/:userId/:code
+   * @param {string} userId
+   * @param {string} code
+   */
+  VERIFIED_INVITE: (id, code) => _url(_SECURITY, 'invites', 'verifyInviteCode', id, code),
+  /**
+   * /security/invites/updatePasswordUserInvite/:userId
+   * @param {string} userId - string
+   */
+  UPDATE_USER_INVITE_DETAILS: userId => _url(_SECURITY, 'invites', 'updatePasswordUserInvite', userId),
+  /**
    * @submodule /security/users
    */
   USER: {
