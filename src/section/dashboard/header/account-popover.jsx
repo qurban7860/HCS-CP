@@ -1,17 +1,17 @@
 import { Fragment, useState, useEffect } from 'react'
+import { t } from 'i18next'
 import { useNavigate, Link as RouterLink } from 'react-router-dom'
 import { useAuthContext } from 'auth'
-import { t } from 'i18next'
-import { getCustomer } from 'store/slice'
+import { useSelector } from 'react-redux'
+import { getCustomer, setChangePasswordDialog } from 'store/slice'
 import { dispatch } from 'store'
 import { useSettingContext, DisplayDialog, snack, Icon, ICON_NAME } from 'hook'
 import { Box, Divider, Dialog, Typography, Stack, MenuItem, Link } from '@mui/material'
-import { CustomAvatar, MenuPopover, IconButtonAnimate } from 'component'
+import { CustomAvatar, MenuPopover, IconButtonAnimate, ChangePasswordDialog } from 'component'
 import { themePreset } from 'theme'
 import { SNACK, COLOR, TYPOGRAPHY } from 'constant'
 import { OPTION } from './util'
 import LanguagePopover from './language-popover'
-import { useSelector } from 'react-redux'
 
 export default function AccountPopover() {
  const { user, logout } = useAuthContext()
@@ -31,6 +31,10 @@ export default function AccountPopover() {
   setOpenPopover(null)
  }
 
+ const handleChangePassword = () => {
+  dispatch(setChangePasswordDialog(true))
+ }
+
  useEffect(() => {
   if (user) {
    dispatch(getCustomer(user.customer))
@@ -40,11 +44,11 @@ export default function AccountPopover() {
  const handleLogout = async () => {
   try {
    logout()
-   snack(SNACK.LOGGED_OUT)
+   snack(SNACK.LOGGED_OUT, { variant: 'success' })
    handleClosePopover()
   } catch (error) {
    console.error(error)
-   snack(SNACK.ERROR.UNABLE_LOGOUT, { variant: COLOR.ERROR })
+   snack(SNACK.ERROR.UNABLE_LOGOUT, { variant: 'error' })
   }
  }
 
@@ -95,7 +99,7 @@ export default function AccountPopover() {
       }
      })
     }}>
-    <CustomAvatar /**src={mockUser[0]?.photoURL}  */ alt={'display name'} name={user?.displayName} />
+    <CustomAvatar /**src={mockUser[0]?.photoURL}  */ alt={'display name'} name={customer?.name} />
    </IconButtonAnimate>
 
    <MenuPopover
@@ -127,6 +131,7 @@ export default function AccountPopover() {
        </Link>
       </MenuItem>
      ))}
+     <MenuItem onClick={handleChangePassword}>{t('change_password.label')}</MenuItem>
      <Divider />
      <MenuItem
       onClick={() => {
@@ -152,6 +157,7 @@ export default function AccountPopover() {
     {!open && <Dialog open={open} notDefault={notDefault} onToggle={handleToggle} />}
     <DisplayDialog open={open} handleClose={handleClose} onResetSetting={onResetSetting} />
    </Fragment>
+   <ChangePasswordDialog />
   </Fragment>
  )
 }
