@@ -75,7 +75,7 @@ export const StyledTableRow = styled(({ theme, mode, index, machine, ...other })
   index % 2
    ? mode === KEY.DARK
      ? alpha(theme.palette.grey[900], 0.5)
-     : alpha(theme.palette.grey[300], 0.4)
+     : alpha(theme.palette.grey[100], 0.4)
    : mode === KEY.DARK
    ? alpha(theme.palette.grey[800], 0.5)
    : alpha(theme.palette.table.cellEven, 0.9),
