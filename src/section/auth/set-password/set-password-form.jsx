@@ -25,9 +25,6 @@ function SetPasswordForm() {
  const { verifiedInvite } = useSelector(state => state.user)
  const expired = new Date(expiry).getTime() > new Date().getTime()
 
- //  hardcoded for now
- const userId = '66ff12e8b691e65928540789'
- const securityUserId = { _id: '66ff12e8b691e65928540789' }
  const navigate = useNavigate()
  const regEx = new RegExp(REGEX.ERROR_CODE)
 
