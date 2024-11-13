@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { getLogs, ChangeLogPage, resetLogs } from 'store/slice'
@@ -21,6 +21,7 @@ const MachineLogsTab = () => {
  const { customerMachines } = useSelector(state => state.machine)
 
  const [searchParams] = useSearchParams()
+ const { id } = useParams()
  const isGraphPage = () => searchParams.get('type') === 'erpGraph'
 
  const defaultValues = useLogDefaultValues(customers[0], customerMachines[0])
@@ -33,23 +34,26 @@ const MachineLogsTab = () => {
  const { customer, machine, dateFrom, dateTo, logType, filteredSearchKey } = watch()
 
  useEffect(() => {
-  dispatch(
-   getLogs({
-    ...payload,
-    page: logPage,
-    pageSize: logRowsPerPage
-   })
-  )
+  if (id) {
+   dispatch(
+    getLogs({
+     ...payload,
+     machineId: id,
+     page: logPage,
+     pageSize: logRowsPerPage
+    })
+   )
+  }
  }, [logPage, logRowsPerPage])
 
  const onGetLogs = data => {
   const customerId = customer._id
-  const machineId = machine?._id || undefined
+  //   const machineId = id || undefined
   dispatch(ChangeLogPage(0))
   dispatch(
    getLogs({
     customerId,
-    machineId,
+    id,
     page: 0,
     pageSize: logRowsPerPage,
     fromDate: dateFrom,
