@@ -39,7 +39,7 @@ export const PATH_AUTH = {
  registerUnprotected: conNex(ROOTS_AUTH, 'register-unprotected'),
  verify: conNex(ROOTS_AUTH, 'verify'),
  resetPassword: conNex(ROOTS_AUTH, 'reset-password'),
- newpassword: (token, userId) => path(ROOTS_AUTH, 'new-password', token, userId),
+ newPassword: (token, userId) => path(ROOTS_AUTH, 'new-password', token, userId),
  setPassword: (token, userId) => conNex(ROOTS_AUTH, 'set-password', token, userId),
  authenticate: conNex(ROOTS_AUTH, 'authenticate')
 }
