@@ -92,9 +92,13 @@ export const PATH_SERVER = {
   LOGOUT: userId => _url(_SECURITY, 'logout', userId),
   /**
    * /security/forgetPassword
-   * @param {string} userId
    */
   RESET_PASSWORD: _url(_SECURITY, 'forgetPassword'),
+  /**
+   * /security/forgetPassword/verifyToken
+   */
+  NEW_PASSWORD: _url(_SECURITY, 'forgetPassword', 'verifyToken'),
+
   /**
    * /security/invites/sendUserInvite/:userId
    * @param {string} userId

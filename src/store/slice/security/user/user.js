@@ -283,3 +283,26 @@ export function resetUserPassword(data) {
   }
  }
 }
+
+export function newUserPassword(data) {
+ return async dispatch => {
+  dispatch(userSlice.actions.startLoading())
+  try {
+   const params = {
+    token: data.token,
+    userId: data.userId,
+    password: data.password
+   }
+
+   const response = await axios.post(PATH_SERVER.SECURITY.NEW_PASSWORD, params)
+   if (regEx.test(response.status)) {
+    dispatch(userSlice.actions.setResponseMessage(response.data))
+   }
+   return response // eslint-disable-line
+  } catch (error) {
+   dispatch(userSlice.actions.hasError(error.Message))
+   console.error(error)
+   throw error
+  }
+ }
+}

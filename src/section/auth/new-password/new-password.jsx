@@ -1,10 +1,11 @@
-import { ResetPasswordForm, ResetPasswordLayout } from 'section/auth/reset-password'
+import { NewPasswordForm } from 'section/auth/new-password'
+import { AuthGateway } from 'section/auth'
 import { GLOBAL } from 'global'
 
-export default function ResetPassword() {
+export default function NewPassword() {
  return (
-  <ResetPasswordLayout title={GLOBAL.APP_BRANDING}>
-   <ResetPasswordForm />
-  </ResetPasswordLayout>
+  <AuthGateway title={GLOBAL.APP_BRANDING}>
+   <NewPasswordForm />
+  </AuthGateway>
  )
 }

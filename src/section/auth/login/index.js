@@ -1,2 +1,2 @@
-export { default } from './login-layout'
-export { default as LoginLayout } from './login-layout'
+export { default as Login } from './login'
+export { default as LoginForm } from './login-form'

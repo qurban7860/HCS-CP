@@ -135,6 +135,9 @@ const en = {
  login: {
   label: `Login`
  },
+ login_page: {
+  label: `Login Page`
+ },
  login_email: {
   label: `Login Email`
  },
@@ -172,7 +175,6 @@ const en = {
   key: `name`,
   label: `Name`
  },
- kanban: `kanban`,
  general: `general`,
  banking: `banking`,
  booking: `booking`,
@@ -212,6 +214,12 @@ const en = {
   label: `Password`,
   confirm_password: {
    label: `Confirm Password`
+  },
+  set_new_password: {
+   label: `Set New Password`
+  },
+  password_updated: {
+   label: `Password Updated`
   }
  },
  product: `product`,
@@ -224,6 +232,9 @@ const en = {
  register: {
   label: `Register`
  },
+ reset_password: {
+  label: `Reset Password`
+ },
  required: {
   label: `Required`
  },
@@ -232,6 +243,23 @@ const en = {
   messages: {
    pre_reset: 'Enter your email address below and we will send you instructions on how to reset your password.',
    check_email: `Check your E-mail for the password reset link.`
+  },
+  success: {
+   logged_in: 'Logged in',
+   register_request_submitted: 'Registration request submitted',
+   details_updated: 'User details updated, navigating you to the Login page...',
+   password_updated: 'Password updated',
+   reset_request_submitted: 'Password reset request submitted'
+  },
+  error: {
+   form_check_errors: 'Please check the form for errors',
+   machine_serial_invalid: 'Machine serial number provided is invalid',
+   something_went_wrong: 'Something went wrong',
+   unable_to_process_request: 'Unable to process your request',
+   unable_save_details: 'Unable to save details',
+   unable_read_error_message: 'Unable to read error message',
+   invalid_credentials: 'Invalid credentials',
+   unexpected_error: 'An unexpected error occurred'
   }
  },
  save: {

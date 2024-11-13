@@ -14,6 +14,7 @@ import {
  VerifyCodePage,
  SetPasswordPage,
  ResetPasswordPage,
+ NewPasswordPage,
  // dashboard: general
  GeneralAppPage,
  // security:
@@ -64,6 +65,7 @@ export default function Router() {
      )
     },
     { path: 'reset-password', element: <ResetPasswordPage /> },
+    { path: 'new-password/:token/:userId', element: <NewPasswordPage /> },
     { path: 'login-unprotected', element: <LoginPage /> },
     { path: 'register-unprotected', element: <RegisterPage /> }
    ]

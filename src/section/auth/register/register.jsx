@@ -1,11 +1,11 @@
-import { RegisterLayout } from 'section/auth/register'
+import { RegisterForm } from 'section/auth/register'
+import { AuthGateway } from 'section/auth'
 import { GLOBAL } from 'global'
-import RegisterForm from './register-form'
 
 export default function Register() {
-  return (
-    <RegisterLayout title={GLOBAL.APP_BRANDING}>
-      <RegisterForm />
-    </RegisterLayout>
-  )
+ return (
+  <AuthGateway title={GLOBAL.APP_BRANDING} isWideForm>
+   <RegisterForm />
+  </AuthGateway>
+ )
 }

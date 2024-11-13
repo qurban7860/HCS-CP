@@ -3,19 +3,19 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSettingContext } from 'hook'
 import { Typography, Stack, Grid, Box } from '@mui/material'
-import { Logo, PortalLogo } from 'component'
+import { Logo, PortalLogo, MotionViewport } from 'component'
 import { GLOBAL } from 'global'
 import { FLEX, KEY, TYPOGRAPHY } from 'constant'
-import { StyledRoot, StyledContent } from '../style'
+import { StyledRoot, StyledContent } from './style'
 
-LoginLayout.propTypes = {
+AuthGateway.propTypes = {
  title: PropTypes.string,
  children: PropTypes.node,
- illustration: PropTypes.string
+ isWideForm: PropTypes.boolean
 }
 
 gsap.registerPlugin(useGSAP)
-function LoginLayout({ children, illustration, title }) {
+function AuthGateway({ children, isWideForm, title }) {
  const { themeMode } = useSettingContext()
  title = title || GLOBAL.APP_BRANDING
 
@@ -59,12 +59,20 @@ function LoginLayout({ children, illustration, title }) {
       </Stack>
      </Grid>
     </Grid>
-    <Box sx={{ width: { xs: '300px', sm: '400px' } }} className={'portal-rhf-textfield'}>
-     {children}
-    </Box>
+    {isWideForm ? (
+     <MotionViewport>
+      <Box className={'portal-rhf-textfield'} sx={{ width: { xs: '350px', sm: '600px', md: '800px', lg: '900px' }, height: { xs: '100vh', md: 'auto' } }}>
+       {children}
+      </Box>
+     </MotionViewport>
+    ) : (
+     <Box className={'portal-rhf-textfield'} sx={{ width: { xs: '300px', sm: '400px' } }}>
+      {children}
+     </Box>
+    )}
    </StyledContent>
   </StyledRoot>
  )
 }
 
-export default LoginLayout
+export default AuthGateway

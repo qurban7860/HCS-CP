@@ -1,4 +1,5 @@
 import { createContext, useEffect, useCallback, useMemo, useReducer } from 'react'
+import { t } from 'i18next'
 import PropTypes from 'prop-types'
 import storage from 'redux-persist/lib/storage'
 import localStorageSpace from 'util/local-storage-space'
@@ -204,7 +205,7 @@ export function AuthProvider({ children }) {
     }
    })
    await getConfigs()
-   snack(RESPONSE.success.LOGIN, { variant: COLOR.SUCCESS })
+   snack(t('responses.success.logged_in'), { variant: COLOR.SUCCESS })
   }
  }, [])
 

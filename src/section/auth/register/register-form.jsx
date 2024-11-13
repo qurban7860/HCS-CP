@@ -3,19 +3,19 @@ import { t } from 'i18next'
 import { Trans } from 'react-i18next'
 import { yupResolver } from '@hookform/resolvers/yup'
 import useResponsive from 'hook/use-responsive'
-import { ICON_NAME, Icon, snack } from 'hook'
+import { snack } from 'hook'
 import { dispatch } from 'store'
 import { useForm, Controller } from 'react-hook-form'
 import { registerCustomer } from 'store/slice'
 import { RegisterSchema } from 'schema'
 import { useRegisterDefaultValues } from 'section/auth'
-import { useTheme, Typography, Grid, Link, Box, Card, CardContent } from '@mui/material'
+import { useTheme, Typography, Grid, Link, Box } from '@mui/material'
 import { AutocompleteScrollChipContainer, RHFRequiredTextFieldWrapper } from 'component'
 import FormProvider, { RHFTextField, RHFCountryAutocomplete, RHFPhoneTextField } from 'component/hook-form'
 import { GLOBAL } from 'config/global'
 import { RADIUS } from 'config'
 import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, VARIANT, SIZE, COLOR, COUNTRY, FLEX, FLEX_DIR } from 'constant'
-import { GStyledLoadingButton } from 'theme/style'
+import { GStyledLoadingButton, GStyledCenteredTextBox } from 'theme/style'
 import { RegisterSuccessCard } from 'section/auth'
 import { delay } from 'util'
 
@@ -103,12 +103,6 @@ function RegisterForm() {
   }
  }, [checkFormCompletion])
 
- //  useEffect(() => {
- //   if (!phoneNumber || phoneNumber === undefined) {
- //    setValue(`phoneNumber.countryCode`, country?.phone?.replace(/[^0-9]/g, ''))
- //   }
- //  }, [country, phoneNumber, setValue])
-
  useEffect(() => {
   getUserLocation()
  }, [])
@@ -136,7 +130,7 @@ function RegisterForm() {
     const currentMachines = getValues('machineSerialNos')
     setValue('machineSerialNos', [...currentMachines, serialNumber])
    } else {
-    snack('Serial Number provided is invalid', { variant: COLOR.ERROR })
+    snack(t('responses.error.machine_serial_invalid'), { variant: COLOR.ERROR })
     setError('machineSerialNos', { message: 'Serial Number provided is invalid' })
     return getValues('machineSerialNos')
    }
@@ -154,7 +148,7 @@ function RegisterForm() {
      message
     })
    })
-   snack('Please check the form for errors', { variant: COLOR.ERROR })
+   snack(t('responses.error.form_check_errors'), { variant: COLOR.ERROR })
    return
   }
   if (error?.MessageCode && regEx.test(error.MessageCode)) {
@@ -166,10 +160,10 @@ function RegisterForm() {
    return
   }
   console.error('Unexpected error:', error)
-  snack('Unable to process your request', { variant: COLOR.ERROR })
+  snack(t('responses.error.unable_to_process_request'), { variant: COLOR.ERROR })
   setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
    type: 'unexpected',
-   message: error?.message || 'An unexpected error occurred'
+   message: error?.message || t('responses.error.unexpected_error')
   })
  }
 
@@ -180,7 +174,7 @@ function RegisterForm() {
    setSubmittedData(data)
    const response = await dispatch(registerCustomer(data))
    if (response?.success) {
-    snack('Registration request sent')
+    snack(t('responses.success.register_request_submitted'), { variant: COLOR.SUCCESS })
     await delay(2000)
     reset()
    }
@@ -195,8 +189,13 @@ function RegisterForm() {
    <Box height={{ xs: 50, md: 100 }} />
   </Fragment>
  ) : (
-  <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-   <Fragment>
+  <Fragment>
+   <GStyledCenteredTextBox>
+    <Typography sx={{ color: 'grey.400', mb: 5 }} variant='h3'>
+     {t('register.label').toUpperCase()}
+    </Typography>
+   </GStyledCenteredTextBox>
+   <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
     <Grid container mb={4} direction={{ xs: 'column', md: 'row' }} flex={1} rowSpacing={4} gridAutoFlow={isMobile ? FLEX_DIR.COLUMN : FLEX_DIR.ROW} columnSpacing={2}>
      <Grid item xs={12} sm={6} md={6}>
       <RHFRequiredTextFieldWrapper condition={!customerName}>
@@ -327,8 +326,8 @@ function RegisterForm() {
      {/* Spacer */}
      <Box height={{ xs: 50, md: 100 }} />
     </Grid>
-   </Fragment>
-  </FormProvider>
+   </FormProvider>
+  </Fragment>
  )
 }
 
