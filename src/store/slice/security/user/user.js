@@ -266,3 +266,20 @@ export function updateUserInvite(data, Id) {
   }
  }
 }
+
+export function resetUserPassword(data) {
+ return async dispatch => {
+  dispatch(userSlice.actions.startLoading())
+  try {
+   const response = await axios.post(PATH_SERVER.SECURITY.RESET_PASSWORD, data)
+   if (regEx.test(response.status)) {
+    dispatch(userSlice.actions.setResponseMessage(response.data))
+   }
+   return response // eslint-disable-line
+  } catch (error) {
+   dispatch(userSlice.actions.hasError(error.Message))
+   console.error(error)
+   throw error
+  }
+ }
+}
