@@ -172,7 +172,6 @@ const en = {
   key: `name`,
   label: `Name`
  },
- kanban: `kanban`,
  general: `general`,
  banking: `banking`,
  booking: `booking`,
@@ -212,6 +211,12 @@ const en = {
   label: `Password`,
   confirm_password: {
    label: `Confirm Password`
+  },
+  set_new_password: {
+   label: `Set New Password`
+  },
+  password_updated: {
+   label: `Password Updated`
   }
  },
  product: `product`,
@@ -223,6 +228,9 @@ const en = {
  invoice: `invoice`,
  register: {
   label: `Register`
+ },
+ reset_password: {
+  label: `Reset Password`
  },
  required: {
   label: `Required`
