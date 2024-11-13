@@ -8,7 +8,7 @@ import { useSelector, dispatch } from 'store'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { useAuthContext } from 'auth'
-import { getCustomers, getLogGraphData, getSecurityUser, getLogs, ChangeLogPage, resetLogsGraphData, resetLogs, resetSecurityUser, getCustomerMachines, resetCustomerMachines } from 'store/slice'
+import { getCustomers, getLogGraphData, getLogs, ChangeLogPage, resetLogsGraphData, resetLogs, getCustomerMachines, resetCustomerMachines } from 'store/slice'
 import { useTheme, Grid, Button, Typography } from '@mui/material'
 import { HowickLoader, MotionLazyContainer, TableTitleBox } from 'component'
 import FormProvider from 'component/hook-form'
@@ -25,7 +25,6 @@ const LogsSection = ({ isArchived }) => {
  const { logPage, isLoading, logRowsPerPage, logsGraphData, selectedSearchFilter } = useSelector(state => state.log)
  const { customers } = useSelector(state => state.customer)
 
- const { userId, user } = useAuthContext()
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  const isMobile = useResponsive('down', 'sm')
@@ -40,9 +39,13 @@ const LogsSection = ({ isArchived }) => {
   defaultValues
  })
 
- const { watch, setValue, handleSubmit, trigger } = methods
+ const { watch, setValue, handleSubmit, trigger, reset } = methods
  const { customer, machine, dateFrom, dateTo, logType, filteredSearchKey, logPeriod, logGraphType } = watch()
  const [graphLabels, setGraphLabels] = useState({ yaxis: 'Cumulative Total Value', xaxis: logPeriod })
+
+ useLayoutEffect(() => {
+  resetLogs()
+ }, [])
 
  useEffect(() => {
   const debouncedDispatch = _.debounce(() => {
@@ -170,7 +173,7 @@ const LogsSection = ({ isArchived }) => {
  }
 
  const payload = {
-  customerId: machine?.customer?._id,
+  customerId: customer?._id,
   machineId: machine?._id || undefined,
   page: logPage,
   pageSize: logRowsPerPage,
