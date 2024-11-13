@@ -1,10 +1,11 @@
-import { NewPasswordForm, NewPasswordLayout } from 'section/auth/new-password'
+import { NewPasswordForm } from 'section/auth/new-password'
+import { AuthGateway } from 'section/auth'
 import { GLOBAL } from 'global'
 
 export default function NewPassword() {
  return (
-  <NewPasswordLayout title={GLOBAL.APP_BRANDING}>
+  <AuthGateway title={GLOBAL.APP_BRANDING}>
    <NewPasswordForm />
-  </NewPasswordLayout>
+  </AuthGateway>
  )
 }
