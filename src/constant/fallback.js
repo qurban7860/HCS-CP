@@ -38,6 +38,11 @@ const FALLBACK = {
   title: 'No Ticket/s Found',
   description: 'No tickets has been issued.'
  },
+ NO_LOG: {
+  code: HTTP_CODE.NO_DATA,
+  title: 'No Log(s) Found',
+  description: 'No log data was found. Your machine(s) may not be integrated with the Howick Portal. Please contact a member of the Howick team for more information.'
+ },
  INVITATION_EXPIRED: {
   code: HTTP_CODE.INVITATION_EXPIRED,
   title: 'Invitation Expired',
