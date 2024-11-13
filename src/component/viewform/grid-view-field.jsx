@@ -13,7 +13,7 @@ const GridViewField = ({ heading, isLoading, isNoBg, noBreakSpace, children, gri
     isNoBg={isNoBg}
     noBreakSpace={noBreakSpace}
     userRolesChip={userRolesChip && userRolesChip}
-    phoneChips={children}
+    // phoneChips={children}
     {...other}>
     {children}
    </ViewFormField>
@@ -30,6 +30,7 @@ GridViewField.propTypes = {
  isLink: PropTypes.bool,
  isNoBg: PropTypes.bool,
  noBreakSpace: PropTypes.bool,
+ userRolesChip: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
  chip: PropTypes.oneOfType([PropTypes.array, PropTypes.string])
 }
 

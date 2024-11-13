@@ -116,6 +116,7 @@ const ViewFormField = ({
        </StyledFlagBox>
       </GStyledSpanBox>
      ) : (
+      // default fallback
       <StyledDefaultTypography variant={variant}>
        {noBreakSpace ? '' : '\u00A0'} {children}
       </StyledDefaultTypography>
@@ -148,14 +149,14 @@ const ViewFormField = ({
          mode={themeMode}
          label={
           <GStyledSpanBox>
-           {p.type && (
+           {p?.type && (
             <Typography variant={TYPOGRAPHY.OVERLINE2} fontWeight='bold'>
              {p?.type} &nbsp;
             </Typography>
            )}
            <Typography variant={TYPOGRAPHY.BODY2}>
-            {p?.countryCode && `+${p?.countryCode} `} {p.contactNumber && p.contactNumber}
-            {p.extensions && `(${p.extensions})`}
+            {p?.countryCode && `+${p?.countryCode} `} {p?.contactNumber && p?.contactNumber}
+            {p?.extensions && `(${p?.extensions})`}
            </Typography>
           </GStyledSpanBox>
          }
@@ -164,6 +165,7 @@ const ViewFormField = ({
        ))}
       </StyledChipGrid>
      )}
+
      {primaryContact && primaryContact !== '' ? (
       <StyledChipGrid container gap={1}>
        <IconTooltip icon={ICON_NAME.CONTACT} color={themeMode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[500]} iconOnly dimension={15} />
