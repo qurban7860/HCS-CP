@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { t } from 'i18next'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSettingContext } from 'hook'
@@ -9,14 +8,14 @@ import { GLOBAL } from 'global'
 import { FLEX, KEY, TYPOGRAPHY } from 'constant'
 import { StyledRoot, StyledContent } from '../style'
 
-ResetPasswordLayout.propTypes = {
+NewPasswordLayout.propTypes = {
  title: PropTypes.string,
  children: PropTypes.node,
  illustration: PropTypes.string
 }
 
 gsap.registerPlugin(useGSAP)
-function ResetPasswordLayout({ children, illustration, title }) {
+function NewPasswordLayout({ children, illustration, title }) {
  const { themeMode } = useSettingContext()
  title = title || GLOBAL.APP_BRANDING
 
@@ -68,4 +67,4 @@ function ResetPasswordLayout({ children, illustration, title }) {
  )
 }
 
-export default ResetPasswordLayout
+export default NewPasswordLayout
