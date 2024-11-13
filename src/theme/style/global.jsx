@@ -135,6 +135,23 @@ export const GStyledMachineTitleSpanBox = styled(Box)(({ theme }) => ({
  justifyContent: 'flex-start'
 }))
 
+export const GStyledCenteredTextBox = styled(Box)(({ theme }) => ({
+ display: 'flex',
+ justifyContent: 'center',
+ alignItems: 'center',
+ my: 'auto',
+ textAlign: 'center'
+}))
+
+export const GStyledCenteredTextHeightBox = styled(Box)(({ theme, height = '100%' }) => ({
+ display: 'flex',
+ justifyContent: 'center',
+ alignItems: 'center',
+ my: 'auto',
+ textAlign: 'center',
+ height
+}))
+
 export const GStyledCenterBox = styled(Box)(({ theme }) => ({
  display: 'flex',
  justifyContent: 'center',
