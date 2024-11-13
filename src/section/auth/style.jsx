@@ -1,5 +1,5 @@
 import { styled, alpha } from '@mui/material/styles'
-import { Tabs, Tab, Box } from '@mui/material'
+import { Tabs, Tab, Box, ListItemText } from '@mui/material'
 import { KEY } from 'constant'
 import { bgGradient } from 'theme/style'
 
@@ -20,6 +20,13 @@ export const StyledSection = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   flexDirection: 'column'
+ }
+}))
+
+export const StyledCriteriaListItemText = styled(ListItemText)(({ theme }) => ({
+ '& .MuiListItemText-primary': {
+  fontSize: '0.875rem',
+  color: theme.palette.text.secondary
  }
 }))
 
