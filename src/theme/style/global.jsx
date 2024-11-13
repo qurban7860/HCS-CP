@@ -128,6 +128,13 @@ export const GStyledSpanBox = styled(Box)(({ theme }) => ({
  alignItems: 'center'
 }))
 
+export const GStyledMachineTitleSpanBox = styled(Box)(({ theme }) => ({
+ display: 'flex',
+ alignItems: 'center',
+ my: 'auto',
+ justifyContent: 'flex-start'
+}))
+
 export const GStyledCenterBox = styled(Box)(({ theme }) => ({
  display: 'flex',
  justifyContent: 'center',
@@ -339,6 +346,22 @@ export const GStyledSupportStatusFieldChip = styled(({ theme, status, ...other }
    : status === SUPPORT_STATUS.RESOLVED || status === SUPPORT_STATUS.COMPLETED
    ? theme.palette.burnIn.altDark
    : theme.palette.howick.lightGray
+}))
+
+export const GStyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView, isNoBg }) => ({
+ overflowWrap: 'break-word',
+ backgroundColor:
+  mode === KEY.LIGHT && !isMachineView && !isNoBg
+   ? theme.palette.grey[300]
+   : (isMachineView || isNoBg) && mode === KEY.LIGHT
+   ? 'transparent'
+   : (isMachineView || isNoBg) && mode === KEY.DARK
+   ? theme.palette.grey[900]
+   : theme.palette.grey[800],
+ padding: '0.5rem 1rem',
+ height: '5rem',
+ border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
+ borderRadius: isMachineView && theme.spacing(1)
 }))
 
 export const GStyledFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
