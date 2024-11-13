@@ -35,7 +35,7 @@ export default function ResetPasswordForm() {
    delay(1000)
    const response = await dispatch(resetUserPassword(data))
    if (response?.status === 200) {
-    snack('Password reset request submitted', { variant: 'success' })
+    snack(t('responses.success.reset_request_submitted'), { variant: 'success' })
     setDisable(true)
    }
   } catch (error) {
@@ -48,7 +48,7 @@ export default function ResetPasswordForm() {
    } else {
     setError('afterSubmit', {
      ...error,
-     message: typeof error === 'string' ? error : 'Something went wrong'
+     message: typeof error === 'string' ? error : t('responses.error.something_went_wrong')
     })
    }
   }
