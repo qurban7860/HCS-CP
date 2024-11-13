@@ -21,50 +21,48 @@ import { Fallback } from 'page/fallback'
 import { IdleManager, ChartStyleOverlay } from 'component'
 import { ScrollToTop } from 'component/scroll-to-top'
 import { MotionLazyContainer } from 'component/animate'
-import { AuthProvider, WebSocketProvider } from 'auth'
+import { WebSocketProvider } from 'auth'
 import ErrorBoundary from 'util/error-boundary'
 import { GLOBAL } from 'config'
 import { FALLBACK } from 'constant'
 
 function App() {
-  useEffect(() => {
-    document.title = GLOBAL.APP_TITLE
-  }, [])
+ useEffect(() => {
+  document.title = GLOBAL.APP_TITLE
+ }, [])
 
-  return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <AuthProvider>
-        <WebSocketProvider>
-          <HelmetProvider>
-            <Provider store={store}>
-              <PersistGate loading={null} persistor={persistor}>
-                <SettingProvider>
-                  <BrowserRouter>
-                    <MotionLazyContainer>
-                      <ThemeProvider>
-                        <ThemeSettings>
-                          <ErrorBoundary fallback={<Fallback {...FALLBACK.INTERNAL_SERVER_ERROR} />}>
-                            <ScrollToTop />
-                            <ThemeLocalization>
-                              <SnackProvider>
-                                <ChartStyleOverlay />
-                                <IdleManager />
-                                <Router />
-                              </SnackProvider>
-                            </ThemeLocalization>
-                          </ErrorBoundary>
-                        </ThemeSettings>
-                      </ThemeProvider>
-                    </MotionLazyContainer>
-                  </BrowserRouter>
-                </SettingProvider>
-              </PersistGate>
-            </Provider>
-          </HelmetProvider>
-        </WebSocketProvider>
-      </AuthProvider>
-    </LocalizationProvider>
-  )
+ return (
+  <LocalizationProvider dateAdapter={AdapterDayjs}>
+   <WebSocketProvider>
+    <HelmetProvider>
+     <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+       <SettingProvider>
+        <BrowserRouter>
+         <MotionLazyContainer>
+          <ThemeProvider>
+           <ThemeSettings>
+            <ErrorBoundary fallback={<Fallback {...FALLBACK.INTERNAL_SERVER_ERROR} />}>
+             <ScrollToTop />
+             <ThemeLocalization>
+              <SnackProvider>
+               <ChartStyleOverlay />
+               <IdleManager />
+               <Router />
+              </SnackProvider>
+             </ThemeLocalization>
+            </ErrorBoundary>
+           </ThemeSettings>
+          </ThemeProvider>
+         </MotionLazyContainer>
+        </BrowserRouter>
+       </SettingProvider>
+      </PersistGate>
+     </Provider>
+    </HelmetProvider>
+   </WebSocketProvider>
+  </LocalizationProvider>
+ )
 }
 
 export default App
