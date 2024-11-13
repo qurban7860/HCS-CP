@@ -1,5 +1,6 @@
 import { Fragment, useState } from 'react'
 import { t } from 'i18next'
+import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
@@ -9,10 +10,11 @@ import { newUserPassword } from 'store/slice'
 import { NewPasswordSchema } from 'schema'
 import { useTheme, Alert, Box, Typography } from '@mui/material'
 import FormProvider, { RHFRequiredTextFieldWrapper, RHFPasswordField } from 'component/hook-form'
-import { GStyledLoadingButton, GStyledCenteredTextBox, GStyledCenteredTextHeightBox } from 'theme/style'
-import { KEY, REGEX, SIZE } from 'constant'
+import { GStyledLoadingButton, GStyledCenteredTextBox, GStyledCenteredTextHeightBox, GStyledSpanBox } from 'theme/style'
+import { KEY, REGEX, SIZE, TYPOGRAPHY } from 'constant'
 import { delay } from 'util'
 import PasswordCriteriaList from './password-criteria-list'
+import { PATH_AUTH } from 'route/path'
 
 export default function NewPasswordForm() {
  const { themeMode } = useSettingContext()
@@ -37,7 +39,7 @@ export default function NewPasswordForm() {
    delay(1000)
    const response = await dispatch(newUserPassword(data))
    if (response?.status === 200) {
-    snack('Password reset request submitted', { variant: 'success' })
+    snack(t('responses.success.password_updated'), { variant: 'success' })
    }
   } catch (error) {
    if (REGEX.ERROR_CODE.test(error.MessageCode)) {
@@ -49,10 +51,23 @@ export default function NewPasswordForm() {
    } else {
     setError('afterSubmit', {
      ...error,
-     message: typeof error === 'string' ? error : 'Something went wrong'
+     message: typeof error === 'string' ? error : t('responses.error.something_went_wrong')
     })
    }
   }
+ }
+
+ const renderLoginButton = () => {
+  return (
+   <GStyledSpanBox gap={1}>
+    <Typography variant={TYPOGRAPHY.BODY1}>Navigate to </Typography>
+    <Link to={{ pathname: PATH_AUTH.login }}>
+     <Typography variant={TYPOGRAPHY.H5} sx={{ color: themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.orange }}>
+      {t('login_page.label').toUpperCase()}
+     </Typography>
+    </Link>
+   </GStyledSpanBox>
+  )
  }
 
  return (
@@ -65,7 +80,10 @@ export default function NewPasswordForm() {
 
    <GStyledCenteredTextHeightBox height={'80%'}>
     {isSubmitSuccessful ? (
-     <Icon icon={ICON_NAME.CHECK_CIRCLE} color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main} />
+     <GStyledSpanBox gap={1}>
+      <Icon icon={ICON_NAME.CHECK_CIRCLE} color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main} />
+      {renderLoginButton()}
+     </GStyledSpanBox>
     ) : (
      <PasswordCriteriaList password={password} confirmPassword={confirmPassword} />
     )}
