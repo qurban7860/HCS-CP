@@ -117,17 +117,17 @@ export const PATH_SERVER = {
    list: _url(_SECURITY, 'users'),
    /**
     * /security/users/:userId
-    * @param {*} userId - string
+    * @param {string} userId
     */
    detail: userId => _url(_SECURITY, 'users', userId),
    /**
     * /security/users/updatePassword/:userId
-    * @param {*} userId - string
+    * @param {string} userId
     */
    updatePassword: userId => _url(_SECURITY, 'users', 'updatePassword', userId),
    /**
     * /security/users/:userId/signinlogs
-    * @param {*} userId - string
+    * @param {string} userId
     */
    signInLogs: userId => _url(_SECURITY, 'users', userId, 'signinlogs')
   }
@@ -142,7 +142,7 @@ export const PATH_SERVER = {
   MACHINE: {
    /**
     * /products/machines/:machineId
-    * @param {*} machineId - string
+    * @param {string} machineId
     */
    detail: machineId => _url(_PRODUCT, 'machines', machineId),
    /**
@@ -151,8 +151,8 @@ export const PATH_SERVER = {
    list: _url(_PRODUCT, 'machines'),
    /**
     * /products/machines?customer={:customerId}&isArchived={:isArchived}
-    * @param {*} customerId - string
-    * @param {*} isArchived - boolean
+    * @param {string} customerId
+    * @param {boolean} isArchived
     */
    viaCustomer: (customerId, isArchived) => _url(_PRODUCT, 'machines', `?customer=${customerId}&isArchived=${isArchived}`)
   },
