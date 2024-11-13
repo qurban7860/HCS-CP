@@ -82,16 +82,16 @@ function SetPasswordForm() {
     await delay(2000)
     const response = await dispatch(updateUserInvite(data, id))
     if (response?.status === 200) {
-     snack('Details saved, navigating to Login page', { variant: COLOR.SUCCESS })
+     snack(t('responses.success.details_updated'), { variant: COLOR.SUCCESS })
      navigate(PATH_AUTH.login)
      reset()
     } else {
-     snack('unable to save details', { variant: COLOR.ERROR })
+     snack(t('responses.error.unable_save_details'), { variant: COLOR.ERROR })
      setError('afterSubmit', { message: 'unable to save details' })
     }
    } catch (error) {
     console.error('unable to read error message', error || '')
-    snack('unable to read error message', { variant: COLOR.ERROR })
+    snack(t('responses.error.unable_read_error_message'), { variant: COLOR.ERROR })
     if (regEx.test(error.MessageCode)) {
      reset()
      setError('afterSubmit', {
@@ -101,7 +101,7 @@ function SetPasswordForm() {
     } else {
      setError('afterSubmit', {
       ...error,
-      message: typeof error === 'string' ? error : 'Something went wrong'
+      message: typeof error === 'string' ? error : t('responses.error.something_went_wrong')
      })
     }
    }
