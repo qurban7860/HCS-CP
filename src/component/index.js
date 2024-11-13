@@ -1,5 +1,6 @@
 // @animate
 export { default as MotionContainer } from './animate/motion-container'
+export { default as MotionViewport } from './animate/motion-viewport'
 export { default as MotionLazyContainer } from './animate/motion-lazy-container'
 export { default as IconButtonAnimate } from './animate/icon-button-animate'
 // @avatar
