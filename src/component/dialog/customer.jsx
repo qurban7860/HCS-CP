@@ -52,7 +52,7 @@ const CustomerDialog = () => {
        {defaultValues?.status}{' '}
       </GridViewField>
       <GridViewField heading={VIEW_FORM.WEBSITE} isLoading={isLoading}>
-       ={defaultValues?.website}
+       {defaultValues?.website}
       </GridViewField>
       <GridViewField heading={CUSTOMER.TRADING_NAME} isLoading={isLoading}>
        {defaultValues?.tradingName}{' '}
@@ -65,7 +65,7 @@ const CustomerDialog = () => {
        {defaultValues?.name}
       </GridViewField>
       <GridViewField heading={ADDRESS.STREET} isLoading={isLoading}>
-       {defaultValues?.street}{' '}
+       {defaultValues?.street}
       </GridViewField>
       <GridViewField heading={ADDRESS.SUBURB} isLoading={isLoading}>
        {defaultValues?.suburb}
