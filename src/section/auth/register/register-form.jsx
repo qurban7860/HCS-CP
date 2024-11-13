@@ -130,7 +130,7 @@ function RegisterForm() {
     const currentMachines = getValues('machineSerialNos')
     setValue('machineSerialNos', [...currentMachines, serialNumber])
    } else {
-    snack('Serial Number provided is invalid', { variant: COLOR.ERROR })
+    snack(t('responses.error.machine_serial_invalid'), { variant: COLOR.ERROR })
     setError('machineSerialNos', { message: 'Serial Number provided is invalid' })
     return getValues('machineSerialNos')
    }
@@ -148,7 +148,7 @@ function RegisterForm() {
      message
     })
    })
-   snack('Please check the form for errors', { variant: COLOR.ERROR })
+   snack(t('responses.error.form_check_errors'), { variant: COLOR.ERROR })
    return
   }
   if (error?.MessageCode && regEx.test(error.MessageCode)) {
@@ -160,10 +160,10 @@ function RegisterForm() {
    return
   }
   console.error('Unexpected error:', error)
-  snack('Unable to process your request', { variant: COLOR.ERROR })
+  snack(t('responses.error.unable_to_process_request'), { variant: COLOR.ERROR })
   setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
    type: 'unexpected',
-   message: error?.message || 'An unexpected error occurred'
+   message: error?.message || t('responses.error.unexpected_error')
   })
  }
 
@@ -174,7 +174,7 @@ function RegisterForm() {
    setSubmittedData(data)
    const response = await dispatch(registerCustomer(data))
    if (response?.success) {
-    snack('Registration request sent')
+    snack(t('responses.success.register_request_submitted'), { variant: COLOR.SUCCESS })
     await delay(2000)
     reset()
    }
