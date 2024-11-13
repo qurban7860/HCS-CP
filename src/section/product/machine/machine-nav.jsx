@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import { Clock, ICON_NAME, useSettingContext } from 'hook'
+import { MachineTabsContainer } from 'section/product/machine'
 import { Grid, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledHeaderCardContainer, GStyledTopBorderDivider, GStyledSpanBox } from 'theme/style'
 import { ViewFormField, IconTooltip } from 'component'
-import { MachineTabsContainer } from 'section/product/machine'
+import { GStyledHeaderCardContainer, GStyledTopBorderDivider, GStyledMachineTitleSpanBox, GStyledFieldGrid } from 'theme/style'
 import { KEY, LABEL, TYPOGRAPHY, FLEX, FLEX_DIR, DECOILER_TYPE_ARR } from 'constant'
 
 const MachineNav = ({ renderedTab, navigatePage, value, isLoading }) => {
@@ -16,14 +16,14 @@ const MachineNav = ({ renderedTab, navigatePage, value, isLoading }) => {
    <GStyledTopBorderDivider mode={themeMode} />
    <Grid container px={1.5}>
     <Grid item lg={8}>
-     <GStyledSpanBox my={2}>
-      <ViewFormField heading={' '} isLoading={isLoading} gridSize={8} isMachineView>
+     <GStyledFieldGrid heading={' '} my={2} isLoading={isLoading} mode={themeMode} gridSize={8} isNoBg isMachineView>
+      <GStyledMachineTitleSpanBox>
        <Typography variant={TYPOGRAPHY.H2}> {value?.serialNo} &nbsp;</Typography>
        <Typography variant={TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.bronze}>
         {value?.machineModel}
        </Typography>
-      </ViewFormField>
-     </GStyledSpanBox>
+      </GStyledMachineTitleSpanBox>
+     </GStyledFieldGrid>
     </Grid>
     <Grid item lg={4}>
      <Grid container justifyContent={FLEX.FLEX_END} flexDirection={FLEX_DIR.COLUMN} alignContent={FLEX.FLEX_END}>

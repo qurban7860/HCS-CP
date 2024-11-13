@@ -139,7 +139,7 @@ const LogsTableController = ({ customers, handleCustomerChange, customerMachines
       <Box sx={{ width: '50%' }}>
        <RHFAutocomplete
         name='logGraphType'
-        label='Graph Type*'
+        label={t('graph_type.label')}
         options={logGraphTypes}
         onChange={(e, newValue) => handleGraphTypeChange(newValue)}
         getOptionLabel={option => option.name || ''}

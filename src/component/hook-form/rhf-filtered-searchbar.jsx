@@ -49,11 +49,7 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
       placeholder={placeholder}
       error={!!fieldError}
       size={size}
-      label={
-       <Typography variant={TYPOGRAPHY.OVERLINE2} color={themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white}>
-        {t('search.label')}
-       </Typography>
-      }
+      label={t('search.label')}
       disabled={!selectedFilter}
       sx={{
        flexDirection: isMobile ? 'column' : 'row',

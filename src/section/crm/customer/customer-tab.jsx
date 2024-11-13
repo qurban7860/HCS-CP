@@ -90,12 +90,12 @@ const CustomerTab = () => {
 
  return (
   <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
-   <Grid item lg={3}>
+   {/* <Grid item lg={3}>
     <MachineListWidget value={defaultValues} handleMachineDialog={handleConnectedMachineDialog} handleMachineSiteDialog={handleMachineSiteDialog} />
     <ContactListWidget value={defaultValues} handleContactDialog={handleContactDialog} />
-   </Grid>
+   </Grid> */}
 
-   <Grid item sm={12} lg={9}>
+   <Grid item sm={12} lg={12}>
     <Box mb={2}>
      <Card {...GCardOption(themeMode)}>
       <GStyledTopBorderDivider mode={themeMode} />

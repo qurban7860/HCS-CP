@@ -3,13 +3,14 @@ import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
 import { useTable, getComparator, useSettingContext } from 'hook'
-import { ChangeLogPage, ChangeLogRowsPerPage, getLogs } from 'store/slice'
+import { useAuthContext } from 'auth'
+import { ChangeLogPage, ChangeLogRowsPerPage, getLogs, resetLogs } from 'store/slice'
 import { Grid, Table } from '@mui/material'
 import { TableNoData, SkeletonTable, LogDetailsDialog } from 'component'
 import { StyledScrollTableContainer, LogsHeader, LogsTable, LogsPagination, tableColumnsReducer } from 'section/log/logs'
 import { GStyledTableHeaderBox } from 'theme/style'
 import { MARGIN } from 'config'
-import { getLogTypeConfigForGenerationAndType, logGraphTypes } from 'config/log-types'
+import { getLogTypeConfigForGenerationAndType } from 'config/log-types'
 import { FLEX_DIR, KEY } from 'constant'
 import { applySort, fDateTime } from 'util'
 
@@ -21,11 +22,18 @@ const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
  const { logs, logPage, logsTotalCount, isLoading, logRowsPerPage } = useSelector(state => state.log)
  const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, getLogTypeConfigForGenerationAndType(5, 'ERP').tableColumns)
  const { themeMode } = useSettingContext()
+ const { user } = useAuthContext()
+
+ useEffect(() => {
+  dispatch(ChangeLogPage(0))
+  dispatch(resetLogs())
+ }, [])
 
  useEffect(() => {
   dispatch(
    getLogs({
     ...payload,
+    customerId: payload?.customerId || user?.customer,
     page: logPage,
     pageSize: logRowsPerPage
    })
@@ -134,9 +142,9 @@ const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
            !isNotFound && <SkeletonTable key={index} sx={{ height: 60 }} />
           )
          )}
-         <TableNoData isNotFound={isNotFound} />
         </Table>
        </StyledScrollTableContainer>
+       <TableNoData logNotFound={isNotFound} />
       </Grid>
      </Grid>
     </Grid>

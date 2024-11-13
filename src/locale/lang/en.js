@@ -23,6 +23,9 @@ const en = {
  chat: `chat`,
  cards: `cards`,
  posts: `posts`,
+ close: {
+  label: `Close`
+ },
  create: `create`,
  column: {
   label: `Column`,
@@ -41,6 +44,9 @@ const en = {
  },
  country: {
   label: `Country`
+ },
+ dashboard: {
+  label: `Dashboard`
  },
  group: {
   label: `Group`
@@ -65,6 +71,9 @@ const en = {
   graphs: {
    label: `Graphs`
   }
+ },
+ graph_type: {
+  label: `Graph Type`
  },
  full_name: {
   label: `Full Name`
@@ -132,6 +141,12 @@ const en = {
  support: {
   local: `support`,
   label: `Support`
+ },
+ new_password: {
+  label: `New Password`
+ },
+ old_password: {
+  label: `Old Password`
  },
  portal: {
   local: `portal`,

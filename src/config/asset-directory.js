@@ -57,7 +57,7 @@ export const ASSET = {
  FRAMA: _icon('frama-def-1.svg'),
  HOWICK_PORTAL_L2: _brand('howick-portal-l2.svg'),
  HOWICK_PORTAL_L2_DARK: _brand('howick-portal-l2-darkmode-eggshell.svg'),
- HOWICK_PORTAL: _brand('howick-portal.svg'),
+ HOWICK_PORTAL: _brand('howick-portal-4.svg'),
  HOWICK_PORTAL_DARK: _brand('howick-portal-dark.svg'),
  MAP_MARKER: _brand('howick-map-marker.svg'),
  NZ_MADE: _sponsor('nz-made.png'),

@@ -188,7 +188,7 @@ export function setLoginUser(userId, User) {
  }
 }
 
-export function SecurityUserPasswordUpdate(data, Id, isAdmin) {
+export function updateUserPassword(data, Id, isAdmin) {
  return async dispatch => {
   dispatch(userSlice.actions.startLoading())
   try {

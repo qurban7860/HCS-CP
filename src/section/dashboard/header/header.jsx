@@ -23,23 +23,23 @@ function Header() {
 
  const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
  const aucklandTimeZone = TIMEZONE.AUCKLAND.timeZone
- const { sendJsonMessage } = useWebSocketContext()
+ //  const { sendJsonMessage } = useWebSocketContext()
 
- useEffect(() => {
-  sendJsonMessage({ eventName: 'getNotifications' })
- }, [sendJsonMessage])
+ //  useEffect(() => {
+ //   sendJsonMessage({ eventName: 'getNotifications' })
+ //  }, [sendJsonMessage])
 
  const renderContent = (
   <Fragment>
    <Stack direction={FLEX_DIR.ROW} justifyContent={FLEX.FLEX_START}>
     {isDesktop && (
      <Badge
-      overlap="circular"
+      overlap='circular'
       anchorOrigin={{ vertical: KEY.BOTTOM, horizontal: KEY.RIGHT }}
-      color="primary"
-      variant="dot"
+      color='primary'
+      variant='dot'
       badgeContent={GLOBAL.VERSION}
-      onMouseEnter={() => <Typography variant="caption">{GLOBAL.VERSION}</Typography>}
+      onMouseEnter={() => <Typography variant='caption'>{GLOBAL.VERSION}</Typography>}
       sx={{
        '.MuiBadge-dot': {
         backgroundColor: GLOBAL.ENV === KEY.DEV || GLOBAL.ENV === KEY.DEVELOPMENT ? GLOBAL.DEV_COLOR : 'transparent'
@@ -51,7 +51,7 @@ function Header() {
    </Stack>
    {!isDesktop && (
     <IconButton sx={{ mr: 1, color: 'text.primary' }}>
-     <Iconify icon="eva:menu-2-fill" />
+     <Iconify icon='eva:menu-2-fill' />
     </IconButton>
    )}
    <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_START} spacing={{ xs: 0.5, sm: 4 }} ml={5}>

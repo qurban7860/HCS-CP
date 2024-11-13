@@ -9,10 +9,6 @@ const OPTION = user => [
  {
   label: t('profile.label'),
   linkTo: PATH_SECURITY.users.profile
- },
- {
-  label: t('change_password.label'),
-  linkTo: PATH_SECURITY.users.password
  }
 ]
 
