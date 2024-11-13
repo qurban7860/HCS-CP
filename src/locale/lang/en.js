@@ -227,8 +227,18 @@ const en = {
  required: {
   label: `Required`
  },
+ responses: {
+  label: `Responses`,
+  messages: {
+   pre_reset: 'Enter your email address below and we will send you instructions on how to reset your password.',
+   check_email: `Check your E-mail for the password reset link.`
+  }
+ },
  save: {
   label: `Save`
+ },
+ send_reset_password_request: {
+  label: `Send Reset Password Request`
  },
  submitted_details: {
   label: `Submitted Details`

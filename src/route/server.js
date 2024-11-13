@@ -87,12 +87,17 @@ export const PATH_SERVER = {
   REGISTER: _url(_SECURITY, 'register'),
   /**
    * /security/logout/:userId
-   * @param {*} userId - string
+   * @param {string} userId
    */
   LOGOUT: userId => _url(_SECURITY, 'logout', userId),
   /**
+   * /security/forgetPassword
+   * @param {string} userId
+   */
+  RESET_PASSWORD: _url(_SECURITY, 'forgetPassword'),
+  /**
    * /security/invites/sendUserInvite/:userId
-   * @param {*} userId - string
+   * @param {string} userId
    */
   SEND_USER_INVITE: userId => _url(_SECURITY, 'invites', 'sendUserInvite', userId),
   /**

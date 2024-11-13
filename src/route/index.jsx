@@ -63,18 +63,7 @@ export default function Router() {
       </GuestGuard>
      )
     },
-    // {
-    //  path: 'set-password',
-    //  element: <SetPasswordPage />
-    // },
-    // {
-    //  path: 'set-password/:token/:userId',
-    //  element: (
-    //   <GuestGuard>
-    //    <SetPasswordPage />
-    //   </GuestGuard>
-    //  )
-    // },
+    { path: 'reset-password', element: <ResetPasswordPage /> },
     { path: 'login-unprotected', element: <LoginPage /> },
     { path: 'register-unprotected', element: <RegisterPage /> }
    ]
