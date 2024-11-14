@@ -131,7 +131,14 @@ const ViewFormField = ({
      ) : (
       contact && typeof contact?.firstName === 'string' && <Chip label={`${contact?.firstName || ''} ${contact?.lastName || ''}`} sx={{ m: 0.2 }} />
      )}
+
      {chip && typeof chip === 'object' && userRolesChip?.length > 0 ? (
+      <StyledChipGrid container>
+       {chip?.map((c, index) => (
+        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{c}</Typography>} size={SIZE.SMALL} />
+       ))}
+      </StyledChipGrid>
+     ) : Array.isArray(chip) ? (
       <StyledChipGrid container>
        {chip?.map((c, index) => (
         <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{c}</Typography>} size={SIZE.SMALL} />
