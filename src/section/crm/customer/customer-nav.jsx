@@ -50,7 +50,7 @@ CustomerNav.propTypes = {
  current: PropTypes.number,
  value: PropTypes.any,
  isLoading: PropTypes.bool,
- renderedTab: PropTypes.array,
+ renderedTab: PropTypes.number,
  navigatePage: PropTypes.func
 }
 
