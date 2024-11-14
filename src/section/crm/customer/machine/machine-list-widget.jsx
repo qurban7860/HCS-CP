@@ -12,7 +12,7 @@ import { VARIANT, SIZE, LABEL, KEY, DECOILER_TYPE_ARR, FLEX } from 'constant'
 
 const { TYPOGRAPHY } = VARIANT
 
-const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog }) => {
+const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog, machineTotalCount }) => {
  const [loading, setLoading] = useState(false)
  const { customerMachines } = useSelector(state => state.machine)
  const theme = useTheme()
@@ -32,27 +32,24 @@ const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog
        left: 0,
        width: '100%',
        height: '30px',
-       backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,0.1), ${alpha(theme.palette.grey[500], 0.5)})`
+       borderRadius: '0 0 2px 2px',
+       backgroundImage:
+        themeMode === KEY.LIGHT
+         ? `linear-gradient(to bottom, rgba(255,255,255,0.1), ${alpha(theme.palette.grey[500], 0.5)})`
+         : `linear-gradient(to bottom, rgba(0,0,0,0.1), ${alpha(theme.palette.grey[700], 0.5)})`
       }
      }
 
  return (
   <Grid container mb={2}>
-   <Grid
-    item
-    lg={12}
-    sm={12}
-    mb={2}
-    bgcolor='background.paper'
-    // TODO:if value?.machines?.length is more than 5, dont add the sx prop
-    sx={sxProp}>
+   <Grid item mb={2} bgcolor='background.paper' borderRadius={2} sx={sxProp}>
     <GStyledSpanBox>
-     <FormHeader label={LABEL.MACHINE(value?.machines?.length)} />
+     <FormHeader label={LABEL.MACHINE(machineTotalCount)} />
     </GStyledSpanBox>
     <Grid
      container
      sx={{
-      height: value?.machines.length > 5 ? '600px' : 'auto',
+      height: machineTotalCount < 5 ? 'auto' : '400px',
       overflow: KEY.AUTO,
       scrollBehavior: 'smooth'
      }}>
@@ -152,7 +149,8 @@ const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog
 MachineListWidget.propTypes = {
  value: PropTypes.object,
  handleMachineDialog: PropTypes.func,
- handleMachineSiteDialog: PropTypes.func
+ handleMachineSiteDialog: PropTypes.func,
+ machineTotalCount: PropTypes.number
 }
 
 export default MachineListWidget
