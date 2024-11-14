@@ -1,1 +1,1 @@
-export { default as customerDefaultValues } from './default-values'
+export { default as useCustomerDefaultValues } from './default-values'
