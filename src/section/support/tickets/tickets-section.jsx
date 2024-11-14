@@ -4,7 +4,7 @@ import { t } from 'i18next'
 import { useSelector, dispatch } from 'store'
 import { useAuthContext } from 'auth'
 import { useTable, useFilter, getComparator, useSettingContext } from 'hook'
-import { getCustomer, getSecurityUser, setCustomerTicketFilterBy, ChangeCustomerTicketPage, ChangeCustomerTicketRowsPerPage, getCustomerTickets, resetCustomerTicketRecords } from 'store/slice'
+import { getCustomer, getSecurityUser, setCustomerTicketFilterBy, ChangeCustomerTicketPage, ChangeCustomerTicketRowsPerPage, getCustomerTickets, resetCustomerTickets } from 'store/slice'
 import { Table, Grid } from '@mui/material'
 import { GStyledTableHeaderBox } from 'theme/style'
 import { TableNoData, MotionLazyContainer, SkeletonTable, SearchBox, TableTitleBox } from 'component'
@@ -52,7 +52,7 @@ const TicketsListSection = () => {
 
   return () => {
    debouncedDispatch.cancel()
-   dispatch(resetCustomerTicketRecords())
+   dispatch(resetCustomerTickets())
   }
  }, [dispatch, securityUser?.customers, filterPeriodOption])
 
