@@ -2,6 +2,12 @@ import { get } from 'react-hook-form'
 
 const en = {
  account: `account`,
+ active_support_ticket: {
+  label: `Active Support Ticket`,
+  active_support_tickets: {
+   label: `Active Support Tickets`
+  }
+ },
  register_agreement: 'By clicking "Register" you agree to our <1>Privacy Policy</1>.',
  address: {
   label: `Address`
@@ -112,6 +118,9 @@ const en = {
    second: 'You will receive further instructions within 12-48 hours',
    last: 'Check your email for the invitation link'
   }
+ },
+ no_coordinates_provided: {
+  label: `No coordinates provided`
  },
  organization: {
   local: `organization`,
