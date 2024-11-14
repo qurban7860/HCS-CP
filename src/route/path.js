@@ -7,6 +7,7 @@ const conNex = (...param) => {
 }
 const ROOTS_AUTH = 'auth'
 const ROOTS_DASHBOARD = 'dashboard'
+const ROOTS_HOME = 'home'
 
 const ROOTS_CRM = 'crm'
 const SUB_CUSTOMERS = 'customers'
@@ -56,6 +57,10 @@ export const PATH_PAGE = {
  invitationExpired: '/invitation-expired',
  invalidErrorPage: '/InvalidErrorPage',
  expiredErrorPage: '/ExpiredErrorPage'
+}
+
+export const PATH_HOME = {
+ root: conNex(ROOTS_HOME)
 }
 
 export const PATH_DASHBOARD = {
