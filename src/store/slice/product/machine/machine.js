@@ -22,6 +22,7 @@ const initialState = {
  machineSiteDialogData: null,
  machineType: null,
  machines: [],
+ machineTotalCount: 0,
  activeMachines: [],
  allMachines: [],
  customerMachines: [],
@@ -69,6 +70,9 @@ const machineSlice = createSlice({
   setMachineType(state, action) {
    state.machineType = action.payload
   },
+  setMachineTotalCount(state, action) {
+   state.machineTotalCount = action.payload
+  },
   setMachineParent(state, action) {
    state.isParent = action.payload
   },
@@ -88,6 +92,7 @@ const machineSlice = createSlice({
    state.isLoading = false
    state.success = true
    state.machines = action.payload
+   state.machineTotalCount = action.payload.length
    state.initial = true
   },
   getActiveMachinesSuccess(state, action) {
@@ -112,6 +117,7 @@ const machineSlice = createSlice({
    state.isLoading = false
    state.success = true
    state.customerMachines = action.payload
+   state.machineTotalCount = action.payload.length
    state.initial = true
   },
   getActiveCustomerMachinesSuccess(state, action) {
