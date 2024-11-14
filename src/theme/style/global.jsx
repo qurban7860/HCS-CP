@@ -25,7 +25,7 @@ export const GStyledWelcomeDescription = styled(({ themeMode, ...other }) => <Ty
  }
 })
 export const GStyledWelcomeContainerDiv = styled('div')(({ theme }) => ({
- height: '100vh',
+ //  height: '100vh',
  display: 'flex',
  overflow: 'hidden',
  position: 'relative',
@@ -683,7 +683,7 @@ export const GStyledSiteMapBox = styled(Box)(({ theme }) => ({
 
 export const GStyledHeaderCardContainer = styled(Card)(({ theme }) => ({
  marginBottom: theme.spacing(1),
- height: 160,
+ height: 180,
  position: 'sticky',
  top: '60px',
  zIndex: 2
