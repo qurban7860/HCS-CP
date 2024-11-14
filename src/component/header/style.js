@@ -3,8 +3,8 @@ import { Box } from '@mui/material'
 import { ASSET } from 'config'
 
 export const StyledHeaderBox = styled(Box)(({ theme }) => ({
-  backgroundImage: `url(${ASSET.BG_STROKE_LOGO})`,
-  backgroundSize: 'cover',
-  backgroundPositionY: 'center',
-  backgroundSize: '150%'
+ backgroundImage: `url(${ASSET.BG_STROKE_LOGO})`,
+ backgroundSize: 'cover',
+ backgroundPositionY: 'center',
+ borderRadius: theme.spacing(0.3)
 }))
