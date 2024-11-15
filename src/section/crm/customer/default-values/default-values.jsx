@@ -21,6 +21,7 @@ export default function useCustomerDefaultValues(customerData, machines, contact
    projectManager: customerData?.projectManager || [],
    supportManager: customerData?.supportManager || [],
    mainSite: customerData?.mainSite || null,
+   customerMainSiteId: customerData?.mainSite?._id || '',
    address: parseAddress(customerData?.mainSite?.address) || '',
    street: customerData?.mainSite?.address?.street || '',
    suburb: customerData?.mainSite?.address?.suburb || '',
