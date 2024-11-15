@@ -15,6 +15,8 @@ export { default as Button } from './button/button'
 export { default as BackButton } from './button/back-button/back-button'
 // @breadcrumb
 export { default as Breadcrumb } from './breadcrumb/breadcrumb'
+// @carousel
+export { default as SiteCarousel } from './carousel/site-carousel'
 // @chart
 export { default as Chart } from './chart'
 export { default as useChart } from './chart/use-chart'
