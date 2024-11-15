@@ -29,6 +29,7 @@ import { Grid } from '@mui/material'
 import { Welcome } from 'component/widget'
 import { GLOBAL } from 'config'
 import { toTitleCase } from 'util'
+import { FLEX } from 'constant'
 
 gsap.registerPlugin(useGSAP)
 function GeneralAppPage() {
@@ -92,25 +93,6 @@ function GeneralAppPage() {
   }
  }, [dispatch, customer])
 
- const handleConnectedMachineDialog = (event, machineId) => {
-  event.preventDefault()
-  dispatch(resetMachine())
-  dispatch(getConnectedMachineDialog(machineId))
-  dispatch(setMachineDialog(true))
- }
-
- const handleMachineSiteDialog = (event, machineId) => {
-  event.preventDefault()
-  dispatch(resetMachineSiteDialogData())
-  dispatch(getMachineSiteDialogData(machineId))
-  dispatch(setMachineSiteDialog(true))
- }
-
- const handleContactDialog = contactId => {
-  dispatch(getContact(customerId, contactId))
-  dispatch(setContactDialog(true))
- }
-
  return (
   <Grid container>
    <Grid container spacing={3} mt={2}>
@@ -118,8 +100,8 @@ function GeneralAppPage() {
      <Welcome customer={customer} title={toTitleCase(GLOBAL.APP_TAGLINE)} description={t('app_customer_tagline')} />
     </Grid>
     <Grid item xs={12}>
-     <Grid container spacing={2}>
-      <Grid item xs={12} sm={4}>
+     <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
+      {/* <Grid item xs={12} sm={4}>
        {!isLoading && (
         <MachineListWidget
          className='machines-widget'
@@ -132,7 +114,7 @@ function GeneralAppPage() {
       </Grid>
       <Grid item xs={12} sm={4}>
        {!isCustomerLoading && <ContactListWidget className='contacts-widget' value={defaultValues} handleContactDialog={handleContactDialog} />}
-      </Grid>
+      </Grid> */}
       <Grid item xs={12} sm={4}>
        {!isTicketLoading && <SupportTicketWidget className='tickets-widget' value={defaultValues} />}
       </Grid>
