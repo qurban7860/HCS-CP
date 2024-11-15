@@ -652,6 +652,11 @@ export const GStyledGlobalCard = styled(Card)(({ theme }) => ({
  backgroundSize: 'auto 90%'
 }))
 
+export const GStyledTransparentCard = styled(Card)(({ theme }) => ({
+ backgroundColor: 'transparent',
+ boxShadow: 'none'
+}))
+
 /**
  * @styled components from minimal layout
  */
@@ -679,6 +684,13 @@ export const GStyledSiteMapBox = styled(Box)(({ theme }) => ({
  margin: 'auto',
  alignItems: 'center',
  overflow: 'hidden'
+}))
+
+export const GStyledChowBox = styled(Box)(({ theme }) => ({
+ gap: theme.spacing(2),
+ paddingRight: theme.spacing(1.5),
+ paddingLeft: theme.spacing(1.5),
+ paddingBottom: theme.spacing(2)
 }))
 
 export const GStyledHeaderCardContainer = styled(Card)(({ theme }) => ({
@@ -731,7 +743,7 @@ export const GCardOption = mode => {
   paddingtop: 2,
 
   sx: {
-   backgroundColor: mode === KEY.LIGHT ? 'background.paper' : 'background.default',
+   backgroundColor: mode === KEY.LIGHT ? 'background.default' : 'background.paper',
    backgroundImage: `url(${mode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
    backgroundSize: 'cover'
    //  backgroundSize: '150%'
