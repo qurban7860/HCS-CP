@@ -168,6 +168,13 @@ const en = {
   local: `support_tickets`,
   label: `Support Tickets`
  },
+ site: {
+  local: `site`,
+  label: `Site`,
+  sites: {
+   label: `Sites`
+  }
+ },
  sites: {
   local: `sites`,
   label: `Sites`
