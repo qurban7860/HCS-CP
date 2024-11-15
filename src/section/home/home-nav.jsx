@@ -54,9 +54,7 @@ const HomeNav = ({ value, isLoading }) => {
 HomeNav.propTypes = {
  current: PropTypes.number,
  value: PropTypes.any,
- isLoading: PropTypes.bool,
- renderedTab: PropTypes.array,
- navigatePage: PropTypes.func
+ isLoading: PropTypes.bool
 }
 
 export default HomeNav
