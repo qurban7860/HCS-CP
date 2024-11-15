@@ -13,6 +13,8 @@ export { default as BadgeCardMedia } from './badge/badge-card-media'
 // @back-button
 export { default as Button } from './button/button'
 export { default as BackButton } from './button/back-button/back-button'
+// @box
+export { default as ChowBox } from './box/chow-box'
 // @breadcrumb
 export { default as Breadcrumb } from './breadcrumb/breadcrumb'
 // @carousel
