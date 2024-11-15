@@ -6,29 +6,34 @@ import { useAuthContext } from 'auth'
 import {
  getCustomerMachines,
  getCustomer,
+ getContact,
  getContacts,
  getSites,
+ getConnectedMachineDialog,
+ getMachineSiteDialogData,
  setContactDialog,
  setMachineDialog,
  setMachineSiteDialog,
  resetMachineSiteDialogData,
  resetCustomerMachines,
- resetContact
+ resetContact,
+ resetMachine
 } from 'store/slice'
 import { useSettingContext } from 'hook'
+import { ContactListCard, MachineListCard } from 'section/home'
 import { useTheme, Grid, Box, Card, Divider } from '@mui/material'
-import { GStyledTopBorderDivider, GStyledFlexEndBox, GCardOption, GStyledTransparentCard, GStyledChowBox } from 'theme/style'
-import { GridViewTitle, AuditBox, SiteCarousel, ChowBox } from 'component'
+import { GStyledTopBorderDivider, GStyledFlexEndBox, GCardOption, GStyledScrollableHeightLockGrid, GStyledChowBox } from 'theme/style'
+import { GridViewTitle, AuditBox, SiteCarousel, ChowBox, MachineDialog, SiteDialog, ContactDialog } from 'component'
 import { HowickResources } from 'section/common'
 import { useCustomerDefaultValues } from 'section/crm/customer'
 import { MARGIN } from 'config'
 import { TITLE, KEY, FLEX_DIR } from 'constant'
 
 const HomeTab = () => {
- const { customerMachines } = useSelector(state => state.machine)
+ const { customerMachines, machineTotalCount } = useSelector(state => state.machine)
  const { customer, isLoading } = useSelector(state => state.customer)
- const { site, sites, validCoordinates } = useSelector(state => state.site)
- const { contacts } = useSelector(state => state.contact)
+ const { site, sites } = useSelector(state => state.site)
+ const { contact, contacts } = useSelector(state => state.contact)
 
  const { user } = useAuthContext()
  const { themeMode } = useSettingContext()
@@ -80,12 +85,50 @@ const HomeTab = () => {
 
  const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
 
+ const handleContactDialog = contactId => {
+  dispatch(getContact(customerId, contactId))
+  dispatch(setContactDialog(true))
+ }
+
+ const handleConnectedMachineDialog = (event, machineId) => {
+  event.preventDefault()
+  dispatch(resetMachine())
+  dispatch(getConnectedMachineDialog(machineId))
+  dispatch(setMachineDialog(true))
+ }
+
+ const handleMachineSiteDialog = (event, machineId) => {
+  event.preventDefault()
+  dispatch(resetMachineSiteDialogData())
+  dispatch(getMachineSiteDialogData(machineId))
+  dispatch(setMachineSiteDialog(true))
+ }
+
  return (
   <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
    <Grid item sm={12} lg={12}>
     <ChowBox title={sites?.length > 1 ? t('site.sites.label') : t('site.label')}>
      <SiteCarousel sites={sites} theme={theme} themeMode={themeMode} isMain={isMain} />
     </ChowBox>
+    <Grid container columnSpacing={2}>
+     <Grid item xs={12} sm={6}>
+      <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={contacts?.length}>
+       <ContactListCard value={defaultValues} handleContactDialog={handleContactDialog} />
+      </GStyledScrollableHeightLockGrid>
+     </Grid>
+     <Grid item xs={12} sm={6} mb={5}>
+      <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={machineTotalCount}>
+       <MachineListCard
+        className='machines-widget'
+        value={defaultValues}
+        handleMachineDialog={handleConnectedMachineDialog}
+        handleMachineSiteDialog={handleMachineSiteDialog}
+        machineTotalCount={machineTotalCount}
+       />
+      </GStyledScrollableHeightLockGrid>
+     </Grid>
+    </Grid>
+
     <Box mb={4}>
      <Card {...GCardOption(themeMode)}>
       <GStyledTopBorderDivider mode={themeMode} />
@@ -104,6 +147,9 @@ const HomeTab = () => {
      </Card>
     </Box>
    </Grid>
+   <MachineDialog />
+   <SiteDialog />
+   <ContactDialog contact={contact} />
   </Grid>
  )
 }
