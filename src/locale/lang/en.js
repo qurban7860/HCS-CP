@@ -40,7 +40,10 @@ const en = {
   }
  },
  contact: {
-  label: `Contact`
+  label: `Contact`,
+  contacts: {
+   label: `Contacts`
+  }
  },
  contact_number: {
   label: `Contact number`
