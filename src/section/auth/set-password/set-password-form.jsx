@@ -17,7 +17,7 @@ import { REGEX, KEY, LABEL, SNACK, SIZE, COLOR } from 'constant'
 import { delay } from 'util'
 
 /**
- * [!NOTE]: SetPasswordForm - some parts are hardcoded for now until endpoints are available
+ * [!NOTE]: SetPasswordForm
  */
 function SetPasswordForm() {
  const [isFormComplete, setIsFormComplete] = useState(false)
