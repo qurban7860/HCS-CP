@@ -20,25 +20,25 @@ const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog
 
  const { Icon: LocIcon, iconSrc } = useIcon(ICON_NAME.DECOILER_DEF)
 
- const sxProp =
-  customerMachines?.length < 5
-   ? {}
-   : {
-      position: 'relative',
-      '&::after': {
-       content: '""',
-       position: 'absolute',
-       bottom: 0,
-       left: 0,
-       width: '100%',
-       height: '30px',
-       borderRadius: '0 0 2px 2px',
-       backgroundImage:
-        themeMode === KEY.LIGHT
-         ? `linear-gradient(to bottom, rgba(255,255,255,0.1), ${alpha(theme.palette.grey[500], 0.5)})`
-         : `linear-gradient(to bottom, rgba(0,0,0,0.1), ${alpha(theme.palette.grey[700], 0.5)})`
-      }
-     }
+ //  const sxProp =
+ //   customerMachines?.length < 5
+ //    ? {}
+ //    : {
+ //       position: 'relative',
+ //       '&::after': {
+ //        content: '""',
+ //        position: 'absolute',
+ //        bottom: 0,
+ //        left: 0,
+ //        width: '100%',
+ //        height: '30px',
+ //        borderRadius: '0 0 2px 2px',
+ //        backgroundImage:
+ //         themeMode === KEY.LIGHT
+ //          ? `linear-gradient(to bottom, rgba(255,255,255,0.1), ${alpha(theme.palette.grey[500], 0.5)})`
+ //          : `linear-gradient(to bottom, rgba(0,0,0,0.1), ${alpha(theme.palette.grey[700], 0.5)})`
+ //       }
+ //      }
 
  return (
   <Grid container mb={2}>
