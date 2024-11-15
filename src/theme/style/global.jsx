@@ -693,6 +693,27 @@ export const GStyledChowBox = styled(Box)(({ theme }) => ({
  paddingBottom: theme.spacing(2)
 }))
 
+export const GStyledScrollableHeightLockGrid = styled(Grid)(({ theme, mode, totalCount }) =>
+ totalCount < 5
+  ? {}
+  : {
+     position: 'relative',
+     '&::after': {
+      content: '""',
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      width: '100%',
+      height: '30px',
+      borderRadius: '0 0 2px 2px',
+      backgroundImage:
+       mode === KEY.LIGHT
+        ? `linear-gradient(to bottom, rgba(255,255,255,0.1), ${alpha(theme.palette.grey[500], 0.5)})`
+        : `linear-gradient(to bottom, rgba(0,0,0,0.1), ${alpha(theme.palette.grey[700], 0.5)})`
+     }
+    }
+)
+
 export const GStyledHeaderCardContainer = styled(Card)(({ theme }) => ({
  marginBottom: theme.spacing(1),
  height: 180,
@@ -747,6 +768,20 @@ export const GCardOption = mode => {
    backgroundImage: `url(${mode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
    backgroundSize: 'cover'
    //  backgroundSize: '150%'
+  }
+ }
+}
+
+export const GCardNoHeightOption = mode => {
+ return {
+  margin: 2,
+  margintop: 10,
+  paddingtop: 2,
+  sx: {
+   backgroundColor: mode === KEY.LIGHT ? 'background.default' : 'background.paper',
+   backgroundImage: `url(${mode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
+   backgroundSize: 'cover',
+   height: 'auto'
   }
  }
 }
