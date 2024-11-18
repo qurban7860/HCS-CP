@@ -61,7 +61,7 @@ function ChangePasswordDialog() {
  }
 
  return (
-  <Dialog disableEnforceFocus fullWidth maxWidth='sm' open={changePasswordDialog} onClose={handleChangePasswordDialog} aria-describedby='alert-dialog-slide-description' inert={!changePasswordDialog}>
+  <Dialog disableEnforceFocus fullWidth maxWidth='sm' open={changePasswordDialog} onClose={handleChangePasswordDialog}>
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle>
     <GStyledSpanBox
@@ -76,9 +76,9 @@ function ChangePasswordDialog() {
     <DialogContent dividers sx={{ py: 2 }}>
      <Box rowGap={2} display='grid'>
       <RHFTextField name='login' label={t('login_email.label')} type='email' value={email} autoComplete='email' disabled />
-      <RHFPasswordField name='oldPassword' label={t('old_password.label')} aria-label={t('password.confirm_password.label')} autoComplete='current-password' />
-      <RHFPasswordField name='newPassword' label={t('new_password.label')} aria-label={t('password.confirm_password.label')} autoComplete='password' />
-      <RHFPasswordField name='confirmNewPassword' label={t('password.confirm_password.label')} aria-label={t('password.confirm_password.label')} autoComplete='password' />
+      <RHFPasswordField name='oldPassword' label={t('old_password.label')} autoComplete='current-password' />
+      <RHFPasswordField name='newPassword' label={t('new_password.label')} autoComplete='password' />
+      <RHFPasswordField name='confirmNewPassword' label={t('password.confirm_password.label')} autoComplete='password' />
      </Box>
     </DialogContent>
     <DialogActions>
