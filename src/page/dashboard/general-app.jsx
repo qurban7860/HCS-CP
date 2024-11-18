@@ -1,50 +1,39 @@
-import { useEffect, useLayoutEffect } from 'react'
+import { memo, useEffect, useLayoutEffect } from 'react'
 import { useAuthContext } from 'auth'
 import { t } from 'i18next'
 import _ from 'lodash'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { dispatch } from 'store'
 import { useSelector } from 'store'
 import {
  getCustomer,
  getContacts,
- getContact,
  getCustomerTickets,
  getCustomerMachines,
- getConnectedMachineDialog,
- getMachineSiteDialogData,
  setMachineDialog,
  setMachineSiteDialog,
  setContactDialog,
- resetMachine,
  resetCustomerMachines,
  resetMachineSiteDialogData,
  resetContact,
  resetCustomerTickets
 } from 'store/slice'
-import { MachineListWidget, ContactListWidget, useCustomerDefaultValues } from 'section/crm/customer'
+import { useCustomerDefaultValues } from 'section/crm/customer'
 import { SupportTicketWidget } from 'section/crm/support'
+import { ProductionTotalGraphWidget } from 'section/dashboard'
 import { Grid } from '@mui/material'
 import { Welcome } from 'component/widget'
 import { GLOBAL } from 'config'
 import { toTitleCase } from 'util'
 import { FLEX } from 'constant'
 
-gsap.registerPlugin(useGSAP)
 function GeneralAppPage() {
- const { isLoading: isCustomerLoading, customer, contacts } = useSelector(state => state.customer)
- const { isLoading, customerMachines, machineTotalCount } = useSelector(state => state.machine)
- const { isLoading: isTicketLoading } = useSelector(state => state.customerTicket)
+ const { customer, contacts } = useSelector(state => state.customer)
+ const { customerMachines } = useSelector(state => state.machine)
+ const { isLoading: isTicketLoading, customerTickets } = useSelector(state => state.customerTicket)
+ const { isLoading: isLogLoading, logsGraphData } = useSelector(state => state.log)
  const { user } = useAuthContext()
  const customerId = user?.customer
  const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
-
- useGSAP(() => {
-  const tl = gsap.timeline()
-
-  tl.from('.machines-widget', { scale: 1, opacity: 0, ease: 'power4.in', delay: 0.3, stagger: 1 }).from('.contacts-widget', { y: 50, opacity: 0 }).from('.tickets-widget', { y: 30, opacity: 0 })
- })
 
  useEffect(() => {
   const debounce = _.debounce(() => {
@@ -52,9 +41,7 @@ function GeneralAppPage() {
     dispatch(getCustomer(customerId))
    }
   }, 300)
-
   debounce()
-
   return () => debounce.cancel()
  }, [customerId])
 
@@ -63,9 +50,7 @@ function GeneralAppPage() {
    dispatch(getCustomerMachines(customerId))
    dispatch(getContacts(customerId))
   }, 300)
-
   debounce()
-
   return () => debounce.cancel()
  }, [customerId])
 
@@ -101,22 +86,11 @@ function GeneralAppPage() {
     </Grid>
     <Grid item xs={12}>
      <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
-      {/* <Grid item xs={12} sm={4}>
-       {!isLoading && (
-        <MachineListWidget
-         className='machines-widget'
-         value={defaultValues}
-         handleMachineDialog={handleConnectedMachineDialog}
-         handleMachineSiteDialog={handleMachineSiteDialog}
-         machineTotalCount={machineTotalCount}
-        />
-       )}
+      <Grid item xs={12} sm={8}>
+       {!isLogLoading && logsGraphData && <ProductionTotalGraphWidget />}
       </Grid>
       <Grid item xs={12} sm={4}>
-       {!isCustomerLoading && <ContactListWidget className='contacts-widget' value={defaultValues} handleContactDialog={handleContactDialog} />}
-      </Grid> */}
-      <Grid item xs={12} sm={4}>
-       {!isTicketLoading && <SupportTicketWidget className='tickets-widget' value={defaultValues} />}
+       {!isTicketLoading && customerTickets?.length > 0 && <SupportTicketWidget value={defaultValues} />}
       </Grid>
      </Grid>
     </Grid>
@@ -125,4 +99,4 @@ function GeneralAppPage() {
  )
 }
 
-export default GeneralAppPage
+export default memo(GeneralAppPage)
