@@ -6,6 +6,9 @@ const en = {
   label: `Active Support Ticket`,
   active_support_tickets: {
    label: `Active Support Tickets`
+  },
+  no_active_tickets_found: {
+   label: `No active tickets found`
   }
  },
  register_agreement: 'By clicking "Register" you agree to our <1>Privacy Policy</1>.',
