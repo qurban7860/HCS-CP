@@ -7,11 +7,11 @@ import { useSelector } from 'react-redux'
 import { Grid, Typography, IconButton, Divider } from '@mui/material'
 import { FormHeader, SkeletonViewFormField, IconTooltip } from 'component'
 import { useTheme, alpha } from '@mui/material/styles'
-import { GStyledListItemText, GStyledSpanBox, GStyledTooltip, GStyledSupportStatusFieldChip } from 'theme/style'
+import { GStyledListItemText, GStyledSpanBox, GStyledSupportStatusFieldChip, GStyledScrollableHeightLockGrid } from 'theme/style'
 import { useTicketsDefaultValues } from 'section/support'
 import { normalizer } from 'util/format'
 import { GLOBAL } from 'config'
-import { VARIANT, SIZE, LABEL, KEY, DECOILER_TYPE_ARR, FLEX, SUPPORT_STATUS } from 'constant'
+import { VARIANT, SIZE, LABEL, KEY, FLEX, SUPPORT_STATUS } from 'constant'
 
 const { TYPOGRAPHY } = VARIANT
 
@@ -25,25 +25,6 @@ const SupportTicketWidget = ({ value, handleMachineDialog, handleMachineSiteDial
 
  const defaultValues = useTicketsDefaultValues(customerTickets?.issues || [])
  const openTickets = defaultValues?.filter(ticket => !COMPLETED_STATUSES.includes(normalizer(ticket?.fields?.status?.name)))
- const sxProp =
-  openTickets?.length < 5
-   ? {}
-   : {
-      position: 'relative',
-      '&::after': {
-       content: '""',
-       position: 'absolute',
-       bottom: 0,
-       left: 0,
-       width: '100%',
-       height: '30px',
-       borderRadius: '0 0 2px 2px',
-       backgroundImage:
-        themeMode === KEY.LIGHT
-         ? `linear-gradient(to bottom, rgba(255,255,255,0.1), ${alpha(theme.palette.grey[500], 0.5)})`
-         : `linear-gradient(to bottom, rgba(0,0,0,0.1), ${alpha(theme.palette.grey[700], 0.5)})`
-      }
-     }
 
  const openInNewPage = jiraKey => {
   const url = GLOBAL.JIRA_URL + jiraKey
@@ -52,7 +33,7 @@ const SupportTicketWidget = ({ value, handleMachineDialog, handleMachineSiteDial
 
  return (
   <Grid container mb={2}>
-   <Grid item mb={2} bgcolor='background.paper' borderRadius={2} sx={sxProp}>
+   <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={openTickets?.length}>
     <GStyledSpanBox>
      <FormHeader label={openTickets?.length > 1 ? t('active_support_ticket.active_support_tickets.label') : t('active_support_ticket.label')} />
     </GStyledSpanBox>
@@ -122,13 +103,15 @@ const SupportTicketWidget = ({ value, handleMachineDialog, handleMachineSiteDial
         <SkeletonViewFormField />
        </m.div>
       ) : (
-       <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
-        {'No active tickets found'}
-       </Typography>
+       <Grid container>
+        <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
+         {t('active_support_ticket.no_active_tickets_found.label')}
+        </Typography>
+       </Grid>
       )}
      </Grid>
     </Grid>
-   </Grid>
+   </GStyledScrollableHeightLockGrid>
   </Grid>
  )
 }
