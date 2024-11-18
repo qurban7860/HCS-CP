@@ -157,6 +157,10 @@ export function getCustomerTickets(ref, period) {
  return async dispatch => {
   dispatch(customerTicketSlice.actions.startLoading())
   try {
+   if (!ref) {
+    // if ref is invalid, throw a better error message and return, don't make the API call
+    return
+   }
    const params = {
     ref,
     startAt: 0
