@@ -5,14 +5,14 @@ import { t } from 'i18next'
 import { dispatch } from 'store'
 import { useSettingContext } from 'hook'
 import { resetLogsGraphData } from 'store/slice'
-import { Typography, Card, Grid } from '@mui/material'
+import { Typography, Card, Grid, Box } from '@mui/material'
 import { LogStackedChart, HowickLoader } from 'component'
 import { useTheme } from '@mui/material/styles'
 import { getTimePeriodDesc } from 'section/log'
-import { GStyledMachineChip, GStyledSpanBox, GStyledCenterBox } from 'theme/style'
+import { GStyledSpanBox, GStyledCenterBox } from 'theme/style'
 import { TYPOGRAPHY, KEY, FLEX } from 'constant'
 
-const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData }) => {
+const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, isDashboard, graphHeight = 500 }) => {
  const [graphData, setGraphData] = useState([])
  const { isLoading } = useSelector(state => state.log)
 
@@ -20,7 +20,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData }
  const theme = useTheme()
 
  useEffect(() => {
-  dispatch(resetLogsGraphData())
+  if (!isDashboard) dispatch(resetLogsGraphData())
  }, [dispatch])
 
  useEffect(() => {
@@ -125,33 +125,29 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData }
  const chartData = processGraphData()
 
  return (
-  <Grid item xs={12} sm={12} md={12} lg={10} xl={6} sx={{ mt: 3 }}>
+  <Grid item xs={12} sm={12} md={12} lg={10} xl={isDashboard ? 12 : 6} sx={{ mt: 3 }}>
    <GStyledSpanBox alignItems={'center'} my={2} sx={{ display: 'flex', justifyContent: FLEX.SPACE_BETWEEN }}>
     <Typography variant={TYPOGRAPHY.H4} gutterBottom>
      {t('production.production_total.label').toUpperCase()}
     </Typography>
     &nbsp;
-    <GStyledMachineChip
-     label={
-      <Typography variant={TYPOGRAPHY.H4} p={0}>
-       {getTimePeriodDesc(timePeriod).toUpperCase()}
-      </Typography>
-     }
-     mode={themeMode}
-    />
+    <Box>
+     <Typography variant={isDashboard ? TYPOGRAPHY.H6 : TYPOGRAPHY.H4} p={0}>
+      {getTimePeriodDesc(timePeriod).toUpperCase()}
+     </Typography>
+    </Box>
    </GStyledSpanBox>
    <Card sx={{ p: 3, background: themeMode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[800], color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white }}>
     {isLoading && (
      <Fragment>
-      <GStyledCenterBox height={500}>
-       {/* <LinearProgress style={{ width: '100%', height: 10 }} /> */}
+      <GStyledCenterBox height={graphHeight}>
        <HowickLoader height={300} width={303} mode={themeMode} />
       </GStyledCenterBox>
      </Fragment>
     )}
     {!isLoading && (
      <Fragment>
-      {graphData?.length > 0 && <Fragment>{chartData && <LogStackedChart chart={chartData} graphLabels={graphLabels} />}</Fragment>}
+      {graphData?.length > 0 && <Fragment>{chartData && <LogStackedChart chart={chartData} graphLabels={graphLabels} graphHeight={graphHeight} />}</Fragment>}
       {graphData?.length === 0 && (
        <Typography variant='body1' color='textSecondary'>
         {customer?._id ? `No data available for the ${getTimePeriodDesc(timePeriod)}.` : 'Please Select a customer to view the graph.'}
@@ -168,7 +164,9 @@ ERPProductionTotal.propTypes = {
  logsGraphData: PropTypes.array,
  timePeriod: PropTypes.string,
  customer: PropTypes.object,
- graphLabels: PropTypes.object
+ graphLabels: PropTypes.object,
+ isDashboard: PropTypes.bool,
+ graphHeight: PropTypes.number
 }
 
 export default ERPProductionTotal
