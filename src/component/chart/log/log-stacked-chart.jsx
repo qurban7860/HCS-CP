@@ -6,7 +6,7 @@ import { Chart } from 'component'
 import { fShortenNumber } from 'util/format'
 import { KEY } from 'constant'
 
-function LogStackedChart({ chart, graphLabels }) {
+function LogStackedChart({ chart, graphLabels, graphHeight = 500 }) {
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  const { categories, series } = chart
@@ -19,8 +19,8 @@ function LogStackedChart({ chart, graphLabels }) {
  const chartOptions = {
   chart: {
    type: 'bar',
-   height: 500,
-   foreColor: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400],
+   height: graphHeight,
+   foreColor: themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400],
    menubar: {
     style: {
      foreColor: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
@@ -98,7 +98,7 @@ function LogStackedChart({ chart, graphLabels }) {
     offsetX: 0,
     offsetY: 0,
     style: {
-     fontSize: '12px',
+     fontSize: '8px',
      fontWeight: 600,
      cssClass: 'apexcharts-xaxis-title'
     }
@@ -107,16 +107,16 @@ function LogStackedChart({ chart, graphLabels }) {
   yaxis: {
    axisBorder: { show: false },
    axisTicks: { show: false },
-   labels: { formatter: value => fShortenNumber(value), style: { fontSize: '12px', color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400] } },
+   labels: { formatter: value => fShortenNumber(value), style: { fontSize: '10px', color: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[400] } },
    title: {
     text: graphLabels?.yaxis,
     offsetX: 0,
     offsetY: 0,
     style: {
-     fontSize: '12px',
+     fontSize: '10px',
      fontWeight: 600,
      cssClass: 'apexcharts-yaxis-title',
-     color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400]
+     color: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[400]
     }
    }
   },
@@ -159,6 +159,6 @@ function LogStackedChart({ chart, graphLabels }) {
  )
 }
 
-LogStackedChart.propTypes = { chart: PropTypes.object, graphLabels: PropTypes.object }
+LogStackedChart.propTypes = { chart: PropTypes.object, graphLabels: PropTypes.object, graphHeight: PropTypes.number }
 
 export default LogStackedChart

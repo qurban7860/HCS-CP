@@ -1,56 +1,117 @@
-// import { useSettingContext } from 'hook'
-// import { useSelector } from 'react-redux'
-// import {
-//   getMachinesByCountry,
-//   getSecurityUsers,
-//   getCustomerTickets,
-//   getCustomer,
-//   resetCustomer,
-//   resetCustomerMachines,
-//   resetCustomerTicketRecords
-// } from 'store/slice'
-import { useEffect } from 'react'
+import { memo, useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react'
 import { useAuthContext } from 'auth'
+import { t } from 'i18next'
+import _ from 'lodash'
 import { dispatch } from 'store'
-import { getSecurityUser } from 'store/slice'
+import { useSelector } from 'store'
+import {
+ getCustomer,
+ getContacts,
+ getCustomerTickets,
+ getCustomerMachines,
+ setMachineDialog,
+ setMachineSiteDialog,
+ setContactDialog,
+ resetCustomerMachines,
+ resetMachineSiteDialogData,
+ resetContact,
+ resetCustomerTickets
+} from 'store/slice'
+import { useCustomerDefaultValues } from 'section/crm/customer'
+import { SupportTicketWidget } from 'section/crm/support'
+import { ProductionTotalGraphWidget, ProductionRateGraphWidget } from 'section/dashboard'
 import { Grid } from '@mui/material'
 import { Welcome } from 'component/widget'
 import { GLOBAL } from 'config'
 import { toTitleCase } from 'util'
-import { useLocale } from '../../locale'
+import { FLEX } from 'constant'
 
 function GeneralAppPage() {
-  // TODO: enable when charts are scoped
-  // const { customerMachines } = useSelector((state) => state.machine)
-  // const { customer } = useSelector((state) => state.customer)
-  // const { securityUser } = useSelector((state) => state.user)
-  // const { customerTickets } = useSelector((state) => state.customerTicket)
+ const { customer, contacts } = useSelector(state => state.customer)
+ const { customerMachines } = useSelector(state => state.machine)
+ const { user } = useAuthContext()
+ const customerId = user?.customer
+ const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
 
-  // useLayoutEffect(() => {
-  //   return () => {
-  //     dispatch(resetCustomer())
-  //     dispatch(resetCustomerMachines())
-  //     dispatch(resetCustomerTicketRecords())
-  //   }
-  // }, [])
+ const allMachineDefault = { _id: null, name: 'All' }
 
-  // useEffect(() => {
-  //   dispatch(getCustomer(customer?._id))
-  //   dispatch(getCustomerMachines(customer?._id))
-  //   dispatch(getCustomerTickets(customer?.ref))
-  // }, [customer?._id, customer?.ref, securityUser?.customer?._id])
+ const isMounted = useRef(false)
+ const [rateSelectedMachine, setRateSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
+ const [totalSelectedMachine, setTotalSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
 
-  const { t } = useLocale()
+ useEffect(() => {
+  if (GLOBAL.ENV === 'dev' && !isMounted.current) {
+   isMounted.current = true
+   return
+  }
+  const debounce = _.debounce(() => {
+   if (customerId !== customer?._id) {
+    dispatch(getCustomer(customerId))
+   }
+  }, 300)
+  debounce()
+  return () => debounce.cancel()
+ }, [customerId, customer?._id])
 
-  return (
-    <Grid container>
-      <Grid container spacing={3} mt={2}>
-        <Grid item xs={12}>
-          <Welcome title={toTitleCase(GLOBAL.APP_TAGLINE)} description={t('app_customer_tagline')} />
-        </Grid>
-      </Grid>
+ useEffect(() => {
+  const debounce = _.debounce(() => {
+   dispatch(getCustomerMachines(customerId))
+   dispatch(getContacts(customerId))
+  }, 300)
+  debounce()
+  return () => debounce.cancel()
+ }, [customerId])
+
+ useLayoutEffect(() => {
+  dispatch(setMachineDialog(false))
+  dispatch(setMachineSiteDialog(false))
+  dispatch(setContactDialog(false))
+  dispatch(resetCustomerMachines())
+  dispatch(resetContact())
+  dispatch(resetMachineSiteDialogData())
+ }, [dispatch])
+
+ useEffect(() => {
+  const debouncedDispatch = _.debounce(() => {
+   if (customerId) {
+    dispatch(getCustomerTickets(customer?.ref, 3, customerId))
+   }
+  }, 300)
+  debouncedDispatch()
+  return () => {
+   debouncedDispatch.cancel()
+   dispatch(resetCustomerTickets())
+  }
+ }, [dispatch, customer])
+
+ return (
+  <Grid container>
+   <Grid container spacing={3} mt={2}>
+    <Grid item xs={12}>
+     <Welcome customer={customer} title={toTitleCase(GLOBAL.APP_TAGLINE)} description={t('app_customer_tagline')} />
     </Grid>
-  )
+    <Grid item xs={12}>
+     <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
+      <Grid item xs={12} sm={8}>
+       <ProductionTotalGraphWidget selectedMachine={totalSelectedMachine} setSelectedMachine={setTotalSelectedMachine} />
+      </Grid>
+      <Grid item xs={12} sm={4}>
+       <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
+        <Grid item xs={12} sm={12}>
+         <SupportTicketWidget value={defaultValues} />
+        </Grid>
+       </Grid>
+      </Grid>
+     </Grid>
+    </Grid>
+    <Grid item xs={12}>
+     <Grid item xs={12} sm={8}>
+      <ProductionRateGraphWidget selectedMachine={rateSelectedMachine} setSelectedMachine={setRateSelectedMachine} />
+     </Grid>
+    </Grid>
+   </Grid>
+  </Grid>
+ )
 }
 
-export default GeneralAppPage
+export default memo(GeneralAppPage)

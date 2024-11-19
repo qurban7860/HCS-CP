@@ -2,6 +2,15 @@ import { get } from 'react-hook-form'
 
 const en = {
  account: `account`,
+ active_support_ticket: {
+  label: `Active Support Ticket`,
+  active_support_tickets: {
+   label: `Active Support Tickets`
+  },
+  no_active_tickets_found: {
+   label: `No active tickets found`
+  }
+ },
  register_agreement: 'By clicking "Register" you agree to our <1>Privacy Policy</1>.',
  address: {
   label: `Address`
@@ -34,7 +43,10 @@ const en = {
   }
  },
  contact: {
-  label: `Contact`
+  label: `Contact`,
+  contacts: {
+   label: `Contacts`
+  }
  },
  contact_number: {
   label: `Contact number`
@@ -113,6 +125,9 @@ const en = {
    last: 'Check your email for the invitation link'
   }
  },
+ no_coordinates_provided: {
+  label: `No coordinates provided`
+ },
  organization: {
   local: `organization`,
   label: `Organization`
@@ -158,6 +173,13 @@ const en = {
  support_tickets: {
   local: `support_tickets`,
   label: `Support Tickets`
+ },
+ site: {
+  local: `site`,
+  label: `Site`,
+  sites: {
+   label: `Sites`
+  }
  },
  sites: {
   local: `sites`,
@@ -246,6 +268,7 @@ const en = {
   },
   success: {
    logged_in: 'Logged in',
+   logged_out: 'Logged out',
    register_request_submitted: 'Registration request submitted',
    details_updated: 'User details updated, navigating you to the Login page...',
    password_updated: 'Password updated',
@@ -253,12 +276,13 @@ const en = {
   },
   error: {
    form_check_errors: 'Please check the form for errors',
+   invalid_credentials: 'Invalid credentials',
    machine_serial_invalid: 'Machine serial number provided is invalid',
    something_went_wrong: 'Something went wrong',
    unable_to_process_request: 'Unable to process your request',
    unable_save_details: 'Unable to save details',
    unable_read_error_message: 'Unable to read error message',
-   invalid_credentials: 'Invalid credentials',
+   unable_logout: 'Unable to logout',
    unexpected_error: 'An unexpected error occurred'
   }
  },

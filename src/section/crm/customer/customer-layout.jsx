@@ -5,7 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { setFromDialog, setFromSiteDialog } from 'store/slice'
 import { Typography } from '@mui/material'
 import { CustomerNav, CustomerTab } from 'section/crm/customer'
-import { ContactTab, SiteTab, customerDefaultValues, TicketsTab } from 'section/crm'
+import { ContactTab, SiteTab, useCustomerDefaultValues, TicketsTab } from 'section/crm'
 import { MachineDialog, SiteDialog, ContactDialog } from 'component'
 import { MotionLazyContainer } from 'component/animate'
 import { FLEX } from 'constant'
@@ -19,7 +19,7 @@ const CustomerLayout = ({ tab = 0 }) => {
  const { customerMachines, connectedMachineDialog, machineSiteDialogData } = useSelector(state => state.machine)
  const { contact, contacts, contactDialog } = useSelector(state => state.contact)
 
- const defaultValues = customerDefaultValues(customer, customerMachines, contacts)
+ const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
 
  const navigatePage = tab => {
   if (tab === 0 && id) {

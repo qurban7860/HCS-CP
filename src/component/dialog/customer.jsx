@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
 import { useSettingContext } from 'hook'
 import { setCustomerDialog } from 'store/slice'
-import { customerDefaultValues } from 'section/crm'
+import { useCustomerDefaultValues } from 'section/crm'
 import { ICON_NAME } from 'hook'
 import { Dialog, DialogContent, DialogTitle, Divider, Typography, Grid } from '@mui/material'
 import { GStyledTopBorderDivider, GStyledSpanBox } from 'theme/style'
@@ -17,7 +17,7 @@ const CustomerDialog = () => {
  const { customer, isLoading, customerDialog } = useSelector(state => state.customer)
  const { CUSTOMER, SITE, ADDRESS } = VIEW_FORM
 
- const defaultValues = customerDefaultValues(customer, null)
+ const defaultValues = useCustomerDefaultValues(customer, null)
 
  const handleCustomerDialog = () => dispatch(setCustomerDialog(false))
 

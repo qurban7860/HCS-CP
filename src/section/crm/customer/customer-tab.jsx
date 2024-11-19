@@ -22,7 +22,7 @@ import { Grid, Box, Card, Divider } from '@mui/material'
 import { GStyledTopBorderDivider, GStyledFlexEndBox, GCardOption } from 'theme/style'
 import { GridViewTitle, GridViewField, AuditBox } from 'component'
 import { HowickResources } from 'section/common'
-import { MachineListWidget, ContactListWidget, customerDefaultValues } from 'section/crm/customer'
+import { useCustomerDefaultValues } from 'section/crm/customer'
 import { MARGIN } from 'config'
 import { TITLE, VIEW_FORM, KEY, VARIANT, FLEX_DIR } from 'constant'
 
@@ -67,7 +67,7 @@ const CustomerTab = () => {
   dispatch(resetMachineSiteDialogData())
  }, [dispatch])
 
- const defaultValues = customerDefaultValues(customer, customerMachines, contacts)
+ const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
 
  const handleConnectedMachineDialog = (event, machineId) => {
   event.preventDefault()

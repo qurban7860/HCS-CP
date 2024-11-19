@@ -25,7 +25,7 @@ export const GStyledWelcomeDescription = styled(({ themeMode, ...other }) => <Ty
  }
 })
 export const GStyledWelcomeContainerDiv = styled('div')(({ theme }) => ({
- height: '100vh',
+ //  height: '100vh',
  display: 'flex',
  overflow: 'hidden',
  position: 'relative',
@@ -652,6 +652,11 @@ export const GStyledGlobalCard = styled(Card)(({ theme }) => ({
  backgroundSize: 'auto 90%'
 }))
 
+export const GStyledTransparentCard = styled(Card)(({ theme }) => ({
+ backgroundColor: 'transparent',
+ boxShadow: 'none'
+}))
+
 /**
  * @styled components from minimal layout
  */
@@ -681,9 +686,37 @@ export const GStyledSiteMapBox = styled(Box)(({ theme }) => ({
  overflow: 'hidden'
 }))
 
+export const GStyledChowBox = styled(Box)(({ theme }) => ({
+ gap: theme.spacing(2),
+ paddingRight: theme.spacing(1.5),
+ paddingLeft: theme.spacing(1.5),
+ paddingBottom: theme.spacing(2)
+}))
+
+export const GStyledScrollableHeightLockGrid = styled(Grid)(({ theme, mode, totalCount }) =>
+ totalCount < 5
+  ? {}
+  : {
+     position: 'relative',
+     '&::after': {
+      content: '""',
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      width: '100%',
+      height: '30px',
+      borderRadius: '0 0 2px 2px',
+      backgroundImage:
+       mode === KEY.LIGHT
+        ? `linear-gradient(to bottom, rgba(255,255,255,0.1), ${alpha(theme.palette.grey[500], 0.5)})`
+        : `linear-gradient(to bottom, rgba(0,0,0,0.1), ${alpha(theme.palette.grey[700], 0.5)})`
+     }
+    }
+)
+
 export const GStyledHeaderCardContainer = styled(Card)(({ theme }) => ({
  marginBottom: theme.spacing(1),
- height: 160,
+ height: 180,
  position: 'sticky',
  top: '60px',
  zIndex: 2
@@ -731,10 +764,24 @@ export const GCardOption = mode => {
   paddingtop: 2,
 
   sx: {
-   backgroundColor: mode === KEY.LIGHT ? 'background.paper' : 'background.default',
+   backgroundColor: mode === KEY.LIGHT ? 'background.default' : 'background.paper',
    backgroundImage: `url(${mode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
    backgroundSize: 'cover'
    //  backgroundSize: '150%'
+  }
+ }
+}
+
+export const GCardNoHeightOption = mode => {
+ return {
+  margin: 2,
+  margintop: 10,
+  paddingtop: 2,
+  sx: {
+   backgroundColor: mode === KEY.LIGHT ? 'background.default' : 'background.paper',
+   backgroundImage: `url(${mode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
+   backgroundSize: 'cover',
+   height: 'auto'
   }
  }
 }

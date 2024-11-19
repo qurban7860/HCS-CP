@@ -1,19 +1,12 @@
 import PropTypes from 'prop-types'
-import { useSettingContext } from 'hook'
-import { Stack } from '@mui/material'
-import { GStyledWelcomeTitle, GStyledWelcomeContainerDiv, GStyledWelcomeDescription, GStyledSpanBox } from 'theme/style'
+import { useSettingContext, Icon, ICON_NAME } from 'hook'
+import { Stack, Box, Grid, Card, Typography } from '@mui/material'
+import { GStyledWelcomeTitle, GStyledWelcomeContainerDiv, GStyledWelcomeDescription, GStyledSpanBox, GStyledTopBorderDivider, GCardOption } from 'theme/style'
 import { useTheme } from '@mui/material/styles'
 import { KEY, TYPOGRAPHY } from 'constant'
 import { ASSET } from 'config'
 
-Welcome.propTypes = {
- img: PropTypes.node,
- action: PropTypes.node,
- title: PropTypes.string,
- description: PropTypes.string
-}
-
-function Welcome({ title, description, action, img, ...other }) {
+function Welcome({ title, description, action, img, customer, ...other }) {
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  return (
@@ -33,10 +26,33 @@ function Welcome({ title, description, action, img, ...other }) {
      {description}
     </GStyledWelcomeDescription>
     {action && action}
+    <Grid container my={2}>
+     <Grid item xs={12} sm={4}>
+      <Box m={2}>
+       <Card {...GCardOption(themeMode)}>
+        <GStyledTopBorderDivider mode={themeMode} />
+        <GStyledSpanBox px={2}>
+         <Icon icon={ICON_NAME.COMPANY} />
+         <Typography variant={TYPOGRAPHY.H3} m={2}>
+          {customer?.name}
+         </Typography>
+        </GStyledSpanBox>
+       </Card>
+      </Box>
+     </Grid>
+    </Grid>
    </Stack>
    {img && img}
   </GStyledWelcomeContainerDiv>
  )
+}
+
+Welcome.propTypes = {
+ img: PropTypes.node,
+ action: PropTypes.node,
+ title: PropTypes.string,
+ description: PropTypes.string,
+ customer: PropTypes.object
 }
 
 export default Welcome

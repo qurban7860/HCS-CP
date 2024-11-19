@@ -7,7 +7,7 @@ export { default as CustomerListPagination } from './customers/customers-paginat
 
 // :customer
 export { default as CustomerLayout } from './customer/customer-layout'
-export { default as customerDefaultValues } from './customer/default-values/default-values'
+export { default as useCustomerDefaultValues } from './customer/default-values/default-values'
 
 // :contact
 export { default as ContactTab } from './contact/contact-tab'
@@ -15,10 +15,8 @@ export { default as contactDefaultValues } from './contact/default-values/defaul
 
 // :site
 export { default as SiteTab } from './site/site-tab'
-export { default as siteDefaultValues } from './site/default-values/default-values'
+export { default as useSiteDefaultValues } from './site/default-values/default-values'
 
 // :support
 export { default as TicketsTab } from './support/tickets-tab'
 export { default as TicketCard } from './support/ticket-card'
-export { default as ticketsDefaultValues } from './support/default-values/default-values'
-export * from './support/default-values/default-values'

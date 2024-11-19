@@ -1,8 +1,9 @@
 import { memo } from 'react'
 import PropTypes from 'prop-types'
 import { dispatch, useSelector } from 'store'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSettingContext } from 'hook'
+import { useAuthContext } from 'auth'
 import { PATH_CUSTOMER } from 'route/path'
 import { setContactDialog, resetSelectedContactCard, setSelectedContactCard, setFromDialog, getContact } from 'store/slice'
 import { ICON_NAME } from 'hook'
@@ -14,12 +15,14 @@ import { GridViewField, GridViewTitle, IconTooltip, Button } from 'component'
 import { VIEW_FORM, TITLE, TYPOGRAPHY, FLEX, LABEL, KEY, FLEX_DIR, BUTTON } from 'constant'
 
 const ContactDialog = ({ contact }) => {
- const { id } = useParams()
- const theme = useTheme()
- const navigate = useNavigate()
- const { themeMode } = useSettingContext()
  const { isLoading, contactDialog } = useSelector(state => state.contact)
  const { customer } = useSelector(state => state.customer)
+
+ const { user } = useAuthContext()
+ const customerId = user?.customer
+ const { themeMode } = useSettingContext()
+ const theme = useTheme()
+ const navigate = useNavigate()
 
  const defaultValues = contactDefaultValues(contact, customer)
 
@@ -29,10 +32,10 @@ const ContactDialog = ({ contact }) => {
  const handleContactOverview = () => {
   dispatch(setContactDialog(false))
   dispatch(resetSelectedContactCard())
-  navigate(PATH_CUSTOMER.customers.contacts.view(id))
+  navigate(PATH_CUSTOMER.customers.contacts.view(customerId))
   dispatch(setFromDialog(true))
   dispatch(setSelectedContactCard(defaultValues?.id))
-  dispatch(getContact(id, defaultValues?.id))
+  dispatch(getContact(customerId, defaultValues?.id))
  }
 
  return (
@@ -50,7 +53,14 @@ const ContactDialog = ({ contact }) => {
        <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
         {defaultValues?.machineConnection?.length > 0 && <IconTooltip title={LABEL.PARENT_MACHINE} icon={ICON_NAME.PARENT} color={theme.palette.grey[500]} iconOnly />}
         {defaultValues?.isActive ? (
-         <IconTooltip title={LABEL.ACTIVE} icon={ICON_NAME.ACTIVE} color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main} isActiveIcon iconOnly />
+         <IconTooltip
+          title={LABEL.ACTIVE}
+          icon={ICON_NAME.ACTIVE}
+          color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+          tooltipColor={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+          isActiveIcon
+          iconOnly
+         />
         ) : (
          <IconTooltip title={LABEL.INACTIVE} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} iconOnly />
         )}

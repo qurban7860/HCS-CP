@@ -12,7 +12,7 @@ const formatNumber = num => {
  return num.toFixed(1)
 }
 
-function LogLineChart({ chart, graphLabels }) {
+function LogLineChart({ chart, graphLabels, graphHeight = 500 }) {
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  const { categories, series } = chart
@@ -38,8 +38,8 @@ function LogLineChart({ chart, graphLabels }) {
  const chartOptions = {
   chart: {
    type: 'line',
-   height: 500,
-   foreColor: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400],
+   height: graphHeight,
+   foreColor: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[400],
    toolbar: { show: true, tools: { download: true, selection: false, zoom: false, zoomin: false, zoomout: false, pan: false, reset: true } },
    animations: { enabled: true }
   },
@@ -83,7 +83,7 @@ function LogLineChart({ chart, graphLabels }) {
      fontSize: '12px',
      fontWeight: 600,
      cssClass: 'apexcharts-yaxis-title',
-     color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400]
+     color: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[400]
     }
    },
    labels: { formatter: value => fShortenNumber(value), style: { fontSize: '12px', color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400] } }
@@ -138,6 +138,6 @@ function LogLineChart({ chart, graphLabels }) {
  )
 }
 
-LogLineChart.propTypes = { chart: PropTypes.object, graphLabels: PropTypes.object, timePeriod: PropTypes.array }
+LogLineChart.propTypes = { chart: PropTypes.object, graphLabels: PropTypes.object, timePeriod: PropTypes.array, graphHeight: PropTypes.number }
 
 export default LogLineChart

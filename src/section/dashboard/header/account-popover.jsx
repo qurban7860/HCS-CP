@@ -35,29 +35,15 @@ export default function AccountPopover() {
   dispatch(setChangePasswordDialog(true))
  }
 
- useEffect(() => {
-  if (user) {
-   dispatch(getCustomer(user.customer))
-  }
- }, [])
-
  const handleLogout = async () => {
   try {
    logout()
-   snack(SNACK.LOGGED_OUT, { variant: 'success' })
+   snack(t('responses.success.logged_out'), { variant: 'success' })
    handleClosePopover()
   } catch (error) {
    console.error(error)
-   snack(SNACK.ERROR.UNABLE_LOGOUT, { variant: 'error' })
+   snack(t('responses.error.unable_logout'), { variant: 'error' })
   }
- }
-
- const handleLang = () => {
-  setOpenLang(!openLang)
- }
-
- const handleCloseLang = () => {
-  setOpenLang(false)
  }
 
  const handleToggle = () => {

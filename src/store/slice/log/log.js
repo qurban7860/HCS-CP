@@ -13,6 +13,8 @@ const initialState = {
  log: {},
  logs: [],
  logsGraphData: [],
+ logsTotalGraphData: [],
+ logsRateGraphData: [],
  logsTotalCount: 0,
  selectedSearchFilter: '',
  dateFrom: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
@@ -83,8 +85,32 @@ const logSlice = createSlice({
    state.success = true
    state.initial = true
   },
+  setLogsTotalGraphData(state, action) {
+   state.logsTotalGraphData = action.payload
+   state.isLoading = false
+   state.success = true
+   state.initial = true
+  },
+  setLogsRateGraphData(state, action) {
+   state.logsRateGraphData = action.payload
+   state.isLoading = false
+   state.success = true
+   state.initial = true
+  },
   resetLogsGraphData(state) {
    state.logsGraphData = []
+   state.responseMessage = null
+   state.success = false
+   state.isLoading = false
+  },
+  resetLogsTotalGraphData(state) {
+   state.logsTotalGraphData = []
+   state.responseMessage = null
+   state.success = false
+   state.isLoading = false
+  },
+  resetLogsRateGraphData(state) {
+   state.logsRateGraphData = []
    state.responseMessage = null
    state.success = false
    state.isLoading = false
@@ -131,6 +157,8 @@ export const {
  resetLog,
  resetLogsGraphData,
  resetLogDates,
+ resetLogsTotalGraphData,
+ resetLogsRateGraphData,
  setResponseMessage,
  setMachineLogsGraphData,
  setLogFilterBy,
@@ -156,6 +184,62 @@ export function getLogGraphData(customerId, machineId, type = 'erp', periodType,
    return {
     success: true,
     message: 'Graph Data fetched'
+   }
+  } catch (error) {
+   console.error(error)
+   dispatch(logSlice.actions.hasError(error.message || 'Something went wrong'))
+   return {
+    success: false,
+    message: error.message || 'Something went wrong'
+   }
+  }
+ }
+}
+
+export function getLogTotalGraphData(customerId, machineId, type = 'erp', periodType) {
+ return async dispatch => {
+  dispatch(logSlice.actions.startLoading())
+  try {
+   const params = {
+    customer: customerId,
+    machine: machineId,
+    type,
+    periodType,
+    logGraphType: 'length_and_waste'
+   }
+   const response = await axios.get(PATH_SERVER.LOG.graph, { params })
+   dispatch(logSlice.actions.setLogsTotalGraphData(response?.data || ''))
+   return {
+    success: true,
+    message: 'Totals Graph Data fetched'
+   }
+  } catch (error) {
+   console.error(error)
+   dispatch(logSlice.actions.hasError(error.message || 'Something went wrong'))
+   return {
+    success: false,
+    message: error.message || 'Something went wrong'
+   }
+  }
+ }
+}
+
+export function getLogRateGraphData(customerId, machineId, type = 'erp', periodType) {
+ return async dispatch => {
+  dispatch(logSlice.actions.startLoading())
+  try {
+   const params = {
+    customer: customerId,
+    machine: machineId,
+    type,
+    periodType,
+    logGraphType: 'productionRate'
+   }
+   const response = await axios.get(PATH_SERVER.LOG.graph, { params })
+   dispatch(logSlice.actions.setLogsRateGraphData(response?.data || ''))
+   return {
+    success: true,
+    message: 'Rates Graph Data fetched'
    }
   } catch (error) {
    console.error(error)

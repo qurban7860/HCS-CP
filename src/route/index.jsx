@@ -15,6 +15,8 @@ import {
  SetPasswordPage,
  ResetPasswordPage,
  NewPasswordPage,
+ // home:
+ HomePage,
  // dashboard: general
  GeneralAppPage,
  // security:
@@ -90,18 +92,14 @@ export default function Router() {
    ]
   },
   {
-   // email
-   path: 'email',
+   // home
+   path: 'home',
    element: (
     <AuthGuard>
      <DashboardLayout />
     </AuthGuard>
    ),
-   children: [
-    { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true }
-    // { path: 'list', element: <Email /> },
-    // { path: ':id/view', element: <Emailviewform /> },
-   ]
+   children: [{ element: <HomePage />, index: true }]
   },
   {
    // security

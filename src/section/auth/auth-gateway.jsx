@@ -11,17 +11,15 @@ import { StyledRoot, StyledContent } from './style'
 AuthGateway.propTypes = {
  title: PropTypes.string,
  children: PropTypes.node,
- isWideForm: PropTypes.boolean
+ isWideForm: PropTypes.bool
 }
 
 gsap.registerPlugin(useGSAP)
 function AuthGateway({ children, isWideForm, title }) {
  const { themeMode } = useSettingContext()
  title = title || GLOBAL.APP_BRANDING
-
  useGSAP(() => {
   const introTl = gsap.timeline()
-
   introTl
    .set('.howick-logo', { opacity: 1, duration: 0.5 })
    .from('.portal-header', {

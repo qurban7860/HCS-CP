@@ -11,7 +11,7 @@ import {
  resetMachineTicketRecords,
  resetSelectedMachineTicketCard
 } from 'store/slice'
-import { ticketsDefaultValues, ticketDefaultValues } from 'section/product'
+import { useTicketsDefaultValues, useTicketDefaultValues } from 'section/support'
 import { Divider, Grid, Card, Typography, Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GCardOption, GStyledTopBorderDivider, GStyledFlexEndBox, GStyledSpanBox, GStyledFieldChip, GStyledSupportStatusFieldChip } from 'theme/style'
@@ -57,8 +57,8 @@ const TicketsTab = () => {
   }
  }, [machineTickets, dispatch])
 
- const defaultValues = ticketsDefaultValues(tableData && tableData)
- const ticket = ticketDefaultValues(machineTicket)
+ const defaultValues = useTicketsDefaultValues(tableData && tableData)
+ const ticket = useTicketDefaultValues(machineTicket)
 
  const { filterName, handleFilterName, filteredData } = useFilter(getComparator(order, orderBy), tableData || [], initial, ChangeMachineTicketPage, setMachineTicketFilterBy)
 

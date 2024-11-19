@@ -64,7 +64,7 @@ const SiteDialog = () => {
       <Grid item sm={6}>
        <GStyledSpanBox>
         <Typography variant={TYPOGRAPHY.H3}>{defaultValues?.serialNo} &nbsp;</Typography>
-        <Typography variant={TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.howick.bronze}>
+        <Typography variant={TYPOGRAPHY.H3} color={theme.palette.howick.bronze}>
          {defaultValues?.machineModel}
         </Typography>
        </GStyledSpanBox>
@@ -84,7 +84,14 @@ const SiteDialog = () => {
         )}
         {defaultValues?.machineConnection?.length > 0 && <IconTooltip title={LABEL.PARENT_MACHINE} icon={ICON_NAME.PARENT} color={theme.palette.grey[500]} iconOnly />}
         {defaultValues?.isActive ? (
-         <IconTooltip title={LABEL.ACTIVE} icon={ICON_NAME.ACTIVE} color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main} isActiveIcon iconOnly />
+         <IconTooltip
+          title={LABEL.ACTIVE}
+          icon={ICON_NAME.ACTIVE}
+          color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+          tooltipColor={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+          isActiveIcon
+          iconOnly
+         />
         ) : (
          <IconTooltip title={LABEL.INACTIVE} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} iconOnly />
         )}

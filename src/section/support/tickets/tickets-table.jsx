@@ -63,10 +63,13 @@ const TicketsTable = ({ ticket, mode, index }) => {
       tooltipTitle={LABEL.VIEW_IN_JIRA}
       icon={ICON_NAME.JIRA}
      />
+     {/* issue */}
      <TableCell>{fields?.summary}</TableCell>
      <TableCell>
+      {/* organization */}
       <Box>{fields?.customfield_10002[0]?.name}</Box>
      </TableCell>
+     {/* machine */}
      <TableCell>{fields?.customfield_10069}</TableCell>
      <TableCell>{fields?.customfield_10070?.value}</TableCell>
      <TableCell>{renderStatus(fields?.status?.statusCategory?.name)}</TableCell>
