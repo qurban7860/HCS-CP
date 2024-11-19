@@ -15,6 +15,7 @@ const SiteCarousel = ({ sites, theme, themeMode, isMain }) => {
     indicators={true}
     interval={null}
     cycleNavigation={false}
+    navButtonsAlwaysVisible={true}
     navButtonsProps={{
      style: {
       backgroundColor: 'transparent',
@@ -52,8 +53,6 @@ const SiteCarousel = ({ sites, theme, themeMode, isMain }) => {
           {isMain(site) && (
            <IconTooltip title={LABEL.MAIN_SITE} icon={ICON_NAME.MAIN_SITE} color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange} dimension={20} iconOnly />
           )}
-
-          <IconTooltip title={'See Map'} icon={ICON_NAME.MAP_MARKER} color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange} dimension={20} cursor />
          </Box>
 
          <GridViewField variant={TYPOGRAPHY.H3} heading='' isLoading={false} gridSize={12} noBreakSpace isNoBg>
