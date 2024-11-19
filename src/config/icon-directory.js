@@ -110,7 +110,8 @@ const ICON_WEB = {
  TRANSFER: _getWebIcon('transfer'),
  TIX_STATUS: _getWebIcon('chevron-up'),
  UPDATE: _getWebIcon('update'),
- WARNING: _getWebIcon('warning')
+ WARNING: _getWebIcon('warning'),
+ WWW: _getWebIcon('world-wide-web')
 }
 
 // add icons that are saved locally
@@ -198,7 +199,8 @@ export const ICON_WEB_NAME = {
  TRANSFER: 'TRANSFER',
  TIX_STATUS: 'TIX_STATUS',
  UPDATE: 'UPDATE',
- WARNING: 'WARNING'
+ WARNING: 'WARNING',
+ WWW: 'WWW'
 }
 
 export const ICON_LOC_NAME = {

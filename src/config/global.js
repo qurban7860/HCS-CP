@@ -22,7 +22,8 @@ export const GLOBAL = {
  MESSAGE_LOGIN_USER: import.meta.env.VITE_MESSAGE_LOGIN_USER,
  GOOGLE_MAPS_API_KEY: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
  IDLE_TIME: import.meta.env.VITE_APP_IDLE_TIME,
- PRIVACY_POLICY_URL: import.meta.env.VITE_PRIVACY_POLICY_URL
+ PRIVACY_POLICY_URL: import.meta.env.VITE_PRIVACY_POLICY_URL,
+ WEBSITE: import.meta.env.VITE_WEBSITE_URL
 }
 
 export const HOST_API_KEY = import.meta.env.VITE_HOST_API_KEY || ''
