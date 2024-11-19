@@ -22,6 +22,7 @@ export { default as SiteCarousel } from './carousel/site-carousel'
 // @chart
 export { default as Chart } from './chart'
 export { default as useChart } from './chart/use-chart'
+export { default as ChartBar } from './chart/chart-bar'
 export { default as LogStackedChart } from './chart/log/log-stacked-chart'
 export { default as LogLineChart } from './chart/log/log-line-chart'
 export { default as ChartStyleOverlay } from './chart/chart-style-overlay'
