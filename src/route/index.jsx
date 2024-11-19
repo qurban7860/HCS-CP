@@ -39,8 +39,7 @@ import {
  LogListPage,
  // fallback:
  BlankPage,
- FallbackPage,
- UserInviteLandingPage
+ FallbackPage
 } from './element'
 
 export default function Router() {
