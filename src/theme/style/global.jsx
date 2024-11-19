@@ -164,6 +164,11 @@ export const GStyledFlexEndBox = styled(Box)(({ theme }) => ({
  flexDirection: 'column-reverse'
 }))
 
+export const GStyledFlexEndGrid = styled(Grid)(({ theme }) => ({
+ display: 'flex',
+ justifyContent: 'flex-end'
+}))
+
 export const GStyledListItemText = styled(ListItemText)(({ theme }) => ({
  '& .MuiListItemText-primary': {
   fontSize: '1.5rem',
