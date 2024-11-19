@@ -1,4 +1,4 @@
-import { memo, useEffect, useLayoutEffect } from 'react'
+import { memo, useEffect, useLayoutEffect, useRef } from 'react'
 import { useAuthContext } from 'auth'
 import { t } from 'i18next'
 import _ from 'lodash'
@@ -9,6 +9,7 @@ import {
  getContacts,
  getCustomerTickets,
  getCustomerMachines,
+ getLogGraphData,
  setMachineDialog,
  setMachineSiteDialog,
  setContactDialog,
@@ -26,16 +27,24 @@ import { GLOBAL } from 'config'
 import { toTitleCase } from 'util'
 import { FLEX } from 'constant'
 
+const LOG_TYPE = 'erp'
+const LOG_PERIOD = 'Quarterly'
+const GRAPH_TYPE = 'length_and_waste'
+
 function GeneralAppPage() {
  const { customer, contacts } = useSelector(state => state.customer)
  const { customerMachines } = useSelector(state => state.machine)
- const { isLoading: isTicketLoading, customerTickets } = useSelector(state => state.customerTicket)
- const { isLoading: isLogLoading, logsGraphData } = useSelector(state => state.log)
  const { user } = useAuthContext()
  const customerId = user?.customer
  const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
 
+ const isMounted = useRef(false)
+
  useEffect(() => {
+  if (GLOBAL.ENV === 'dev' && !isMounted.current) {
+   isMounted.current = true
+   return
+  }
   const debounce = _.debounce(() => {
    if (customerId !== customer?._id) {
     dispatch(getCustomer(customerId))
@@ -43,7 +52,7 @@ function GeneralAppPage() {
   }, 300)
   debounce()
   return () => debounce.cancel()
- }, [customerId])
+ }, [customerId, customer?._id])
 
  useEffect(() => {
   const debounce = _.debounce(() => {
@@ -69,14 +78,30 @@ function GeneralAppPage() {
     dispatch(getCustomerTickets(customer?.ref, 3, customerId))
    }
   }, 300)
-
   debouncedDispatch()
-
   return () => {
    debouncedDispatch.cancel()
    dispatch(resetCustomerTickets())
   }
  }, [dispatch, customer])
+
+ useEffect(() => {
+  if (GLOBAL.ENV === 'dev' && !isMounted.current) {
+   isMounted.current = true
+   return
+  }
+  const debounce = _.debounce(() => {
+   if (customerId) {
+    dispatch(getLogGraphData(customer._id, null, LOG_TYPE, LOG_PERIOD, GRAPH_TYPE))
+   }
+  }, 300)
+  debounce()
+  return () => debounce.cancel()
+ }, [customerId, LOG_TYPE, LOG_PERIOD, GRAPH_TYPE, dispatch])
+
+ //  useLayoutEffect(() => {
+ //   dispatch(getLogGraphData(customer._id, null, LOG_TYPE, LOG_PERIOD, GRAPH_TYPE))
+ //  }, [dispatch])
 
  return (
   <Grid container>
@@ -87,10 +112,14 @@ function GeneralAppPage() {
     <Grid item xs={12}>
      <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
       <Grid item xs={12} sm={8}>
-       {!isLogLoading && logsGraphData && <ProductionTotalGraphWidget />}
+       <ProductionTotalGraphWidget />
       </Grid>
       <Grid item xs={12} sm={4}>
-       {!isTicketLoading && customerTickets?.length > 0 && <SupportTicketWidget value={defaultValues} />}
+       <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
+        <Grid item xs={12} sm={12}>
+         <SupportTicketWidget value={defaultValues} />
+        </Grid>
+       </Grid>
       </Grid>
      </Grid>
     </Grid>
