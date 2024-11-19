@@ -1,43 +1,63 @@
-import { memo, useCallback, useState, useMemo } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useLayoutEffect } from 'react'
 import { t } from 'i18next'
+import _ from 'lodash'
 import PropTypes from 'prop-types'
 import { Icon, useSettingContext, useResponsive, ICON_NAME } from 'hook'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
-import { getLogGraphData } from 'store/slice'
+import { getLogTotalGraphData, resetLogsTotalGraphData } from 'store/slice'
 import { ERPProductionTotal } from 'section/log'
 import { Grid, Autocomplete, TextField } from '@mui/material'
 import { FormHeader, SkeletonGraphLoader } from 'component'
 import { GStyledSpanBox, GStyledLoadingButton } from 'theme/style'
+import { GLOBAL } from 'config'
 import { KEY, FLEX, FLEX_DIR } from 'constant'
 
 const LOG_TYPE = 'erp'
 const LOG_PERIOD = 'Quarterly'
-const GRAPH_TYPE = 'length_and_waste'
 
-const ProductionTotalGraphWidget = ({ value, handleMachineDialog, handleMachineSiteDialog }) => {
- const { isLoading, logsGraphData } = useSelector(state => state.log)
+const ProductionTotalGraphWidget = ({ selectedMachine, setSelectedMachine }) => {
+ const { isLoading, logsTotalGraphData } = useSelector(state => state.log)
  const { customerMachines } = useSelector(state => state.machine)
  const { customer } = useSelector(state => state.customer)
 
- const [selectedMachine, setSelectedMachine] = useState(() => (customerMachines?.length > 0 ? { _id: null, name: 'All' } : { _id: null, name: 'All' }))
+ const isMounted = useRef(false)
  const { themeMode } = useSettingContext()
  const isMobile = useResponsive('down', 'sm')
+
+ useLayoutEffect(() => {
+  dispatch(resetLogsTotalGraphData())
+ }, [dispatch])
 
  const optionsMachines = useMemo(() => {
   return customerMachines?.length > 0 ? [{ _id: null, name: 'All' }, ...customerMachines] : []
  }, [customerMachines])
  const graphLabels = useMemo(() => ({ yaxis: 'Cumulative Total Value', xaxis: LOG_PERIOD }), [])
 
- const handleMachineChange = useCallback((event, newMachine) => {
+ useEffect(() => {
+  if (GLOBAL.ENV === 'dev' && !isMounted.current) {
+   isMounted.current = true
+   return
+  }
+  const debounce = _.debounce(() => {
+   if (customer?._id) {
+    dispatch(getLogTotalGraphData(customer._id, null, LOG_TYPE, LOG_PERIOD))
+   }
+  }, 300)
+  debounce()
+  return () => debounce.cancel()
+ }, [customer?._id, LOG_TYPE, LOG_PERIOD, dispatch])
+
+ const handleTotalGraphMachineChange = useCallback((event, newMachine) => {
   const machineId = newMachine?._id || null
-  dispatch(getLogGraphData(customer._id, machineId, LOG_TYPE, LOG_PERIOD, GRAPH_TYPE))
+  dispatch(resetLogsTotalGraphData())
+  dispatch(getLogTotalGraphData(customer._id, machineId, LOG_TYPE, LOG_PERIOD))
  }, [])
 
  const handleRefresh = useCallback(() => {
   if (customer?._id && selectedMachine?._id) {
    const machineId = selectedMachine?._id || null
-   dispatch(getLogGraphData(customer._id, machineId, LOG_TYPE, LOG_PERIOD, GRAPH_TYPE))
+   dispatch(getLogTotalGraphData(customer._id, machineId, LOG_TYPE, LOG_PERIOD))
   }
  }, [customer?._id, selectedMachine?._id, dispatch])
 
@@ -77,7 +97,7 @@ const ProductionTotalGraphWidget = ({ value, handleMachineDialog, handleMachineS
          )}
          onChange={(event, newMachine) => {
           setSelectedMachine(newMachine)
-          handleMachineChange(event, newMachine)
+          handleTotalGraphMachineChange(event, newMachine)
          }}
         />
        </Grid>
@@ -91,7 +111,7 @@ const ProductionTotalGraphWidget = ({ value, handleMachineDialog, handleMachineS
       </Grid>
      </Grid>
      <Grid item xs={12}>
-      <ERPProductionTotal timePeriod={LOG_PERIOD} customer={customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard graphHeight={300} />
+      <ERPProductionTotal timePeriod={LOG_PERIOD} customer={customer} graphLabels={graphLabels} logsGraphData={logsTotalGraphData} isDashboard graphHeight={300} />
      </Grid>
     </Grid>
    </Grid>
@@ -100,9 +120,9 @@ const ProductionTotalGraphWidget = ({ value, handleMachineDialog, handleMachineS
 }
 
 ProductionTotalGraphWidget.propTypes = {
- value: PropTypes.object,
- handleMachineDialog: PropTypes.func,
- handleMachineSiteDialog: PropTypes.func
+ selectedMachine: PropTypes.object,
+ setSelectedMachine: PropTypes.func,
+ handleMachineChange: PropTypes.func
 }
 
 export default memo(ProductionTotalGraphWidget)
