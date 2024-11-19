@@ -45,11 +45,6 @@ function RegisterForm() {
   return foundCountry ? foundCountry : { code: '', label: '', phone: '64' }
  }
 
- const updatePhoneCountryCode = country => {
-  const countryCode = country?.phone?.replace(/[^0-9]/g, '')
-  setValue('phoneNumber.countryCode', countryCode)
- }
-
  const getUserLocation = () => {
   if (navigator.geolocation) {
    navigator.geolocation.getCurrentPosition(
@@ -68,7 +63,6 @@ function RegisterForm() {
   } else {
    const userCountry = getCountryByLocale()
    setValue('country', userCountry)
-   //    updatePhoneCountryCode(userCountry)
   }
  }
 
@@ -87,11 +81,10 @@ function RegisterForm() {
   setValue,
   watch,
   handleSubmit,
-  control,
   formState: { errors, isSubmitting, isSubmitSuccessful },
   clearErrors
  } = methods
- const { customerName, machineSerialNos, address, country, contactPersonName, email } = watch()
+ const { customerName, machineSerialNos, country, contactPersonName, email } = watch()
 
  const checkFormCompletion = useCallback(() => {
   setIsFormComplete(!!customerName && !!contactPersonName && !!country && !!email && machineSerialNos.length > 0)
@@ -300,10 +293,7 @@ function RegisterForm() {
      </Grid>
     </Grid>
 
-    <Grid
-     container
-     direction={{ xs: 'column', md: 'row' }} // Responsive direction
-     justifyContent='center'>
+    <Grid container direction={{ xs: 'column', md: 'row' }} justifyContent='center'>
      <Grid container justifyContent='center' mt={2} mb={2}>
       <Typography variant={TYPOGRAPHY.BODY2}>
        <Trans i18nKey='register_agreement' components={{ 1: <Link href={GLOBAL.PRIVACY_POLICY_URL} /> }} />
