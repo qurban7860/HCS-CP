@@ -1,4 +1,4 @@
-import { memo, useEffect, useLayoutEffect, useRef } from 'react'
+import { memo, useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react'
 import { useAuthContext } from 'auth'
 import { t } from 'i18next'
 import _ from 'lodash'
@@ -9,7 +9,6 @@ import {
  getContacts,
  getCustomerTickets,
  getCustomerMachines,
- getLogGraphData,
  setMachineDialog,
  setMachineSiteDialog,
  setContactDialog,
@@ -20,16 +19,12 @@ import {
 } from 'store/slice'
 import { useCustomerDefaultValues } from 'section/crm/customer'
 import { SupportTicketWidget } from 'section/crm/support'
-import { ProductionTotalGraphWidget } from 'section/dashboard'
+import { ProductionTotalGraphWidget, ProductionRateGraphWidget } from 'section/dashboard'
 import { Grid } from '@mui/material'
 import { Welcome } from 'component/widget'
 import { GLOBAL } from 'config'
 import { toTitleCase } from 'util'
 import { FLEX } from 'constant'
-
-const LOG_TYPE = 'erp'
-const LOG_PERIOD = 'Quarterly'
-const GRAPH_TYPE = 'length_and_waste'
 
 function GeneralAppPage() {
  const { customer, contacts } = useSelector(state => state.customer)
@@ -38,7 +33,11 @@ function GeneralAppPage() {
  const customerId = user?.customer
  const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
 
+ const allMachineDefault = { _id: null, name: 'All' }
+
  const isMounted = useRef(false)
+ const [rateSelectedMachine, setRateSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
+ const [totalSelectedMachine, setTotalSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
 
  useEffect(() => {
   if (GLOBAL.ENV === 'dev' && !isMounted.current) {
@@ -85,24 +84,6 @@ function GeneralAppPage() {
   }
  }, [dispatch, customer])
 
- useEffect(() => {
-  if (GLOBAL.ENV === 'dev' && !isMounted.current) {
-   isMounted.current = true
-   return
-  }
-  const debounce = _.debounce(() => {
-   if (customerId) {
-    dispatch(getLogGraphData(customer._id, null, LOG_TYPE, LOG_PERIOD, GRAPH_TYPE))
-   }
-  }, 300)
-  debounce()
-  return () => debounce.cancel()
- }, [customerId, LOG_TYPE, LOG_PERIOD, GRAPH_TYPE, dispatch])
-
- //  useLayoutEffect(() => {
- //   dispatch(getLogGraphData(customer._id, null, LOG_TYPE, LOG_PERIOD, GRAPH_TYPE))
- //  }, [dispatch])
-
  return (
   <Grid container>
    <Grid container spacing={3} mt={2}>
@@ -112,7 +93,7 @@ function GeneralAppPage() {
     <Grid item xs={12}>
      <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
       <Grid item xs={12} sm={8}>
-       <ProductionTotalGraphWidget />
+       <ProductionTotalGraphWidget selectedMachine={totalSelectedMachine} setSelectedMachine={setTotalSelectedMachine} />
       </Grid>
       <Grid item xs={12} sm={4}>
        <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
@@ -121,6 +102,11 @@ function GeneralAppPage() {
         </Grid>
        </Grid>
       </Grid>
+     </Grid>
+    </Grid>
+    <Grid item xs={12}>
+     <Grid item xs={12} sm={8}>
+      <ProductionRateGraphWidget selectedMachine={rateSelectedMachine} setSelectedMachine={setRateSelectedMachine} />
      </Grid>
     </Grid>
    </Grid>
