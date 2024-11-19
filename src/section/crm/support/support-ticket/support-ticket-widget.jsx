@@ -104,9 +104,13 @@ const SupportTicketWidget = ({ value, handleMachineDialog, handleMachineSiteDial
        </m.div>
       ) : (
        <Grid container>
-        <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
-         {t('active_support_ticket.no_active_tickets_found.label')}
-        </Typography>
+        <Grid item xs={12} sx={{ width: '420px' }}>
+         <Grid container justifyContent={'space-between'}>
+          <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
+           {t('active_support_ticket.no_active_tickets_found.label')}
+          </Typography>
+         </Grid>
+        </Grid>
        </Grid>
       )}
      </Grid>
