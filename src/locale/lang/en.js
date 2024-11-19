@@ -268,6 +268,7 @@ const en = {
   },
   success: {
    logged_in: 'Logged in',
+   logged_out: 'Logged out',
    register_request_submitted: 'Registration request submitted',
    details_updated: 'User details updated, navigating you to the Login page...',
    password_updated: 'Password updated',
@@ -275,12 +276,13 @@ const en = {
   },
   error: {
    form_check_errors: 'Please check the form for errors',
+   invalid_credentials: 'Invalid credentials',
    machine_serial_invalid: 'Machine serial number provided is invalid',
    something_went_wrong: 'Something went wrong',
    unable_to_process_request: 'Unable to process your request',
    unable_save_details: 'Unable to save details',
    unable_read_error_message: 'Unable to read error message',
-   invalid_credentials: 'Invalid credentials',
+   unable_logout: 'Unable to logout',
    unexpected_error: 'An unexpected error occurred'
   }
  },
