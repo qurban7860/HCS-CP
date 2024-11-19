@@ -97,10 +97,10 @@ function LoginForm() {
   <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
    <Stack spacing={3} sx={{ mt: 1 }}>
     {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
-    <RHFTextField type={KEY.EMAIL} name={KEY.EMAIL} label={LABEL.LOGIN_EMAIL} autoComplete={KEY.USERNAME} aria-label={LABEL.LOGIN_EMAIL} required />
-    <RHFPasswordField name={KEY.PASSWORD} id={KEY.PASSWORD} label={LABEL.LOGIN_PASSWORD} autoComplete={KEY.CURRENT_PASSWORD} aria-label={LABEL.LOGIN_PASSWORD} />
+    <RHFTextField type={KEY.EMAIL} name={KEY.EMAIL} label={t('login.login_email.label')} autoComplete={KEY.USERNAME} aria-label={LABEL.LOGIN_EMAIL} required />
+    <RHFPasswordField name={KEY.PASSWORD} id={KEY.PASSWORD} label={t('password.label')} autoComplete={KEY.CURRENT_PASSWORD} aria-label={LABEL.LOGIN_PASSWORD} />
    </Stack>
-   <RHFCheckbox name={KEY.REMEMBER} label={BUTTON.REMEMBER_ME} />
+   <RHFCheckbox name={KEY.REMEMBER} label={t('remember_me.label')} />
    <GStyledLoadingButton
     fullWidth
     className='portal-button'
