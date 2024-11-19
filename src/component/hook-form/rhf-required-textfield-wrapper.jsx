@@ -22,7 +22,7 @@ const RHFRequiredTextFieldWrapper = ({ condition, children }) => {
      //  backgroundColor: condition ? theme.palette.error.main : theme.palette.burnIn.altDark,
      borderRadius: '0.2em'
     }}>
-    {condition ? <Typography variant={TYPOGRAPHY.OVERLINE0}>{t('required.label')}</Typography> : ''}
+    {condition ? <Typography variant={TYPOGRAPHY.OVERLINE0}>{'*'}</Typography> : ''}
    </Box>
   </Box>
  )
