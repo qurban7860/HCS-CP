@@ -245,7 +245,6 @@ export function registerCustomer(params) {
     phoneNumber: params?.phoneNumber,
     customerNote: params?.customerNote
    }
-   console.log(data)
    const response = await axios.post(PATH_SERVER.CRM.CUSTOMER.register, data)
    return response
   } catch (error) {

@@ -106,6 +106,9 @@ const en = {
   local: `home`,
   label: `Home`
  },
+ howick_website: {
+  label: `Howick Website`
+ },
  machine: {
   local: `machine`,
   label: `Machine`,
@@ -119,10 +122,10 @@ const en = {
    label: `Next Steps`
   },
   registration_process: {
-   title: 'Registration Request was submitted',
+   title: 'Registration Request has been submitted',
    first: 'Our team will review your registration request',
    second: 'You will receive further instructions within 12-48 hours',
-   last: 'Check your email for the invitation link'
+   last: 'Check your email (<1>{{email}}</1>) for the invitation link'
   }
  },
  no_coordinates_provided: {
@@ -148,7 +151,10 @@ const en = {
   label: `Document`
  },
  login: {
-  label: `Login`
+  label: `Login`,
+  login_email: {
+   label: `Login / Email address`
+  }
  },
  login_page: {
   label: `Login Page`
@@ -237,6 +243,9 @@ const en = {
   confirm_password: {
    label: `Confirm Password`
   },
+  set_password: {
+   label: `Set Password`
+  },
   set_new_password: {
    label: `Set New Password`
   },
@@ -254,11 +263,14 @@ const en = {
  register: {
   label: `Register`
  },
- reset_password: {
-  label: `Reset Password`
+ remember_me: {
+  label: `Remember me`
  },
  required: {
   label: `Required`
+ },
+ reset_password: {
+  label: `Reset Password`
  },
  responses: {
   label: `Responses`,
@@ -291,6 +303,9 @@ const en = {
  },
  send_reset_password_request: {
   label: `Send Reset Password Request`
+ },
+ submit: {
+  label: `Submit`
  },
  submitted_details: {
   label: `Submitted Details`

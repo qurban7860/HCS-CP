@@ -1,24 +1,22 @@
-import { memo, useEffect, useState, useCallback } from 'react'
+import { Fragment, memo, useEffect, useState, useCallback } from 'react'
 import { t } from 'i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { SetPasswordSchema } from 'schema'
 import { dispatch, useSelector } from 'store'
 import { PATH_PAGE, PATH_AUTH } from 'route/path'
-import { useSetPasswordDefaultValues } from 'section/auth/default-value'
 import { verifiedUserInvite, updateUserInvite } from 'store/slice'
-import { snack } from 'hook'
+import { snack, useResponsive } from 'hook'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Stack, Alert, Box } from '@mui/material'
-import { GStyledLoadingButton } from 'theme/style'
-import { RHFTextField, RHFPhoneInput, RHFRequiredTextFieldWrapper } from 'component'
+import { useSetPasswordDefaultValues } from 'section/auth/default-value'
+import { PasswordCriteriaList } from 'section/auth'
+import { Stack, Alert, Box, Typography } from '@mui/material'
+import { GStyledLoadingButton, GStyledCenteredTextBox, GStyledCenteredTextHeightBox } from 'theme/style'
+import { RHFTextField, RHFRequiredTextFieldWrapper } from 'component'
 import FormProvider, { RHFPasswordField } from 'component/hook-form'
-import { REGEX, KEY, LABEL, SNACK, SIZE, COLOR } from 'constant'
+import { REGEX, KEY, LABEL, SNACK, SIZE, COLOR, TYPOGRAPHY } from 'constant'
 import { delay } from 'util'
 
-/**
- * [!NOTE]: SetPasswordForm
- */
 function SetPasswordForm() {
  const [isFormComplete, setIsFormComplete] = useState(false)
  const { id, code, expiry } = useParams()
@@ -26,6 +24,7 @@ function SetPasswordForm() {
  const expired = new Date(expiry).getTime() > new Date().getTime()
 
  const navigate = useNavigate()
+ const isMobile = useResponsive('down', 'sm')
  const regEx = new RegExp(REGEX.ERROR_CODE)
 
  const defaultValues = useSetPasswordDefaultValues(verifiedInvite)
@@ -61,7 +60,7 @@ function SetPasswordForm() {
  useEffect(() => {
   setValue('customerName', verifiedInvite?.customerName || '')
   setValue('contactName', verifiedInvite?.contactName || '')
-  setValue('fullName', '')
+  setValue('fullName', verifiedInvite?.fullName || '')
   setValue('phone', verifiedInvite?.phone || '')
   setValue('login', verifiedInvite?.login || '')
   setValue('email', verifiedInvite?.email || '')
@@ -69,8 +68,8 @@ function SetPasswordForm() {
 
  const { fullName, login, email, password, confirmPassword } = watch()
  const checkFormCompletion = useCallback(() => {
-  setIsFormComplete(!!email && password === confirmPassword)
- }, [email, password, confirmPassword])
+  setIsFormComplete(password && confirmPassword && password === confirmPassword)
+ }, [password, confirmPassword])
 
  useEffect(() => {
   checkFormCompletion()
@@ -111,51 +110,60 @@ function SetPasswordForm() {
  }
 
  return (
-  <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-   <Stack spacing={3} sx={{ mt: 1, mb: 3 }}>
-    {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
-    <Stack spacing={2}>
-     <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }}>
-      {!!errors.afterSubmit && <Alert severity='error'>{errors.afterSubmit.message}</Alert>}
-      <RHFTextField name='customerName' label='Customer' disabled />
-      <RHFTextField name='contactName' label='Contact' disabled />
-      <RHFRequiredTextFieldWrapper condition={!fullName}>
-       <RHFTextField
-        name='fullName'
-        label={t('full_name.label')}
-        autoComplete={KEY.NAME}
-        placeholder={t('full_name.label')}
-        aria-label={t('full_name.label')}
-        helperText={errors.fullName ? errors.fullName.message : ''}
-        required
-       />
-      </RHFRequiredTextFieldWrapper>
-      <RHFPhoneInput name='phone' label={t('contact_number.label')} />
-     </Box>
-     <RHFTextField name='login' label={t('login_email.label')} disabled />
-     <Box rowGap={3} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }}>
-      <RHFRequiredTextFieldWrapper condition={REGEX.PASSWORD.test(password) === false}>
-       <RHFPasswordField name={KEY.PASSWORD} id={KEY.PASSWORD} label={LABEL.LOGIN_PASSWORD} autoComplete={KEY.CURRENT_PASSWORD} aria-label={LABEL.LOGIN_PASSWORD} />
-      </RHFRequiredTextFieldWrapper>
-      <RHFRequiredTextFieldWrapper condition={password !== confirmPassword}>
-       <RHFPasswordField name={'confirmPassword'} id={'confirmPassword'} label={t('password.confirm_password.label')} autoComplete={KEY.CURRENT_PASSWORD} aria-label={LABEL.LOGIN_PASSWORD} />
-      </RHFRequiredTextFieldWrapper>
-     </Box>
+  <Fragment>
+   <GStyledCenteredTextBox>
+    <Typography sx={{ color: 'grey.400', mb: 5 }} variant={TYPOGRAPHY.H3}>
+     {t('password.set_password.label').toUpperCase()}
+    </Typography>
+   </GStyledCenteredTextBox>
+   <GStyledCenteredTextHeightBox height={'20%'}>
+    <PasswordCriteriaList password={password} confirmPassword={confirmPassword} />
+   </GStyledCenteredTextHeightBox>
+   <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Stack spacing={3} sx={{ mt: 4, mb: 3 }}>
+     {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
+     <Stack spacing={2}>
+      <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }}>
+       {!!errors.afterSubmit && <Alert severity='error'>{errors.afterSubmit.message}</Alert>}
+       <RHFTextField name='customerName' label='Customer' disabled />
+       <RHFRequiredTextFieldWrapper condition={!fullName}>
+        <RHFTextField
+         name='fullName'
+         label={t('full_name.label')}
+         autoComplete={KEY.NAME}
+         placeholder={t('full_name.label')}
+         aria-label={t('full_name.label')}
+         helperText={errors.fullName ? errors.fullName.message : ''}
+         disabled
+         required
+        />
+       </RHFRequiredTextFieldWrapper>
+      </Box>
+      <RHFTextField name='login' label={t('login_email.label')} disabled />
+      <Box rowGap={3} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }}>
+       <RHFRequiredTextFieldWrapper condition={REGEX.PASSWORD.test(password) === false}>
+        <RHFPasswordField name={KEY.PASSWORD} id={KEY.PASSWORD} label={LABEL.LOGIN_PASSWORD} autoComplete={KEY.CURRENT_PASSWORD} aria-label={LABEL.LOGIN_PASSWORD} />
+       </RHFRequiredTextFieldWrapper>
+       <RHFRequiredTextFieldWrapper condition={password !== confirmPassword}>
+        <RHFPasswordField name={'confirmPassword'} id={'confirmPassword'} label={t('password.confirm_password.label')} autoComplete={KEY.CURRENT_PASSWORD} aria-label={LABEL.LOGIN_PASSWORD} />
+       </RHFRequiredTextFieldWrapper>
+      </Box>
+     </Stack>
     </Stack>
-   </Stack>
 
-   <GStyledLoadingButton
-    sx={{ justifySelf: 'flex-end', display: 'flex' }}
-    isLoading={isSubmitting}
-    color={KEY.INHERIT}
-    size={SIZE.LARGE}
-    type={KEY.SUBMIT}
-    variant={KEY.CONTAINED}
-    loading={isSubmitSuccessful || isSubmitting}
-    disabled={!isFormComplete}>
-    {t('save.label').toUpperCase()}
-   </GStyledLoadingButton>
-  </FormProvider>
+    <GStyledLoadingButton
+     sx={{ justifySelf: 'flex-end', display: 'flex' }}
+     isLoading={isSubmitting}
+     color={KEY.INHERIT}
+     size={SIZE.LARGE}
+     type={KEY.SUBMIT}
+     variant={KEY.CONTAINED}
+     loading={isSubmitSuccessful || isSubmitting}
+     disabled={!isFormComplete}>
+     {t('submit.label').toUpperCase()}
+    </GStyledLoadingButton>
+   </FormProvider>
+  </Fragment>
  )
 }
 

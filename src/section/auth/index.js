@@ -5,6 +5,7 @@ export { default as LoginForm } from './login/login-form'
 
 export { default as NewPassword } from './new-password/new-password'
 export { default as NewPasswordForm } from './new-password/new-password-form'
+export { default as PasswordCriteriaList } from './new-password/password-criteria-list'
 
 export { default as Register } from './register/register'
 export { default as RegisterForm } from './register/register-form'

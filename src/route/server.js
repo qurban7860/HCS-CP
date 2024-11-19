@@ -1,4 +1,4 @@
-import { GLOBAL } from 'global'
+import { GLOBAL } from 'config/global'
 import { conNex } from 'util'
 
 const _baseUrl = GLOBAL.SERVER_URL

@@ -38,7 +38,7 @@ export const ContactPage = Loadable(lazy(() => import('page/crm/contact/contact'
 export const SitePage = Loadable(lazy(() => import('page/crm/site/site')))
 // customer-support
 export const CustomerSupportTicketsPage = Loadable(lazy(() => import('page/crm/support/tickets')))
-//log
+// log
 export const LogListPage = Loadable(lazy(() => import('page/log/logs')))
 // support
 export const TicketsListPage = Loadable(lazy(() => import('page/support/tickets/tickets')))
@@ -51,4 +51,3 @@ export const UserProfilePage = Loadable(lazy(() => import('page/security/user/us
 export const BlankPage = Loadable(lazy(() => import('page/dashboard/blank')))
 // fallback
 export const FallbackPage = Loadable(lazy(() => import('page/fallback/fallback')))
-export const UserInviteLandingPage = Loadable(lazy(() => import('page/fallback/user-invite')))
