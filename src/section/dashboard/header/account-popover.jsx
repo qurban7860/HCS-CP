@@ -1,5 +1,6 @@
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useState, useEffect, useRef } from 'react'
 import { t } from 'i18next'
+import _ from 'lodash'
 import { useNavigate, Link as RouterLink } from 'react-router-dom'
 import { useAuthContext } from 'auth'
 import { useSelector } from 'react-redux'
@@ -10,6 +11,7 @@ import { Box, Divider, Dialog, Typography, Stack, MenuItem, Link } from '@mui/ma
 import { CustomAvatar, MenuPopover, IconButtonAnimate, ChangePasswordDialog } from 'component'
 import { themePreset } from 'theme'
 import { SNACK, COLOR, TYPOGRAPHY } from 'constant'
+import { GLOBAL } from 'config/global'
 import { OPTION } from './util'
 import LanguagePopover from './language-popover'
 
@@ -17,11 +19,27 @@ export default function AccountPopover() {
  const { user, logout } = useAuthContext()
  const { customer } = useSelector(state => state.customer)
  const navigate = useNavigate()
+ const customerId = user?.customer
+ const isMounted = useRef(false)
 
  const [openPopover, setOpenPopover] = useState(null)
  const [openLang, setOpenLang] = useState(false)
  const [open, setOpen] = useState(false)
  const { themeMode, themeLayout, themeStretch, themeContrast, themeDirection, themeColorPreset, onResetSetting } = useSettingContext()
+
+ useEffect(() => {
+  if (GLOBAL.ENV === 'dev' && !isMounted.current) {
+   isMounted.current = true
+   return
+  }
+  const debounce = _.debounce(() => {
+   if (customerId !== customer?._id) {
+    dispatch(getCustomer(customerId))
+   }
+  }, 300)
+  debounce()
+  return () => debounce.cancel()
+ }, [customerId, customer?._id])
 
  const handleOpenPopover = event => {
   setOpenPopover(event.currentTarget)

@@ -15,7 +15,8 @@ import {
  resetCustomerMachines,
  resetMachineSiteDialogData,
  resetContact,
- resetCustomerTickets
+ resetCustomerTickets,
+ resetCustomers
 } from 'store/slice'
 import { useCustomerDefaultValues } from 'section/crm/customer'
 import { SupportTicketWidget } from 'section/crm/support'
@@ -39,19 +40,19 @@ function GeneralAppPage() {
  const [rateSelectedMachine, setRateSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
  const [totalSelectedMachine, setTotalSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
 
- useEffect(() => {
-  if (GLOBAL.ENV === 'dev' && !isMounted.current) {
-   isMounted.current = true
-   return
-  }
-  const debounce = _.debounce(() => {
-   if (customerId !== customer?._id) {
-    dispatch(getCustomer(customerId))
-   }
-  }, 300)
-  debounce()
-  return () => debounce.cancel()
- }, [customerId, customer?._id])
+ //  useEffect(() => {
+ //   if (GLOBAL.ENV === 'dev' && !isMounted.current) {
+ //    isMounted.current = true
+ //    return
+ //   }
+ //   const debounce = _.debounce(() => {
+ //    if (customerId !== customer?._id) {
+ //     dispatch(getCustomer(customerId))
+ //    }
+ //   }, 300)
+ //   debounce()
+ //   return () => debounce.cancel()
+ //  }, [customerId, customer?._id])
 
  useEffect(() => {
   const debounce = _.debounce(() => {
@@ -67,6 +68,7 @@ function GeneralAppPage() {
   dispatch(setMachineSiteDialog(false))
   dispatch(setContactDialog(false))
   dispatch(resetCustomerMachines())
+  dispatch(resetCustomers())
   dispatch(resetContact())
   dispatch(resetMachineSiteDialogData())
  }, [dispatch])
