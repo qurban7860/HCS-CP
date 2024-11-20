@@ -1,10 +1,10 @@
-import { Fragment, useState, useEffect, useRef } from 'react'
+import { Fragment, useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { t } from 'i18next'
 import _ from 'lodash'
 import { useNavigate, Link as RouterLink } from 'react-router-dom'
 import { useAuthContext } from 'auth'
 import { useSelector } from 'react-redux'
-import { getCustomer, setChangePasswordDialog } from 'store/slice'
+import { getCustomer, setChangePasswordDialog, resetCustomer } from 'store/slice'
 import { dispatch } from 'store'
 import { useSettingContext, DisplayDialog, snack, Icon, ICON_NAME } from 'hook'
 import { Box, Divider, Dialog, Typography, Stack, MenuItem, Link } from '@mui/material'
@@ -23,9 +23,12 @@ export default function AccountPopover() {
  const isMounted = useRef(false)
 
  const [openPopover, setOpenPopover] = useState(null)
- const [openLang, setOpenLang] = useState(false)
  const [open, setOpen] = useState(false)
  const { themeMode, themeLayout, themeStretch, themeContrast, themeDirection, themeColorPreset, onResetSetting } = useSettingContext()
+
+ useLayoutEffect(() => {
+  dispatch(resetCustomer())
+ }, [dispatch])
 
  useEffect(() => {
   if (GLOBAL.ENV === 'dev' && !isMounted.current) {
