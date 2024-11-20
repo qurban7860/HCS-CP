@@ -32,13 +32,11 @@ export default function AccountPopover() {
 
  useEffect(() => {
   const debounce = _.debounce(() => {
-   if (customerId && customer?._id) {
-    dispatch(getCustomer(customerId))
-   }
+   dispatch(getCustomer(customerId))
   }, 300)
   debounce()
   return () => debounce.cancel()
- }, [customerId, customer?._id])
+ }, [dispatch])
 
  const handleOpenPopover = event => {
   setOpenPopover(event.currentTarget)
