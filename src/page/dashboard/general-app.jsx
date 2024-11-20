@@ -45,22 +45,20 @@ function GeneralAppPage() {
   dispatch(setMachineSiteDialog(false))
   dispatch(setContactDialog(false))
   dispatch(resetCustomerMachines())
-  dispatch(resetCustomer())
+  //   dispatch(resetCustomer())
   dispatch(resetContact())
   dispatch(resetMachineSiteDialogData())
  }, [dispatch])
 
- useEffect(() => {
-  if (GLOBAL.ENV === 'dev' && !isMounted.current) {
-   isMounted.current = true
-   return
-  }
-  const debounce = _.debounce(() => {
-   dispatch(getCustomer(customerId))
-  }, 300)
-  debounce()
-  return () => debounce.cancel()
- }, [customerId, customer?._id])
+ //  useEffect(() => {
+ //   const debounce = _.debounce(() => {
+ //    if (customerId && customer?._id) {
+ //     dispatch(getCustomer(customerId))
+ //    }
+ //   }, 300)
+ //   debounce()
+ //   return () => debounce.cancel()
+ //  }, [customerId, customer?._id])
 
  useEffect(() => {
   const debounce = _.debounce(() => {

@@ -31,12 +31,10 @@ export default function AccountPopover() {
  }, [dispatch])
 
  useEffect(() => {
-  if (GLOBAL.ENV === 'dev' && !isMounted.current) {
-   isMounted.current = true
-   return
-  }
   const debounce = _.debounce(() => {
-   dispatch(getCustomer(customerId))
+   if (customerId && customer?._id) {
+    dispatch(getCustomer(customerId))
+   }
   }, 300)
   debounce()
   return () => debounce.cancel()
