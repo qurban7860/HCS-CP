@@ -60,6 +60,12 @@ const en = {
  dashboard: {
   label: `Dashboard`
  },
+ detail: {
+  label: `Detail`,
+  details: {
+   label: `Details`
+  }
+ },
  group: {
   label: `Group`
  },
@@ -313,6 +319,9 @@ const en = {
  },
  send_reset_password_request: {
   label: `Send Reset Password Request`
+ },
+ see_more: {
+  label: `See More`
  },
  submit: {
   label: `Submit`
