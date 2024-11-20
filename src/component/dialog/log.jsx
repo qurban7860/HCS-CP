@@ -1,12 +1,12 @@
 import { Fragment, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
+import { t } from 'i18next'
 import { Icon, ICON_NAME, useSettingContext } from 'hook'
-import { Dialog, DialogActions, DialogContent, DialogTitle, Divider, Typography, Stack, Accordion, AccordionSummary, AccordionDetails, Box, Grid, TextField, Skeleton } from '@mui/material'
-import { SkeletonLoading, BadgeCardMedia, CodeRaw, Button } from 'component'
+import { Dialog, DialogActions, DialogContent, DialogTitle, Divider, Typography, Accordion, AccordionSummary, AccordionDetails, Box, Grid } from '@mui/material'
+import { SkeletonLoading, CodeRaw, Button } from 'component'
 import { styled, useTheme } from '@mui/material/styles'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { GStyledTopBorderDivider, GStyledSpanBox } from 'theme/style'
-import { Iconify } from 'component/iconify'
 import { camelCaseNormalizer } from 'util'
 import { TYPOGRAPHY, FLEX, KEY } from 'constant'
 
@@ -18,13 +18,11 @@ const ResponsiveGrid = styled(Grid)(({ theme }) => ({
 
 const extraInfo = ['customer', 'machine', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'isActive', 'isArchived', 'createdIP', 'updatedIP', 'archivedByMachine', 'batchId']
 
-function LogDetailsDialog({ logDetails, logType, open, setOpenLogDetailsDialog, refreshLogsList, isLogsPage, componentTitle }) {
+function LogDetailsDialog({ logDetails, open, setOpenLogDetailsDialog, componentTitle }) {
  const [logsToShow, setLogsToShow] = useState({})
  const { isLoading } = useSelector(state => state.log)
  const { themeMode } = useSettingContext()
  const theme = useTheme()
-
- const isArchivedStatus = logDetails?.isArchived
 
  useEffect(() => {
   if (logDetails) {
@@ -35,7 +33,6 @@ function LogDetailsDialog({ logDetails, logType, open, setOpenLogDetailsDialog, 
 
  const formatMachineLogToShow = log => {
   const { createdIP, updatedIP, __v, machine, customer, updatedBy, createdBy, archivedByMachine, createdAt, updatedAt, isActive, isArchived, type, version, batchId, ...rest } = log
-
   return { ...rest }
  }
 
@@ -47,7 +44,7 @@ function LogDetailsDialog({ logDetails, logType, open, setOpenLogDetailsDialog, 
   if (isLoading) {
    return <SkeletonLoading />
   }
-  return <LogDetailsRaw logsToShow={logsToShow} logDetails={logDetails} />
+  return <LogDetailsRaw logsToShow={logsToShow} logDetails={logDetails} mode={themeMode} />
  }
 
  return (
@@ -64,18 +61,13 @@ function LogDetailsDialog({ logDetails, logType, open, setOpenLogDetailsDialog, 
       <Typography variant={TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.howick.bronze}>
        {componentTitle?.componentLabel}
       </Typography>
-      {/* <BadgeCardMedia dimension={40} /> */}
      </GStyledSpanBox>
     </DialogTitle>
     <Divider orientation='horizontal' flexItem sx={{ mb: 2 }} />
     <DialogContent>{renderDialogContent()}</DialogContent>
     <DialogActions>
-     <Grid container>
-      <Grid item sm={12}>
-       <Grid container justifyContent={FLEX.FLEX_END}>
-        <Button label={'Close'} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCloseDialog} color={theme.palette.error.dark} />
-       </Grid>
-      </Grid>
+     <Grid container justifyContent={FLEX.FLEX_END}>
+      <Button label={t('close.label')} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCloseDialog} color={themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white} />
      </Grid>
     </DialogActions>
    </Dialog>
@@ -95,30 +87,35 @@ LogDetailsDialog.propTypes = {
  componentTitle: PropTypes.object
 }
 
-const LogDetailsRaw = ({ logsToShow, logDetails }) => {
+const LogDetailsRaw = ({ logsToShow, logDetails, mode }) => {
  const theme = useTheme()
  return (
   <Fragment>
-   <ResponsiveGrid container spacing={2}>
-    {extraInfo.map((info, index) => (
-     <Grid item xs={12} sm={6} key={index}>
-      <Box sx={{ mb: 2 }}>
-       <Typography variant='body2' color={theme.palette.text.secondary} sx={{ fontWeight: 'bold' }}>
-        {camelCaseNormalizer(info)}:
-       </Typography>
-       <Typography variant='body2' color={theme.palette.text.secondary}>
-        {JSON.stringify(logDetails[info])?.replaceAll('"', '')}
-       </Typography>
-      </Box>
-     </Grid>
-    ))}
-   </ResponsiveGrid>
+   <CodeRaw value={JSON.stringify(logsToShow, null, 2)} HandleChangeIniJson={() => {}} editable={false} disableTopBar autoHeight />
+
    <Accordion>
-    <AccordionSummary aria-controls='panel1-content' id='panel1-header' expandIcon={<Iconify icon='ep:arrow-down-bold' color={theme.palette.text.secondary} />}>
-     <Typography variant={TYPOGRAPHY.H5}>Raw Details</Typography>
+    <AccordionSummary
+     aria-controls='panel1-content'
+     id='panel1-header'
+     expandIcon={<Icon icon={ICON_NAME.CHEVRON_DOWN} color={mode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white} />}
+     sx={{ backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[700] }}>
+     <Typography variant={TYPOGRAPHY.H5}> {t('see_more.label').toUpperCase()}</Typography>
     </AccordionSummary>
     <AccordionDetails>
-     <CodeRaw value={JSON.stringify(logsToShow, null, 2)} HandleChangeIniJson={() => {}} editable={false} disableTopBar autoHeight />
+     <ResponsiveGrid container spacing={2} sx={{ backgroundColor: 'transparent' }}>
+      {extraInfo.map((info, index) => (
+       <Grid item xs={12} sm={6} key={index}>
+        <Box sx={{ mb: 2 }}>
+         <Typography variant={TYPOGRAPHY.BODY2} color={mode === KEY.LIGHT ? theme.palette.grey[700] : theme.palette.common.white} sx={{ fontWeight: 'bold' }}>
+          {camelCaseNormalizer(info)}:
+         </Typography>
+         <Typography variant={TYPOGRAPHY.BODY2} color={mode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white}>
+          {JSON.stringify(logDetails[info])?.replaceAll('"', '')}
+         </Typography>
+        </Box>
+       </Grid>
+      ))}
+     </ResponsiveGrid>
     </AccordionDetails>
    </Accordion>
   </Fragment>
@@ -127,5 +124,6 @@ const LogDetailsRaw = ({ logsToShow, logDetails }) => {
 
 LogDetailsRaw.propTypes = {
  logsToShow: PropTypes.object,
- logDetails: PropTypes.object
+ logDetails: PropTypes.object,
+ mode: PropTypes.string
 }
