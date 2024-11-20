@@ -126,7 +126,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
 
  return (
   <Grid item xs={12} sm={12} md={12} lg={10} xl={isDashboard ? 12 : 6} sx={{ mt: 3 }}>
-   <GStyledSpanBox alignItems={'center'} my={2} sx={{ display: 'flex', justifyContent: FLEX.SPACE_BETWEEN }}>
+   <GStyledSpanBox alignItems={KEY.CENTER} my={2} sx={{ display: FLEX.FLEX, justifyContent: FLEX.SPACE_BETWEEN }}>
     <Typography variant={TYPOGRAPHY.H4} gutterBottom>
      {t('production.production_total.label').toUpperCase()}
     </Typography>
@@ -149,7 +149,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
      <Fragment>
       {graphData?.length > 0 && <Fragment>{chartData && <LogStackedChart chart={chartData} graphLabels={graphLabels} graphHeight={graphHeight} />}</Fragment>}
       {graphData?.length === 0 && (
-       <Typography variant='body1' color='textSecondary'>
+       <Typography variant={TYPOGRAPHY.BODY1} color='textSecondary'>
         {customer?._id ? `No data available for the ${getTimePeriodDesc(timePeriod)}.` : 'Please Select a customer to view the graph.'}
        </Typography>
       )}

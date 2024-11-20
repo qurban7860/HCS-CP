@@ -175,7 +175,7 @@ const ViewFormField = ({
 
      {primaryContact && primaryContact !== '' ? (
       <StyledChipGrid container gap={1}>
-       <IconTooltip icon={ICON_NAME.CONTACT} color={themeMode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[500]} iconOnly dimension={15} />
+       <IconTooltip icon={ICON_NAME.CONTACT} color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange} iconOnly dimension={15} />
        {primaryContact}
       </StyledChipGrid>
      ) : (

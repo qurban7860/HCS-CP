@@ -22,9 +22,6 @@ const en = {
  user: `user`,
  list: `list`,
  edit: `edit`,
- email: {
-  label: `Email`
- },
  shop: `shop`,
  blog: `blog`,
  post: `post`,
@@ -32,6 +29,9 @@ const en = {
  chat: `chat`,
  cards: `cards`,
  posts: `posts`,
+ billing_contact: {
+  label: `Billing Contact`
+ },
  close: {
   label: `Close`
  },
@@ -60,6 +60,12 @@ const en = {
  dashboard: {
   label: `Dashboard`
  },
+ detail: {
+  label: `Detail`,
+  details: {
+   label: `Details`
+  }
+ },
  group: {
   label: `Group`
  },
@@ -77,6 +83,13 @@ const en = {
  },
  customer_note: {
   label: `Customer Note`
+ },
+ document: {
+  local: `document`,
+  label: `Document`
+ },
+ email: {
+  label: `Email`
  },
  graph: {
   label: `Graph`,
@@ -101,6 +114,18 @@ const en = {
   period: {
    label: `Period`
   }
+ },
+ login: {
+  label: `Login`,
+  login_email: {
+   label: `Login / Email address`
+  }
+ },
+ login_page: {
+  label: `Login Page`
+ },
+ login_email: {
+  label: `Login Email`
  },
  home: {
   local: `home`,
@@ -146,22 +171,7 @@ const en = {
  organization_name: {
   label: `Organization name`
  },
- document: {
-  local: `document`,
-  label: `Document`
- },
- login: {
-  label: `Login`,
-  login_email: {
-   label: `Login / Email address`
-  }
- },
- login_page: {
-  label: `Login Page`
- },
- login_email: {
-  label: `Login Email`
- },
+
  support: {
   local: `support`,
   label: `Support`
@@ -253,6 +263,12 @@ const en = {
    label: `Password Updated`
   }
  },
+ phone_number: {
+  label: `Phone Number`,
+  phone_numbers: {
+   label: `Phone Numbers`
+  }
+ },
  product: `product`,
  production: {
   label: `Production`,
@@ -304,11 +320,17 @@ const en = {
  send_reset_password_request: {
   label: `Send Reset Password Request`
  },
+ see_more: {
+  label: `See More`
+ },
  submit: {
   label: `Submit`
  },
  submitted_details: {
   label: `Submitted Details`
+ },
+ technical_contact: {
+  label: `Technical Contact`
  },
  details: `details`,
  checkout: `checkout`,

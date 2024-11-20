@@ -1,6 +1,7 @@
 import { useEffect, useMemo, memo, useLayoutEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import _ from 'lodash'
+import { t } from 'i18next'
 import { dispatch, useSelector } from 'store'
 import { useSettingContext, useFilter, useTable, getComparator, ICON_NAME } from 'hook'
 import {
@@ -17,12 +18,12 @@ import {
  resetValidCoordinates
 } from 'store/slice'
 import { Divider, Grid, Card, Typography } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import { GCardOption, GStyledTopBorderDivider, GStyledFlexEndBox, GStyledSiteMapBox, GStyledSpanBox } from 'theme/style'
 import { MotionLazyContainer, GridViewTitle, GridViewField, AuditBox, CustomerDialog, SearchBox, GoogleMaps, NothingProvided, IconTooltip } from 'component'
+import { useTheme } from '@mui/material/styles'
+import { GCardOption, GStyledTopBorderDivider, GStyledFlexEndBox, GStyledSiteMapBox, GStyledSpanBox, GStyledFlexEndGrid } from 'theme/style'
 import { SiteCard, useSiteDefaultValues } from 'section/crm/site'
 import { MARGIN } from 'config'
-import { KEY, TITLE, FLEX, TYPOGRAPHY, SNACK, FLEX_DIR, LABEL, VARIANT, ADDRESS, VIEW_FORM, CUSTOMER } from 'constant'
+import { KEY, TITLE, FLEX, TYPOGRAPHY, SNACK, FLEX_DIR, LABEL, VARIANT, ADDRESS } from 'constant'
 
 const SiteTab = () => {
  const { id } = useParams()
@@ -38,7 +39,7 @@ const SiteTab = () => {
 
  useLayoutEffect(() => {
   dispatch(setFromSiteDialog(false))
-  dispatch(resetValidCoordinates())
+  dispatch(resetSite())
  }, [dispatch])
 
  useEffect(() => {
@@ -94,7 +95,7 @@ const SiteTab = () => {
   } else {
    dispatch(setValidCoordinates(false))
   }
- }, [defaultValues?.lat, defaultValues?.long])
+ }, [dispatch, latLong])
 
  const handleSiteCard = (event, siteId) => {
   event.preventDefault()
@@ -139,25 +140,58 @@ const SiteTab = () => {
          </Grid>
          <Grid item lg={12} sm={12}>
           <Grid container flexDirection={FLEX_DIR.ROW}>
-           <Grid item xs={12} sm={6}>
+           <Grid item xs={12} sm={9}>
             <Grid container spacing={1} p={2}>
-             <GridViewField variant={TYPOGRAPHY.H2} heading={''} isLoading={isLoading} gridSize={12} noBreakSpace isNoBg>
-              {defaultValues?.name}
-             </GridViewField>
              <Grid item xs={12} sm={12}>
               <GStyledSpanBox>
                {defaultValues?.isActive ? (
-                <IconTooltip title={LABEL.ACTIVE} icon={ICON_NAME.ACTIVE} color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main} isActiveIcon iconOnly />
+                <IconTooltip
+                 title={LABEL.ACTIVE}
+                 icon={ICON_NAME.ACTIVE}
+                 color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+                 tooltipColor={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+                 isActiveIcon
+                 iconOnly
+                />
                ) : (
                 <IconTooltip title={LABEL.INACTIVE} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} />
                )}
                {isMain(site) && (
-                <IconTooltip title={LABEL.MAIN_SITE} icon={ICON_NAME.MAIN_SITE} color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange} dimension={20} iconOnly />
+                <IconTooltip
+                 title={LABEL.MAIN_SITE}
+                 icon={ICON_NAME.MAIN_SITE}
+                 color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}
+                 tooltipColor={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}
+                 dimension={20}
+                 iconOnly
+                />
                )}
+               <GridViewField variant={TYPOGRAPHY.H2} heading={''} isLoading={isLoading} gridSize={12} noBreakSpace isNoBg>
+                {defaultValues?.name}
+               </GridViewField>
               </GStyledSpanBox>
              </Grid>
-             <GridViewField heading={VIEW_FORM.PHONE_NUMBERS} isLoading={isLoading} phoneChips={defaultValues?.phone} isNoBg />
-             <GridViewField heading={VIEW_FORM.WEBSITE} isLoading={isLoading} link={defaultValues?.website} variant={TYPOGRAPHY.BODY2} gridSize={12} isNoBg />
+
+             <GridViewField heading={ADDRESS.ADDRESS} isLoading={false} gridSize={12} isNoBg>
+              {defaultValues.address}
+             </GridViewField>
+             <GridViewField heading={t('billing_contact.label')} isLoading={isLoading} primaryContact={defaultValues?.primaryBillingContactFullName} isNoBg gridSize={4} />
+             <GridViewField heading={t('technical_contact.label')} isLoading={isLoading} primaryContact={defaultValues?.primaryTechnicalContactFullName} isNoBg gridSize={4} />
+             <GridViewField
+              heading={t(defaultValues?.phone?.length > 1 ? 'phone_number.phone_numbers.label' : 'phone_number.label')}
+              isLoading={isLoading}
+              phoneChips={defaultValues?.phone}
+              gridSize={4}
+              isNoBg
+             />
+            </Grid>
+           </Grid>
+
+           <GStyledFlexEndGrid item xs={12} sm={3} flexDirection={FLEX_DIR.COLUMN}>
+            <Grid container spacing={1} p={2} flexDirection={FLEX_DIR.COLUMN} sx={{ backgroundColor: themeMode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[900] }}>
+             <GridViewField heading={ADDRESS.LAT} isLoading={isLoading} isNoBg>
+              {defaultValues?.lat ? defaultValues.lat : LABEL.LAT_LONG}
+             </GridViewField>
              <GridViewField
               heading={ADDRESS.LONG}
               isLoading={isLoading}
@@ -166,33 +200,8 @@ const SiteTab = () => {
               sx={{ color: themeMode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[500] }}>
               {defaultValues?.long ? defaultValues.long : LABEL.LAT_LONG}
              </GridViewField>
-             <GridViewField heading={ADDRESS.LAT} isLoading={isLoading} isNoBg>
-              {defaultValues?.lat ? defaultValues.lat : LABEL.LAT_LONG}
-             </GridViewField>
             </Grid>
-           </Grid>
-
-           <Grid item xs={12} sm={6}>
-            <Grid container spacing={1} p={2} flexDirection={FLEX_DIR.ROW_REVERSE}>
-             <GridViewField heading={CUSTOMER.PRIMARY_BILLING_CONTACT} isLoading={isLoading} primaryContact={defaultValues?.primaryBillingContactFullName} />
-             <GridViewField heading={CUSTOMER.PRIMARY_TECHNICAL_CONTACT} isLoading={isLoading} primaryContact={defaultValues?.primaryTechnicalContactFullName} />
-             <GridViewField heading={ADDRESS.CITY} isLoading={isLoading}>
-              {defaultValues?.city}
-             </GridViewField>
-             <GridViewField heading={ADDRESS.STREET} isLoading={isLoading}>
-              {defaultValues?.street}
-             </GridViewField>
-             <GridViewField heading={ADDRESS.REGION} isLoading={isLoading}>
-              {defaultValues?.region}
-             </GridViewField>
-             <GridViewField heading={ADDRESS.POST_CODE} isLoading={isLoading}>
-              {defaultValues?.postCode}
-             </GridViewField>
-             <GridViewField heading={ADDRESS.COUNTRY} isLoading={isLoading}>
-              {defaultValues?.country}
-             </GridViewField>
-            </Grid>
-           </Grid>
+           </GStyledFlexEndGrid>
           </Grid>
          </Grid>
         </Grid>

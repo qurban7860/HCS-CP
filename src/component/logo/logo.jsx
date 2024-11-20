@@ -18,12 +18,14 @@ const Logo = forwardRef(({ width = BRAND.NAV_ICON, disabledLink = false, sx, src
  )
 })
 
+Logo.displayName = 'Logo'
 Logo.propTypes = {
  sx: PropTypes.object,
  disabledLink: PropTypes.bool,
  src: PropTypes.string,
  width: PropTypes.number,
- disableHeight: PropTypes.bool
+ disableHeight: PropTypes.bool,
+ className: PropTypes.string
 }
 
 export default Logo

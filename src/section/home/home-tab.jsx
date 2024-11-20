@@ -22,7 +22,7 @@ import {
 import { useSettingContext } from 'hook'
 import { ContactListCard, MachineListCard } from 'section/home'
 import { useTheme, Grid, Box, Card, Divider } from '@mui/material'
-import { GStyledTopBorderDivider, GStyledFlexEndBox, GCardOption, GStyledScrollableHeightLockGrid, GStyledChowBox } from 'theme/style'
+import { GStyledTopBorderDivider, GStyledFlexEndBox, GCardOption, GStyledScrollableHeightLockGrid } from 'theme/style'
 import { GridViewTitle, AuditBox, SiteCarousel, ChowBox, MachineDialog, SiteDialog, ContactDialog } from 'component'
 import { HowickResources } from 'section/common'
 import { useCustomerDefaultValues } from 'section/crm/customer'
@@ -32,7 +32,7 @@ import { TITLE, KEY, FLEX_DIR } from 'constant'
 const HomeTab = () => {
  const { customerMachines, machineTotalCount } = useSelector(state => state.machine)
  const { customer, isLoading } = useSelector(state => state.customer)
- const { site, sites } = useSelector(state => state.site)
+ const { sites } = useSelector(state => state.site)
  const { contact, contacts } = useSelector(state => state.contact)
 
  const { user } = useAuthContext()
