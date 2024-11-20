@@ -36,9 +36,7 @@ export default function AccountPopover() {
    return
   }
   const debounce = _.debounce(() => {
-   if (customerId !== customer?._id) {
-    dispatch(getCustomer(customerId))
-   }
+   dispatch(getCustomer(customerId))
   }, 300)
   debounce()
   return () => debounce.cancel()
