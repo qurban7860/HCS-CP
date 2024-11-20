@@ -40,6 +40,16 @@ function GeneralAppPage() {
  const [rateSelectedMachine, setRateSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
  const [totalSelectedMachine, setTotalSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
 
+ useLayoutEffect(() => {
+  dispatch(setMachineDialog(false))
+  dispatch(setMachineSiteDialog(false))
+  dispatch(setContactDialog(false))
+  dispatch(resetCustomerMachines())
+  dispatch(resetCustomers())
+  dispatch(resetContact())
+  dispatch(resetMachineSiteDialogData())
+ }, [dispatch])
+
  useEffect(() => {
   if (GLOBAL.ENV === 'dev' && !isMounted.current) {
    isMounted.current = true
@@ -62,16 +72,6 @@ function GeneralAppPage() {
   debounce()
   return () => debounce.cancel()
  }, [customerId])
-
- useLayoutEffect(() => {
-  dispatch(setMachineDialog(false))
-  dispatch(setMachineSiteDialog(false))
-  dispatch(setContactDialog(false))
-  dispatch(resetCustomerMachines())
-  dispatch(resetCustomers())
-  dispatch(resetContact())
-  dispatch(resetMachineSiteDialogData())
- }, [dispatch])
 
  useEffect(() => {
   const debouncedDispatch = _.debounce(() => {
