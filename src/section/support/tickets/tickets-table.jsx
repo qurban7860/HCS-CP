@@ -65,10 +65,6 @@ const TicketsTable = ({ ticket, mode, index }) => {
      />
      {/* issue */}
      <TableCell>{fields?.summary}</TableCell>
-     <TableCell>
-      {/* organization */}
-      <Box>{fields?.customfield_10002[0]?.name}</Box>
-     </TableCell>
      {/* machine */}
      <TableCell>{fields?.customfield_10069}</TableCell>
      <TableCell>{fields?.customfield_10070?.value}</TableCell>
@@ -76,16 +72,6 @@ const TicketsTable = ({ ticket, mode, index }) => {
     </StyledTableRow>
    </TableBody>
   </Fragment>
-  /**
-      * <TableCell>
-          <StyledIconListItemText inActive={ticket?.fields?.status?.statusCategory?.name}>
-            <m.div>
-              {machine?.isActive ? <Icon icon={ICON_NAME.ACTIVE} color={activeColor} /> : <Icon icon={ICON_NAME.INACTIVE} color={inactiveColor} />}
-            </m.div>
-          </StyledIconListItemText>
-        </TableCell>
-     *
-     */
  )
 }
 
