@@ -1,12 +1,11 @@
 import { Fragment, useEffect } from 'react'
-import { useOffSetTop, useResponsive, Clock, useSettingContext } from 'hook'
-import { Stack, AppBar, Toolbar, IconButton, Badge, Typography } from '@mui/material'
+import { useOffSetTop, useResponsive, Clock, useSettingContext, Icon, ICON_NAME } from 'hook'
+import { AppBar, Toolbar, Stack, Badge, IconButton, Typography, Drawer, Box, List, ListItem, ListItemButton, ListItemText, Popover } from '@mui/material'
+import { LogoIcon } from 'component/logo'
+import { NavSection } from 'component/nav-section'
 import { useTheme } from '@mui/material/styles'
 import { bgBlur } from 'theme/style'
 import { HEADER, GLOBAL, NavConfiguration } from 'config'
-import { LogoIcon } from 'component/logo'
-import { Iconify } from 'component/iconify'
-import { NavSection } from 'component/nav-section'
 import ModeOption from './mode-option'
 import AccountPopover from './account-popover'
 import NotificationPopover from './notification-popover'
@@ -16,7 +15,7 @@ import { FLEX, FLEX_DIR, KEY, TIMEZONE } from 'constant'
 function Header() {
  const theme = useTheme()
  const navConfig = NavConfiguration()
- const { themeLayout } = useSettingContext()
+ const { themeLayout, themeMode } = useSettingContext()
  const isNavHorizontal = themeLayout === 'horizontal'
  const isDesktop = useResponsive('up', 'lg')
  const isOffset = useOffSetTop(HEADER.H_DASHBOARD_DESKTOP) && !isNavHorizontal
@@ -49,21 +48,32 @@ function Header() {
      </Badge>
     )}
    </Stack>
-   {!isDesktop && (
-    <IconButton sx={{ mr: 1, color: 'text.primary' }}>
-     <Iconify icon='eva:menu-2-fill' />
-    </IconButton>
+   {!isDesktop ? (
+    <Fragment>
+     <IconButton sx={{ mr: 1, color: 'text.primary' }}>
+      <Icon icon={ICON_NAME.MENU} color={themeMode === KEY.LIGHT ? theme.palette.howick.orange : theme.palette.howick.blue} />
+     </IconButton>
+     <IconButton sx={{ mr: 1, color: 'text.primary' }}>
+      <Icon icon={ICON_NAME.CLOCK} color={themeMode === KEY.LIGHT ? theme.palette.howick.orange : theme.palette.howick.blue} />
+     </IconButton>
+     {/* add menu nav items */}
+     {/* add clock menu button here that shows different time zones*/}
+     {/* <Clock main city={KEY.AUCKLAND} /> */}
+    </Fragment>
+   ) : (
+    <Fragment>
+     <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_START} spacing={{ xs: 0.5, sm: 4 }} ml={5}>
+      <NavSection data={navConfig} />
+     </Stack>
+     <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_END} spacing={{ xs: 0.5, sm: 2 }}>
+      {localTimeZone !== aucklandTimeZone && <Clock local={localTimeZone} />}
+      <Clock main city={KEY.AUCKLAND} />
+      <ModeOption />
+      <NotificationPopover />
+      <AccountPopover />
+     </Stack>
+    </Fragment>
    )}
-   <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_START} spacing={{ xs: 0.5, sm: 4 }} ml={5}>
-    <NavSection data={navConfig} />
-   </Stack>
-   <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_END} spacing={{ xs: 0.5, sm: 2 }}>
-    {localTimeZone !== aucklandTimeZone && <Clock local={localTimeZone} />}
-    <Clock main city={KEY.AUCKLAND} />
-    <ModeOption />
-    <NotificationPopover />
-    <AccountPopover />
-   </Stack>
   </Fragment>
  )
 
