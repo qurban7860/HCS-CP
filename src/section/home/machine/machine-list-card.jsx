@@ -76,6 +76,9 @@ const MachineListCard = ({ value, handleMachineDialog, handleMachineSiteDialog, 
            </Grid>
            <Grid item xs={4} flex={1} justifyContent={KEY.FLEX_END} alignContent={KEY.RIGHT}>
             <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1}>
+             {mach?.portalKey && (
+              <IconTooltip title={t('portal_synced.label')} icon={ICON_NAME.PORTAL_SYNC} dimension={18} color={theme.palette.howick.bronze} tooltipColor={theme.palette.howick.bronze} iconOnly />
+             )}
              <IconTooltip
               title={LABEL.SITE_VIEW(mach?.serialNo)}
               icon={ICON_NAME.MAP_MARKER}

@@ -1,20 +1,14 @@
 import { memo } from 'react'
-import PropTypes from 'prop-types'
-import { useAuthContext } from 'auth'
 import { useSelector } from 'store'
-import { useNavigate } from 'react-router-dom'
 import { HomeNav, HomeTab } from 'section/home'
 import { useCustomerDefaultValues } from 'section/crm'
 import { MotionLazyContainer } from 'component/animate'
 import { FLEX } from 'constant'
 
-const HomeLayout = ({ tab = 0 }) => {
- const navigate = useNavigate()
- const { user } = useAuthContext()
- const customerId = user?.customer
+const HomeLayout = () => {
  const { customer, isLoading } = useSelector(state => state.customer)
- const { customerMachines, connectedMachineDialog, machineSiteDialogData } = useSelector(state => state.machine)
- const { contact, contacts, contactDialog } = useSelector(state => state.contact)
+ const { customerMachines } = useSelector(state => state.machine)
+ const { contacts } = useSelector(state => state.contact)
 
  const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
 
@@ -25,10 +19,6 @@ const HomeLayout = ({ tab = 0 }) => {
    <HomeTab />
   </MotionLazyContainer>
  )
-}
-
-HomeLayout.propTypes = {
- tab: PropTypes.number
 }
 
 export default memo(HomeLayout)

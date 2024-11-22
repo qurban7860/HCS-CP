@@ -5,7 +5,6 @@ import _ from 'lodash'
 import { dispatch } from 'store'
 import { useSelector } from 'store'
 import {
- getCustomer,
  getContacts,
  getCustomerTickets,
  getCustomerMachines,
@@ -16,7 +15,7 @@ import {
  resetMachineSiteDialogData,
  resetContact,
  resetCustomerTickets,
- resetCustomer
+ resetMachines
 } from 'store/slice'
 import { useCustomerDefaultValues } from 'section/crm/customer'
 import { SupportTicketWidget } from 'section/crm/support'
@@ -36,7 +35,6 @@ function GeneralAppPage() {
 
  const allMachineDefault = { _id: null, name: 'All' }
 
- const isMounted = useRef(false)
  const [rateSelectedMachine, setRateSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
  const [totalSelectedMachine, setTotalSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
 
@@ -45,8 +43,8 @@ function GeneralAppPage() {
   dispatch(setMachineSiteDialog(false))
   dispatch(setContactDialog(false))
   dispatch(resetCustomerMachines())
-  //   dispatch(resetCustomer())
   dispatch(resetContact())
+  dispatch(resetMachines())
   dispatch(resetMachineSiteDialogData())
  }, [dispatch])
 

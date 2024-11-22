@@ -302,14 +302,21 @@ export const GStyledCustomAvatar = styled('div')(({ theme }) => ({
 }))
 
 export const GStyledTooltip = styled(({ className, mode, green, disabled, ...props }) => <Tooltip {...props} arrow classes={{ popper: className }} />)(
- ({ theme, mode, tooltipcolor, green, disabled }) => ({
+ ({ theme, mode, tooltipcolor, green, disabled, tooltipTextColor }) => ({
   [`& .${tooltipClasses.arrow}`]: {
    color: disabled ? theme.palette.action.disabled : tooltipcolor
   },
   [`& .${tooltipClasses.tooltip}`]: {
    fontSize: '1rem',
    backgroundColor: disabled ? theme.palette.action.disabled : tooltipcolor,
-   color: mode === KEY.LIGHT ? theme.palette.common.black : green && mode !== KEY.LIGHT ? theme.palette.burnIn.contrastText : disabled ? theme.palette.action.disabledText : theme.palette.common.white
+   color:
+    tooltipTextColor || mode === KEY.LIGHT
+     ? theme.palette.common.black
+     : green && mode !== KEY.LIGHT
+     ? theme.palette.burnIn.contrastText
+     : disabled
+     ? theme.palette.action.disabledText
+     : theme.palette.common.white
   }
  })
 )

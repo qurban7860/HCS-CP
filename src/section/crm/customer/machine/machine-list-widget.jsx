@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react'
 import { m } from 'framer-motion'
 import PropTypes from 'prop-types'
-import { useIcon, ICON_NAME, useSettingContext } from 'hook'
+import { useIcon, Icon, ICON_NAME, useSettingContext } from 'hook'
 import { useSelector } from 'react-redux'
 import { Grid, Typography, IconButton, Divider } from '@mui/material'
 import { useTheme, alpha } from '@mui/material/styles'
@@ -19,26 +19,6 @@ const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog
  const { themeMode } = useSettingContext()
 
  const { Icon: LocIcon, iconSrc } = useIcon(ICON_NAME.DECOILER_DEF)
-
- //  const sxProp =
- //   customerMachines?.length < 5
- //    ? {}
- //    : {
- //       position: 'relative',
- //       '&::after': {
- //        content: '""',
- //        position: 'absolute',
- //        bottom: 0,
- //        left: 0,
- //        width: '100%',
- //        height: '30px',
- //        borderRadius: '0 0 2px 2px',
- //        backgroundImage:
- //         themeMode === KEY.LIGHT
- //          ? `linear-gradient(to bottom, rgba(255,255,255,0.1), ${alpha(theme.palette.grey[500], 0.5)})`
- //          : `linear-gradient(to bottom, rgba(0,0,0,0.1), ${alpha(theme.palette.grey[700], 0.5)})`
- //       }
- //      }
 
  return (
   <Grid container mb={2}>
@@ -95,6 +75,16 @@ const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog
           </Grid>
           <Grid item xs={4} flex={1} justifyContent={KEY.FLEX_END} alignContent={KEY.RIGHT}>
            <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1}>
+            {mach?.isPortalSynced && (
+             <IconTooltip
+              title={LABEL.SITE_VIEW(mach?.serialNo)}
+              icon={ICON_NAME.MAP_MARKER}
+              dimension={18}
+              color={themeMode === KEY.LIGHT ? theme.palette.howick.bronze : theme.palette.howick.orange}
+              iconOnly
+              cursor
+             />
+            )}
             <IconTooltip
              title={LABEL.SITE_VIEW(mach?.serialNo)}
              icon={ICON_NAME.MAP_MARKER}

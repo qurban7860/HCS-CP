@@ -101,7 +101,6 @@ const CustomerTab = () => {
       <GStyledTopBorderDivider mode={themeMode} />
       <Grid container spacing={2} px={1.5}>
        <GridViewTitle title={TITLE.KEY_DETAILS} />
-
        <Divider variant={VARIANT.MIDDLE} style={{ width: '100%', marginBottom: '20px' }} />
        <Grid item lg={12} sm={12}>
         <Grid container spacing={2} p={2} pb={5}>
