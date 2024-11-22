@@ -18,6 +18,7 @@ export default function IconTooltip({
  textColor,
  buttonColor,
  tooltipColor,
+ tooltipTextColor,
  variant,
  title,
  placement = 'top',
@@ -49,7 +50,7 @@ export default function IconTooltip({
      </GStyledTooltip>
     </Button>
    ) : iconOnly && !disabled ? (
-    <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={tooltipColor} color={color} green={isActiveIcon}>
+    <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={tooltipColor} color={color} tooltipTextColor={tooltipTextColor} green={isActiveIcon}>
      <Icon
       color={color}
       sx={{
@@ -127,6 +128,7 @@ IconTooltip.propTypes = {
  title: PropTypes.any,
  textColor: PropTypes.string,
  tooltipColor: PropTypes.string,
+ tooltipTextColor: PropTypes.string,
  buttonColor: PropTypes.string,
  placement: PropTypes.string,
  variant: PropTypes.string,
