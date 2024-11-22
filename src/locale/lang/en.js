@@ -171,7 +171,9 @@ const en = {
  organization_name: {
   label: `Organization name`
  },
-
+ portal_synced: {
+  label: `Portal Synced`
+ },
  support: {
   local: `support`,
   label: `Support`
