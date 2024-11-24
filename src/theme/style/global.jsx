@@ -241,6 +241,16 @@ export const GStyledTopBorderDivider = styled(({ theme, mode, ...other }) => <Di
  borderWidth: 5
 }))
 
+// :form top border divider
+export const GStyledRightBorderDivider = styled(({ theme, mode, ...other }) => <Divider {...other} />)(({ theme, mode }) => ({
+ borderStyle: 'solid',
+ borderImage:
+  mode === KEY.LIGHT
+   ? `linear-gradient(to bottom, ${theme.palette.howick.darkBlue}, ${theme.palette.howick.blue}) 1`
+   : `linear-gradient(to up,  ${theme.palette.grey[500]},  ${theme.palette.grey[800]}) 1`,
+ borderWidth: 5
+}))
+
 export const GStyledLoadingButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
  backgroundColor: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
  color: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
