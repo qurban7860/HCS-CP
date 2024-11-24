@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
-import { useSettingContext, Icon, ICON_NAME } from 'hook'
+import { useSettingContext, Icon, ICON_NAME, useResponsive } from 'hook'
 import { useTheme, Stack, Box, Grid, Card, Typography } from '@mui/material'
 import { SkeletonViewFormField } from 'component'
 import { GStyledWelcomeContainerDiv, GStyledWelcomeDescription, GStyledSpanBox, GStyledTopBorderDivider, GCardOption } from 'theme/style'
@@ -14,6 +14,8 @@ function Welcome({ title, description, action, img, customer, ...other }) {
  const { themeMode } = useSettingContext()
  const theme = useTheme()
 
+ const isMobile = useResponsive('down', 'sm')
+
  const portalSyncedMachines = customerMachines?.filter(machine => machine?.portalKey)
 
  return (
@@ -25,7 +27,7 @@ function Welcome({ title, description, action, img, customer, ...other }) {
      mb: { xs: 5, md: 10 },
      mt: { xs: 0, md: 5 }
     }}>
-    <GStyledSpanBox gap={2} my={2}>
+    <GStyledSpanBox gap={2} my={isMobile ? 0 : 2}>
      <img alt='logo' src={themeMode === KEY.DARK ? ASSET.HOWICK_PORTAL_DARK_2 : ASSET.HOWICK_PORTAL} width={900} style={{ pointerEvents: KEY.NONE }} />
     </GStyledSpanBox>
     <GStyledWelcomeDescription variant={TYPOGRAPHY.SUBTITLE0} themeMode={themeMode}>
