@@ -334,6 +334,12 @@ const en = {
  technical_contact: {
   label: `Technical Contact`
  },
+ time_zone: {
+  label: `Time Zone`,
+  time_zones: {
+   label: `Time Zones`
+  }
+ },
  details: `details`,
  checkout: `checkout`,
  calendar: `calendar`,

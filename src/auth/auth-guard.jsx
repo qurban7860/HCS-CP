@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuthContext } from './use-auth-context'
-// components
 import { FramingLoader } from 'component'
 import { Login } from 'page/auth'
 

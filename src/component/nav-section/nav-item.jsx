@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 import PropTypes from 'prop-types'
 import { Link as RouterLink } from 'react-router-dom'
-import { Icon, ICON_NAME, useSettingContext } from 'hook'
+import { Icon, ICON_NAME, useSettingContext, useResponsive } from 'hook'
 import { Box, Tooltip, ListItemText, Link } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useLocale } from 'locale'
@@ -11,11 +11,12 @@ import { GStyledTooltip } from 'theme/style'
 import { StyledItem, StyledIcon } from './style'
 import { KEY, TYPOGRAPHY } from 'constant'
 
-const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...other }, ref) => {
+const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, onListItemClick, ...other }, ref) => {
  const { t } = useLocale()
  const { title, path, icon, info, children, disabled, caption, roles } = item
  const { themeMode } = useSettingContext()
  const theme = useTheme()
+ const isMobile = useResponsive('down', 'sm')
 
  const subItem = depth !== 1
 
@@ -40,10 +41,11 @@ const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...othe
    <ListItemText
     primary={`${t(title)}`}
     disabled={disabled}
+    onClick={onListItemClick}
     primaryTypographyProps={{
      noWrap: true,
      component: 'span',
-     variant: TYPOGRAPHY.BODY1,
+     variant: TYPOGRAPHY.OVERLINE1,
      fontWeight: active && KEY.BOLD,
      color: theme.palette.text.primary
     }}
@@ -70,7 +72,7 @@ const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...othe
  const renderItem = () => {
   if (isExternalLink)
    return (
-    <Link href={path} target='_blank' rel='noopener' underline={KEY.NONE}>
+    <Link href={path} target='_blank' rel='noopener' underline={'always'}>
      {renderContent}
     </Link>
    )
@@ -79,9 +81,10 @@ const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, ...othe
    <Link
     component={RouterLink}
     to={!disabled && path}
-    underline={KEY.NONE}
+    underline={'always'}
     sx={{
-     cursor: disabled && 'not-allowed'
+     cursor: disabled && 'not-allowed',
+     textAlign: isMobile ? 'right' : 'center'
     }}>
     {renderContent}
    </Link>
@@ -97,7 +100,8 @@ NavItem.propTypes = {
  active: PropTypes.any,
  item: PropTypes.object,
  depth: PropTypes.number,
- isExternalLink: PropTypes.bool
+ isExternalLink: PropTypes.bool,
+ onListItemClick: PropTypes.func
 }
 
 export default NavItem
