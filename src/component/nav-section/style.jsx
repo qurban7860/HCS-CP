@@ -2,11 +2,12 @@ import { styled, alpha } from '@mui/material/styles'
 import { Popover, ListItemButton, ListItemIcon } from '@mui/material'
 import { bgBlur } from 'theme/style'
 import { NAV, ICON } from 'config'
+import { KEY } from 'constant'
 
 export const StyledItem = styled(ListItemButton, {
  shouldForwardProp: prop => prop !== 'active' && prop !== 'open'
 })(({ active, disabled, open, depth, theme }) => {
- const isLight = theme.palette.mode === 'light'
+ const isLight = theme.palette.mode === KEY.LIGHT
 
  const subItem = depth !== 1
 
