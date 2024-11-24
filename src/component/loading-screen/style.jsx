@@ -82,7 +82,7 @@ export const StyledAnimatedPath = styled('path')(({ theme, mode, strokeColor }) 
 
 export const LoaderContainer = styled(Box)(({ theme }) => ({
  width: '100%',
- maxWidth: '500px',
+ maxWidth: '350px',
  margin: '0 auto',
  padding: theme.spacing(2),
  position: 'relative',
