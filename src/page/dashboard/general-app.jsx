@@ -2,8 +2,8 @@ import { memo, useEffect, useLayoutEffect, useRef, useState, useCallback } from 
 import { useAuthContext } from 'auth'
 import { t } from 'i18next'
 import _ from 'lodash'
-import { dispatch } from 'store'
-import { useSelector } from 'store'
+import { dispatch, useSelector } from 'store'
+import { useResponsive } from 'hook'
 import {
  getContacts,
  getCustomerTickets,
@@ -33,6 +33,7 @@ function GeneralAppPage() {
  const customerId = user?.customer
  const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
 
+ const isMobile = useResponsive('down', 'sm')
  const allMachineDefault = { _id: null, name: 'All' }
 
  const [rateSelectedMachine, setRateSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
@@ -82,7 +83,7 @@ function GeneralAppPage() {
 
  return (
   <Grid container>
-   <Grid container spacing={3} mt={2}>
+   <Grid container spacing={3} mt={isMobile ? 0 : 2}>
     <Grid item xs={12}>
      <Welcome customer={customer} title={toTitleCase(GLOBAL.APP_TAGLINE)} description={t('app_customer_tagline')} />
     </Grid>
