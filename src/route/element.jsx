@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react'
-import { FramingLoader } from 'component'
+import { FramingLoader, HowickLoader } from 'component'
 
 // eslint-disable-next-line react/display-name
 const Loadable = Component => props =>
