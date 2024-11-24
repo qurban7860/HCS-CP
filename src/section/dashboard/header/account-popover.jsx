@@ -6,7 +6,7 @@ import { useAuthContext } from 'auth'
 import { useSelector } from 'react-redux'
 import { getCustomer, setChangePasswordDialog, resetCustomer } from 'store/slice'
 import { dispatch } from 'store'
-import { useSettingContext, DisplayDialog, snack, Icon, ICON_NAME } from 'hook'
+import { useSettingContext, DisplayDialog, snack, Icon, ICON_NAME, useResponsive } from 'hook'
 import { Box, Divider, Dialog, Typography, Stack, MenuItem, Link } from '@mui/material'
 import { CustomAvatar, MenuPopover, IconButtonAnimate, ChangePasswordDialog } from 'component'
 import { themePreset } from 'theme'
@@ -20,6 +20,8 @@ export default function AccountPopover() {
  const { customer } = useSelector(state => state.customer)
  const navigate = useNavigate()
  const customerId = user?.customer
+
+ const isMobile = useResponsive('down', 'sm')
  const isMounted = useRef(false)
 
  const [openPopover, setOpenPopover] = useState(null)
@@ -115,11 +117,11 @@ export default function AccountPopover() {
      p: 0,
      borderRadius: 0.4
     }}>
-    <Box sx={{ my: 1.5, px: 2.5 }}>
+    <Box sx={{ my: 1.5, px: 2.5, overflowX: 'hidden', mr: 1.5 }}>
      <Typography variant={TYPOGRAPHY.SUBTITLE2} noWrap>
       {customer?.name || 'User'}
      </Typography>
-     <Typography variant='overline' sx={{ color: 'text.secondary' }} fontWeight='bold' noWrap>
+     <Typography variant={isMobile ? TYPOGRAPHY.CAPTION : TYPOGRAPHY.OVERLINE} sx={{ color: 'text.secondary' }} fontWeight='bold' noWrap>
       {user?.email}
      </Typography>
     </Box>
