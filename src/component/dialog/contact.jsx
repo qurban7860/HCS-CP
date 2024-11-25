@@ -7,7 +7,7 @@ import { useAuthContext } from 'auth'
 import { PATH_CUSTOMER } from 'route/path'
 import { setContactDialog, resetSelectedContactCard, setSelectedContactCard, setFromDialog, getContact } from 'store/slice'
 import { ICON_NAME } from 'hook'
-import { contactDefaultValues } from 'section/crm'
+import { useContactDefaultValues } from 'section/crm'
 import { Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledSpanBox } from 'theme/style'
@@ -24,7 +24,7 @@ const ContactDialog = ({ contact }) => {
  const theme = useTheme()
  const navigate = useNavigate()
 
- const defaultValues = contactDefaultValues(contact, customer)
+ const defaultValues = useContactDefaultValues(contact, customer)
 
  const { ADDRESS } = VIEW_FORM
  const handleDialog = () => dispatch(setContactDialog(false))

@@ -11,7 +11,7 @@ export { default as useCustomerDefaultValues } from './customer/default-values/d
 
 // :contact
 export { default as ContactTab } from './contact/contact-tab'
-export { default as contactDefaultValues } from './contact/default-values/default-values'
+export { default as useContactDefaultValues } from './contact/default-values/default-values'
 
 // :site
 export { default as SiteTab } from './site/site-tab'
