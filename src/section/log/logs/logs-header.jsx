@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { t } from 'i18next'
 import { ICON_NAME, useSettingContext } from 'hook'
 import { TableHead, TableRow, TableSortLabel, Typography } from '@mui/material'
 import { IconTooltip } from 'component'
@@ -28,7 +29,7 @@ const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
          <TableSortLabel hideSortIcon active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : 'asc'} onClick={() => onSort(headCell.id)} sx={{ textTransform: 'capitalize' }}>
           {normalizer(headCell.label) === 'machine' ? (
            <IconTooltip
-            title={'Machine'}
+            title={t('machine.label')}
             icon={ICON_NAME.FRAMA}
             color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[300]}
             tooltipColor={theme.palette.howick.midBlue}
@@ -37,7 +38,7 @@ const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
            />
           ) : normalizer(headCell.label) === 'date' ? (
            <IconTooltip
-            title={'Date'}
+            title={'date.label'}
             icon={ICON_NAME.CALENDAR_CLOCK}
             color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[300]}
             tooltipColor={theme.palette.howick.midBlue}
@@ -45,17 +46,9 @@ const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
             cursor
            />
           ) : (
-           <GStyledMachineChip
-            mode={themeMode}
-            size='small'
-            label={
-             <GStyledTooltip disableFocusListener title={headCell.label} tooltipcolor={theme.palette.howick.midBlue} placement={'top'}>
-              <Typography variant={TYPOGRAPHY.OVERLINE1} p={0}>
-               {charAtText(headCell.label)}
-              </Typography>
-             </GStyledTooltip>
-            }
-           />
+           <Typography variant={TYPOGRAPHY.OVERLINE0} p={0}>
+            {headCell.label}
+           </Typography>
           )}
          </TableSortLabel>
         ) : (

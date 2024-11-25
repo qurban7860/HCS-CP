@@ -84,6 +84,9 @@ const en = {
  customer_note: {
   label: `Customer Note`
  },
+ date: {
+  label: `Date`
+ },
  document: {
   local: `document`,
   label: `Document`
