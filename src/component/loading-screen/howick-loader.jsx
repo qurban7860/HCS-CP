@@ -1,8 +1,14 @@
 import PropTypes from 'prop-types'
+import { useSettingContext } from 'hook'
+import { useTheme } from '@mui/material/styles'
 import { GStyledCenterBox } from 'theme/style'
 import { StyledAnimatedPath } from './style'
+import { KEY } from 'constant'
 
 const HowickLoader = ({ height = '465', width = '467', mode, strokeColor }) => {
+ const { themeMode } = useSettingContext()
+ const theme = useTheme()
+
  return (
   <GStyledCenterBox>
    <svg version='1.2' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 465 467' width={width} height={height}>
