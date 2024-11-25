@@ -77,7 +77,7 @@ const SearchBox = ({ term, handleSearch, mode, onReload, mt = 5 }) => {
      placement={KEY.TOP}
      variant={VARIANT.CONTAINED}
      tooltipColor={mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze}
-     color={mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black}
+     color={theme.palette.common.white}
      dimension={25}
      onClick={onReload}
     />
