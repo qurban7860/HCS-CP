@@ -2,7 +2,7 @@ import { useEffect, useState, memo, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 import _ from 'lodash'
-import { t } from 'i18next'
+import { Trans } from 'react-i18next'
 import { useAuthContext } from 'auth'
 import { useSelector, dispatch } from 'store'
 import { useNavigate } from 'react-router-dom'
@@ -26,7 +26,7 @@ import { GStyledTableHeaderBox } from 'theme/style'
 import { TableNoData, MotionLazyContainer, SkeletonTable, SearchBox, TableTitleBox } from 'component'
 import { MachineTable, MachineHeader, MachineListPagination, MachineCard } from 'section/product'
 import { MARGIN, TABLE } from 'config'
-import { KEY, TITLE, FLEX, FLEX_DIR, LABEL, TYPOGRAPHY } from 'constant'
+import { KEY, TITLE, FLEX, FLEX_DIR, TYPOGRAPHY } from 'constant'
 import { StyledScrollTableContainer } from './style'
 
 const MachineListSection = ({ isArchived }) => {
@@ -145,7 +145,7 @@ const MachineListSection = ({ isArchived }) => {
           ))
          ) : (
           <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
-           {t('no_machine_found.label')}
+           <Trans i18nKey='no_found.label' values={{ value: 'Machine' }} />
           </Typography>
          )}
         </Grid>

@@ -64,7 +64,7 @@ const rotateDiagonalReverse = keyframes`
 
 export const StyledAnimatedPath = styled('path')(({ theme, mode, strokeColor }) => ({
  fill: 'none',
- stroke: !strokeColor && (mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.grey[500]),
+ stroke: !strokeColor && (mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[500]),
  strokeWidth: 1.5,
  strokeMiterlimit: 100,
  strokeDasharray: 1000,
