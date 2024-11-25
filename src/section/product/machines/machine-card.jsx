@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { t } from 'i18next'
+import { Trans } from 'react-i18next'
 import { useSettingContext, ICON_NAME } from 'hook'
 import { Box, Grid, Typography, Link } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
@@ -32,7 +32,7 @@ const MachineCard = ({ selectedCardId, handleSelected, handleMachineCard, handle
          &nbsp;
          <IconTooltip
           onClick={event => handleMachineInNewTabCard(event, machine._id)}
-          title={t('open_machine_in_new_tab.label')}
+          title={<Trans i18nKey='open_in_new_tab.label' values={{ value: 'Machine' }} />}
           icon={ICON_NAME.OPEN_IN_NEW}
           placement={KEY.RIGHT}
           color={theme.palette.grey[500]}
