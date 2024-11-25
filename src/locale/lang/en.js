@@ -11,7 +11,7 @@ const en = {
    label: `No active tickets found`
   }
  },
- register_agreement: 'By clicking "Register" you agree to our <1>Privacy Policy</1>.',
+
  address: {
   label: `Address`
  },
@@ -36,11 +36,9 @@ const en = {
   label: `Close`
  },
  create: `create`,
- column: {
-  label: `Column`,
-  columns: {
-   label: `Columns`
-  }
+ contacts: {
+  local: `contacts`,
+  label: `Contacts`
  },
  contact: {
   label: `Contact`,
@@ -56,6 +54,16 @@ const en = {
  },
  country: {
   label: `Country`
+ },
+ customer_overview: {
+  local: `customer_overview`,
+  label: `Customer Overview`
+ },
+ column: {
+  label: `Column`,
+  columns: {
+   label: `Columns`
+  }
  },
  dashboard: {
   label: `Dashboard`
@@ -159,6 +167,9 @@ const en = {
  no_coordinates_provided: {
   label: `No coordinates provided`
  },
+ old_password: {
+  label: `Old Password`
+ },
  organization: {
   local: `organization`,
   label: `Organization`
@@ -184,9 +195,6 @@ const en = {
  new_password: {
   label: `New Password`
  },
- old_password: {
-  label: `Old Password`
- },
  portal: {
   local: `portal`,
   label: `Portal`
@@ -206,14 +214,7 @@ const en = {
   local: `sites`,
   label: `Sites`
  },
- contacts: {
-  local: `contacts`,
-  label: `Contacts`
- },
- customer_overview: {
-  local: `customer_overview`,
-  label: `Customer Overview`
- },
+
  name: {
   key: `name`,
   label: `Name`
@@ -240,8 +241,8 @@ const en = {
    label: `Legends`
   }
  },
- no_machine_found: {
-  label: `No Machine Found`
+ no_found: {
+  label: `No {{value}} Found`
  },
  note: {
   label: `Note`
@@ -250,8 +251,8 @@ const en = {
   label: `Notifications`,
   no_notif: `You have no new notifications`
  },
- open_machine_in_new_tab: {
-  label: `Open Machine in New Tab`
+ open_in_new_tab: {
+  label: `Open {{value}} in a New Tab`
  },
  password: {
   label: `Password`,
@@ -280,7 +281,6 @@ const en = {
   production_total: { label: `Production Total` },
   production_rate: { label: `Production Rate` }
  },
- invoice: `invoice`,
  register: {
   label: `Register`
  },
@@ -340,6 +340,7 @@ const en = {
  submitted_details: {
   label: `Submitted Details`
  },
+ register_agreement: 'By clicking "Register" you agree to our <1>Privacy Policy</1>.',
  technical_contact: {
   label: `Technical Contact`
  },
@@ -348,6 +349,9 @@ const en = {
   time_zones: {
    label: `Time Zones`
   }
+ },
+ view_jira_in_new_tab: {
+  label: `View in Jira in a New Tab`
  },
  details: `details`,
  checkout: `checkout`,
