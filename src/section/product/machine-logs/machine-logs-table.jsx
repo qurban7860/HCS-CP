@@ -5,7 +5,7 @@ import { dispatch } from 'store'
 import { useTable, getComparator, useSettingContext } from 'hook'
 import { useAuthContext } from 'auth'
 import { ChangeLogPage, ChangeLogRowsPerPage, getLogs, resetLogs } from 'store/slice'
-import { Grid, Table } from '@mui/material'
+import { Grid, Table, TableContainer } from '@mui/material'
 import { TableNoData, SkeletonTable, LogDetailsDialog } from 'component'
 import { StyledScrollTableContainer, LogsHeader, LogsTable, LogsPagination, tableColumnsReducer } from 'section/log/logs'
 import { GStyledTableHeaderBox } from 'theme/style'
@@ -106,9 +106,9 @@ const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
  return (
   <Fragment>
    <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
-    <Grid item lg={12}>
+    <Grid item xs={12} sm={12}>
      <Grid container mb={2}>
-      <Grid item lg={12} sm={12} mb={2} bgcolor='background.paper'>
+      <Grid item xs={12} sm={12} mb={2} bgcolor='background.paper'>
        <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
        <LogsPagination
         count={logsTotalCount || 0}
@@ -120,7 +120,7 @@ const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
         columnFilterButtonData={tableColumns}
         handleColumnButtonClick={handleColumnButtonClick}
        />
-       <StyledScrollTableContainer>
+       <TableContainer>
         <Table>
          <LogsHeader columns={tableColumns} dataFiltered={dataFiltered} orderBy={orderBy} order={order} onSort={onSort} />
          {(isLoading ? [...Array(logRowsPerPage)] : dataFiltered).map((row, index) =>
@@ -143,7 +143,7 @@ const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
           )
          )}
         </Table>
-       </StyledScrollTableContainer>
+       </TableContainer>
        <TableNoData logNotFound={isNotFound} />
       </Grid>
      </Grid>
