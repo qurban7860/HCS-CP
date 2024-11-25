@@ -1,26 +1,38 @@
 import { useEffect, useState, memo } from 'react'
 import _ from 'lodash'
 import { t } from 'i18next'
+import { Trans } from 'react-i18next'
 import { useSelector, dispatch } from 'store'
 import { useAuthContext } from 'auth'
-import { useTable, useFilter, getComparator, useSettingContext } from 'hook'
-import { getCustomer, getSecurityUser, setCustomerTicketFilterBy, ChangeCustomerTicketPage, ChangeCustomerTicketRowsPerPage, getCustomerTickets, resetCustomerTickets } from 'store/slice'
-import { Table, Grid } from '@mui/material'
+import { useTable, useFilter, getComparator, useSettingContext, useResponsive } from 'hook'
+import {
+ getCustomer,
+ getSecurityUser,
+ getCustomerTickets,
+ getCustomerTicketByKey,
+ setCustomerTicketFilterBy,
+ setSelectedCustomerTicketCard,
+ ChangeCustomerTicketPage,
+ ChangeCustomerTicketRowsPerPage,
+ resetCustomerTickets
+} from 'store/slice'
+import { TicketsTable, TicketsTableHeader, TicketsListPagination, TicketCard, useTicketsDefaultValues } from 'section/support'
+import { Table, Grid, TableContainer, Typography } from '@mui/material'
+import { TableNoData, MotionLazyContainer, SkeletonTable, SearchBox, TableTitleBox, HowickLoader } from 'component'
 import { GStyledTableHeaderBox } from 'theme/style'
-import { TableNoData, MotionLazyContainer, SkeletonTable, SearchBox, TableTitleBox } from 'component'
-import { TicketsTable, TicketsTableHeader, TicketsListPagination } from 'section/support'
+import { GLOBAL } from 'config/global'
 import { MARGIN, TABLE } from 'config'
-import { KEY, FLEX, FLEX_DIR } from 'constant'
-import { StyledScrollTableContainer } from './style'
+import { KEY, FLEX, FLEX_DIR, TYPOGRAPHY } from 'constant'
 
 const TicketsListSection = () => {
  const [tableData, setTableData] = useState([])
  const [filterPeriodOption, setFilterPeriodOption] = useState(3)
  const { userId } = useAuthContext()
  const { customer } = useSelector(state => state.customer)
- const { customerTickets, initial, isLoading, customerTicketRowsPerPage, customerTicketPage } = useSelector(state => state.customerTicket)
+ const { customerTickets, initial, isLoading, customerTicketRowsPerPage, customerTicketPage, selectedCustomerTicketCard } = useSelector(state => state.customerTicket)
  const { securityUser } = useSelector(state => state.user)
 
+ const isMobile = useResponsive('down', 'sm')
  const { themeMode } = useSettingContext()
  const denseHeight = TABLE.DENSE_HEIGHT
 
@@ -66,6 +78,7 @@ const TicketsListSection = () => {
   }
  }, [customerTickets, initial])
 
+ const defaultValues = useTicketsDefaultValues(tableData && tableData)
  const { filterName, handleFilterName, filteredData } = useFilter(getComparator(order, orderBy), tableData, initial, ChangeCustomerTicketPage, setCustomerTicketFilterBy)
 
  const handleChangePage = (event, newPage) => {
@@ -79,38 +92,91 @@ const TicketsListSection = () => {
   dispatch(ChangeCustomerTicketRowsPerPage(parseInt(event.target.value, 10)))
  }
 
+ const handleSelectedCard = (event, key) => {
+  event.preventDefault()
+  //    dispatch(resetMachine())
+  dispatch(setSelectedCustomerTicketCard(key))
+ }
+
+ const handleCustomerTicketCard = (event, machineSerialNo, customerTicketKey) => {
+  event.preventDefault()
+  //open ticket in a dialog instead : #1550
+  dispatch(getCustomerTicketByKey(machineSerialNo, customerTicketKey))
+  dispatch(setSelectedCustomerTicketCard(customerTicketKey))
+ }
+
+ const handleCustomerTicketInNewTabCard = jiraKey => {
+  const url = GLOBAL.JIRA_URL + jiraKey
+  window.open(url, KEY.BLANK)
+ }
+
  const isNotFound = !isLoading && !filteredData?.length
 
  return (
   <MotionLazyContainer display={FLEX.FLEX}>
    <TableTitleBox title={t('support_tickets.label')} user={securityUser} />
    <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} onReload={onRefresh} />
-   <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
-    <Grid item lg={12}>
-     <Grid container mb={2}>
-      <Grid item lg={12} sm={12} mb={2} bgcolor='background.paper'>
-       <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
-       <TicketsListPagination
-        mode={themeMode}
-        data={filteredData}
-        page={customerTicketPage}
-        rowsPerPage={customerTicketRowsPerPage}
-        handleChangePage={handleChangePage}
-        handleChangeRowsPerPage={handleChangeRowsPerPage}
-       />
-       <StyledScrollTableContainer>
-        <Table>
-         <TicketsTableHeader mode={themeMode} />
-         {(isLoading ? [...Array(customerTicketRowsPerPage)] : filteredData)
-          .slice(customerTicketPage * customerTicketRowsPerPage, customerTicketPage * customerTicketRowsPerPage + customerTicketRowsPerPage)
-          .map((row, index) => (row ? <TicketsTable key={row.key} ticket={row} mode={themeMode} index={index} /> : !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />))}
-         <TableNoData isNotFound={isNotFound} />
-        </Table>
-       </StyledScrollTableContainer>
+   {isMobile ? (
+    <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+     <Grid item xs={12} sm={12}>
+      <Grid container mb={2}>
+       <Grid item xs={12} sm={12} mb={2} bgcolor='transparent'>
+        <Grid container p={1}>
+         {!isLoading ? (
+          filteredData?.length > 0 ? (
+           defaultValues.map((cticket, index) => (
+            <TicketCard
+             key={index}
+             selectedCardId={selectedCustomerTicketCard || index}
+             ticket={cticket}
+             handleSelected={handleSelectedCard}
+             handleTicketCard={handleCustomerTicketCard}
+             handleTicketInNewTabCard={handleCustomerTicketInNewTabCard}
+            />
+           ))
+          ) : (
+           <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
+            <Trans i18nKey='no_found.label' values={{ value: 'Ticket' }} />
+           </Typography>
+          )
+         ) : (
+          <Grid xs={12} sm={12}>
+           <HowickLoader mode={themeMode} />
+          </Grid>
+         )}
+        </Grid>
+       </Grid>
       </Grid>
      </Grid>
     </Grid>
-   </Grid>
+   ) : (
+    <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+     <Grid item xs={12} sm={12}>
+      <Grid container mb={2}>
+       <Grid item xs={12} sm={12} mb={2} bgcolor='background.paper'>
+        <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
+        <TicketsListPagination
+         mode={themeMode}
+         data={filteredData}
+         page={customerTicketPage}
+         rowsPerPage={customerTicketRowsPerPage}
+         handleChangePage={handleChangePage}
+         handleChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+        <TableContainer>
+         <Table>
+          <TicketsTableHeader mode={themeMode} />
+          {(isLoading ? [...Array(customerTicketRowsPerPage)] : filteredData)
+           .slice(customerTicketPage * customerTicketRowsPerPage, customerTicketPage * customerTicketRowsPerPage + customerTicketRowsPerPage)
+           .map((row, index) => (row ? <TicketsTable key={row.key} ticket={row} mode={themeMode} index={index} /> : !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />))}
+          <TableNoData isNotFound={isNotFound} />
+         </Table>
+        </TableContainer>
+       </Grid>
+      </Grid>
+     </Grid>
+    </Grid>
+   )}
   </MotionLazyContainer>
  )
 }
