@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types'
+import { t } from 'i18next'
 import { useSettingContext, ICON_NAME } from 'hook'
-import { PATH_MACHINE } from 'route/path'
 import { Box, Grid, Typography, Link } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledContactCard, GStyledListItemText, GStyledSpanBox, GStyledCard } from 'theme/style'
+import { GStyledListItemText, GStyledSpanBox, GStyledCard } from 'theme/style'
 import { IconTooltip } from 'component'
 import { LABEL, TYPOGRAPHY, KEY, FLEX, DECOILER_TYPE_ARR } from 'constant'
-import { t } from 'i18next'
 
-const MachineCard = ({ selectedCardId, value, handleSelected, handleMachineCard, handleMachineInNewTabCard, machine }) => {
+const MachineCard = ({ selectedCardId, handleSelected, handleMachineCard, handleMachineInNewTabCard, machine }) => {
  const theme = useTheme()
  const { themeMode } = useSettingContext()
 
@@ -26,12 +25,7 @@ const MachineCard = ({ selectedCardId, value, handleSelected, handleMachineCard,
            color: themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
            cursor: 'pointer'
           }}>
-          <Typography
-           color={themeMode === KEY.LIGHT ? 'common.black' : 'grey.400'}
-           variant={TYPOGRAPHY.H4}
-           sx={{
-            opacity: selectedCardId === machine._id ? 0.7 : 1
-           }}>
+          <Typography color={themeMode === KEY.LIGHT ? 'common.black' : 'grey.400'} variant={TYPOGRAPHY.H4} sx={{ opacity: selectedCardId === machine._id ? 0.7 : 1 }}>
            {machine?.serialNo}
           </Typography>
          </Link>
