@@ -12,9 +12,9 @@ const initialState = {
  success: false,
  isLoading: false,
  error: null,
- selectedCustomerTicketCard: null,
  customerTicket: {},
  customerTickets: [],
+ selectedCustomerTicketCard: null,
  customerTicketTotalCount: 0,
  customerTicketFilterBy: '',
  customerTicketFilterStatus: 'Open',
@@ -61,14 +61,20 @@ const customerTicketSlice = createSlice({
    state.isLoading = false
   },
   resetSelectedCustomerTicketCard(state, action) {
-   state.selectedcustomerTicketCard = null
+   state.selectedCustomerTicketCard = null
+  },
+  resetCustomerTicket(state) {
+   state.customerTicket = {}
+   state.customerTicketResponseMessage = null
+   state.success = false
+   state.isLoading = false
   },
   resetCustomerTickets(state) {
    state.customerTickets = []
    state.customerTicketResponseMessage = null
    state.success = false
    state.customerTicketTotalCount = 0
-   // state.isLoading = false;
+   state.isLoading = false
   },
   setSelectedCustomerTicketCard(state, action) {
    state.selectedCustomerTicketCard = action.payload
