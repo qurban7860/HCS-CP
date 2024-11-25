@@ -237,6 +237,9 @@ const en = {
    label: `Legends`
   }
  },
+ no_machine_found: {
+  label: `No Machine Found`
+ },
  note: {
   label: `Note`
  },
@@ -244,11 +247,8 @@ const en = {
   label: `Notifications`,
   no_notif: `You have no new notifications`
  },
- search: {
-  label: `Search`
- },
- select_filter: {
-  label: `Select Filter`
+ open_machine_in_new_tab: {
+  label: `Open Machine in New Tab`
  },
  password: {
   label: `Password`,
@@ -318,6 +318,12 @@ const en = {
  },
  save: {
   label: `Save`
+ },
+ search: {
+  label: `Search`
+ },
+ select_filter: {
+  label: `Select Filter`
  },
  send_reset_password_request: {
   label: `Send Reset Password Request`
