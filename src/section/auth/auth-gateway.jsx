@@ -46,7 +46,7 @@ function AuthGateway({ children, isWideForm, title }) {
     <Grid sx={{ display: FLEX.FLEX, justifyContent: KEY.CENTER, mt: 2, mb: -3 }} alignItems={KEY.CENTER} spacing={2} container>
      <Grid item>
       <Grid container flex={1} justifyContent='center'>
-       <Logo className={'howick-logo'} src={themeMode === KEY.LIGHT ? ASSET.LOGO : ASSET.BG_DARK_LOGO} sx={{ width: { xs: '80px', sm: '120px', md: '150px' }, pointerEvents: KEY.NONE }} />
+       <Logo className={'howick-logo'} src={themeMode === KEY.LIGHT ? ASSET.LOGO : ASSET.LOGO_DARK} sx={{ width: { xs: '80px', sm: '120px', md: '150px' }, pointerEvents: KEY.NONE }} />
       </Grid>
       <Stack sx={{ alignItems: KEY.CENTER }}>
        <PortalLogo className='portal-header' src={themeMode === KEY.LIGHT ? ASSET.PORTAL : ASSET.PORTAL_2} sx={{ width: { xs: '150px', sm: '170px', md: '250px' }, mt: { xs: -2, lg: -3 } }} />
