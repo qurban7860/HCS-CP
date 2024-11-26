@@ -85,6 +85,7 @@ const MachineListCard = ({ value, handleMachineDialog, handleMachineSiteDialog, 
               dimension={18}
               onClick={e => handleMachineSiteDialog(e, mach._id)}
               color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
+              tooltipColor={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
               iconOnly
               cursor
              />
@@ -94,6 +95,7 @@ const MachineListCard = ({ value, handleMachineDialog, handleMachineSiteDialog, 
               dimension={18}
               onClick={() => window.open(PATH_MACHINE.machines.view(mach?._id), KEY.BLANK)}
               color={theme.palette.grey[500]}
+              tooltipColor={theme.palette.grey[500]}
               iconOnly
               cursor
              />
