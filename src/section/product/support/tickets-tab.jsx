@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useState, useRef, memo, Fragment } from 'react'
-import { useParams } from 'react-router-dom'
+import { t } from 'i18next'
 import { dispatch, useSelector } from 'store'
 import { useSettingContext, useFilter, useTable, getComparator, ICON_NAME } from 'hook'
 import {
@@ -20,7 +20,7 @@ import { TicketCard } from 'section/product'
 import { parseArrDesc } from 'util/parse-arr-desc'
 import { normalizer } from 'util/format'
 import { MARGIN } from 'config'
-import { KEY, TITLE, FLEX, TYPOGRAPHY, VIEW_FORM, SUPPORT_TICKET, FLEX_DIR, LABEL, VARIANT, SIZE } from 'constant'
+import { KEY, TITLE, FLEX, TYPOGRAPHY, SUPPORT_TICKET, FLEX_DIR, LABEL, VARIANT, SIZE } from 'constant'
 
 const TicketsTab = () => {
  const [tableData, setTableData] = useState([])
@@ -128,19 +128,33 @@ const TicketsTab = () => {
             </GStyledSpanBox>
            </Grid>
            <Grid item lg={12}>
-            <GridViewTitle title={TITLE.KEY_DETAILS} />
             <Divider variant={VARIANT.MIDDLE} style={{ width: '100%', marginBottom: 5 }} />
            </Grid>
            <Grid item lg={12} sm={12}>
             <Grid container spacing={2} p={2} pb={2}>
+             <Grid item xs={12} sm={12}>
+              <Box>
+               <Box>
+                <Typography variant={TYPOGRAPHY.OVERLINE1}>{t('description.label')}</Typography>
+               </Box>
+               {ticket?.descriptionContents?.length <= 0 ? (
+                <Box ml={2}>
+                 <Typography variant={TYPOGRAPHY.OVERLINE1} color={theme.palette.grey[500]}>
+                  {t('no_description.label')}
+                 </Typography>
+                </Box>
+               ) : (
+                <Box ml={2}>
+                 <Typography>{parseArrDesc(ticket?.descriptionContents)}</Typography>
+                </Box>
+               )}
+              </Box>
+             </Grid>
              <GridViewField heading={SUPPORT_TICKET.ASSIGNEE} isLoading={isLoading}>
               {ticket?.assigneeName}
              </GridViewField>
              <GridViewField heading={SUPPORT_TICKET.REPORTER} isLoading={isLoading}>
               {ticket?.reporterName}
-             </GridViewField>
-             <GridViewField heading={VIEW_FORM.DESCRIPTION} isLoading={isLoading} gridSize={12}>
-              {parseArrDesc(ticket.descriptionContents)}
              </GridViewField>
             </Grid>
            </Grid>
