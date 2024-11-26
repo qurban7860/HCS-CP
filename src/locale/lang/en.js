@@ -29,6 +29,9 @@ const en = {
  chat: `chat`,
  cards: `cards`,
  posts: `posts`,
+ assignee: {
+  label: `Assignee`
+ },
  billing_contact: {
   label: `Billing Contact`
  },
@@ -95,6 +98,9 @@ const en = {
  date: {
   label: `Date`
  },
+ description: {
+  label: `Description`
+ },
  document: {
   local: `document`,
   label: `Document`
@@ -110,6 +116,9 @@ const en = {
  },
  graph_type: {
   label: `Graph Type`
+ },
+ hmi_version: {
+  label: `HMI Version`
  },
  full_name: {
   label: `Full Name`
@@ -145,12 +154,25 @@ const en = {
  howick_website: {
   label: `Howick Website`
  },
+ key_detail: {
+  label: `Key Detail`,
+  key_details: {
+   label: `Key Details`
+  }
+ },
  machine: {
   local: `machine`,
   label: `Machine`,
   machines: {
    label: `Machines`
   }
+ },
+ machine_information: {
+  label: `Machine Information`
+ },
+ name: {
+  key: `name`,
+  label: `Name`
  },
  next_step: {
   label: `Next Step`,
@@ -163,6 +185,9 @@ const en = {
    second: 'You will receive further instructions within 12-48 hours',
    last: 'Check your email (<1>{{email}}</1>) for the invitation link'
   }
+ },
+ no_description: {
+  label: `No description`
  },
  no_coordinates_provided: {
   label: `No coordinates provided`
@@ -187,6 +212,12 @@ const en = {
  },
  portal_synced: {
   label: `Portal Synced`
+ },
+ quick_spec: {
+  label: `Quick Spec`,
+  quick_specs: {
+   label: `Quick Specs`
+  }
  },
  support: {
   local: `support`,
@@ -213,11 +244,6 @@ const en = {
  sites: {
   local: `sites`,
   label: `Sites`
- },
-
- name: {
-  key: `name`,
-  label: `Name`
  },
  general: `general`,
  banking: `banking`,
@@ -275,6 +301,9 @@ const en = {
    label: `Phone Numbers`
   }
  },
+ plc_version: {
+  label: `PLC Version`
+ },
  product: `product`,
  production: {
   label: `Production`,
@@ -284,8 +313,12 @@ const en = {
  register: {
   label: `Register`
  },
+ register_agreement: 'By clicking "Register" you agree to our <1>Privacy Policy</1>.',
  remember_me: {
   label: `Remember me`
+ },
+ reporter: {
+  label: `Reporter`
  },
  required: {
   label: `Required`
@@ -340,7 +373,6 @@ const en = {
  submitted_details: {
   label: `Submitted Details`
  },
- register_agreement: 'By clicking "Register" you agree to our <1>Privacy Policy</1>.',
  technical_contact: {
   label: `Technical Contact`
  },
@@ -350,9 +382,13 @@ const en = {
    label: `Time Zones`
   }
  },
- view_jira_in_new_tab: {
-  label: `View in Jira in a New Tab`
+ view_jira: {
+  label: `View in Jira`,
+  view_jira_in_new_tab: {
+   label: `View in Jira in a New Tab`
+  }
  },
+
  details: `details`,
  checkout: `checkout`,
  calendar: `calendar`,
@@ -370,7 +406,7 @@ const en = {
  item_label: `item label`,
  item_caption: `item caption`,
  item_external_link: `item external link`,
- description: `description`,
+
  other_cases: `other cases`,
  item_by_roles: `item by roles`,
  only_admin_can_see_this_item: `Only admin can see this item`,
