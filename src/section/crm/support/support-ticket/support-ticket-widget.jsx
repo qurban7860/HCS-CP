@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react'
 import { m } from 'framer-motion'
 import { t } from 'i18next'
+import { Trans } from 'react-i18next'
 import PropTypes from 'prop-types'
 import { useIcon, ICON_NAME, useSettingContext } from 'hook'
 import { useSelector } from 'react-redux'
@@ -54,7 +55,6 @@ const SupportTicketWidget = ({ value, handleMachineDialog, handleMachineSiteDial
             mach?.fields?.status?.name === 'Open' && (
              <GStyledSpanBox>
               <IconButton
-               // onClick={e => handleMachineDialog(e, mach._id)}
                size={SIZE.MEDIUM}
                color={themeMode === KEY.LIGHT ? 'grey.800' : 'common.white'}
                aria-label='view'
@@ -107,7 +107,7 @@ const SupportTicketWidget = ({ value, handleMachineDialog, handleMachineSiteDial
         <Grid item xs={12} sx={{ width: '350px' }}>
          <Grid container justifyContent={'space-between'}>
           <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
-           {t('active_support_ticket.no_active_tickets_found.label')}
+           <Trans i18nKey='no_found.label' values={{ value: 'Active Support Ticket' }} />
           </Typography>
          </Grid>
         </Grid>
