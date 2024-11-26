@@ -30,7 +30,7 @@ const TicketCard = ({ selectedCardId, handleSelected, handleTicketCard, handleTi
          </Link>
          &nbsp;
          <IconTooltip
-          title={t('view_jira_in_new_tab.label')}
+          title={t('view_jira.view_jira_in_new_tab.label')}
           icon={ICON_NAME.JIRA}
           color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
           dimension={18}
@@ -60,7 +60,7 @@ const TicketCard = ({ selectedCardId, handleSelected, handleTicketCard, handleTi
 }
 
 TicketCard.propTypes = {
- selectedCardId: PropTypes.number,
+ selectedCardId: PropTypes.string,
  value: PropTypes.any,
  contact: PropTypes.any,
  ticket: PropTypes.any,

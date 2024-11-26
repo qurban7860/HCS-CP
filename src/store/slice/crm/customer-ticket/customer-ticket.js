@@ -14,6 +14,7 @@ const initialState = {
  error: null,
  customerTicket: {},
  customerTickets: [],
+ customerTicketDialog: false,
  selectedCustomerTicketCard: null,
  customerTicketTotalCount: 0,
  customerTicketFilterBy: '',
@@ -76,6 +77,9 @@ const customerTicketSlice = createSlice({
    state.customerTicketTotalCount = 0
    state.isLoading = false
   },
+  setCustomerTicketDialog(state, action) {
+   state.customerTicketDialog = action.payload
+  },
   setSelectedCustomerTicketCard(state, action) {
    state.selectedCustomerTicketCard = action.payload
   },
@@ -97,9 +101,11 @@ const customerTicketSlice = createSlice({
 export default customerTicketSlice.reducer
 export const {
  resetCustomerTicketRecord,
+ resetCustomerTicket,
  resetCustomerTickets,
  resetSelectedCustomerTicketCard,
  setSelectedCustomerTicketCard,
+ setCustomerTicketDialog,
  setCustomerTicketResponseMessage,
  setCustomerTicketFilterBy,
  setCustomerTicketFilterStatus,
@@ -223,6 +229,23 @@ export function getCustomerTicketByKey(ref, key) {
    dispatch(customerTicketSlice.actions.getCustomerTicketRecordSuccess(customerTicket))
   } catch (error) {
    // goodlog.error(error, TAG, 'getcustomerTicketByKey')
+   dispatch(customerTicketSlice.actions.hasError(error.Message))
+   throw error
+  }
+ }
+}
+
+export function getCustomerTicketBySerialNoAndKey(serialNo, key) {
+ return async dispatch => {
+  dispatch(customerTicketSlice.actions.startLoading())
+  try {
+   const params = {
+    serialNo
+   }
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+   let customerTicket = response.data.issues.find(ticket => ticket.key === key)
+   dispatch(customerTicketSlice.actions.getCustomerTicketRecordSuccess(customerTicket))
+  } catch (error) {
    dispatch(customerTicketSlice.actions.hasError(error.Message))
    throw error
   }

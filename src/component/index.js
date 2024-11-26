@@ -42,6 +42,7 @@ export { default as SiteDialog } from './dialog/site'
 export { default as ContactDialog } from './dialog/contact'
 export { default as LogDetailsDialog } from './dialog/log'
 export { default as ChangePasswordDialog } from './dialog/change-password'
+export { default as SupportTicketDialog } from './dialog/support-ticket'
 // @form
 export { default as FormHeader } from './header/form'
 // @google-map
