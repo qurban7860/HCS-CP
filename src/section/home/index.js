@@ -1,6 +1,8 @@
 export { default as HomeNav } from './home-nav'
 export { default as HomeLayout } from './home-layout'
 export { default as HomeTab } from './home-tab'
+export { default as MachineListCard } from './machine/machine-list-card'
+export { default as SiteCard } from './site/site-card'
 
 export * from './contact'
 export * from './machine'

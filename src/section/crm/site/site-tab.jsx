@@ -17,11 +17,12 @@ import {
  resetSelectedSiteCard,
  resetValidCoordinates
 } from 'store/slice'
+import { useSiteDefaultValues } from 'section/crm/site'
+import { SiteCard } from 'section/home'
 import { Divider, Grid, Card, Typography } from '@mui/material'
 import { MotionLazyContainer, GridViewTitle, GridViewField, AuditBox, CustomerDialog, SearchBox, GoogleMaps, NothingProvided, IconTooltip } from 'component'
 import { useTheme } from '@mui/material/styles'
 import { GCardOption, GStyledTopBorderDivider, GStyledFlexEndBox, GStyledSiteMapBox, GStyledSpanBox, GStyledFlexEndGrid } from 'theme/style'
-import { SiteCard, useSiteDefaultValues } from 'section/crm/site'
 import { MARGIN } from 'config'
 import { KEY, TITLE, FLEX, TYPOGRAPHY, SNACK, FLEX_DIR, LABEL, VARIANT, ADDRESS } from 'constant'
 
@@ -106,7 +107,6 @@ const SiteTab = () => {
 
  return (
   <MotionLazyContainer display={FLEX.FLEX}>
-   {/*  TODO: Make responsive */}
    <Grid container spacing={2} flexDirection={FLEX_DIR.COLUMN} {...MARGIN.PAGE_PROP}>
     <Grid item xs={12} sm={12} sx={{ overflow: KEY.AUTO, scrollBehavior: 'smooth' }}>
      <Grid container gap={2}>
