@@ -2,6 +2,15 @@ import { get } from 'react-hook-form'
 
 const en = {
  account: `account`,
+ account_manager: {
+  label: `Account Manager`,
+  account_managers: {
+   label: `Account Managers`
+  }
+ },
+ active: {
+  label: `Active`
+ },
  active_support_ticket: {
   label: `Active Support Ticket`,
   active_support_tickets: {
@@ -11,7 +20,6 @@ const en = {
    label: `No active tickets found`
   }
  },
-
  address: {
   label: `Address`
  },
@@ -35,10 +43,19 @@ const en = {
  billing_contact: {
   label: `Billing Contact`
  },
+ billing_site: {
+  label: `Billing Site`
+ },
  close: {
   label: `Close`
  },
  create: `create`,
+ connected_machine: {
+  label: `Connected Machine`,
+  connected_machines: {
+   label: `Connected Machines`
+  }
+ },
  contacts: {
   local: `contacts`,
   label: `Contacts`
@@ -108,6 +125,12 @@ const en = {
  email: {
   label: `Email`
  },
+ full_name: {
+  label: `Full Name`
+ },
+ go_back: {
+  label: `Go Back`
+ },
  graph: {
   label: `Graph`,
   graphs: {
@@ -120,8 +143,8 @@ const en = {
  hmi_version: {
   label: `HMI Version`
  },
- full_name: {
-  label: `Full Name`
+ installation_site: {
+  label: `Installation Site`
  },
  log: {
   label: `Log`,
@@ -170,6 +193,9 @@ const en = {
  machine_information: {
   label: `Machine Information`
  },
+ menu: {
+  label: `Menu`
+ },
  name: {
   key: `name`,
   label: `Name`
@@ -212,6 +238,12 @@ const en = {
  },
  portal_synced: {
   label: `Portal Synced`
+ },
+ project_manager: {
+  label: `Project Manager`,
+  project_managers: {
+   label: `Project Managers`
+  }
  },
  quick_spec: {
   label: `Quick Spec`,
@@ -323,6 +355,9 @@ const en = {
  required: {
   label: `Required`
  },
+ reset: {
+  label: `Reset`
+ },
  reset_password: {
   label: `Reset Password`
  },
@@ -373,6 +408,12 @@ const en = {
  submitted_details: {
   label: `Submitted Details`
  },
+ support_manager: {
+  label: `Support Manager`,
+  support_managers: {
+   label: `Support Managers`
+  }
+ },
  technical_contact: {
   label: `Technical Contact`
  },
@@ -382,13 +423,18 @@ const en = {
    label: `Time Zones`
   }
  },
+ trading_name: {
+  label: `Trading Name / Alias`
+ },
  view_jira: {
   label: `View in Jira`,
   view_jira_in_new_tab: {
    label: `View in Jira in a New Tab`
   }
  },
-
+ website: {
+  label: `Website`
+ },
  details: `details`,
  checkout: `checkout`,
  calendar: `calendar`,
