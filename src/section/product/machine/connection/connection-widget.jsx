@@ -1,7 +1,6 @@
 import { Fragment, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useIcon, ICON_NAME } from 'hook'
-import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
 import { setMachineDialog } from 'store/slice'
 import { Grid, Typography, IconButton, Divider } from '@mui/material'
@@ -53,7 +52,9 @@ const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMa
                borderRadius: 2,
                m: 0
               }}>
-              <Typography variant={value?.machineConnection?.length > 1 ? TYPOGRAPHY.H4 : TYPOGRAPHY.H3}>{truncate(mach?.connectedMachine?.serialNo, 35)}</Typography>
+              <Typography color={themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white} variant={value?.machineConnection?.length > 1 ? TYPOGRAPHY.H4 : TYPOGRAPHY.H3}>
+               {truncate(mach?.connectedMachine?.serialNo, 35)}
+              </Typography>
              </IconButton>
              <GStyledTooltip title={LABEL.DECOILER_DEF} disableFocusListener placement={KEY.TOP} tooltipcolor={theme.palette.grey[500]} color={theme.palette.grey[500]}>
               <LocIcon icon={decoilerSrc} color={theme.palette.grey[500]} sx={{ height: 15 }} />
@@ -98,7 +99,6 @@ const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMa
           )}
          </GStyledSpanBox>
         </Grid>
-        {/* <Divider style={{ width: '100%', color: 'common.white', marginBottom: 5 }} /> */}
        </Fragment>
       ))
      ) : value?.parentConnection?.length > 0 ? (
@@ -120,7 +120,9 @@ const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMa
                borderRadius: 2,
                m: 0
               }}>
-              <Typography variant={value?.parentConnection?.length > 1 ? TYPOGRAPHY.H4 : TYPOGRAPHY.H3}>{mach?.machine?.serialNo}</Typography>
+              <Typography color={themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white} variant={value?.parentConnection?.length > 1 ? TYPOGRAPHY.H4 : TYPOGRAPHY.H3}>
+               {mach?.machine?.serialNo}
+              </Typography>
              </IconButton>
 
              <GStyledTooltip title={LABEL.PARENT} disableFocusListener placement={KEY.TOP} tooltipcolor={theme.palette.grey[500]} color={theme.palette.grey[500]}>
