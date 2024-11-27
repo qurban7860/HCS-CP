@@ -202,6 +202,12 @@ export const GStyledSpanBox = styled(Box)(({ theme }) => ({
  alignItems: 'center'
 }))
 
+export const GStyledSpaceBetweenSpanBox = styled(Box)(({ theme }) => ({
+ display: 'flex',
+ alignItems: 'center',
+ justifyContent: 'space-between'
+}))
+
 export const GStyledMachineTitleSpanBox = styled(Box)(({ theme }) => ({
  display: 'flex',
  alignItems: 'center',
