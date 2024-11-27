@@ -1,14 +1,14 @@
 import { t } from 'i18next'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { snack, useSettingContext, Icon, ICON_NAME } from 'hook'
+import { snack, useSettingContext, useResponsive, ICON_NAME } from 'hook'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { setChangePasswordDialog, updateUserPassword } from 'store/slice'
 import { ChangePasswordSchema } from 'schema'
 import { Dialog, DialogContent, DialogTitle, Divider, DialogActions, Box, Typography, Grid } from '@mui/material'
 import { RHFTextField, RHFPasswordField } from 'component'
 import FormProvider from 'component/hook-form'
-import { GStyledTopBorderDivider, GStyledSpanBox, GStyledLoadingButton } from 'theme/style'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledLoadingButton, GBackdropPropsOption } from 'theme/style'
 import { TYPOGRAPHY, FLEX, SIZE, KEY } from 'constant'
 
 function ChangePasswordDialog() {
@@ -18,6 +18,7 @@ function ChangePasswordDialog() {
 
  const { themeMode } = useSettingContext()
  const dispatch = useDispatch()
+ const isMobile = useResponsive('down', 'sm')
 
  const handleChangePasswordDialog = () => {
   dispatch(setChangePasswordDialog(false))
@@ -61,14 +62,14 @@ function ChangePasswordDialog() {
  }
 
  return (
-  <Dialog disableEnforceFocus fullWidth maxWidth='sm' open={changePasswordDialog} onClose={handleChangePasswordDialog}>
+  <Dialog disableEnforceFocus fullWidth maxWidth='sm' open={changePasswordDialog} onClose={handleChangePasswordDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle>
     <GStyledSpanBox
      sx={{
       justifyContent: FLEX.SPACE_BETWEEN
      }}>
-     <Typography variant={TYPOGRAPHY.H3}>{t('change_password.label').toUpperCase()}</Typography> &nbsp;
+     <Typography variant={isMobile ? TYPOGRAPHY.H5 : TYPOGRAPHY.H3}>{t('change_password.label').toUpperCase()}</Typography> &nbsp;
     </GStyledSpanBox>
    </DialogTitle>
    <Divider orientation='horizontal' flexItem />
