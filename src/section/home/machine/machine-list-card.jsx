@@ -6,14 +6,12 @@ import { useIcon, ICON_NAME, useSettingContext } from 'hook'
 import { useSelector } from 'react-redux'
 import { Grid, Typography, IconButton, Divider, Box, Card } from '@mui/material'
 import { useTheme, alpha } from '@mui/material/styles'
-import { GStyledListItemText, GStyledSpanBox, GStyledTooltip, GStyledTopBorderDivider, GStyledScrollableHeightLockGrid, GCardNoHeightOption } from 'theme/style'
+import { GStyledListItemText, GStyledSpanBox, GStyledTooltip, GStyledTopBorderDivider, GCardNoHeightOption } from 'theme/style'
 import { FormHeader, SkeletonViewFormField, IconTooltip, GridViewTitle } from 'component'
 import { PATH_MACHINE } from 'route/path'
-import { VARIANT, SIZE, LABEL, KEY, DECOILER_TYPE_ARR, FLEX } from 'constant'
+import { TYPOGRAPHY, SIZE, LABEL, KEY, DECOILER_TYPE_ARR, FLEX } from 'constant'
 
-const { TYPOGRAPHY } = VARIANT
-
-const MachineListCard = ({ value, handleMachineDialog, handleMachineSiteDialog, machineTotalCount }) => {
+const MachineListCard = ({ handleMachineDialog, handleMachineSiteDialog, machineTotalCount }) => {
  const [loading, setLoading] = useState(false)
  const { customerMachines } = useSelector(state => state.machine)
  const theme = useTheme()
@@ -99,7 +97,7 @@ const MachineListCard = ({ value, handleMachineDialog, handleMachineSiteDialog, 
               iconOnly
               cursor
              />
-             {value?.isActive ? (
+             {mach?.isActive ? (
               <IconTooltip
                title={LABEL.ACTIVE}
                icon={ICON_NAME.ACTIVE}
