@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useSettingContext } from 'hook'
 import useResponsive from 'hook/use-responsive'
@@ -27,6 +26,7 @@ function GlobalStyle() {
      margin: 0,
      padding: 0,
      width: '100%',
+     //  height: '100vh',
      WebkitOverflowScrolling: 'touch'
     },
     body: {
@@ -45,7 +45,6 @@ function GlobalStyle() {
     },
     '#root': {
      width: '100%'
-     //  height: '100vh'
     },
     input: {
      '&[type=number]': {
