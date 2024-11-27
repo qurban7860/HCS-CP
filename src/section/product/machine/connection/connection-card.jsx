@@ -192,7 +192,7 @@ const MachineConnectionListCard = ({ value, handleConnectionDialog, handleConnec
           <SkeletonViewFormField />
          </m.div>
         ) : (
-         <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
+         <Typography variant={TYPOGRAPHY.OVERLINE1} color='grey.300'>
           <Trans i18nKey='no_found.label' values={{ value: 'Connected Machine' }} />
          </Typography>
         )}
