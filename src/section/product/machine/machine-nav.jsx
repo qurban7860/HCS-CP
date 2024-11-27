@@ -1,62 +1,135 @@
+import React, { Fragment, useState } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
-import { Clock, ICON_NAME, useSettingContext } from 'hook'
-import { MachineTabsContainer } from 'section/product/machine'
-import { Grid, Typography } from '@mui/material'
+import { Grid, Typography, IconButton, Drawer, Box, useMediaQuery, tabsClasses } from '@mui/material'
+import { IconTooltip, PopoverDefault, TabContainer, BackButton } from 'component'
 import { useTheme } from '@mui/material/styles'
-import { IconTooltip } from 'component'
-import { GStyledHeaderCardContainer, GStyledTopBorderDivider, GStyledMachineTitleSpanBox, GStyledFieldGrid } from 'theme/style'
+import { Clock, Icon, ICON_NAME, useSettingContext } from 'hook'
+import { MachineTabsContainer, TABS } from 'section/product/machine'
+import { GStyledHeaderCardContainer, GStyledTopBorderDivider, GStyledSpanBox, GStyledFieldGrid, GStyledTab } from 'theme/style'
 import { KEY, LABEL, TYPOGRAPHY, FLEX, FLEX_DIR, DECOILER_TYPE_ARR } from 'constant'
+import { truncate } from 'util'
+import { a11yProps } from 'util/a11y.js'
+import 'swiper/css'
 
 const MachineNav = ({ renderedTab, navigatePage, value, isLoading }) => {
+ const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+ const [menuAnchor, setMenuAnchor] = useState(null)
+
  const theme = useTheme()
  const { themeMode } = useSettingContext()
 
+ const isDesktop = useMediaQuery(theme.breakpoints.up('lg'))
+ const isTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'))
+ const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
+ const menuOpen = Boolean(menuAnchor)
+ const menuId = menuOpen ? 'machine-menu' : undefined
+ const toggleMenu = event => {
+  setMenuAnchor(menuAnchor ? null : event.currentTarget)
+ }
+
+ const renderMachineStatusIcons = () => (
+  <Grid
+   container
+   justifyContent={FLEX.FLEX_END}
+   gap={isMobile ? 0.5 : 2}
+   sx={{
+    flexWrap: 'wrap',
+    alignItems: KEY.CENTER
+   }}>
+   <Clock city={value?.installationSiteCity} country={value?.installationSiteCountry} region={value?.installationSiteRegion} />
+   {value?.isPortalSynced && (
+    <IconTooltip title={t('portal_synced.label')} icon={ICON_NAME.PORTAL_SYNC} color={theme.palette.howick.bronze} tooltipColor={theme.palette.howick.bronze} dimension={isMobile ? 15 : 20} iconOnly />
+   )}
+   {DECOILER_TYPE_ARR.some(type => value?.machineModel?.includes(type)) && (
+    <IconTooltip
+     title={LABEL.DECOILER(value?.machineModel)}
+     icon={ICON_NAME.DECOILER_DEF}
+     color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]}
+     dimension={isMobile ? 15 : 20}
+     iconOnly
+    />
+   )}
+   {value?.isActive ? (
+    <IconTooltip
+     title={LABEL.ACTIVE}
+     icon={ICON_NAME.ACTIVE}
+     color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+     tooltipColor={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+     buttonColor={themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black}
+     tooltipTextColor={themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black}
+     dimension={isMobile ? 15 : 20}
+     iconOnly
+    />
+   ) : (
+    <IconTooltip title={LABEL.INACTIVE} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} dimension={isMobile ? 15 : 20} iconOnly />
+   )}
+  </Grid>
+ )
+
  return (
-  <GStyledHeaderCardContainer>
-   <GStyledTopBorderDivider mode={themeMode} />
-   <Grid container px={1.5}>
-    <Grid item lg={8}>
-     <GStyledFieldGrid heading={' '} my={2} isLoading={isLoading} mode={themeMode} gridSize={8} isNoBg isMachineView>
-      <GStyledMachineTitleSpanBox>
-       <Typography variant={TYPOGRAPHY.H2}> {value?.serialNo} &nbsp;</Typography>
-       <Typography variant={TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.bronze}>
-        {value?.machineModel}
-       </Typography>
-      </GStyledMachineTitleSpanBox>
-     </GStyledFieldGrid>
-    </Grid>
-    <Grid item lg={4}>
-     <Grid container justifyContent={FLEX.FLEX_END} flexDirection={FLEX_DIR.COLUMN} alignContent={FLEX.FLEX_END}>
-      <Grid item xs={12} justifyContent={FLEX.FLEX_END} mt={2}>
-       <Grid container justifyContent={FLEX.FLEX_END} gap={3}>
-        <Clock city={value?.installationSiteCity} country={value?.installationSiteCountry} region={value?.installationSiteRegion} />
-        {value?.isPortalSynced && <IconTooltip title={t('portal_synced.label')} icon={ICON_NAME.PORTAL_SYNC} color={theme.palette.howick.bronze} tooltipColor={theme.palette.howick.bronze} iconOnly />}
-        {DECOILER_TYPE_ARR.some(type => value?.machineModel?.includes(type)) && (
-         <IconTooltip title={LABEL.DECOILER(value?.machineModel)} icon={ICON_NAME.DECOILER} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} iconOnly />
-        )}
-        {value?.isActive ? (
-         <IconTooltip
-          title={LABEL.ACTIVE}
-          icon={ICON_NAME.ACTIVE}
-          color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
-          tooltipColor={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
-          buttonColor={themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black}
-          tooltipTextColor={themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black}
-          iconOnly
-         />
-        ) : (
-         <IconTooltip title={LABEL.INACTIVE} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} iconOnly />
-        )}
-       </Grid>
+  <Fragment>
+   <GStyledHeaderCardContainer height={160}>
+    <GStyledTopBorderDivider mode={themeMode} />
+    <Grid container spacing={2} flexDirection={FLEX_DIR.COLUMN} px={isMobile ? 1 : 1.5}>
+     <Grid container flexDirection={FLEX_DIR.ROW} p={2}>
+      <Grid item xs={12} sm={8} display={FLEX.FLEX} alignItems={KEY.TOP}>
+       <GStyledSpanBox>
+        <GStyledFieldGrid my={2} isLoading={isLoading} mode={themeMode} isNoBg isMachineView>
+         <Typography variant={isMobile ? TYPOGRAPHY.H2 : TYPOGRAPHY.H2}>{truncate(value?.serialNo, 5)}</Typography>
+        </GStyledFieldGrid>
+        &nbsp;
+        <Typography variant={isMobile ? TYPOGRAPHY.H5 : TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.bronze}>
+         {truncate(value?.machineModel, 35)}
+        </Typography>
+       </GStyledSpanBox>
+      </Grid>
+
+      <Grid item xs={12} sm={4} display={FLEX.FLEX} justifyContent={FLEX.FLEX_END}>
+       {isMobile && (
+        <Fragment>
+         <BackButton alongTab />
+         <IconButton
+          sx={{
+           mr: 1,
+           color: 'text.primary'
+          }}
+          onClick={toggleMenu}>
+          <Icon icon={menuOpen ? ICON_NAME.MENU_POPOVER_CLOSE : ICON_NAME.MENU_POPOVER_OPEN} color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze} />
+          <Typography variant={TYPOGRAPHY.OVERLINE}>{t('menu.label')}</Typography>
+         </IconButton>
+         <PopoverDefault id={menuId} open={menuOpen} anchorEl={menuAnchor} onClose={toggleMenu}>
+          <Box sx={{ flexGrow: 1, display: 'flex' }}>
+           <TabContainer tabsClasses={tabsClasses.scrollButtons} orientation={KEY.VERTICAL} currentTab={renderedTab} setCurrentTab={tab => navigatePage(tab)} isNotAbsolute>
+            {TABS(null).map(tab => (
+             <GStyledTab
+              className='tab'
+              mode={themeMode}
+              key={tab.id}
+              value={tab.id}
+              disabled={tab.disabled}
+              label={<Typography variant={TYPOGRAPHY.OVERLINE1}>{tab.label}</Typography>}
+              {...a11yProps(tab.id)}
+             />
+            ))}
+           </TabContainer>
+          </Box>
+         </PopoverDefault>
+        </Fragment>
+       )}
+       {renderMachineStatusIcons()}
+      </Grid>
+     </Grid>
+
+     <Grid container p={2}>
+      <Grid item xs={12} sm={12}>
+       {!isMobile && <MachineTabsContainer value={value} renderedTab={renderedTab} navigatePage={navigatePage} isLoading={isLoading} />}
       </Grid>
      </Grid>
     </Grid>
-   </Grid>
-   <Grid item sm={12} px={2}>
-    <MachineTabsContainer value={value} renderedTab={renderedTab} navigatePage={navigatePage} isLoading={isLoading} />
-   </Grid>
-  </GStyledHeaderCardContainer>
+   </GStyledHeaderCardContainer>
+  </Fragment>
  )
 }
 
