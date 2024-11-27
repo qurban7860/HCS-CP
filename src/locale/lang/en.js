@@ -44,6 +44,9 @@ const en = {
  billing_site: {
   label: `Billing Site`
  },
+ change_password: {
+  label: `Change Password`
+ },
  close: {
   label: `Close`
  },
@@ -83,8 +86,23 @@ const en = {
    label: `Columns`
   }
  },
+ customer: {
+  label: `Customer`
+ },
+ customer_name: {
+  label: `Customer Name`
+ },
+ customer_group: {
+  label: `Customer Group`
+ },
+ customer_note: {
+  label: `Customer Note`
+ },
  dashboard: {
   label: `Dashboard`
+ },
+ default_profile: {
+  label: `Default Profile`
  },
  detail: {
   label: `Detail`,
@@ -98,21 +116,7 @@ const en = {
  group: {
   label: `Group`
  },
- change_password: {
-  label: `Change Password`
- },
- customer: {
-  label: `Customer`
- },
- customer_name: {
-  label: `Customer Name`
- },
- customer_group: {
-  label: `Customer Group`
- },
- customer_note: {
-  label: `Customer Note`
- },
+
  date: {
   label: `Date`
  },
@@ -125,6 +129,9 @@ const en = {
  },
  email: {
   label: `Email`
+ },
+ financing_company: {
+  label: `Financing Company`
  },
  full_name: {
   label: `Full Name`
@@ -146,6 +153,9 @@ const en = {
  },
  installation_site: {
   label: `Installation Site`
+ },
+ installation_date: {
+  label: `Installation Date`
  },
  log: {
   label: `Log`,
@@ -207,8 +217,14 @@ const en = {
    label: `Machines`
   }
  },
+ machine_model: {
+  label: `Machine Model`
+ },
  machine_information: {
   label: `Machine Information`
+ },
+ manufacture_date: {
+  label: `Manufacture Date`
  },
  menu: {
   label: `Menu`
@@ -282,6 +298,9 @@ const en = {
  no_found: {
   label: `No {{value}} Found`
  },
+ not_provided: {
+  label: `Not Provided`
+ },
  note: {
   label: `Note`
  },
@@ -321,6 +340,9 @@ const en = {
   label: `Production`,
   production_total: { label: `Production Total` },
   production_rate: { label: `Production Rate` }
+ },
+ purchase_date: {
+  label: `Purchase Date`
  },
  register: {
   label: `Register`
@@ -382,6 +404,26 @@ const en = {
  see_more: {
   label: `See More`
  },
+ shipping_date: {
+  label: `Shipping Date`
+ },
+ site: {
+  local: `site`,
+  label: `Site`,
+  sites: {
+   label: `Sites`
+  }
+ },
+ sites: {
+  local: `sites`,
+  label: `Sites`
+ },
+ status: {
+  label: `Status`
+ },
+ supplier: {
+  label: `Supplier`
+ },
  submit: {
   label: `Submit`
  },
@@ -398,20 +440,12 @@ const en = {
   local: `support`,
   label: `Support`
  },
+ support_expiration: {
+  label: `Support Expiration`
+ },
  support_tickets: {
   local: `support_tickets`,
   label: `Support Tickets`
- },
- site: {
-  local: `site`,
-  label: `Site`,
-  sites: {
-   label: `Sites`
-  }
- },
- sites: {
-  local: `sites`,
-  label: `Sites`
  },
  technical_contact: {
   label: `Technical Contact`
@@ -433,6 +467,9 @@ const en = {
  },
  website: {
   label: `Website`
+ },
+ work_order: {
+  label: `Work Order`
  },
  details: `details`,
  checkout: `checkout`,
