@@ -1,5 +1,3 @@
-import { get } from 'react-hook-form'
-
 const en = {
  account: `account`,
  account_manager: {
@@ -94,6 +92,9 @@ const en = {
    label: `Details`
   }
  },
+ display_settings: {
+  label: `Display Settings`
+ },
  group: {
   label: `Group`
  },
@@ -183,6 +184,22 @@ const en = {
    label: `Key Details`
   }
  },
+ general: `general`,
+ banking: `banking`,
+ booking: `booking`,
+
+ logout: {
+  label: `Logout`
+ },
+ language: {
+  label: `Language`
+ },
+ legend: {
+  label: `Legend`,
+  legends: {
+   label: `Legends`
+  }
+ },
  machine: {
   local: `machine`,
   label: `Machine`,
@@ -212,6 +229,9 @@ const en = {
    last: 'Check your email (<1>{{email}}</1>) for the invitation link'
   }
  },
+ new_password: {
+  label: `New Password`
+ },
  no_description: {
   label: `No description`
  },
@@ -239,64 +259,24 @@ const en = {
  portal_synced: {
   label: `Portal Synced`
  },
+ portal: {
+  local: `portal`,
+  label: `Portal`
+ },
  project_manager: {
   label: `Project Manager`,
   project_managers: {
    label: `Project Managers`
   }
  },
- quick_spec: {
-  label: `Quick Spec`,
-  quick_specs: {
-   label: `Quick Specs`
-  }
- },
- support: {
-  local: `support`,
-  label: `Support`
- },
- new_password: {
-  label: `New Password`
- },
- portal: {
-  local: `portal`,
-  label: `Portal`
- },
- support_tickets: {
-  local: `support_tickets`,
-  label: `Support Tickets`
- },
- site: {
-  local: `site`,
-  label: `Site`,
-  sites: {
-   label: `Sites`
-  }
- },
- sites: {
-  local: `sites`,
-  label: `Sites`
- },
- general: `general`,
- banking: `banking`,
- booking: `booking`,
  profile: {
   local: `profile`,
   label: `Profile`
  },
- display_settings: {
-  label: `Display Settings`
- },
- logout: {
-  label: `Logout`
- },
- language: {
-  label: `Language`
- },
- legend: {
-  label: `Legend`,
-  legends: {
-   label: `Legends`
+ quick_spec: {
+  label: `Quick Spec`,
+  quick_specs: {
+   label: `Quick Specs`
   }
  },
  no_found: {
@@ -414,6 +394,25 @@ const en = {
    label: `Support Managers`
   }
  },
+ support: {
+  local: `support`,
+  label: `Support`
+ },
+ support_tickets: {
+  local: `support_tickets`,
+  label: `Support Tickets`
+ },
+ site: {
+  local: `site`,
+  label: `Site`,
+  sites: {
+   label: `Sites`
+  }
+ },
+ sites: {
+  local: `sites`,
+  label: `Sites`
+ },
  technical_contact: {
   label: `Technical Contact`
  },
@@ -452,7 +451,6 @@ const en = {
  item_label: `item label`,
  item_caption: `item caption`,
  item_external_link: `item external link`,
-
  other_cases: `other cases`,
  item_by_roles: `item by roles`,
  only_admin_can_see_this_item: `Only admin can see this item`,
