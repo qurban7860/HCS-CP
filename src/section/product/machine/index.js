@@ -4,6 +4,7 @@ export { default as MachineConnectionListCard } from './connection/connection-ca
 export { default as MachineHistoryWidget } from './history/history-widget'
 export { default as MachineSiteWidget } from './site/site-widget'
 export { default as MachineTab } from './machine-tab'
+export { default as MachineFieldsCard } from './machine-fields-card'
 export { default as MachineNav } from './machine-nav'
 export { default as MachineTabsContainer } from './machine-tabs-container'
 export * from './fields-config'

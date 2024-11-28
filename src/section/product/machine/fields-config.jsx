@@ -1,13 +1,11 @@
 import { t } from 'i18next'
 import { PATH_CUSTOMER } from 'route/path'
-import { Link } from '@mui/material'
-import { truncate } from 'util'
-import { VIEW_FORM, KEY } from 'constant'
+import { KEY } from 'constant'
 
 export const fieldsKeyConfig = [
  {
   key: 'serialNo',
-  heading: 'name.label',
+  heading: 'machine_serial_number.label',
   value: defaultValues => defaultValues?.serialNo,
   gridSize: 4
  },
@@ -34,24 +32,22 @@ export const fieldsMachineInformationConfig = [
   gridSize: 12
  },
  {
-  key: 'organization',
-  heading: VIEW_FORM.ORGANIZATION,
+  key: 'customer',
+  heading: 'organization.label',
   value: defaultValues => defaultValues?.customer,
+  type: 'link',
   additionalProps: (defaultValues, handleCustomerDialog, themeMode) => ({
    country: defaultValues?.customerCountry,
-   customerLink: PATH_CUSTOMER.customers.view(defaultValues?.customerId),
-   onClick: event => handleCustomerDialog(event, defaultValues?.customerId),
-   render: value =>
-    value ? (
-     <Link
-      onClick={event => handleCustomerDialog(event, defaultValues?.customerId)}
-      href='#'
-      underline='none'
-      color={themeMode === KEY.LIGHT ? 'theme.palette.howick.midBlue' : 'theme.palette.howick.orange'}>
-      {truncate(value, 21)}
-     </Link>
-    ) : null
-  })
+   customerLink: PATH_CUSTOMER.customers.view(defaultValues?.customerId)
+  }),
+  linkProps: {
+   country: defaultValues => defaultValues?.customerCountry,
+   href: '#',
+   underline: 'none',
+   color: themeMode => (themeMode === KEY.LIGHT ? 'howick.midBlue' : 'howick.orange'),
+   onClick: (event, customerId, handleCustomerDialog) => handleCustomerDialog(event, customerId)
+  },
+  truncate: 21
  },
  {
   key: 'status',

@@ -1,8 +1,6 @@
-import { Fragment, useEffect, memo } from 'react'
-import { t } from 'i18next'
+import { useEffect, memo } from 'react'
 import { useSelector, dispatch } from 'store'
 import { useParams } from 'react-router-dom'
-import { useSettingContext, useResponsive } from 'hook'
 import {
  getCustomer,
  getMachine,
@@ -17,24 +15,18 @@ import {
 } from 'store/slice'
 import { useMachineDefaultValues, fieldsKeyConfig, fieldsMachineInformationConfig } from 'section/product'
 import { HowickResources } from 'section/common'
-import { Box, Grid, Card, Divider, Link, useMediaQuery } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledFlexEndBox, GCardOption } from 'theme/style'
-import { AuditBox, GridViewField, GridViewTitle } from 'component'
-import { MachineConnectionWidget, MachineConnectionListCard } from 'section/product/machine'
+import { Box, Grid, useMediaQuery } from '@mui/material'
+import { GStyledFlexEndBox } from 'theme/style'
+import { AuditBox } from 'component'
+import { MachineConnectionWidget, MachineConnectionListCard, MachineFieldsCard } from 'section/product/machine'
 import { MARGIN } from 'config'
-import { TITLE, FLEX_DIR } from 'constant'
-import { truncate } from 'util/truncate'
+import { FLEX_DIR } from 'constant'
 
 const MachineTab = () => {
  const { id } = useParams()
  const { machine, isLoading } = useSelector(state => state.machine)
  const { customer } = useSelector(state => state.customer)
-
- const { themeMode } = useSettingContext()
  const isDesktop = useMediaQuery(theme => theme.breakpoints.up('lg'))
- const isMobile = useResponsive('down', 'sm')
- const theme = useTheme()
 
  useEffect(() => {
   if (id !== machine?._id) {
@@ -80,35 +72,6 @@ const MachineTab = () => {
   dispatch(setMachineSiteDialog(true))
  }
 
- const renderFields = config => {
-  return (
-   <Fragment>
-    {config?.map(field => {
-     const additionalProps = field.additionalProps ? field.additionalProps(defaultValues, handleCustomerDialog, themeMode) : {}
-     let content = field.value(defaultValues)
-     {
-      if (field.type === 'link' && defaultValues[field.key]) {
-       content = (
-        <Link
-         onClick={event => field.linkProps.onClick(event, defaultValues?.customerId, handleCustomerDialog)}
-         href={field.linkProps.href}
-         underline={field.linkProps.underline}
-         color={field.linkProps.color(themeMode)}>
-         {truncate(content, field.truncate)}
-        </Link>
-       )
-      }
-     }
-     return (
-      <GridViewField key={field.key} heading={t(field.heading)} isLoading={isLoading} gridSize={field.gridSize || 6} {...additionalProps}>
-       {content}
-      </GridViewField>
-     )
-    })}
-   </Fragment>
-  )
- }
-
  return (
   <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
    {isDesktop && (
@@ -116,54 +79,17 @@ const MachineTab = () => {
      <MachineConnectionWidget value={defaultValues} handleConnectedMachineDialog={handleConnectedMachineDialog} handleMachineSiteDialog={handleMachineSiteDialog} />
     </Grid>
    )}
-
    <Grid item xs={12} sm={12} lg={9}>
-    <Box mb={2}>
-     <Card {...GCardOption(themeMode)}>
-      <GStyledTopBorderDivider mode={themeMode} />
-      <Grid container spacing={2} px={1.5}>
-       <GridViewTitle title={t('key_detail.key_details.label')} />
-       <Grid item lg={12} sm={12}>
-        <Grid container spacing={2} p={2} pb={5}>
-         {renderFields(fieldsKeyConfig)}
-        </Grid>
-       </Grid>
-      </Grid>
-     </Card>
-    </Box>
-
-    <Box mb={2}>
-     <Card {...GCardOption(themeMode)}>
-      <GStyledTopBorderDivider mode={themeMode} />
-      <Grid container spacing={2} px={1.5}>
-       <GridViewTitle title={t('machine_information.label')} />
-       <Grid item lg={12} sm={12}>
-        <Grid container spacing={2} p={2} pb={5}>
-         {renderFields(fieldsMachineInformationConfig)}
-        </Grid>
-       </Grid>
-      </Grid>
-     </Card>
-    </Box>
-
+    <MachineFieldsCard i18nKey={'key_detail.key_details.label'} defaultValues={defaultValues} fieldsConfig={fieldsKeyConfig} isLoading={isLoading} handleDialog={handleCustomerDialog} />
+    <MachineFieldsCard i18nKey={'machine_information.label'} defaultValues={defaultValues} fieldsConfig={fieldsMachineInformationConfig} isLoading={isLoading} handleDialog={handleCustomerDialog} />
     {!isDesktop && (
      <Box mb={2}>
       <MachineConnectionListCard value={defaultValues} isLoading={isLoading} handleConnectionDialog={handleConnectedMachineDialog} />
      </Box>
     )}
-
-    <Box>
-     <Card {...GCardOption(themeMode)}>
-      <GStyledTopBorderDivider mode={themeMode} />
-      <Grid container spacing={2} px={1.5}>
-       <GridViewTitle title={t('howick_resources.label')} />
-       <Divider orientation='horizontal' variant='fullWidth' />
-       <Grid item lg={12} sm={12}>
-        <HowickResources value={defaultValues} isLoading={isLoading} />
-       </Grid>
-      </Grid>
-     </Card>
-    </Box>
+    <MachineFieldsCard isChildren i18nKey={'howick_resources.label'} defaultValues={defaultValues} isLoading={isLoading}>
+     <HowickResources value={defaultValues} isLoading={isLoading} />
+    </MachineFieldsCard>
     <Box my={2} mb={4}>
      <GStyledFlexEndBox>
       <AuditBox value={defaultValues} />
