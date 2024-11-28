@@ -52,7 +52,7 @@ const CustomerTab = () => {
 
  return (
   <Fragment>
-   <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+   <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
     <Grid item sm={12} lg={12}>
      <CustomerFieldsCard i18nKey={'key_detail.key_details.label'} defaultValues={defaultValues} fieldsConfig={fieldsKeyConfig} isLoading={isLoading} />
      <CustomerFieldsCard i18nKey={'site_information.label'} defaultValues={defaultValues} fieldsConfig={fieldSiteInformationConfig} isLoading={isLoading} />
