@@ -46,6 +46,8 @@ export { default as SiteDialog } from './dialog/site'
 export { default as SupportTicketDialog } from './dialog/support-ticket'
 // @drawer
 export { default as DrawerMenu } from './drawer/menu'
+// @dropdown
+export { default as DropdownDefault } from './dropdown/default'
 // @form
 export { default as FormHeader } from './header/form'
 // @google-map

@@ -19,35 +19,35 @@ import { t } from 'i18next'
  * An array of tabs for the customer section.
  * @type {Tab[]}
  */
-export const TABS = (value) => [
-  {
-    id: 0,
-    label: t('customer_overview.label'),
-    icon: ICON_NAME.CUSTOMER,
-    disabled: false
-  },
-  {
-    id: 1,
-    label: t('contacts.label'),
-    icon: ICON_NAME.CONTACTS,
-    disabled: false
-  },
-  {
-    id: 2,
-    label: t('sites.label'),
-    icon: ICON_NAME.SITES,
-    disabled: false
-  },
-  // {
-  //   id: 3,
-  //   label: 'Machines',
-  //   icon: ICON_NAME.SUPPORT,
-  //   disabled: true
-  // },
-  {
-    id: 4,
-    label:  t('support_tickets.label'),
-    icon: ICON_NAME.SUPPORT,
-    disabled: false
-  }
+export const TABS = value => [
+ {
+  id: 0,
+  label: t('organization_overview.label'),
+  icon: ICON_NAME.CUSTOMER,
+  disabled: false
+ },
+ {
+  id: 1,
+  label: t('contacts.label'),
+  icon: ICON_NAME.CONTACTS,
+  disabled: false
+ },
+ {
+  id: 2,
+  label: t('sites.label'),
+  icon: ICON_NAME.SITES,
+  disabled: false
+ },
+ // {
+ //   id: 3,
+ //   label: 'Machines',
+ //   icon: ICON_NAME.SUPPORT,
+ //   disabled: true
+ // },
+ {
+  id: 4,
+  label: t('support_tickets.label'),
+  icon: ICON_NAME.SUPPORT,
+  disabled: false
+ }
 ]

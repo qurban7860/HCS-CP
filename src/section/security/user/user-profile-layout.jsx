@@ -137,25 +137,21 @@ const UserProfileLayout = () => {
             <GridViewField heading={VIEW_FORM.LOGIN} isLoading={isLoading}>
              {defaultValues?.loginEmail}
             </GridViewField>
-            <GridViewField heading={VIEW_FORM.PHONE} isLoading={isLoading}>
+            {/* <GridViewField heading={VIEW_FORM.PHONE} isLoading={isLoading}>
              {defaultValues?.phone}
-            </GridViewField>
+            </GridViewField> */}
            </Grid>
           </Grid>
           <Grid item lg={4} sm={12}>
            <ProfileAvatar value={defaultValues} />
           </Grid>
          </Grid>
-         <Grid item sm={12} p={2}>
-          <GStyledFlexEndBox>
-           <AuditBox value={defaultValues} />
-          </GStyledFlexEndBox>
-         </Grid>
         </Card>
        </Grid>
       </Grid>
      </Grid>
     </Grid>
+    <AuditBox value={defaultValues} />
    </FormProvider>
 
    {customerDialog && <CustomerDialog />}

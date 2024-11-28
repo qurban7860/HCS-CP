@@ -2,24 +2,20 @@ import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { ICON_NAME, useIcon, useSettingContext } from 'hook'
+import { Icon, ICON_NAME, useSettingContext } from 'hook'
 import { Box, TableBody, TableCell, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTableChip } from 'theme/style'
 import { LinkTableCell } from 'component/table-tool'
 import { PATH_CUSTOMER } from 'route/path'
 import { fDate } from 'util'
-import { KEY, SIZE, VARIANT } from 'constant'
+import { KEY, SIZE, TYPOGRAPHY } from 'constant'
 import { StyledIconListItemText, StyledTableRow } from './style'
 
-const { BODY2 } = VARIANT.TYPOGRAPHY
-
 const CustomerTable = ({ customer, mode, index }) => {
- const theme = useTheme()
  const { themeMode } = useSettingContext()
+ const theme = useTheme()
  const navigate = useNavigate()
- const { Icon, iconSrc: activeSrc } = useIcon(ICON_NAME.ACTIVE)
- const { iconSrc: inactiveSrc } = useIcon(ICON_NAME.INACTIVE)
 
  const activeColor = mode === KEY.DARK ? theme.palette.howick.burnIn : theme.palette.burnIn.altDark
  const inactiveColor = theme.palette.howick.error
@@ -37,7 +33,6 @@ const CustomerTable = ({ customer, mode, index }) => {
  }
 
  const openInNewPage = id => {
-  // dispatch(setMachineTab('info'))
   const url = PATH_CUSTOMER.customers.view(id)
   window.open(url, '_blank')
  }
@@ -58,7 +53,7 @@ const CustomerTable = ({ customer, mode, index }) => {
      </TableCell>
      <TableCell>
       {customer?.tradingName?.map((alias, index) => (
-       <GStyledTableChip key={index} mode={themeMode} size={SIZE.SMALL} label={<Typography variant={BODY2}>{alias}</Typography>} />
+       <GStyledTableChip key={index} mode={themeMode} size={SIZE.SMALL} label={<Typography variant={TYPOGRAPHY.BODY2}>{alias}</Typography>} />
       ))}
      </TableCell>
      <TableCell>
@@ -71,7 +66,7 @@ const CustomerTable = ({ customer, mode, index }) => {
      <TableCell>{fDate(customer?.createdAt)}</TableCell>
      <TableCell>
       <StyledIconListItemText inActive={customer?.isActive}>
-       <m.div>{customer?.isActive ? <Icon icon={activeSrc} color={activeColor} /> : <Icon icon={inactiveSrc} color={inactiveColor} />}</m.div>
+       <m.div>{customer?.isActive ? <Icon icon={ICON_NAME.ACTIVE} color={activeColor} /> : <Icon icon={ICON_NAME.INACTIVE} color={inactiveColor} />}</m.div>
       </StyledIconListItemText>
      </TableCell>
     </StyledTableRow>
