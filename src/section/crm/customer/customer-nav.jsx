@@ -1,4 +1,5 @@
 import { Fragment, useState } from 'react'
+import { t } from 'i18next'
 import PropTypes from 'prop-types'
 import { useSettingContext, ICON_NAME } from 'hook'
 import { CustomerTabsContainer, TABS } from 'section/crm/customer'
@@ -35,9 +36,10 @@ const CustomerNav = ({ renderedTab, navigatePage, value, isLoading }) => {
    <SvgFlagIcon country={value?.country} color={themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.bronze} dimension={isMobile ? 15 : 20} />
    {value?.isActive ? (
     <IconTooltip
-     title={LABEL.ACTIVE}
+     title={t('active.label')}
      icon={ICON_NAME.ACTIVE}
      color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+     tooltipColor={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
      isActiveIcon
      iconOnly
      dimension={isMobile ? 15 : 20}
