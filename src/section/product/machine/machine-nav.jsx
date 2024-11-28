@@ -1,10 +1,10 @@
-import React, { Fragment, useState } from 'react'
+import { Fragment, useState } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
-import { Grid, Typography, IconButton, Drawer, Box, useMediaQuery, tabsClasses } from '@mui/material'
-import { IconTooltip, PopoverDefault, TabContainer, BackButton } from 'component'
+import { Grid, Typography, Box, useMediaQuery, tabsClasses } from '@mui/material'
+import { IconTooltip, TabContainer, PopoverCombo } from 'component'
 import { useTheme } from '@mui/material/styles'
-import { Clock, Icon, ICON_NAME, useSettingContext } from 'hook'
+import { Clock, ICON_NAME, useSettingContext } from 'hook'
 import { MachineTabsContainer, TABS } from 'section/product/machine'
 import { GStyledHeaderCardContainer, GStyledTopBorderDivider, GStyledSpanBox, GStyledFieldGrid, GStyledTab } from 'theme/style'
 import { KEY, LABEL, TYPOGRAPHY, FLEX, FLEX_DIR, DECOILER_TYPE_ARR } from 'constant'
@@ -13,11 +13,9 @@ import { a11yProps } from 'util/a11y.js'
 import 'swiper/css'
 
 const MachineNav = ({ renderedTab, navigatePage, value, isLoading }) => {
- const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
  const [menuAnchor, setMenuAnchor] = useState(null)
-
- const theme = useTheme()
  const { themeMode } = useSettingContext()
+ const theme = useTheme()
 
  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'))
  const isTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'))
@@ -30,14 +28,7 @@ const MachineNav = ({ renderedTab, navigatePage, value, isLoading }) => {
  }
 
  const renderMachineStatusIcons = () => (
-  <Grid
-   container
-   justifyContent={FLEX.FLEX_END}
-   gap={isMobile ? 0.5 : 2}
-   sx={{
-    flexWrap: 'wrap',
-    alignItems: KEY.CENTER
-   }}>
+  <Grid container justifyContent={FLEX.FLEX_END} gap={isMobile ? 0.5 : 2} sx={{ flexWrap: 'wrap', alignItems: KEY.CENTER }}>
    <Clock city={value?.installationSiteCity} country={value?.installationSiteCountry} region={value?.installationSiteRegion} />
    {value?.isPortalSynced && (
     <IconTooltip title={t('portal_synced.label')} icon={ICON_NAME.PORTAL_SYNC} color={theme.palette.howick.bronze} tooltipColor={theme.palette.howick.bronze} dimension={isMobile ? 15 : 20} iconOnly />
@@ -88,35 +79,23 @@ const MachineNav = ({ renderedTab, navigatePage, value, isLoading }) => {
 
       <Grid item xs={12} sm={4} display={FLEX.FLEX} justifyContent={FLEX.FLEX_END}>
        {isMobile && (
-        <Fragment>
-         <BackButton alongTab />
-         <IconButton
-          sx={{
-           mr: 1,
-           color: 'text.primary'
-          }}
-          onClick={toggleMenu}>
-          <Icon icon={menuOpen ? ICON_NAME.MENU_POPOVER_CLOSE : ICON_NAME.MENU_POPOVER_OPEN} color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze} />
-          <Typography variant={TYPOGRAPHY.OVERLINE}>{t('menu.label')}</Typography>
-         </IconButton>
-         <PopoverDefault id={menuId} open={menuOpen} anchorEl={menuAnchor} onClose={toggleMenu}>
-          <Box sx={{ flexGrow: 1, display: 'flex' }}>
-           <TabContainer tabsClasses={tabsClasses.scrollButtons} orientation={KEY.VERTICAL} currentTab={renderedTab} setCurrentTab={tab => navigatePage(tab)} isNotAbsolute>
-            {TABS(null).map(tab => (
-             <GStyledTab
-              className='tab'
-              mode={themeMode}
-              key={tab.id}
-              value={tab.id}
-              disabled={tab.disabled}
-              label={<Typography variant={TYPOGRAPHY.OVERLINE1}>{tab.label}</Typography>}
-              {...a11yProps(tab.id)}
-             />
-            ))}
-           </TabContainer>
-          </Box>
-         </PopoverDefault>
-        </Fragment>
+        <PopoverCombo withBackButton id={menuId} open={menuOpen} anchorEl={menuAnchor} onClose={toggleMenu} toggleMenu={toggleMenu}>
+         <Box sx={{ flexGrow: 1, display: 'flex' }}>
+          <TabContainer tabsClasses={tabsClasses.scrollButtons} orientation={KEY.VERTICAL} currentTab={renderedTab} setCurrentTab={tab => navigatePage(tab)} isNotAbsolute>
+           {TABS(null).map(tab => (
+            <GStyledTab
+             className='tab'
+             mode={themeMode}
+             key={tab.id}
+             value={tab.id}
+             disabled={tab.disabled}
+             label={<Typography variant={TYPOGRAPHY.OVERLINE1}>{tab.label}</Typography>}
+             {...a11yProps(tab.id)}
+            />
+           ))}
+          </TabContainer>
+         </Box>
+        </PopoverCombo>
        )}
        {renderMachineStatusIcons()}
       </Grid>

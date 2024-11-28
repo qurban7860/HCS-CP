@@ -72,6 +72,7 @@ export { default as NavSection } from './nav-section/nav-section'
 export { default as NavSectionY } from './nav-section/nav-section-y'
 // @popover
 export { default as PopoverDefault } from './popover/default'
+export { default as PopoverCombo } from './popover/combo'
 // @rhf
 export { default as FormProvider } from './hook-form/form-provider'
 export * from './hook-form'

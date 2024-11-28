@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
-import { useSettingContext, Icon, ICON_NAME } from 'hook'
+import { useSettingContext } from 'hook'
 import { Typography, tabsClasses } from '@mui/material'
-import { Swiper, SwiperSlide } from 'swiper/react'
 import { GStyledSpanBox } from 'theme/style'
 import { BackButton, TabContainer } from 'component'
 import { TABS, a11yProps } from 'section/crm/customer'
@@ -14,9 +13,9 @@ const CustomerTabsContainer = ({ value, renderedTab, disableTab, navigatePage })
 
  return (
   <GStyledSpanBox gap={2}>
-   <BackButton alongTab />
    <StyledTabBox>
     <TabContainer tabsClasses={tabsClasses.scrollButtons} currentTab={renderedTab} setCurrentTab={tab => navigatePage(tab)}>
+     <BackButton alongTab />
      {TABS(value).map(tab => (
       <StyledTab
        className='tab'

@@ -19,7 +19,31 @@ const en = {
   }
  },
  address: {
-  label: `Address`
+  label: `Address`,
+  addresses: {
+   label: `Addresses`
+  },
+  street: {
+   label: `Street`
+  },
+  suburb: {
+   label: `Suburb`
+  },
+  post_code: {
+   label: `Post Code`
+  },
+  region: {
+   label: `Region`
+  },
+  city: {
+   label: `City`
+  },
+  state: {
+   label: `State`
+  },
+  country: {
+   label: `Country`
+  }
  },
  additional_notes: {
   label: `Additional Notes`
@@ -419,6 +443,12 @@ const en = {
   sites: {
    label: `Sites`
   }
+ },
+ site_information: {
+  label: `Site Information`
+ },
+ site_name: {
+  label: `Site Name`
  },
  sites: {
   local: `sites`,

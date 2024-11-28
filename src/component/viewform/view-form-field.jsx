@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
 import { useIcon, ICON_NAME, useSettingContext, useResponsive } from 'hook'
 import { useLocation } from 'react-router-dom'
-import { Typography, Chip, IconButton, Box } from '@mui/material'
+import { Typography, Chip, IconButton, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledSpanBox, GStyledTooltip, GStyledSpaceBetweenSpanBox } from 'theme/style'
+import { GStyledSpanBox, GStyledTooltip } from 'theme/style'
 import { SvgFlagIcon, IconTooltip } from 'component'
 import { SkeletonViewFormField } from 'component/skeleton'
 import { SIZE, VARIANT, KEY, LABEL, FLEX } from 'constant'
@@ -36,8 +36,9 @@ const ViewFormField = ({
  const [anchorEl, setAnchorEl] = useState(null)
  const { themeMode } = useSettingContext()
  const { pathname } = useLocation()
- const isMobile = useResponsive('down', 'sm')
  const theme = useTheme()
+ const isMobile = useResponsive('down', 'sm')
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
  const { Icon: WebIcon, iconSrc: openInSrc } = useIcon(ICON_NAME.OPEN_IN_NEW)
 
@@ -141,13 +142,13 @@ const ViewFormField = ({
      {chip && typeof chip === 'object' && userRolesChip?.length > 0 ? (
       <StyledChipGrid container mode={themeMode} isNoBg>
        {chip?.map((c, index) => (
-        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{c}</Typography>} size={SIZE.SMALL} />
+        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE}>{c}</Typography>} size={SIZE.SMALL} />
        ))}
       </StyledChipGrid>
      ) : Array.isArray(chip) ? (
       <StyledChipGrid container mode={themeMode} isNoBg>
        {chip?.map((c, index) => (
-        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{c}</Typography>} size={SIZE.SMALL} />
+        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE}>{c}</Typography>} size={SIZE.SMALL} />
        ))}
       </StyledChipGrid>
      ) : (
@@ -155,7 +156,7 @@ const ViewFormField = ({
      )}
 
      {Array.isArray(phoneChips) && (
-      <StyledChipGrid container>
+      <StyledChipGrid container mode={themeMode} isNoBg>
        {phoneChips?.map((p, index) => (
         <StyledFieldChip
          key={index}
@@ -193,9 +194,9 @@ const ViewFormField = ({
      )}
 
      {userRolesChip && typeof userRolesChip === 'object' && userRolesChip.length > 0 ? (
-      <StyledChipGrid container>
+      <StyledChipGrid container mode={themeMode} isNoBg>
        {userRolesChip?.map((r, index) => (
-        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{r?.roleType}</Typography>} size={SIZE.SMALL} />
+        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{r}</Typography>} size={SIZE.SMALL} />
        ))}
       </StyledChipGrid>
      ) : (

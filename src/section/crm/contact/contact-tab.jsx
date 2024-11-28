@@ -1,4 +1,4 @@
-import { useEffect, memo } from 'react'
+import { useEffect, memo, Fragment } from 'react'
 import { useParams } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
 import { useSettingContext, useFilter, useTable, getComparator, ICON_NAME } from 'hook'
@@ -58,8 +58,7 @@ const ContactTab = () => {
  }
 
  return (
-  <MotionLazyContainer display={FLEX.FLEX}>
-   {/*  TODO: Make responsive */}
+  <Fragment>
    <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
     <Grid item xs={12} sm={3} sx={{ height: '600px', overflow: KEY.AUTO, scrollBehavior: 'smooth' }}>
      <Grid container mb={2}>
@@ -115,9 +114,7 @@ const ContactTab = () => {
            <GridViewField heading={VIEW_FORM.HEADING_EMAIL} isLoading={isLoading}>
             {defaultValues?.loginEmail}
            </GridViewField>
-           <GridViewField heading={VIEW_FORM.PHONE} isLoading={isLoading}>
-            {defaultValues?.phoneNumbers}
-           </GridViewField>
+           <GridViewField heading={VIEW_FORM.PHONE} isLoading={isLoading} phoneChips={defaultValues?.phoneNumbers} />
            <GridViewField heading={VIEW_FORM.DEPARTMENT} isLoading={isLoading}>
             {defaultValues?.department}
            </GridViewField>
@@ -151,20 +148,14 @@ const ContactTab = () => {
           </Grid>
          </Grid>
         </Grid>
-
-        <Grid item sm={12} p={2}>
-         <GStyledFlexEndBox>
-          <AuditBox value={defaultValues} />
-         </GStyledFlexEndBox>
-        </Grid>
        </Card>
       </Grid>
      </Grid>
     </Grid>
    </Grid>
-
+   <AuditBox value={defaultValues} />
    {customerDialog && <CustomerDialog />}
-  </MotionLazyContainer>
+  </Fragment>
  )
 }
 

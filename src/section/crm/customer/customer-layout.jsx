@@ -6,8 +6,7 @@ import { setFromDialog, setFromSiteDialog } from 'store/slice'
 import { Typography } from '@mui/material'
 import { CustomerNav, CustomerTab } from 'section/crm/customer'
 import { ContactTab, SiteTab, useCustomerDefaultValues, TicketsTab } from 'section/crm'
-import { MachineDialog, SiteDialog, ContactDialog } from 'component'
-import { MotionLazyContainer } from 'component/animate'
+import { MotionLazyContainer, MachineDialog, SiteDialog, ContactDialog } from 'component'
 import { FLEX } from 'constant'
 import { PATH_CUSTOMER } from 'route/path'
 
@@ -45,7 +44,6 @@ const CustomerLayout = ({ tab = 0 }) => {
 
  return (
   <MotionLazyContainer display={FLEX.FLEX}>
-   {/* TODO: [HPS-1240] HPS-1245 Machine Layout Reponsiveness */}
    <CustomerNav renderedTab={renderedTab} navigatePage={navigatePage} isLoading={isLoading} value={defaultValues} />
    {renderedTab === 0 ? (
     <CustomerTab />
