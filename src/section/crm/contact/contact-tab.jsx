@@ -1,23 +1,26 @@
 import { useEffect, memo, Fragment } from 'react'
+import { Trans } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
-import { useSettingContext, useFilter, useTable, getComparator, ICON_NAME } from 'hook'
+import { useSettingContext, useFilter, useTable, getComparator } from 'hook'
 import { getCustomer, setSelectedContactCard, resetContact, getContact, getContacts, ChangeContactPage, setContactFilterBy, resetSelectedContactCard } from 'store/slice'
 import { useContactDefaultValues } from 'section/crm'
-import { Divider, Grid, Card, Typography } from '@mui/material'
+import { ContactCard, fieldsContactConfig } from 'section/crm/contact'
+import { CommonFieldsCard } from 'section/common'
+import { useMediaQuery, Grid, Typography } from '@mui/material'
+import { DropdownDefault, AuditBox, CustomerDialog, SearchBox } from 'component'
 import { useTheme } from '@mui/material/styles'
-import { GCardOption, GStyledTopBorderDivider, GStyledFlexEndBox, GStyledSpanBox } from 'theme/style'
-import { MotionLazyContainer, GridViewTitle, GridViewField, AuditBox, CustomerDialog, SearchBox, IconTooltip } from 'component'
-import { ContactCard } from 'section/crm/contact'
+import { GStyledScrollableHeightLockGrid } from 'theme/style'
 import { MARGIN } from 'config'
-import { KEY, TITLE, FLEX, TYPOGRAPHY, VIEW_FORM, FLEX_DIR, LABEL, VARIANT, ADDRESS } from 'constant'
+import { KEY, TYPOGRAPHY, FLEX_DIR } from 'constant'
 
 const ContactTab = () => {
- const { id } = useParams()
  const { contact, contacts, initial, isLoading, selectedContactCard, fromDialog } = useSelector(state => state.contact)
  const { customer, customerDialog } = useSelector(state => state.customer)
-
+ const { id } = useParams()
  const theme = useTheme()
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
+
  const { themeMode } = useSettingContext()
  const { order, orderBy } = useTable({
   defaultOrderBy: KEY.CREATED_AT,
@@ -57,10 +60,31 @@ const ContactTab = () => {
   dispatch(getContact(id, contactId))
  }
 
+ const renderDesktopView = () =>
+  filteredData.map((contact, index) => <ContactCard key={contact?._id} selectedCardId={selectedContactCard || index} value={defaultValues} handleContactCard={handleContactCard} c={contact} />)
+
+ const renderMobileView = () => (
+  <DropdownDefault filteredData={filteredData} selectedCard={selectedContactCard} i18nKey={'contact.contacts.label'} onChange={e => handleContactCard(e, e.target.value)} />
+ )
+
+ const renderNoContacts = () => (
+  <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.secondary' align='center' sx={{ mt: 2 }}>
+   <Trans i18nKey='no_found.label' values={{ value: 'contact' }} />
+  </Typography>
+ )
+
+ const renderContent = () => {
+  if (contacts?.length > 0) {
+   return isDesktop ? renderDesktopView() : renderMobileView()
+  } else {
+   return renderNoContacts()
+  }
+ }
+
  return (
   <Fragment>
    <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
-    <Grid item xs={12} sm={3} sx={{ height: '600px', overflow: KEY.AUTO, scrollBehavior: 'smooth' }}>
+    <Grid item xs={12} md={3} sx={{ height: contacts?.length >= 5 ? '600px' : 'auto', overflow: KEY.AUTO, scrollBehavior: 'smooth' }}>
      <Grid container mb={2}>
       <Grid item lg={12} sm={12} mb={2}>
        {contacts.length >= 5 && (
@@ -68,89 +92,17 @@ const ContactTab = () => {
          <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
         </Grid>
        )}
-       <Grid container p={1}>
-        {contacts?.length > 0 ? (
-         filteredData.map((c, index) => <ContactCard key={index} selectedCardId={selectedContactCard || index} value={defaultValues} handleContactCard={handleContactCard} c={c} />)
-        ) : (
-         <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
-          {LABEL.NO_CONTACT_FOUND}
-         </Typography>
-        )}
-       </Grid>
+       <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={contacts?.length}>
+        <Grid container p={1}>
+         {renderContent()}
+        </Grid>
+       </GStyledScrollableHeightLockGrid>
       </Grid>
      </Grid>
     </Grid>
-    <Grid item sm={12} lg={9}>
-     <Grid container>
-      <Grid item sm={12}>
-       <Card {...GCardOption}>
-        <GStyledTopBorderDivider mode={themeMode} />
-        <Grid container spacing={2} px={1.5} mb={10}>
-         <Grid item xs={12} sm={12}>
-          <GStyledSpanBox justifyContent={FLEX.FLEX_END} spacing={1} py={1}>
-           {defaultValues?.isActive ? (
-            <IconTooltip title={LABEL.ACTIVE} icon={ICON_NAME.ACTIVE} color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main} isActiveIcon iconOnly />
-           ) : (
-            <IconTooltip title={LABEL.INACTIVE} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} />
-           )}
-          </GStyledSpanBox>
-         </Grid>
-         <Divider variant={VARIANT.MIDDLE} style={{ width: '100%', marginBottom: 5 }} />
-         <Grid item lg={12}>
-          <GridViewTitle title={TITLE.PERSONAL_INFO} />
-          <Divider variant={VARIANT.MIDDLE} style={{ width: '100%', marginBottom: 5 }} />
-         </Grid>
-         <Grid item lg={12} sm={12}>
-          <Grid container spacing={2} p={2} pb={2}>
-           <GridViewField heading={VIEW_FORM.FIRST_NAME} isLoading={isLoading}>
-            {defaultValues?.firstName}
-           </GridViewField>
-           <GridViewField heading={VIEW_FORM.LAST_NAME} isLoading={isLoading}>
-            {defaultValues?.lastName}
-           </GridViewField>
-           <GridViewField heading={VIEW_FORM.TITLE} isLoading={isLoading}>
-            {defaultValues?.title}
-           </GridViewField>
-           <GridViewField heading={VIEW_FORM.HEADING_EMAIL} isLoading={isLoading}>
-            {defaultValues?.loginEmail}
-           </GridViewField>
-           <GridViewField heading={VIEW_FORM.PHONE} isLoading={isLoading} phoneChips={defaultValues?.phoneNumbers} />
-           <GridViewField heading={VIEW_FORM.DEPARTMENT} isLoading={isLoading}>
-            {defaultValues?.department}
-           </GridViewField>
-           <GridViewField heading={VIEW_FORM.CONTACT_TYPES} isLoading={isLoading} userRolesChip={defaultValues?.contactTypes} />
-           <GridViewField heading={VIEW_FORM.REPORT_TO} isLoading={isLoading}>
-            {defaultValues?.loginEmail}
-           </GridViewField>
-          </Grid>
-         </Grid>
-         <Grid item lg={12}>
-          <GridViewTitle title={TITLE.ADDRESS_INFO} />
-          <Divider variant={VARIANT.MIDDLE} style={{ width: '100%', marginBottom: 5 }} />
-         </Grid>
-         <Grid item lg={12} sm={12}>
-          <Grid container spacing={2} p={2} pb={2}>
-           <GridViewField heading={ADDRESS.STREET} isLoading={isLoading}>
-            {defaultValues?.street}
-           </GridViewField>
-           <GridViewField heading={ADDRESS.CITY} isLoading={isLoading}>
-            {contact?.city}
-           </GridViewField>
-           <GridViewField heading={ADDRESS.REGION} isLoading={isLoading}>
-            {defaultValues?.region}
-           </GridViewField>
-           <GridViewField heading={ADDRESS.POST_CODE} isLoading={isLoading}>
-            {defaultValues?.postCode}
-           </GridViewField>
-           <GridViewField heading={ADDRESS.COUNTRY} isLoading={isLoading}>
-            {defaultValues?.country}
-           </GridViewField>
-          </Grid>
-         </Grid>
-        </Grid>
-       </Card>
-      </Grid>
-     </Grid>
+
+    <Grid item xs={12} md={9}>
+     <CommonFieldsCard defaultValues={defaultValues} fieldsConfig={fieldsContactConfig} isLoading={isLoading} />
     </Grid>
    </Grid>
    <AuditBox value={defaultValues} />

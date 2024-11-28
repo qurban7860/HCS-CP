@@ -31,6 +31,7 @@ export default function useContactDefaultValues(contact, customer) {
    country: contact?.address?.country || '',
    phone: contact?.phone || '',
    phoneNumbers: contact?.phoneNumbers || [],
+   reportTo: contact?.reportTo || '',
    formerEmployee: contact?.formerEmployee || false,
    archivedByCustomer: contact?.archivedByCustomer || false,
    isActive: contact?.isActive || false,
