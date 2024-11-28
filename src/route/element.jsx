@@ -42,9 +42,6 @@ export const CustomerSupportTicketsPage = Loadable(lazy(() => import('page/crm/s
 export const LogListPage = Loadable(lazy(() => import('page/log/logs')))
 // support
 export const TicketsListPage = Loadable(lazy(() => import('page/support/tickets/tickets')))
-// user Invitations List
-export const { UserInvitationList } = Loadable(lazy(() => import('page/security/user/user')))
-export const { UserInvitationView } = Loadable(lazy(() => import('page/security')))
 // user
 export const UserProfilePage = Loadable(lazy(() => import('page/security/user/user')))
 // blanks

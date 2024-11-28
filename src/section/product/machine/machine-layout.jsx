@@ -1,4 +1,4 @@
-import { memo, useState } from 'react'
+import { Fragment, memo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'store'
 import { useParams, useNavigate } from 'react-router-dom'
@@ -37,7 +37,6 @@ const MachineLayout = ({ tab = 0 }) => {
  }
  return (
   <MotionLazyContainer display={FLEX.FLEX}>
-   {/*  TODO: HPS-1240 Make responsive */}
    <MachineNav renderedTab={renderedTab} navigatePage={navigatePage} isLoading={isLoading} value={defaultValues} />
    {renderedTab === 0 ? (
     <MachineTab />

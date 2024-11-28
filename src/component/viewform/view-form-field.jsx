@@ -1,11 +1,11 @@
 import { useState, useEffect, memo, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
-import { useIcon, ICON_NAME, useSettingContext } from 'hook'
+import { useIcon, ICON_NAME, useSettingContext, useResponsive } from 'hook'
 import { useLocation } from 'react-router-dom'
-import { Typography, Chip, IconButton } from '@mui/material'
+import { Typography, Chip, IconButton, Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledSpanBox, GStyledTooltip } from 'theme/style'
+import { GStyledSpanBox, GStyledTooltip, GStyledSpaceBetweenSpanBox } from 'theme/style'
 import { SvgFlagIcon, IconTooltip } from 'component'
 import { SkeletonViewFormField } from 'component/skeleton'
 import { SIZE, VARIANT, KEY, LABEL, FLEX } from 'constant'
@@ -36,6 +36,7 @@ const ViewFormField = ({
  const [anchorEl, setAnchorEl] = useState(null)
  const { themeMode } = useSettingContext()
  const { pathname } = useLocation()
+ const isMobile = useResponsive('down', 'sm')
  const theme = useTheme()
 
  const { Icon: WebIcon, iconSrc: openInSrc } = useIcon(ICON_NAME.OPEN_IN_NEW)
@@ -44,7 +45,6 @@ const ViewFormField = ({
   if (open) {
    handleClose()
   }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [pathname])
 
  const handleOpen = event => {
@@ -57,8 +57,8 @@ const ViewFormField = ({
  }
 
  return (
-  <StyledFieldGrid item xs={!isWidget && 12} sm={gridSize} mode={themeMode} isMachineView={isMachineView} isNoBg={isNoBg}>
-   <Typography variant={TYPOGRAPHY.OVERLINE0} color='grey.600'>
+  <StyledFieldGrid item xs={!isWidget && 12} sm={gridSize} mode={themeMode} isMachineView={isMachineView} isNoBg={isNoBg} isMobile={isMobile}>
+   <Typography variant={isMobile ? TYPOGRAPHY.OVERLINE : TYPOGRAPHY.OVERLINE0} color={theme.palette.grey[600]}>
     {heading}
    </Typography>
    {isLoading ? (
@@ -116,16 +116,22 @@ const ViewFormField = ({
        </StyledFlagBox>
       </GStyledSpanBox>
      ) : (
-      // default fallback
+      // default
+
       <StyledDefaultTypography variant={variant}>
        {noBreakSpace ? '' : '\u00A0'} {children}
       </StyledDefaultTypography>
      )}
 
      {contact && typeof contact === 'object' && contact.length > 0 ? (
-      <StyledChipGrid container>
+      <StyledChipGrid container isNoBg={isNoBg} mode={themeMode}>
        {contact.map((chip, index) => (
-        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{` ${chip?.firstName || ''} ${chip?.lastName || ''}`}</Typography>} size={SIZE.SMALL} />
+        <StyledFieldChip
+         key={index}
+         mode={themeMode}
+         label={<Typography variant={isMobile ? TYPOGRAPHY.OVERLINE : TYPOGRAPHY.OVERLINE2}>{` ${chip?.firstName || ''} ${chip?.lastName || ''}`}</Typography>}
+         size={SIZE.SMALL}
+        />
        ))}
       </StyledChipGrid>
      ) : (
@@ -133,13 +139,13 @@ const ViewFormField = ({
      )}
 
      {chip && typeof chip === 'object' && userRolesChip?.length > 0 ? (
-      <StyledChipGrid container>
+      <StyledChipGrid container mode={themeMode} isNoBg>
        {chip?.map((c, index) => (
         <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{c}</Typography>} size={SIZE.SMALL} />
        ))}
       </StyledChipGrid>
      ) : Array.isArray(chip) ? (
-      <StyledChipGrid container>
+      <StyledChipGrid container mode={themeMode} isNoBg>
        {chip?.map((c, index) => (
         <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{c}</Typography>} size={SIZE.SMALL} />
        ))}
@@ -174,13 +180,13 @@ const ViewFormField = ({
      )}
 
      {primaryContact && primaryContact !== '' ? (
-      <StyledChipGrid container gap={1}>
+      <StyledChipGrid container gap={1} isNoBg mode={themeMode}>
        <IconTooltip icon={ICON_NAME.CONTACT} color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange} iconOnly dimension={15} />
        {primaryContact}
       </StyledChipGrid>
      ) : (
       primaryContact === '' && (
-       <StyledChipGrid container>
+       <StyledChipGrid container isNoBg mode={themeMode}>
         <IconTooltip icon={ICON_NAME.CONTACT} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.darkGray} iconOnly dimension={15} />
        </StyledChipGrid>
       )

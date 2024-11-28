@@ -25,7 +25,7 @@ const SiteCarousel = ({ sites, theme, themeMode, isMain }) => {
     }}>
     {sites.map(site => (
      <Box key={site._id} sx={{ p: 2 }}>
-      <Card {...GCardOption(site.isActive ? KEY.LIGHT : KEY.DARK)}>
+      <Card {...GCardOption(themeMode)}>
        <Box
         sx={{
          gap: 2,

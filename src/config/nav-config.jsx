@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react'
 import { ICON_NAME, useResponsive } from 'hook'
-import { PATH_DASHBOARD, PATH_CUSTOMER, PATH_MACHINE, PATH_SUPPORT, PATH_LOGS, PATH_HOME } from 'route/path'
+import { useMediaQuery } from '@mui/material'
+import { PATH_DASHBOARD, PATH_MACHINE, PATH_SUPPORT, PATH_LOGS, PATH_HOME } from 'route/path'
 
 function NavConfiguration() {
- const isMobile = useResponsive('down', 'sm')
- const customerId = localStorage.getItem('customer')
+ const isDesktop = useMediaQuery(theme => theme.breakpoints.up('lg'))
  const [navConfig, setNavConfig] = useState([
   {
    subheader: 'general',
    items: [
-    { title: isMobile ? 'dashboard.label' : '|', path: PATH_DASHBOARD.general.app, icon: isMobile ? '' : ICON_NAME.DASHBOARD, caption: 'dashboard.label' },
+    { title: !isDesktop ? 'dashboard.label' : '|', path: PATH_DASHBOARD.general.app, icon: !isDesktop ? '' : ICON_NAME.DASHBOARD, caption: 'dashboard.label' },
     { title: 'home.label', path: PATH_HOME.root },
     { title: 'machine.label', path: PATH_MACHINE.machines.list },
     { title: 'log.label', path: PATH_LOGS.machines.list },

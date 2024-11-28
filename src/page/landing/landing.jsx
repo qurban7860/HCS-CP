@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import { useSettingContext, Icon, ICON_NAME } from 'hook'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
@@ -10,6 +10,8 @@ import { useAuthContext } from 'auth'
 import { ASSET, BRAND_RESP } from 'config'
 import { GLOBAL } from 'config/global'
 import { LABEL, PRODUCT, COMPANY, BUTTON, TYPOGRAPHY, KEY, FLEX_DIR, FLEX } from 'constant'
+
+const { H1, H4, OVERLINE } = TYPOGRAPHY
 
 gsap.registerPlugin(useGSAP, TextPlugin)
 const Landing = () => {
@@ -33,16 +35,20 @@ const Landing = () => {
    margin: matches.desktop ? theme.spacing(10) : theme.spacing(2)
   },
   logo: {
-   width: matches.desktop ? 700 : 300
+   width: matches.desktop ? 700 : 200
   },
   heading: {
-   variant: matches.desktop ? 'h1' : 'h3'
+   variant: matches.desktop ? H1 : H4
+  },
+  description: {
+   variant: matches.desktop ? TYPOGRAPHY.OVERLINE : TYPOGRAPHY.CAPTION
   },
   productGrid: {
    spacing: matches.mobile ? 2 : 4,
-   direction: matches.desktop ? 'row' : 'column'
+   direction: matches.desktop ? FLEX_DIR.ROW : FLEX_DIR.COLUMN
   }
  }
+
  const headingRef = useRef(null)
  const descriptionRef = useRef(null)
  const buttonRef = useRef(null)
@@ -61,8 +67,8 @@ const Landing = () => {
  const renderProductSection = (items, title) => (
   <Grid container spacing={styles.productGrid.spacing} direction={styles.productGrid.direction} ml={isMobile || isTablet || isMd ? 4 : 10}>
    <Grid item lg={isMobile || isTablet ? 12 : 9} m={isMobile || isTablet ? 0 : 3} width={400}>
-    <Typography ref={brandLabelRef} variant={TYPOGRAPHY.OVERLINE} color='grey.500' sx={{ opacity: 0.5 }}>
-     {title}
+    <Typography ref={brandLabelRef} variant={OVERLINE} color='grey.500' sx={{ opacity: 0.5 }}>
+     {title.toUpperCase()}
     </Typography>
     <Grid container>
      {items.map((item, index) => (
@@ -98,7 +104,7 @@ const Landing = () => {
      spacing={4}
      sx={{
       marginTop: 5,
-      flexDirection: isMobile || isTablet || isMd ? 'column' : 'row'
+      flexDirection: isMobile || isTablet || isMd ? FLEX_DIR.COLUMN : FLEX_DIR.ROW
      }}>
      {renderProductSection(PRODUCT, LABEL.OUR_PRODUCT)}
      {renderProductSection(COMPANY, LABEL.OUR_COMPANY)}

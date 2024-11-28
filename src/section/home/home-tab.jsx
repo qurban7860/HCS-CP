@@ -118,13 +118,7 @@ const HomeTab = () => {
      </Grid>
      <Grid item xs={12} sm={6} mb={5}>
       <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={machineTotalCount}>
-       <MachineListCard
-        className='machines-widget'
-        value={defaultValues}
-        handleMachineDialog={handleConnectedMachineDialog}
-        handleMachineSiteDialog={handleMachineSiteDialog}
-        machineTotalCount={machineTotalCount}
-       />
+       <MachineListCard className='machines-widget' handleMachineDialog={handleConnectedMachineDialog} handleMachineSiteDialog={handleMachineSiteDialog} machineTotalCount={machineTotalCount} />
       </GStyledScrollableHeightLockGrid>
      </Grid>
     </Grid>

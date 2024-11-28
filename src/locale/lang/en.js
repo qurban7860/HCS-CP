@@ -1,7 +1,14 @@
-import { get } from 'react-hook-form'
-
 const en = {
  account: `account`,
+ account_manager: {
+  label: `Account Manager`,
+  account_managers: {
+   label: `Account Managers`
+  }
+ },
+ active: {
+  label: `Active`
+ },
  active_support_ticket: {
   label: `Active Support Ticket`,
   active_support_tickets: {
@@ -11,7 +18,6 @@ const en = {
    label: `No active tickets found`
   }
  },
-
  address: {
   label: `Address`
  },
@@ -35,10 +41,22 @@ const en = {
  billing_contact: {
   label: `Billing Contact`
  },
+ billing_site: {
+  label: `Billing Site`
+ },
+ change_password: {
+  label: `Change Password`
+ },
  close: {
   label: `Close`
  },
  create: `create`,
+ connected_machine: {
+  label: `Connected Machine`,
+  connected_machines: {
+   label: `Connected Machines`
+  }
+ },
  contacts: {
   local: `contacts`,
   label: `Contacts`
@@ -68,21 +86,6 @@ const en = {
    label: `Columns`
   }
  },
- dashboard: {
-  label: `Dashboard`
- },
- detail: {
-  label: `Detail`,
-  details: {
-   label: `Details`
-  }
- },
- group: {
-  label: `Group`
- },
- change_password: {
-  label: `Change Password`
- },
  customer: {
   label: `Customer`
  },
@@ -95,6 +98,25 @@ const en = {
  customer_note: {
   label: `Customer Note`
  },
+ dashboard: {
+  label: `Dashboard`
+ },
+ default_profile: {
+  label: `Default Profile`
+ },
+ detail: {
+  label: `Detail`,
+  details: {
+   label: `Details`
+  }
+ },
+ display_settings: {
+  label: `Display Settings`
+ },
+ group: {
+  label: `Group`
+ },
+
  date: {
   label: `Date`
  },
@@ -108,6 +130,15 @@ const en = {
  email: {
   label: `Email`
  },
+ financing_company: {
+  label: `Financing Company`
+ },
+ full_name: {
+  label: `Full Name`
+ },
+ go_back: {
+  label: `Go Back`
+ },
  graph: {
   label: `Graph`,
   graphs: {
@@ -120,8 +151,20 @@ const en = {
  hmi_version: {
   label: `HMI Version`
  },
- full_name: {
-  label: `Full Name`
+ howick_resources: {
+  label: `Howick Resources`
+ },
+ installation_site: {
+  label: `Installation Site`
+ },
+ installation_date: {
+  label: `Installation Date`
+ },
+ key_detail: {
+  label: `Key Detail`,
+  key_details: {
+   label: `Key Details`
+  }
  },
  log: {
   label: `Log`,
@@ -154,10 +197,20 @@ const en = {
  howick_website: {
   label: `Howick Website`
  },
- key_detail: {
-  label: `Key Detail`,
-  key_details: {
-   label: `Key Details`
+ general: `general`,
+ banking: `banking`,
+ booking: `booking`,
+
+ logout: {
+  label: `Logout`
+ },
+ language: {
+  label: `Language`
+ },
+ legend: {
+  label: `Legend`,
+  legends: {
+   label: `Legends`
   }
  },
  machine: {
@@ -167,8 +220,20 @@ const en = {
    label: `Machines`
   }
  },
+ machine_serial_number: {
+  label: `Machine Serial Number`
+ },
+ machine_model: {
+  label: `Machine Model`
+ },
  machine_information: {
   label: `Machine Information`
+ },
+ manufacture_date: {
+  label: `Manufacture Date`
+ },
+ menu: {
+  label: `Menu`
  },
  name: {
   key: `name`,
@@ -185,6 +250,9 @@ const en = {
    second: 'You will receive further instructions within 12-48 hours',
    last: 'Check your email (<1>{{email}}</1>) for the invitation link'
   }
+ },
+ new_password: {
+  label: `New Password`
  },
  no_description: {
   label: `No description`
@@ -213,62 +281,31 @@ const en = {
  portal_synced: {
   label: `Portal Synced`
  },
+ portal: {
+  local: `portal`,
+  label: `Portal`
+ },
+ project_manager: {
+  label: `Project Manager`,
+  project_managers: {
+   label: `Project Managers`
+  }
+ },
+ profile: {
+  local: `profile`,
+  label: `Profile`
+ },
  quick_spec: {
   label: `Quick Spec`,
   quick_specs: {
    label: `Quick Specs`
   }
  },
- support: {
-  local: `support`,
-  label: `Support`
- },
- new_password: {
-  label: `New Password`
- },
- portal: {
-  local: `portal`,
-  label: `Portal`
- },
- support_tickets: {
-  local: `support_tickets`,
-  label: `Support Tickets`
- },
- site: {
-  local: `site`,
-  label: `Site`,
-  sites: {
-   label: `Sites`
-  }
- },
- sites: {
-  local: `sites`,
-  label: `Sites`
- },
- general: `general`,
- banking: `banking`,
- booking: `booking`,
- profile: {
-  local: `profile`,
-  label: `Profile`
- },
- display_settings: {
-  label: `Display Settings`
- },
- logout: {
-  label: `Logout`
- },
- language: {
-  label: `Language`
- },
- legend: {
-  label: `Legend`,
-  legends: {
-   label: `Legends`
-  }
- },
  no_found: {
   label: `No {{value}} Found`
+ },
+ not_provided: {
+  label: `Not Provided`
  },
  note: {
   label: `Note`
@@ -310,6 +347,9 @@ const en = {
   production_total: { label: `Production Total` },
   production_rate: { label: `Production Rate` }
  },
+ purchase_date: {
+  label: `Purchase Date`
+ },
  register: {
   label: `Register`
  },
@@ -322,6 +362,9 @@ const en = {
  },
  required: {
   label: `Required`
+ },
+ reset: {
+  label: `Reset`
  },
  reset_password: {
   label: `Reset Password`
@@ -367,11 +410,48 @@ const en = {
  see_more: {
   label: `See More`
  },
+ shipping_date: {
+  label: `Shipping Date`
+ },
+ site: {
+  local: `site`,
+  label: `Site`,
+  sites: {
+   label: `Sites`
+  }
+ },
+ sites: {
+  local: `sites`,
+  label: `Sites`
+ },
+ status: {
+  label: `Status`
+ },
+ supplier: {
+  label: `Supplier`
+ },
  submit: {
   label: `Submit`
  },
  submitted_details: {
   label: `Submitted Details`
+ },
+ support_manager: {
+  label: `Support Manager`,
+  support_managers: {
+   label: `Support Managers`
+  }
+ },
+ support: {
+  local: `support`,
+  label: `Support`
+ },
+ support_expiration: {
+  label: `Support Expiration`
+ },
+ support_tickets: {
+  local: `support_tickets`,
+  label: `Support Tickets`
  },
  technical_contact: {
   label: `Technical Contact`
@@ -382,13 +462,21 @@ const en = {
    label: `Time Zones`
   }
  },
+ trading_name: {
+  label: `Trading Name / Alias`
+ },
  view_jira: {
   label: `View in Jira`,
   view_jira_in_new_tab: {
    label: `View in Jira in a New Tab`
   }
  },
-
+ website: {
+  label: `Website`
+ },
+ work_order: {
+  label: `Work Order`
+ },
  details: `details`,
  checkout: `checkout`,
  calendar: `calendar`,
@@ -406,7 +494,6 @@ const en = {
  item_label: `item label`,
  item_caption: `item caption`,
  item_external_link: `item external link`,
-
  other_cases: `other cases`,
  item_by_roles: `item by roles`,
  only_admin_can_see_this_item: `Only admin can see this item`,

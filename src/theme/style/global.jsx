@@ -1,6 +1,6 @@
 import { color, m } from 'framer-motion'
 import { styled, alpha } from '@mui/material/styles'
-import { Popover, ListItemText, Card, Chip, Grid, Divider, Container, Skeleton, Box, Typography, IconButton, Tab, Tabs, TablePagination } from '@mui/material'
+import { Popover, ListItemText, Card, Chip, Grid, Divider, Container, Skeleton, Box, Typography, IconButton, Tab, Tabs, TablePagination, Drawer } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { bgBlur } from 'theme/style'
@@ -183,11 +183,29 @@ export const GStyledSiteCard = styled(({ theme, selectedCardId, s, mode, ...othe
  transition: 'ease-in-out 0.2s'
 }))
 
+export const GStyledMenuDrawer = styled(({ theme, ...other }) => <Drawer {...other} />)(({ theme, mode, isDesktop }) => ({
+ position: 'relative',
+ '& .MuiDrawer-paper': {
+  color: theme.palette.common.white,
+  backgroundImage: mode === KEY.LIGHT ? `url(${ASSET.BG_STROKE_LIGHTGREY_LOGO})` : `url(${ASSET.BG_STROKE_BRONZE_LOGO})`,
+  backgroundSize: !isDesktop ? '250%' : '150%',
+  backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'top center',
+  backgroundAttachment: 'fixed'
+ }
+}))
+
 // :components ____________________________________________________________________________________________
 
 export const GStyledSpanBox = styled(Box)(({ theme }) => ({
  display: 'flex',
  alignItems: 'center'
+}))
+
+export const GStyledSpaceBetweenSpanBox = styled(Box)(({ theme }) => ({
+ display: 'flex',
+ alignItems: 'center',
+ justifyContent: 'space-between'
 }))
 
 export const GStyledMachineTitleSpanBox = styled(Box)(({ theme }) => ({
@@ -459,10 +477,10 @@ export const GStyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ..
    : (isMachineView || isNoBg) && mode === KEY.DARK
    ? theme.palette.grey[900]
    : theme.palette.grey[800],
- padding: '0.5rem 1rem',
- height: '5rem',
+ padding: '0.5rem 0.5rem',
+ height: !isMachineView && '5rem',
  border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
- borderRadius: isMachineView && theme.spacing(1)
+ borderRadius: isMachineView && theme.spacing(0.2)
 }))
 
 export const GStyledFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
@@ -798,12 +816,12 @@ export const GStyledScrollableHeightLockGrid = styled(Grid)(({ theme, mode, tota
     }
 )
 
-export const GStyledHeaderCardContainer = styled(Card)(({ theme }) => ({
+export const GStyledHeaderCardContainer = styled(Card)(({ theme, height = 180 }) => ({
  marginBottom: theme.spacing(1),
- height: 180,
+ height,
  position: 'sticky',
  top: '60px',
- zIndex: 2
+ zIndex: 4
 }))
 
 /**
@@ -846,7 +864,6 @@ export const GCardOption = mode => {
   margin: 2,
   margintop: 10,
   paddingtop: 2,
-
   sx: {
    backgroundColor: mode === KEY.LIGHT ? 'background.default' : 'background.paper',
    backgroundImage: `url(${mode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
@@ -866,6 +883,16 @@ export const GCardNoHeightOption = mode => {
    backgroundImage: `url(${mode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
    backgroundSize: 'cover',
    height: 'auto'
+  }
+ }
+}
+
+export const GBackdropPropsOption = mode => {
+ return {
+  sx: {
+   backgroundColor: mode === KEY.LIGHT ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)',
+   backdropFilter: 'blur(5px)',
+   transition: 'backdrop-filter 0.3s ease-in-out'
   }
  }
 }

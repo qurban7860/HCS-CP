@@ -1,18 +1,16 @@
 import { Fragment, useState } from 'react'
 import { useOffSetTop, useResponsive, Clock, useSettingContext, Icon, ICON_NAME } from 'hook'
-import { AppBar, Toolbar, Stack, Badge, IconButton, Typography, Drawer, Box, List, ListItem, ListItemButton, ListItemText, Popover, alpha } from '@mui/material'
-import { NavSection, NavSectionY } from 'component'
+import { AppBar, Toolbar, Stack, Badge, IconButton, Box } from '@mui/material'
+import { NavSection, PopoverDefault, DrawerMenu } from 'component'
 import { LogoIcon } from 'component/logo'
 import { useTheme } from '@mui/material/styles'
-import { bgBlur, GStyledRightBorderDivider } from 'theme/style'
+import { bgBlur } from 'theme/style'
 import { HEADER, GLOBAL, NavConfiguration } from 'config'
-import { ASSET } from 'config/asset-directory'
-import { FLEX, FLEX_DIR, KEY, TIMEZONE } from 'constant'
+import { KEY, TIMEZONE } from 'constant'
 import ModeOption from './mode-option'
 import AccountPopover from './account-popover'
 import NotificationPopover from './notification-popover'
-import { useWebSocketContext } from 'auth/websocket-provider'
-import { t } from 'i18next'
+// import { useWebSocketContext } from 'auth/websocket-provider'
 
 function Header() {
  const theme = useTheme()
@@ -76,69 +74,10 @@ function Header() {
       <Box justifyContent={'flex-end'} sx={{ display: 'flex', alignItems: 'center' }}>
        <AccountPopover />
       </Box>
-      <Drawer
-       anchor='left'
-       open={mobileMenuOpen}
-       onClose={toggleMobileMenu}
-       sx={{
-        position: 'relative',
-        backgroundImage: themeMode === KEY.LIGHT ? `url(${ASSET.BG_STROKE_LIGHTGREY_LOGO})` : `url(${ASSET.BG_STROKE_BRONZE_LOGO})`,
-        backgroundSize: !isDesktop ? '250%' : '150%',
-        backgroundRepeat: 'no-repeat',
-        backgroundPositionY: 'center',
-        backgroundPositionX: 'left',
-        backgroundOpacity: 0.2,
-        backgroundAttachment: 'fixed',
-        '& .MuiDrawer-paper': {
-         color: theme.palette.common.white
-        }
-       }}
-       BackdropProps={{
-        sx: {
-         backgroundColor: 'rgba(255, 255, 255, 0.5)',
-         backdropFilter: 'blur(5px)',
-         transition: 'backdrop-filter 0.3s ease-in-out'
-        }
-       }}>
-       <Box sx={{ width: 150, p: 2, mt: 5 }}>
-        <GStyledRightBorderDivider
-         mode={themeMode}
-         orientation={'vertical'}
-         sx={{
-          height: '100%',
-          position: 'absolute',
-          top: 0,
-          right: 0
-         }}
-        />
-        <Stack flexGrow={1} direction='row' alignItems='right' justifyContent='flex-end' spacing={{ xs: 0.5, sm: 4 }}>
-         <NavSectionY data={navConfig} handleCloseNavItem={toggleMobileMenu} />
-        </Stack>
-       </Box>
-      </Drawer>
-      <Popover
-       id={clockId}
-       open={clockOpen}
-       anchorEl={clockAnchor}
-       onClose={() => setClockAnchor(null)}
-       anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right'
-       }}
-       transformOrigin={{
-        vertical: 'top',
-        horizontal: 'left'
-       }}
-       sx={{
-        zIndex: theme.zIndex.modal + 1
-       }}>
-       <Box sx={{ p: 2 }}>
-        <Box sx={{ pr: 2, py: 2 }}>
-         <Typography variant='subtitle1'>{t('time_zone.label')}:</Typography>
-        </Box>
-        <Clock main city={KEY.AUCKLAND} />
-       </Box>
-      </Popover>
+      <DrawerMenu navConfig={navConfig} open={mobileMenuOpen} onClose={toggleMobileMenu} />
+      <PopoverDefault id={clockId} localizedLabel={'time_zone.label'} open={clockOpen} anchorEl={clockAnchor} onClose={() => setClockAnchor(null)}>
+       <Clock main city={KEY.AUCKLAND} />
+      </PopoverDefault>
      </Box>
     </Fragment>
    ) : (

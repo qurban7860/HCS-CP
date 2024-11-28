@@ -1,20 +1,16 @@
 import PropTypes from 'prop-types'
+import { t } from 'i18next'
 import { useSettingContext, ICON_NAME } from 'hook'
 import { Grid } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledHeaderCardContainer, GStyledTopBorderDivider, GStyledSpanBox } from 'theme/style'
-import { SvgFlagIcon, IconTooltip, ViewFormField, BadgeCardMedia, GridViewField, BackButton } from 'component'
-import { CustomerTabsContainer } from 'section/crm/customer'
+import { SvgFlagIcon, IconTooltip, ViewFormField, BadgeCardMedia, GridViewField } from 'component'
 import { KEY, VARIANT, LABEL, FLEX, FLEX_DIR, VIEW_FORM } from 'constant'
 import { truncate } from 'util'
 
 const HomeNav = ({ value, isLoading }) => {
  const theme = useTheme()
  const { themeMode } = useSettingContext()
-
- const { CUSTOMER, SITE, ADDRESS } = VIEW_FORM
-
- //  console.log('chip', value?.tradingName)
 
  return (
   <GStyledHeaderCardContainer>
@@ -43,8 +39,8 @@ const HomeNav = ({ value, isLoading }) => {
      </Grid>
     </Grid>
     <Grid container columnSpacing={2} px={2} pb={2}>
-     <GridViewField heading={CUSTOMER.TRADING_NAME} isLoading={isLoading} chip={value?.tradingName} gridSize={8} isNoBg />
-     <GridViewField heading={VIEW_FORM.WEBSITE} isLoading={isLoading} link={value?.website} gridSize={4} isNoBg />
+     <GridViewField heading={t('trading_name.label')} isLoading={isLoading} chip={value?.tradingName} gridSize={8} isNoBg />
+     <GridViewField heading={t('website.label')} isLoading={isLoading} link={value?.website} gridSize={4} isNoBg />
     </Grid>
    </Grid>
   </GStyledHeaderCardContainer>
