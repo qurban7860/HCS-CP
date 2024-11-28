@@ -48,6 +48,9 @@ const en = {
  additional_notes: {
   label: `Additional Notes`
  },
+ address_information: {
+  label: `Address Information`
+ },
  app: `app`,
  user: `user`,
  list: `list`,
@@ -97,6 +100,12 @@ const en = {
  contact_person_name: {
   label: `Name of Contact Person`
  },
+ contact_type: {
+  label: `Contact Type`,
+  contact_types: {
+   label: `Contact Types`
+  }
+ },
  country: {
   label: `Country`
  },
@@ -144,6 +153,9 @@ const en = {
  date: {
   label: `Date`
  },
+ department: {
+  label: `Department`
+ },
  description: {
   label: `Description`
  },
@@ -156,6 +168,9 @@ const en = {
  },
  financing_company: {
   label: `Financing Company`
+ },
+ first_name: {
+  label: `First Name`
  },
  full_name: {
   label: `Full Name`
@@ -175,8 +190,18 @@ const en = {
  hmi_version: {
   label: `HMI Version`
  },
+ home: {
+  local: `home`,
+  label: `Home`
+ },
  howick_resources: {
   label: `Howick Resources`
+ },
+ howick_website: {
+  label: `Howick Website`
+ },
+ inactive: {
+  label: `Inactive`
  },
  installation_site: {
   label: `Installation Site`
@@ -189,6 +214,9 @@ const en = {
   key_details: {
    label: `Key Details`
   }
+ },
+ last_name: {
+  label: `Last Name`
  },
  log: {
   label: `Log`,
@@ -214,17 +242,9 @@ const en = {
  login_email: {
   label: `Login Email`
  },
- home: {
-  local: `home`,
-  label: `Home`
- },
- howick_website: {
-  label: `Howick Website`
- },
  general: `general`,
  banking: `banking`,
  booking: `booking`,
-
  logout: {
   label: `Logout`
  },
@@ -290,6 +310,9 @@ const en = {
  organization: {
   local: `organization`,
   label: `Organization`
+ },
+ organization_overview: {
+  label: `Organization Overview`
  },
  organization_address: {
   local: `organization`,
@@ -362,6 +385,9 @@ const en = {
    label: `Phone Numbers`
   }
  },
+ personal_information: {
+  label: `Personal Information`
+ },
  plc_version: {
   label: `PLC Version`
  },
@@ -374,6 +400,9 @@ const en = {
  purchase_date: {
   label: `Purchase Date`
  },
+ title: {
+  label: `Title`
+ },
  register: {
   label: `Register`
  },
@@ -383,6 +412,9 @@ const en = {
  },
  reporter: {
   label: `Reporter`
+ },
+ report_to: {
+  label: `Report To`
  },
  required: {
   label: `Required`
