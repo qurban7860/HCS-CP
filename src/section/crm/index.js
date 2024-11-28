@@ -7,6 +7,7 @@ export { default as CustomerListPagination } from './customers/customers-paginat
 
 // :customer
 export { default as CustomerLayout } from './customer/customer-layout'
+export { default as CustomerFieldsCard } from './customer/customer-fields-card'
 export { default as useCustomerDefaultValues } from './customer/default-values/default-values'
 
 // :contact
