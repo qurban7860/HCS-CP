@@ -151,11 +151,20 @@ const en = {
  hmi_version: {
   label: `HMI Version`
  },
+ howick_resources: {
+  label: `Howick Resources`
+ },
  installation_site: {
   label: `Installation Site`
  },
  installation_date: {
   label: `Installation Date`
+ },
+ key_detail: {
+  label: `Key Detail`,
+  key_details: {
+   label: `Key Details`
+  }
  },
  log: {
   label: `Log`,
@@ -188,12 +197,6 @@ const en = {
  howick_website: {
   label: `Howick Website`
  },
- key_detail: {
-  label: `Key Detail`,
-  key_details: {
-   label: `Key Details`
-  }
- },
  general: `general`,
  banking: `banking`,
  booking: `booking`,
@@ -216,6 +219,9 @@ const en = {
   machines: {
    label: `Machines`
   }
+ },
+ machine_serial_number: {
+  label: `Machine Serial Number`
  },
  machine_model: {
   label: `Machine Model`
