@@ -73,7 +73,7 @@ const MachineTab = () => {
 
  return (
   <Fragment>
-   <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+   <Grid container columnSpacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
     {isDesktop && (
      <Grid item xs={12} md={12} lg={3}>
       <MachineConnectionWidget value={defaultValues} handleConnectedMachineDialog={handleConnectedMachineDialog} handleMachineSiteDialog={handleMachineSiteDialog} />

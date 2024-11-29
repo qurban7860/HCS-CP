@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from 'react'
+import { Fragment, useEffect, useLayoutEffect } from 'react'
 import { t } from 'i18next'
 import { useSelector, dispatch } from 'store'
 import _ from 'lodash'
@@ -105,46 +105,43 @@ const HomeTab = () => {
  }
 
  return (
-  <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
-   <Grid item sm={12} lg={12}>
-    <ChowBox title={sites?.length > 1 ? t('site.sites.label') : t('site.label')}>
-     <SiteCarousel sites={sites} theme={theme} themeMode={themeMode} isMain={isMain} />
-    </ChowBox>
-    <Grid container columnSpacing={2}>
-     <Grid item xs={12} sm={6}>
-      <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={contacts?.length}>
-       <ContactListCard value={defaultValues} handleContactDialog={handleContactDialog} />
-      </GStyledScrollableHeightLockGrid>
-     </Grid>
-     <Grid item xs={12} sm={6} mb={5}>
-      <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={machineTotalCount}>
-       <MachineListCard className='machines-widget' handleMachineDialog={handleConnectedMachineDialog} handleMachineSiteDialog={handleMachineSiteDialog} machineTotalCount={machineTotalCount} />
-      </GStyledScrollableHeightLockGrid>
-     </Grid>
-    </Grid>
-
-    <Box mb={4}>
-     <Card {...GCardOption(themeMode)}>
-      <GStyledTopBorderDivider mode={themeMode} />
-      <Grid container spacing={2} px={1.5} mb={5}>
-       <GridViewTitle title={TITLE.HOWICK_RESOURCES} />
-       <Divider variant={KEY.MIDDLE} style={{ width: '100%', marginBottom: '20px' }} />
-       <Grid item lg={12} sm={12}>
-        <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} />
-       </Grid>
-       <Grid item sm={12}>
-        <GStyledFlexEndBox>
-         <AuditBox value={defaultValues} />
-        </GStyledFlexEndBox>
-       </Grid>
+  <Fragment>
+   <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+    <Grid item sm={12} lg={12}>
+     <ChowBox title={sites?.length > 1 ? t('site.sites.label') : t('site.label')}>
+      <SiteCarousel sites={sites} theme={theme} themeMode={themeMode} isMain={isMain} />
+     </ChowBox>
+     <Grid container columnSpacing={2}>
+      <Grid item xs={12} sm={6}>
+       <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={contacts?.length}>
+        <ContactListCard value={defaultValues} handleContactDialog={handleContactDialog} />
+       </GStyledScrollableHeightLockGrid>
       </Grid>
-     </Card>
-    </Box>
+      <Grid item xs={12} sm={6} mb={5}>
+       <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={machineTotalCount}>
+        <MachineListCard className='machines-widget' handleMachineDialog={handleConnectedMachineDialog} handleMachineSiteDialog={handleMachineSiteDialog} machineTotalCount={machineTotalCount} />
+       </GStyledScrollableHeightLockGrid>
+      </Grid>
+     </Grid>
+
+     <Box mb={2}>
+      <Card {...GCardOption(themeMode)}>
+       <GStyledTopBorderDivider mode={themeMode} />
+       <Grid container spacing={2} px={1.5} mb={5}>
+        <GridViewTitle title={TITLE.HOWICK_RESOURCES} />
+        <Grid item lg={12} sm={12}>
+         <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} />
+        </Grid>
+       </Grid>
+      </Card>
+     </Box>
+    </Grid>
+    <MachineDialog />
+    <SiteDialog />
+    <ContactDialog contact={contact} />
    </Grid>
-   <MachineDialog />
-   <SiteDialog />
-   <ContactDialog contact={contact} />
-  </Grid>
+   <AuditBox value={defaultValues} />
+  </Fragment>
  )
 }
 
