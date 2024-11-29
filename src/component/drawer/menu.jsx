@@ -3,7 +3,7 @@ import { useSettingContext, useResponsive } from 'hook'
 import { Box, Stack } from '@mui/material'
 import { NavSectionY } from 'component'
 import { GStyledMenuDrawer, GStyledRightBorderDivider, GBackdropPropsOption } from 'theme/style'
-import { KEY } from 'constant'
+import { FLEX, FLEX_DIR, KEY } from 'constant'
 
 const DrawerMenu = ({ anchor = KEY.LEFT, open, onClose, navConfig }) => {
  const { themeMode } = useSettingContext()
@@ -21,7 +21,7 @@ const DrawerMenu = ({ anchor = KEY.LEFT, open, onClose, navConfig }) => {
       right: 0
      }}
     />
-    <Stack flexGrow={1} direction='row' alignItems='right' justifyContent='flex-end' spacing={{ xs: 0.5, sm: 4 }}>
+    <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.RIGHT} justifyContent={FLEX.FLEX_END} spacing={{ xs: 0.5, sm: 4, width: '-webkit-fill-available' }}>
      <NavSectionY data={navConfig} handleCloseNavItem={onClose} />
     </Stack>
    </Box>

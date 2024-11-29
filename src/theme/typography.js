@@ -118,6 +118,12 @@ const typography = {
   lineHeight: 1.5,
   fontSize: pxToRem(12)
  },
+ overlineMini: {
+  fontWeight: 700,
+  lineHeight: 1,
+  fontSize: pxToRem(8),
+  textTransform: 'uppercase'
+ },
  overline: {
   fontWeight: 700,
   lineHeight: 1.5,

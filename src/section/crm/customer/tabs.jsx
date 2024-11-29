@@ -37,17 +37,17 @@ export const TABS = value => [
   label: t('sites.label'),
   icon: ICON_NAME.SITES,
   disabled: false
- },
+ }
  // {
  //   id: 3,
  //   label: 'Machines',
  //   icon: ICON_NAME.SUPPORT,
  //   disabled: true
  // },
- {
-  id: 4,
-  label: t('support_tickets.label'),
-  icon: ICON_NAME.SUPPORT,
-  disabled: false
- }
+ //  {
+ //   id: 4,
+ //   label: t('support_tickets.label'),
+ //   icon: ICON_NAME.SUPPORT,
+ //   disabled: false
+ //  }
 ]

@@ -52,7 +52,7 @@ const TicketCard = ({ selectedCardId, handleSelected, handleTicketCard, handleTi
    </Grid>
    <Grid item xs={3} flex={1} justifyContent={FLEX.FLEX_END} alignContent={KEY.RIGHT}>
     <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1}>
-     <GStyledSupportStatusFieldChip status={normalizer(ticket?.status)} mode={themeMode} label={<Typography variant={TYPOGRAPHY.CAPTION}>{ticket?.status}</Typography>} size={SIZE.SMALL} />
+     <GStyledSupportStatusFieldChip status={normalizer(ticket?.status)} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE_MINI}>{ticket?.status}</Typography>} size={SIZE.SMALL} />
     </GStyledSpanBox>
    </Grid>
   </GStyledSupportListCard>

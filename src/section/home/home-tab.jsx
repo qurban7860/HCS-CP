@@ -21,13 +21,13 @@ import {
 } from 'store/slice'
 import { useSettingContext } from 'hook'
 import { ContactListCard, MachineListCard } from 'section/home'
-import { useTheme, Grid, Box, Card, Divider } from '@mui/material'
-import { GStyledTopBorderDivider, GStyledFlexEndBox, GCardOption, GStyledScrollableHeightLockGrid } from 'theme/style'
-import { GridViewTitle, AuditBox, SiteCarousel, ChowBox, MachineDialog, SiteDialog, ContactDialog } from 'component'
-import { HowickResources } from 'section/common'
+import { HowickResources, CommonFieldsCard } from 'section/common'
 import { useCustomerDefaultValues } from 'section/crm/customer'
+import { useTheme, Grid } from '@mui/material'
+import { GStyledScrollableHeightLockGrid } from 'theme/style'
+import { AuditBox, SiteCarousel, ChowBox, MachineDialog, SiteDialog, ContactDialog } from 'component'
 import { MARGIN } from 'config'
-import { TITLE, KEY, FLEX_DIR } from 'constant'
+import { FLEX_DIR } from 'constant'
 
 const HomeTab = () => {
  const { customerMachines, machineTotalCount } = useSelector(state => state.machine)
@@ -111,7 +111,7 @@ const HomeTab = () => {
      <ChowBox title={sites?.length > 1 ? t('site.sites.label') : t('site.label')}>
       <SiteCarousel sites={sites} theme={theme} themeMode={themeMode} isMain={isMain} />
      </ChowBox>
-     <Grid container columnSpacing={2}>
+     <Grid container rowGap={2} columnSpacing={2}>
       <Grid item xs={12} sm={6}>
        <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={contacts?.length}>
         <ContactListCard value={defaultValues} handleContactDialog={handleContactDialog} />
@@ -123,18 +123,9 @@ const HomeTab = () => {
        </GStyledScrollableHeightLockGrid>
       </Grid>
      </Grid>
-
-     <Box mb={2}>
-      <Card {...GCardOption(themeMode)}>
-       <GStyledTopBorderDivider mode={themeMode} />
-       <Grid container spacing={2} px={1.5} mb={5}>
-        <GridViewTitle title={TITLE.HOWICK_RESOURCES} />
-        <Grid item lg={12} sm={12}>
-         <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} />
-        </Grid>
-       </Grid>
-      </Card>
-     </Box>
+     <CommonFieldsCard isChildren i18nKey={'howick_resources.label'} defaultValues={defaultValues} isLoading={isLoading}>
+      <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} />
+     </CommonFieldsCard>
     </Grid>
     <MachineDialog />
     <SiteDialog />

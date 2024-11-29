@@ -13,6 +13,7 @@ import {
  resetConnectedMachineDialog,
  resetMachineSiteDialogData
 } from 'store/slice'
+import { CommonFieldsCard } from 'section/common'
 import { useMachineDefaultValues, fieldsKeyConfig, fieldsMachineInformationConfig } from 'section/product'
 import { MachineConnectionWidget, MachineConnectionListCard, MachineFieldsCard } from 'section/product/machine'
 import { HowickResources } from 'section/common'
@@ -87,9 +88,9 @@ const MachineTab = () => {
        <MachineConnectionListCard value={defaultValues} isLoading={isLoading} handleConnectionDialog={handleConnectedMachineDialog} />
       </Box>
      )}
-     <MachineFieldsCard isChildren i18nKey={'howick_resources.label'} defaultValues={defaultValues} isLoading={isLoading}>
+     <CommonFieldsCard isChildren i18nKey={'howick_resources.label'} defaultValues={defaultValues} isLoading={isLoading}>
       <HowickResources value={defaultValues} isLoading={isLoading} />
-     </MachineFieldsCard>
+     </CommonFieldsCard>
     </Grid>
    </Grid>
    <AuditBox value={defaultValues} />

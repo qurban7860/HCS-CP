@@ -16,7 +16,6 @@ const HomeLayout = () => {
  return (
   <MotionLazyContainer display={FLEX.FLEX}>
    <Grid container rowGap={2} flexDirection={FLEX_DIR.COLUMN}>
-    {/* TODO: [HPS-1240] HPS-1245 Machine Layout Reponsiveness */}
     <HomeNav isLoading={isLoading} value={defaultValues} />
     <HomeTab />
    </Grid>

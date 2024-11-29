@@ -84,7 +84,9 @@ const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, onListI
     underline={'always'}
     sx={{
      cursor: disabled && 'not-allowed',
-     textAlign: isMobile ? 'right' : 'center'
+     transition: 'ease-in-out width .2s',
+     textAlign: isMobile ? 'right' : 'center',
+     backgroundColor: themeMode === KEY.LIGHT ? (active ? 'howick.midBlue' : 'transparent') : active && 'howick.orange'
     }}>
     {renderContent}
    </Link>

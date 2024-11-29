@@ -30,8 +30,8 @@ function Welcome({ title, description, action, img, customer, ...other }) {
     <GStyledSpanBox gap={2} my={isMobile ? 0 : 2}>
      <img alt='logo' src={themeMode === KEY.DARK ? ASSET.HOWICK_PORTAL_DARK_2 : ASSET.HOWICK_PORTAL} width={900} style={{ pointerEvents: KEY.NONE }} />
     </GStyledSpanBox>
-    <GStyledWelcomeDescription variant={TYPOGRAPHY.SUBTITLE0} themeMode={themeMode}>
-     {description}
+    <GStyledWelcomeDescription variant={isMobile ? TYPOGRAPHY.BODY1 : TYPOGRAPHY.SUBTITLE0} themeMode={themeMode}>
+     {/* {description} */}
     </GStyledWelcomeDescription>
     {action && action}
     <Grid container my={2}>
