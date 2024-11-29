@@ -8,7 +8,7 @@ import { GCardOption, GStyledTopBorderDivider, GStyledSpanBox } from 'theme/styl
 import { KEY, FLEX } from 'constant'
 import { truncate } from 'util'
 
-const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, handleDialog, isChildren, children }) => {
+const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, handleDialog, isChildren, children, withStatusIcon }) => {
  const { themeMode } = useSettingContext()
  const theme = useTheme()
 
@@ -16,6 +16,9 @@ const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, han
   return (
    <Fragment>
     {config?.map(field => {
+     let content = null
+     let additionalProps = null
+
      switch (field.type) {
       case 'title':
        return (
@@ -24,6 +27,8 @@ const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, han
         </Grid>
        )
       case 'link':
+       additionalProps = field.additionalProps ? field.additionalProps(defaultValues, handleDialog, themeMode) : {}
+       content = field.value && field.value(defaultValues)
        return (
         <GridViewField key={field.key} heading={t(field.heading)} isLoading={isLoading} gridSize={field.gridSize || 6} {...additionalProps}>
          <Link
@@ -36,8 +41,8 @@ const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, han
         </GridViewField>
        )
       default:
-       var additionalProps = field.additionalProps ? field.additionalProps(defaultValues, handleDialog, themeMode) : {}
-       var content = field.value && field.value(defaultValues)
+       additionalProps = field.additionalProps ? field.additionalProps(defaultValues, handleDialog, themeMode) : {}
+       content = field.value && field.value(defaultValues)
        return (
         <GridViewField key={field.key} heading={t(field.heading)} isLoading={isLoading} gridSize={field.gridSize || 6} {...additionalProps}>
          {content}
@@ -53,22 +58,25 @@ const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, han
    <Card {...GCardOption(themeMode)}>
     <GStyledTopBorderDivider mode={themeMode} />
     <Grid container p={1.5}>
-     <Grid item xs={12} sm={12}>
-      <GStyledSpanBox justifyContent={FLEX.FLEX_END}>
-       {defaultValues?.isActive ? (
-        <IconTooltip
-         title={t('active.label')}
-         icon={ICON_NAME.ACTIVE}
-         color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
-         tooltipColor={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
-         isActiveIcon
-         iconOnly
-        />
-       ) : (
-        <IconTooltip title={t('nactive.label')} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} iconOnly />
-       )}
-      </GStyledSpanBox>
-     </Grid>
+     {withStatusIcon && (
+      <Grid item xs={12} sm={12}>
+       <GStyledSpanBox justifyContent={FLEX.FLEX_END}>
+        {defaultValues?.isActive ? (
+         <IconTooltip
+          title={t('active.label')}
+          icon={ICON_NAME.ACTIVE}
+          color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+          tooltipColor={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+          isActiveIcon
+          iconOnly
+         />
+        ) : (
+         <IconTooltip title={t('nactive.label')} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} iconOnly />
+        )}
+       </GStyledSpanBox>
+      </Grid>
+     )}
+
      <GridViewTitle title={t(i18nKey)} />
      <Grid item lg={12} sm={12}>
       <Grid container spacing={2} p={2} pb={5}>
@@ -88,7 +96,8 @@ CommonFieldsCard.propTypes = {
  i18nKey: PropTypes.string,
  handleDialog: PropTypes.func,
  isLoading: PropTypes.bool,
- isChildren: PropTypes.bool
+ isChildren: PropTypes.bool,
+ withStatusIcon: PropTypes.bool
 }
 
 export default CommonFieldsCard
