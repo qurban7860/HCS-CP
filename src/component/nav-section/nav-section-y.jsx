@@ -1,9 +1,8 @@
 import { Fragment, memo } from 'react'
 import PropTypes from 'prop-types'
 import { Stack } from '@mui/material'
-import { hideScrollbarY, hideScrollbarX } from 'theme/style'
-import NavList from './nav-list'
-import { FLEX_DIR, KEY } from 'constant'
+import { hideScrollbarY } from 'theme/style'
+import { NavListY } from 'component/nav-section'
 
 NavSectionY.propTypes = {
  sx: PropTypes.object,
@@ -17,7 +16,8 @@ function NavSectionY({ data, sx, handleCloseNavItem, ...other }) {
    spacing={2}
    sx={{
     ...hideScrollbarY,
-    ...sx
+    ...sx,
+    width: '100%'
    }}
    {...other}>
    {data.map(group => (
@@ -38,7 +38,7 @@ function Items({ items, handleCloseNavItem }) {
  return (
   <Fragment>
    {items.map(list => (
-    <NavList key={list.title + list.path} data={list} depth={1} hasChild={!!list.children} handleCloseNavItem={handleCloseNavItem} />
+    <NavListY key={list.title + list.path} data={list} depth={1} hasChild={!!list.children} handleCloseNavItem={handleCloseNavItem} />
    ))}
   </Fragment>
  )
