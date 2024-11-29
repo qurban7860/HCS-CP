@@ -5,9 +5,9 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { PATH_MACHINE } from 'route/path'
 import { useMachineDefaultValues, TicketsTab, MachineLogsTab, MachineGraphsTab } from 'section/product'
 import { MachineNav, MachineTab } from 'section/product/machine'
-import { Typography } from '@mui/material'
+import { Typography, Grid } from '@mui/material'
 import { MotionLazyContainer, CustomerDialog, MachineDialog, SiteDialog } from 'component'
-import { FLEX } from 'constant'
+import { FLEX, FLEX_DIR } from 'constant'
 
 const MachineLayout = ({ tab = 0 }) => {
  const [renderedTab, setRenderedTab] = useState(tab)
@@ -37,22 +37,24 @@ const MachineLayout = ({ tab = 0 }) => {
  }
  return (
   <MotionLazyContainer display={FLEX.FLEX}>
-   <MachineNav renderedTab={renderedTab} navigatePage={navigatePage} isLoading={isLoading} value={defaultValues} />
-   {renderedTab === 0 ? (
-    <MachineTab />
-   ) : renderedTab === 1 ? (
-    <Typography variant='h0'>{'LICENSE PAGE'}</Typography>
-   ) : renderedTab === 2 ? (
-    <Typography variant='h0'>{'TOOLS PAGE'}</Typography>
-   ) : renderedTab === 3 ? (
-    <Typography variant='h0'>{'PROFILES PAGE'}</Typography>
-   ) : renderedTab === 4 ? (
-    <MachineLogsTab />
-   ) : renderedTab === 5 ? (
-    <MachineGraphsTab />
-   ) : renderedTab === 6 ? (
-    <TicketsTab />
-   ) : null}
+   <Grid container rowGap={2} flexDirection={FLEX_DIR.COLUMN}>
+    <MachineNav renderedTab={renderedTab} navigatePage={navigatePage} isLoading={isLoading} value={defaultValues} />
+    {renderedTab === 0 ? (
+     <MachineTab />
+    ) : renderedTab === 1 ? (
+     <Typography variant='h0'>{'LICENSE PAGE'}</Typography>
+    ) : renderedTab === 2 ? (
+     <Typography variant='h0'>{'TOOLS PAGE'}</Typography>
+    ) : renderedTab === 3 ? (
+     <Typography variant='h0'>{'PROFILES PAGE'}</Typography>
+    ) : renderedTab === 4 ? (
+     <MachineLogsTab />
+    ) : renderedTab === 5 ? (
+     <MachineGraphsTab />
+    ) : renderedTab === 6 ? (
+     <TicketsTab />
+    ) : null}
+   </Grid>
    {customerDialog && <CustomerDialog />}
    {machineSiteDialogData && <SiteDialog />}
    {connectedMachineDialog && <MachineDialog />}

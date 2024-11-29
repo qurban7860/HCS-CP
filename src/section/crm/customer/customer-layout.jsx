@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import { useSelector, dispatch } from 'store'
 import { useParams, useNavigate } from 'react-router-dom'
 import { setFromDialog, setFromSiteDialog } from 'store/slice'
-import { Typography } from '@mui/material'
+import { Typography, Grid } from '@mui/material'
 import { CustomerNav, CustomerTab } from 'section/crm/customer'
 import { ContactTab, SiteTab, useCustomerDefaultValues, TicketsTab } from 'section/crm'
 import { MotionLazyContainer, MachineDialog, SiteDialog, ContactDialog } from 'component'
-import { FLEX } from 'constant'
+import { FLEX, FLEX_DIR } from 'constant'
 import { PATH_CUSTOMER } from 'route/path'
 
 const CustomerLayout = ({ tab = 0 }) => {
@@ -44,18 +44,20 @@ const CustomerLayout = ({ tab = 0 }) => {
 
  return (
   <MotionLazyContainer display={FLEX.FLEX}>
-   <CustomerNav renderedTab={renderedTab} navigatePage={navigatePage} isLoading={isLoading} value={defaultValues} />
-   {renderedTab === 0 ? (
-    <CustomerTab />
-   ) : renderedTab === 1 ? (
-    <ContactTab />
-   ) : renderedTab === 2 ? (
-    <SiteTab />
-   ) : renderedTab === 3 ? (
-    <Typography variant='h0'>{'MACHINE PAGE'}</Typography>
-   ) : renderedTab === 4 ? (
-    <TicketsTab />
-   ) : null}
+   <Grid container rowGap={2} flexDirection={FLEX_DIR.COLUMN}>
+    <CustomerNav renderedTab={renderedTab} navigatePage={navigatePage} isLoading={isLoading} value={defaultValues} />
+    {renderedTab === 0 ? (
+     <CustomerTab />
+    ) : renderedTab === 1 ? (
+     <ContactTab />
+    ) : renderedTab === 2 ? (
+     <SiteTab />
+    ) : renderedTab === 3 ? (
+     <Typography variant='h0'>{'MACHINE PAGE'}</Typography>
+    ) : renderedTab === 4 ? (
+     <TicketsTab />
+    ) : null}
+   </Grid>
    {contactDialog && <ContactDialog contact={contact} />}
    {machineSiteDialogData && <SiteDialog />}
    {connectedMachineDialog && <MachineDialog />}
