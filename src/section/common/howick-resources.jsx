@@ -5,7 +5,7 @@ import { ViewFormField } from 'component/viewform'
 
 const HowickResources = ({ value, isLoading, gridSize = 6, spacing = 2, isDialog }) => {
  return (
-  <Grid container spacing={isDialog ? 1 : spacing} pb={5}>
+  <Grid container spacing={isDialog ? 1 : spacing} pb={2}>
    <Grid item xs={12} sm={gridSize}>
     <ViewFormField heading={value.projectManager?.length > 1 ? t('project_manager.project_managers.label') : t('project_manager.label')} isLoading={isLoading} contact={value.projectManager} isNoBg />
    </Grid>
