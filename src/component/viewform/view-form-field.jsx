@@ -24,6 +24,7 @@ const ViewFormField = ({
  isWidget = false,
  noBreakSpace = false,
  userRolesChip,
+ rolesChip,
  isNoBg,
  chip,
  phoneChips,
@@ -202,6 +203,15 @@ const ViewFormField = ({
      ) : (
       userRolesChip && typeof userRolesChip === 'string' && userRolesChip.trim().length > 0 && <Chip label={userRolesChip} sx={{ m: 0.2 }} />
      )}
+
+     {rolesChip && Array.isArray(rolesChip) && rolesChip.length > 0 && (
+      <StyledChipGrid container mode={themeMode} isNoBg>
+       &nbsp;
+       {rolesChip?.map((r, index) => (
+        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isMobile ? TYPOGRAPHY.OVERLINE : TYPOGRAPHY.OVERLINE2}>{r?.roleType}</Typography>} size={SIZE.SMALL} />
+       ))}
+      </StyledChipGrid>
+     )}
     </Fragment>
    )}
   </StyledFieldGrid>
@@ -221,7 +231,8 @@ ViewFormField.propTypes = {
  contact: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
  chip: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
  phoneChips: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
- userRolesChip: PropTypes.array,
+ userRolesChip: PropTypes.any,
+ rolesChip: PropTypes.array,
  link: PropTypes.string,
  customerLink: PropTypes.string,
  primaryContact: PropTypes.any,
