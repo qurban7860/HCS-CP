@@ -527,6 +527,9 @@ const en = {
  trading_name: {
   label: `Trading Name / Alias`
  },
+ username: {
+  label: `Username`
+ },
  view_jira: {
   label: `View in Jira`,
   view_jira_in_new_tab: {
