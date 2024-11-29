@@ -249,6 +249,11 @@ export const GStyledFlexEndGrid = styled(Grid)(({ theme }) => ({
  justifyContent: 'flex-end'
 }))
 
+export const GStyledCenterGrid = styled(Grid)(({ theme }) => ({
+ display: 'flex',
+ justifyContent: 'center'
+}))
+
 export const GStyledListItemText = styled(ListItemText)(({ theme }) => ({
  '& .MuiListItemText-primary': {
   fontSize: '1.5rem',
