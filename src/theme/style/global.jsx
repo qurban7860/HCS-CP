@@ -330,9 +330,7 @@ export const GStyledTopBorderDivider = styled(({ theme, mode, ...other }) => <Di
 export const GStyledRightBorderDivider = styled(({ theme, mode, ...other }) => <Divider {...other} />)(({ theme, mode }) => ({
  borderStyle: 'solid',
  borderImage:
-  mode === KEY.LIGHT
-   ? `linear-gradient(to bottom, ${theme.palette.howick.darkBlue}, ${theme.palette.howick.blue}) 1`
-   : `linear-gradient(to up,  ${theme.palette.grey[500]},  ${theme.palette.grey[800]}) 1`,
+  mode === KEY.LIGHT ? `linear-gradient(to bottom, ${theme.palette.grey[300]}, ${theme.palette.grey[100]}) 1` : `linear-gradient(to up,  ${theme.palette.grey[500]},  ${theme.palette.grey[800]}) 1`,
  borderWidth: 5
 }))
 
@@ -491,6 +489,13 @@ export const GStyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ..
 export const GStyledFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
  margin: theme.spacing(0.2),
  borderRadius: theme.spacing(0.4),
+ // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
+ backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
+}))
+
+export const GStyledMiniChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
+ //  margin: theme.spacing(0.2),
+ borderRadius: theme.spacing(0.2),
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
 }))
