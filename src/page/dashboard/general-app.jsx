@@ -1,5 +1,5 @@
 import { memo, useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react'
-import { useAuthContext } from 'auth'
+import { useAuthContext } from 'auth/use-auth-context'
 import { t } from 'i18next'
 import _ from 'lodash'
 import { dispatch, useSelector } from 'store'
