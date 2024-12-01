@@ -165,7 +165,7 @@ const ViewFormField = ({
          label={
           <GStyledSpanBox>
            {p?.type && (
-            <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE_MINI} fontWeight='bold'>
+            <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE} fontWeight='bold'>
              {p?.type} &nbsp;
             </Typography>
            )}
@@ -197,7 +197,7 @@ const ViewFormField = ({
      {userRolesChip && typeof userRolesChip === 'object' && userRolesChip.length > 0 ? (
       <StyledChipGrid container mode={themeMode} isNoBg>
        {userRolesChip?.map((r, index) => (
-        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{r}</Typography>} size={SIZE.SMALL} />
+        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE}>{r}</Typography>} size={SIZE.SMALL} />
        ))}
       </StyledChipGrid>
      ) : (
