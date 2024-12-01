@@ -7,7 +7,7 @@ import { IconTooltip } from 'component'
 import { LABEL, TYPOGRAPHY, KEY, FLEX } from 'constant'
 import { truncate } from 'util'
 
-const SiteCard = ({ isMain, selectedCardId, value, handleSiteCard, s }) => {
+const SiteCard = ({ isMain, selectedCardId, handleSiteCard, site }) => {
  const theme = useTheme()
  const { themeMode } = useSettingContext()
 
@@ -19,27 +19,27 @@ const SiteCard = ({ isMain, selectedCardId, value, handleSiteCard, s }) => {
   return `${hasValidCity ? s.address.city : ''}${shouldShowSeparator ? ', ' : ''}${hasValidCity && hasValidCity.length <= 20 && hasValidCountry ? s.address.country : ''}`
  }
  return (
-  <GStyledSiteCard onClick={event => handleSiteCard(event, s._id)} selectedCardId={selectedCardId} s={s} mode={themeMode}>
+  <GStyledSiteCard onClick={event => handleSiteCard(event, site._id)} selectedCardId={selectedCardId} site={site} mode={themeMode}>
    <Grid item xs={10}>
     <Box height={50}>
      <GStyledListItemText
       primary={
-       s && (
+       site && (
         <GStyledSpanBox>
          <Typography
           color={themeMode === KEY.LIGHT ? 'common.black' : 'grey.400'}
           variant={TYPOGRAPHY.H5}
           sx={{
-           opacity: selectedCardId === s._id ? 0.7 : 1
+           opacity: selectedCardId === site._id ? 0.7 : 1
           }}>
-          {truncate(s?.name)}
+          {truncate(site?.name)}
          </Typography>
         </GStyledSpanBox>
        )
       }
       secondary={
        <Typography variant={TYPOGRAPHY.BODY2} color='text.secondary'>
-        {getCityAndCountry(s)}
+        {getCityAndCountry(site)}
        </Typography>
       }
      />
@@ -57,13 +57,12 @@ const SiteCard = ({ isMain, selectedCardId, value, handleSiteCard, s }) => {
 }
 
 SiteCard.propTypes = {
- value: PropTypes.any,
  isMain: PropTypes.bool,
  selectedCardId: PropTypes.string,
  handleContactCard: PropTypes.func,
  handleSiteCard: PropTypes.func,
  contact: PropTypes.any,
- s: PropTypes.any
+ site: PropTypes.any
 }
 
 export default SiteCard
