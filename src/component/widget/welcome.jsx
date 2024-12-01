@@ -1,19 +1,20 @@
 import { Fragment } from 'react'
+import { t } from 'i18next'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { useSettingContext, Icon, ICON_NAME, useResponsive } from 'hook'
-import { useTheme, Stack, Box, Grid, Card, Typography } from '@mui/material'
+import { useTheme, useMediaQuery, Stack, Box, Grid, Card, Typography } from '@mui/material'
 import { SkeletonViewFormField } from 'component'
 import { GStyledWelcomeContainerDiv, GStyledWelcomeDescription, GStyledSpanBox, GStyledTopBorderDivider, GCardOption } from 'theme/style'
 import { KEY, TYPOGRAPHY } from 'constant'
 import { ASSET } from 'config'
-import { t } from 'i18next'
 
-function Welcome({ title, description, action, img, customer, ...other }) {
+function Welcome({ title, description, action, img, customer, isCustomerLoading, ...other }) {
  const { customerMachines, isLoading } = useSelector(state => state.machine)
  const { themeMode } = useSettingContext()
  const theme = useTheme()
 
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
  const isMobile = useResponsive('down', 'sm')
 
  const portalSyncedMachines = customerMachines?.filter(machine => machine?.portalKey)
@@ -41,9 +42,13 @@ function Welcome({ title, description, action, img, customer, ...other }) {
         <GStyledTopBorderDivider mode={themeMode} />
         <GStyledSpanBox px={2}>
          <Icon icon={ICON_NAME.COMPANY} color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]} />
-         <Typography variant={TYPOGRAPHY.H3} m={2}>
-          {customer?.name}
-         </Typography>
+         {isCustomerLoading ? (
+          () => <SkeletonViewFormField />
+         ) : (
+          <Typography variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H4} m={2}>
+           {customer.name}
+          </Typography>
+         )}
         </GStyledSpanBox>
         <Box mb={2}>
          <GStyledSpanBox px={2}>
@@ -102,6 +107,7 @@ function Welcome({ title, description, action, img, customer, ...other }) {
 Welcome.propTypes = {
  img: PropTypes.node,
  action: PropTypes.node,
+ isCustomerLoading: PropTypes.bool,
  title: PropTypes.string,
  description: PropTypes.string,
  customer: PropTypes.object

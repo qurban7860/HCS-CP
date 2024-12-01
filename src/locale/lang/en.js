@@ -215,8 +215,20 @@ const en = {
    label: `Key Details`
   }
  },
+ latitude: {
+  label: `ϕ Latitude`
+ },
+ language: {
+  label: `Language`
+ },
  last_name: {
   label: `Last Name`
+ },
+ legend: {
+  label: `Legend`,
+  legends: {
+   label: `Legends`
+  }
  },
  log: {
   label: `Log`,
@@ -248,15 +260,10 @@ const en = {
  logout: {
   label: `Logout`
  },
- language: {
-  label: `Language`
+ longitude: {
+  label: `λ Longitude`
  },
- legend: {
-  label: `Legend`,
-  legends: {
-   label: `Legends`
-  }
- },
+
  machine: {
   local: `machine`,
   label: `Machine`,

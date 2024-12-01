@@ -165,11 +165,11 @@ const ViewFormField = ({
          label={
           <GStyledSpanBox>
            {p?.type && (
-            <Typography variant={TYPOGRAPHY.OVERLINE2} fontWeight='bold'>
+            <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE_MINI} fontWeight='bold'>
              {p?.type} &nbsp;
             </Typography>
            )}
-           <Typography variant={TYPOGRAPHY.BODY2}>
+           <Typography variant={isDesktop ? TYPOGRAPHY.BODY2 : TYPOGRAPHY.CAPTION}>
             {p?.countryCode && `+${p?.countryCode} `} {p?.contactNumber && p?.contactNumber}
             {p?.extensions && `(${p?.extensions})`}
            </Typography>
