@@ -27,7 +27,7 @@ import { toTitleCase } from 'util'
 import { FLEX } from 'constant'
 
 function GeneralAppPage() {
- const { customer, contacts } = useSelector(state => state.customer)
+ const { customer, contacts, isLoading } = useSelector(state => state.customer)
  const { customerMachines } = useSelector(state => state.machine)
  const { user } = useAuthContext()
  const customerId = user?.customer
@@ -85,7 +85,7 @@ function GeneralAppPage() {
   <Grid container>
    <Grid container spacing={3} mt={isMobile ? 0 : 2}>
     <Grid item xs={12}>
-     <Welcome customer={customer} title={toTitleCase(GLOBAL.APP_TAGLINE)} description={t('app_customer_tagline')} />
+     <Welcome customer={customer} isCustomerLoading={isLoading} title={toTitleCase(GLOBAL.APP_TAGLINE)} description={t('app_customer_tagline')} />
     </Grid>
     <Grid item xs={12}>
      <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
