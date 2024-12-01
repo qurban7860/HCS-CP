@@ -67,7 +67,7 @@ function NavListY({ data, depth, hasChild, handleCloseNavItem }) {
     onMouseLeave={handleClose}
     sx={{
      //  transition: 'background-color 0.3s',
-     //  backgroundColor: themeMode === KEY.LIGHT ? (active ? `linear-gradient(to bottom, ${theme.palette.howick.midBlue}, ${theme.palette.howick.blue}) 1` : 'transparent') : active && 'howick.orange',
+     backgroundColor: 'transparent',
      '& .MuiTypography-root': {
       color: themeMode === KEY.LIGHT ? (active ? 'common.white' : 'grey.900') : active && 'common.black',
       fontWeight: active ? 'bold' : 'normal',
