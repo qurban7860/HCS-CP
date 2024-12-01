@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
 import { getLogTotalGraphData, resetLogsTotalGraphData } from 'store/slice'
 import { ERPProductionTotal } from 'section/log'
-import { Grid, Autocomplete, TextField } from '@mui/material'
+import { useMediaQuery, useTheme, Grid, Autocomplete, TextField } from '@mui/material'
 import { FormHeader, SkeletonGraphLoader } from 'component'
 import { GStyledSpanBox, GStyledLoadingButton } from 'theme/style'
 import { GLOBAL } from 'config'
@@ -23,6 +23,8 @@ const ProductionTotalGraphWidget = ({ selectedMachine, setSelectedMachine }) => 
 
  const isMounted = useRef(false)
  const { themeMode } = useSettingContext()
+ const theme = useTheme()
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
  const isMobile = useResponsive('down', 'sm')
 
  useLayoutEffect(() => {
@@ -103,7 +105,7 @@ const ProductionTotalGraphWidget = ({ selectedMachine, setSelectedMachine }) => 
        </Grid>
        <Grid item xs={12} sm={6}>
         <Grid container justifyContent={FLEX.FLEX_END}>
-         <GStyledLoadingButton mode={themeMode} fullWidth={isMobile} isLoading={isLoading} onClick={handleRefresh} variant='contained' size='large'>
+         <GStyledLoadingButton mode={themeMode} fullWidth={isMobile} isLoading={isLoading} onClick={handleRefresh} variant='filled' size='large'>
           <Icon icon={ICON_NAME.REFRESH} />
          </GStyledLoadingButton>
         </Grid>

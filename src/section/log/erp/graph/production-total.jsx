@@ -5,7 +5,7 @@ import { t } from 'i18next'
 import { dispatch } from 'store'
 import { useSettingContext } from 'hook'
 import { resetLogsGraphData } from 'store/slice'
-import { Typography, Card, Grid, Box } from '@mui/material'
+import { useMediaQuery, Typography, Card, Grid, Box } from '@mui/material'
 import { LogStackedChart, HowickLoader } from 'component'
 import { useTheme } from '@mui/material/styles'
 import { getTimePeriodDesc } from 'section/log'
@@ -18,6 +18,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
 
  const { themeMode } = useSettingContext()
  const theme = useTheme()
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
  useEffect(() => {
   if (!isDashboard) dispatch(resetLogsGraphData())
@@ -127,12 +128,14 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
  return (
   <Grid item xs={12} sm={12} md={12} lg={10} xl={isDashboard ? 12 : 6} sx={{ mt: 3 }}>
    <GStyledSpanBox alignItems={KEY.CENTER} my={2} sx={{ display: FLEX.FLEX, justifyContent: FLEX.SPACE_BETWEEN }}>
-    <Typography variant={TYPOGRAPHY.H4} gutterBottom>
-     {t('production.production_total.label').toUpperCase()}
-    </Typography>
+    {isDesktop && (
+     <Typography variant={isDesktop ? TYPOGRAPHY.H4 : TYPOGRAPHY.OVERLINE} gutterBottom>
+      {t('production.production_total.label').toUpperCase()}
+     </Typography>
+    )}
     &nbsp;
     <Box>
-     <Typography variant={isDashboard ? TYPOGRAPHY.H6 : TYPOGRAPHY.H4} p={0}>
+     <Typography variant={isDashboard ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.H4} p={0}>
       {getTimePeriodDesc(timePeriod).toUpperCase()}
      </Typography>
     </Box>
