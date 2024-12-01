@@ -171,14 +171,14 @@ export const GStyledSiteCard = styled(({ theme, selectedCardId, s, mode, ...othe
  justifyContent: 'space-between',
  alignItems: 'center',
  padding: theme.spacing(1),
- marginBottom: selectedCardId === s._id ? theme.spacing(2) : theme.spacing(0),
+ marginTop: selectedCardId === s._id ? theme.spacing(2) : theme.spacing(0),
  width: '300px',
  cursor: 'pointer',
  borderBottom: selectedCardId === s._id && `9px solid ${mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}`,
  backgroundColor: selectedCardId === s._id ? (mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.howick.darkGrey) : mode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[800],
  '&:hover': {
   backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.howick.darkGrey,
-  marginBottom: theme.spacing(2)
+  marginTop: theme.spacing(2)
  },
  transition: 'ease-in-out 0.2s'
 }))
