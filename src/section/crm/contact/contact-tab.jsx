@@ -83,17 +83,17 @@ const ContactTab = () => {
 
  return (
   <Fragment>
-   <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
-    <Grid item xs={12} md={3} sx={{ height: contacts?.length >= 5 ? '600px' : 'auto', overflow: KEY.AUTO, scrollBehavior: 'smooth' }}>
-     <Grid container mb={2}>
-      <Grid item lg={12} sm={12} mb={2}>
+   <Grid container columnSpacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+    <Grid item xs={12} md={3}>
+     <Grid container gap={2}>
+      <Grid item xs={12} md={12}>
        {contacts.length >= 5 && (
-        <Grid item sm={12} pb={2}>
+        <Grid item xs={12}>
          <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
         </Grid>
        )}
        <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={contacts?.length}>
-        <Grid container p={1}>
+        <Grid container gap={2} p={1} height={isDesktop ? 100 : 'auto'}>
          {renderContent()}
         </Grid>
        </GStyledScrollableHeightLockGrid>
@@ -102,7 +102,7 @@ const ContactTab = () => {
     </Grid>
 
     <Grid item xs={12} md={9}>
-     <CommonFieldsCard defaultValues={defaultValues} fieldsConfig={fieldsContactConfig} isLoading={isLoading} />
+     <CommonFieldsCard defaultValues={defaultValues} fieldsConfig={fieldsContactConfig} isLoading={isLoading} withStatusIcon />
     </Grid>
    </Grid>
    <AuditBox value={defaultValues} />
