@@ -57,9 +57,9 @@ const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, han
   <Box mb={2}>
    <Card {...GCardOption(themeMode)}>
     <GStyledTopBorderDivider mode={themeMode} />
-    <Grid container p={1.5}>
+    <Grid container spacing={1} px={1.5}>
      {withStatusIcon && (
-      <Grid item xs={12} sm={12}>
+      <Grid item xs={12} sm={12} mt={1.5}>
        <GStyledSpanBox justifyContent={FLEX.FLEX_END}>
         {defaultValues?.isActive ? (
          <IconTooltip
@@ -79,7 +79,7 @@ const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, han
 
      <GridViewTitle title={t(i18nKey)} />
      <Grid item lg={12} sm={12}>
-      <Grid container spacing={2} p={2} pb={5}>
+      <Grid container spacing={2} p={1} pb={5}>
        {isChildren ? children : renderFields(fieldsConfig)}
       </Grid>
      </Grid>
