@@ -17,6 +17,7 @@ export { default as useContactDefaultValues } from './contact/default-values/def
 // :site
 export { default as SiteTab } from './site/site-tab'
 export { default as useSiteDefaultValues } from './site/default-values/default-values'
+export * from './site/site-fields-config'
 
 // :support
 export { default as TicketsTab } from './support/tickets-tab'
