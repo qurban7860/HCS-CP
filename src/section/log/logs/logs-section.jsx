@@ -2,12 +2,12 @@ import { Fragment, useEffect, useState, memo, useLayoutEffect, useCallback, useM
 import PropTypes from 'prop-types'
 import axios from 'axios'
 import _ from 'lodash'
+import { t } from 'i18next'
 import { useSearchParams } from 'react-router-dom'
 import { Icon, ICON_NAME, useResponsive, useSettingContext } from 'hook'
 import { useSelector, dispatch } from 'store'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
-import { useAuthContext } from 'auth'
 import { getCustomers, getLogGraphData, getLogs, ChangeLogPage, resetLogsGraphData, resetLogs, getCustomerMachines, resetCustomerMachines } from 'store/slice'
 import { useTheme, Grid, Button, Typography } from '@mui/material'
 import { HowickLoader, MotionLazyContainer, TableTitleBox } from 'component'
@@ -190,7 +190,7 @@ const LogsSection = ({ isArchived }) => {
   <Fragment>
    <MotionLazyContainer display={FLEX.FLEX}>
     <Grid container sx={{ display: 'flex', justifyContent: FLEX.SPACE_BETWEEN }}>
-     <TableTitleBox title={'Logs'} />
+     <TableTitleBox title={t('log.logs.label')} />
      <Button
       size='small'
       startIcon={<Icon icon={pageType === 'graph' ? ICON_NAME.LIST : ICON_NAME.GRAPH} sx={{ mr: 0.3 }} />}
