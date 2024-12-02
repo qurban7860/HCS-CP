@@ -74,6 +74,9 @@ const en = {
  change_password: {
   label: `Change Password`
  },
+ clear: {
+  label: `Clear`
+ },
  close: {
   label: `Close`
  },
