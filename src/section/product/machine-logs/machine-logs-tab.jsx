@@ -110,25 +110,23 @@ const MachineLogsTab = () => {
 
  return (
   <Fragment>
-   <MotionLazyContainer display={FLEX.FLEX}>
-    <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
-     <Grid container spacing={2} mt={3}>
-      <Grid item xs={12} sm={12}>
-       <LogsTableController
-        customers={customers}
-        handleCustomerChange={handleCustomerChange}
-        customerMachines={customerMachines}
-        handleMachineChange={handleMachineChange}
-        handleLogTypeChange={handleLogTypeChange}
-        isGraphPage={isGraphPage}
-        methods={methods}
-        onGetLogs={onGetLogs}
-       />
-      </Grid>
+   <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
+    <Grid container spacing={2}>
+     <Grid item xs={12} md={12}>
+      <LogsTableController
+       customers={customers}
+       handleCustomerChange={handleCustomerChange}
+       customerMachines={customerMachines}
+       handleMachineChange={handleMachineChange}
+       handleLogTypeChange={handleLogTypeChange}
+       isGraphPage={isGraphPage}
+       methods={methods}
+       onGetLogs={onGetLogs}
+      />
      </Grid>
-    </FormProvider>
-    <MachineLogsTable isLogsPage={false} logType={logType} payload={payload} />
-   </MotionLazyContainer>
+    </Grid>
+   </FormProvider>
+   <MachineLogsTable isLogsPage={false} logType={logType} payload={payload} />
   </Fragment>
  )
 }

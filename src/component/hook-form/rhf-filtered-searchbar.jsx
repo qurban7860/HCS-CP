@@ -43,6 +43,52 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
    control={control}
    render={({ field, fieldState: { error: fieldError } }) => (
     <Stack spacing={0}>
+     {isMobile && (
+      <Select
+       value={selectedFilter}
+       onChange={e => {
+        dispatch(setSelectedFilter(e.target.value))
+        setError('')
+       }}
+       displayEmpty
+       size={size}
+       fullWidth
+       sx={{
+        minWidth: '100%',
+        '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
+        '&:hover .MuiOutlinedInput-notchedOutline': { border: 'none' },
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { border: 'none' },
+        boxShadow: 'none',
+        borderBottom: '2px solid',
+        borderColor: 'divider',
+        marginBottom: 1,
+        color: selectedFilter === '' ? 'text.secondary' : 'text.primary'
+       }}
+       MenuProps={{
+        PaperProps: {
+         sx: {
+          maxHeight: 300,
+          overflowY: 'auto',
+          '& .MuiMenuItem-root': {
+           '&.Mui-selected': {
+            color: theme.palette.common.black,
+            fontWeight: 'bold',
+            backgroundColor: 'howick.orange'
+           }
+          }
+         }
+        }
+       }}>
+       <MenuItem dense value='' disabled sx={{ color: 'text.secondary' }}>
+        {placeholder || 'Select Filter'}
+       </MenuItem>
+       {filterOptions.map(option => (
+        <MenuItem key={option.id} value={option.id}>
+         {option.label}
+        </MenuItem>
+       ))}
+      </Select>
+     )}
      <TextField
       {...field}
       fullWidth
@@ -52,19 +98,14 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
       label={t('search.label')}
       disabled={!selectedFilter}
       sx={{
-       flexDirection: isMobile ? 'column' : 'row',
        '& .MuiInputBase-root': {
-        flexDirection: isMobile ? 'column' : 'row'
+        flexDirection: isMobile ? 'row' : 'row'
        },
        '& .MuiInputBase-input::placeholder': {
         color: 'text.secondary'
        },
-       '& .MuiInputAdornment-root': {
-        marginTop: isMobile ? 0 : 'auto',
-        marginBottom: isMobile ? 1 : 'auto'
-       },
        '& .MuiInputBase-input': {
-        paddingLeft: isMobile ? '14px' : 'inherit'
+        paddingLeft: isMobile ? 1 : 'inherit'
        },
        '& .Mui-disabled .MuiOutlinedInput-notchedOutline': {
         borderColor: themeMode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[500]
@@ -75,63 +116,69 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
       }}
       {...other}
       InputProps={{
-       startAdornment: (
-        <InputAdornment position='start' sx={{ mr: 0, ml: 0, height: '100%', width: isMobile ? '100%' : 'auto' }}>
-         <Select
-          value={selectedFilter}
-          onChange={e => {
-           dispatch(setSelectedFilter(e.target.value))
-           setError('')
-          }}
-          displayEmpty
-          size={size}
-          sx={{
-           minWidth: isMobile ? '100%' : 120,
-           '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
-           '&:hover .MuiOutlinedInput-notchedOutline': { border: 'none' },
-           '&.Mui-focused .MuiOutlinedInput-notchedOutline': { border: 'none' },
-           '& .MuiSelect-select': {
-            paddingRight: isMobile ? 'unset' : 0,
-            paddingLeft: isMobile ? 4.5 : 0,
-            paddingTop: isMobile ? undefined : 0,
-            paddingBottom: isMobile ? 'unset' : 0
-           },
-           boxShadow: 'none',
-           borderRight: isMobile ? 'none' : '2px solid',
-           borderBottom: isMobile ? '2px solid' : 'none',
-           borderRadius: 0,
-           borderColor: 'divider',
-           paddingRight: 1,
-           marginRight: 1,
-           color: selectedFilter === '' ? 'text.secondary' : 'text.primary'
-          }}
-          MenuProps={{
-           PaperProps: {
-            sx: {
-             marginTop: 2,
-             marginLeft: isMobile ? 0 : '-8px',
-             width: isMobile ? '100%' : 'auto',
-             maxHeight: 300,
-             overflowY: 'auto'
+       ...(!isMobile && {
+        startAdornment: (
+         <InputAdornment position='start' sx={{ mr: 1, ml: 0, height: '100%', width: isMobile ? '100%' : 'auto' }}>
+          <Select
+           value={selectedFilter}
+           onChange={e => {
+            dispatch(setSelectedFilter(e.target.value))
+            setError('')
+           }}
+           displayEmpty
+           size={size}
+           sx={{
+            minWidth: isMobile ? '100%' : 120,
+            '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
+            '&:hover .MuiOutlinedInput-notchedOutline': { border: 'none' },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': { border: 'none' },
+            '& .MuiSelect-select': {
+             paddingRight: isMobile ? 'unset' : 0,
+             paddingLeft: isMobile ? 4.5 : 0,
+             paddingTop: isMobile ? undefined : 0,
+             paddingBottom: isMobile ? 'unset' : 0
+            },
+            boxShadow: 'none',
+            borderRight: isMobile ? 'none' : '2px solid',
+            borderBottom: isMobile ? '2px solid' : 'none',
+            borderRadius: 0,
+            borderColor: 'divider',
+            //    paddingRight: 1,
+            marginRight: 1,
+            color: selectedFilter === '' ? 'text.secondary' : 'text.primary'
+           }}
+           MenuProps={{
+            PaperProps: {
+             sx: {
+              width: 'auto',
+              maxHeight: 300,
+              overflowY: 'auto',
+              '& .MuiMenuItem-root': {
+               '&.Mui-selected': {
+                color: theme.palette.common.black,
+                fontWeight: 'bold',
+                backgroundColor: 'howick.orange'
+               }
+              }
+             }
             }
-           }
-          }}>
-          <MenuItem dense value='' disabled sx={{ color: 'text.secondary' }}>
-           {t('select_filter.label')}
-          </MenuItem>
-          {filterOptions?.map(option => (
-           <MenuItem key={option?.id} value={option?.id}>
-            {option.label}
+           }}>
+           <MenuItem dense value='' disabled sx={{ color: 'text.secondary' }}>
+            {t('select_filter.label')}
            </MenuItem>
-          ))}
-         </Select>
-         <Icon icon={ICON_NAME.SEARCH} sx={{ color: 'text.disabled', mr: 1 }} />
-        </InputAdornment>
-       ),
+           {filterOptions?.map(option => (
+            <MenuItem key={option?.id} value={option?.id}>
+             {option.label}
+            </MenuItem>
+           ))}
+          </Select>
+         </InputAdornment>
+        )
+       }),
        endAdornment: searchKey?.length > 0 && (
-        <InputAdornment position='end'>
-         <Button fullWidth onClick={clearSearchKey} color='error' size='small' startIcon={<Icon icon={ICON_NAME.TRASH} />}>
-          {BUTTON.CLEAR}
+        <InputAdornment position={KEY.END}>
+         <Button onClick={clearSearchKey} color='error' size='small' startIcon={<Icon icon={ICON_NAME.TRASH} />}>
+          {t('clear.label')}
          </Button>
         </InputAdornment>
        )
@@ -139,7 +186,7 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
      />
      <Box sx={{ minHeight: '20px' }}>
       {(fieldError || error || helperText) && (
-       <Typography variant='caption' color='text.disabled' sx={{ marginLeft: 1 }}>
+       <Typography variant={TYPOGRAPHY.CAPTION} color='text.disabled' sx={{ marginLeft: 1 }}>
         {fieldError ? fieldError.message : error || helperText}
        </Typography>
       )}

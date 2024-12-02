@@ -121,7 +121,7 @@ const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData, i
  const chartData = processGraphData()
 
  return (
-  <Grid item xs={12} sm={12} md={12} lg={10} xl={isDashboard ? 12 : 6} sx={{ mt: 3 }}>
+  <Grid item xs={12} sm={12} md={12} xl={isDashboard ? 12 : 6} sx={{ mt: 3 }}>
    <GStyledSpanBox alignItems={'center'} my={2} sx={{ display: 'flex', justifyContent: FLEX.SPACE_BETWEEN }}>
     {isDesktop && (
      <Typography variant={TYPOGRAPHY.H4} gutterBottom>
