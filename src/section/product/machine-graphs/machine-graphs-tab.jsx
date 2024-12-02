@@ -140,33 +140,31 @@ const MachineGraphsTab = () => {
 
  return (
   <Fragment>
-   <MotionLazyContainer display={FLEX.FLEX}>
-    <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
-     <Grid container spacing={2} mt={3}>
-      <Grid item xs={12} sm={12}>
-       <LogsTableController
-        customers={customers}
-        handleCustomerChange={handleCustomerChange}
-        customerMachines={customerMachines}
-        handleMachineChange={handleMachineChange}
-        handleLogTypeChange={handleLogTypeChange}
-        handlePeriodChange={handlePeriodChange}
-        setSelectedFilter={setSelectedSearchFilter}
-        isGraphPage={() => true}
-        methods={methods}
-        onGetLogs={onGetLogs}
-       />
-      </Grid>
+   <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
+    <Grid container spacing={2} mt={3}>
+     <Grid item xs={12} sm={12}>
+      <LogsTableController
+       customers={customers}
+       handleCustomerChange={handleCustomerChange}
+       customerMachines={customerMachines}
+       handleMachineChange={handleMachineChange}
+       handleLogTypeChange={handleLogTypeChange}
+       handlePeriodChange={handlePeriodChange}
+       setSelectedFilter={setSelectedSearchFilter}
+       isGraphPage={() => true}
+       methods={methods}
+       onGetLogs={onGetLogs}
+      />
      </Grid>
-    </FormProvider>
-    {isLoading ? (
-     <HowickLoader height={300} width={303} mode={themeMode} />
-    ) : logGraphType.key === 'production_total' ? (
-     <ERPProductionTotal timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} />
-    ) : (
-     <ERPProductionRate timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} />
-    )}
-   </MotionLazyContainer>
+    </Grid>
+   </FormProvider>
+   {isLoading ? (
+    <HowickLoader height={300} width={303} mode={themeMode} />
+   ) : logGraphType.key === 'production_total' ? (
+    <ERPProductionTotal timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard />
+   ) : (
+    <ERPProductionRate timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard />
+   )}
   </Fragment>
  )
 }
