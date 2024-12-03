@@ -19,7 +19,7 @@ import {
 } from 'store/slice'
 import { TicketsTable, TicketsTableHeader, TicketsListPagination, TicketCard, useTicketsDefaultValues } from 'section/support'
 import { Table, Grid, TableContainer, Typography } from '@mui/material'
-import { TableNoData, MotionLazyContainer, SkeletonTable, SearchBox, TableTitleBox, HowickLoader, SupportTicketDialog } from 'component'
+import { TableNoData, SkeletonTable, SearchBox, TableTitleBox, HowickLoader, SupportTicketDialog } from 'component'
 import { GStyledTableHeaderBox } from 'theme/style'
 import { GLOBAL } from 'config/global'
 import { MARGIN, TABLE } from 'config'
@@ -114,77 +114,75 @@ const TicketsListSection = () => {
 
  return (
   <Fragment>
-   <MotionLazyContainer display={FLEX.FLEX}>
-    <TableTitleBox title={t('support_tickets.label')} user={securityUser} />
-    <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} onReload={onRefresh} />
-    {isMobile ? (
-     <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
-      <Grid item xs={12} sm={12}>
-       <Grid container mb={2}>
-        <Grid item xs={12} sm={12} mb={2} bgcolor='transparent'>
-         <Grid container p={1}>
-          {!isLoading ? (
-           filteredData?.length > 0 ? (
-            defaultValues.map((cticket, index) => (
-             <TicketCard
-              key={index}
-              selectedCardId={selectedCustomerTicketCard || index}
-              ticket={cticket}
-              handleSelected={handleSelectedCard}
-              handleTicketCard={handleCustomerTicketCard}
-              handleTicketInNewTabCard={handleCustomerTicketInNewTabCard}
-             />
-            ))
-           ) : (
-            <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
-             <Trans i18nKey='no_found.label' values={{ value: 'Ticket' }} />
-            </Typography>
-           )
+   <TableTitleBox title={t('support_tickets.label')} user={securityUser} />
+   <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} onReload={onRefresh} />
+   {isMobile ? (
+    <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+     <Grid item xs={12} sm={12}>
+      <Grid container mb={2}>
+       <Grid item xs={12} sm={12} mb={2} bgcolor='transparent'>
+        <Grid container p={1}>
+         {!isLoading ? (
+          filteredData?.length > 0 ? (
+           defaultValues.map((cticket, index) => (
+            <TicketCard
+             key={index}
+             selectedCardId={selectedCustomerTicketCard || index}
+             ticket={cticket}
+             handleSelected={handleSelectedCard}
+             handleTicketCard={handleCustomerTicketCard}
+             handleTicketInNewTabCard={handleCustomerTicketInNewTabCard}
+            />
+           ))
           ) : (
-           <Grid item xs={12} sm={12}>
-            <HowickLoader mode={themeMode} />
-           </Grid>
-          )}
-         </Grid>
+           <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
+            <Trans i18nKey='no_found.label' values={{ value: 'Ticket' }} />
+           </Typography>
+          )
+         ) : (
+          <Grid item xs={12} sm={12}>
+           <HowickLoader mode={themeMode} />
+          </Grid>
+         )}
         </Grid>
        </Grid>
       </Grid>
      </Grid>
-    ) : (
-     <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
-      <Grid item xs={12} sm={12}>
-       <Grid container mb={2}>
-        <Grid item xs={12} sm={12} mb={2} bgcolor='background.paper'>
-         <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
-         <TicketsListPagination
-          mode={themeMode}
-          data={filteredData}
-          page={customerTicketPage}
-          rowsPerPage={customerTicketRowsPerPage}
-          handleChangePage={handleChangePage}
-          handleChangeRowsPerPage={handleChangeRowsPerPage}
-         />
-         <TableContainer>
-          <Table>
-           <TicketsTableHeader mode={themeMode} />
-           {(isLoading ? [...Array(customerTicketRowsPerPage)] : filteredData)
-            .slice(customerTicketPage * customerTicketRowsPerPage, customerTicketPage * customerTicketRowsPerPage + customerTicketRowsPerPage)
-            .map((row, index) =>
-             row ? (
-              <TicketsTable key={row.key} handleCustomerTicket={handleCustomerTicketCard} ticket={row} mode={themeMode} index={index} />
-             ) : (
-              !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />
-             )
-            )}
-           <TableNoData isNotFound={isNotFound} />
-          </Table>
-         </TableContainer>
-        </Grid>
+    </Grid>
+   ) : (
+    <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+     <Grid item xs={12} sm={12}>
+      <Grid container mb={2}>
+       <Grid item xs={12} sm={12} mb={2} bgcolor='background.paper'>
+        <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
+        <TicketsListPagination
+         mode={themeMode}
+         data={filteredData}
+         page={customerTicketPage}
+         rowsPerPage={customerTicketRowsPerPage}
+         handleChangePage={handleChangePage}
+         handleChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+        <TableContainer>
+         <Table>
+          <TicketsTableHeader mode={themeMode} />
+          {(isLoading ? [...Array(customerTicketRowsPerPage)] : filteredData)
+           .slice(customerTicketPage * customerTicketRowsPerPage, customerTicketPage * customerTicketRowsPerPage + customerTicketRowsPerPage)
+           .map((row, index) =>
+            row ? (
+             <TicketsTable key={row.key} handleCustomerTicket={handleCustomerTicketCard} ticket={row} mode={themeMode} index={index} />
+            ) : (
+             !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />
+            )
+           )}
+          <TableNoData isNotFound={isNotFound} />
+         </Table>
+        </TableContainer>
        </Grid>
       </Grid>
      </Grid>
-    )}
-   </MotionLazyContainer>
+    </Grid>
+   )}
    {customerTickets && <SupportTicketDialog />}
   </Fragment>
  )

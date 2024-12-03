@@ -9,14 +9,14 @@ import { TYPOGRAPHY, KEY, FLEX, SIZE } from 'constant'
 import { normalizer } from 'util/format'
 import { truncate } from 'util'
 
-const TicketCard = ({ selectedCardId, handleSelected, handleTicketCard, handleTicketInNewTabCard, ticket }) => {
+const TicketCard = ({ selectedCardId, handleSelected, handleTicketCard, handleTicketInNewTabCard, ticket, isMachinePage }) => {
  const theme = useTheme()
  const { themeMode } = useSettingContext()
 
  return (
   <GStyledSupportListCard onClick={event => handleSelected(event, ticket?.key)} selectedCardId={selectedCardId} value={ticket} mode={themeMode}>
    <Grid item xs={9}>
-    <Box height={70}>
+    <Box height={isMachinePage ? 60 : 80}>
      <GStyledListItemText
       primary={
        ticket && (
@@ -40,9 +40,11 @@ const TicketCard = ({ selectedCardId, handleSelected, handleTicketCard, handleTi
        )
       }
       secondary={
-       <Typography variant={TYPOGRAPHY.BODY2} color='text.secondary'>
-        {ticket?.machineSerialNo}
-       </Typography>
+       !isMachinePage && (
+        <Typography variant={TYPOGRAPHY.BODY2} color='text.secondary'>
+         {ticket?.machineSerialNo}
+        </Typography>
+       )
       }
      />
      <Typography variant={TYPOGRAPHY.CAPTION} color='text.secondary'>
@@ -64,6 +66,7 @@ TicketCard.propTypes = {
  value: PropTypes.any,
  contact: PropTypes.any,
  ticket: PropTypes.any,
+ isMachinePage: PropTypes.bool,
  handleSelected: PropTypes.func,
  handleTicketCard: PropTypes.func,
  handleTicketInNewTabCard: PropTypes.func
