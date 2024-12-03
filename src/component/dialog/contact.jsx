@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import { t } from 'i18next'
 import PropTypes from 'prop-types'
 import { dispatch, useSelector } from 'store'
 import { useNavigate } from 'react-router-dom'
@@ -8,9 +9,9 @@ import { PATH_CUSTOMER } from 'route/path'
 import { setContactDialog, resetSelectedContactCard, setSelectedContactCard, setFromDialog, getContact } from 'store/slice'
 import { ICON_NAME } from 'hook'
 import { useContactDefaultValues } from 'section/crm'
-import { Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
+import { useMediaQuery, Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledSpanBox } from 'theme/style'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton } from 'theme/style'
 import { GridViewField, GridViewTitle, IconTooltip, Button } from 'component'
 import { VIEW_FORM, TITLE, TYPOGRAPHY, FLEX, LABEL, KEY, FLEX_DIR, BUTTON } from 'constant'
 
@@ -22,6 +23,7 @@ const ContactDialog = ({ contact }) => {
  const customerId = user?.customer
  const { themeMode } = useSettingContext()
  const theme = useTheme()
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
  const navigate = useNavigate()
 
  const defaultValues = useContactDefaultValues(contact, customer)
@@ -41,12 +43,17 @@ const ContactDialog = ({ contact }) => {
  return (
   <Dialog disableEnforceFocus maxWidth={KEY.LG} open={contactDialog} onClose={handleDialog} aria-describedby='alert-dialog-slide-description'>
    <GStyledTopBorderDivider mode={themeMode} />
-   <DialogTitle>
+   <DialogTitle
+    sx={{
+     width: '100%',
+     boxSizing: 'border-box',
+     padding: theme.spacing(2)
+    }}>
     <GStyledSpanBox>
      <Grid container flexDirection={FLEX_DIR.ROW} justifyContent={FLEX.SPACE_BETWEEN}>
       <Grid item sm={6}>
        <GStyledSpanBox>
-        <Typography variant={TYPOGRAPHY.H3}>{defaultValues?.fullName} &nbsp;</Typography>
+        <Typography variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H5}>{defaultValues?.fullName} &nbsp;</Typography>
        </GStyledSpanBox>
       </Grid>
       <Grid item sm={6}>
@@ -130,6 +137,9 @@ const ContactDialog = ({ contact }) => {
 
      <Grid item sm={12}>
       <Grid container justifyContent={FLEX.FLEX_END}>
+       <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog} gap={2}>
+        {t('close.label').toUpperCase()}
+       </GStyledCloseButton>
        <Button label={BUTTON.CONTACT_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleContactOverview} />
       </Grid>
      </Grid>

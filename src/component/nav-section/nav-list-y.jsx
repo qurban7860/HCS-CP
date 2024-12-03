@@ -2,7 +2,6 @@ import { Fragment, useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useLocation } from 'react-router-dom'
 import { useActiveLink, useSettingContext } from 'hook'
-import { useTheme } from '@mui/material/styles'
 import { GStyledPopover } from './style'
 import NavItem from './nav-item'
 import { KEY } from 'constant'
@@ -20,7 +19,6 @@ function NavListY({ data, depth, hasChild, handleCloseNavItem }) {
  const { themeMode } = useSettingContext()
  const { pathname } = useLocation()
  const { active, isExternalLink } = useActiveLink(data.path)
- const theme = useTheme()
 
  useEffect(() => {
   if (open) {
@@ -72,7 +70,9 @@ function NavListY({ data, depth, hasChild, handleCloseNavItem }) {
       color: themeMode === KEY.LIGHT ? (active ? 'common.white' : 'grey.900') : active && 'common.black',
       fontWeight: active ? 'bold' : 'normal',
       '&:hover': {
-       color: themeMode === KEY.LIGHT ? 'common.black' : 'common.white'
+       color: themeMode === KEY.LIGHT ? 'grey.500' : 'grey.700',
+       scale: 0.9,
+       transition: 'ease-in-out 0.2s'
       }
      }
     }}

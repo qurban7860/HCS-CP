@@ -2,15 +2,17 @@ import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import { useSettingContext, ICON_NAME } from 'hook'
-import { useTheme, Box, Grid, Link } from '@mui/material'
+import { useTheme, useMediaQuery, Typography, Box, Divider, Grid, Link } from '@mui/material'
 import { GridViewField, GridViewTitle, IconTooltip } from 'component'
 import { GStyledSpanBox } from 'theme/style'
-import { KEY, FLEX } from 'constant'
+import { KEY, FLEX, VARIANT, TYPOGRAPHY } from 'constant'
 import { truncate } from 'util'
+import { parseArrDesc } from 'util/parse-arr-desc'
 
 const CommonFieldsContainer = ({ defaultValues, fieldsConfig, i18nKey, isLoading, handleDialog, isChildren, children, withStatusIcon }) => {
  const { themeMode } = useSettingContext()
  const theme = useTheme()
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
  let content = null
  let additionalProps = null
 
@@ -24,6 +26,26 @@ const CommonFieldsContainer = ({ defaultValues, fieldsConfig, i18nKey, isLoading
         <Grid item xs={12} sm={12} key={field.key}>
          <GridViewTitle title={t(field.title)} />
         </Grid>
+       )
+      case 'titleWithDividers':
+       return (
+        <Grid item xs={12} sm={12} key={field.key}>
+         <GridViewTitle title={t(field.title)} />
+         <Divider variant={VARIANT.MIDDLE} style={{ width: '100%', marginBottom: 5 }} />
+        </Grid>
+       )
+      case 'supportDescription':
+       return (
+        <Box m={2} width={'100%'}>
+         <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={theme.palette.grey[600]}>
+          {t('description.label')}
+         </Typography>
+         <Grid container my={2}>
+          <Grid item xs={12} md={12}>
+           <Typography variant={isDesktop ? TYPOGRAPHY.BODY1 : TYPOGRAPHY.BODY2}>{parseArrDesc(field.value(defaultValues))}</Typography>
+          </Grid>
+         </Grid>
+        </Box>
        )
       case 'link':
        additionalProps = field.additionalProps ? field.additionalProps(defaultValues, handleDialog, themeMode) : {}

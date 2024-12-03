@@ -8,7 +8,7 @@ import { ChangePasswordSchema } from 'schema'
 import { Dialog, DialogContent, DialogTitle, Divider, DialogActions, Box, Typography, Grid } from '@mui/material'
 import { RHFTextField, RHFPasswordField } from 'component'
 import FormProvider from 'component/hook-form'
-import { GStyledTopBorderDivider, GStyledSpanBox, GStyledLoadingButton, GBackdropPropsOption } from 'theme/style'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledLoadingButton, GBackdropPropsOption, GStyledCloseButton } from 'theme/style'
 import { TYPOGRAPHY, FLEX, SIZE, KEY } from 'constant'
 
 function ChangePasswordDialog() {
@@ -84,9 +84,7 @@ function ChangePasswordDialog() {
     </DialogContent>
     <DialogActions>
      <Grid container justifyContent={FLEX.FLEX_END} gap={2} pb={1}>
-      <GStyledLoadingButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleChangePasswordDialog}>
-       {t('close.label').toUpperCase()}
-      </GStyledLoadingButton>
+      <GStyledCloseButton onClick={handleChangePasswordDialog}>{t('close.label').toUpperCase()}</GStyledCloseButton>
       <GStyledLoadingButton className='portal-button' isLoading={isSubmitting} size={SIZE.LARGE} type={KEY.SUBMIT} mode={themeMode} variant={KEY.CONTAINED} loading={isSubmitting}>
        {t('change_password.label').toUpperCase()}
       </GStyledLoadingButton>

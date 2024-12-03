@@ -1,14 +1,12 @@
 import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
-import { useSettingContext, ICON_NAME, useResponsive } from 'hook'
-import { Tag, Flex } from 'antd'
-import { useMediaQuery, Grid, Typography, ListItemText } from '@mui/material'
+import { useSettingContext, ICON_NAME } from 'hook'
+import { useMediaQuery, Grid } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledHeaderCardContainer, GStyledTopBorderDivider, GStyledSpanBox, GStyledListItemText, GStyledMiniChip } from 'theme/style'
-import { SvgFlagIcon, IconTooltip, ViewFormField, BadgeCardMedia, GridViewField } from 'component'
-import { KEY, TYPOGRAPHY, LABEL, FLEX, FLEX_DIR, SIZE } from 'constant'
-import { truncate } from 'util'
+import { GStyledHeaderCardContainer, GStyledTopBorderDivider, GStyledSpanBox } from 'theme/style'
+import { SvgFlagIcon, IconTooltip, BadgeCardMedia, TitleListItemText } from 'component'
+import { KEY, LABEL, FLEX, FLEX_DIR } from 'constant'
 
 const HomeNav = ({ value, isLoading }) => {
  const { themeMode } = useSettingContext()
@@ -51,42 +49,18 @@ const HomeNav = ({ value, isLoading }) => {
       <Grid item xs={8} md={8} display={FLEX.FLEX} alignItems={KEY.CENTER} mt={2}>
        <GStyledSpanBox gap={1} mb={1}>
         <BadgeCardMedia />
-        <ListItemText
-         primary={
-          <Typography color={themeMode === KEY.LIGHT ? 'common.black' : 'common.white'} variant={isMobile ? TYPOGRAPHY.H5 : TYPOGRAPHY.H4}>
-           {truncate(value?.name, 50)}
-          </Typography>
-         }
-         secondary={
-          <Grid
-           container
-           sx={{
-            height: 20,
-            flexWrap: 'wrap',
-            overflow: 'auto'
-           }}>
-           {value?.tradingName &&
-            value?.tradingName?.slice(0, 3)?.map((item, index) => (
-             <Typography key={index} color={theme.palette.grey[500]} variant={isDesktop ? TYPOGRAPHY.OVERLINE1 : TYPOGRAPHY.OVERLINE_MINI} mx={0.5}>
-              {item}
-             </Typography>
-            ))}
-          </Grid>
-         }
-        />
+        <TitleListItemText truncatedName={value?.name} tradingAliases={value?.tradingName} />
        </GStyledSpanBox>
       </Grid>
       <Grid item xs={4} sm={4} display={FLEX.FLEX} justifyContent={FLEX.FLEX_END}>
        {renderStatusIcons()}
       </Grid>
       <Grid container p={2} display={FLEX.FLEX} justifyContent={FLEX_DIR.ROW}>
-       {/* <GridViewField heading={t('trading_name.label')} isLoading={isLoading} chip={value?.tradingName} gridSize={7} isNoBg /> */}
        {!isDesktop && (
         <Grid item xs={5} sm={12}>
          {renderStatusIcons()}
         </Grid>
        )}
-       {/* {isDesktop && <GridViewField heading={t('website.label')} isLoading={isLoading} link={value?.website} gridSize={4} isNoBg />} */}
       </Grid>
      </Grid>
     </Grid>

@@ -26,6 +26,7 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
 
  const { themeMode } = useSettingContext()
  const theme = useTheme()
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
  useEffect(() => {
@@ -62,7 +63,8 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
         borderBottom: '2px solid',
         borderColor: 'divider',
         marginBottom: 1,
-        color: selectedFilter === '' ? 'text.secondary' : 'text.primary'
+        color: selectedFilter === '' ? 'text.secondary' : 'text.primary',
+        typography: theme.typography.body2
        }}
        MenuProps={{
         PaperProps: {
@@ -74,13 +76,14 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
             color: theme.palette.common.black,
             fontWeight: 'bold',
             backgroundColor: 'howick.orange'
-           }
+           },
+           typography: theme.typography.body2
           }
          }
         }
        }}>
-       <MenuItem dense value='' disabled sx={{ color: 'text.secondary' }}>
-        {placeholder || 'Select Filter'}
+       <MenuItem dense value='' disabled sx={{ color: 'text.secondary', typography: theme.typography.body2 }}>
+        {t('select_filter.label')}
        </MenuItem>
        {filterOptions.map(option => (
         <MenuItem key={option.id} value={option.id}>
@@ -102,10 +105,12 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
         flexDirection: isMobile ? 'row' : 'row'
        },
        '& .MuiInputBase-input::placeholder': {
-        color: 'text.secondary'
+        color: 'text.secondary',
+        typography: isDesktop ? theme.typography.body1 : theme.typography.body2
        },
        '& .MuiInputBase-input': {
-        paddingLeft: isMobile ? 1 : 'inherit'
+        paddingLeft: isMobile ? 1 : 'inherit',
+        typography: isDesktop ? theme.typography.body1 : theme.typography.body2
        },
        '& .Mui-disabled .MuiOutlinedInput-notchedOutline': {
         borderColor: themeMode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[500]
@@ -154,6 +159,7 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
               maxHeight: 300,
               overflowY: 'auto',
               '& .MuiMenuItem-root': {
+               typography: isDesktop ? theme.typography.body1 : theme.typography.body2,
                '&.Mui-selected': {
                 color: theme.palette.common.black,
                 fontWeight: 'bold',

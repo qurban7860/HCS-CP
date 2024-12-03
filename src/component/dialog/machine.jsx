@@ -1,23 +1,24 @@
+import { t } from 'i18next'
 import { useNavigate } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
 import { useSettingContext } from 'hook'
 import { setMachineDialog } from 'store/slice'
-import { ICON_NAME, useIcon, Clock } from 'hook'
+import { ICON_NAME, Clock } from 'hook'
 import { PATH_CUSTOMER, PATH_MACHINE } from 'route/path'
 import { useMachineDefaultValues } from 'section/product'
 import { Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledFlexEndBox, GStyledSpanBox } from 'theme/style'
+import { GStyledTopBorderDivider, GStyledCloseButton, GStyledSpanBox } from 'theme/style'
 import { GridViewField, GridViewTitle, IconTooltip, Button } from 'component'
 import { HowickResources } from 'section/common'
-import { VIEW_FORM, TITLE, TYPOGRAPHY, FLEX, LABEL, KEY, DECOILER_TYPE_ARR, BUTTON, VARIANT, FLEX_DIR } from 'constant'
+import { VIEW_FORM, TITLE, TYPOGRAPHY, FLEX, LABEL, KEY, DECOILER_TYPE_ARR, BUTTON, FLEX_DIR } from 'constant'
 import { truncate } from 'util/truncate'
 
 const MachineDialog = () => {
  const navigate = useNavigate()
  const theme = useTheme()
  const { themeMode } = useSettingContext()
- const { connectedMachineDialog, isLoading, isParent, isDecoiler, machineDialog } = useSelector(state => state.machine)
+ const { connectedMachineDialog, isLoading, machineDialog } = useSelector(state => state.machine)
  const { customer } = useSelector(state => state.customer)
 
  const { MACHINE } = VIEW_FORM
@@ -91,7 +92,6 @@ const MachineDialog = () => {
       <Divider variant={KEY.FULL_WIDTH} style={{ width: '100%', marginX: '20px' }} />
       <GridViewTitle title={TITLE.MACHINE_INFO} />
       <Grid container spacing={1} p={2} pb={1}>
-       {/* <GridViewField heading={VIEW_FORM.NAME} isLoading={isLoading} children={defaultValues?.name} gridSize={12} /> */}
        <GridViewField heading={MACHINE.DEFAULT_PROFILE} isLoading={isLoading}>
         {Array.isArray(defaultValues?.profiles) && defaultValues?.profiles.length > 0 ? defaultValues?.profiles[0]?.flange + 'X' + defaultValues?.profiles[0]?.web : TITLE.NOT_PROVIDED}
        </GridViewField>
@@ -134,7 +134,10 @@ const MachineDialog = () => {
        </Grid>
        <Grid item sm={12}>
         <Grid container justifyContent={FLEX.FLEX_END}>
-         <Grid container justifyContent={FLEX.FLEX_END}>
+         <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
+          <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog}>
+           {t('close.label').toUpperCase()}
+          </GStyledCloseButton>
           <Button label={BUTTON.MACHINE_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleMachineOverview} />
          </Grid>
         </Grid>

@@ -2,11 +2,11 @@ import { Fragment, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import { Icon, ICON_NAME, useSettingContext } from 'hook'
-import { Dialog, DialogActions, DialogContent, DialogTitle, Divider, Typography, Accordion, AccordionSummary, AccordionDetails, Box, Grid } from '@mui/material'
-import { SkeletonLoading, CodeRaw, Button } from 'component'
+import { useMediaQuery, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Typography, Accordion, AccordionSummary, AccordionDetails, Box, Grid } from '@mui/material'
+import { SkeletonLoading, CodeRaw } from 'component'
 import { styled, useTheme } from '@mui/material/styles'
 import { useSelector } from 'react-redux'
-import { GStyledTopBorderDivider, GStyledSpanBox } from 'theme/style'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton } from 'theme/style'
 import { camelCaseNormalizer } from 'util'
 import { TYPOGRAPHY, FLEX, KEY } from 'constant'
 
@@ -24,6 +24,7 @@ function LogDetailsDialog({ logDetails, open, setOpenLogDetailsDialog, component
  const { themeMode } = useSettingContext()
  const theme = useTheme()
 
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
  useEffect(() => {
   if (logDetails) {
    const formattedLog = formatMachineLogToShow(logDetails)
@@ -57,8 +58,8 @@ function LogDetailsDialog({ logDetails, open, setOpenLogDetailsDialog, component
       sx={{
        justifyContent: FLEX.FLEX_START
       }}>
-      <Typography variant={TYPOGRAPHY.H3}>{componentTitle?.date} &nbsp;</Typography>
-      <Typography variant={TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.howick.bronze}>
+      <Typography variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H5}>{componentTitle?.date} &nbsp;</Typography>
+      <Typography variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H5} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.bronze}>
        {componentTitle?.componentLabel}
       </Typography>
      </GStyledSpanBox>
@@ -66,8 +67,10 @@ function LogDetailsDialog({ logDetails, open, setOpenLogDetailsDialog, component
     <Divider orientation='horizontal' flexItem sx={{ mb: 2 }} />
     <DialogContent>{renderDialogContent()}</DialogContent>
     <DialogActions>
-     <Grid container justifyContent={FLEX.FLEX_END}>
-      <Button label={t('close.label')} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCloseDialog} color={themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white} />
+     <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
+      <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCloseDialog}>
+       {t('close.label').toUpperCase()}
+      </GStyledCloseButton>
      </Grid>
     </DialogActions>
    </Dialog>
@@ -89,6 +92,7 @@ LogDetailsDialog.propTypes = {
 
 const LogDetailsRaw = ({ logsToShow, logDetails, mode }) => {
  const theme = useTheme()
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
  return (
   <Fragment>
    <CodeRaw value={JSON.stringify(logsToShow, null, 2)} HandleChangeIniJson={() => {}} editable={false} disableTopBar autoHeight />
@@ -99,7 +103,7 @@ const LogDetailsRaw = ({ logsToShow, logDetails, mode }) => {
      id='panel1-header'
      expandIcon={<Icon icon={ICON_NAME.CHEVRON_DOWN} color={mode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white} />}
      sx={{ backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[700] }}>
-     <Typography variant={TYPOGRAPHY.H5}> {t('see_more.label').toUpperCase()}</Typography>
+     <Typography variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H6}> {t('see_more.label').toUpperCase()}</Typography>
     </AccordionSummary>
     <AccordionDetails>
      <ResponsiveGrid container spacing={2} sx={{ backgroundColor: 'transparent' }}>
