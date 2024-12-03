@@ -1,26 +1,28 @@
-import { useEffect, useLayoutEffect, useState, useRef, memo, Fragment } from 'react'
-import { t } from 'i18next'
+import { Fragment, useEffect, useLayoutEffect, useState, memo } from 'react'
+import { Trans } from 'react-i18next'
 import { dispatch, useSelector } from 'store'
-import { useSettingContext, useFilter, useTable, getComparator, ICON_NAME } from 'hook'
+import { useSettingContext, useFilter, useTable, getComparator } from 'hook'
 import {
  getMachineTicketByKey,
  getMachineTickets,
  setSelectedMachineTicketCard,
- ChangeMachineTicketPage,
+ setMachineTicketDialog,
  setMachineTicketFilterBy,
+ ChangeMachineTicketPage,
  resetMachineTicketRecords,
  resetSelectedMachineTicketCard
 } from 'store/slice'
-import { useTicketsDefaultValues, useTicketDefaultValues } from 'section/support'
-import { Divider, Grid, Card, Typography, Box } from '@mui/material'
+import { useTicketsDefaultValues, useTicketDefaultValues, TicketCard as MachineTicketCard } from 'section/support'
+import { CommonFieldsContainer } from 'section/common'
+import { TicketCard, fieldsTicketBasicInfoConfig, fieldsTicketQuickSpecsConfig } from 'section/product'
+import { useMediaQuery, Divider, Grid, Card, Typography, Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GCardOption, GStyledTopBorderDivider, GStyledFlexEndBox, GStyledSpanBox, GStyledFieldChip, GStyledSupportStatusFieldChip } from 'theme/style'
-import { MotionLazyContainer, GridViewTitle, GridViewField, AuditBox, CustomerDialog, SearchBox, IconTooltip, TableNoData } from 'component'
-import { TicketCard } from 'section/product'
-import { parseArrDesc } from 'util/parse-arr-desc'
+import { GCardOption, GStyledTopBorderDivider, GStyledSpanBox, GStyledFieldChip, GStyledSupportStatusFieldChip } from 'theme/style'
+import { MachineSupportTicketDialog, AuditBox, CustomerDialog, SearchBox, TableNoData, HowickLoader } from 'component'
 import { normalizer } from 'util/format'
+import { GLOBAL } from 'config/global'
 import { MARGIN } from 'config'
-import { KEY, TITLE, FLEX, TYPOGRAPHY, SUPPORT_TICKET, FLEX_DIR, LABEL, VARIANT, SIZE } from 'constant'
+import { KEY, FLEX, TYPOGRAPHY, FLEX_DIR, VARIANT, SIZE } from 'constant'
 
 const TicketsTab = () => {
  const [tableData, setTableData] = useState([])
@@ -30,6 +32,7 @@ const TicketsTab = () => {
 
  const theme = useTheme()
  const { themeMode } = useSettingContext()
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
  const { order, orderBy } = useTable({
   defaultOrderBy: 'created',
   defaultOrder: 'desc'
@@ -68,130 +71,156 @@ const TicketsTab = () => {
   dispatch(setSelectedMachineTicketCard(machineTicketKey))
  }
 
+ const handleSelectedCard = (event, key) => {
+  event.preventDefault()
+  dispatch(setSelectedMachineTicketCard(key))
+ }
+
+ const handleMachineTicketCardMobile = (event, machineSerialNo, machineTicketKey) => {
+  event.preventDefault()
+  dispatch(getMachineTicketByKey(machineSerialNo, machineTicketKey))
+  dispatch(setSelectedMachineTicketCard(machineTicketKey))
+  dispatch(setMachineTicketDialog(true))
+ }
+
+ const handleMachineTicketInNewTabCard = jiraKey => {
+  const url = GLOBAL.JIRA_URL + jiraKey
+  window.open(url, KEY.BLANK)
+ }
+
  const isNotFound = !isLoading && !filteredData.length
 
+ const renderTitlebar = () => {
+  return (
+   <Grid item xs={12} sm={12}>
+    <GStyledSpanBox justifyContent={FLEX.SPACE_BETWEEN} spacing={1} py={1}>
+     <Box>
+      <GStyledSpanBox justifyContent={FLEX.FLEX_START}>
+       <Typography variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H5}>{ticket?.key}: &nbsp;</Typography>
+      </GStyledSpanBox>
+      <Typography variant={isDesktop ? TYPOGRAPHY.BODY1 : TYPOGRAPHY.BODY2} color='text.secondary'>
+       &nbsp; {ticket?.issue}
+      </Typography>
+      {ticket?.tags.map((tag, index) => (
+       <GStyledFieldChip key={index} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE1}>{tag?.name}</Typography>} size={SIZE.SMALL} />
+      ))}
+     </Box>
+     <GStyledSpanBox justifyContent={FLEX.FLEX_END} spacing={1} py={1}>
+      <Box mt={1} spacing={2}>
+       <GStyledSupportStatusFieldChip
+        status={normalizer(ticket?.status)}
+        mode={themeMode}
+        label={<Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE_MINI}>{ticket?.status}</Typography>}
+        size={SIZE.SMALL}
+       />
+      </Box>
+     </GStyledSpanBox>
+    </GStyledSpanBox>
+   </Grid>
+  )
+ }
+
+ const renderSidebar = () => {
+  return (
+   <Grid container mb={2}>
+    <Grid item lg={12} sm={12} mb={2}>
+     {filteredData?.length >= 5 && (
+      <Grid item sm={12} pb={2}>
+       <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
+      </Grid>
+     )}
+     <Grid container p={1}>
+      {filteredData?.length > 0 && !isLoading ? (
+       defaultValues?.map((t, index) => <TicketCard key={index} selectedCardId={selectedMachineTicketCard || index} value={t} handleMachineTicketCard={handleMachineTicketCard} t={t} />)
+      ) : isLoading ? (
+       <Grid item xs={12} md={12}>
+        <HowickLoader mode={themeMode} />
+       </Grid>
+      ) : (
+       <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
+        <Trans i18nKey='no_found.label' values={{ value: 'support ticket' }} />
+       </Typography>
+      )}
+     </Grid>
+    </Grid>
+   </Grid>
+  )
+ }
+
  return (
-  <MotionLazyContainer display={FLEX.FLEX}>
-   {/*  TODO: Make responsive */}
-   <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
-    <Grid item xs={12} sm={3} sx={{ height: '600px', overflow: KEY.AUTO, scrollBehavior: 'smooth' }}>
-     <Grid container mb={2}>
-      <Grid item lg={12} sm={12} mb={2}>
-       {filteredData?.length >= 5 && (
-        <Grid item sm={12} pb={2}>
-         <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
+  <Fragment>
+   {isDesktop ? (
+    <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+     <Grid item xs={12} sm={3} sx={{ height: '600px', overflow: KEY.AUTO, scrollBehavior: 'smooth' }}>
+      {renderSidebar()}
+     </Grid>
+     <Grid item xs={12} md={9}>
+      {machineTickets?.issues?.length > 0 && !isLoading ? (
+       <Fragment>
+        <Box mb={2}>
+         <Card {...GCardOption(themeMode)}>
+          <GStyledTopBorderDivider mode={themeMode} />
+          <Grid container spacing={2} px={1.5} mb={10}>
+           {renderTitlebar()}
+           <Grid item lg={12}>
+            <Divider variant={VARIANT.MIDDLE} style={{ width: '100%', marginBottom: 5 }} />
+           </Grid>
+           <Grid item lg={12} sm={12}>
+            <CommonFieldsContainer defaultValues={ticket} fieldsConfig={fieldsTicketBasicInfoConfig} isLoading={isLoading} />
+           </Grid>
+           <Grid item lg={12} sm={12}>
+            <CommonFieldsContainer defaultValues={ticket} fieldsConfig={fieldsTicketQuickSpecsConfig} isLoading={isLoading} />
+           </Grid>
+          </Grid>
+         </Card>
+        </Box>
+        <AuditBox value={ticket} />
+       </Fragment>
+      ) : (
+       <Box display={FLEX.CENTER} justifyContent={FLEX.CENTER} alignItems={FLEX.CENTER} style={{ height: '100%' }}>
+        <TableNoData ticketNotFound={isNotFound} />
+       </Box>
+      )}
+     </Grid>
+    </Grid>
+   ) : (
+    <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+     <Grid item xs={12} sm={12}>
+      <Grid container mb={2}>
+       <Grid item xs={12} sm={12} mb={2} bgcolor='transparent'>
+        <Grid container p={1}>
+         {!isLoading ? (
+          filteredData?.length > 0 ? (
+           defaultValues.map((cticket, index) => (
+            <MachineTicketCard
+             key={index}
+             selectedCardId={selectedMachineTicketCard || index}
+             ticket={cticket}
+             handleSelected={handleSelectedCard}
+             handleTicketCard={handleMachineTicketCardMobile}
+             handleTicketInNewTabCard={handleMachineTicketInNewTabCard}
+             isMachinePage
+            />
+           ))
+          ) : (
+           <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
+            <Trans i18nKey='no_found.label' values={{ value: 'Ticket' }} />
+           </Typography>
+          )
+         ) : (
+          <Grid item xs={12} sm={12}>
+           <HowickLoader mode={themeMode} />
+          </Grid>
+         )}
         </Grid>
-       )}
-       <Grid container p={1}>
-        {filteredData?.length > 0 && !isLoading ? (
-         defaultValues?.map((t, index) => <TicketCard key={index} selectedCardId={selectedMachineTicketCard || index} value={t} handleMachineTicketCard={handleMachineTicketCard} t={t} />)
-        ) : isLoading ? (
-         <Box justifyContent={KEY.CENTER}>
-          <Typography variant={TYPOGRAPHY.OVERLINE1}>Please wait...</Typography>
-         </Box>
-        ) : (
-         <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
-          {LABEL.NO_SUPPORT_TICKET}
-         </Typography>
-        )}
        </Grid>
       </Grid>
      </Grid>
     </Grid>
-    <Grid item sm={12} lg={9}>
-     <Grid container>
-      <Grid item sm={12}>
-       <Card {...GCardOption}>
-        <GStyledTopBorderDivider mode={themeMode} />
-        {machineTickets?.issues?.length > 0 && !isLoading ? (
-         <Fragment>
-          <Grid container spacing={2} px={1.5} mb={10}>
-           <Grid item xs={12} sm={12}>
-            <GStyledSpanBox justifyContent={FLEX.SPACE_BETWEEN} spacing={1} py={1}>
-             <Box>
-              <GStyledSpanBox justifyContent={FLEX.FLEX_START}>
-               <Typography variant={TYPOGRAPHY.H3}>{ticket?.key}: &nbsp;</Typography>
-               <Typography variant={TYPOGRAPHY.H4} color='text.secondary'>
-                {ticket?.issue}
-               </Typography>
-              </GStyledSpanBox>
-              {ticket?.tags.map((tag, index) => (
-               <GStyledFieldChip key={index} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE1}>{tag?.name}</Typography>} size={SIZE.SMALL} />
-              ))}
-             </Box>
-             <GStyledSpanBox justifyContent={FLEX.FLEX_END} spacing={1} py={1}>
-              <Box mt={1} spacing={2}>
-               <IconTooltip title={TITLE.QUICK_SPECS} icon={ICON_NAME.QUICK} color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange} dimension={18} />
-               <GStyledSupportStatusFieldChip status={normalizer(ticket?.status)} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{ticket?.status}</Typography>} size={SIZE.SMALL} />
-              </Box>
-             </GStyledSpanBox>
-            </GStyledSpanBox>
-           </Grid>
-           <Grid item lg={12}>
-            <Divider variant={VARIANT.MIDDLE} style={{ width: '100%', marginBottom: 5 }} />
-           </Grid>
-           <Grid item lg={12} sm={12}>
-            <Grid container spacing={2} p={2} pb={2}>
-             <Grid item xs={12} sm={12}>
-              <Box>
-               <Box>
-                <Typography variant={TYPOGRAPHY.OVERLINE1}>{t('description.label')}</Typography>
-               </Box>
-               {ticket?.descriptionContents?.length <= 0 ? (
-                <Box ml={2}>
-                 <Typography variant={TYPOGRAPHY.OVERLINE1} color={theme.palette.grey[500]}>
-                  {t('no_description.label')}
-                 </Typography>
-                </Box>
-               ) : (
-                <Box ml={2}>
-                 <Typography>{parseArrDesc(ticket?.descriptionContents)}</Typography>
-                </Box>
-               )}
-              </Box>
-             </Grid>
-             <GridViewField heading={SUPPORT_TICKET.ASSIGNEE} isLoading={isLoading}>
-              {ticket?.assigneeName}
-             </GridViewField>
-             <GridViewField heading={SUPPORT_TICKET.REPORTER} isLoading={isLoading}>
-              {ticket?.reporterName}
-             </GridViewField>
-            </Grid>
-           </Grid>
-           <Grid item lg={12}>
-            <GridViewTitle title={TITLE.QUICK_SPECS} />
-            <Divider variant={VARIANT.MIDDLE} style={{ width: '100%', marginBottom: 5 }} />
-           </Grid>
-           <Grid item lg={12} sm={12}>
-            <Grid container spacing={2} p={2} pb={2}>
-             <GridViewField heading={SUPPORT_TICKET.PLC_VERSION} isLoading={isLoading}>
-              {ticket?.plcVersion}
-             </GridViewField>
-             <GridViewField heading={SUPPORT_TICKET.HMI_VERSION} isLoading={isLoading}>
-              {ticket?.hmiVersion}
-             </GridViewField>
-            </Grid>
-           </Grid>
-          </Grid>
-          <Grid item sm={12} p={2}>
-           <GStyledFlexEndBox>
-            <AuditBox value={ticket} />
-           </GStyledFlexEndBox>
-          </Grid>
-         </Fragment>
-        ) : (
-         <Box display={FLEX.CENTER} justifyContent={FLEX.CENTER} alignItems={FLEX.CENTER} style={{ height: '100%' }}>
-          <TableNoData ticketNotFound={isNotFound} />
-         </Box>
-        )}
-       </Card>
-      </Grid>
-     </Grid>
-    </Grid>
-   </Grid>
-
+   )}
+   {machineTickets && <MachineSupportTicketDialog />}
    {customerDialog && <CustomerDialog />}
-  </MotionLazyContainer>
+  </Fragment>
  )
 }
 
