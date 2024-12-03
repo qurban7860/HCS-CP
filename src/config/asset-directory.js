@@ -32,6 +32,7 @@ export const ASSET = {
  BG_STROKE_LIGHTGREY_LOGO: _background('howick-logo-stroke-light-grey.svg'),
  BG_STROKE_BRONZE_LOGO: _background('howick-logo-stroke-bronze.svg'),
  BRAND_LOGO_FULL: _brand('logo.svg'),
+ BRAND_LOGO_FULL_WHITE: _brand('logo-white.svg'),
  COMPANY_HOWICK: _sponsor('howick.png'),
  COMPANY_HOWICK_DM: _sponsor('howick-dm.png'),
  COMPANY_RFS: _sponsor('rfs.png'),
