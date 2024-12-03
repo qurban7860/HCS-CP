@@ -337,12 +337,26 @@ export const GStyledRightBorderDivider = styled(({ theme, mode, ...other }) => <
 export const GStyledLoadingButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
  backgroundColor: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
  color: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
- '&:hover': { backgroundColor: KEY.LIGHT ? theme.palette.howick.orange : theme.palette.howick.darkBlue }
+ '&:hover': {
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.howick.orange : theme.palette.howick.darkBlue,
+  color: mode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
+ }
  //  '&.MuiButton-root.Mui-disabled': {
  //   backgroundColor: theme.palette.grey[200],
  //   color: theme.palette.grey[600],
  //   opacity: 0.5
  //  }
+}))
+
+export const GStyledCloseButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
+ backgroundColor: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
+ color: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
+ '&:hover': {
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.error.main : theme.palette.error.dark,
+  color: mode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
+ },
+ paddingTop: theme.spacing(1.5),
+ paddingBottom: theme.spacing(1.5)
 }))
 
 export const GStyledLoadingScreenDiv = styled('div')(({ theme }) => ({
@@ -667,15 +681,12 @@ export const GStyledBottomPolygonDiv = styled(({ themeMode, isMobile, isMd, ...o
  }
 })
 
-export const StylendLandingContainerBox = styled(Box)(({ theme, isTablet }) => ({
+export const StylendLandingContainerBox = styled(Box)(({ theme, isTablet, mode }) => ({
  backgroundColor: theme.palette.background.default,
- backgroundImage: `url(${ASSET.BG_STROKE_GREY_LOGO})`,
+ backgroundImage: mode === KEY.LIGHT ? `url(${ASSET.BG_STROKE_GREY_LOGO})` : `url(${ASSET.BG_STROKE_BRONZE_LOGO})`,
  backgroundSize: 'cover',
  backgroundPositionY: 'center',
- //  backgroundSize: isMobile ? '250%' : '150%',
- //  backgroundBlendMode: 'screen',
  backgroundOpacity: 0.2,
- //  backgroundColor: alpha(theme.palette.background.default, 0.8),
  display: 'flex',
  height: '100%',
  flexDirection: 'column',
