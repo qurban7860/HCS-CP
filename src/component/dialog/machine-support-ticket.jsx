@@ -1,11 +1,11 @@
 import { t } from 'i18next'
 import { dispatch, useSelector } from 'store'
 import { useSettingContext, ICON_NAME } from 'hook'
-import { setCustomerTicketDialog } from 'store/slice'
+import { setMachineTicketDialog } from 'store/slice'
 import { useTicketDefaultValues } from 'section/support'
 import { useMediaQuery, Grid, Dialog, DialogContent, DialogTitle, Divider, Typography, Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledSpanBox, GStyledSupportStatusFieldChip, GStyledCloseButton } from 'theme/style'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledSupportStatusFieldChip, GStyledCloseButton, GStyledLoadingButton } from 'theme/style'
 import { GridViewField, GridViewTitle, AuditBox, Button } from 'component'
 import { GLOBAL } from 'config/global'
 import { TYPOGRAPHY, FLEX, SIZE, KEY, FLEX_DIR } from 'constant'
@@ -13,23 +13,23 @@ import { normalizer } from 'util/format'
 import { parseArrDesc } from 'util/parse-arr-desc'
 import { truncate } from 'util'
 
-const SupportTicketDialog = () => {
- const { customerTicket, isLoading, customerTicketDialog } = useSelector(state => state.customerTicket)
+const MachineSupportTicketDialog = () => {
+ const { machineTicket, isLoading, machineTicketDialog } = useSelector(state => state.machineTicket)
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
- const defaultValues = useTicketDefaultValues(customerTicket)
- const handleDialog = () => dispatch(setCustomerTicketDialog(false))
+ const defaultValues = useTicketDefaultValues(machineTicket)
+ const handleDialog = () => dispatch(setMachineTicketDialog(false))
 
  const handleCustomerTicketOverview = jiraKey => {
-  dispatch(setCustomerTicketDialog(false))
+  dispatch(setMachineTicketDialog(false))
   const url = GLOBAL.JIRA_URL + jiraKey
   window.open(url, KEY.BLANK)
  }
 
  return (
-  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={customerTicketDialog} onClose={handleDialog} aria-describedby='alert-dialog-slide-description'>
+  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={machineTicketDialog} onClose={handleDialog} aria-describedby='alert-dialog-slide-description'>
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle
     sx={{
@@ -113,4 +113,4 @@ const SupportTicketDialog = () => {
  )
 }
 
-export default SupportTicketDialog
+export default MachineSupportTicketDialog
