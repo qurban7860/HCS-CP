@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { useSettingContext } from 'hook'
 import { useFormContext, Controller } from 'react-hook-form'
-import { Autocomplete, TextField, Typography } from '@mui/material'
+import { useMediaQuery, Autocomplete, TextField } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { TYPOGRAPHY, KEY } from 'constant'
 
@@ -17,6 +17,7 @@ export default function RHFAutocomplete({ name, label, helperText, Error, ...oth
 
  const { themeMode } = useSettingContext()
  const theme = useTheme()
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
  return (
   <Controller
@@ -36,6 +37,9 @@ export default function RHFAutocomplete({ name, label, helperText, Error, ...oth
        borderRadius: 0.4,
        color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0',
        ...theme.typography.body1
+      },
+      '& .MuiAutocomplete-input': {
+       ...(isDesktop ? theme.typography.body1 : theme.typography.body2)
       }
      }}
     />
