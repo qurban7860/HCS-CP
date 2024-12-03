@@ -65,13 +65,14 @@ function NavList({ data, depth, hasChild, handleCloseNavItem }) {
     onMouseEnter={handleOpen}
     onMouseLeave={handleClose}
     sx={{
-     transition: 'background-color 0.3s',
      backgroundColor: themeMode === KEY.LIGHT ? (active ? 'primary.main' : 'transparent') : active && 'howick.orange',
      '& .MuiTypography-root': {
       color: themeMode === KEY.LIGHT ? (active ? 'common.white' : 'grey.900') : active && 'common.black',
       fontWeight: active ? 'bold' : 'normal',
       '&:hover': {
-       color: themeMode === KEY.LIGHT ? 'common.black' : 'common.white'
+       color: themeMode === KEY.LIGHT ? 'grey.500' : 'grey.700',
+       scale: 0.9,
+       transition: 'ease-in-out 0.2s'
       }
      }
     }}
