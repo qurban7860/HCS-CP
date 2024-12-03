@@ -11,6 +11,7 @@ export * from './machine'
 // :support
 export { default as TicketsTab } from './support/tickets-tab'
 export { default as TicketCard } from './support/ticket-card'
+export * from './support/ticket-fields-config'
 
 // :log
 export * from './machine-logs'
