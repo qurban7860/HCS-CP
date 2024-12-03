@@ -9,8 +9,8 @@ import { useSelector, dispatch } from 'store'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { getCustomers, getLogGraphData, getLogs, ChangeLogPage, resetLogsGraphData, resetLogs, getCustomerMachines, resetCustomerMachines } from 'store/slice'
-import { useTheme, Grid, Button, Typography } from '@mui/material'
-import { HowickLoader, MotionLazyContainer, TableTitleBox } from 'component'
+import { useMediaQuery, useTheme, Grid, Button, Typography } from '@mui/material'
+import { HowickLoader, TableTitleBox } from 'component'
 import FormProvider from 'component/hook-form'
 import { LogsTableController, ERPProductionTotal, ERPProductionRate, useLogDefaultValues } from 'section/log'
 import { MachineLogsTable } from 'section/product'
@@ -27,6 +27,7 @@ const LogsSection = ({ isArchived }) => {
 
  const { themeMode } = useSettingContext()
  const theme = useTheme()
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
  const isMobile = useResponsive('down', 'sm')
 
  const axiosToken = () => axios.CancelToken.source()
@@ -188,54 +189,52 @@ const LogsSection = ({ isArchived }) => {
 
  return (
   <Fragment>
-   <MotionLazyContainer display={FLEX.FLEX}>
-    <Grid container sx={{ display: 'flex', justifyContent: FLEX.SPACE_BETWEEN }}>
-     <TableTitleBox title={t('log.logs.label')} />
-     <Button
-      size='small'
-      startIcon={<Icon icon={pageType === 'graph' ? ICON_NAME.LIST : ICON_NAME.GRAPH} sx={{ mr: 0.3 }} />}
-      variant='outlined'
-      sx={{
-       mr: 1,
-       color: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
-       borderColor: theme.palette.grey[500]
-      }}
-      onClick={() => handleOnClick('erpLog', handleErpLogToggle)}>
-      {(!isMobile || expandedButton === 'erpLog') && <Typography variant={TYPOGRAPHY.BODY0}>{pageType === 'graph' ? 'Machine Logs' : 'See Graph'}</Typography>}
-     </Button>
-    </Grid>
+   <Grid container sx={{ display: FLEX.FLEX, justifyContent: FLEX.SPACE_BETWEEN }}>
+    <TableTitleBox title={t('log.logs.label')} />
+    <Button
+     size='small'
+     startIcon={<Icon icon={pageType === 'graph' ? ICON_NAME.LIST : ICON_NAME.GRAPH} sx={{ mr: 0.3 }} />}
+     variant='outlined'
+     sx={{
+      mr: 1,
+      color: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
+      borderColor: theme.palette.grey[500]
+     }}
+     onClick={() => handleOnClick('erpLog', handleErpLogToggle)}>
+     {(!isMobile || expandedButton === 'erpLog') && <Typography variant={isDesktop ? TYPOGRAPHY.BODY0 : TYPOGRAPHY.BODY2}>{pageType === 'graph' ? 'Machine Logs' : 'See Graph'}</Typography>}
+    </Button>
+   </Grid>
 
-    <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
-     <Grid container spacing={2} mt={3}>
-      <Grid item xs={12} sm={12}>
-       <LogsTableController
-        customers={customers}
-        handleCustomerChange={handleCustomerChange}
-        customerMachines={customerMachines}
-        handleMachineChange={handleMachineChange}
-        handleLogTypeChange={handleLogTypeChange}
-        handlePeriodChange={handlePeriodChange}
-        isLogsPage={true}
-        isGraphPage={isGraphPage}
-        methods={methods}
-        onGetLogs={onGetLogs}
-       />
-      </Grid>
+   <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
+    <Grid container spacing={2} mt={3}>
+     <Grid item xs={12} sm={12}>
+      <LogsTableController
+       customers={customers}
+       handleCustomerChange={handleCustomerChange}
+       customerMachines={customerMachines}
+       handleMachineChange={handleMachineChange}
+       handleLogTypeChange={handleLogTypeChange}
+       handlePeriodChange={handlePeriodChange}
+       isLogsPage={true}
+       isGraphPage={isGraphPage}
+       methods={methods}
+       onGetLogs={onGetLogs}
+      />
      </Grid>
-    </FormProvider>
-    {!isGraphPage() && <MachineLogsTable isLogsPage logType={logType} payload={payload} />}
-    {isGraphPage() && (
-     <Fragment>
-      {isLoading ? (
-       <HowickLoader height={300} width={303} mode={themeMode} />
-      ) : logGraphType.key === 'production_total' ? (
-       <ERPProductionTotal timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} />
-      ) : (
-       <ERPProductionRate timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} />
-      )}
-     </Fragment>
-    )}
-   </MotionLazyContainer>
+    </Grid>
+   </FormProvider>
+   {!isGraphPage() && <MachineLogsTable isLogsPage logType={logType} payload={payload} />}
+   {isGraphPage() && (
+    <Fragment>
+     {isLoading ? (
+      <HowickLoader height={300} width={303} mode={themeMode} />
+     ) : logGraphType.key === 'production_total' ? (
+      <ERPProductionTotal timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} />
+     ) : (
+      <ERPProductionRate timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} />
+     )}
+    </Fragment>
+   )}
   </Fragment>
  )
 }
