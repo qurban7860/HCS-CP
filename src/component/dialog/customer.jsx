@@ -1,14 +1,15 @@
+import { t } from 'i18next'
 import { useNavigate } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
 import { useSettingContext } from 'hook'
 import { setCustomerDialog } from 'store/slice'
 import { useCustomerDefaultValues } from 'section/crm'
 import { ICON_NAME } from 'hook'
-import { Dialog, DialogContent, DialogTitle, Divider, Typography, Grid } from '@mui/material'
-import { GStyledTopBorderDivider, GStyledSpanBox } from 'theme/style'
-import { GridViewField, GridViewTitle, Button, BadgeCardMedia } from 'component'
+import { useMediaQuery, useTheme, Dialog, DialogContent, DialogTitle, Divider, Grid } from '@mui/material'
+import { GridViewField, GridViewTitle, Button, BadgeCardMedia, TitleListItemText } from 'component'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton } from 'theme/style'
 import { HowickResources } from 'section/common'
-import { VIEW_FORM, TITLE, TYPOGRAPHY, KEY, BUTTON, FLEX } from 'constant'
+import { VIEW_FORM, TITLE, KEY, BUTTON, FLEX, SZ } from 'constant'
 import { PATH_CUSTOMER } from 'route/path'
 
 const CustomerDialog = () => {
@@ -16,6 +17,9 @@ const CustomerDialog = () => {
  const { themeMode } = useSettingContext()
  const { customer, isLoading, customerDialog } = useSelector(state => state.customer)
  const { CUSTOMER, SITE, ADDRESS } = VIEW_FORM
+ const theme = useTheme()
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
+ const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
  const defaultValues = useCustomerDefaultValues(customer, null)
 
@@ -27,14 +31,14 @@ const CustomerDialog = () => {
  }
 
  return (
-  <Dialog disableEnforceFocus maxWidth='lg' open={customerDialog} onClose={handleCustomerDialog} aria-describedby='alert-dialog-slide-description'>
+  <Dialog disableEnforceFocus maxWidth={SZ.LG} open={customerDialog} onClose={handleCustomerDialog} aria-describedby='alert-dialog-slide-description'>
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle>
     <GStyledSpanBox
      sx={{
       justifyContent: FLEX.SPACE_BETWEEN
      }}>
-     <Typography variant={TYPOGRAPHY.H3}>{customer?.name?.toUpperCase()}</Typography> &nbsp;
+     <TitleListItemText truncatedName={defaultValues?.name} tradingAliases={defaultValues?.tradingName} />
      <BadgeCardMedia dimension={40} />
     </GStyledSpanBox>
    </DialogTitle>
@@ -49,14 +53,12 @@ const CustomerDialog = () => {
        {defaultValues?.code}
       </GridViewField>
       <GridViewField heading={VIEW_FORM.STATUS} isLoading={isLoading}>
-       {defaultValues?.status}{' '}
+       {defaultValues?.status}
       </GridViewField>
       <GridViewField heading={VIEW_FORM.WEBSITE} isLoading={isLoading}>
        {defaultValues?.website}
       </GridViewField>
-      <GridViewField heading={CUSTOMER.TRADING_NAME} isLoading={isLoading}>
-       {defaultValues?.tradingName}{' '}
-      </GridViewField>
+      <GridViewField heading={CUSTOMER.TRADING_NAME} isLoading={isLoading} chip={defaultValues?.tradingName} />
      </Grid>
      <Divider variant={KEY.FULL_WIDTH} style={{ width: '100%', marginX: '20px' }} />
      <GridViewTitle title={TITLE.SITE_INFO} />
@@ -92,11 +94,14 @@ const CustomerDialog = () => {
       <Grid item sm={12}>
        <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} isDialog />
       </Grid>
-      <Grid item sm={12}>
-       <Grid container justifyContent={FLEX.FLEX_END}>
-        <Button label={BUTTON.CUSTOMER_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCustomerOverview} />
-       </Grid>
-      </Grid>
+     </Grid>
+    </Grid>
+    <Grid item sm={12} mt={2}>
+     <Grid container justifyContent={FLEX.FLEX_END} display={FLEX.FLEX} gap={2}>
+      <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCustomerDialog} gap={2}>
+       {t('close.label').toUpperCase()}
+      </GStyledCloseButton>
+      <Button label={BUTTON.CUSTOMER_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCustomerOverview} />
      </Grid>
     </Grid>
    </DialogContent>
