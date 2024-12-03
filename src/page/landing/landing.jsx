@@ -84,12 +84,12 @@ const Landing = () => {
  )
 
  return (
-  <StylendLandingContainerBox>
+  <StylendLandingContainerBox mode={themeMode}>
    <Grid container>
     <Grid container sx={{ marginRight: isMobile || isTablet || isMd ? 2 : 10 }}>
      <Grid item xs={12} sx={{ display: FLEX.FLEX, justifyContent: FLEX.FLEX_END }}>
       <Box ref={headingRef}>
-       <img alt='logo' src={ASSET.BRAND_LOGO_FULL} style={styles.logo} />
+       <img alt='logo' src={themeMode === KEY.LIGHT ? ASSET.BRAND_LOGO_FULL : ASSET.BRAND_LOGO_FULL_WHITE} style={styles.logo} />
       </Box>
      </Grid>
      <Grid item xs={12}>
@@ -114,7 +114,7 @@ const Landing = () => {
         <Button size='sm' {...ButtonProps} sx={{ color: theme.palette.grey[500], bgcolor: theme.palette.grey[100], pointerEvents: 'none', py: 1 }}>
          {' BUILDING SOMETHING BIG.. '} &nbsp;
          {' COMING SOON '} &nbsp;
-         <Icon icon={ICON_NAME.TRAFFIC_CONE} color={theme.palette.howick.orange} sx={IconDimension} />{' '}
+         <Icon icon={ICON_NAME.TRAFFIC_CONE} color={theme.palette.howick.orange} sx={IconDimension} />
         </Button>
        </Grid>
       </Grid>
