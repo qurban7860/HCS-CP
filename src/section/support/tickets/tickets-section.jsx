@@ -23,7 +23,7 @@ import { TableNoData, SkeletonTable, SearchBox, TableTitleBox, HowickLoader, Sup
 import { GStyledTableHeaderBox } from 'theme/style'
 import { GLOBAL } from 'config/global'
 import { MARGIN, TABLE } from 'config'
-import { KEY, FLEX, FLEX_DIR, TYPOGRAPHY } from 'constant'
+import { KEY, FLEX_DIR, TYPOGRAPHY } from 'constant'
 
 const TicketsListSection = () => {
  const [tableData, setTableData] = useState([])
@@ -57,7 +57,9 @@ const TicketsListSection = () => {
   const debouncedDispatch = _.debounce(() => {
    if (securityUser?.customers) {
     dispatch(getCustomer(securityUser?.customer?._id))
-    dispatch(getCustomerTickets(securityUser?.customers[0]?.ref, filterPeriodOption))
+    if (securityUser?.customers[0]?.ref) {
+     dispatch(getCustomerTickets(securityUser?.customers[0]?.ref, filterPeriodOption))
+    }
    }
   }, 300)
 
@@ -139,10 +141,14 @@ const TicketsListSection = () => {
             <Trans i18nKey='no_found.label' values={{ value: 'Ticket' }} />
            </Typography>
           )
-         ) : (
+         ) : isLoading ? (
           <Grid item xs={12} sm={12}>
            <HowickLoader mode={themeMode} />
           </Grid>
+         ) : (
+          <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
+           <Trans i18nKey='no_found.label' values={{ value: 'Ticket' }} />
+          </Typography>
          )}
         </Grid>
        </Grid>
