@@ -341,11 +341,15 @@ export const GStyledLoadingButton = styled(({ theme, isLoading, ...other }) => <
   backgroundColor: mode === KEY.LIGHT ? theme.palette.howick.orange : theme.palette.howick.darkBlue,
   color: mode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
  }
- //  '&.MuiButton-root.Mui-disabled': {
- //   backgroundColor: theme.palette.grey[200],
- //   color: theme.palette.grey[600],
- //   opacity: 0.5
- //  }
+}))
+
+export const GStyledBackButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
+ backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700],
+ color: mode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
+ '&:hover': {
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[800],
+  color: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black
+ }
 }))
 
 export const GStyledCloseButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
