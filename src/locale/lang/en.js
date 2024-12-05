@@ -246,16 +246,16 @@ const en = {
   }
  },
  login: {
-  label: `Login`,
+  label: `Log in`,
   login_email: {
-   label: `Login / Email address`
+   label: `Log in / Email address`
   }
  },
  login_page: {
-  label: `Login Page`
+  label: `Log in Page`
  },
  login_email: {
-  label: `Login Email`
+  label: `Log in Email`
  },
  general: `general`,
  banking: `banking`,
@@ -445,7 +445,7 @@ const en = {
    logged_in: 'Logged in',
    logged_out: 'Logged out',
    register_request_submitted: 'Registration request submitted',
-   details_updated: 'User details updated, navigating you to the Login page...',
+   details_updated: 'User details updated, navigating you to the Log in page...',
    password_updated: 'Password updated',
    reset_request_submitted: 'Password reset request submitted'
   },
