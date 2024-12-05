@@ -2,7 +2,7 @@ import { Fragment, useEffect, useLayoutEffect } from 'react'
 import { t } from 'i18next'
 import { useSelector, dispatch } from 'store'
 import _ from 'lodash'
-import { useAuthContext } from 'auth'
+import { useAuthContext } from 'auth/use-auth-context'
 import {
  getCustomerMachines,
  getCustomer,
