@@ -41,7 +41,7 @@ const ContactDialog = ({ contact }) => {
  }
 
  return (
-  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={contactDialog} onClose={handleDialog} aria-describedby='alert-dialog-slide-description'>
+  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={contactDialog} onClose={handleDialog}>
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle
     sx={{
@@ -136,7 +136,7 @@ const ContactDialog = ({ contact }) => {
      </Grid>
 
      <Grid item sm={12}>
-      <Grid container justifyContent={FLEX.FLEX_END}>
+      <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
        <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog} gap={2}>
         {t('close.label').toUpperCase()}
        </GStyledCloseButton>
