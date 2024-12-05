@@ -27,18 +27,14 @@ import { GLOBAL } from 'config'
 import { FALLBACK } from 'constant'
 
 function App() {
- useEffect(() => {
-  document.title = GLOBAL.APP_TITLE
- }, [])
-
  return (
   <LocalizationProvider dateAdapter={AdapterDayjs}>
    <WebSocketProvider>
-    <HelmetProvider>
-     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-       <SettingProvider>
-        <BrowserRouter>
+    <Provider store={store}>
+     <PersistGate loading={null} persistor={persistor}>
+      <SettingProvider>
+       <BrowserRouter>
+        <HelmetProvider>
          <MotionLazyContainer>
           <ThemeProvider>
            <ThemeSettings>
@@ -55,11 +51,11 @@ function App() {
            </ThemeSettings>
           </ThemeProvider>
          </MotionLazyContainer>
-        </BrowserRouter>
-       </SettingProvider>
-      </PersistGate>
-     </Provider>
-    </HelmetProvider>
+        </HelmetProvider>
+       </BrowserRouter>
+      </SettingProvider>
+     </PersistGate>
+    </Provider>
    </WebSocketProvider>
   </LocalizationProvider>
  )
