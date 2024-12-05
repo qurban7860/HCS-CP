@@ -6,9 +6,9 @@ import { dispatch } from 'store'
 import { snack, useSettingContext } from 'hook'
 import { resetUserPassword } from 'store/slice'
 import { ResetPasswordSchema } from 'schema'
-import { Alert, Box, Typography } from '@mui/material'
+import { Alert, Typography } from '@mui/material'
 import FormProvider, { RHFTextField, RHFRequiredTextFieldWrapper } from 'component/hook-form'
-import { GStyledLoadingButton, GStyledCenteredTextBox, GStyledCenteredTextHeightBox } from 'theme/style'
+import { GStyledLoadingButton, GStyledCenteredTextBox, GStyledCenteredTextHeightBox, GStyledBackButton } from 'theme/style'
 import { KEY, REGEX, SIZE } from 'constant'
 import { delay } from 'util'
 
@@ -97,6 +97,9 @@ export default function ResetPasswordForm() {
      sx={{ mt: 3 }}>
      {disable ? t('responses.messages.check_email') : t('send_reset_password_request.label')}
     </GStyledLoadingButton>
+    <GStyledBackButton fullWidth mode={themeMode} size={SIZE.LARGE} variant='text' sx={{ mt: 1 }} onClick={() => window.history.back()}>
+     {t('go_back.label')}
+    </GStyledBackButton>
    </FormProvider>
   </Fragment>
  )
