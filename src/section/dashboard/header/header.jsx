@@ -86,7 +86,7 @@ function Header() {
       <NavSection data={navConfig} />
      </Stack>
      <Stack flexGrow={1} direction='row' alignItems='center' justifyContent='flex-end' spacing={{ xs: 0.5, sm: 2 }}>
-      {localTimeZone !== aucklandTimeZone && <Clock local={localTimeZone} />}
+      {/* {localTimeZone !== aucklandTimeZone && <Clock local={localTimeZone} city={'cleveland'} />} */}
       <Clock main city={KEY.AUCKLAND} />
       <ModeOption />
       <NotificationPopover />
