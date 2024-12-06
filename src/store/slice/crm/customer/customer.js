@@ -18,6 +18,7 @@ const initialState = {
  spCustomers: [],
  customer: {},
  customerDialog: false,
+ customerUserInviteDialog: false,
  newMachineCustomer: null,
  customerFilterBy: '',
  verified: 'all',
@@ -46,6 +47,9 @@ const customerSlice = createSlice({
   },
   setCustomerDialog(state, action) {
    state.customerDialog = action.payload
+  },
+  setCustomerUserInviteDialog(state, action) {
+   state.customerUserInviteDialog = action.payload
   },
   hasError(state, action) {
    state.isLoading = false
@@ -171,17 +175,18 @@ export const {
  setNewMachineCustomer,
  setCustomerRenderTab,
  setCustomerEditFormVisibility,
+ setResponseMessage,
+ setCustomerFilterBy,
+ setExcludeReporting,
+ setCustomerDialog,
+ setCustomerUserInviteDialog,
  resetCustomer,
  resetCustomers,
  resetActiveCustomers,
  resetAllActiveCustomers,
  resetFinancingCompanies,
- setResponseMessage,
- setCustomerFilterBy,
- setExcludeReporting,
  ChangeCustomerRowsPerPage,
- ChangeCustomerPage,
- setCustomerDialog
+ ChangeCustomerPage
 } = customerSlice.actions
 
 // :thunks
@@ -241,10 +246,13 @@ export function registerCustomer(params) {
     address: params?.address,
     email: params?.email,
     machineSerialNos: params?.machineSerialNos,
-    country: params?.country.label,
+    country: typeof params?.country === 'string' ? params?.country : params?.country.label,
     phoneNumber: params?.phoneNumber,
     customerNote: params?.customerNote
    }
+
+   console.log('data', data)
+
    const response = await axios.post(PATH_SERVER.CRM.CUSTOMER.register, data)
    return response
   } catch (error) {
