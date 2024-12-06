@@ -1,4 +1,4 @@
-import { useEffect, useState, memo, useLayoutEffect } from 'react'
+import { Fragment, useEffect, useState, memo, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 import _ from 'lodash'
@@ -123,8 +123,8 @@ const MachineListSection = ({ isArchived }) => {
  const isNotFound = !isLoading && !filteredData.length
 
  return (
-  <MotionLazyContainer display={FLEX.FLEX}>
-   <TableTitleBox title={TITLE.MACHINE_LIST} user={securityUser} />
+  <Fragment>
+   <TableTitleBox title={TITLE.MACHINE_LIST} />
    <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} />
    {isMobile ? (
     <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
@@ -183,7 +183,7 @@ const MachineListSection = ({ isArchived }) => {
      </Grid>
     </Grid>
    )}
-  </MotionLazyContainer>
+  </Fragment>
  )
 }
 
