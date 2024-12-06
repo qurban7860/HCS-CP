@@ -1,6 +1,7 @@
 import { useMemo, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useAuthContext } from 'auth/use-auth-context'
+import { useSelector } from 'react-redux'
 
 /**
  * Custom hook to manage Helmet for setting page metadata.
@@ -13,6 +14,7 @@ import { useAuthContext } from 'auth/use-auth-context'
  */
 export const useHelmet = (config = {}) => {
  const { user } = useAuthContext()
+ const { customer } = useSelector(state => state.customer)
  const ROUTE_TITLES = {
   // auth
   '/auth/login': 'Log in',
@@ -34,7 +36,7 @@ export const useHelmet = (config = {}) => {
   '/products/machines/:id/graphs': 'Machine Graphs',
   '/products/machines/:id/support': 'Machine Support',
   // crm
-  '/crm/customers': 'Customer List',
+  '/crm/customers': 'Organizations',
   '/crm/customers/:id/view': 'Organization Overview',
   '/crm/customers/:id/contacts': 'Organization Contacts',
   '/crm/customers/:id/sites': 'Organization Sites',
@@ -53,7 +55,7 @@ export const useHelmet = (config = {}) => {
    { pattern: /^\/products\/machines\/[^/]+\/logs$/, title: 'Machine Logs' },
    { pattern: /^\/products\/machines\/[^/]+\/graphs$/, title: 'Machine Graphs' },
    { pattern: /^\/products\/machines\/[^/]+\/support$/, title: 'Machine Support' },
-   { pattern: /^\/crm\/customers\/[^/]+\/view$/, title: 'Customer Details' },
+   { pattern: /^\/crm\/customers\/[^/]+\/view$/, title: customer ? customer.name : 'Organization Overview' },
    { pattern: /^\/crm\/customers\/[^/]+\/contacts$/, title: 'Customer Contacts' },
    { pattern: /^\/crm\/customers\/[^/]+\/sites$/, title: 'Customer Sites' },
    { pattern: /^\/crm\/customers\/[^/]+\/support$/, title: 'Customer Support' }
