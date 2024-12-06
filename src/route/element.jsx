@@ -16,6 +16,7 @@ export const VerifyCodePage = Loadable(lazy(() => import('page/auth/verify-code'
 export const ResetPasswordPage = Loadable(lazy(() => import('page/auth/reset-password')))
 export const NewPasswordPage = Loadable(lazy(() => import('page/auth/new-password')))
 export const SetPasswordPage = Loadable(lazy(() => import('page/auth/set-password')))
+export const UserInvitePage = Loadable(lazy(() => import('page/auth/user-invite')))
 export const Login = Loadable(lazy(() => import('section/auth/login')))
 // home
 export const HomePage = Loadable(lazy(() => import('page/home/home')))

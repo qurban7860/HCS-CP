@@ -16,6 +16,7 @@ import {
  SetPasswordPage,
  ResetPasswordPage,
  NewPasswordPage,
+ UserInvitePage,
  // home:
  HomePage,
  // dashboard: general
@@ -77,6 +78,15 @@ export default function Router() {
       { path: 'reset-password', element: <ResetPasswordPage /> },
       { path: 'new-password/:token/:userId', element: <NewPasswordPage /> },
       { path: 'login-unprotected', element: <LoginPage /> },
+      {
+       path: 'user-invite',
+       element: (
+        <AuthGuard>
+         <DashboardLayout />
+        </AuthGuard>
+       ),
+       children: [{ element: <UserInvitePage />, index: true }]
+      },
       { path: 'register-unprotected', element: <RegisterPage /> }
      ]
     },
