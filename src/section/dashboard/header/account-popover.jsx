@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { getCustomer, setChangePasswordDialog, resetCustomer } from 'store/slice'
 import { dispatch } from 'store'
 import { useSettingContext, snack, Icon, ICON_NAME, useResponsive } from 'hook'
+import { PATH_AUTH } from 'route/path'
 import { Box, Divider, Dialog, Typography, Stack, MenuItem, Link } from '@mui/material'
 import { CustomAvatar, MenuPopover, IconButtonAnimate, ChangePasswordDialog, DisplayDialog } from 'component'
 import { themePreset } from 'theme'
@@ -19,9 +20,10 @@ export default function AccountPopover() {
  const { customer } = useSelector(state => state.customer)
  const navigate = useNavigate()
  const customerId = user?.customer
-
  const isMobile = useResponsive('down', 'sm')
  const isMounted = useRef(false)
+
+ const isCustomerAdmin = user?.roles?.some(role => role?.name === 'CustomerAdmin')
 
  const [openPopover, setOpenPopover] = useState(null)
  const [open, setOpen] = useState(false)
@@ -134,6 +136,16 @@ export default function AccountPopover() {
       </MenuItem>
      ))}
      <MenuItem onClick={handleChangePassword}>{t('change_password.label')}</MenuItem>
+     {isCustomerAdmin && (
+      <Fragment>
+       <Divider />
+       <MenuItem onClick={() => handleClickItem(PATH_AUTH.userInvite)}>
+        <Link underline='none' color='inherit' component={RouterLink}>
+         {t('invite_user.label')}
+        </Link>
+       </MenuItem>
+      </Fragment>
+     )}
      <Divider />
      <MenuItem
       onClick={() => {
