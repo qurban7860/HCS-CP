@@ -107,10 +107,9 @@ function UserInviteForm() {
  const onSubmit = async data => {
   try {
    await delay(2000)
-   //    setIsSuccessState(true)
-   //    setSubmittedData(data)
+   setIsSuccessState(true)
+   setSubmittedData(data)
 
-   console.log('data', data)
    const response = await dispatch(registerCustomer(data))
    if (response?.success) {
     snack(t('responses.success.user_invite_request_submitted'), { variant: COLOR.SUCCESS })
