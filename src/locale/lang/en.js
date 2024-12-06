@@ -203,6 +203,12 @@ const en = {
  howick_website: {
   label: `Howick Website`
  },
+ invite: {
+  label: `Invite`
+ },
+ invite_user: {
+  label: `Invite a User`
+ },
  inactive: {
   label: `Inactive`
  },
@@ -301,6 +307,12 @@ const en = {
   registration_process: {
    title: 'Registration Request has been submitted',
    first: 'Our team will review your registration request',
+   second: 'You will receive further instructions within 12-48 hours',
+   last: 'Check your email (<1>{{email}}</1>) for the invitation link'
+  },
+  user_invite_process: {
+   title: 'User Invite Request has been submitted',
+   first: 'Our team will review your user invite request',
    second: 'You will receive further instructions within 12-48 hours',
    last: 'Check your email (<1>{{email}}</1>) for the invitation link'
   }
@@ -445,6 +457,7 @@ const en = {
    logged_in: 'Logged in',
    logged_out: 'Logged out',
    register_request_submitted: 'Registration request submitted',
+   user_invite_request_submitted: 'User invite request submitted',
    details_updated: 'User details updated, navigating you to the Log in page...',
    password_updated: 'Password updated',
    reset_request_submitted: 'Password reset request submitted'
@@ -539,6 +552,9 @@ const en = {
  },
  username: {
   label: `Username`
+ },
+ user_invite: {
+  label: `User Invite`
  },
  view_jira: {
   label: `View in Jira`,
