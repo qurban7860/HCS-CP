@@ -32,6 +32,7 @@ export function AuthProvider({ children }) {
     user.customer = localStorage.getItem(LOCAL_STORAGE_KEY.CUSTOMER)
     user.email = localStorage.getItem(LOCAL_STORAGE_KEY.EMAIL)
     user.displayName = localStorage.getItem(LOCAL_STORAGE_KEY.NAME)
+    user.roles = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.ROLES))
 
     const userId = localStorage.getItem(LOCAL_STORAGE_KEY.USER_ID)
 
@@ -301,6 +302,7 @@ export function AuthProvider({ children }) {
    isAuthenticated: state.isAuthenticated,
    user: state.user,
    userId: state.userId,
+   userRoles: state.userRoles,
    isAllAccessAllowed: state.isAllAccessAllowed,
    isDisableDelete: state.isDisableDelete,
    isDashboardAccessLimited: state.isDashboardAccessLimited,
@@ -335,6 +337,7 @@ export function AuthProvider({ children }) {
    state.isDeveloper,
    state.user,
    state.userId,
+   state.userRoles,
    login,
    logout,
    register,
