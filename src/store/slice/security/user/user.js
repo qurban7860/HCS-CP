@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
-import { DEBUG, RESPONSE } from 'constant'
+import { DEBUG } from 'constant'
 
 const regEx = /^[^2]*/
 const initialState = {
@@ -19,6 +19,9 @@ const initialState = {
  userEmail: null,
  userLogin: null,
  userDisplayName: null,
+ userInviteDialog: false,
+ userInviteResponse: null,
+ securityUserTotalCount: 0,
  assignedUsers: [],
  signInLogs: [],
  changePasswordDialog: false,
@@ -60,6 +63,12 @@ const userSlice = createSlice({
    state.userDisplayName = User.displayName
    state.userRoles = User.roles
   },
+  setUserInviteDialog(state, action) {
+   state.userInviteDialog = action.payload
+  },
+  setSecurityUserTotalCount(state, action) {
+   state.securityUserTotalCount = action.payload
+  },
   getSecurityUserSuccess(state, action) {
    state.isLoading = false
    state.success = true
@@ -70,6 +79,7 @@ const userSlice = createSlice({
    state.isLoading = false
    state.success = true
    state.securityUsers = action.payload
+   state.securityUserTotalCount = action.payload.length
    state.initial = true
   },
   getLoggedInSecurityUserSuccess(state, action) {
@@ -89,6 +99,12 @@ const userSlice = createSlice({
    state.success = true
    state.verifiedInvite = action.payload
   },
+  getUserInviteResponseSuccess(state, action) {
+   state.isLoading = false
+   state.success = true
+   state.userInviteResponse = action.payload
+   state.initial = true
+  },
   resetLoadingResetPasswordEmail(state, action) {
    state.isLoadingResetPasswordEmail = false
   },
@@ -100,6 +116,12 @@ const userSlice = createSlice({
   },
   resetSecurityUsers(state) {
    state.securityUsers = []
+   state.responseMessage = null
+   state.success = false
+   state.isLoading = false
+  },
+  resetUserInviteResponse(state) {
+   state.userInviteResponse = null
    state.responseMessage = null
    state.success = false
    state.isLoading = false
@@ -133,9 +155,12 @@ export const {
  getVerifyInvite,
  setChangePasswordDialog,
  setResponseMessage,
+ setSecurityUserTotalCount,
  setSecurityUserProperties,
+ setUserInviteDialog,
  getSignInLogsSuccess,
  resetLoadingResetPasswordEmail,
+ resetUserInviteResponse,
  resetSecurityUser,
  resetSecurityUsers,
  resetSignInLogs,
@@ -146,17 +171,19 @@ export const {
 
 // :thunks
 
-export function getSecurityUsers() {
+export function getSecurityUsers(id) {
  return async dispatch => {
   dispatch(userSlice.actions.startLoading())
   try {
    const response = await axios.get(PATH_SERVER.SECURITY.USER.list, {
     params: {
-     isArchived: false
+     isArchived: false,
+     customer: id
     }
    })
    if (regEx.test(response.status)) {
-    dispatch(userSlice.actions.getSecurityUsersSuccess(response.data))
+    const Data = response.data?.filter(user => user.customer?._id === id)
+    dispatch(userSlice.actions.getSecurityUsersSuccess(Data))
    }
    return response
   } catch (error) {
@@ -232,6 +259,36 @@ export function sendUserInvite(Id) {
   } catch (error) {
    dispatch(userSlice.actions.hasError(error.Message))
    console.error(DEBUG.SEND_USER_INVITE, error)
+   throw error
+  }
+ }
+}
+
+export function addAndInviteSecurityUser(param) {
+ return async dispatch => {
+  dispatch(userSlice.actions.startLoading())
+  try {
+   const data = {
+    customer: param.customer?._id,
+    contact: param.contact?._id,
+    name: param.name,
+    phone: param.phone,
+    email: param.email,
+    login: param.email,
+    password: param.password,
+    roles: param.roles.map(role => role?._id),
+    dataAccessibilityLevel: 'RESTRICTED',
+    // machines: param.machines?.map(machines => machines?._id),
+    isInvite: true,
+    isActive: true,
+    currentEmployee: false,
+    multiFactorAuthentication: param.multiFactorAuthentication
+   }
+   const response = await axios.post(PATH_SERVER.SECURITY.USER.list, data)
+   dispatch(userSlice.actions.getUserInviteResponseSuccess(response.data))
+   return response
+  } catch (error) {
+   dispatch(userSlice.actions.hasError(error.Message))
    throw error
   }
  }
