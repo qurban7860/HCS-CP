@@ -1,36 +1,38 @@
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
-import { Trans } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
 import { useSettingContext, Icon, ICON_NAME } from 'hook'
-import { setCustomerTicketDialog } from 'store/slice'
-import { useTicketDefaultValues } from 'section/support'
-import { useMediaQuery, Grid, Dialog, DialogContent, DialogTitle, Divider, Typography, Box, Paper, List, ListItem, ListItemIcon, ListItemText, Avatar, Stack, Chip } from '@mui/material'
+import { setUserInviteDialog } from 'store/slice'
+import { PATH_SECURITY } from 'route/path'
+import { useMediaQuery, Grid, Dialog, DialogContent, DialogTitle, Divider, Typography, Avatar, Stack, Chip } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton } from 'theme/style'
-import { GLOBAL } from 'config/global'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GStyledLoadingButton, GBackdropPropsOption } from 'theme/style'
+import { PATH_AFTER_LOGIN } from 'config/global'
 import { TYPOGRAPHY, FLEX, KEY, FLEX_DIR } from 'constant'
-import { normalizer } from 'util/format'
-import { parseArrDesc } from 'util/parse-arr-desc'
-import { truncate } from 'util'
 
-const UserInviteSuccessDialog = ({ submittedData }) => {
- const { customer, isLoading, customerUserInviteDialog } = useSelector(state => state.customer)
+const UserInviteSuccessDialog = () => {
+ const { userInviteResponse, userInviteDialog } = useSelector(state => state.user)
  const { themeMode } = useSettingContext()
  const theme = useTheme()
+ const navigate = useNavigate()
  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
- //  const defaultValues = useTicketDefaultValues(customerTicket)
- const handleDialog = () => dispatch(setCustomerTicketDialog(false))
-
- const handleCustomerTicketOverview = jiraKey => {
-  dispatch(setCustomerTicketDialog(false))
-  const url = GLOBAL.JIRA_URL + jiraKey
-  window.open(url, KEY.BLANK)
+ const handleDialog = () => {
+  dispatch(setUserInviteDialog(false))
+  navigate(PATH_SECURITY.users.list)
  }
 
+ const handleNavigate = () => {
+  dispatch(setUserInviteDialog(false))
+  const url = PATH_AFTER_LOGIN
+  navigate(url)
+ }
+
+ const roleName = role => (role?.name === KEY.CUSTOMER_ADMIN ? 'Admin' : 'User')
+
  return (
-  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={customerUserInviteDialog} onClose={handleDialog} aria-describedby='alert-dialog-slide-description'>
+  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={userInviteDialog} onClose={handleDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle
     sx={{
@@ -39,47 +41,36 @@ const UserInviteSuccessDialog = ({ submittedData }) => {
      boxSizing: 'border-box',
      padding: theme.spacing(2)
     }}>
-    <GStyledSpanBox>
-     <Grid container flexDirection={FLEX_DIR.ROW} justifyContent='space-between'>
-      <Grid item sm={6}>
-       <GStyledSpanBox>
-        <Avatar
-         sx={{
-          width: 60,
-          height: 60,
-          bgcolor: 'success.light',
-          mx: 'auto',
-          mb: 2
-         }}>
-         <Icon icon={ICON_NAME.CHECK_CICLE_OUTLINE} width={40} sx={{ color: theme => theme.palette.primary.contrastText }} />
-        </Avatar>
-        <Typography variant={isDesktop ? TYPOGRAPHY.H5 : TYPOGRAPHY.H6}>{t('next_step.user_invite_process.title')} &nbsp;</Typography>
-       </GStyledSpanBox>
-      </Grid>
-     </Grid>
-    </GStyledSpanBox>
+    <Grid container gap={2}>
+     <GStyledSpanBox
+      gap={2}
+      sx={{
+       display: 'flex',
+       justifyContent: 'flex-start'
+      }}>
+      <Avatar
+       sx={{
+        width: 20,
+        height: 20,
+        bgcolor: theme.palette.howick.darkBlue
+       }}>
+       <Icon icon={ICON_NAME.CHECK_CICLE_OUTLINE} width={40} sx={{ color: theme.palette.grey[200] }} />
+      </Avatar>
+      <Typography variant={isDesktop ? TYPOGRAPHY.H4 : TYPOGRAPHY.H5}>{t('next_step.user_invite_process.sent').toUpperCase()} &nbsp;</Typography>
+     </GStyledSpanBox>
+    </Grid>
    </DialogTitle>
    <Divider orientation={KEY.HORIZONTAL} flexItem />
    <DialogContent dividers sx={{ px: 3, py: 2 }}>
     <Grid container spacing={2} flexDirection={FLEX_DIR.COLUMN}>
      <Grid item xs={12} sm={12} pb={1}>
-      <Box sx={{ textAlign: 'center', mb: 4 }}>
-       <Typography variant={TYPOGRAPHY.H4} gutterBottom>
-        {t('next_step.user_invite_process.title')}
-       </Typography>
-      </Box>
-
-      <Typography variant='h6' gutterBottom>
-       {t('submitted_details.label')} :
-      </Typography>
-
       <Grid container spacing={3}>
        <Grid item xs={12} md={6}>
         <Typography color='text.secondary' variant={TYPOGRAPHY.OVERLINE0}>
          {t('organization_name.label')}
         </Typography>
         <Typography variant={TYPOGRAPHY.BODY1} sx={{ mb: 2 }}>
-         &nbsp;{submittedData.customerName}
+         &nbsp;{userInviteResponse?.user?.customer?.name}
         </Typography>
        </Grid>
 
@@ -88,7 +79,7 @@ const UserInviteSuccessDialog = ({ submittedData }) => {
          {t('contact_person_name.label')}
         </Typography>
         <Typography variant={TYPOGRAPHY.BODY1} sx={{ mb: 2 }}>
-         &nbsp;{submittedData.contactPersonName}
+         &nbsp;{userInviteResponse?.user?.name}
         </Typography>
        </Grid>
 
@@ -97,63 +88,32 @@ const UserInviteSuccessDialog = ({ submittedData }) => {
          {t('email.label')}
         </Typography>
         <Typography variant={TYPOGRAPHY.BODY1} sx={{ mb: 2 }}>
-         &nbsp;{submittedData.email}
+         &nbsp;{userInviteResponse?.user?.email}
         </Typography>
        </Grid>
 
-       {submittedData.phoneNumber && (
+       {userInviteResponse?.user?.phone && (
         <Grid item xs={12} md={6}>
          <Typography color='text.secondary' variant={TYPOGRAPHY.OVERLINE0}>
           {t('contact_number.label')}
          </Typography>
          <Typography variant={TYPOGRAPHY.BODY1} sx={{ mb: 2 }}>
-          &nbsp;{submittedData.phoneNumber}
+          &nbsp;{userInviteResponse.user.phone}
          </Typography>
         </Grid>
        )}
-
-       {submittedData.address && (
-        <Grid item xs={12} md={6}>
-         <Typography color='text.secondary' variant={TYPOGRAPHY.OVERLINE0}>
-          {t('address.label')}
-         </Typography>
-         <Typography variant={TYPOGRAPHY.BODY1} sx={{ mb: 2 }}>
-          &nbsp;{submittedData.address}
-         </Typography>
-        </Grid>
-       )}
-
-       <Grid item xs={12} md={6}>
-        <Typography color='text.secondary' variant={TYPOGRAPHY.OVERLINE0}>
-         {t('country.label')}
-        </Typography>
-        <Typography variant={TYPOGRAPHY.BODY1} sx={{ mb: 2 }}>
-         &nbsp;{submittedData.country.label}
-        </Typography>
-       </Grid>
 
        <Grid item xs={12}>
         <Typography color='text.secondary' variant={TYPOGRAPHY.OVERLINE0}>
-         {submittedData.machineSerialNos.length > 1 ? t('machine.machines.label') : t('machine.label')}
+         {userInviteResponse?.user?.roles?.length > 1 ? t('role.roles.label') : t('role.label')}
         </Typography>
         <Stack direction='row' spacing={1} sx={{ mt: 1, flexWrap: 'wrap', gap: 1 }}>
          &nbsp;
-         {submittedData.machineSerialNos.map((serial, index) => (
-          <Chip key={index} label={<Typography variant={TYPOGRAPHY.H6}>{serial}</Typography>} variant='outlined' size='small' sx={{ borderRadius: 0.2 }} />
+         {userInviteResponse?.user?.roles?.map((role, index) => (
+          <Chip key={index} label={<Typography variant={TYPOGRAPHY.H6}>{roleName(role)}</Typography>} variant='outlined' size='small' sx={{ borderRadius: 0.2 }} />
          ))}
         </Stack>
        </Grid>
-
-       {submittedData.customerNote && (
-        <Grid item xs={12}>
-         <Typography color='text.secondary' variant={TYPOGRAPHY.OVERLINE0}>
-          {t('additional_notes.label')}
-         </Typography>
-         <Typography variant={TYPOGRAPHY.BODY1} sx={{ mb: 2 }}>
-          {submittedData.customerNote}
-         </Typography>
-        </Grid>
-       )}
       </Grid>
 
       <Grid item sm={12} my={2}>
@@ -162,7 +122,9 @@ const UserInviteSuccessDialog = ({ submittedData }) => {
          <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog}>
           {t('close.label').toUpperCase()}
          </GStyledCloseButton>
-         {/* <Button label={t('view_jira.label')} icon={ICON_NAME.JIRA} onClick={() => handleCustomerTicketOverview(defaultValues?.key)} /> */}
+         <GStyledLoadingButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleNavigate} mode={themeMode}>
+          {t('go_to_dashboard.label').toUpperCase()}
+         </GStyledLoadingButton>
         </Grid>
        </Grid>
       </Grid>
@@ -174,7 +136,7 @@ const UserInviteSuccessDialog = ({ submittedData }) => {
 }
 
 UserInviteSuccessDialog.propTypes = {
- submittedData: PropTypes.object.isRequired
+ responseUser: PropTypes.object
 }
 
 export default UserInviteSuccessDialog
