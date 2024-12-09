@@ -6,17 +6,18 @@ import { parseAddress } from 'util'
  * @param {Object} userLocale - The customer data object.
  * @returns {Object} - The default values object.
  */
-export function useUserInviteDefaultValues(customer, machines) {
+export function useUserInviteDefaultValues(customer) {
  return useMemo(() => {
   return {
-   customerName: customer?.name,
-   contactPersonName: '',
-   address: parseAddress(customer?.mainSite?.address),
-   country: customer?.mainSite?.address?.country || '',
+   customer: customer,
+   contact: null,
+   name: '',
+   phone: '',
    email: '',
-   machineSerialNos: machines.map(machine => machine.serialNo || ''),
-   phoneNumber: (customer?.mainSite?.phoneNumbers[0] && '+' + customer?.mainSite?.phoneNumbers[0]?.countryCode + customer?.mainSite?.phoneNumbers[0]?.contactNumber) || '',
-   customerNote: ''
+   password: '',
+   confirmPassword: '',
+   roles: [],
+   multiFactorAuthentication: false
   }
  }, [customer])
 }

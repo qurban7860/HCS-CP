@@ -1,75 +1,93 @@
-import { useEffect, useLayoutEffect, useState, useCallback, Fragment } from 'react'
+import { useEffect, useState, useCallback, Fragment } from 'react'
 import { t } from 'i18next'
-import { Trans } from 'react-i18next'
-import _ from 'lodash'
 import { useSelector } from 'react-redux'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuthContext } from 'auth/use-auth-context'
-import { snack, useResponsive } from 'hook'
+import { snack, useResponsive, useSettingContext } from 'hook'
 import { dispatch } from 'store'
-import { useForm, Controller } from 'react-hook-form'
-import { registerCustomer, getCustomerMachines, resetCustomerMachines } from 'store/slice'
+import { useForm } from 'react-hook-form'
+import {
+ addAndInviteSecurityUser,
+ getCustomer,
+ getSecurityUsers,
+ getActiveContacts,
+ getCustomerRoles,
+ setUserInviteDialog,
+ resetUserInviteResponse,
+ resetCustomer,
+ resetActiveContacts,
+ resetSecurityUsers
+} from 'store/slice'
 import { UserInviteSchema } from 'schema'
 import { useUserInviteDefaultValues } from 'section/auth'
-import { useTheme, Typography, Grid, Link, Box } from '@mui/material'
-import { AutocompleteScrollChipContainer, GridViewField, RHFRequiredTextFieldWrapper } from 'component'
-import FormProvider, { RHFTextField, RHFCountryAutocomplete, RHFPhoneTextField } from 'component/hook-form'
-import { GLOBAL } from 'config/global'
+import { Grid, Box, Checkbox, Typography } from '@mui/material'
+import { RHFRequiredTextFieldWrapper, UserInviteSuccessDialog } from 'component'
+import FormProvider, { RHFTextField, RHFAutocomplete, RHFPhoneInput } from 'component/hook-form'
+import { GStyledLoadingButton, GStyledSpanBox, GStyledFieldChip } from 'theme/style'
 import { RADIUS } from 'config'
-import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, COUNTRY, TYPOGRAPHY, FLEX_DIR } from 'constant'
-import { GStyledLoadingButton, GStyledCenteredTextBox } from 'theme/style'
-import { RegisterSuccessCard } from 'section/auth'
-import { delay } from 'util'
+import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, TYPOGRAPHY, FLEX_DIR } from 'constant'
+import { delay, getCountryCode } from 'util'
 
 /**
  * Used by the customer admin to invite their own users to the Howick Portal
  * @returns {JSX.Element}
  */
 function UserInviteForm() {
- const { customer } = useSelector(state => state.customer)
- const { customerMachines } = useSelector(state => state.machine)
- const { user } = useAuthContext
  const [isFormComplete, setIsFormComplete] = useState(false)
- const [rows, setRows] = useState(1)
- const [submittedData, setSubmittedData] = useState(null)
  const [isSuccessState, setIsSuccessState] = useState(false)
+ const { customer } = useSelector(state => state.customer)
+ const { activeContacts } = useSelector(state => state.contact)
+ const { userInviteDialog, securityUserTotalCount } = useSelector(state => state.user)
+ const { customerRoles } = useSelector(state => state.role)
+ const { user } = useAuthContext()
+ const { themeMode } = useSettingContext()
 
  const regEx = new RegExp(REGEX.ERROR_CODE)
  const isMobile = useResponsive('down', 'sm')
 
- useLayoutEffect(() => {
-  dispatch(resetCustomerMachines())
+ const roleName = role => (role?.name === KEY.CUSTOMER_ADMIN ? 'Admin' : 'User' || '')
+ const countryCode = getCountryCode(customer?.mainSite?.address?.country) || 'NZ'
+
+ useEffect(() => {
+  dispatch(resetSecurityUsers())
+  dispatch(resetCustomer())
+  dispatch(resetActiveContacts())
+  dispatch(resetUserInviteResponse())
  }, [dispatch])
 
  useEffect(() => {
-  const debounce = _.debounce(() => {
-   dispatch(getCustomerMachines(customer?._id))
-  }, 300)
-  debounce()
-  return () => debounce.cancel()
- }, [customer?._id])
- const defaultValues = useUserInviteDefaultValues(customer, customerMachines)
+  if (user?.customer) {
+   const fetchData = async () => {
+    await dispatch(getSecurityUsers(user.customer))
+    await dispatch(getCustomer(user.customer))
+    await dispatch(getActiveContacts(user.customer))
+    await dispatch(getCustomerRoles())
+   }
+   fetchData()
+  }
+ }, [user, dispatch])
+
+ const defaultValues = useUserInviteDefaultValues(customer)
 
  const methods = useForm({
   resolver: yupResolver(UserInviteSchema),
-  defaultValues
+  defaultValues,
+  mode: 'onChange'
  })
 
  const {
   reset,
-  getValues,
   setError,
-  setValue,
   watch,
   handleSubmit,
-  formState: { errors, isSubmitting, isSubmitSuccessful },
-  clearErrors
+  formState: { errors, isSubmitting, isSubmitSuccessful }
  } = methods
- const { contactPersonName, email } = watch()
+
+ const { email, contact, name, roles } = watch()
 
  const checkFormCompletion = useCallback(() => {
-  setIsFormComplete(!!contactPersonName && !!REGEX.EMAIL.test(email))
- }, [contactPersonName, email])
+  setIsFormComplete(!!name && !!REGEX.EMAIL.test(email) && !!contact && roles.length > 0)
+ }, [name, email, contact, roles])
 
  useEffect(() => {
   if (!isSuccessState) {
@@ -106,53 +124,76 @@ function UserInviteForm() {
 
  const onSubmit = async data => {
   try {
-   await delay(2000)
    setIsSuccessState(true)
-   setSubmittedData(data)
-
-   const response = await dispatch(registerCustomer(data))
-   if (response?.success) {
+   const Data = {
+    ...data,
+    customer
+   }
+   const response = await dispatch(addAndInviteSecurityUser(Data))
+   await delay(2000)
+   if (REGEX.SUCCESS_CODE.test(response.status)) {
     snack(t('responses.success.user_invite_request_submitted'), { variant: COLOR.SUCCESS })
-    await delay(2000)
     reset()
+    dispatch(setUserInviteDialog(true))
+    setIsFormComplete(false)
+    setIsSuccessState(false)
+   } else {
+    console.error('Submission failed:', response)
+    snack('Submission failed', { variant: COLOR.ERROR })
+    setIsSuccessState(false)
    }
   } catch (error) {
    handleSubmissionError(error)
+   setIsSuccessState(false)
   }
  }
 
  return (
   <Fragment>
+   <Grid container>
+    <Grid item xs={12} sm={12} md={12}>
+     {securityUserTotalCount && (
+      <GStyledSpanBox>
+       <Typography variant={TYPOGRAPHY.BODY1}>{t('total_users.label') + ':'}</Typography>
+       <Typography variant={TYPOGRAPHY.H5}>&nbsp;{securityUserTotalCount}</Typography>
+      </GStyledSpanBox>
+     )}
+    </Grid>
+   </Grid>
    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
     <Grid container my={4} direction={{ xs: 'column', md: 'row' }} flex={1} rowSpacing={4} gridAutoFlow={isMobile ? FLEX_DIR.COLUMN : FLEX_DIR.ROW} columnSpacing={2}>
      <Grid item xs={12} sm={6} md={6}>
-      <RHFTextField
-       name='customerName'
-       label={t('organization_name.label')}
-       autoComplete={LABEL.NAME}
-       aria-label={t('organization_name.label')}
-       helperText={errors.customerName ? errors.customerName.message : ''}
-       required
-       disabled
-      />
-     </Grid>
-     <Grid item xs={12} sm={6} md={6}>
-      <RHFRequiredTextFieldWrapper condition={!contactPersonName}>
-       <RHFTextField
-        name='contactPersonName'
-        label={t('full_name.label')}
-        autoComplete={KEY.NAME}
-        aria-label={KEY.NAME}
-        helperText={errors.contactPersonName ? errors.contactPersonName.message : ''}
-        required
+      <RHFRequiredTextFieldWrapper condition={!contact}>
+       <RHFAutocomplete
+        name='contact'
+        label={t('contact.label')}
+        options={activeContacts}
+        getOptionLabel={option => `${option?.firstName || ''} ${option?.lastName || ''}`}
+        isOptionEqualToValue={(option, value) => option?._id === value?._id}
+        renderOption={(props, option) => (
+         <li {...props} key={option?._id}>
+          {option?.firstName || ''} {option?.lastName || ''}
+         </li>
+        )}
        />
       </RHFRequiredTextFieldWrapper>
      </Grid>
      <Grid item xs={12} sm={6} md={6}>
-      <RHFTextField name='address' label={t('organization_address.label')} autoComplete='address' helperText={errors.address ? errors.address.message : ''} disabled />
+      <RHFRequiredTextFieldWrapper condition={!name}>
+       <RHFTextField name='name' label={t('full_name.label')} autoComplete={KEY.NAME} aria-label={KEY.NAME} helperText={errors.contactPersonName ? errors.contactPersonName.message : ''} required />
+      </RHFRequiredTextFieldWrapper>
      </Grid>
      <Grid item xs={12} sm={6} md={6}>
-      <RHFTextField name='country' label={t('country.label')} helperText={errors.country ? errors.country.message : ''} required disabled fullWidth />
+      <RHFPhoneInput
+       name='phone'
+       label={t('contact_number.label')}
+       autoComplete={KEY.PHONE}
+       placeholder={t('contact_number.label')}
+       aria-label={t('contact_number.label')}
+       error={!!errors.phone}
+       helperText={errors.phone ? errors.phone.message : ''}
+       defaultCountry={countryCode}
+      />
      </Grid>
      <Grid item xs={12} sm={6} md={6}>
       <RHFRequiredTextFieldWrapper condition={REGEX.EMAIL.test(email) === false}>
@@ -168,69 +209,29 @@ function UserInviteForm() {
        />
       </RHFRequiredTextFieldWrapper>
      </Grid>
+
      <Grid item xs={12} sm={6} md={6}>
-      <RHFTextField
-       name='phoneNumber'
-       label={t('contact_number.label')}
-       autoComplete={KEY.PHONE}
-       placeholder={t('contact_number.label')}
-       aria-label={t('contact_number.label')}
-       helperText={errors.phoneNumber ? errors.phoneNumber.message : ''}
-       disabled
-      />
-     </Grid>
-     {/* <GridViewField
-      name='machineSerialNos'
-      heading={t('machine.machines.label')}
-      gridSize={12}
-      chip={defaultValues?.machineSerialNos}
-      helperText={errors.machineSerialNos ? errors.machineSerialNos.message : ''}
-      disabled
-     /> */}
-     {/* <Grid item xs={12}>
-      <Controller
-       name='machineSerialNos'
-       control={methods.control}
-       defaultValue={[]}
-       render={({ field: { onChange, value }, fieldState: { error } }) => (
-        <AutocompleteScrollChipContainer
-         value={value}
-         onChange={(_, newValue) => {
-          onChange(newValue)
-          setIsTyping(newValue.length > 0)
-         }}
-         handleInputChange={handleValidateSerialNumbers}
-         renderInput={params => (
-          <RHFTextField
-           {...params}
-           type='text'
-           name='machineSerialNos'
-           label={t('machine.machines.label')}
-           onChange={event => setIsTyping(event.target.value.length > 0)}
-           placeholder='Enter machine serial numbers'
-           helperText={error ? error.message : 'Press enter at the end of each serial number'}
-           FormHelperTextProps={{ sx: { display: isTyping ? 'block' : 'none' } }}
-           disabled
-          />
-         )}
-         fullWidth
-        />
+      <RHFAutocomplete
+       multiple
+       disableCloseOnSelect
+       filterSelectedOptions
+       name='roles'
+       label={t('role.roles.label')}
+       options={customerRoles}
+       getOptionLabel={option => roleName(option)}
+       isOptionEqualToValue={(option, value) => option?._id === value?._id}
+       renderOption={(props, option, { selected }) => (
+        <li {...props}>
+         <Checkbox checked={selected} />
+         {roleName(option)}
+        </li>
        )}
-      />
-     </Grid> */}
-     <Grid item xs={12}>
-      <RHFTextField
-       name='customerNote'
-       label={t('note.label')}
-       autoComplete='customerNote'
-       aria-label={t('note.label')}
-       placeholder='Any additional notes?'
-       helperText={errors.customerNote ? errors.customerNote.message : ''}
-       multiline
-       rows={rows}
-       mt={2}
-       onFocus={() => setRows(3)}
-       onBlur={() => setRows(1)}
+       renderTags={(value, getTagProps) =>
+        value.map((option, index) => {
+         const { key, ...tagProps } = getTagProps({ index })
+         return <GStyledFieldChip key={option?._id} label={roleName(option)} mode={themeMode} {...tagProps} />
+        })
+       }
       />
      </Grid>
     </Grid>
@@ -245,15 +246,16 @@ function UserInviteForm() {
        type={KEY.SUBMIT}
        variant={KEY.CONTAINED}
        loading={isSubmitting}
-       disabled={Object.keys(errors).length > 0 || !isFormComplete}
+       disabled={!isFormComplete}
        sx={RADIUS.BORDER}>
-       {t('invite.label').toUpperCase()}
+       {t('send_invitation.label').toUpperCase()}
       </GStyledLoadingButton>
      </Grid>
      {/* Spacer */}
      <Box height={{ xs: 50, md: 100 }} />
     </Grid>
    </FormProvider>
+   {userInviteDialog && <UserInviteSuccessDialog />}
   </Fragment>
  )
 }
