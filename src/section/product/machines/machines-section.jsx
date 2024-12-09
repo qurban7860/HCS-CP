@@ -23,10 +23,10 @@ import {
 } from 'store/slice'
 import { Table, Grid, Typography } from '@mui/material'
 import { GStyledTableHeaderBox } from 'theme/style'
-import { TableNoData, MotionLazyContainer, SkeletonTable, SearchBox, TableTitleBox } from 'component'
+import { TableNoData, SkeletonTable, SearchBox, TableTitleBox } from 'component'
 import { MachineTable, MachineHeader, MachineListPagination, MachineCard } from 'section/product'
 import { MARGIN, TABLE } from 'config'
-import { KEY, TITLE, FLEX, FLEX_DIR, TYPOGRAPHY } from 'constant'
+import { KEY, TITLE, FLEX_DIR, TYPOGRAPHY } from 'constant'
 import { StyledScrollTableContainer } from './style'
 
 const MachineListSection = ({ isArchived }) => {
@@ -34,11 +34,10 @@ const MachineListSection = ({ isArchived }) => {
  const { machines, selectedMachineCard, initial, isLoading, machinePage, machineRowsPerPage } = useSelector(state => state.machine)
  const { securityUser } = useSelector(state => state.user)
  const { userId } = useAuthContext()
+ const { themeMode } = useSettingContext()
 
  const isMobile = useResponsive('down', 'sm')
-
  const navigate = useNavigate()
- const { themeMode } = useSettingContext()
  const denseHeight = TABLE.DENSE_HEIGHT
 
  const axiosToken = () => axios.CancelToken.source()
