@@ -9,8 +9,9 @@ import { GStyledWelcomeContainerDiv, GStyledWelcomeDescription, GStyledSpanBox, 
 import { KEY, TYPOGRAPHY } from 'constant'
 import { ASSET } from 'config'
 
-function Welcome({ title, description, action, img, customer, isCustomerLoading, ...other }) {
+function Welcome({ action, img, customer, isCustomerLoading, ...other }) {
  const { customerMachines, isLoading } = useSelector(state => state.machine)
+ const { securityUserTotalCount } = useSelector(state => state.user)
  const { themeMode } = useSettingContext()
  const theme = useTheme()
 
@@ -63,10 +64,10 @@ function Welcome({ title, description, action, img, customer, isCustomerLoading,
               width: 15
              }}
             />
-            <Typography variant={TYPOGRAPHY.OVERLINE0} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+            <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
              {(customerMachines?.length > 1 ? t('machine.machines.label') : t('machine.label')) + ':'}
             </Typography>
-            <Typography variant={TYPOGRAPHY.BODY1} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+            <Typography variant={isDesktop ? TYPOGRAPHY.BODY1 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
              {customerMachines?.length} {KEY.MACHINES}
             </Typography>
            </Fragment>
@@ -84,11 +85,32 @@ function Welcome({ title, description, action, img, customer, isCustomerLoading,
               width: 15
              }}
             />
-            <Typography variant={TYPOGRAPHY.OVERLINE0} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+            <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
              {t('portal_synced.label') + ':'}
             </Typography>
-            <Typography variant={TYPOGRAPHY.BODY1} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+            <Typography variant={isDesktop ? TYPOGRAPHY.BODY1 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
              {portalSyncedMachines?.length} / {customerMachines?.length} {customerMachines?.length > 1 ? t('machine.machines.label') : t('machine.label')}
+            </Typography>
+           </Fragment>
+          )}
+         </GStyledSpanBox>
+         <GStyledSpanBox px={2}>
+          {isLoading ? (
+           () => <SkeletonViewFormField />
+          ) : (
+           <Fragment>
+            <Icon
+             icon={ICON_NAME.USERS}
+             color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]}
+             sx={{
+              width: 15
+             }}
+            />
+            <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+             {t('user.users.label') + ':'}
+            </Typography>
+            <Typography variant={isDesktop ? TYPOGRAPHY.BODY1 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+             {securityUserTotalCount} {t('user.users.label')}
             </Typography>
            </Fragment>
           )}
