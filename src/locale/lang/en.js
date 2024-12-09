@@ -52,7 +52,6 @@ const en = {
   label: `Address Information`
  },
  app: `app`,
- user: `user`,
  list: `list`,
  edit: `edit`,
  shop: `shop`,
@@ -568,6 +567,13 @@ const en = {
  },
  username: {
   label: `Username`
+ },
+ user: {
+  local: `user`,
+  label: `User`,
+  users: {
+   label: `Users`
+  }
  },
  user_details: {
   label: `User Details`
