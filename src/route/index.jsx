@@ -22,6 +22,7 @@ import {
  // dashboard: general
  GeneralAppPage,
  // security:
+ UserListPage,
  UserProfilePage,
  // product:
  MachinePage,
@@ -132,6 +133,10 @@ export default function Router() {
       {
        path: 'users',
        children: [
+        {
+         path: 'list',
+         element: <UserListPage />
+        },
         {
          path: 'profile',
          element: <UserProfilePage />

@@ -44,6 +44,7 @@ export const LogListPage = Loadable(lazy(() => import('page/log/logs')))
 // support
 export const TicketsListPage = Loadable(lazy(() => import('page/support/tickets/tickets')))
 // user
+export const UserListPage = Loadable(lazy(() => import('page/security/users/users')))
 export const UserProfilePage = Loadable(lazy(() => import('page/security/user/user')))
 // blanks
 export const BlankPage = Loadable(lazy(() => import('page/dashboard/blank')))

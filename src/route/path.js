@@ -144,10 +144,10 @@ export const PATH_SECURITY = {
  root: ROOTS_SECURITY,
  permissionDenied: path(ROOTS_SECURITY, '/permission-denied'),
  users: {
-  root: path(ROOTS_SECURITY, '/users'),
+  root: conNex(ROOTS_SECURITY, '/users'),
   new: path(ROOTS_SECURITY, `/users/new/`),
   invite: path(ROOTS_SECURITY, `/users/invite/`),
-  list: path(ROOTS_SECURITY, '/users/list'),
+  list: conNex(ROOTS_SECURITY, '/users/list'),
   cards: path(ROOTS_SECURITY, '/users/cards'),
   profile: path(ROOTS_SECURITY, '/users/profile'),
   editProfile: path(ROOTS_SECURITY, '/users/editProfile'),
