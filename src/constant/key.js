@@ -82,6 +82,7 @@ const KEY = {
 
  // default
  AUTO: 'auto',
+ DEFAULT_COUNTRY_CODE: 'NZ',
  IMG: 'img',
  END: 'end',
  ACTIVE: 'active',
