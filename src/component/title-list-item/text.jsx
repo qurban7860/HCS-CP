@@ -39,7 +39,7 @@ const TitleListItemText = ({ truncatedName, tradingAliases }) => {
 
 TitleListItemText.propTypes = {
  truncatedName: PropTypes.string.isRequired,
- tradingAliases: PropTypes.array
+ tradingAliases: PropTypes.oneOfType([PropTypes.array, PropTypes.string])
 }
 
 export default TitleListItemText
