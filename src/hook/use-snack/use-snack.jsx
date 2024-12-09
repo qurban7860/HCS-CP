@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import { Fragment } from 'react'
-import { AnimatePresence } from 'framer-motion'
 import { SnackbarProvider as NotistackProvider, useSnackbar } from 'notistack'
 import { Slide, IconButton } from '@mui/material'
 import { useIcon, ICON_NAME } from 'hook'
@@ -48,7 +47,7 @@ export default function SnackProvider({ children }) {
       <Icon icon={closeIcon} />
      </IconButton>
     )}>
-    <AnimatePresence>{children}</AnimatePresence>
+    {children}
    </NotistackProvider>
   </Fragment>
  )
