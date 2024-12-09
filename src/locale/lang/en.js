@@ -181,6 +181,9 @@ const en = {
  go_back: {
   label: `Go Back`
  },
+ go_to_dashboard: {
+  label: `Go to Dashboard`
+ },
  graph: {
   label: `Graph`,
   graphs: {
@@ -312,6 +315,7 @@ const en = {
   },
   user_invite_process: {
    title: 'User Invite Request has been submitted',
+   sent: 'User invite  sent',
    first: 'Our team will review your user invite request',
    second: 'You will receive further instructions within 12-48 hours',
    last: 'Check your email (<1>{{email}}</1>) for the invitation link'
@@ -425,6 +429,9 @@ const en = {
  title: {
   label: `Title`
  },
+ total_users: {
+  label: `Total Users`
+ },
  register: {
   label: `Register`
  },
@@ -474,6 +481,12 @@ const en = {
    unexpected_error: 'An unexpected error occurred'
   }
  },
+ role: {
+  label: `Role`,
+  roles: {
+   label: `Roles`
+  }
+ },
  save: {
   label: `Save`
  },
@@ -482,6 +495,9 @@ const en = {
  },
  select_filter: {
   label: `Select Filter`
+ },
+ send_invitation: {
+  label: `Send Invitation`
  },
  send_reset_password_request: {
   label: `Send Reset Password Request`
@@ -552,6 +568,9 @@ const en = {
  },
  username: {
   label: `Username`
+ },
+ user_details: {
+  label: `User Details`
  },
  user_invite: {
   label: `User Invite`
