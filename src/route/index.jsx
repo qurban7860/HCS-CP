@@ -16,11 +16,13 @@ import {
  SetPasswordPage,
  ResetPasswordPage,
  NewPasswordPage,
+ UserInvitePage,
  // home:
  HomePage,
  // dashboard: general
  GeneralAppPage,
  // security:
+ UserListPage,
  UserProfilePage,
  // product:
  MachinePage,
@@ -77,6 +79,15 @@ export default function Router() {
       { path: 'reset-password', element: <ResetPasswordPage /> },
       { path: 'new-password/:token/:userId', element: <NewPasswordPage /> },
       { path: 'login-unprotected', element: <LoginPage /> },
+      {
+       path: 'user-invite',
+       element: (
+        <AuthGuard>
+         <DashboardLayout />
+        </AuthGuard>
+       ),
+       children: [{ element: <UserInvitePage />, index: true }]
+      },
       { path: 'register-unprotected', element: <RegisterPage /> }
      ]
     },
@@ -122,6 +133,10 @@ export default function Router() {
       {
        path: 'users',
        children: [
+        {
+         path: 'list',
+         element: <UserListPage />
+        },
         {
          path: 'profile',
          element: <UserProfilePage />

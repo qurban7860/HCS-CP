@@ -16,6 +16,7 @@ export const VerifyCodePage = Loadable(lazy(() => import('page/auth/verify-code'
 export const ResetPasswordPage = Loadable(lazy(() => import('page/auth/reset-password')))
 export const NewPasswordPage = Loadable(lazy(() => import('page/auth/new-password')))
 export const SetPasswordPage = Loadable(lazy(() => import('page/auth/set-password')))
+export const UserInvitePage = Loadable(lazy(() => import('page/auth/user-invite')))
 export const Login = Loadable(lazy(() => import('section/auth/login')))
 // home
 export const HomePage = Loadable(lazy(() => import('page/home/home')))
@@ -43,6 +44,7 @@ export const LogListPage = Loadable(lazy(() => import('page/log/logs')))
 // support
 export const TicketsListPage = Loadable(lazy(() => import('page/support/tickets/tickets')))
 // user
+export const UserListPage = Loadable(lazy(() => import('page/security/users/users')))
 export const UserProfilePage = Loadable(lazy(() => import('page/security/user/user')))
 // blanks
 export const BlankPage = Loadable(lazy(() => import('page/dashboard/blank')))

@@ -20,5 +20,6 @@ export { default as AuthGateway } from './auth-gateway'
 
 export * from './default-value/register'
 export * from './default-value/set-password'
+export * from './default-value/user-invite'
 export * from './register'
 export * from './style'

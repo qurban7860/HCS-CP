@@ -1,4 +1,4 @@
-import { memo, useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react'
+import { memo, useEffect, useLayoutEffect, useState } from 'react'
 import { useAuthContext } from 'auth/use-auth-context'
 import { t } from 'i18next'
 import _ from 'lodash'
@@ -7,6 +7,7 @@ import { useResponsive } from 'hook'
 import {
  getContacts,
  getCustomerTickets,
+ getSecurityUsers,
  getCustomerMachines,
  setMachineDialog,
  setMachineSiteDialog,
@@ -15,7 +16,8 @@ import {
  resetMachineSiteDialogData,
  resetContact,
  resetCustomerTickets,
- resetMachines
+ resetMachines,
+ resetSecurityUsers
 } from 'store/slice'
 import { useCustomerDefaultValues } from 'section/crm/customer'
 import { SupportTicketWidget } from 'section/crm/support'
@@ -46,23 +48,15 @@ function GeneralAppPage() {
   dispatch(resetCustomerMachines())
   dispatch(resetContact())
   dispatch(resetMachines())
+  dispatch(resetSecurityUsers())
   dispatch(resetMachineSiteDialogData())
  }, [dispatch])
-
- //  useEffect(() => {
- //   const debounce = _.debounce(() => {
- //    if (customerId && customer?._id) {
- //     dispatch(getCustomer(customerId))
- //    }
- //   }, 300)
- //   debounce()
- //   return () => debounce.cancel()
- //  }, [customerId, customer?._id])
 
  useEffect(() => {
   const debounce = _.debounce(() => {
    dispatch(getCustomerMachines(customerId))
    dispatch(getContacts(customerId))
+   dispatch(getSecurityUsers(customerId))
   }, 300)
   debounce()
   return () => debounce.cancel()

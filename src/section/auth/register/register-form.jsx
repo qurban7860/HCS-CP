@@ -14,12 +14,10 @@ import { AutocompleteScrollChipContainer, RHFRequiredTextFieldWrapper } from 'co
 import FormProvider, { RHFTextField, RHFCountryAutocomplete, RHFPhoneTextField } from 'component/hook-form'
 import { GLOBAL } from 'config/global'
 import { RADIUS } from 'config'
-import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, VARIANT, SIZE, COLOR, COUNTRY, FLEX, FLEX_DIR } from 'constant'
+import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, COUNTRY, TYPOGRAPHY, FLEX_DIR } from 'constant'
 import { GStyledLoadingButton, GStyledCenteredTextBox } from 'theme/style'
 import { RegisterSuccessCard } from 'section/auth'
 import { delay } from 'util'
-
-const { TYPOGRAPHY } = VARIANT
 
 /**
  * [!Note]: This will be refined

@@ -45,6 +45,7 @@ export { default as MachineDialog } from './dialog/machine'
 export { default as SiteDialog } from './dialog/site'
 export { default as MachineSupportTicketDialog } from './dialog/machine-support-ticket'
 export { default as SupportTicketDialog } from './dialog/support-ticket'
+export { default as UserInviteSuccessDialog } from './dialog/user-invite-success'
 // @drawer
 export { default as DrawerMenu } from './drawer/menu'
 // @dropdown

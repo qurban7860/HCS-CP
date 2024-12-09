@@ -40,6 +40,7 @@ export const PATH_AUTH = {
  registerUnprotected: conNex(ROOTS_AUTH, 'register-unprotected'),
  verify: conNex(ROOTS_AUTH, 'verify'),
  resetPassword: conNex(ROOTS_AUTH, 'reset-password'),
+ userInvite: conNex(ROOTS_AUTH, 'user-invite'),
  newPassword: (token, userId) => path(ROOTS_AUTH, 'new-password', token, userId),
  setPassword: (token, userId) => conNex(ROOTS_AUTH, 'set-password', token, userId),
  authenticate: conNex(ROOTS_AUTH, 'authenticate')
@@ -143,10 +144,10 @@ export const PATH_SECURITY = {
  root: ROOTS_SECURITY,
  permissionDenied: path(ROOTS_SECURITY, '/permission-denied'),
  users: {
-  root: path(ROOTS_SECURITY, '/users'),
+  root: conNex(ROOTS_SECURITY, '/users'),
   new: path(ROOTS_SECURITY, `/users/new/`),
   invite: path(ROOTS_SECURITY, `/users/invite/`),
-  list: path(ROOTS_SECURITY, '/users/list'),
+  list: conNex(ROOTS_SECURITY, '/users/list'),
   cards: path(ROOTS_SECURITY, '/users/cards'),
   profile: path(ROOTS_SECURITY, '/users/profile'),
   editProfile: path(ROOTS_SECURITY, '/users/editProfile'),

@@ -115,6 +115,7 @@ const ICON_WEB = {
  TRANSFER: _getWebIcon('transfer'),
  TIX_STATUS: _getWebIcon('chevron-up'),
  UPDATE: _getWebIcon('update'),
+ USERS: _getWebIcon('account-group'),
  WARNING: _getWebIcon('warning'),
  WWW: _getWebIcon('world-wide-web')
 }
@@ -209,6 +210,7 @@ export const ICON_WEB_NAME = {
  TRAFFIC_CONE: 'TRAFFIC_CONE',
  TRANSFER: 'TRANSFER',
  TIX_STATUS: 'TIX_STATUS',
+ USERS: 'USERS',
  UPDATE: 'UPDATE',
  WARNING: 'WARNING',
  WWW: 'WWW'
