@@ -8,6 +8,11 @@ const ORIENTATION = {
  VERTICAL: 'vertical'
 }
 
+const ROLES = {
+ CUSTOMER_ADMIN: 'CustomerAdmin',
+ CUSTOMER_USER: 'CustomerUser'
+}
+
 const MODULES = {
  CRM: 'crm',
  PRODUCT: 'product',
@@ -123,7 +128,8 @@ const KEY = {
  ...SZ,
  ...FLEX,
  ...FLEX_DIR,
- ...FONT_WEIGHT
+ ...FONT_WEIGHT,
+ ...ROLES
 }
 
 export default KEY
