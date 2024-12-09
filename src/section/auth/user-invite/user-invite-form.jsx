@@ -25,7 +25,7 @@ import { RHFRequiredTextFieldWrapper, UserInviteSuccessDialog } from 'component'
 import FormProvider, { RHFTextField, RHFAutocomplete, RHFPhoneInput } from 'component/hook-form'
 import { GStyledLoadingButton, GStyledSpanBox, GStyledFieldChip } from 'theme/style'
 import { RADIUS } from 'config'
-import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, TYPOGRAPHY, FLEX_DIR } from 'constant'
+import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, TYPOGRAPHY, FLEX_DIR, COUNTRY } from 'constant'
 import { delay, getCountryCode } from 'util'
 
 /**
@@ -46,7 +46,7 @@ function UserInviteForm() {
  const isMobile = useResponsive('down', 'sm')
 
  const roleName = role => (role?.name === KEY.CUSTOMER_ADMIN ? 'Admin' : 'User' || '')
- const countryCode = getCountryCode(customer?.mainSite?.address?.country) || 'NZ'
+ const countryCode = getCountryCode(customer?.mainSite?.address?.country) || KEY.DEFAULT_COUNTRY_CODE
 
  useEffect(() => {
   dispatch(resetSecurityUsers())
