@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types'
-import { useSettingContext } from 'hook'
-import { TableCell, Link } from '@mui/material'
+import { ICON_NAME, useLimitString, useSettingContext } from 'hook'
+import { useMediaQuery, TableCell, Link, Typography } from '@mui/material'
 import { alpha, useTheme } from '@mui/material/styles'
 import { GStyledSpanBox } from 'theme/style'
 import { IconTooltip } from 'component'
-import { ICON_NAME, Icon, useLimitString } from 'hook'
-import { KEY, LABEL } from 'constant'
+import { KEY, LABEL, TYPOGRAPHY } from 'constant'
 
 function LinkTableCell({ align, onClick, param, stringLength, tooltipTitle, openInNewTab, icon }) {
  const theme = useTheme()
  const { themeMode } = useSettingContext()
+ const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
  return (
   <TableCell
@@ -30,7 +30,7 @@ function LinkTableCell({ align, onClick, param, stringLength, tooltipTitle, open
    }}>
    <GStyledSpanBox gap={1}>
     <Link onClick={onClick} sx={{ color: themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange }}>
-     {useLimitString(param, stringLength || 30)}
+     <Typography variant={isMobile ? TYPOGRAPHY.BODY2 : TYPOGRAPHY.H6}>{useLimitString(param, stringLength || 30)}</Typography>
     </Link>
     {openInNewTab && (
      <IconTooltip

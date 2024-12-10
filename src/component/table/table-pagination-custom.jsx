@@ -2,7 +2,7 @@ import { Fragment, memo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import { Icon, ICON_NAME, useSettingContext } from 'hook'
-import { Box, Switch, Typography, FormControlLabel, Button, MenuItem, Checkbox, Menu } from '@mui/material'
+import { useMediaQuery, Box, Switch, Typography, FormControlLabel, Button, MenuItem, Checkbox, Menu } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTablePaginationCustom, GStyledMachineChip } from 'theme/style'
 import { normalizer, charAtText } from 'util'
@@ -24,6 +24,7 @@ function TablePaginationCustom({
  const [anchorEl, setAnchorEl] = useState(null)
  const { themeMode } = useSettingContext()
  const theme = useTheme()
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
  const handleColumnClick = column => {
   if (!column.alwaysShow) {
@@ -59,7 +60,7 @@ function TablePaginationCustom({
         color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[0],
         border: `1px solid ${themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[0]}`
        }}>
-       {t('column.columns.label')}
+       <Typography variant={isDesktop ? TYPOGRAPHY.BODY2 : TYPOGRAPHY.CAPTION}>{t('column.columns.label')}</Typography>
       </Button>
       <Menu
        id='long-menu'
@@ -80,7 +81,7 @@ function TablePaginationCustom({
         <MenuItem dense sx={{ p: 0 }} key={column.id} onClick={() => handleColumnClick(column)}>
          <Checkbox checked={column.checked} disabled={column?.alwaysShow} />
          {normalizer(column.label) === 'machine' ? (
-          <Icon title={'Machine'} icon={ICON_NAME.FRAMA} dimension={20} color={theme.palette.grey[400]} />
+          <Icon title={t('machine.label')} icon={ICON_NAME.FRAMA} dimension={20} color={theme.palette.grey[400]} />
          ) : normalizer(column.label) === 'date' ? (
           <Icon icon={ICON_NAME.CALENDAR_CLOCK} dimension={20} c color={theme.palette.grey[400]} />
          ) : (
@@ -100,7 +101,6 @@ function TablePaginationCustom({
         </MenuItem>
        ))}
       </Menu>
-      {/* <IconTooltip title={'Legend'} icon={ICON_NAME.LEGEND} color={theme.palette.grey[600]} cursor tooltipColor={theme.palette.howick.darkBlue} /> */}
      </Box>
     </Fragment>
    )}
