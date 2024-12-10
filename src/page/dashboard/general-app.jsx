@@ -17,7 +17,8 @@ import {
  resetContact,
  resetCustomerTickets,
  resetMachines,
- resetSecurityUsers
+ resetSecurityUsers,
+ resetContacts
 } from 'store/slice'
 import { useCustomerDefaultValues } from 'section/crm/customer'
 import { SupportTicketWidget } from 'section/crm/support'
@@ -29,7 +30,10 @@ import { toTitleCase } from 'util'
 import { FLEX } from 'constant'
 
 function GeneralAppPage() {
- const { customer, contacts, isLoading } = useSelector(state => state.customer)
+ const { customer, isLoading } = useSelector(state => state.customer)
+ const { customerTickets } = useSelector(state => state.customerTicket)
+ const { contacts } = useSelector(state => state.contact)
+ const { securityUsers } = useSelector(state => state.user)
  const { customerMachines } = useSelector(state => state.machine)
  const { user } = useAuthContext()
  const customerId = user?.customer
@@ -47,33 +51,54 @@ function GeneralAppPage() {
   dispatch(setContactDialog(false))
   dispatch(resetCustomerMachines())
   dispatch(resetContact())
+  dispatch(resetContacts())
   dispatch(resetMachines())
   dispatch(resetSecurityUsers())
   dispatch(resetMachineSiteDialogData())
+  dispatch(resetCustomerTickets())
  }, [dispatch])
 
  useEffect(() => {
   const debounce = _.debounce(() => {
-   dispatch(getCustomerMachines(customerId))
-   dispatch(getContacts(customerId))
-   dispatch(getSecurityUsers(customerId))
+   if (customerId && !customerMachines.length) {
+    dispatch(getCustomerMachines(customerId))
+   }
   }, 300)
   debounce()
   return () => debounce.cancel()
- }, [customerId])
+ }, [customerId, customerMachines, dispatch])
+
+ useEffect(() => {
+  const debounce = _.debounce(() => {
+   if (customerId && !contacts.length) {
+    dispatch(getContacts(customerId))
+   }
+  }, 300)
+  debounce()
+  return () => debounce.cancel()
+ }, [customerId, contacts, dispatch])
+
+ useEffect(() => {
+  const debounce = _.debounce(() => {
+   if (customerId && !securityUsers.length) {
+    dispatch(getSecurityUsers(customerId))
+   }
+  }, 300)
+  debounce()
+  return () => debounce.cancel()
+ }, [customerId, securityUsers, dispatch])
 
  useEffect(() => {
   const debouncedDispatch = _.debounce(() => {
-   if (customerId) {
+   if (customer?.ref && customerId && !customerTickets?.issues?.length) {
     dispatch(getCustomerTickets(customer?.ref, 3, customerId))
    }
   }, 300)
   debouncedDispatch()
   return () => {
    debouncedDispatch.cancel()
-   dispatch(resetCustomerTickets())
   }
- }, [dispatch, customer])
+ }, [dispatch, customer?.ref, customerTickets])
 
  return (
   <Grid container>
