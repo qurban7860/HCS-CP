@@ -6,13 +6,12 @@ import { ICON_NAME, Clock, useSettingContext } from 'hook'
 import { PATH_CUSTOMER } from 'route/path'
 import { useMachineDefaultValues } from 'section/product'
 import { Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledSiteMapBox, GStyledSpanBox } from 'theme/style'
 import { GridViewField, GridViewTitle, GoogleMaps, IconTooltip, NothingProvided, Button } from 'component'
-import { VIEW_FORM, SNACK, TITLE, TYPOGRAPHY, FLEX, LABEL, KEY, DECOILER_TYPE_ARR, FLEX_DIR, VARIANT, BUTTON } from 'constant'
+import { useTheme } from '@mui/material/styles'
+import { GStyledTopBorderDivider, GStyledSiteMapBox, GStyledSpanBox, GBackdropPropsOption } from 'theme/style'
+import { VIEW_FORM, SNACK, TITLE, TYPOGRAPHY, FLEX, LABEL, KEY, DECOILER_TYPE_ARR, FLEX_DIR, BUTTON } from 'constant'
 
 const SiteDialog = () => {
- const { id } = useParams()
  const [validCoordinates, setValidCoordinates] = useState(false)
  const { machineSiteDialogData, machineSiteDialog, isLoading } = useSelector(state => state.machine)
  const { customer } = useSelector(state => state.customer)
@@ -56,7 +55,7 @@ const SiteDialog = () => {
  }
 
  return (
-  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={machineSiteDialog} onClose={handleDialog} aria-describedby='alert-dialog-slide-description'>
+  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={machineSiteDialog} onClose={handleDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle>
     <GStyledSpanBox>

@@ -5,14 +5,14 @@ import { dispatch, useSelector } from 'store'
 import { useNavigate } from 'react-router-dom'
 import { useSettingContext } from 'hook'
 import { useAuthContext } from 'auth'
+import { ICON_NAME } from 'hook'
 import { PATH_CUSTOMER } from 'route/path'
 import { setContactDialog, resetSelectedContactCard, setSelectedContactCard, setFromDialog, getContact } from 'store/slice'
-import { ICON_NAME } from 'hook'
 import { useContactDefaultValues } from 'section/crm'
 import { useMediaQuery, Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
+import { GridViewField, GridViewTitle, IconTooltip, Button, AuditBox } from 'component'
 import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton } from 'theme/style'
-import { GridViewField, GridViewTitle, IconTooltip, Button } from 'component'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption } from 'theme/style'
 import { VIEW_FORM, TITLE, TYPOGRAPHY, FLEX, LABEL, KEY, FLEX_DIR, BUTTON } from 'constant'
 
 const ContactDialog = ({ contact }) => {
@@ -41,7 +41,7 @@ const ContactDialog = ({ contact }) => {
  }
 
  return (
-  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={contactDialog} onClose={handleDialog}>
+  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={contactDialog} onClose={handleDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle
     sx={{
@@ -134,6 +134,7 @@ const ContactDialog = ({ contact }) => {
        </Grid>
       </Grid>
      </Grid>
+     <AuditBox value={defaultValues} />
 
      <Grid item sm={12}>
       <Grid container justifyContent={FLEX.FLEX_END} gap={2}>

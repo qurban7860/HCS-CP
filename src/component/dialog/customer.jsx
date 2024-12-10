@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
 import { useSettingContext } from 'hook'
 import { setCustomerDialog } from 'store/slice'
-import { useCustomerDefaultValues } from 'section/crm'
 import { ICON_NAME } from 'hook'
-import { useMediaQuery, useTheme, Dialog, DialogContent, DialogTitle, Divider, Grid } from '@mui/material'
-import { GridViewField, GridViewTitle, Button, BadgeCardMedia, TitleListItemText } from 'component'
-import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton } from 'theme/style'
-import { HowickResources } from 'section/common'
-import { VIEW_FORM, TITLE, KEY, BUTTON, FLEX, SZ } from 'constant'
 import { PATH_CUSTOMER } from 'route/path'
+import { useCustomerDefaultValues } from 'section/crm'
+import { HowickResources } from 'section/common'
+import { useMediaQuery, useTheme, Dialog, DialogContent, DialogTitle, Divider, Grid } from '@mui/material'
+import { GridViewField, GridViewTitle, Button, BadgeCardMedia, TitleListItemText, AuditBox } from 'component'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption } from 'theme/style'
+import { VIEW_FORM, TITLE, KEY, BUTTON, FLEX, SZ } from 'constant'
 
 const CustomerDialog = () => {
  const navigate = useNavigate()
@@ -23,6 +23,8 @@ const CustomerDialog = () => {
 
  const defaultValues = useCustomerDefaultValues(customer, null)
 
+ console.log('defaultValues', customer)
+
  const handleCustomerDialog = () => dispatch(setCustomerDialog(false))
 
  const handleCustomerOverview = () => {
@@ -31,7 +33,7 @@ const CustomerDialog = () => {
  }
 
  return (
-  <Dialog disableEnforceFocus maxWidth={SZ.LG} open={customerDialog} onClose={handleCustomerDialog} aria-describedby='alert-dialog-slide-description'>
+  <Dialog disableEnforceFocus maxWidth={SZ.LG} open={customerDialog} onClose={handleCustomerDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle>
     <GStyledSpanBox
@@ -96,6 +98,7 @@ const CustomerDialog = () => {
       </Grid>
      </Grid>
     </Grid>
+    <AuditBox value={defaultValues} />
     <Grid item sm={12} mt={2}>
      <Grid container justifyContent={FLEX.FLEX_END} display={FLEX.FLEX} gap={2}>
       <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCustomerDialog} gap={2}>
