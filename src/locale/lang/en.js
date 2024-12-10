@@ -79,6 +79,10 @@ const en = {
  close: {
   label: `Close`
  },
+ contrast: {
+  label: `Contrast`,
+  contrast_tooltip: `Adjust the CONTRAST of the theme`
+ },
  create: `create`,
  connected_machine: {
   label: `Connected Machine`,
@@ -176,6 +180,10 @@ const en = {
  },
  full_name: {
   label: `Full Name`
+ },
+ full_screen: {
+  label: `Full Screen`,
+  full_screen_tooltip: `Toggle FULL SCREEN mode`
  },
  go_back: {
   label: `Go Back`
@@ -296,6 +304,13 @@ const en = {
  },
  menu: {
   label: `Menu`
+ },
+ mode: {
+  label: `Mode`,
+  modes: {
+   label: `Modes`
+  },
+  mode_tooltip: `Toggle {{value}} mode`
  },
  name: {
   key: `name`,
