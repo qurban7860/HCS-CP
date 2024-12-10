@@ -43,36 +43,39 @@ const HomeTab = () => {
  const isMain = s => defaultValues?.customerMainSiteId === s?._id
  useEffect(() => {
   const debounce = _.debounce(() => {
-   if (customerId !== customer?._id) {
-    dispatch(getCustomer(customerId))
-   }
+   if (customerId !== customer?._id) dispatch(getCustomer(customerId))
   }, 300)
-
   debounce()
-
   return () => debounce.cancel()
- }, [customerId])
+ }, [customerId, customer])
 
  useEffect(() => {
   const debouncedDispatch = _.debounce(() => {
-   dispatch(getSites(customerId, customer?.isArchived))
+   if (customerId && !sites.length) {
+    dispatch(getSites(customerId, customer?.isArchived))
+   }
   }, 300)
-
   debouncedDispatch()
-
   return () => debouncedDispatch.cancel()
- }, [customerId, dispatch])
+ }, [customerId, sites, dispatch])
 
  useEffect(() => {
   const debounce = _.debounce(() => {
-   dispatch(getCustomerMachines(customerId))
-   dispatch(getContacts(customerId))
+   if (customerId && !customerMachines.length) {
+    dispatch(getCustomerMachines(customerId))
+   }
   }, 300)
-
   debounce()
-
   return () => debounce.cancel()
- }, [customerId])
+ }, [customerId, customerMachines, dispatch])
+
+ useEffect(() => {
+  const debounce = _.debounce(() => {
+   if (customerId && !contacts.length) dispatch(getContacts(customerId))
+  }, 300)
+  debounce()
+  return () => debounce.cancel()
+ }, [customerId, contacts, dispatch])
 
  useLayoutEffect(() => {
   dispatch(setMachineDialog(false))

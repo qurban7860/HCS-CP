@@ -1,8 +1,7 @@
-import { useEffect, useState, useLayoutEffect, memo } from 'react'
+import { useEffect, useLayoutEffect, memo } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, dispatch } from 'store'
 import axios from 'axios'
-import { t } from 'i18next'
 import _ from 'lodash'
 import { useSettingContext, useTable, useFilter, getComparator } from 'hook'
 import { Table, Typography, Grid } from '@mui/material'
@@ -14,7 +13,7 @@ import { TableNoData } from 'component'
 import { SkeletonTable } from 'component/skeleton'
 import { CustomerTable, CustomerHeader, CustomerListPagination } from 'section/crm'
 import { MARGIN, TABLE } from 'config'
-import { KEY, TITLE, VARIANT, FLEX_DIR, FLEX } from 'constant'
+import { KEY, VARIANT, FLEX_DIR, FLEX } from 'constant'
 import { StyledScrollTableContainer } from './style'
 
 const { TYPOGRAPHY } = VARIANT
@@ -46,9 +45,7 @@ const CustomerListSection = ({ isArchived }) => {
   const debouncedDispatch = _.debounce(() => {
    dispatch(getCustomers(null, null, isArchived, cancelTokenSource))
   }, 300)
-
   debouncedDispatch()
-
   return () => debouncedDispatch.cancel()
  }, [dispatch])
 
