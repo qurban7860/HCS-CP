@@ -1,5 +1,7 @@
 import { useEffect, useState, useCallback, Fragment } from 'react'
 import { t } from 'i18next'
+import axios from 'axios'
+import _ from 'lodash'
 import { useSelector } from 'react-redux'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuthContext } from 'auth/use-auth-context'
@@ -37,7 +39,7 @@ function UserInviteForm() {
  const [isSuccessState, setIsSuccessState] = useState(false)
  const { customer } = useSelector(state => state.customer)
  const { activeContacts } = useSelector(state => state.contact)
- const { userInviteDialog, securityUserTotalCount } = useSelector(state => state.user)
+ const { userInviteDialog, securityUserTotalCount, securityUsers } = useSelector(state => state.user)
  const { customerRoles } = useSelector(state => state.role)
  const { user } = useAuthContext()
  const { themeMode } = useSettingContext()
@@ -47,6 +49,8 @@ function UserInviteForm() {
 
  const roleName = role => (role?.name === KEY.CUSTOMER_ADMIN ? 'Admin' : 'User' || '')
  const countryCode = getCountryCode(customer?.mainSite?.address?.country) || KEY.DEFAULT_COUNTRY_CODE
+ const axiosToken = () => axios.CancelToken.source()
+ const cancelTokenSource = axiosToken()
 
  useEffect(() => {
   dispatch(resetSecurityUsers())
@@ -56,19 +60,38 @@ function UserInviteForm() {
  }, [dispatch])
 
  useEffect(() => {
-  if (user?.customer) {
-   const fetchData = async () => {
-    await dispatch(getSecurityUsers(user.customer))
-    await dispatch(getCustomer(user.customer))
-    await dispatch(getActiveContacts(user.customer))
-    await dispatch(getCustomerRoles())
-   }
-   fetchData()
-  }
- }, [user, dispatch])
+  const debouncedDispatch = _.debounce(() => {
+   if (user?.customer && !customer) dispatch(getCustomer(user.customer))
+  }, 300)
+  debouncedDispatch()
+  return () => debouncedDispatch.cancel()
+ }, [user?.customer, customer, dispatch])
+
+ useEffect(() => {
+  const debouncedDispatch = _.debounce(() => {
+   if (user?.customer && !securityUsers) dispatch(getSecurityUsers(user.customer))
+  }, 300)
+  debouncedDispatch()
+  return () => debouncedDispatch.cancel()
+ }, [user?.customer, securityUsers, dispatch])
+
+ useEffect(() => {
+  const debouncedDispatch = _.debounce(() => {
+   if (user?.customer && !activeContacts) dispatch(getActiveContacts(user.customer))
+  }, 300)
+  debouncedDispatch()
+  return () => debouncedDispatch.cancel()
+ }, [user?.customer, activeContacts, dispatch])
+
+ useEffect(() => {
+  const debouncedDispatch = _.debounce(() => {
+   if (!customerRoles) dispatch(getCustomerRoles())
+  }, 300)
+  debouncedDispatch()
+  return () => debouncedDispatch.cancel()
+ }, [user?.customer, customerRoles, dispatch])
 
  const defaultValues = useUserInviteDefaultValues(customer)
-
  const methods = useForm({
   resolver: yupResolver(UserInviteSchema),
   defaultValues,
@@ -246,6 +269,7 @@ function UserInviteForm() {
        type={KEY.SUBMIT}
        variant={KEY.CONTAINED}
        loading={isSubmitting}
+       mode={themeMode}
        disabled={!isFormComplete}
        sx={RADIUS.BORDER}>
        {t('send_invitation.label').toUpperCase()}
