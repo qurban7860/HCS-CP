@@ -337,6 +337,9 @@ export const GStyledRightBorderDivider = styled(({ theme, mode, ...other }) => <
 export const GStyledLoadingButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
  backgroundColor: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
  color: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
+ '&:disabled': {
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[700]
+ },
  '&:hover': {
   backgroundColor: mode === KEY.LIGHT ? theme.palette.howick.orange : theme.palette.howick.darkBlue,
   color: mode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
