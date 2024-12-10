@@ -8,7 +8,7 @@ const { CREATED_BY, UPDATED_BY } = LABEL.AUDIT
 const { TYPOGRAPHY } = VARIANT
 
 const AuditBox = ({ value }) => {
- const { createdAt, createdBy, updatedAt, updatedBy, createdIP, updatedIP } = value
+ const { createdAt, createdBy, updatedAt, updatedBy } = value
 
  return (
   <Box pb={4}>
@@ -19,7 +19,7 @@ const AuditBox = ({ value }) => {
        {CREATED_BY} &nbsp;
       </Typography>
       <Typography variant={TYPOGRAPHY.CAPTION} color='grey.500'>
-       {createdBy && createdBy} {createdAt && `${' / ' + fDate(createdAt)}`} {createdIP && `/ ${createdIP}`}
+       {createdBy && createdBy} {createdAt && `${' / ' + fDate(createdAt)}`}
       </Typography>
      </GStyledSpanBox>
      <GStyledSpanBox>
@@ -27,7 +27,7 @@ const AuditBox = ({ value }) => {
        {UPDATED_BY} &nbsp;
       </Typography>
       <Typography variant={TYPOGRAPHY.CAPTION} color='grey.500'>
-       {updatedBy} {updatedAt && `${' / ' + fDate(updatedAt)}`} {updatedIP && `/ ${updatedIP}`}
+       {updatedBy} {updatedAt && `${' / ' + fDate(updatedAt)}`}
       </Typography>
      </GStyledSpanBox>
     </Box>
