@@ -33,7 +33,8 @@ export const NAV = {
  // popover
  SPACING: 2,
  H_OPTION: 50,
- H_ACCOUNT_POPOVER: 380
+ H_ACCOUNT_POPOVER: 380,
+ H_ACCOUNT_POPOVER_MOBILE: 300
 }
 
 export const ICON = {
