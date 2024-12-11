@@ -20,7 +20,7 @@ const initialState = {
  userLogin: null,
  userDisplayName: null,
  userInviteDialog: false,
- userInviteResponse: null,
+ userInviteConfirmDetails: null,
  securityUserTotalCount: 0,
  assignedUsers: [],
  signInLogs: [],
@@ -69,6 +69,9 @@ const userSlice = createSlice({
   setSecurityUserTotalCount(state, action) {
    state.securityUserTotalCount = action.payload
   },
+  setUserInviteConfirmDetails(state, action) {
+   state.userInviteConfirmDetails = action.payload
+  },
   getSecurityUserSuccess(state, action) {
    state.isLoading = false
    state.success = true
@@ -99,10 +102,10 @@ const userSlice = createSlice({
    state.success = true
    state.verifiedInvite = action.payload
   },
-  getUserInviteResponseSuccess(state, action) {
+  getUserInviteConfirmDetailsSuccess(state, action) {
    state.isLoading = false
    state.success = true
-   state.userInviteResponse = action.payload
+   state.userInviteConfirmDetails = action.payload
    state.initial = true
   },
   resetLoadingResetPasswordEmail(state, action) {
@@ -120,8 +123,8 @@ const userSlice = createSlice({
    state.success = false
    state.isLoading = false
   },
-  resetUserInviteResponse(state) {
-   state.userInviteResponse = null
+  resetUserInviteConfirmDetails(state) {
+   state.userInviteConfirmDetails = null
    state.responseMessage = null
    state.success = false
    state.isLoading = false
@@ -158,9 +161,10 @@ export const {
  setSecurityUserTotalCount,
  setSecurityUserProperties,
  setUserInviteDialog,
+ setUserInviteConfirmDetails,
  getSignInLogsSuccess,
  resetLoadingResetPasswordEmail,
- resetUserInviteResponse,
+ resetUserInviteConfirmDetails,
  resetSecurityUser,
  resetSecurityUsers,
  resetSignInLogs,
@@ -208,6 +212,18 @@ export function getSecurityUser(id) {
   }
  }
 }
+
+// export function getUserInviteConfirmDetails(data) {
+//  return async dispatch => {
+//   dispatch(userSlice.actions.startLoading())
+//   try {
+//    return  dispatch(userSlice.actions.getSecurityUserSuccess(data))
+//   } catch (error) {
+//    console.error(DEBUG.GET_SECURITY_USERS_ERROR, error)
+//    throw error
+//   }
+//  }
+// }
 
 export function setLoginUser(userId, User) {
  return async dispatch => {
@@ -285,7 +301,6 @@ export function addAndInviteSecurityUser(param) {
     multiFactorAuthentication: param.multiFactorAuthentication
    }
    const response = await axios.post(PATH_SERVER.SECURITY.USER.list, data)
-   dispatch(userSlice.actions.getUserInviteResponseSuccess(response.data))
    return response
   } catch (error) {
    dispatch(userSlice.actions.hasError(error.Message))
