@@ -70,6 +70,9 @@ const en = {
  billing_site: {
   label: `Billing Site`
  },
+ cancel: {
+  label: `Cancel`
+ },
  change_password: {
   label: `Change Password`
  },
@@ -78,6 +81,12 @@ const en = {
  },
  close: {
   label: `Close`
+ },
+ confirm: {
+  label: `Confirm`
+ },
+ confirm_user_details: {
+  label: `Confirm User Details`
  },
  contrast: {
   label: `Contrast`,
@@ -277,7 +286,7 @@ const en = {
  banking: `banking`,
  booking: `booking`,
  logout: {
-  label: `Logout`
+  label: `Log out`
  },
  longitude: {
   label: `λ Longitude`
@@ -519,6 +528,11 @@ const en = {
  see_more: {
   label: `See More`
  },
+ session_inactivity: {
+  label: `Session Inactivity`,
+  content: `You are about to be logged out, stay or you'll be logged out in {{countdown}} seconds.`,
+  content_2: `You are about to be logged out.`
+ },
  shipping_date: {
   label: `Shipping Date`
  },
@@ -541,6 +555,9 @@ const en = {
  },
  status: {
   label: `Status`
+ },
+ stay: {
+  label: `Stay`
  },
  supplier: {
   label: `Supplier`
