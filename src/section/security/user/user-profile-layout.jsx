@@ -1,7 +1,7 @@
-import { useRef, useEffect, memo, useLayoutEffect } from 'react'
+import { useRef, useEffect, memo } from 'react'
 import { t } from 'i18next'
 import _ from 'lodash'
-import { useAuthContext } from 'auth'
+import { useAuthContext } from 'auth/use-auth-context'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
 import { getSecurityUser, getCustomer, resetCustomer, setCustomerDialog } from 'store/slice'
@@ -22,14 +22,10 @@ import { truncate } from 'util/truncate'
 const UserProfileLayout = () => {
  const { customer, customerDialog } = useSelector(state => state.customer)
  const { securityUser, isLoading } = useSelector(state => state.user)
- const { userId } = useAuthContext()
+ const { user, userId } = useAuthContext()
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
-
- useLayoutEffect(() => {
-  dispatch(resetCustomer())
- }, [dispatch])
 
  useEffect(() => {
   if (userId !== securityUser?._id) {
@@ -44,18 +40,6 @@ const UserProfileLayout = () => {
   resolver: yupResolver(editUserSchema),
   defaultValues
  })
-
- useEffect(() => {
-  const debouncedDispatch = _.debounce(() => {
-   if (defaultValues?.customerId) {
-    dispatch(getCustomer(defaultValues.customerId))
-   }
-  }, 300)
-
-  debouncedDispatch()
-
-  return () => debouncedDispatch.cancel()
- }, [dispatch, defaultValues?.customerId])
 
  const handleCustomerDialog = (event, customerId) => {
   event.preventDefault()
@@ -99,7 +83,7 @@ const UserProfileLayout = () => {
        <Grid container flexDirection={FLEX_DIR.ROW} pt={2} px={2}>
         <Grid item xs={12} md={8} display={FLEX.FLEX} alignItems={KEY.CENTER} mt={2}>
          <GStyledSpanBox gap={1}>
-          <BadgeCardMedia />
+          <BadgeCardMedia customer={customer} />
           <ViewFormField variant={isDesktop ? TYPOGRAPHY.H4 : TYPOGRAPHY.H5} isLoading={isLoading}>
            {truncate(defaultValues?.name, 50)}
           </ViewFormField>
@@ -117,7 +101,6 @@ const UserProfileLayout = () => {
        </Grid>
       </Grid>
      </GStyledHeaderCardContainer>
-
      <Grid item sm={12}>
       <Card {...GCardOption(themeMode)}>
        <GStyledTopBorderDivider mode={themeMode} />
