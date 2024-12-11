@@ -341,8 +341,8 @@ export const GStyledLoadingButton = styled(({ theme, isLoading, ...other }) => <
   backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[700]
  },
  '&:hover': {
-  backgroundColor: mode === KEY.LIGHT ? theme.palette.howick.orange : theme.palette.howick.darkBlue,
-  color: mode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.darkBlue,
+  color: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.white
  }
 }))
 
@@ -361,9 +361,9 @@ export const GStyledCloseButton = styled(({ theme, isLoading, ...other }) => <Lo
  '&:hover': {
   backgroundColor: mode === KEY.LIGHT ? theme.palette.error.main : theme.palette.error.dark,
   color: mode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
- },
- paddingTop: theme.spacing(1.5),
- paddingBottom: theme.spacing(1.5)
+ }
+ //  paddingTop: theme.spacing(1.5),
+ //  paddingBottom: theme.spacing(1.5)
 }))
 
 export const GStyledLoadingScreenDiv = styled('div')(({ theme }) => ({
