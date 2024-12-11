@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
+import { t } from 'i18next'
 import { LoadingButton } from '@mui/lab'
 import { useIdleTimer } from 'react-idle-timer'
 import { useAuthContext } from 'auth'
 import { ConfirmDialog } from 'component/dialog'
 import { GLOBAL } from 'config/global'
+import { VARIANT } from 'constant'
+import { Trans } from 'react-i18next'
 
 const IdleManager = () => {
  const [openModal, setOpenModal] = useState(false)
@@ -11,7 +14,7 @@ const IdleManager = () => {
  const [showStay, setShowStay] = useState(true)
  const [countdown, setCountdown] = useState(10)
 
- const idleTimeout = 15 * GLOBAL.IDLE_TIME
+ const idleTimeout = 14 * GLOBAL.IDLE_TIME
 
  const handleIdle = () => {
   setOpenModal(true)
@@ -64,13 +67,13 @@ const IdleManager = () => {
    key={openModal}
    open={openModal}
    onClose={handleLogout}
-   title='Session Inactivity'
-   content={`You are about to be logged out! ${showStay ? `Please stay or you'll be logged out in ${countdown} seconds.` : ''}`}
-   SubButton='Logout'
+   title={t('session_inactivity.label')}
+   content={showStay ? <Trans i18nKey='session_inactivity.content' values={{ countdown }} /> : t('session_inactivity.content_2')}
+   subButton={t('logout.label')}
    action={
     showStay ? (
-     <LoadingButton variant='contained' color='primary' onClick={handleStillHere}>
-      Stay
+     <LoadingButton variant={VARIANT.CONTAINED} color='primary' onClick={handleStillHere}>
+      {t('stay.label')}
      </LoadingButton>
     ) : null
    }
