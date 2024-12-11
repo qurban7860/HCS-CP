@@ -1,4 +1,6 @@
 import { useEffect, useState, useCallback, Fragment } from 'react'
+import _ from 'lodash'
+import debounce from 'lodash.debounce'
 import { t } from 'i18next'
 import { useSelector } from 'react-redux'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -44,10 +46,17 @@ function UserInviteForm() {
  const [isFormComplete, setIsFormComplete] = useState(false)
  const [isSuccessState, setIsSuccessState] = useState(false)
  const [isConfirming, setIsConfirming] = useState(false)
- const { customer } = useSelector(state => state.customer)
- const { activeContacts } = useSelector(state => state.contact)
- const { securityUserTotalCount, userInviteDialog } = useSelector(state => state.user)
- const { customerRoles } = useSelector(state => state.role)
+ const { customer, activeContacts, securityUserTotalCount, customerRoles, userInviteDialog } = useSelector(
+  state => ({
+   customer: state.customer.customer,
+   activeContacts: state.contact.activeContacts,
+   securityUserTotalCount: state.user.securityUserTotalCount,
+   userInviteDialog: state.user.userInviteDialog,
+   customerRoles: state.role.customerRoles
+  }),
+  _.isEqual
+ )
+
  const { user } = useAuthContext()
  const { themeMode } = useSettingContext()
 
@@ -55,13 +64,6 @@ function UserInviteForm() {
  const isMobile = useResponsive('down', 'sm')
 
  const countryCode = getCountryCode(customer?.mainSite?.address?.country) || KEY.DEFAULT_COUNTRY_CODE
-
- useEffect(() => {
-  dispatch(resetSecurityUsers())
-  dispatch(resetCustomer())
-  dispatch(resetActiveContacts())
-  dispatch(resetUserInviteConfirmDetails())
- }, [dispatch])
 
  const fetchCustomer = useCallback(() => {
   if (user?.customer && !customer) {
@@ -75,11 +77,28 @@ function UserInviteForm() {
  }, [fetchCustomer])
 
  useEffect(() => {
-  const fetchData = async () => {
-   await Promise.all([dispatch(getSecurityUsers(user.customer)), dispatch(getActiveContacts(user.customer)), dispatch(getCustomerRoles())])
-  }
-  fetchData()
- }, [user?.customer, dispatch])
+  const debounceFetch = debounce(() => {
+   if (user.customer && securityUserTotalCount) dispatch(getSecurityUsers(user.customer))
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [user.customer, securityUserTotalCount, dispatch])
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   if (user.customer && !activeContacts.length) dispatch(getActiveContacts(user.customer))
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [user.customer, activeContacts, dispatch])
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   if (user.customer && !customerRoles.length) dispatch(getCustomerRoles())
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [user.customer, customerRoles, dispatch])
 
  const defaultValues = useUserInviteDefaultValues(customer)
  const methods = useForm({
@@ -112,6 +131,13 @@ function UserInviteForm() {
   setIsConfirming(true)
   await Promise.all([dispatch(setUserInviteConfirmDetails({ customer, name, email, phone, roles })), dispatch(setUserInviteDialog(true))])
  }
+
+ useEffect(() => {
+  dispatch(resetSecurityUsers())
+  dispatch(resetCustomer())
+  dispatch(resetActiveContacts())
+  dispatch(resetUserInviteConfirmDetails())
+ }, [dispatch])
 
  const handleSubmissionError = error => {
   if (error?.errors) {
