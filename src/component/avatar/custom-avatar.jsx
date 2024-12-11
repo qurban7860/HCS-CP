@@ -1,25 +1,25 @@
 /* eslint-disable react/display-name */
 import PropTypes from 'prop-types'
 import { forwardRef } from 'react'
+import { useMediaQuery, Badge, Avatar, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { Badge, Avatar, Typography } from '@mui/material'
 import { TYPOGRAPHY } from 'constant'
 
 const getCharAtName = name => name && name.charAt(0).toUpperCase()
 const getCharAtSecondName = name => name && name.split(' ')[1]?.charAt(0).toUpperCase()
 
 const getColorByName = name => {
- if (['A', 'N', 'H', 'L', 'Q'].includes(getCharAtName(name))) return 'primary'
- if (['F', 'G', 'T', 'I', 'J'].includes(getCharAtName(name))) return 'info'
- if (['K', 'D', 'Y', 'B', 'O'].includes(getCharAtName(name))) return 'success'
- if (['P', 'E', 'R', 'S', 'U'].includes(getCharAtName(name))) return 'warning'
- if (['V', 'W', 'X', 'M', 'Z'].includes(getCharAtName(name))) return 'error'
+ if (['A', 'N', 'H', 'L', 'Q'].includes(getCharAtName(name))) return 'success'
+ if (['F', 'G', 'T', 'I', 'J'].includes(getCharAtName(name))) return 'blue'
+ if (['K', 'D', 'Y', 'B', 'O'].includes(getCharAtName(name))) return 'orange'
+ if (['P', 'E', 'R', 'S', 'U'].includes(getCharAtName(name))) return 'bronze'
+ if (['V', 'W', 'X', 'M', 'Z'].includes(getCharAtName(name))) return 'burnIn'
  return 'default'
 }
 
-const CustomAvatar = forwardRef(({ color, name = '', justName, BadgeProps, children, extension, sx, ...other }, ref) => {
+const CustomAvatar = forwardRef(({ color, name = '', justName, BadgeProps, children, typography = TYPOGRAPHY.H3, extension, sx, ...other }, ref) => {
  const theme = useTheme()
-
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
  const charAtName = getCharAtSecondName(name) ? getCharAtName(name) + getCharAtSecondName(name) : getCharAtName(name)
 
  const colorByName = getColorByName(name)
@@ -37,7 +37,7 @@ const CustomAvatar = forwardRef(({ color, name = '', justName, BadgeProps, child
      ...sx
     }}
     {...other}>
-    {justName ? <Typography variant={TYPOGRAPHY.H0}>{name && charAtName}</Typography> : name && charAtName}
+    {justName ? <Typography variant={TYPOGRAPHY.H0}>{name && charAtName}</Typography> : <Typography variant={typography}>{name && charAtName}</Typography>}
 
     {extension}
     {children}
@@ -52,7 +52,7 @@ const CustomAvatar = forwardRef(({ color, name = '', justName, BadgeProps, child
      ...sx
     }}
     {...other}>
-    {justName ? <Typography variant={TYPOGRAPHY.H0}>{name && charAtName}</Typography> : name && charAtName}
+    {justName ? <Typography variant={TYPOGRAPHY.H0}>{name && charAtName}</Typography> : <Typography variant={typography}>{name && charAtName}</Typography>}
     {children}
    </Avatar>
   )
@@ -73,6 +73,7 @@ CustomAvatar.propTypes = {
  extension: PropTypes.string,
  children: PropTypes.node,
  BadgeProps: PropTypes.object,
+ typography: PropTypes.string,
  color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error'])
 }
 

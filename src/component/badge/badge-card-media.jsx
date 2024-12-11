@@ -2,13 +2,13 @@ import { useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
 import { Badge, CardMedia, Chip } from '@mui/material'
-import { useIcon, ICON_NAME } from 'hook'
-import { KEY, COMPONENT, SIZE, VARIANT } from 'constant'
+import { CustomAvatar } from 'component'
+import { Icon, ICON_NAME } from 'hook'
+import { KEY, COMPONENT, SIZE, VARIANT, TYPOGRAPHY } from 'constant'
 import { mockUser } from '_mock'
 
-const BadgeCardMedia = ({ dimension = 70 }) => {
+const BadgeCardMedia = ({ dimension = 70, customer, typographyVariant }) => {
  const [hoverBadge, setHoverBadge] = useState(false)
- const { Icon, iconSrc: editSrc } = useIcon(ICON_NAME.EDIT)
  const fileInput = useRef(null)
 
  const handleHoverBadge = () => {
@@ -30,7 +30,7 @@ const BadgeCardMedia = ({ dimension = 70 }) => {
     anchorOrigin={{ vertical: KEY.TOP, horizontal: KEY.RIGHT }}
     badgeContent={
      <Chip
-      icon={<Icon icon={editSrc} color='common.black' width={15} />}
+      icon={<Icon icon={ICON_NAME.EDIT} color='common.black' width={15} />}
       size={SIZE.SMALL}
       variant={VARIANT.OUTLINED}
       onClick={() => {
@@ -45,7 +45,8 @@ const BadgeCardMedia = ({ dimension = 70 }) => {
       }}
      />
     }>
-    <CardMedia
+    {/* use for #1584 */}
+    {/* <CardMedia
      component={COMPONENT.IMG}
      src={mockUser[0].badge}
      alt={mockUser[0]?.organization}
@@ -55,15 +56,30 @@ const BadgeCardMedia = ({ dimension = 70 }) => {
       marginRight: 2,
       height: dimension,
       width: dimension
+     }}> */}
+    <CustomAvatar
+     /**src={mockUser[0]?.photoURL}  */ alt={'display name'}
+     name={customer?.name}
+     value
+     typography={typographyVariant}
+     sx={{
+      objectFit: 'hidden',
+      borderRadius: '5%',
+      marginRight: 2,
+      height: dimension,
+      width: dimension
      }}
     />
+    {/* </CardMedia> */}
    </Badge>
   </m.div>
  )
 }
 
 BadgeCardMedia.propTypes = {
- dimension: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+ dimension: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+ customer: PropTypes.object,
+ typographyVariant: PropTypes.string
 }
 
 export default BadgeCardMedia
