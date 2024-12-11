@@ -6,11 +6,12 @@ import { dispatch, useSelector } from 'store'
 import { useSettingContext, Icon, ICON_NAME } from 'hook'
 import { setUserInviteDialog } from 'store/slice'
 import { PATH_SECURITY } from 'route/path'
-import { useMediaQuery, Grid, Dialog, DialogContent, DialogTitle, DialogActions, Divider, Typography, Avatar, Stack, Chip, Button, Box } from '@mui/material'
+import { useMediaQuery, Grid, Dialog, DialogContent, DialogTitle, DialogActions, Divider, Typography, Avatar, Stack, Chip, Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledCloseButton, GStyledLoadingButton, GBackdropPropsOption } from 'theme/style'
 import { PATH_AFTER_LOGIN } from 'config/global'
 import { TYPOGRAPHY, FLEX, KEY, FLEX_DIR } from 'constant'
+import { roleCoverUp } from 'util'
 
 const UserInviteSuccessDialog = ({ action, onConfirm, setIsConfirming, isSubmitSuccessful }) => {
  const { userInviteConfirmDetails, userInviteDialog } = useSelector(state => state.user)
@@ -35,8 +36,6 @@ const UserInviteSuccessDialog = ({ action, onConfirm, setIsConfirming, isSubmitS
   const url = PATH_AFTER_LOGIN
   navigate(url)
  }
-
- const roleName = role => (role?.name === KEY.CUSTOMER_ADMIN ? 'Admin' : 'User')
 
  return (
   <Dialog disableEnforceFocus maxWidth={KEY.LG} open={userInviteDialog} onClose={handleDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
@@ -120,7 +119,7 @@ const UserInviteSuccessDialog = ({ action, onConfirm, setIsConfirming, isSubmitS
          <Stack direction='row' spacing={1} sx={{ mt: 1, flexWrap: 'wrap', gap: 1 }}>
           &nbsp;
           {userInviteConfirmDetails?.roles?.map((role, index) => (
-           <Chip key={index} label={<Typography variant={TYPOGRAPHY.H6}>{roleName(role)}</Typography>} variant='outlined' size='small' sx={{ borderRadius: 0.2 }} />
+           <Chip key={index} label={<Typography variant={TYPOGRAPHY.H6}>{roleCoverUp(role)}</Typography>} variant='outlined' size='small' sx={{ borderRadius: 0.2 }} />
           ))}
          </Stack>
         </Grid>

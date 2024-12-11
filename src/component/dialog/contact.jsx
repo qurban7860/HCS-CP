@@ -9,7 +9,7 @@ import { ICON_NAME } from 'hook'
 import { PATH_CUSTOMER } from 'route/path'
 import { setContactDialog, resetSelectedContactCard, setSelectedContactCard, setFromDialog, getContact } from 'store/slice'
 import { useContactDefaultValues } from 'section/crm'
-import { useMediaQuery, Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
+import { useMediaQuery, Grid, Dialog, DialogContent, DialogTitle, DialogActions, Divider, Typography } from '@mui/material'
 import { GridViewField, GridViewTitle, IconTooltip, Button, AuditBox } from 'component'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption } from 'theme/style'
@@ -134,18 +134,19 @@ const ContactDialog = ({ contact }) => {
        </Grid>
       </Grid>
      </Grid>
-     <AuditBox value={defaultValues} />
-
-     <Grid item sm={12}>
-      <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
-       <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog} gap={2}>
-        {t('close.label').toUpperCase()}
-       </GStyledCloseButton>
-       <Button label={BUTTON.CONTACT_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleContactOverview} />
-      </Grid>
+    </Grid>
+    <AuditBox value={defaultValues} pb={0} />
+   </DialogContent>
+   <DialogActions>
+    <Grid item sm={12}>
+     <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
+      <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog} gap={2}>
+       {t('close.label').toUpperCase()}
+      </GStyledCloseButton>
+      <Button label={BUTTON.CONTACT_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleContactOverview} />
      </Grid>
     </Grid>
-   </DialogContent>
+   </DialogActions>
   </Dialog>
  )
 }

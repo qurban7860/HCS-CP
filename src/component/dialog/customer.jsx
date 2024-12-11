@@ -92,7 +92,7 @@ const CustomerDialog = () => {
       </Grid>
      </Grid>
     </Grid>
-    <AuditBox value={defaultValues} />
+    <AuditBox value={defaultValues} pb={0} />
    </DialogContent>
    <DialogActions>
     <Grid item sm={12}>

@@ -1,7 +1,7 @@
 import { t } from 'i18next'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { snack, useSettingContext, useResponsive, ICON_NAME } from 'hook'
+import { snack, useSettingContext, useResponsive } from 'hook'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { setChangePasswordDialog, updateUserPassword } from 'store/slice'
 import { ChangePasswordSchema } from 'schema'
@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogTitle, Divider, DialogActions, Box, Typogr
 import { RHFTextField, RHFPasswordField } from 'component'
 import FormProvider from 'component/hook-form'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledLoadingButton, GBackdropPropsOption, GStyledCloseButton } from 'theme/style'
-import { TYPOGRAPHY, FLEX, SIZE, KEY } from 'constant'
+import { TYPOGRAPHY, FLEX, KEY } from 'constant'
 
 function ChangePasswordDialog() {
  const userId = localStorage.getItem('userId')
