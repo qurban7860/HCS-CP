@@ -2,7 +2,7 @@ import { Fragment, useEffect, useLayoutEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector, dispatch } from 'store'
 import _ from 'lodash'
-import { getCustomerMachines, getCustomer, getContacts, setContactDialog, setMachineDialog, setMachineSiteDialog, resetMachineSiteDialogData, resetCustomerMachines, resetContact } from 'store/slice'
+import { getCustomer, getContacts, setContactDialog, setMachineDialog, setMachineSiteDialog, resetMachineSiteDialogData, resetContact } from 'store/slice'
 import { Grid } from '@mui/material'
 import { AuditBox } from 'component'
 import { HowickResources } from 'section/common'
@@ -11,7 +11,6 @@ import { MARGIN } from 'config'
 import { FLEX_DIR } from 'constant'
 
 const CustomerTab = () => {
- const { customerMachines } = useSelector(state => state.machine)
  const { customer, isLoading } = useSelector(state => state.customer)
  const { contacts } = useSelector(state => state.contact)
  const { id } = useParams()
@@ -22,33 +21,29 @@ const CustomerTab = () => {
     dispatch(getCustomer(id))
    }
   }, 300)
-
   debounce()
-
   return () => debounce.cancel()
  }, [id])
 
  useEffect(() => {
   const debounce = _.debounce(() => {
-   dispatch(getCustomerMachines(id))
-   dispatch(getContacts(id))
+   if (id && !contacts.length) {
+    dispatch(getContacts(id))
+   }
   }, 300)
-
   debounce()
-
   return () => debounce.cancel()
- }, [id])
+ }, [id, contacts])
 
  useLayoutEffect(() => {
   dispatch(setMachineDialog(false))
   dispatch(setMachineSiteDialog(false))
   dispatch(setContactDialog(false))
-  dispatch(resetCustomerMachines())
   dispatch(resetContact())
   dispatch(resetMachineSiteDialogData())
  }, [dispatch])
 
- const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
+ const defaultValues = useCustomerDefaultValues(customer, null, contacts)
 
  return (
   <Fragment>

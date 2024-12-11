@@ -1,7 +1,8 @@
-import { Fragment, useEffect, useLayoutEffect } from 'react'
+import { Fragment, useEffect, useCallback, useLayoutEffect } from 'react'
 import { t } from 'i18next'
 import { useSelector, dispatch } from 'store'
 import _ from 'lodash'
+import debounce from 'lodash/debounce'
 import { useAuthContext } from 'auth/use-auth-context'
 import {
  getCustomerMachines,
@@ -28,63 +29,62 @@ import { MARGIN } from 'config'
 import { FLEX_DIR } from 'constant'
 
 const HomeTab = () => {
- const { customerMachines, machineTotalCount } = useSelector(state => state.machine)
- const { customer, isLoading } = useSelector(state => state.customer)
- const { sites } = useSelector(state => state.site)
- const { contact, contacts } = useSelector(state => state.contact)
+ const { customerMachines, machineTotalCount, customer, isLoading, sites, contact, contacts } = useSelector(
+  state => ({
+   customerMachines: state.machine.customerMachines,
+   machineTotalCount: state.machine.machineTotalCount,
+   customer: state.customer.customer,
+   isLoading: state.customer.isLoading,
+   sites: state.site.sites,
+   contact: state.contact.contact,
+   contacts: state.contact.contacts
+  }),
+  _.isEqual
+ )
 
  const { user } = useAuthContext()
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  const customerId = user?.customer
- const isMain = s => defaultValues?.customerMainSiteId === s?._id
-
- useLayoutEffect(() => {
-  dispatch(setMachineDialog(false))
-  dispatch(setMachineSiteDialog(false))
-  dispatch(setContactDialog(false))
-  dispatch(resetCustomerMachines())
-  dispatch(resetContact())
-  //   dispatch(resetMachineSiteDialogData())
- }, [dispatch])
 
  useEffect(() => {
-  const debounce = _.debounce(() => {
+  const debounceFetch = debounce(() => {
    if (customerId !== customer?._id) dispatch(getCustomer(customerId))
   }, 300)
-  debounce()
-  return () => debounce.cancel()
+  debounceFetch()
+  return () => debounceFetch.cancel()
  }, [customerId, customer])
 
  useEffect(() => {
-  const debouncedDispatch = _.debounce(() => {
+  const debounceFetch = debounce(() => {
    if (customerId && !sites.length) {
     dispatch(getSites(customerId, customer?.isArchived))
    }
   }, 300)
-  debouncedDispatch()
-  return () => debouncedDispatch.cancel()
+  debounceFetch()
+  return () => debounceFetch.cancel()
  }, [customerId, sites, dispatch])
 
  useEffect(() => {
-  const debounce = _.debounce(() => {
+  const debounceFetch = debounce(() => {
    if (customerId && !customerMachines.length) {
     dispatch(getCustomerMachines(customerId))
    }
   }, 300)
-  debounce()
-  return () => debounce.cancel()
+  debounceFetch()
+  return () => debounceFetch.cancel()
  }, [customerId, customerMachines, dispatch])
 
  useEffect(() => {
-  const debounce = _.debounce(() => {
+  const debounceFetch = debounce(() => {
    if (customerId && !contacts.length) dispatch(getContacts(customerId))
   }, 300)
-  debounce()
-  return () => debounce.cancel()
+  debounceFetch()
+  return () => debounceFetch.cancel()
  }, [customerId, contacts, dispatch])
 
  const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
+ const isMain = useCallback(s => defaultValues?.customerMainSiteId === s?._id, [defaultValues])
 
  const handleContactDialog = contactId => {
   dispatch(getContact(customerId, contactId))
@@ -97,6 +97,14 @@ const HomeTab = () => {
   dispatch(getConnectedMachineDialog(machineId))
   dispatch(setMachineDialog(true))
  }
+
+ useLayoutEffect(() => {
+  dispatch(setMachineDialog(false))
+  dispatch(setMachineSiteDialog(false))
+  dispatch(setContactDialog(false))
+  dispatch(resetCustomerMachines())
+  dispatch(resetContact())
+ }, [dispatch])
 
  return (
   <Fragment>
