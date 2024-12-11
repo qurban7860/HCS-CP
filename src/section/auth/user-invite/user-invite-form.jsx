@@ -1,4 +1,6 @@
 import { useEffect, useState, useCallback, Fragment } from 'react'
+import _ from 'lodash'
+import debounce from 'lodash.debounce'
 import { t } from 'i18next'
 import { useSelector } from 'react-redux'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -13,7 +15,8 @@ import {
  getActiveContacts,
  getCustomerRoles,
  setUserInviteDialog,
- resetUserInviteResponse,
+ setUserInviteConfirmDetails,
+ resetUserInviteConfirmDetails,
  resetCustomer,
  resetActiveContacts,
  resetSecurityUsers
@@ -24,9 +27,16 @@ import { Grid, Box, Checkbox, Typography } from '@mui/material'
 import { RHFRequiredTextFieldWrapper, UserInviteSuccessDialog } from 'component'
 import FormProvider, { RHFTextField, RHFAutocomplete, RHFPhoneInput } from 'component/hook-form'
 import { GStyledLoadingButton, GStyledSpanBox, GStyledFieldChip } from 'theme/style'
-import { RADIUS } from 'config'
-import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, TYPOGRAPHY, FLEX_DIR, COUNTRY } from 'constant'
-import { delay, getCountryCode } from 'util'
+import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, TYPOGRAPHY, FLEX_DIR } from 'constant'
+import { delay, getCountryCode, roleCoverUp } from 'util'
+
+const FORM_EL = {
+ contact: 'contact',
+ name: 'name',
+ phone: 'phone',
+ email: 'email',
+ roles: 'roles'
+}
 
 /**
  * Used by the customer admin to invite their own users to the Howick Portal
@@ -35,40 +45,62 @@ import { delay, getCountryCode } from 'util'
 function UserInviteForm() {
  const [isFormComplete, setIsFormComplete] = useState(false)
  const [isSuccessState, setIsSuccessState] = useState(false)
- const { customer } = useSelector(state => state.customer)
- const { activeContacts } = useSelector(state => state.contact)
- const { userInviteDialog, securityUserTotalCount } = useSelector(state => state.user)
- const { customerRoles } = useSelector(state => state.role)
+ const [isConfirming, setIsConfirming] = useState(false)
+ const { customer, activeContacts, securityUserTotalCount, customerRoles, userInviteDialog } = useSelector(
+  state => ({
+   customer: state.customer.customer,
+   activeContacts: state.contact.activeContacts,
+   securityUserTotalCount: state.user.securityUserTotalCount,
+   userInviteDialog: state.user.userInviteDialog,
+   customerRoles: state.role.customerRoles
+  }),
+  _.isEqual
+ )
+
  const { user } = useAuthContext()
  const { themeMode } = useSettingContext()
 
  const regEx = new RegExp(REGEX.ERROR_CODE)
  const isMobile = useResponsive('down', 'sm')
 
- const roleName = role => (role?.name === KEY.CUSTOMER_ADMIN ? 'Admin' : 'User' || '')
  const countryCode = getCountryCode(customer?.mainSite?.address?.country) || KEY.DEFAULT_COUNTRY_CODE
 
- useEffect(() => {
-  dispatch(resetSecurityUsers())
-  dispatch(resetCustomer())
-  dispatch(resetActiveContacts())
-  dispatch(resetUserInviteResponse())
- }, [dispatch])
+ const fetchCustomer = useCallback(() => {
+  if (user?.customer && !customer) {
+   dispatch(getCustomer(user.customer))
+  }
+ }, [user?.customer, customer, dispatch])
 
  useEffect(() => {
-  if (user?.customer) {
-   const fetchData = async () => {
-    await dispatch(getSecurityUsers(user.customer))
-    await dispatch(getCustomer(user.customer))
-    await dispatch(getActiveContacts(user.customer))
-    await dispatch(getCustomerRoles())
-   }
-   fetchData()
-  }
- }, [user, dispatch])
+  const timer = setTimeout(fetchCustomer, 300)
+  return () => clearTimeout(timer)
+ }, [fetchCustomer])
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   if (user.customer && securityUserTotalCount) dispatch(getSecurityUsers(user.customer))
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [user.customer, securityUserTotalCount, dispatch])
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   if (user.customer && !activeContacts.length) dispatch(getActiveContacts(user.customer))
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [user.customer, activeContacts, dispatch])
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   if (user.customer && !customerRoles.length) dispatch(getCustomerRoles())
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [user.customer, customerRoles, dispatch])
 
  const defaultValues = useUserInviteDefaultValues(customer)
-
  const methods = useForm({
   resolver: yupResolver(UserInviteSchema),
   defaultValues,
@@ -83,7 +115,7 @@ function UserInviteForm() {
   formState: { errors, isSubmitting, isSubmitSuccessful }
  } = methods
 
- const { email, contact, name, roles } = watch()
+ const { email, contact, name, roles, phone } = watch()
 
  const checkFormCompletion = useCallback(() => {
   setIsFormComplete(!!name && !!REGEX.EMAIL.test(email) && !!contact && roles.length > 0)
@@ -94,6 +126,18 @@ function UserInviteForm() {
    checkFormCompletion()
   }
  }, [checkFormCompletion])
+
+ const handleConfirmation = async () => {
+  setIsConfirming(true)
+  await Promise.all([dispatch(setUserInviteConfirmDetails({ customer, name, email, phone, roles })), dispatch(setUserInviteDialog(true))])
+ }
+
+ useEffect(() => {
+  dispatch(resetSecurityUsers())
+  dispatch(resetCustomer())
+  dispatch(resetActiveContacts())
+  dispatch(resetUserInviteConfirmDetails())
+ }, [dispatch])
 
  const handleSubmissionError = error => {
   if (error?.errors) {
@@ -125,6 +169,7 @@ function UserInviteForm() {
  const onSubmit = async data => {
   try {
    setIsSuccessState(true)
+   setIsConfirming(false)
    const Data = {
     ...data,
     customer
@@ -134,13 +179,13 @@ function UserInviteForm() {
    if (REGEX.SUCCESS_CODE.test(response.status)) {
     snack(t('responses.success.user_invite_request_submitted'), { variant: COLOR.SUCCESS })
     reset()
-    dispatch(setUserInviteDialog(true))
     setIsFormComplete(false)
     setIsSuccessState(false)
    } else {
     console.error('Submission failed:', response)
     snack('Submission failed', { variant: COLOR.ERROR })
     setIsSuccessState(false)
+    setIsConfirming(false)
    }
   } catch (error) {
    handleSubmissionError(error)
@@ -165,7 +210,7 @@ function UserInviteForm() {
      <Grid item xs={12} sm={6} md={6}>
       <RHFRequiredTextFieldWrapper condition={!contact}>
        <RHFAutocomplete
-        name='contact'
+        name={FORM_EL.contact}
         label={t('contact.label')}
         options={activeContacts}
         getOptionLabel={option => `${option?.firstName || ''} ${option?.lastName || ''}`}
@@ -180,12 +225,19 @@ function UserInviteForm() {
      </Grid>
      <Grid item xs={12} sm={6} md={6}>
       <RHFRequiredTextFieldWrapper condition={!name}>
-       <RHFTextField name='name' label={t('full_name.label')} autoComplete={KEY.NAME} aria-label={KEY.NAME} helperText={errors.contactPersonName ? errors.contactPersonName.message : ''} required />
+       <RHFTextField
+        name={FORM_EL.name}
+        label={t('full_name.label')}
+        autoComplete={KEY.NAME}
+        aria-label={KEY.NAME}
+        helperText={errors.contactPersonName ? errors.contactPersonName.message : ''}
+        required
+       />
       </RHFRequiredTextFieldWrapper>
      </Grid>
      <Grid item xs={12} sm={6} md={6}>
       <RHFPhoneInput
-       name='phone'
+       name={FORM_EL.phone}
        label={t('contact_number.label')}
        autoComplete={KEY.PHONE}
        placeholder={t('contact_number.label')}
@@ -198,7 +250,7 @@ function UserInviteForm() {
      <Grid item xs={12} sm={6} md={6}>
       <RHFRequiredTextFieldWrapper condition={REGEX.EMAIL.test(email) === false}>
        <RHFTextField
-        name={KEY.EMAIL}
+        name={FORM_EL.email}
         type={KEY.EMAIL}
         label={t('email.label')}
         autoComplete={KEY.EMAIL}
@@ -218,44 +270,59 @@ function UserInviteForm() {
        name='roles'
        label={t('role.roles.label')}
        options={customerRoles}
-       getOptionLabel={option => roleName(option)}
+       getOptionLabel={option => roleCoverUp(option)}
        isOptionEqualToValue={(option, value) => option?._id === value?._id}
-       renderOption={(props, option, { selected }) => (
-        <li {...props}>
-         <Checkbox checked={selected} />
-         {roleName(option)}
-        </li>
-       )}
+       renderOption={(props, option, { selected }) => {
+        // eslint-disable-next-line react/prop-types
+        const { key, ...liProps } = props
+        return (
+         <li key={option?._id} {...liProps}>
+          <Checkbox checked={selected} />
+          {roleCoverUp(option)}
+         </li>
+        )
+       }}
        renderTags={(value, getTagProps) =>
         value.map((option, index) => {
          const { key, ...tagProps } = getTagProps({ index })
-         return <GStyledFieldChip key={option?._id} label={roleName(option)} mode={themeMode} {...tagProps} />
+         return <GStyledFieldChip key={option?._id} label={roleCoverUp(option)} mode={themeMode} {...tagProps} />
         })
        }
       />
      </Grid>
     </Grid>
-
     <Grid container direction={{ xs: 'column', md: 'row' }} justifyContent={KEY.CENTER}>
      <Grid item xs={12} sm={4} md={4}>
       <GStyledLoadingButton
        fullWidth
-       isLoading={isSubmitting}
        color={KEY.INHERIT}
        size={SIZE.LARGE}
-       type={KEY.SUBMIT}
+       type={'button'}
        variant={KEY.CONTAINED}
-       loading={isSubmitting}
-       disabled={!isFormComplete}
-       sx={RADIUS.BORDER}>
+       //    isLoading={isConfirming}
+       loading={isConfirming}
+       mode={themeMode}
+       onClick={handleConfirmation}
+       disabled={!isFormComplete}>
        {t('send_invitation.label').toUpperCase()}
       </GStyledLoadingButton>
      </Grid>
-     {/* Spacer */}
      <Box height={{ xs: 50, md: 100 }} />
     </Grid>
+
+    {userInviteDialog && (
+     <UserInviteSuccessDialog
+      setIsConfirming={setIsConfirming}
+      isSubmitSuccessful={isSubmitSuccessful}
+      onConfirm={handleSubmit(onSubmit)}
+      action={
+       <GStyledLoadingButton isLoading={isSubmitting} color={KEY.INHERIT} type={KEY.SUBMIT} loading={isSubmitting} variant={KEY.CONTAINED} mode={themeMode}>
+        {t('confirm.label').toUpperCase()}
+       </GStyledLoadingButton>
+      }
+     />
+    )}
    </FormProvider>
-   {userInviteDialog && <UserInviteSuccessDialog />}
   </Fragment>
  )
 }

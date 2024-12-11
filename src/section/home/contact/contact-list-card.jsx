@@ -85,16 +85,6 @@ const ContactListCard = ({ value, handleContactDialog }) => {
            <Grid item xs={2} flex={1} justifyContent={FLEX.FLEX_END} alignContent={KEY.RIGHT}>
             <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1}>
              <IconTooltip
-              title={LABEL.CONTACT_THIS(c.firstName, c.phone)}
-              icon={ICON_NAME.PHONE}
-              color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
-              tooltipColor={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
-              dimension={18}
-              disabled={!c.phone}
-              iconOnly
-              cursor
-             />
-             <IconTooltip
               title={notEmployed(c) ? LABEL.NOT_EMPLOYED : LABEL.CURRENTLY_EMPLOYED}
               icon={notEmployed(c) ? ICON_NAME.NOT_EMPLOYED : ICON_NAME.CURRENTLY_EMPLOYED}
               color={notEmployed(c) ? theme.palette.error.dark : !notEmployed(c) && themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}

@@ -3,10 +3,10 @@ import { dispatch, useSelector } from 'store'
 import { useSettingContext, ICON_NAME } from 'hook'
 import { setMachineTicketDialog } from 'store/slice'
 import { useTicketDefaultValues } from 'section/support'
-import { useMediaQuery, Grid, Dialog, DialogContent, DialogTitle, Divider, Typography, Box } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledSpanBox, GStyledSupportStatusFieldChip, GStyledCloseButton, GStyledLoadingButton } from 'theme/style'
+import { useMediaQuery, Grid, Dialog, DialogContent, DialogTitle, DialogActions, Divider, Typography, Box } from '@mui/material'
 import { GridViewField, GridViewTitle, AuditBox, Button } from 'component'
+import { useTheme } from '@mui/material/styles'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledSupportStatusFieldChip, GStyledCloseButton, GBackdropPropsOption } from 'theme/style'
 import { GLOBAL } from 'config/global'
 import { TYPOGRAPHY, FLEX, SIZE, KEY, FLEX_DIR } from 'constant'
 import { normalizer } from 'util/format'
@@ -29,7 +29,7 @@ const MachineSupportTicketDialog = () => {
  }
 
  return (
-  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={machineTicketDialog} onClose={handleDialog} aria-describedby='alert-dialog-slide-description'>
+  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={machineTicketDialog} onClose={handleDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle
     sx={{
@@ -95,20 +95,22 @@ const MachineSupportTicketDialog = () => {
         </GridViewField>
        </Grid>
       </Grid>
-      <AuditBox value={defaultValues} />
-      <Grid item sm={12} my={2}>
-       <Grid container justifyContent={FLEX.FLEX_END}>
-        <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
-         <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog}>
-          {t('close.label').toUpperCase()}
-         </GStyledCloseButton>
-         <Button label={t('view_jira.label')} icon={ICON_NAME.JIRA} onClick={() => handleCustomerTicketOverview(defaultValues?.key)} />
-        </Grid>
-       </Grid>
+     </Grid>
+    </Grid>
+    <AuditBox value={defaultValues} pb={0} />
+   </DialogContent>
+   <DialogActions>
+    <Grid item sm={12}>
+     <Grid container justifyContent={FLEX.FLEX_END}>
+      <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
+       <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog}>
+        {t('close.label').toUpperCase()}
+       </GStyledCloseButton>
+       <Button label={t('view_jira.label')} icon={ICON_NAME.JIRA} onClick={() => handleCustomerTicketOverview(defaultValues?.key)} />
       </Grid>
      </Grid>
     </Grid>
-   </DialogContent>
+   </DialogActions>
   </Dialog>
  )
 }

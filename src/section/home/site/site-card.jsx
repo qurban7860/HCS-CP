@@ -18,6 +18,7 @@ const SiteCard = ({ isMain, selectedCardId, handleSiteCard, site }) => {
 
   return `${hasValidCity ? s.address.city : ''}${shouldShowSeparator ? ', ' : ''}${hasValidCity && hasValidCity.length <= 20 && hasValidCountry ? s.address.country : ''}`
  }
+
  return (
   <GStyledSiteCard onClick={event => handleSiteCard(event, site._id)} selectedCardId={selectedCardId} site={site} mode={themeMode}>
    <Grid item xs={10}>

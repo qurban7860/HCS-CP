@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
+import { Trans } from 'react-i18next'
 import { Block, ModeOption, FullScreenOption, ContrastOption, Icon, ICON_NAME, useSettingContext, useResponsive } from 'hook'
 import { Box, Dialog, Divider, IconButton, Stack, Tooltip, Typography } from '@mui/material'
 import { Scrollbar } from 'component/scrollbar'
 import { GStyledTopBorderDivider, GBackdropPropsOption } from 'theme/style'
-import { NAV } from 'config'
-import { FLEX, FLEX_DIR, KEY, TITLE, TYPOGRAPHY } from 'constant'
+import { NAV } from 'config/layout'
+import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 
 const DisplayDialog = ({ open, handleClose, onResetSetting }) => {
  const { themeMode } = useSettingContext()
@@ -20,18 +21,18 @@ const DisplayDialog = ({ open, handleClose, onResetSetting }) => {
     sx: {
      width: NAV.W_BASE,
      ...(open && { '&:after': { position: 'relative', zIndex: 9999 } }),
-     height: NAV.H_ACCOUNT_POPOVER
+     height: isMobile ? NAV.H_ACCOUNT_POPOVER_MOBILE : NAV.H_ACCOUNT_POPOVER
     }
    }}>
    <GStyledTopBorderDivider mode={themeMode} />
    <Stack direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} display={FLEX.FLEX} justifyContent={FLEX.SPACE_BETWEEN} sx={{ py: 1, pr: 1, pl: NAV.SPACING }}>
     <Typography
-     variant={isMobile ? TYPOGRAPHY.H5 : TYPOGRAPHY.H3}
+     variant={isMobile ? TYPOGRAPHY.H6 : TYPOGRAPHY.H5}
      sx={{
       flexGrow: 1,
       textAlign: 'left'
      }}>
-     {TITLE.DISPLAY_SETTING}
+     {t('display_settings.label')}
     </Typography>
 
     <Tooltip title={t('reset.label')}>
@@ -41,25 +42,20 @@ const DisplayDialog = ({ open, handleClose, onResetSetting }) => {
       </IconButton>
      </Box>
     </Tooltip>
-
-    {/* activate when becomes a problem */}
-    {/* <IconButton onClick={handleClose}>
-     <WebIcon icon={closeSrc} />
-    </IconButton> */}
    </Stack>
-
    <Divider />
-
    <Scrollbar sx={{ p: NAV.SPACING, pb: 0 }}>
-    <Block {...TITLE.MODE(themeMode)}>
+    <Block title={t('mode.label')} tooltip={<Trans i18nKey='mode.mode_tooltip' values={{ value: themeMode === KEY.LIGHT ? KEY.DARK.toUpperCase() : KEY.LIGHT.toUpperCase() }} />}>
      <ModeOption />
     </Block>
-    <Block {...TITLE.CONSTRAST}>
+    <Block title={t('contrast.label')} tooltip={t('contrast.contrast_tooltip')}>
      <ContrastOption />
     </Block>
-    <Block {...TITLE.FULLSCREEN}>
-     <FullScreenOption />
-    </Block>
+    {!isMobile && (
+     <Block title={t('full_screen.label')} tooltip={t('full_screen.full_screen_tooltip')}>
+      <FullScreenOption />
+     </Block>
+    )}
    </Scrollbar>
   </Dialog>
  )

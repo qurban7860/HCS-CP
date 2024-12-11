@@ -6,7 +6,7 @@ import { useMediaQuery, Grid } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledHeaderCardContainer, GStyledTopBorderDivider, GStyledSpanBox } from 'theme/style'
 import { SvgFlagIcon, IconTooltip, BadgeCardMedia, TitleListItemText } from 'component'
-import { KEY, LABEL, FLEX, FLEX_DIR } from 'constant'
+import { KEY, LABEL, FLEX, FLEX_DIR, TYPOGRAPHY } from 'constant'
 
 const HomeNav = ({ value, isLoading }) => {
  const { themeMode } = useSettingContext()
@@ -48,7 +48,7 @@ const HomeNav = ({ value, isLoading }) => {
      <Grid container flexDirection={FLEX_DIR.ROW} p={2}>
       <Grid item xs={8} md={8} display={FLEX.FLEX} alignItems={KEY.CENTER} mt={2}>
        <GStyledSpanBox gap={1} mb={1}>
-        <BadgeCardMedia />
+        <BadgeCardMedia customer={value?.customer} typographyVariant={TYPOGRAPHY.H2} />
         <TitleListItemText truncatedName={value?.name} tradingAliases={value?.tradingName} />
        </GStyledSpanBox>
       </Grid>

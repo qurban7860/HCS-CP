@@ -50,11 +50,13 @@ const LogsSection = ({ isArchived }) => {
 
  useEffect(() => {
   const debouncedDispatch = _.debounce(() => {
-   dispatch(getCustomers(null, null, isArchived, cancelTokenSource))
+   if (!customerMachines.length) {
+    dispatch(getCustomers(null, null, isArchived, cancelTokenSource))
+   }
   }, 300)
   debouncedDispatch()
   return () => debouncedDispatch.cancel()
- }, [dispatch])
+ }, [customers, dispatch])
 
  useEffect(() => {
   if (customers?.length > 0) {
@@ -63,12 +65,14 @@ const LogsSection = ({ isArchived }) => {
  }, [customers, setValue])
 
  useEffect(() => {
-  if (customer) {
-   dispatch(getCustomerMachines(customer._id))
-  } else {
-   dispatch(resetCustomerMachines())
-  }
- }, [dispatch, customer])
+  const debouncedDispatch = _.debounce(() => {
+   if (customer && !customerMachines.length) {
+    dispatch(getCustomerMachines(customer._id))
+   }
+  }, 300)
+  debouncedDispatch()
+  return () => debouncedDispatch.cancel()
+ }, [customer?._id, customerMachines, dispatch])
 
  useEffect(() => {
   setPageType(searchParams.get('type'))

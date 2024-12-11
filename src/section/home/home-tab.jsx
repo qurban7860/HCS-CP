@@ -1,7 +1,8 @@
-import { Fragment, useEffect, useLayoutEffect } from 'react'
+import { Fragment, useEffect, useCallback, useLayoutEffect } from 'react'
 import { t } from 'i18next'
 import { useSelector, dispatch } from 'store'
 import _ from 'lodash'
+import debounce from 'lodash/debounce'
 import { useAuthContext } from 'auth/use-auth-context'
 import {
  getCustomerMachines,
@@ -10,11 +11,9 @@ import {
  getContacts,
  getSites,
  getConnectedMachineDialog,
- getMachineSiteDialogData,
  setContactDialog,
  setMachineDialog,
  setMachineSiteDialog,
- resetMachineSiteDialogData,
  resetCustomerMachines,
  resetContact,
  resetMachine
@@ -30,60 +29,62 @@ import { MARGIN } from 'config'
 import { FLEX_DIR } from 'constant'
 
 const HomeTab = () => {
- const { customerMachines, machineTotalCount } = useSelector(state => state.machine)
- const { customer, isLoading } = useSelector(state => state.customer)
- const { sites } = useSelector(state => state.site)
- const { contact, contacts } = useSelector(state => state.contact)
+ const { customerMachines, machineTotalCount, customer, isLoading, sites, contact, contacts } = useSelector(
+  state => ({
+   customerMachines: state.machine.customerMachines,
+   machineTotalCount: state.machine.machineTotalCount,
+   customer: state.customer.customer,
+   isLoading: state.customer.isLoading,
+   sites: state.site.sites,
+   contact: state.contact.contact,
+   contacts: state.contact.contacts
+  }),
+  _.isEqual
+ )
 
  const { user } = useAuthContext()
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  const customerId = user?.customer
 
- const isMain = s => defaultValues?.customerMainSiteId === s?._id
  useEffect(() => {
-  const debounce = _.debounce(() => {
-   if (customerId !== customer?._id) {
-    dispatch(getCustomer(customerId))
+  const debounceFetch = debounce(() => {
+   if (customerId !== customer?._id) dispatch(getCustomer(customerId))
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [customerId, customer])
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   if (customerId && !sites.length) {
+    dispatch(getSites(customerId, customer?.isArchived))
    }
   }, 300)
-
-  debounce()
-
-  return () => debounce.cancel()
- }, [customerId])
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [customerId, sites, dispatch])
 
  useEffect(() => {
-  const debouncedDispatch = _.debounce(() => {
-   dispatch(getSites(customerId, customer?.isArchived))
+  const debounceFetch = debounce(() => {
+   if (customerId && !customerMachines.length) {
+    dispatch(getCustomerMachines(customerId))
+   }
   }, 300)
-
-  debouncedDispatch()
-
-  return () => debouncedDispatch.cancel()
- }, [customerId, dispatch])
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [customerId, customerMachines, dispatch])
 
  useEffect(() => {
-  const debounce = _.debounce(() => {
-   dispatch(getCustomerMachines(customerId))
-   dispatch(getContacts(customerId))
+  const debounceFetch = debounce(() => {
+   if (customerId && !contacts.length) dispatch(getContacts(customerId))
   }, 300)
-
-  debounce()
-
-  return () => debounce.cancel()
- }, [customerId])
-
- useLayoutEffect(() => {
-  dispatch(setMachineDialog(false))
-  dispatch(setMachineSiteDialog(false))
-  dispatch(setContactDialog(false))
-  dispatch(resetCustomerMachines())
-  dispatch(resetContact())
-  dispatch(resetMachineSiteDialogData())
- }, [dispatch])
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [customerId, contacts, dispatch])
 
  const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
+ const isMain = useCallback(s => defaultValues?.customerMainSiteId === s?._id, [defaultValues])
 
  const handleContactDialog = contactId => {
   dispatch(getContact(customerId, contactId))
@@ -97,12 +98,13 @@ const HomeTab = () => {
   dispatch(setMachineDialog(true))
  }
 
- const handleMachineSiteDialog = (event, machineId) => {
-  event.preventDefault()
-  dispatch(resetMachineSiteDialogData())
-  dispatch(getMachineSiteDialogData(machineId))
-  dispatch(setMachineSiteDialog(true))
- }
+ useLayoutEffect(() => {
+  dispatch(setMachineDialog(false))
+  dispatch(setMachineSiteDialog(false))
+  dispatch(setContactDialog(false))
+  dispatch(resetCustomerMachines())
+  dispatch(resetContact())
+ }, [dispatch])
 
  return (
   <Fragment>
@@ -119,7 +121,7 @@ const HomeTab = () => {
       </Grid>
       <Grid item xs={12} sm={6} mb={5}>
        <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={machineTotalCount}>
-        <MachineListCard className='machines-widget' handleMachineDialog={handleConnectedMachineDialog} handleMachineSiteDialog={handleMachineSiteDialog} machineTotalCount={machineTotalCount} />
+        <MachineListCard className='machines-widget' handleMachineDialog={handleConnectedMachineDialog} machineTotalCount={machineTotalCount} />
        </GStyledScrollableHeightLockGrid>
       </Grid>
      </Grid>

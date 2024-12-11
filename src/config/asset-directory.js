@@ -71,6 +71,7 @@ export const ASSET = {
  PLACEHOLDER: _image('placeholder.svg'),
  PORTAL: _brand('portal.svg'),
  PORTAL_2: _brand('portal-2.svg'),
+ RANDOM_GRAPX: _background('working-together.jpg'),
  OCTICON: icon => `/asset/octicon/${icon}.svg`,
  SVG: icon => `/asset/svg/${icon}.svg`
 }

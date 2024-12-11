@@ -3,6 +3,7 @@ export { default as MotionContainer } from './animate/motion-container'
 export { default as MotionViewport } from './animate/motion-viewport'
 export { default as MotionLazyContainer } from './animate/motion-lazy-container'
 export { default as IconButtonAnimate } from './animate/icon-button-animate'
+export { default as DialogAnimate } from './animate/dialog-animate'
 // @avatar
 export { default as Avatar } from './avatar/avatar'
 export { default as CustomAvatar } from './avatar/custom-avatar'

@@ -1,4 +1,5 @@
-import { Fragment, useEffect, memo } from 'react'
+import { Fragment, useEffect, memo, useLayoutEffect } from 'react'
+import _ from 'lodash'
 import { useSelector, dispatch } from 'store'
 import { useParams } from 'react-router-dom'
 import {
@@ -6,12 +7,12 @@ import {
  getMachine,
  setCustomerDialog,
  getConnectedMachineDialog,
- getMachineSiteDialogData,
  setMachineDialog,
  setMachineSiteDialog,
  resetCustomer,
  resetConnectedMachineDialog,
- resetMachineSiteDialogData
+ resetMachineSiteDialogData,
+ resetMachine
 } from 'store/slice'
 import { CommonFieldsCard } from 'section/common'
 import { useMachineDefaultValues, fieldsKeyConfig, fieldsMachineInformationConfig } from 'section/product'
@@ -28,26 +29,29 @@ const MachineTab = () => {
  const { customer } = useSelector(state => state.customer)
  const isDesktop = useMediaQuery(theme => theme.breakpoints.up('lg'))
 
- useEffect(() => {
-  if (id !== machine?._id) {
-   dispatch(getMachine(id))
-  }
- }, [id])
-
- useEffect(() => {
-  if (machine?.customer && machine?.customer._id !== customer?._id) {
-   dispatch(getCustomer(machine?.customer._id))
-  }
- }, [machine?.customer, customer?._id])
-
- useEffect(() => {
+ useLayoutEffect(() => {
   dispatch(setCustomerDialog(false))
   dispatch(setMachineDialog(false))
   dispatch(setMachineSiteDialog(false))
+  dispatch(resetMachine())
   dispatch(resetCustomer())
   dispatch(resetConnectedMachineDialog())
   dispatch(resetMachineSiteDialogData())
  }, [dispatch])
+
+ useEffect(() => {
+  const debounce = _.debounce(() => {
+   dispatch(getMachine(id))
+  }, 300)
+  debounce()
+  return () => debounce.cancel()
+ }, [id, dispatch])
+
+ useEffect(() => {
+  if (machine?.customer) {
+   dispatch(getCustomer(machine?.customer._id))
+  }
+ }, [machine?.customer, dispatch])
 
  const defaultValues = useMachineDefaultValues(machine, customer)
 
@@ -65,19 +69,12 @@ const MachineTab = () => {
   dispatch(setMachineDialog(true))
  }
 
- const handleMachineSiteDialog = (event, machineId) => {
-  event.preventDefault()
-  dispatch(resetMachineSiteDialogData())
-  dispatch(getMachineSiteDialogData(machineId))
-  dispatch(setMachineSiteDialog(true))
- }
-
  return (
   <Fragment>
    <Grid container columnSpacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
     {isDesktop && (
      <Grid item xs={12} md={12} lg={3}>
-      <MachineConnectionWidget value={defaultValues} handleConnectedMachineDialog={handleConnectedMachineDialog} handleMachineSiteDialog={handleMachineSiteDialog} />
+      <MachineConnectionWidget value={defaultValues} handleConnectedMachineDialog={handleConnectedMachineDialog} />
      </Grid>
     )}
     <Grid item xs={12} sm={12} lg={9}>

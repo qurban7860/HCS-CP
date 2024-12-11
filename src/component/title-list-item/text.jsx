@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useMediaQuery, useTheme, Grid, ListItemText, Typography } from '@mui/material'
+import { useMediaQuery, useTheme, Box, ListItemText, Typography } from '@mui/material'
 import { useSettingContext } from 'hook'
 import { truncate } from 'util/truncate'
 import { TYPOGRAPHY, KEY } from 'constant'
@@ -18,8 +18,7 @@ const TitleListItemText = ({ truncatedName, tradingAliases }) => {
     </Typography>
    }
    secondary={
-    <Grid
-     container
+    <Box
      sx={{
       height: 20,
       flexWrap: 'wrap',
@@ -31,7 +30,7 @@ const TitleListItemText = ({ truncatedName, tradingAliases }) => {
         {item}
        </Typography>
       ))}
-    </Grid>
+    </Box>
    }
   />
  )

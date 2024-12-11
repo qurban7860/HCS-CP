@@ -2,13 +2,11 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import { Trans } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { Icon, ICON_NAME, useSettingContext } from 'hook'
-import { Box, Card, CardContent, Typography, Grid, Paper, List, ListItem, ListItemIcon, ListItemText, Avatar, Chip, Stack, Button } from '@mui/material'
+import { Box, Card, CardContent, Typography, Grid, Paper, List, ListItem, ListItemIcon, ListItemText, Avatar, Chip, Stack } from '@mui/material'
 import { GStyledLoadingButton } from 'theme/style'
 import { GLOBAL } from 'config/global'
 import { SIZE, TYPOGRAPHY, VARIANT } from 'constant'
-import { delay } from 'util'
 
 const UserInviteSuccessCard = ({ submittedData }) => {
  const [loading, setLoading] = useState(false)

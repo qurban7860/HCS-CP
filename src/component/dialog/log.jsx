@@ -1,14 +1,14 @@
 import { Fragment, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
+import { useSelector } from 'react-redux'
 import { Icon, ICON_NAME, useSettingContext } from 'hook'
 import { useMediaQuery, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Typography, Accordion, AccordionSummary, AccordionDetails, Box, Grid } from '@mui/material'
 import { SkeletonLoading, CodeRaw } from 'component'
 import { styled, useTheme } from '@mui/material/styles'
-import { useSelector } from 'react-redux'
-import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton } from 'theme/style'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption } from 'theme/style'
 import { camelCaseNormalizer } from 'util'
-import { TYPOGRAPHY, FLEX, KEY } from 'constant'
+import { TYPOGRAPHY, FLEX, KEY, SZ } from 'constant'
 
 const ResponsiveGrid = styled(Grid)(({ theme }) => ({
  [theme.breakpoints.down('sm')]: {
@@ -49,32 +49,29 @@ function LogDetailsDialog({ logDetails, open, setOpenLogDetailsDialog, component
  }
 
  return (
-  <Fragment>
-   <Dialog disableEnforceFocus maxWidth='lg' open={open} onClose={handleCloseDialog} aria-describedby='alert-dialog-slide-description'>
-    <GStyledTopBorderDivider mode={themeMode} />
-
-    <DialogTitle sx={{ pb: 1, pt: 2 }}>
-     <GStyledSpanBox
-      sx={{
-       justifyContent: FLEX.FLEX_START
-      }}>
-      <Typography variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H5}>{componentTitle?.date} &nbsp;</Typography>
-      <Typography variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H5} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.bronze}>
-       {componentTitle?.componentLabel}
-      </Typography>
-     </GStyledSpanBox>
-    </DialogTitle>
-    <Divider orientation='horizontal' flexItem sx={{ mb: 2 }} />
-    <DialogContent>{renderDialogContent()}</DialogContent>
-    <DialogActions>
-     <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
-      <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCloseDialog}>
-       {t('close.label').toUpperCase()}
-      </GStyledCloseButton>
-     </Grid>
-    </DialogActions>
-   </Dialog>
-  </Fragment>
+  <Dialog disableEnforceFocus maxWidth={SZ.LG} open={open} onClose={handleCloseDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
+   <GStyledTopBorderDivider mode={themeMode} />
+   <DialogTitle sx={{ pb: 1, pt: 2 }}>
+    <GStyledSpanBox
+     sx={{
+      justifyContent: FLEX.FLEX_START
+     }}>
+     <Typography variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H5}>{componentTitle?.date} &nbsp;</Typography>
+     <Typography variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H5} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.bronze}>
+      {componentTitle?.componentLabel}
+     </Typography>
+    </GStyledSpanBox>
+   </DialogTitle>
+   <Divider orientation={KEY.HORIZONTAL} flexItem sx={{ mb: 2 }} />
+   <DialogContent>{renderDialogContent()}</DialogContent>
+   <DialogActions>
+    <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
+     <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCloseDialog}>
+      {t('close.label').toUpperCase()}
+     </GStyledCloseButton>
+    </Grid>
+   </DialogActions>
+  </Dialog>
  )
 }
 export default LogDetailsDialog
@@ -96,14 +93,13 @@ const LogDetailsRaw = ({ logsToShow, logDetails, mode }) => {
  return (
   <Fragment>
    <CodeRaw value={JSON.stringify(logsToShow, null, 2)} HandleChangeIniJson={() => {}} editable={false} disableTopBar autoHeight />
-
    <Accordion>
     <AccordionSummary
      aria-controls='panel1-content'
      id='panel1-header'
      expandIcon={<Icon icon={ICON_NAME.CHEVRON_DOWN} color={mode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white} />}
      sx={{ backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[700] }}>
-     <Typography variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H6}> {t('see_more.label').toUpperCase()}</Typography>
+     <Typography variant={isDesktop ? TYPOGRAPHY.H5 : TYPOGRAPHY.H6}> {t('see_more.label').toUpperCase()}</Typography>
     </AccordionSummary>
     <AccordionDetails>
      <ResponsiveGrid container spacing={2} sx={{ backgroundColor: 'transparent' }}>

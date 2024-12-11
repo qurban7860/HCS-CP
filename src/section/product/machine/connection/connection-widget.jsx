@@ -1,21 +1,22 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { useIcon, ICON_NAME } from 'hook'
+import { useSelector } from 'react-redux'
+import { Icon, ICON_NAME } from 'hook'
 import { dispatch } from 'store'
-import { setMachineDialog } from 'store/slice'
-import { Grid, Typography, IconButton, Divider } from '@mui/material'
+import { getMachineSiteDialogData, getSite, setMachineDialog, setMachineSiteDialog, resetMachineSiteDialogData } from 'store/slice'
+import { Grid, Typography, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTooltip } from 'theme/style'
 import { useSettingContext } from 'hook'
 import { FormHeader, IconTooltip } from 'component'
 import { PATH_MACHINE } from 'route/path'
 import { GStyledListItemText, GStyledSpanBox } from 'theme/style'
-import { VARIANT, SIZE, LABEL, KEY, FLEX } from 'constant'
+import { TYPOGRAPHY, SIZE, LABEL, KEY, FLEX } from 'constant'
 import { truncate } from 'util/truncate'
+import { Trans } from 'react-i18next'
 
-const { TYPOGRAPHY } = VARIANT
-
-const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMachineSiteDialog }) => {
+const MachineConnectionWidget = ({ value, handleConnectedMachineDialog }) => {
+ const { customer } = useSelector(state => state.customer)
  const theme = useTheme()
  const { themeMode } = useSettingContext()
 
@@ -23,8 +24,13 @@ const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMa
   dispatch(setMachineDialog(false))
  }, [dispatch])
 
- const { Icon: LocIcon, iconSrc: decoilerSrc } = useIcon(ICON_NAME.DECOILER_DEF)
- const { iconSrc: parentSrc } = useIcon(ICON_NAME.PARENT)
+ const handleMachineSiteDialog = (event, machineId) => {
+  event.preventDefault()
+  dispatch(resetMachineSiteDialogData())
+  dispatch(getMachineSiteDialogData(machineId))
+  dispatch(getSite(customer?._id, customer?.mainSite?._id))
+  dispatch(setMachineSiteDialog(true))
+ }
 
  return (
   <Grid container mb={2}>
@@ -57,7 +63,7 @@ const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMa
               </Typography>
              </IconButton>
              <GStyledTooltip title={LABEL.DECOILER_DEF} disableFocusListener placement={KEY.TOP} tooltipcolor={theme.palette.grey[500]} color={theme.palette.grey[500]}>
-              <LocIcon icon={decoilerSrc} color={theme.palette.grey[500]} sx={{ height: 15 }} />
+              <Icon icon={ICON_NAME.DECOILER_DEF} color={theme.palette.grey[500]} sx={{ height: 15 }} />
              </GStyledTooltip>
             </GStyledSpanBox>
            )
@@ -126,7 +132,7 @@ const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMa
              </IconButton>
 
              <GStyledTooltip title={LABEL.PARENT} disableFocusListener placement={KEY.TOP} tooltipcolor={theme.palette.grey[500]} color={theme.palette.grey[500]}>
-              <LocIcon icon={parentSrc} color={theme.palette.grey[500]} sx={{ height: 15 }} />
+              <Icon icon={ICON_NAME.PARENT} color={theme.palette.grey[500]} sx={{ height: 15 }} />
              </GStyledTooltip>
             </GStyledSpanBox>
            )
@@ -172,7 +178,7 @@ const MachineConnectionWidget = ({ value, handleConnectedMachineDialog, handleMa
       ))
      ) : (
       <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
-       {LABEL.NO_CONNECTED_MACHINE}
+       <Trans i18nKey='no_found.label' values={{ value: 'connected machine' }} />
       </Typography>
      )}
     </Grid>

@@ -25,8 +25,8 @@ const ProfileAvatar = ({ value }) => {
   <Box display={FLEX.FLEX} justifyContent={KEY.CENTER} alignItems={KEY.CENTER}>
    <input accept='image/*' type='file' ref={fileInput} style={{ display: 'none' }} onChange={handleFileChange} />
    <Badge
-    onMouseEnter={handleHoverAvatar}
-    onMouseLeave={handleHoverAvatar}
+    // onMouseEnter={handleHoverAvatar}
+    // onMouseLeave={handleHoverAvatar}
     overlap='circular'
     anchorOrigin={{ vertical: KEY.TOP, horizontal: KEY.RIGHT }}
     badgeContent={

@@ -1,7 +1,7 @@
 import { t } from 'i18next'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { snack, useSettingContext, useResponsive, ICON_NAME } from 'hook'
+import { snack, useSettingContext, useResponsive } from 'hook'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { setChangePasswordDialog, updateUserPassword } from 'store/slice'
 import { ChangePasswordSchema } from 'schema'
@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogTitle, Divider, DialogActions, Box, Typogr
 import { RHFTextField, RHFPasswordField } from 'component'
 import FormProvider from 'component/hook-form'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledLoadingButton, GBackdropPropsOption, GStyledCloseButton } from 'theme/style'
-import { TYPOGRAPHY, FLEX, SIZE, KEY } from 'constant'
+import { TYPOGRAPHY, FLEX, KEY } from 'constant'
 
 function ChangePasswordDialog() {
  const userId = localStorage.getItem('userId')
@@ -56,7 +56,7 @@ function ChangePasswordDialog() {
     } else {
      snack('Something went wrong!', { variant: `error` })
     }
-    console.log('Error:', error)
+    console.error('Error:', error)
    }
   }
  }
@@ -83,9 +83,9 @@ function ChangePasswordDialog() {
      </Box>
     </DialogContent>
     <DialogActions>
-     <Grid container justifyContent={FLEX.FLEX_END} gap={2} pb={1}>
+     <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
       <GStyledCloseButton onClick={handleChangePasswordDialog}>{t('close.label').toUpperCase()}</GStyledCloseButton>
-      <GStyledLoadingButton className='portal-button' isLoading={isSubmitting} size={SIZE.LARGE} type={KEY.SUBMIT} mode={themeMode} variant={KEY.CONTAINED} loading={isSubmitting}>
+      <GStyledLoadingButton className='portal-button' isLoading={isSubmitting} type={KEY.SUBMIT} mode={themeMode} loading={isSubmitting}>
        {t('change_password.label').toUpperCase()}
       </GStyledLoadingButton>
      </Grid>

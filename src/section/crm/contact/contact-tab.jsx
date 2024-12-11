@@ -1,9 +1,10 @@
-import { useEffect, memo, Fragment } from 'react'
+import { useEffect, memo, Fragment, useLayoutEffect } from 'react'
 import { Trans } from 'react-i18next'
+import debounce from 'lodash/debounce'
 import { useParams } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
 import { useSettingContext, useFilter, useTable, getComparator } from 'hook'
-import { getCustomer, setSelectedContactCard, resetContact, getContact, getContacts, ChangeContactPage, setContactFilterBy, resetSelectedContactCard } from 'store/slice'
+import { getCustomer, setSelectedContactCard, resetContact, getContact, getContacts, ChangeContactPage, setContactFilterBy, resetSelectedContactCard, resetContacts } from 'store/slice'
 import { useContactDefaultValues } from 'section/crm'
 import { ContactCard, fieldsContactConfig } from 'section/crm/contact'
 import { CommonFieldsCard } from 'section/common'
@@ -28,27 +29,48 @@ const ContactTab = () => {
  })
 
  useEffect(() => {
-  if (id) {
-   dispatch(getCustomer(id))
-   dispatch(getContacts(id, customer?.isArchived))
-  }
+  const debounceFetch = debounce(() => {
+   if (id !== customer?._id) {
+    dispatch(getCustomer(id))
+   }
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
  }, [id, dispatch])
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   if (id && !contacts.length) {
+    dispatch(getContacts(id, customer?.isArchived))
+   }
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [id, contacts, dispatch])
 
  const defaultValues = useContactDefaultValues(contact, customer)
 
  useEffect(() => {
-  if (contacts.length > 0 && !fromDialog) {
-   dispatch(resetSelectedContactCard())
-   dispatch(getContact(id, contacts[0]?._id))
-   dispatch(setSelectedContactCard(contacts[0]?._id))
-  }
+  const debounceFetch = debounce(() => {
+   if (contacts.length > 0 && !fromDialog) {
+    dispatch(resetSelectedContactCard())
+    dispatch(getContact(id, contacts[0]?._id))
+    dispatch(setSelectedContactCard(contacts[0]?._id))
+   }
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
  }, [dispatch, contacts])
 
  useEffect(() => {
-  if (contacts.length > 0 && fromDialog) {
-   dispatch(getContact(id, selectedContactCard))
-   dispatch(setSelectedContactCard(selectedContactCard))
-  }
+  const debounceFetch = debounce(() => {
+   if (contacts.length > 0 && fromDialog) {
+    dispatch(getContact(id, selectedContactCard))
+    dispatch(setSelectedContactCard(selectedContactCard))
+   }
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
  }, [dispatch, contacts])
 
  const { filterName, handleFilterName, filteredData } = useFilter(getComparator(order, orderBy), contacts, initial, ChangeContactPage, setContactFilterBy)
@@ -80,6 +102,11 @@ const ContactTab = () => {
    return renderNoContacts()
   }
  }
+
+ useLayoutEffect(() => {
+  dispatch(resetContact())
+  dispatch(resetContacts())
+ }, [])
 
  return (
   <Fragment>

@@ -1,6 +1,7 @@
-import { Fragment, useEffect, useMemo, memo, useLayoutEffect } from 'react'
+import { Fragment, useEffect, useMemo, memo, useLayoutEffect, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import _ from 'lodash'
+import debounce from 'lodash/debounce'
 import { t } from 'i18next'
 import { Trans } from 'react-i18next'
 import { dispatch, useSelector } from 'store'
@@ -41,46 +42,52 @@ const SiteTab = () => {
   defaultOrder: KEY.DESC
  })
 
- useLayoutEffect(() => {
-  dispatch(setFromSiteDialog(false))
-  dispatch(resetSite())
- }, [dispatch])
-
  useEffect(() => {
-  if (id !== customer?._id) {
-   dispatch(getCustomer(id))
-  }
- }, [id, dispatch])
-
- useEffect(() => {
-  const debouncedDispatch = _.debounce(() => {
-   dispatch(getSites(id, customer?.isArchived))
+  const debounceFetch = debounce(() => {
+   if (id !== customer?._id) {
+    dispatch(getCustomer(id))
+   }
   }, 300)
-
-  debouncedDispatch()
-
-  return () => debouncedDispatch.cancel()
+  debounceFetch()
+  return () => debounceFetch.cancel()
  }, [id, dispatch])
+
+ useEffect(() => {
+  const debouceFetch = _.debounce(() => {
+   if (id && !sites.length) {
+    dispatch(getSites(id, customer?.isArchived))
+   }
+  }, 300)
+  debouceFetch()
+  return () => debouceFetch.cancel()
+ }, [id, sites, dispatch])
+
+ useEffect(() => {
+  const debouceFetch = debounce(() => {
+   if (sites.length && !fromSiteDialog) {
+    dispatch(resetSelectedSiteCard())
+    dispatch(resetValidCoordinates())
+    dispatch(getSite(id, sites[0]?._id))
+    dispatch(setSelectedSiteCard(sites[0]?._id))
+   }
+  }, 300)
+  debouceFetch()
+  return () => debouceFetch.cancel()
+ }, [dispatch, sites])
+
+ useEffect(() => {
+  const debouceFetch = debounce(() => {
+   if (sites.length > 0 && fromSiteDialog) {
+    dispatch(getSite(id, selectedSiteCard))
+    dispatch(setSelectedSiteCard(selectedSiteCard))
+   }
+  }, 300)
+  debouceFetch()
+  return () => debouceFetch.cancel()
+ }, [dispatch, sites])
 
  const defaultValues = useSiteDefaultValues(site, customer)
- const isMain = s => defaultValues?.customerMainSiteId === s?._id
-
- useEffect(() => {
-  if (sites.length > 0 && !fromSiteDialog) {
-   dispatch(resetSelectedSiteCard())
-   dispatch(resetValidCoordinates())
-   dispatch(getSite(id, sites[0]?._id))
-   dispatch(setSelectedSiteCard(sites[0]?._id))
-  }
- }, [dispatch, sites])
-
- useEffect(() => {
-  if (sites.length > 0 && fromSiteDialog) {
-   dispatch(getSite(id, selectedSiteCard))
-   dispatch(setSelectedSiteCard(selectedSiteCard))
-  }
- }, [dispatch, sites])
-
+ const isMain = useCallback(s => defaultValues?.customerMainSiteId === s?._id, [defaultValues])
  const { filterName, handleFilterName, filteredData } = useFilter(getComparator(order, orderBy), sites, initial, ChangeSitePage, setSiteFilterBy)
 
  const latLong = useMemo(
@@ -170,6 +177,11 @@ const SiteTab = () => {
    </Grid>
   )
  }
+
+ useLayoutEffect(() => {
+  dispatch(setFromSiteDialog(false))
+  dispatch(resetSite())
+ }, [dispatch])
 
  return (
   <Fragment>

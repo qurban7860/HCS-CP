@@ -6,10 +6,10 @@ import { setMachineDialog } from 'store/slice'
 import { ICON_NAME, Clock } from 'hook'
 import { PATH_CUSTOMER, PATH_MACHINE } from 'route/path'
 import { useMachineDefaultValues } from 'section/product'
-import { Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
+import { Grid, Dialog, DialogContent, DialogActions, DialogTitle, Divider, Typography } from '@mui/material'
+import { GridViewField, GridViewTitle, IconTooltip, Button, AuditBox } from 'component'
 import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledCloseButton, GStyledSpanBox } from 'theme/style'
-import { GridViewField, GridViewTitle, IconTooltip, Button } from 'component'
+import { GStyledTopBorderDivider, GStyledCloseButton, GStyledSpanBox, GBackdropPropsOption } from 'theme/style'
 import { HowickResources } from 'section/common'
 import { VIEW_FORM, TITLE, TYPOGRAPHY, FLEX, LABEL, KEY, DECOILER_TYPE_ARR, BUTTON, FLEX_DIR } from 'constant'
 import { truncate } from 'util/truncate'
@@ -32,7 +32,7 @@ const MachineDialog = () => {
  }
 
  return (
-  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={machineDialog} onClose={handleDialog} aria-describedby='alert-dialog-slide-description'>
+  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={machineDialog} onClose={handleDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle>
     <GStyledSpanBox>
@@ -127,25 +127,26 @@ const MachineDialog = () => {
        </GridViewField>
       </Grid>
       <Divider variant={KEY.FULL_WIDTH} style={{ width: '100%', marginX: '20px' }} />
-      <GridViewTitle title={TITLE.HOWICK_RESOURCES} />
-      <Grid container pb={1}>
-       <Grid item sm={12}>
-        <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} isDialog />
-       </Grid>
-       <Grid item sm={12}>
-        <Grid container justifyContent={FLEX.FLEX_END}>
-         <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
-          <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog}>
-           {t('close.label').toUpperCase()}
-          </GStyledCloseButton>
-          <Button label={BUTTON.MACHINE_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleMachineOverview} />
-         </Grid>
-        </Grid>
-       </Grid>
+      <GridViewTitle title={t('howick_resources.label')} />
+      <Grid item sm={12} mb={2}>
+       <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} isDialog />
       </Grid>
      </Grid>
     </Grid>
+    <AuditBox value={defaultValues} pb={0} />
    </DialogContent>
+   <DialogActions>
+    <Grid item sm={12}>
+     <Grid container justifyContent={FLEX.FLEX_END}>
+      <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
+       <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog}>
+        {t('close.label').toUpperCase()}
+       </GStyledCloseButton>
+       <Button label={BUTTON.MACHINE_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleMachineOverview} />
+      </Grid>
+     </Grid>
+    </Grid>
+   </DialogActions>
   </Dialog>
  )
 }

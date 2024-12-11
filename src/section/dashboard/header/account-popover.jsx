@@ -103,7 +103,7 @@ export default function AccountPopover() {
       }
      })
     }}>
-    <CustomAvatar /**src={mockUser[0]?.photoURL}  */ alt={'display name'} name={customer?.name} />
+    <CustomAvatar /**src={mockUser[0]?.photoURL}  */ typography={TYPOGRAPHY.H4} alt={'display name'} name={customer?.name} />
    </IconButtonAnimate>
 
    <MenuPopover

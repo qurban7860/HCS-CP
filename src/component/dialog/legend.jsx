@@ -5,7 +5,7 @@ import { useSettingContext, ICON_NAME } from 'hook'
 import { Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
 import { IconTooltip } from 'component'
 import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledSpanBox } from 'theme/style'
+import { GStyledTopBorderDivider, GStyledSpanBox, GBackdropPropsOption } from 'theme/style'
 import { TYPOGRAPHY, FLEX, KEY, FLEX_DIR } from 'constant'
 
 const LegendDialog = ({ open, onClose }) => {
@@ -13,7 +13,7 @@ const LegendDialog = ({ open, onClose }) => {
  const { themeMode } = useSettingContext()
 
  return (
-  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={open} onClose={onClose} aria-describedby='alert-dialog-slide-description'>
+  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={open} onClose={onClose} BackdropProps={GBackdropPropsOption(themeMode)}>
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle>
     <GStyledSpanBox>

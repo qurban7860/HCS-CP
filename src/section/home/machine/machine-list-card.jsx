@@ -1,23 +1,21 @@
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import { t } from 'i18next'
+import { Trans } from 'react-i18next'
 import { m } from 'framer-motion'
 import PropTypes from 'prop-types'
-import { useIcon, ICON_NAME, useSettingContext } from 'hook'
 import { useSelector } from 'react-redux'
+import { Icon, ICON_NAME, useSettingContext } from 'hook'
 import { Grid, Typography, IconButton, Divider, Box, Card } from '@mui/material'
-import { useTheme, alpha } from '@mui/material/styles'
+import { IconTooltip, GridViewTitle, HowickLoader } from 'component'
+import { useTheme } from '@mui/material/styles'
 import { GStyledListItemText, GStyledSpanBox, GStyledTooltip, GStyledTopBorderDivider, GCardNoHeightOption } from 'theme/style'
-import { FormHeader, SkeletonViewFormField, IconTooltip, GridViewTitle } from 'component'
 import { PATH_MACHINE } from 'route/path'
 import { TYPOGRAPHY, SIZE, LABEL, KEY, DECOILER_TYPE_ARR, FLEX } from 'constant'
 
-const MachineListCard = ({ handleMachineDialog, handleMachineSiteDialog, machineTotalCount }) => {
- const [loading, setLoading] = useState(false)
- const { customerMachines } = useSelector(state => state.machine)
+const MachineListCard = ({ handleMachineDialog, machineTotalCount }) => {
+ const { customerMachines, isLoading } = useSelector(state => state.machine)
  const theme = useTheme()
  const { themeMode } = useSettingContext()
-
- const { Icon: LocIcon, iconSrc } = useIcon(ICON_NAME.DECOILER_DEF)
 
  return (
   <Box>
@@ -59,7 +57,7 @@ const MachineListCard = ({ handleMachineDialog, handleMachineSiteDialog, machine
                 </IconButton>
                 {DECOILER_TYPE_ARR.some(type => mach?.machineModel?.name?.includes(type)) && (
                  <GStyledTooltip title={LABEL.DECOILER_DEF} disableFocusListener placement={KEY.TOP} tooltipcolor={theme.palette.grey[500]} color={theme.palette.grey[500]}>
-                  <LocIcon icon={iconSrc} color={theme.palette.grey[500]} sx={{ height: 15 }} />
+                  <Icon icon={ICON_NAME.DECOILER_DEF} color={theme.palette.grey[500]} sx={{ height: 15 }} />
                  </GStyledTooltip>
                 )}
                </GStyledSpanBox>
@@ -77,16 +75,6 @@ const MachineListCard = ({ handleMachineDialog, handleMachineSiteDialog, machine
              {mach?.portalKey && (
               <IconTooltip title={t('portal_synced.label')} icon={ICON_NAME.PORTAL_SYNC} dimension={18} color={theme.palette.howick.bronze} tooltipColor={theme.palette.howick.bronze} iconOnly />
              )}
-             <IconTooltip
-              title={LABEL.SITE_VIEW(mach?.serialNo)}
-              icon={ICON_NAME.MAP_MARKER}
-              dimension={18}
-              onClick={e => handleMachineSiteDialog(e, mach._id)}
-              color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
-              tooltipColor={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
-              iconOnly
-              cursor
-             />
              <IconTooltip
               title={LABEL.NAVIGATE_TO(mach?.serialNo)}
               icon={ICON_NAME.OPEN_IN_NEW}
@@ -116,13 +104,13 @@ const MachineListCard = ({ handleMachineDialog, handleMachineSiteDialog, machine
            {index !== customerMachines.length - 1 && <Divider variant='fullWidth' style={{ width: '100%', marginBottom: '10px' }} />}
           </Fragment>
          ))
-        ) : loading ? (
+        ) : isLoading ? (
          <m.div>
-          <SkeletonViewFormField />
+          <HowickLoader mode={themeMode} height={200} />
          </m.div>
         ) : (
          <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
-          {LABEL.NO_MACHINE_FOUND}
+          <Trans i18nKey='no_found.label' values={{ value: 'machine' }} />
          </Typography>
         )}
        </Grid>

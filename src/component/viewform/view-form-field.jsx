@@ -9,6 +9,7 @@ import { GStyledSpanBox, GStyledTooltip } from 'theme/style'
 import { SvgFlagIcon, IconTooltip } from 'component'
 import { SkeletonViewFormField } from 'component/skeleton'
 import { SIZE, VARIANT, KEY, LABEL, FLEX } from 'constant'
+import { roleCoverUp } from 'util/role-cover-up'
 import { StyledDefaultTypography, StyledFieldGrid, StyledChipGrid, StyledFieldChip, StyledFlagBox } from './style'
 
 const { TYPOGRAPHY } = VARIANT
@@ -119,10 +120,11 @@ const ViewFormField = ({
       </GStyledSpanBox>
      ) : (
       // default
-
-      <StyledDefaultTypography variant={variant}>
-       {noBreakSpace ? '' : '\u00A0'} {children}
-      </StyledDefaultTypography>
+      <m.div>
+       <StyledDefaultTypography variant={variant}>
+        {noBreakSpace ? '' : '\u00A0'} {children}
+       </StyledDefaultTypography>
+      </m.div>
      )}
 
      {contact && typeof contact === 'object' && contact.length > 0 ? (
@@ -208,7 +210,7 @@ const ViewFormField = ({
       <StyledChipGrid container mode={themeMode} isNoBg>
        &nbsp;
        {rolesChip?.map((r, index) => (
-        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isMobile ? TYPOGRAPHY.OVERLINE : TYPOGRAPHY.OVERLINE2}>{r?.roleType}</Typography>} size={SIZE.SMALL} />
+        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isMobile ? TYPOGRAPHY.OVERLINE : TYPOGRAPHY.OVERLINE2}>{roleCoverUp(r)}</Typography>} size={SIZE.SMALL} />
        ))}
       </StyledChipGrid>
      )}

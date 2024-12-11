@@ -2,6 +2,7 @@ import { memo, useEffect, useLayoutEffect, useState } from 'react'
 import { useAuthContext } from 'auth/use-auth-context'
 import { t } from 'i18next'
 import _ from 'lodash'
+import debounce from 'lodash/debounce'
 import { dispatch, useSelector } from 'store'
 import { useResponsive } from 'hook'
 import {
@@ -17,7 +18,8 @@ import {
  resetContact,
  resetCustomerTickets,
  resetMachines,
- resetSecurityUsers
+ resetSecurityUsers,
+ resetContacts
 } from 'store/slice'
 import { useCustomerDefaultValues } from 'section/crm/customer'
 import { SupportTicketWidget } from 'section/crm/support'
@@ -25,12 +27,20 @@ import { ProductionTotalGraphWidget, ProductionRateGraphWidget } from 'section/d
 import { Grid } from '@mui/material'
 import { Welcome } from 'component/widget'
 import { GLOBAL } from 'config'
-import { toTitleCase } from 'util'
 import { FLEX } from 'constant'
+import { toTitleCase } from 'util'
 
 function GeneralAppPage() {
- const { customer, contacts, isLoading } = useSelector(state => state.customer)
- const { customerMachines } = useSelector(state => state.machine)
+ const { customer, isLoading, customerTickets, contacts, securityUsers, customerMachines } = useSelector(
+  state => ({
+   customer: state.customer.customer,
+   isLoading: state.customer.isLoading,
+   customerTickets: state.customerTicket.customerTickets,
+   securityUsers: state.user.securityUsers,
+   customerMachines: state.machine.customerMachines
+  }),
+  _.isEqual
+ )
  const { user } = useAuthContext()
  const customerId = user?.customer
  const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
@@ -41,39 +51,60 @@ function GeneralAppPage() {
  const [rateSelectedMachine, setRateSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
  const [totalSelectedMachine, setTotalSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
 
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   if (customerId && !customerMachines.length) {
+    dispatch(getCustomerMachines(customerId))
+   }
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [customerId, customerMachines, dispatch])
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   if (customerId && !contacts.length) {
+    dispatch(getContacts(customerId))
+   }
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [customerId, contacts, dispatch])
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   if (customerId && !securityUsers.length) {
+    dispatch(getSecurityUsers(customerId))
+   }
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [customerId, securityUsers, dispatch])
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   if (customer?.ref && customerId && !customerTickets?.issues?.length) {
+    dispatch(getCustomerTickets(customer?.ref, 3, customerId))
+   }
+  }, 300)
+  debounceFetch()
+  return () => {
+   debounceFetch.cancel()
+  }
+ }, [dispatch, customer?.ref, customerTickets])
+
  useLayoutEffect(() => {
   dispatch(setMachineDialog(false))
   dispatch(setMachineSiteDialog(false))
   dispatch(setContactDialog(false))
   dispatch(resetCustomerMachines())
   dispatch(resetContact())
+  dispatch(resetContacts())
   dispatch(resetMachines())
   dispatch(resetSecurityUsers())
   dispatch(resetMachineSiteDialogData())
+  dispatch(resetCustomerTickets())
  }, [dispatch])
-
- useEffect(() => {
-  const debounce = _.debounce(() => {
-   dispatch(getCustomerMachines(customerId))
-   dispatch(getContacts(customerId))
-   dispatch(getSecurityUsers(customerId))
-  }, 300)
-  debounce()
-  return () => debounce.cancel()
- }, [customerId])
-
- useEffect(() => {
-  const debouncedDispatch = _.debounce(() => {
-   if (customerId) {
-    dispatch(getCustomerTickets(customer?.ref, 3, customerId))
-   }
-  }, 300)
-  debouncedDispatch()
-  return () => {
-   debouncedDispatch.cancel()
-   dispatch(resetCustomerTickets())
-  }
- }, [dispatch, customer])
 
  return (
   <Grid container>

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { fDate, parseAddress } from 'util'
 
-export default function useMachineDefaultValues(machineData, customer) {
+export default function useMachineDefaultValues(machineData, customer, site) {
  return useMemo(() => {
   return {
    id: machineData?._id || '',
@@ -34,7 +34,10 @@ export default function useMachineDefaultValues(machineData, customer) {
    billingSiteObj: machineData?.billingSite || '',
    billingSite: parseAddress(machineData?.billingSite?.address) || '',
    mainSiteName: customer?.mainSite?.name || '',
+   mainSiteLat: site?.lat || '',
+   mainSiteLong: site?.long || '',
    mainSitePhone: customer?.mainSite?.phoneNumbers || '',
+   mainSiteAddress: parseAddress(customer?.mainSite?.address) || '',
    mainSiteStreet: customer?.mainSite?.address?.street || '',
    mainSiteSuburb: customer?.mainSite?.address?.suburb || '',
    mainSiteCity: customer?.mainSite?.address?.city || '',

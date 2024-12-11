@@ -2,21 +2,16 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Icon, ICON_NAME, useSettingContext } from 'hook'
 import { useFormContext, Controller } from 'react-hook-form'
-import { TextField, InputAdornment, IconButton } from '@mui/material'
+import { useMediaQuery, TextField, InputAdornment, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { KEY } from 'constant'
-
-RHFPasswordField.propTypes = {
- name: PropTypes.string,
- helperText: PropTypes.node,
- Error: PropTypes.bool
-}
 
 export default function RHFPasswordField({ name, helperText, Error, ...other }) {
  const [showPassword, setShowPassword] = useState(false)
  const { control } = useFormContext()
  const { themeMode } = useSettingContext()
  const theme = useTheme()
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
  return (
   <Controller
@@ -42,12 +37,12 @@ export default function RHFPasswordField({ name, helperText, Error, ...other }) 
      {...other}
      sx={{
       '& .MuiInputLabel-root': {
-       ...theme.typography.body1
+       ...(isDesktop ? theme.typography.body1 : theme.typography.body2)
       },
       '& .MuiOutlinedInput-notchedOutline': {
        borderRadius: 0.4,
        color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0',
-       ...theme.typography.body1
+       ...(isDesktop ? theme.typography.body1 : theme.typography.body2)
       },
 
       '& .MuiInputBase-root': {
@@ -81,4 +76,10 @@ export default function RHFPasswordField({ name, helperText, Error, ...other }) 
    )}
   />
  )
+}
+
+RHFPasswordField.propTypes = {
+ name: PropTypes.string,
+ helperText: PropTypes.node,
+ Error: PropTypes.bool
 }
