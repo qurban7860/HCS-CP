@@ -1,13 +1,10 @@
-function path(root, sublink) {
- return `${root}${sublink}`
-}
-
 const conNex = (...param) => {
  return '/' + param.join('/')
 }
 const ROOTS_AUTH = 'auth'
 const ROOTS_DASHBOARD = 'dashboard'
 const ROOTS_HOME = 'home'
+const ROOTS_SECURITY = 'security'
 
 const ROOTS_CRM = 'crm'
 const SUB_CUSTOMERS = 'customers'
@@ -21,19 +18,12 @@ const SUB_TICKETS = 'tickets'
 const ROOTS_LOGS = 'logs'
 const SUB_MACHINE_LOGS = 'machine'
 
-const ROOTS_EMAIL = '/email'
-const ROOTS_SECURITY = '/security'
-const ROOTS_SETTING = '/settings'
-const ROOTS_DOCUMENT = '/documents'
-const ROOTS_SITEMAP = '/site'
-
 export const PATH_LANDING = {
  root: '/'
 }
 
 export const PATH_AUTH = {
  root: ROOTS_AUTH,
- // login: path('/auth', '/login'),
  login: conNex(ROOTS_AUTH, 'login'),
  register: conNex(ROOTS_AUTH, 'register'),
  loginUnprotected: conNex(ROOTS_AUTH, 'login-unprotected'),
@@ -41,7 +31,7 @@ export const PATH_AUTH = {
  verify: conNex(ROOTS_AUTH, 'verify'),
  resetPassword: conNex(ROOTS_AUTH, 'reset-password'),
  userInvite: conNex(ROOTS_AUTH, 'user-invite'),
- newPassword: (token, userId) => path(ROOTS_AUTH, 'new-password', token, userId),
+ newPassword: (token, userId) => conNex(ROOTS_AUTH, 'new-password', token, userId),
  setPassword: (token, userId) => conNex(ROOTS_AUTH, 'set-password', token, userId),
  authenticate: conNex(ROOTS_AUTH, 'authenticate')
 }
@@ -54,7 +44,7 @@ export const PATH_PAGE = {
  notFound: '/404',
  internalServerError: '/500',
  components: '/components',
- userInviteLanding: (id, code, expiry) => path(`/invite/${id}/{$code}/{$expiry}`),
+ userInviteLanding: (id, code, expiry) => conNex('invite', id, code, expiry),
  invitationExpired: '/invitation-expired',
  invalidErrorPage: '/InvalidErrorPage',
  expiredErrorPage: '/ExpiredErrorPage'
@@ -69,13 +59,13 @@ export const PATH_DASHBOARD = {
  permissionDenied: conNex(ROOTS_DASHBOARD, 'permission-denied'),
  blank: conNex(ROOTS_AUTH, 'login'),
  general: {
-  app: path('/dashboard', '/app')
+  app: conNex(ROOTS_DASHBOARD, 'app')
  }
 }
 
 export const PATH_CUSTOMER = {
  root: ROOTS_CRM,
- permissionDenied: path(ROOTS_CRM, '/permission-denied'),
+ permissionDenied: conNex(ROOTS_CRM, 'permission-denied'),
  customers: {
   list: conNex(ROOTS_CRM, SUB_CUSTOMERS),
   new: conNex(ROOTS_CRM, SUB_CUSTOMERS, 'new'),
@@ -95,7 +85,7 @@ export const PATH_CUSTOMER = {
 // :machine
 export const PATH_MACHINE = {
  root: ROOTS_PRODUCTS,
- permissionDenied: path(ROOTS_PRODUCTS, '/permission-denied'),
+ permissionDenied: conNex(ROOTS_PRODUCTS, 'permission-denied'),
  machines: {
   root: conNex(ROOTS_PRODUCTS, SUB_MACHINES),
   list: conNex(ROOTS_PRODUCTS, SUB_MACHINES),
@@ -130,62 +120,14 @@ export const PATH_LOGS = {
  }
 }
 
-export const PATH_EMAIL = {
- root: ROOTS_EMAIL,
- permissionDenied: conNex(ROOTS_EMAIL, 'permission-denied'),
- email: {
-  list: conNex(ROOTS_EMAIL, 'list'),
-  new: conNex(ROOTS_EMAIL, 'new'),
-  view: id => path(ROOTS_EMAIL, id, 'view')
- }
-}
-
 export const PATH_SECURITY = {
  root: ROOTS_SECURITY,
- permissionDenied: path(ROOTS_SECURITY, '/permission-denied'),
+ permissionDenied: conNex(ROOTS_SECURITY, 'permission-denied'),
  users: {
-  root: conNex(ROOTS_SECURITY, '/users'),
-  new: path(ROOTS_SECURITY, `/users/new/`),
-  invite: path(ROOTS_SECURITY, `/users/invite/`),
-  list: conNex(ROOTS_SECURITY, '/users/list'),
-  cards: path(ROOTS_SECURITY, '/users/cards'),
-  profile: path(ROOTS_SECURITY, '/users/profile'),
-  editProfile: path(ROOTS_SECURITY, '/users/editProfile'),
-  password: path(ROOTS_SECURITY, '/users/password'),
-  userPassword: path(ROOTS_SECURITY, '/users/changePassword'),
-  account: path(ROOTS_SECURITY, '/users/account'),
-  view: id => path(ROOTS_SECURITY, `/users/${id}/view`),
-  edit: id => path(ROOTS_SECURITY, `/users/${id}/edit`),
-  demoEdit: path(ROOTS_SECURITY, `/users/reece-chung/edit`),
-  signInLogList: path(ROOTS_SECURITY, '/users/signInLogList')
- }
-}
-
-export const PATH_SITEMAP = {
- root: ROOTS_SITEMAP,
- permissionDenied: path(ROOTS_SITEMAP, '/permission-denied'),
- general: {
-  app: path(ROOTS_SITEMAP, '/app')
- },
- app: path(ROOTS_SITEMAP, '/app')
-}
-
-export const PATH_DOCUMENT = {
- root: ROOTS_DOCUMENT,
- permissionDenied: path(ROOTS_DOCUMENT, '/permission-denied'),
- document: {
-  list: path(ROOTS_DOCUMENT, '/list'),
-  new: path(ROOTS_DOCUMENT, '/new'),
-  gallery: id => path(ROOTS_DOCUMENT, `/${id}/gallery`),
-  edit: id => path(ROOTS_DOCUMENT, `/${id}/edit`),
-  view: id => path(ROOTS_DOCUMENT, `/${id}/view`),
-  customer: id => path(ROOTS_DOCUMENT, `/${id}/customer`),
-  machine: id => path(ROOTS_DOCUMENT, `/${id}/machine`),
-  machineDrawings: {
-   list: path(ROOTS_DOCUMENT, '/machineDrawings/list'),
-   new: path(ROOTS_DOCUMENT, '/machineDrawings/new'),
-   view: id => path(ROOTS_DOCUMENT, `/machineDrawings/${id}/view`)
-  }
+  root: conNex(ROOTS_SECURITY, 'users'),
+  list: conNex(ROOTS_SECURITY, 'users', 'list'),
+  profile: conNex(ROOTS_SECURITY, 'users', 'profile'),
+  editProfile: conNex(ROOTS_SECURITY, 'users', 'editProfile')
  }
 }
 
