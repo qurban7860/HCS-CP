@@ -22,7 +22,7 @@ import { truncate } from 'util/truncate'
 const UserProfileLayout = () => {
  const { customer, customerDialog } = useSelector(state => state.customer)
  const { securityUser, isLoading } = useSelector(state => state.user)
- const { user, userId } = useAuthContext()
+ const { userId } = useAuthContext()
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
@@ -83,8 +83,8 @@ const UserProfileLayout = () => {
        <Grid container flexDirection={FLEX_DIR.ROW} pt={2} px={2}>
         <Grid item xs={12} md={8} display={FLEX.FLEX} alignItems={KEY.CENTER} mt={2}>
          <GStyledSpanBox gap={1}>
-          <BadgeCardMedia customer={customer} />
-          <ViewFormField variant={isDesktop ? TYPOGRAPHY.H4 : TYPOGRAPHY.H5} isLoading={isLoading}>
+          <BadgeCardMedia user={securityUser} typographyVariant={TYPOGRAPHY.H2} />
+          <ViewFormField variant={isDesktop ? TYPOGRAPHY.H4 : TYPOGRAPHY.H5} isLoading={isLoading} isNoBg>
            {truncate(defaultValues?.name, 50)}
           </ViewFormField>
          </GStyledSpanBox>

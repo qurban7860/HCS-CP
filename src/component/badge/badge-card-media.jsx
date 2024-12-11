@@ -1,13 +1,12 @@
 import { useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
-import { Badge, CardMedia, Chip } from '@mui/material'
+import { Badge, Chip } from '@mui/material'
 import { CustomAvatar } from 'component'
 import { Icon, ICON_NAME } from 'hook'
-import { KEY, COMPONENT, SIZE, VARIANT, TYPOGRAPHY } from 'constant'
-import { mockUser } from '_mock'
+import { KEY, SIZE, VARIANT } from 'constant'
 
-const BadgeCardMedia = ({ dimension = 70, customer, typographyVariant }) => {
+const BadgeCardMedia = ({ dimension = 70, customer, typographyVariant, user }) => {
  const [hoverBadge, setHoverBadge] = useState(false)
  const fileInput = useRef(null)
 
@@ -59,7 +58,7 @@ const BadgeCardMedia = ({ dimension = 70, customer, typographyVariant }) => {
      }}> */}
     <CustomAvatar
      /**src={mockUser[0]?.photoURL}  */ alt={'display name'}
-     name={customer?.name}
+     name={customer?.name || user?.name}
      value
      typography={typographyVariant}
      sx={{
@@ -78,8 +77,9 @@ const BadgeCardMedia = ({ dimension = 70, customer, typographyVariant }) => {
 
 BadgeCardMedia.propTypes = {
  dimension: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+ typographyVariant: PropTypes.string,
  customer: PropTypes.object,
- typographyVariant: PropTypes.string
+ user: PropTypes.object
 }
 
 export default BadgeCardMedia
