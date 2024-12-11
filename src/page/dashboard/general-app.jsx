@@ -26,8 +26,8 @@ import { ProductionTotalGraphWidget, ProductionRateGraphWidget } from 'section/d
 import { Grid } from '@mui/material'
 import { Welcome } from 'component/widget'
 import { GLOBAL } from 'config'
-import { toTitleCase } from 'util'
 import { FLEX } from 'constant'
+import { toTitleCase } from 'util'
 
 function GeneralAppPage() {
  const { customer, isLoading } = useSelector(state => state.customer)
