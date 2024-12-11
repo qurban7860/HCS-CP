@@ -1,13 +1,13 @@
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import { m } from 'framer-motion'
 import { t } from 'i18next'
 import { Trans } from 'react-i18next'
 import PropTypes from 'prop-types'
-import { useIcon, ICON_NAME, useSettingContext } from 'hook'
+import { ICON_NAME, useSettingContext } from 'hook'
 import { useSelector } from 'react-redux'
 import { Grid, Typography, IconButton, Divider } from '@mui/material'
-import { FormHeader, SkeletonViewFormField, IconTooltip } from 'component'
-import { useTheme, alpha } from '@mui/material/styles'
+import { FormHeader, IconTooltip, HowickLoader } from 'component'
+import { useTheme } from '@mui/material/styles'
 import { GStyledListItemText, GStyledSpanBox, GStyledSupportStatusFieldChip, GStyledScrollableHeightLockGrid } from 'theme/style'
 import { useTicketsDefaultValues } from 'section/support'
 import { normalizer } from 'util/format'
@@ -99,7 +99,7 @@ const SupportTicketWidget = ({ value, handleMachineDialog, handleMachineSiteDial
        ))
       ) : isLoading ? (
        <m.div>
-        <SkeletonViewFormField />
+        <HowickLoader mode={themeMode} height={200} />
        </m.div>
       ) : (
        <Grid container>
