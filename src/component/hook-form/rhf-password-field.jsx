@@ -42,7 +42,7 @@ export default function RHFPasswordField({ name, helperText, Error, ...other }) 
       '& .MuiOutlinedInput-notchedOutline': {
        borderRadius: 0.4,
        color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0',
-       ...theme.typography.body1
+       ...(isDesktop ? theme.typography.body1 : theme.typography.body2)
       },
 
       '& .MuiInputBase-root': {
