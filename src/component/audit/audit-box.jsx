@@ -7,11 +7,11 @@ import { fDate } from 'util/format'
 const { CREATED_BY, UPDATED_BY } = LABEL.AUDIT
 const { TYPOGRAPHY } = VARIANT
 
-const AuditBox = ({ value }) => {
+const AuditBox = ({ value, pb = 4 }) => {
  const { createdAt, createdBy, updatedAt, updatedBy } = value
 
  return (
-  <Box pb={4}>
+  <Box pb={pb}>
    <GStyledFlexEndBox>
     <Box>
      <GStyledSpanBox>
@@ -37,7 +37,8 @@ const AuditBox = ({ value }) => {
 }
 
 AuditBox.propTypes = {
- value: PropTypes.any
+ value: PropTypes.any,
+ pb: PropTypes.number
 }
 
 export default AuditBox
