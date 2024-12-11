@@ -66,7 +66,11 @@ const BackButton = ({ alongTab, width = 50 }) => {
  return (
   <Fragment>
    {alongTab ? (
-    <IconTooltip title={t('go_back.label')} icon={ICON_NAME.A_BACK} color={theme.palette.grey[600]} onClick={handleClick} cursor iconOnly />
+    window.history.length > 1 ? (
+     <IconTooltip title={t('go_back.label')} icon={ICON_NAME.A_BACK} color={theme.palette.grey[600]} onClick={handleClick} cursor iconOnly />
+    ) : (
+     <IconTooltip title={'no history'} icon={ICON_NAME.A_BACK} iconOnly disabled />
+    )
    ) : (
     <Fragment>
      <StyledBackIconButton disabled={window.history.length === 1} onClick={handleClick} aria-label={LABEL.GO_BACK} onMouseEnter={handleOpen} onMouseLeave={handleClose}>
