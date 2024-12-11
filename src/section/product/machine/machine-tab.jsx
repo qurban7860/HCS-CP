@@ -7,7 +7,6 @@ import {
  getMachine,
  setCustomerDialog,
  getConnectedMachineDialog,
- getMachineSiteDialogData,
  setMachineDialog,
  setMachineSiteDialog,
  resetCustomer,
@@ -49,10 +48,10 @@ const MachineTab = () => {
  }, [id, dispatch])
 
  useEffect(() => {
-  if (machine?.customer && !customer) {
+  if (machine?.customer) {
    dispatch(getCustomer(machine?.customer._id))
   }
- }, [machine?.customer, customer, dispatch])
+ }, [machine?.customer, dispatch])
 
  const defaultValues = useMachineDefaultValues(machine, customer)
 
@@ -70,19 +69,12 @@ const MachineTab = () => {
   dispatch(setMachineDialog(true))
  }
 
- const handleMachineSiteDialog = (event, machineId) => {
-  event.preventDefault()
-  dispatch(resetMachineSiteDialogData())
-  dispatch(getMachineSiteDialogData(machineId))
-  dispatch(setMachineSiteDialog(true))
- }
-
  return (
   <Fragment>
    <Grid container columnSpacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
     {isDesktop && (
      <Grid item xs={12} md={12} lg={3}>
-      <MachineConnectionWidget value={defaultValues} handleConnectedMachineDialog={handleConnectedMachineDialog} handleMachineSiteDialog={handleMachineSiteDialog} />
+      <MachineConnectionWidget value={defaultValues} handleConnectedMachineDialog={handleConnectedMachineDialog} />
      </Grid>
     )}
     <Grid item xs={12} sm={12} lg={9}>
