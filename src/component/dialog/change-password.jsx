@@ -56,7 +56,7 @@ function ChangePasswordDialog() {
     } else {
      snack('Something went wrong!', { variant: `error` })
     }
-    console.log('Error:', error)
+    console.error('Error:', error)
    }
   }
  }
@@ -83,9 +83,9 @@ function ChangePasswordDialog() {
      </Box>
     </DialogContent>
     <DialogActions>
-     <Grid container justifyContent={FLEX.FLEX_END} gap={2} pb={1}>
+     <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
       <GStyledCloseButton onClick={handleChangePasswordDialog}>{t('close.label').toUpperCase()}</GStyledCloseButton>
-      <GStyledLoadingButton className='portal-button' isLoading={isSubmitting} size={SIZE.LARGE} type={KEY.SUBMIT} mode={themeMode} variant={KEY.CONTAINED} loading={isSubmitting}>
+      <GStyledLoadingButton className='portal-button' isLoading={isSubmitting} type={KEY.SUBMIT} mode={themeMode} loading={isSubmitting}>
        {t('change_password.label').toUpperCase()}
       </GStyledLoadingButton>
      </Grid>

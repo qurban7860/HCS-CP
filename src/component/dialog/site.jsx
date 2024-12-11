@@ -1,14 +1,15 @@
 import { useState, useMemo, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { t } from 'i18next'
+import { useNavigate } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
 import { setMachineSiteDialog, resetSelectedSiteCard, setFromSiteDialog, setSelectedSiteCard, getSite, resetValidCoordinates } from 'store/slice'
 import { ICON_NAME, Clock, useSettingContext } from 'hook'
 import { PATH_CUSTOMER } from 'route/path'
 import { useMachineDefaultValues } from 'section/product'
-import { Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
-import { GridViewField, GridViewTitle, GoogleMaps, IconTooltip, NothingProvided, Button } from 'component'
+import { Grid, Dialog, DialogContent, DialogActions, DialogTitle, Divider, Typography } from '@mui/material'
+import { GridViewField, GridViewTitle, GoogleMaps, IconTooltip, NothingProvided, Button, AuditBox } from 'component'
 import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledSiteMapBox, GStyledSpanBox, GBackdropPropsOption } from 'theme/style'
+import { GStyledTopBorderDivider, GStyledSiteMapBox, GStyledSpanBox, GBackdropPropsOption, GStyledCloseButton } from 'theme/style'
 import { VIEW_FORM, SNACK, TITLE, TYPOGRAPHY, FLEX, LABEL, KEY, DECOILER_TYPE_ARR, FLEX_DIR, BUTTON } from 'constant'
 
 const SiteDialog = () => {
@@ -142,13 +143,19 @@ const SiteDialog = () => {
      <Grid item sm={12}>
       <GStyledSiteMapBox>{validCoordinates ? <GoogleMaps machineView latlongArr={latLong} mapHeight={350} /> : <NothingProvided content={SNACK.NO_COORIDNATES} />}</GStyledSiteMapBox>
      </Grid>
-     <Grid item sm={12}>
-      <Grid container justifyContent={FLEX.FLEX_END}>
-       <Button label={BUTTON.SITE_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleSiteOverview} />
-      </Grid>
+    </Grid>
+    <AuditBox value={defaultValues} />
+   </DialogContent>
+   <DialogActions>
+    <Grid item sm={12}>
+     <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
+      <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog}>
+       {t('close.label').toUpperCase()}
+      </GStyledCloseButton>
+      <Button label={BUTTON.SITE_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleSiteOverview} />
      </Grid>
     </Grid>
-   </DialogContent>
+   </DialogActions>
   </Dialog>
  )
 }

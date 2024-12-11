@@ -3,7 +3,7 @@ import { dispatch, useSelector } from 'store'
 import { useSettingContext, ICON_NAME } from 'hook'
 import { setCustomerTicketDialog } from 'store/slice'
 import { useTicketDefaultValues } from 'section/support'
-import { useMediaQuery, Grid, Dialog, DialogContent, DialogTitle, Divider, Typography, Box } from '@mui/material'
+import { useMediaQuery, Grid, Dialog, DialogContent, DialogActions, DialogTitle, Divider, Typography, Box } from '@mui/material'
 import { GridViewField, GridViewTitle, AuditBox, Button } from 'component'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledSupportStatusFieldChip, GStyledCloseButton, GBackdropPropsOption } from 'theme/style'
@@ -95,20 +95,22 @@ const SupportTicketDialog = () => {
         </GridViewField>
        </Grid>
       </Grid>
-      <AuditBox value={defaultValues} />
-      <Grid item sm={12}>
-       <Grid container justifyContent={FLEX.FLEX_END}>
-        <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
-         <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog}>
-          {t('close.label').toUpperCase()}
-         </GStyledCloseButton>
-         <Button label={t('view_jira.label')} icon={ICON_NAME.JIRA} onClick={() => handleCustomerTicketOverview(defaultValues?.key)} />
-        </Grid>
-       </Grid>
+     </Grid>
+    </Grid>
+    <AuditBox value={defaultValues} />
+   </DialogContent>
+   <DialogActions>
+    <Grid item sm={12}>
+     <Grid container justifyContent={FLEX.FLEX_END}>
+      <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
+       <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog}>
+        {t('close.label').toUpperCase()}
+       </GStyledCloseButton>
+       <Button label={t('view_jira.label')} icon={ICON_NAME.JIRA} onClick={() => handleCustomerTicketOverview(defaultValues?.key)} />
       </Grid>
      </Grid>
     </Grid>
-   </DialogContent>
+   </DialogActions>
   </Dialog>
  )
 }

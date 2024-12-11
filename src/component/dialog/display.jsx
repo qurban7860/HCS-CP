@@ -6,7 +6,7 @@ import { Box, Dialog, Divider, IconButton, Stack, Tooltip, Typography } from '@m
 import { Scrollbar } from 'component/scrollbar'
 import { GStyledTopBorderDivider, GBackdropPropsOption } from 'theme/style'
 import { NAV } from 'config/layout'
-import { FLEX, FLEX_DIR, KEY, TITLE, TYPOGRAPHY } from 'constant'
+import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 
 const DisplayDialog = ({ open, handleClose, onResetSetting }) => {
  const { themeMode } = useSettingContext()

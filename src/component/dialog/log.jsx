@@ -8,7 +8,7 @@ import { SkeletonLoading, CodeRaw } from 'component'
 import { styled, useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption } from 'theme/style'
 import { camelCaseNormalizer } from 'util'
-import { TYPOGRAPHY, FLEX, KEY } from 'constant'
+import { TYPOGRAPHY, FLEX, KEY, SZ } from 'constant'
 
 const ResponsiveGrid = styled(Grid)(({ theme }) => ({
  [theme.breakpoints.down('sm')]: {
@@ -49,31 +49,29 @@ function LogDetailsDialog({ logDetails, open, setOpenLogDetailsDialog, component
  }
 
  return (
-  <Fragment>
-   <Dialog disableEnforceFocus maxWidth='lg' open={open} onClose={handleCloseDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
-    <GStyledTopBorderDivider mode={themeMode} />
-    <DialogTitle sx={{ pb: 1, pt: 2 }}>
-     <GStyledSpanBox
-      sx={{
-       justifyContent: FLEX.FLEX_START
-      }}>
-      <Typography variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H5}>{componentTitle?.date} &nbsp;</Typography>
-      <Typography variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H5} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.bronze}>
-       {componentTitle?.componentLabel}
-      </Typography>
-     </GStyledSpanBox>
-    </DialogTitle>
-    <Divider orientation={KEY.HORIZONTAL} flexItem sx={{ mb: 2 }} />
-    <DialogContent>{renderDialogContent()}</DialogContent>
-    <DialogActions>
-     <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
-      <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCloseDialog}>
-       {t('close.label').toUpperCase()}
-      </GStyledCloseButton>
-     </Grid>
-    </DialogActions>
-   </Dialog>
-  </Fragment>
+  <Dialog disableEnforceFocus maxWidth={SZ.LG} open={open} onClose={handleCloseDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
+   <GStyledTopBorderDivider mode={themeMode} />
+   <DialogTitle sx={{ pb: 1, pt: 2 }}>
+    <GStyledSpanBox
+     sx={{
+      justifyContent: FLEX.FLEX_START
+     }}>
+     <Typography variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H5}>{componentTitle?.date} &nbsp;</Typography>
+     <Typography variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H5} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.bronze}>
+      {componentTitle?.componentLabel}
+     </Typography>
+    </GStyledSpanBox>
+   </DialogTitle>
+   <Divider orientation={KEY.HORIZONTAL} flexItem sx={{ mb: 2 }} />
+   <DialogContent>{renderDialogContent()}</DialogContent>
+   <DialogActions>
+    <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
+     <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCloseDialog}>
+      {t('close.label').toUpperCase()}
+     </GStyledCloseButton>
+    </Grid>
+   </DialogActions>
+  </Dialog>
  )
 }
 export default LogDetailsDialog

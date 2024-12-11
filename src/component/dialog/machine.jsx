@@ -6,7 +6,7 @@ import { setMachineDialog } from 'store/slice'
 import { ICON_NAME, Clock } from 'hook'
 import { PATH_CUSTOMER, PATH_MACHINE } from 'route/path'
 import { useMachineDefaultValues } from 'section/product'
-import { Grid, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@mui/material'
+import { Grid, Dialog, DialogContent, DialogActions, DialogTitle, Divider, Typography } from '@mui/material'
 import { GridViewField, GridViewTitle, IconTooltip, Button, AuditBox } from 'component'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledCloseButton, GStyledSpanBox, GBackdropPropsOption } from 'theme/style'
@@ -131,20 +131,22 @@ const MachineDialog = () => {
       <Grid item sm={12} mb={2}>
        <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} isDialog />
       </Grid>
-      <AuditBox value={defaultValues} />
-      <Grid item sm={12}>
-       <Grid container justifyContent={FLEX.FLEX_END}>
-        <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
-         <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog}>
-          {t('close.label').toUpperCase()}
-         </GStyledCloseButton>
-         <Button label={BUTTON.MACHINE_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleMachineOverview} />
-        </Grid>
-       </Grid>
+     </Grid>
+    </Grid>
+    <AuditBox value={defaultValues} />
+   </DialogContent>
+   <DialogActions>
+    <Grid item sm={12}>
+     <Grid container justifyContent={FLEX.FLEX_END}>
+      <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
+       <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog}>
+        {t('close.label').toUpperCase()}
+       </GStyledCloseButton>
+       <Button label={BUTTON.MACHINE_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleMachineOverview} />
       </Grid>
      </Grid>
     </Grid>
-   </DialogContent>
+   </DialogActions>
   </Dialog>
  )
 }

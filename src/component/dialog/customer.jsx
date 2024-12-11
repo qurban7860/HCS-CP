@@ -7,7 +7,7 @@ import { ICON_NAME } from 'hook'
 import { PATH_CUSTOMER } from 'route/path'
 import { useCustomerDefaultValues } from 'section/crm'
 import { HowickResources } from 'section/common'
-import { useMediaQuery, useTheme, Dialog, DialogContent, DialogTitle, Divider, Grid } from '@mui/material'
+import { Dialog, DialogContent, DialogTitle, DialogActions, Divider, Grid } from '@mui/material'
 import { GridViewField, GridViewTitle, Button, BadgeCardMedia, TitleListItemText, AuditBox } from 'component'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption } from 'theme/style'
 import { VIEW_FORM, TITLE, KEY, BUTTON, FLEX, SZ } from 'constant'
@@ -17,13 +17,7 @@ const CustomerDialog = () => {
  const { themeMode } = useSettingContext()
  const { customer, isLoading, customerDialog } = useSelector(state => state.customer)
  const { CUSTOMER, SITE, ADDRESS } = VIEW_FORM
- const theme = useTheme()
- const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
- const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
-
  const defaultValues = useCustomerDefaultValues(customer, null)
-
- console.log('defaultValues', customer)
 
  const handleCustomerDialog = () => dispatch(setCustomerDialog(false))
 
@@ -41,12 +35,12 @@ const CustomerDialog = () => {
       justifyContent: FLEX.SPACE_BETWEEN
      }}>
      <TitleListItemText truncatedName={defaultValues?.name} tradingAliases={defaultValues?.tradingName} />
-     <BadgeCardMedia dimension={40} />
+     <BadgeCardMedia customer={customer} dimension={40} />
     </GStyledSpanBox>
    </DialogTitle>
    <Divider orientation={KEY.HORIZONTAL} flexItem />
-   <DialogContent dividers sx={{ px: 3, py: 2 }}>
-    <Grid item pb={2}>
+   <DialogContent dividers sx={{ px: 3 }}>
+    <Grid item>
      <Grid container spacing={1} p={2} pb={1}>
       <GridViewField heading={CUSTOMER.CUSTOMER_NAME} isLoading={isLoading}>
        {defaultValues?.name}
@@ -92,14 +86,16 @@ const CustomerDialog = () => {
      </Grid>
      <Divider variant={KEY.FULL_WIDTH} style={{ width: '100%', marginX: '20px' }} />
      <GridViewTitle title={TITLE.HOWICK_RESOURCES} />
-     <Grid container spacing={1} pb={1}>
+     <Grid container spacing={1}>
       <Grid item sm={12}>
        <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} isDialog />
       </Grid>
      </Grid>
     </Grid>
     <AuditBox value={defaultValues} />
-    <Grid item sm={12} mt={2}>
+   </DialogContent>
+   <DialogActions>
+    <Grid item sm={12}>
      <Grid container justifyContent={FLEX.FLEX_END} display={FLEX.FLEX} gap={2}>
       <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCustomerDialog} gap={2}>
        {t('close.label').toUpperCase()}
@@ -107,7 +103,7 @@ const CustomerDialog = () => {
       <Button label={BUTTON.CUSTOMER_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCustomerOverview} />
      </Grid>
     </Grid>
-   </DialogContent>
+   </DialogActions>
   </Dialog>
  )
 }
