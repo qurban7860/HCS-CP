@@ -10,11 +10,9 @@ import {
  getContacts,
  getSites,
  getConnectedMachineDialog,
- getMachineSiteDialogData,
  setContactDialog,
  setMachineDialog,
  setMachineSiteDialog,
- resetMachineSiteDialogData,
  resetCustomerMachines,
  resetContact,
  resetMachine
@@ -39,8 +37,17 @@ const HomeTab = () => {
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  const customerId = user?.customer
-
  const isMain = s => defaultValues?.customerMainSiteId === s?._id
+
+ useLayoutEffect(() => {
+  dispatch(setMachineDialog(false))
+  dispatch(setMachineSiteDialog(false))
+  dispatch(setContactDialog(false))
+  dispatch(resetCustomerMachines())
+  dispatch(resetContact())
+  //   dispatch(resetMachineSiteDialogData())
+ }, [dispatch])
+
  useEffect(() => {
   const debounce = _.debounce(() => {
    if (customerId !== customer?._id) dispatch(getCustomer(customerId))
@@ -77,15 +84,6 @@ const HomeTab = () => {
   return () => debounce.cancel()
  }, [customerId, contacts, dispatch])
 
- useLayoutEffect(() => {
-  dispatch(setMachineDialog(false))
-  dispatch(setMachineSiteDialog(false))
-  dispatch(setContactDialog(false))
-  dispatch(resetCustomerMachines())
-  dispatch(resetContact())
-  dispatch(resetMachineSiteDialogData())
- }, [dispatch])
-
  const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
 
  const handleContactDialog = contactId => {
@@ -98,13 +96,6 @@ const HomeTab = () => {
   dispatch(resetMachine())
   dispatch(getConnectedMachineDialog(machineId))
   dispatch(setMachineDialog(true))
- }
-
- const handleMachineSiteDialog = (event, machineId) => {
-  event.preventDefault()
-  dispatch(resetMachineSiteDialogData())
-  dispatch(getMachineSiteDialogData(machineId))
-  dispatch(setMachineSiteDialog(true))
  }
 
  return (
@@ -122,7 +113,7 @@ const HomeTab = () => {
       </Grid>
       <Grid item xs={12} sm={6} mb={5}>
        <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={machineTotalCount}>
-        <MachineListCard className='machines-widget' handleMachineDialog={handleConnectedMachineDialog} handleMachineSiteDialog={handleMachineSiteDialog} machineTotalCount={machineTotalCount} />
+        <MachineListCard className='machines-widget' handleMachineDialog={handleConnectedMachineDialog} machineTotalCount={machineTotalCount} />
        </GStyledScrollableHeightLockGrid>
       </Grid>
      </Grid>
