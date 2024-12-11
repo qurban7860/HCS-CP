@@ -1,7 +1,5 @@
 import { useEffect, useState, useCallback, Fragment } from 'react'
 import { t } from 'i18next'
-import axios from 'axios'
-import _ from 'lodash'
 import { useSelector } from 'react-redux'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuthContext } from 'auth/use-auth-context'
@@ -24,10 +22,10 @@ import {
 import { UserInviteSchema } from 'schema'
 import { useUserInviteDefaultValues } from 'section/auth'
 import { Grid, Box, Checkbox, Typography } from '@mui/material'
-import { RHFRequiredTextFieldWrapper, UserInviteSuccessDialog, ConfirmDialog } from 'component'
+import { RHFRequiredTextFieldWrapper, UserInviteSuccessDialog } from 'component'
 import FormProvider, { RHFTextField, RHFAutocomplete, RHFPhoneInput } from 'component/hook-form'
 import { GStyledLoadingButton, GStyledSpanBox, GStyledFieldChip } from 'theme/style'
-import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, TYPOGRAPHY, FLEX_DIR, COUNTRY } from 'constant'
+import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, TYPOGRAPHY, FLEX_DIR } from 'constant'
 import { delay, getCountryCode, roleCoverUp } from 'util'
 
 const FORM_EL = {
@@ -48,13 +46,14 @@ function UserInviteForm() {
  const [isConfirming, setIsConfirming] = useState(false)
  const { customer } = useSelector(state => state.customer)
  const { activeContacts } = useSelector(state => state.contact)
- const { securityUserTotalCount, securityUsers, userInviteDialog } = useSelector(state => state.user)
+ const { securityUserTotalCount, userInviteDialog } = useSelector(state => state.user)
  const { customerRoles } = useSelector(state => state.role)
  const { user } = useAuthContext()
  const { themeMode } = useSettingContext()
 
  const regEx = new RegExp(REGEX.ERROR_CODE)
  const isMobile = useResponsive('down', 'sm')
+
  const countryCode = getCountryCode(customer?.mainSite?.address?.country) || KEY.DEFAULT_COUNTRY_CODE
 
  useEffect(() => {
@@ -185,7 +184,7 @@ function UserInviteForm() {
      <Grid item xs={12} sm={6} md={6}>
       <RHFRequiredTextFieldWrapper condition={!contact}>
        <RHFAutocomplete
-        name='contact'
+        name={FORM_EL.contact}
         label={t('contact.label')}
         options={activeContacts}
         getOptionLabel={option => `${option?.firstName || ''} ${option?.lastName || ''}`}
@@ -200,12 +199,19 @@ function UserInviteForm() {
      </Grid>
      <Grid item xs={12} sm={6} md={6}>
       <RHFRequiredTextFieldWrapper condition={!name}>
-       <RHFTextField name='name' label={t('full_name.label')} autoComplete={KEY.NAME} aria-label={KEY.NAME} helperText={errors.contactPersonName ? errors.contactPersonName.message : ''} required />
+       <RHFTextField
+        name={FORM_EL.name}
+        label={t('full_name.label')}
+        autoComplete={KEY.NAME}
+        aria-label={KEY.NAME}
+        helperText={errors.contactPersonName ? errors.contactPersonName.message : ''}
+        required
+       />
       </RHFRequiredTextFieldWrapper>
      </Grid>
      <Grid item xs={12} sm={6} md={6}>
       <RHFPhoneInput
-       name='phone'
+       name={FORM_EL.phone}
        label={t('contact_number.label')}
        autoComplete={KEY.PHONE}
        placeholder={t('contact_number.label')}
@@ -218,7 +224,7 @@ function UserInviteForm() {
      <Grid item xs={12} sm={6} md={6}>
       <RHFRequiredTextFieldWrapper condition={REGEX.EMAIL.test(email) === false}>
        <RHFTextField
-        name={KEY.EMAIL}
+        name={FORM_EL.email}
         type={KEY.EMAIL}
         label={t('email.label')}
         autoComplete={KEY.EMAIL}
