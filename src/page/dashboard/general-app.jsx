@@ -2,6 +2,7 @@ import { memo, useEffect, useLayoutEffect, useState } from 'react'
 import { useAuthContext } from 'auth/use-auth-context'
 import { t } from 'i18next'
 import _ from 'lodash'
+import debounce from 'lodash/debounce'
 import { dispatch, useSelector } from 'store'
 import { useResponsive } from 'hook'
 import {
@@ -30,11 +31,16 @@ import { FLEX } from 'constant'
 import { toTitleCase } from 'util'
 
 function GeneralAppPage() {
- const { customer, isLoading } = useSelector(state => state.customer)
- const { customerTickets } = useSelector(state => state.customerTicket)
- const { contacts } = useSelector(state => state.contact)
- const { securityUsers } = useSelector(state => state.user)
- const { customerMachines } = useSelector(state => state.machine)
+ const { customer, isLoading, customerTickets, contacts, securityUsers, customerMachines } = useSelector(
+  state => ({
+   customer: state.customer.customer,
+   isLoading: state.customer.isLoading,
+   customerTickets: state.customerTicket.customerTickets,
+   securityUsers: state.user.securityUsers,
+   customerMachines: state.machine.customerMachines
+  }),
+  _.isEqual
+ )
  const { user } = useAuthContext()
  const customerId = user?.customer
  const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
@@ -44,6 +50,48 @@ function GeneralAppPage() {
 
  const [rateSelectedMachine, setRateSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
  const [totalSelectedMachine, setTotalSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   if (customerId && !customerMachines.length) {
+    dispatch(getCustomerMachines(customerId))
+   }
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [customerId, customerMachines, dispatch])
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   if (customerId && !contacts.length) {
+    dispatch(getContacts(customerId))
+   }
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [customerId, contacts, dispatch])
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   if (customerId && !securityUsers.length) {
+    dispatch(getSecurityUsers(customerId))
+   }
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [customerId, securityUsers, dispatch])
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   if (customer?.ref && customerId && !customerTickets?.issues?.length) {
+    dispatch(getCustomerTickets(customer?.ref, 3, customerId))
+   }
+  }, 300)
+  debounceFetch()
+  return () => {
+   debounceFetch.cancel()
+  }
+ }, [dispatch, customer?.ref, customerTickets])
 
  useLayoutEffect(() => {
   dispatch(setMachineDialog(false))
@@ -57,48 +105,6 @@ function GeneralAppPage() {
   dispatch(resetMachineSiteDialogData())
   dispatch(resetCustomerTickets())
  }, [dispatch])
-
- useEffect(() => {
-  const debounce = _.debounce(() => {
-   if (customerId && !customerMachines.length) {
-    dispatch(getCustomerMachines(customerId))
-   }
-  }, 300)
-  debounce()
-  return () => debounce.cancel()
- }, [customerId, customerMachines, dispatch])
-
- useEffect(() => {
-  const debounce = _.debounce(() => {
-   if (customerId && !contacts.length) {
-    dispatch(getContacts(customerId))
-   }
-  }, 300)
-  debounce()
-  return () => debounce.cancel()
- }, [customerId, contacts, dispatch])
-
- useEffect(() => {
-  const debounce = _.debounce(() => {
-   if (customerId && !securityUsers.length) {
-    dispatch(getSecurityUsers(customerId))
-   }
-  }, 300)
-  debounce()
-  return () => debounce.cancel()
- }, [customerId, securityUsers, dispatch])
-
- useEffect(() => {
-  const debouncedDispatch = _.debounce(() => {
-   if (customer?.ref && customerId && !customerTickets?.issues?.length) {
-    dispatch(getCustomerTickets(customer?.ref, 3, customerId))
-   }
-  }, 300)
-  debouncedDispatch()
-  return () => {
-   debouncedDispatch.cancel()
-  }
- }, [dispatch, customer?.ref, customerTickets])
 
  return (
   <Grid container>
