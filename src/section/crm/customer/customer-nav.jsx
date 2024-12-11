@@ -58,7 +58,7 @@ const CustomerNav = ({ renderedTab, navigatePage, value, isLoading }) => {
      <Grid container flexDirection={FLEX_DIR.ROW} p={2}>
       <Grid item xs={12} sm={8} display={FLEX.FLEX} alignItems={KEY.CENTER} mt={2}>
        <GStyledSpanBox gap={1} mb={1}>
-        <BadgeCardMedia />
+        <BadgeCardMedia customer={value?.customer} typographyVariant={TYPOGRAPHY.H2} />
         <ViewFormField variant={isMobile ? TYPOGRAPHY.H5 : TYPOGRAPHY.H4} isLoading={isLoading}>
          {truncate(value?.name, 35)}
         </ViewFormField>

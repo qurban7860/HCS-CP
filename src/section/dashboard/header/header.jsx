@@ -6,7 +6,7 @@ import { LogoIcon } from 'component/logo'
 import { useTheme } from '@mui/material/styles'
 import { bgBlur } from 'theme/style'
 import { HEADER, GLOBAL, NavConfiguration } from 'config'
-import { KEY, TIMEZONE } from 'constant'
+import { KEY } from 'constant'
 import ModeOption from './mode-option'
 import AccountPopover from './account-popover'
 import NotificationPopover from './notification-popover'
@@ -20,8 +20,8 @@ function Header() {
  const isDesktop = useResponsive('up', 'lg')
  const isOffset = useOffSetTop(HEADER.H_DASHBOARD_DESKTOP) && !isNavHorizontal
 
- const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
- const aucklandTimeZone = TIMEZONE.AUCKLAND.timeZone
+ //  const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+ //  const aucklandTimeZone = TIMEZONE.AUCKLAND.timeZone
 
  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
  const [clockAnchor, setClockAnchor] = useState(null)

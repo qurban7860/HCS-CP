@@ -11,6 +11,7 @@ export default function useCustomerDefaultValues(customerData, machines, contact
  return useMemo(() => {
   return {
    id: customerData?._id || '',
+   customer: customerData || '',
    code: customerData?.clientCode || '',
    name: customerData?.name || '',
    ref: customerData?.ref || '',
