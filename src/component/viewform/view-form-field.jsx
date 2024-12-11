@@ -120,10 +120,11 @@ const ViewFormField = ({
       </GStyledSpanBox>
      ) : (
       // default
-
-      <StyledDefaultTypography variant={variant}>
-       {noBreakSpace ? '' : '\u00A0'} {children}
-      </StyledDefaultTypography>
+      <m.div>
+       <StyledDefaultTypography variant={variant}>
+        {noBreakSpace ? '' : '\u00A0'} {children}
+       </StyledDefaultTypography>
+      </m.div>
      )}
 
      {contact && typeof contact === 'object' && contact.length > 0 ? (
