@@ -29,6 +29,7 @@ export { default as LogLineChart } from './chart/log/log-line-chart'
 export { default as ChartStyleOverlay } from './chart/chart-style-overlay'
 // @chip
 export { default as AutocompleteScrollChipContainer } from './chip/autocomplete-scroll'
+export { default as ChipsGrid } from './chip/chips-grid'
 // @code-raw
 export { default as CodeRaw } from './code-mirror/code-raw'
 export { default as CodePopover } from './code-mirror/code-popover'
