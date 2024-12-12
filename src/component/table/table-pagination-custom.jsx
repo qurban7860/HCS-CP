@@ -37,6 +37,9 @@ function TablePaginationCustom({
   setAnchorEl(null)
  }
 
+ const filteredRowsPerPageOptions = rowsPerPageOptions.filter(option => option <= data.length)
+ const isPaginationDisabled = data.length <= rowsPerPage
+
  return (
   <Box
    sx={{
@@ -110,7 +113,7 @@ function TablePaginationCustom({
     count={count}
     mode={themeMode}
     rowsPerPage={rowsPerPage}
-    rowsPerPageOptions={rowsPerPageOptions}
+    rowsPerPageOptions={isPaginationDisabled ? false : filteredRowsPerPageOptions}
     component={component}
     showLastButton
     showFirstButton
@@ -120,8 +123,10 @@ function TablePaginationCustom({
       height: '20px',
       width: '!important 200px'
      },
-     borderTop: 'none'
+     borderTop: 'none',
+     ...(isPaginationDisabled && { display: 'none' })
     }}
+    {...other}
    />
    {onChangeDense && (
     <FormControlLabel
