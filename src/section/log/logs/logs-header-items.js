@@ -1,4 +1,4 @@
-export const HEADER = [
+export const HEADER_ITEMS = [
  { key: 'serialNo', label: 'Serial No' },
  { key: 'name', label: 'Name' },
  { key: 'model', label: 'Model' },
