@@ -97,6 +97,7 @@ export { default as TablePaginationCustom } from './table/table-pagination-custo
 export { default as TableTitleBox } from './table/title-box'
 // @table-tool
 export { default as LinkTableCell } from './table-tool/link-table-cell'
+export { default as LinkWrap } from './table-tool/link-wrap'
 // @title-list-item
 export { default as TitleListItemText } from './title-list-item/text'
 // @scroll to top
