@@ -1,17 +1,18 @@
-import { Fragment, useState, useEffect, useRef, useLayoutEffect } from 'react'
+import { Fragment, useState, useEffect, useLayoutEffect } from 'react'
 import { t } from 'i18next'
 import _ from 'lodash'
 import { useNavigate, Link as RouterLink } from 'react-router-dom'
 import { useAuthContext } from 'auth/use-auth-context'
 import { useSelector } from 'react-redux'
-import { getCustomer, setChangePasswordDialog, resetCustomer } from 'store/slice'
 import { dispatch } from 'store'
+import { getCustomer, setChangePasswordDialog, resetCustomer } from 'store/slice'
 import { useSettingContext, snack, Icon, ICON_NAME, useResponsive } from 'hook'
-import { PATH_AUTH } from 'route/path'
+import { PATH_AUTH, PATH_SECURITY } from 'route/path'
 import { Box, Divider, Dialog, Typography, Stack, MenuItem, Link } from '@mui/material'
 import { CustomAvatar, MenuPopover, IconButtonAnimate, ChangePasswordDialog, DisplayDialog } from 'component'
 import { themePreset } from 'theme'
 import { TYPOGRAPHY } from 'constant'
+import { isCustomerAdmin } from 'util'
 import { OPTION } from './util'
 import LanguagePopover from './language-popover'
 
@@ -21,17 +22,10 @@ export default function AccountPopover() {
  const navigate = useNavigate()
  const customerId = user?.customer
  const isMobile = useResponsive('down', 'sm')
- const isMounted = useRef(false)
-
- const isCustomerAdmin = user?.roles?.some(role => role?.name === 'CustomerAdmin')
 
  const [openPopover, setOpenPopover] = useState(null)
  const [open, setOpen] = useState(false)
  const { themeMode, themeLayout, themeStretch, themeContrast, themeDirection, themeColorPreset, onResetSetting } = useSettingContext()
-
- useLayoutEffect(() => {
-  dispatch(resetCustomer())
- }, [dispatch])
 
  useEffect(() => {
   const debounce = _.debounce(() => {
@@ -39,6 +33,10 @@ export default function AccountPopover() {
   }, 300)
   debounce()
   return () => debounce.cancel()
+ }, [dispatch])
+
+ useLayoutEffect(() => {
+  dispatch(resetCustomer())
  }, [dispatch])
 
  const handleOpenPopover = event => {
@@ -113,14 +111,10 @@ export default function AccountPopover() {
      vertical: 'bottom',
      horizontal: 'right'
     }}
-    sx={{
-     width: 200,
-     p: 0,
-     borderRadius: 0.4
-    }}>
+    sx={{ width: 200, p: 0, borderRadius: 0.4 }}>
     <Box sx={{ my: 1.5, px: 2.5, overflowX: 'hidden', mr: 1.5 }}>
      <Typography variant={TYPOGRAPHY.SUBTITLE2} noWrap>
-      {customer?.name || 'User'}
+      {customer?.name || 'Organization'}
      </Typography>
      <Typography variant={isMobile ? TYPOGRAPHY.CAPTION : TYPOGRAPHY.OVERLINE} sx={{ color: 'text.secondary' }} fontWeight='bold' noWrap>
       {user?.email}
@@ -136,12 +130,17 @@ export default function AccountPopover() {
       </MenuItem>
      ))}
      <MenuItem onClick={handleChangePassword}>{t('change_password.label')}</MenuItem>
-     {isCustomerAdmin && (
+     {isCustomerAdmin(user) && (
       <Fragment>
        <Divider />
        <MenuItem onClick={() => handleClickItem(PATH_AUTH.userInvite)}>
         <Link underline='none' color='inherit' component={RouterLink}>
          {t('invite_user.label')}
+        </Link>
+       </MenuItem>
+       <MenuItem onClick={() => handleClickItem(PATH_SECURITY.users.list)}>
+        <Link underline='none' color='inherit' component={RouterLink}>
+         {t('users_list.label')}
         </Link>
        </MenuItem>
       </Fragment>
