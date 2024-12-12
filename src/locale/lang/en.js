@@ -603,6 +603,7 @@ const en = {
  user: {
   local: `user`,
   label: `User`,
+  label_plural: `Users`,
   users: {
    label: `Users`
   }
@@ -612,6 +613,9 @@ const en = {
  },
  user_invite: {
   label: `User Invite`
+ },
+ users_list: {
+  label: `Users List`
  },
  view_jira: {
   label: `View in Jira`,
