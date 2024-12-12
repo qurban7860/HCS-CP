@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
-import { DEBUG } from 'constant'
+import { DEBUG, REGEX } from 'constant'
 
-const regEx = /^[^2]*/
+const regEx = new RegExp(REGEX.SUCCESS_CODE)
 const initialState = {
  initial: false,
  responseMessage: null,
@@ -29,9 +29,10 @@ const initialState = {
  verifiedInvite: null,
  activeFilterList: 'active',
  employeeFilterList: 'all',
+ selectedUserCard: null,
  userFilterBy: '',
  userPage: 0,
- userRowsPerPage: 100
+ userRowsPerPage: 10
 }
 
 const userSlice = createSlice({
@@ -54,6 +55,9 @@ const userSlice = createSlice({
    state.isLoading = false
    state.success = true
    state.initial = true
+  },
+  setSelectedUserCard(state, action) {
+   state.selectedUserCard = action.payload
   },
   setSecurityUserProperties(state, userData) {
    const { UserId, User } = userData
@@ -135,6 +139,9 @@ const userSlice = createSlice({
    state.success = false
    state.isLoading = false
   },
+  resetSelectedUserCard(state) {
+   state.selectedUserCard = null
+  },
   setUserFilterBy(state, action) {
    state.userFilterBy = action.payload
   },
@@ -162,12 +169,14 @@ export const {
  setSecurityUserProperties,
  setUserInviteDialog,
  setUserInviteConfirmDetails,
+ setSelectedUserCard,
  getSignInLogsSuccess,
  resetLoadingResetPasswordEmail,
  resetUserInviteConfirmDetails,
  resetSecurityUser,
  resetSecurityUsers,
  resetSignInLogs,
+ resetSelectedUserCard,
  setUserFilterBy,
  ChangeUserRowsPerPage,
  ChangeUserPage
