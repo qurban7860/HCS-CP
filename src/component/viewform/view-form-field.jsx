@@ -9,7 +9,7 @@ import { GStyledSpanBox, GStyledTooltip } from 'theme/style'
 import { SvgFlagIcon, IconTooltip } from 'component'
 import { SkeletonViewFormField } from 'component/skeleton'
 import { SIZE, VARIANT, KEY, LABEL, FLEX } from 'constant'
-import { roleCoverUp } from 'util/role-cover-up'
+import { roleCoverUp } from 'util/role'
 import { StyledDefaultTypography, StyledFieldGrid, StyledChipGrid, StyledFieldChip, StyledFlagBox } from './style'
 
 const { TYPOGRAPHY } = VARIANT
