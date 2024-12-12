@@ -4,14 +4,14 @@ import { ICON_NAME, useSettingContext } from 'hook'
 import { TableHead, TableRow, TableSortLabel, Typography } from '@mui/material'
 import { IconTooltip } from 'component'
 import { useTheme } from '@mui/material/styles'
-import { GStyledMachineChip, GStyledTooltip } from 'theme/style'
 import { StyledHeaderTableCell } from './style'
-import { normalizer, charAtText } from 'util'
+import { normalizer } from 'util'
 import { KEY, TYPOGRAPHY } from 'constant'
 
 const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
  const { themeMode } = useSettingContext()
  const theme = useTheme()
+
  return (
   <TableHead>
    <TableRow>

@@ -4,6 +4,7 @@ import { useLocalStorage } from 'hook'
 import { themePreset } from 'theme'
 import { localStorageSpace } from 'util'
 import { defaultPreset, getPreset, presetsOption } from 'theme/preset'
+import { KEY } from 'constant'
 
 const initialState = {
  ...themePreset,
@@ -43,7 +44,7 @@ export function SettingProvider({ children }) {
  const langStorage = storageAvailable ? localStorage.getItem('i18nextLng') : ''
 
  const onToggleMode = useCallback(() => {
-  const themeMode = settings.themeMode === 'light' ? 'dark' : 'light'
+  const themeMode = settings.themeMode === KEY.LIGHT ? KEY.DARK : KEY.LIGHT
   setSettings({ ...settings, themeMode })
  }, [setSettings, settings])
 

@@ -17,10 +17,7 @@ const LogsPagination = ({
  ...other
 }) => {
  return (
-  <Box
-   sx={{
-    position: 'relative'
-   }}>
+  <Box sx={{ position: 'relative' }}>
    <TablePaginationCustom
     count={data?.length ?? 0}
     component={m.div}

@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
-import { Box, TablePagination } from '@mui/material'
+import { Box } from '@mui/material'
 import { StyledTablePagination } from './style'
 import { LABEL } from 'constant'
 
