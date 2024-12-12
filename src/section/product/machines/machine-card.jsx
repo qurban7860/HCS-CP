@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import PropTypes from 'prop-types'
 import { Trans } from 'react-i18next'
 import { useSettingContext, ICON_NAME } from 'hook'
@@ -7,7 +8,7 @@ import { GStyledListItemText, GStyledSpanBox, GStyledCard } from 'theme/style'
 import { IconTooltip } from 'component'
 import { LABEL, TYPOGRAPHY, KEY, FLEX, DECOILER_TYPE_ARR } from 'constant'
 
-const MachineCard = ({ selectedCardId, handleSelected, handleMachineCard, handleMachineInNewTabCard, machine }) => {
+const MachinesCard = ({ selectedCardId, handleSelected, handleMachineCard, handleMachineInNewTabCard, machine }) => {
  const theme = useTheme()
  const { themeMode } = useSettingContext()
 
@@ -77,7 +78,7 @@ const MachineCard = ({ selectedCardId, handleSelected, handleMachineCard, handle
  )
 }
 
-MachineCard.propTypes = {
+MachinesCard.propTypes = {
  selectedCardId: PropTypes.string,
  value: PropTypes.any,
  contact: PropTypes.any,
@@ -87,4 +88,4 @@ MachineCard.propTypes = {
  handleMachineInNewTabCard: PropTypes.func
 }
 
-export default MachineCard
+export default memo(MachinesCard)

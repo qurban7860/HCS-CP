@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState, memo, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
+import { t } from 'i18next'
 import axios from 'axios'
 import _ from 'lodash'
 import { Trans } from 'react-i18next'
@@ -24,9 +25,9 @@ import {
 import { Table, Grid, Typography } from '@mui/material'
 import { GStyledTableHeaderBox } from 'theme/style'
 import { TableNoData, SkeletonTable, SearchBox, TableTitleBox } from 'component'
-import { MachineTable, MachineHeader, MachineListPagination, MachineCard } from 'section/product'
+import { MachineTable, MachineHeader, MachineListPagination, MachinesCard } from 'section/product'
 import { MARGIN, TABLE } from 'config'
-import { KEY, TITLE, FLEX_DIR, TYPOGRAPHY } from 'constant'
+import { KEY, FLEX_DIR, TYPOGRAPHY } from 'constant'
 import { StyledScrollTableContainer } from './style'
 
 const MachineListSection = ({ isArchived }) => {
@@ -97,7 +98,6 @@ const MachineListSection = ({ isArchived }) => {
 
  const handleSelectedCard = (event, id) => {
   event.preventDefault()
-  //    dispatch(resetMachine())
   dispatch(setSelectedMachineCard(id))
  }
 
@@ -123,7 +123,7 @@ const MachineListSection = ({ isArchived }) => {
 
  return (
   <Fragment>
-   <TableTitleBox title={TITLE.MACHINE_LIST} />
+   <TableTitleBox title={t('machine.machines.label')} />
    <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} />
    {isMobile ? (
     <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
@@ -133,7 +133,7 @@ const MachineListSection = ({ isArchived }) => {
         <Grid container p={1}>
          {machines?.length > 0 ? (
           filteredData.map((cmach, index) => (
-           <MachineCard
+           <MachinesCard
             key={index}
             selectedCardId={selectedMachineCard || index}
             machine={cmach}
