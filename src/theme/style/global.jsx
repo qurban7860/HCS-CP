@@ -491,6 +491,13 @@ export const GStyledSupportStatusFieldChip = styled(({ theme, status, ...other }
    : theme.palette.howick.lightGray
 }))
 
+export const GStyledNoPaddingFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView, isNoBg }) => ({
+ overflowWrap: 'break-word',
+ backgroundColor: 'transparent',
+ //  border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
+ borderRadius: isMachineView && theme.spacing(0.2)
+}))
+
 export const GStyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView, isNoBg }) => ({
  overflowWrap: 'break-word',
  backgroundColor:
@@ -505,6 +512,11 @@ export const GStyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ..
  height: !isMachineView && '5rem',
  border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
  borderRadius: isMachineView && theme.spacing(0.2)
+}))
+
+export const GStyledNoPaddingFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, roleColr }) => ({
+ borderRadius: theme.spacing(0.4),
+ backgroundColor: roleColr
 }))
 
 export const GStyledFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
