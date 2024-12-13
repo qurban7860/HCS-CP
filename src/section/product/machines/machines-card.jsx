@@ -3,15 +3,14 @@ import PropTypes from 'prop-types'
 import { Trans } from 'react-i18next'
 import { useSettingContext, ICON_NAME } from 'hook'
 import { Box, Grid, Typography, Link } from '@mui/material'
+import { IconTooltip } from 'component'
 import { useTheme } from '@mui/material/styles'
 import { GStyledListItemText, GStyledSpanBox, GStyledCard } from 'theme/style'
-import { IconTooltip } from 'component'
 import { LABEL, TYPOGRAPHY, KEY, FLEX, DECOILER_TYPE_ARR } from 'constant'
 
 const MachinesCard = ({ selectedCardId, handleSelected, handleMachineCard, handleMachineInNewTabCard, machine }) => {
  const theme = useTheme()
  const { themeMode } = useSettingContext()
-
  return (
   <GStyledCard onClick={event => handleSelected(event, machine?._id)} selectedCardId={selectedCardId} value={machine} mode={themeMode}>
    <Grid item xs={10}>
@@ -34,9 +33,9 @@ const MachinesCard = ({ selectedCardId, handleSelected, handleMachineCard, handl
          <IconTooltip
           onClick={event => handleMachineInNewTabCard(event, machine._id)}
           title={<Trans i18nKey='open_in_new_tab.label' values={{ value: 'Machine' }} />}
+          color={theme.palette.grey[500]}
           icon={ICON_NAME.OPEN_IN_NEW}
           placement={KEY.RIGHT}
-          color={theme.palette.grey[500]}
           dimension={15}
           px={0}
           iconOnly
@@ -79,7 +78,7 @@ const MachinesCard = ({ selectedCardId, handleSelected, handleMachineCard, handl
 }
 
 MachinesCard.propTypes = {
- selectedCardId: PropTypes.string,
+ selectedCardId: PropTypes.number,
  value: PropTypes.any,
  contact: PropTypes.any,
  machine: PropTypes.any,
