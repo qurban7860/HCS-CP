@@ -3,10 +3,12 @@ import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import { Icon, ICON_NAME, useSettingContext } from 'hook'
 import { useMediaQuery, Box, Switch, Typography, FormControlLabel, Button, MenuItem, Checkbox, Menu } from '@mui/material'
+import { ColorizedStatusTextBox } from 'component'
 import { useTheme } from '@mui/material/styles'
-import { GStyledTablePaginationCustom, GStyledMachineChip } from 'theme/style'
-import { normalizer, charAtText } from 'util'
+import { GStyledTablePaginationCustom, GStyledMachineChip, GStyledSpanBox } from 'theme/style'
 import { KEY, TYPOGRAPHY } from 'constant'
+import { STATUS_TYPES } from 'config'
+import { normalizer, charAtText } from 'util'
 
 function TablePaginationCustom({
  count,
@@ -16,6 +18,7 @@ function TablePaginationCustom({
  onChangeDense,
  rowsPerPage,
  disabled,
+ currentFilterStatus,
  showFilterStatus = false,
  handleFilterStatus,
  rowsPerPageOptions = [10, 20, 50, 100],
@@ -26,15 +29,10 @@ function TablePaginationCustom({
 }) {
  const [anchorEl, setAnchorEl] = useState(null)
  const [filterStatusAnchorEl, setFilterStatusAnchorEl] = useState(null)
+
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
-
- const STATUSES = [
-  { id: 'all', label: 'All', value: 'all' },
-  { id: 'active', label: 'Active', value: 'active' },
-  { id: 'inActive', label: 'In Active', value: 'inActive' }
- ]
 
  const handleColumnClick = column => {
   if (!column.alwaysShow) {
@@ -127,7 +125,11 @@ function TablePaginationCustom({
          color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[0],
          border: `1px solid ${themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[0]}`
         }}>
-        <Typography variant={isDesktop ? TYPOGRAPHY.BODY2 : TYPOGRAPHY.CAPTION}>{t('status.label') + ':'}</Typography>
+        <GStyledSpanBox>
+         <Typography variant={isDesktop ? TYPOGRAPHY.BODY2 : TYPOGRAPHY.CAPTION}>{t('status.label') + ':'} </Typography>
+         <ColorizedStatusTextBox status={currentFilterStatus} />
+         {!filterStatusAnchorEl ? <Icon icon={ICON_NAME.CHEVRON_DOWN} /> : <Icon icon={ICON_NAME.CHEVRON_UP} />}
+        </GStyledSpanBox>
        </Button>
        <Menu
         id='long-menu'
@@ -136,7 +138,7 @@ function TablePaginationCustom({
         open={!!filterStatusAnchorEl}
         onClose={handleFilterStatusClose}
         PaperProps={{ style: { width: '25ch', maxHeight: 300, overflowY: 'auto' } }}>
-        {STATUSES?.map(column => (
+        {STATUS_TYPES?.map(column => (
          <MenuItem dense sx={{ p: 1 }} key={column.id} onClick={e => handleFilterStatus(e, column.value)} value={column.value}>
           <Typography variant={TYPOGRAPHY.BODY2}>{column.label}</Typography>
          </MenuItem>
@@ -184,6 +186,7 @@ TablePaginationCustom.propTypes = {
  count: PropTypes.number,
  dense: PropTypes.bool,
  disabled: PropTypes.bool,
+ currentFilterStatus: PropTypes.any,
  showFilterStatus: PropTypes.bool,
  handleFilterStatus: PropTypes.func,
  component: PropTypes.elementType,
