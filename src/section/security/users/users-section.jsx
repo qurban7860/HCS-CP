@@ -2,7 +2,6 @@ import { Fragment, useEffect, useState, memo, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import axios from 'axios'
-import _ from 'lodash'
 import { debounce } from 'lodash'
 import { Trans } from 'react-i18next'
 import { useAuthContext } from 'auth'
@@ -19,7 +18,6 @@ import {
  ChangeUserRowsPerPage,
  resetSecurityUser,
  resetSecurityUsers,
- resetSelectedUserCard,
  resetSelectedContactCard
 } from 'store/slice'
 import { Table, Grid, Typography, TableContainer } from '@mui/material'
@@ -28,7 +26,6 @@ import { TableNoData, SkeletonTable, SearchBox, TableTitleBox } from 'component'
 import { UsersTable, UsersHeader, UsersListPagination, UsersCard, HEADER_ITEMS } from 'section/security'
 import { MARGIN, TABLE } from 'config'
 import { KEY, FLEX_DIR, TYPOGRAPHY, FLEX } from 'constant'
-import { applySort } from 'util'
 import { StyledScrollTableContainer } from './style'
 
 const UsersListSection = ({ isArchived }) => {
@@ -42,9 +39,6 @@ const UsersListSection = ({ isArchived }) => {
  const isMobile = useResponsive('down', 'sm')
  const navigate = useNavigate()
  const denseHeight = TABLE.DENSE_HEIGHT
-
- const axiosToken = () => axios.CancelToken.source()
- const cancelTokenSource = axiosToken()
 
  const {
   order,
@@ -88,11 +82,6 @@ const UsersListSection = ({ isArchived }) => {
    setTableData(securityUsers || [])
   }
  }, [securityUsers, initial])
-
- //  const dataFiltered = applySort({
- //   inputData: tableData,
- //   comparator: getComparator(order, orderBy)
- //  })
 
  const { filterName, handleFilterName, filteredData, filterStatus, handleFilterStatus } = useFilter(getComparator(order, orderBy), tableData, initial, ChangeUserPage, setUserFilterBy)
 
@@ -175,6 +164,7 @@ const UsersListSection = ({ isArchived }) => {
          handleChangePage={handleChangePage}
          handleChangeRowsPerPage={handleChangeRowsPerPage}
          columnFilterButtonData={HEADER_ITEMS}
+         currentFilterStatus={filterStatus}
          handleFilterStatus={handleFilterStatus}
          showFilterStatus
         />

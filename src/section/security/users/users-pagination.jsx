@@ -15,6 +15,7 @@ const UsersListPagination = ({
  handleChangeRowsPerPage,
  columnFilterButtonData,
  handleColumnButtonClick,
+ currentFilterStatus,
  showFilterStatus,
  handleFilterStatus,
  ...other
@@ -34,6 +35,7 @@ const UsersListPagination = ({
     rowsPerPage={rowsPerPage}
     columnFilterButtonData={columnFilterButtonData}
     columnButtonClickHandler={handleColumnButtonClick}
+    currentFilterStatus={currentFilterStatus}
     showFilterStatus={showFilterStatus}
     handleFilterStatus={handleFilterStatus}
     disabled
@@ -54,6 +56,7 @@ UsersListPagination.propTypes = {
  handleChangeRowsPerPage: PropTypes.func,
  columnFilterButtonData: PropTypes.array,
  handleColumnButtonClick: PropTypes.func,
+ currentFilterStatus: PropTypes.any,
  showFilterStatus: PropTypes.bool,
  handleFilterStatus: PropTypes.func
 }
