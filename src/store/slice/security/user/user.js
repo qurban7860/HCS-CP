@@ -27,7 +27,7 @@ const initialState = {
  changePasswordDialog: false,
  userRoles: [],
  verifiedInvite: null,
- activeFilterList: 'active',
+ userFilterStatus: 'active',
  employeeFilterList: 'all',
  selectedUserCard: null,
  userFilterBy: '',
@@ -75,6 +75,9 @@ const userSlice = createSlice({
   },
   setUserInviteConfirmDetails(state, action) {
    state.userInviteConfirmDetails = action.payload
+  },
+  setUserFilterStatus(state, action) {
+   state.userFilterStatus = action.payload
   },
   getSecurityUserSuccess(state, action) {
    state.isLoading = false
@@ -170,6 +173,7 @@ export const {
  setUserInviteDialog,
  setUserInviteConfirmDetails,
  setSelectedUserCard,
+ setUserFilterStatus,
  getSignInLogsSuccess,
  resetLoadingResetPasswordEmail,
  resetUserInviteConfirmDetails,
