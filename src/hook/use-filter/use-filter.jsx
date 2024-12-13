@@ -5,7 +5,7 @@ import { useTable } from 'hook'
 import { applySort } from 'util'
 import { filterProperties } from './query-pool'
 import { getProperty, getNestedProperty } from './get-property'
-import { setUserFilterStatus } from 'store/slice'
+import { KEY } from 'constant'
 
 /**
  * don't remove------------------using useFilter hook-----------------
@@ -102,9 +102,10 @@ export default function useFilter(comparator, params, initial, ChangePage, setFi
   setFilterStatus(value)
  }
 
- const handleFilterRole = event => {
+ const handleFilterRole = (event, value) => {
+  event.preventDefault()
   setPage(0)
-  setFilterRole(event.target.value)
+  setFilterRole(value)
  }
 
  const handleResetFilter = () => {
@@ -126,8 +127,10 @@ export default function useFilter(comparator, params, initial, ChangePage, setFi
     filterVal = filterVal.filter(obj => obj.isActive === false)
    }
 
-   if (filterRole !== 'all') {
-    filterVal = filterVal.filter(item => item.role === filterRole)
+   if (filterRole === KEY.CUSTOMER_ADMIN) {
+    filterVal = filterVal.filter(item => item.roles.some(obj => obj.name === KEY.CUSTOMER_ADMIN))
+   } else if (filterRole === KEY.CUSTOMER_USER) {
+    filterVal = filterVal.filter(item => item.roles.some(obj => obj.name === KEY.CUSTOMER_USER))
    }
   }
 
