@@ -7,7 +7,7 @@ import { ColorizedStatusTextBox } from 'component'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTablePaginationCustom, GStyledMachineChip, GStyledSpanBox } from 'theme/style'
 import { KEY, TYPOGRAPHY } from 'constant'
-import { STATUS_TYPES } from 'config'
+import { STATUS_TYPES, ROLE_TYPES } from 'config'
 import { normalizer, charAtText } from 'util'
 
 function TablePaginationCustom({
@@ -21,6 +21,9 @@ function TablePaginationCustom({
  currentFilterStatus,
  showFilterStatus = false,
  handleFilterStatus,
+ currentFilterRole,
+ showFilterRole = false,
+ handleFilterRole,
  rowsPerPageOptions = [10, 20, 50, 100],
  columnFilterButtonData = [],
  columnButtonClickHandler = () => {},
@@ -29,6 +32,7 @@ function TablePaginationCustom({
 }) {
  const [anchorEl, setAnchorEl] = useState(null)
  const [filterStatusAnchorEl, setFilterStatusAnchorEl] = useState(null)
+ const [filterRoleAnchorEl, setFilterRoleAnchorEl] = useState(null)
 
  const { themeMode } = useSettingContext()
  const theme = useTheme()
@@ -47,6 +51,10 @@ function TablePaginationCustom({
 
  const handleFilterStatusClose = () => {
   setFilterStatusAnchorEl(null)
+ }
+
+ const handleFilterRoleClose = () => {
+  setFilterRoleAnchorEl(null)
  }
 
  const filteredRowsPerPageOptions = rowsPerPageOptions.filter(option => option <= data.length)
@@ -147,6 +155,40 @@ function TablePaginationCustom({
       </Box>
      </Fragment>
     )}
+    {showFilterRole && (
+     <Fragment>
+      <Box sx={{ flexGrow: 1, pl: 2 }}>
+       <Button
+        startIcon={<Icon icon={ICON_NAME.BADGE} />}
+        variant='outlined'
+        onClick={e => setFilterRoleAnchorEl(e.currentTarget)}
+        sx={{
+         mr: 1,
+         color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[0],
+         border: `1px solid ${themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[0]}`
+        }}>
+        <GStyledSpanBox>
+         <Typography variant={isDesktop ? TYPOGRAPHY.BODY2 : TYPOGRAPHY.CAPTION}>{t('role.label') + ':'} </Typography>
+         <ColorizedStatusTextBox role={currentFilterRole} />
+         {!filterRoleAnchorEl ? <Icon icon={ICON_NAME.CHEVRON_DOWN} /> : <Icon icon={ICON_NAME.CHEVRON_UP} />}
+        </GStyledSpanBox>
+       </Button>
+       <Menu
+        id='long-menu'
+        MenuListProps={{ 'aria-labelledby': 'long-button' }}
+        anchorEl={filterRoleAnchorEl}
+        open={!!filterRoleAnchorEl}
+        onClose={handleFilterRoleClose}
+        PaperProps={{ style: { width: '25ch', maxHeight: 300, overflowY: 'auto' } }}>
+        {ROLE_TYPES?.map(column => (
+         <MenuItem dense sx={{ p: 1 }} key={column.id} onClick={e => handleFilterRole(e, column.value)} value={column.value}>
+          <Typography variant={TYPOGRAPHY.BODY2}>{column.label}</Typography>
+         </MenuItem>
+        ))}
+       </Menu>
+      </Box>
+     </Fragment>
+    )}
    </Box>
    <GStyledTablePaginationCustom
     labelRowsPerPage={t('row.label') + ':'}
@@ -189,6 +231,9 @@ TablePaginationCustom.propTypes = {
  currentFilterStatus: PropTypes.any,
  showFilterStatus: PropTypes.bool,
  handleFilterStatus: PropTypes.func,
+ showFilterRole: PropTypes.bool,
+ currentFilterRole: PropTypes.any,
+ handleFilterRole: PropTypes.func,
  component: PropTypes.elementType,
  onChangeDense: PropTypes.func,
  rowsPerPage: PropTypes.number,
