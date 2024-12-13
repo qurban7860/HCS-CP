@@ -181,6 +181,9 @@ const en = {
  email: {
   label: `Email`
  },
+ filter_status: {
+  label: `Filter Status`
+ },
  financing_company: {
   label: `Financing Company`
  },
@@ -509,6 +512,9 @@ const en = {
   roles: {
    label: `Roles`
   }
+ },
+ row: {
+  label: `Row`
  },
  save: {
   label: `Save`
