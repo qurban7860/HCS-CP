@@ -5,6 +5,7 @@ import { useTable } from 'hook'
 import { applySort } from 'util'
 import { filterProperties } from './query-pool'
 import { getProperty, getNestedProperty } from './get-property'
+import { setUserFilterStatus } from 'store/slice'
 
 /**
  * don't remove------------------using useFilter hook-----------------
