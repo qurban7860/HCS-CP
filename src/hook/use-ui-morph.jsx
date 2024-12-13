@@ -1,6 +1,6 @@
-import { useMediaQuery, useTheme } from '@material-ui/core'
+import { useMediaQuery, useTheme } from '@mui/material'
 
-export function useUIMorph() {
+function useUIMorph() {
  const theme = useTheme()
  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
@@ -18,3 +18,5 @@ export function useUIMorph() {
   IsBreakpointBetween
  }
 }
+
+export default useUIMorph
