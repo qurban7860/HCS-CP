@@ -23,6 +23,7 @@ export const useHelmet = (config = {}) => {
   '/auth/register': 'Register',
   '/auth/reset-password': 'Reset Password',
   '/auth/new-password': 'New Password',
+  '/auth/user-invite': 'Invite a User',
   // dashboard
   '/dashboard': 'Dashboard',
   '/dashboard/app': 'Dashboard',
