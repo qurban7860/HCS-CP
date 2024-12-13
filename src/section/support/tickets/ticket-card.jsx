@@ -22,11 +22,10 @@ const TicketCard = ({ selectedCardId, handleSelected, handleTicketCard, handleTi
        ticket && (
         <GStyledSpanBox>
          <Link
+          typography={TYPOGRAPHY.H5}
           onClick={event => handleTicketCard(event, ticket?.machineSerialNo, ticket?.key)}
-          sx={{ color: themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange, cursor: 'pointer' }}>
-          <Typography color={themeMode === KEY.LIGHT ? 'common.black' : 'grey.400'} variant={TYPOGRAPHY.H4} sx={{ opacity: selectedCardId === ticket?.id ? 0.7 : 1 }}>
-           {ticket?.key}
-          </Typography>
+          sx={{ color: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.howick.orange, cursor: 'pointer' }}>
+          {ticket?.key}
          </Link>
          &nbsp;
          <IconTooltip
