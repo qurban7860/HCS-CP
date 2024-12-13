@@ -95,12 +95,12 @@ export const GStyledCard = styled(({ theme, selectedCardId, c, mode, ...other })
  marginBottom: theme.spacing(2),
  marginLeft: theme.spacing(2),
  marginRight: theme.spacing(2),
- marginTop: selectedCardId === value._id || selectedCardId === value.key ? theme.spacing(2) : theme.spacing(0),
+ marginTop: selectedCardId === value?._id || selectedCardId === value?.key ? theme.spacing(2) : theme.spacing(0),
  width: '100%',
  cursor: 'pointer',
- borderBottom: selectedCardId === value._id || selectedCardId === value.key ? `2px solid ${mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}` : '',
+ borderBottom: selectedCardId === value?._id || selectedCardId === value?.key ? `2px solid ${mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}` : '',
  backgroundColor:
-  selectedCardId === value._id || selectedCardId === value.key
+  selectedCardId === value?._id || selectedCardId === value?.key
    ? mode === KEY.LIGHT
      ? theme.palette.grey[300]
      : theme.palette.howick.darkGrey
