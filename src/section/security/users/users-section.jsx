@@ -26,7 +26,6 @@ import { TableNoData, SkeletonTable, SearchBox, TableTitleBox } from 'component'
 import { UsersTable, UsersHeader, UsersListPagination, UsersCard, HEADER_ITEMS } from 'section/security'
 import { MARGIN, TABLE } from 'config'
 import { KEY, FLEX_DIR, TYPOGRAPHY, FLEX } from 'constant'
-import { StyledScrollTableContainer } from './style'
 
 const UsersListSection = ({ isArchived }) => {
  const [tableData, setTableData] = useState([])
@@ -130,32 +129,50 @@ const UsersListSection = ({ isArchived }) => {
    <TableTitleBox title={t('user.users.label')} />
    <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} />
    {isMobile ? (
-    <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
-     <Grid item xs={12} sm={12}>
-      <Grid container mb={2}>
-       <Grid item xs={12} sm={12} mb={2} bgcolor='transparent'>
-        <Grid container p={1}>
-         {securityUsers?.length > 0 ? (
-          filteredData.map((cmach, index) => (
-           <UsersCard
-            key={index}
-            selectedCardId={selectedUserCard || index}
-            machine={cmach}
-            handleSelected={handleSelectedCard}
-            handleUserCard={handleUserCard}
-            handleMachineInNewTabCard={handleMachineInNewTabCard}
-           />
-          ))
-         ) : (
-          <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
-           <Trans i18nKey='no_found.label' values={{ value: 'Machine' }} />
-          </Typography>
-         )}
+    <Fragment>
+     <UsersListPagination
+      count={filteredData?.length || 0}
+      data={filteredData}
+      page={userPage}
+      rowsPerPage={userRowsPerPage}
+      handleChangePage={handleChangePage}
+      handleChangeRowsPerPage={handleChangeRowsPerPage}
+      columnFilterButtonData={HEADER_ITEMS}
+      currentFilterStatus={filterStatus}
+      handleFilterStatus={handleFilterStatus}
+      currentFilterRole={filterRole}
+      handleFilterRole={handleFilterRole}
+      noPaginationToolbar
+      showFilterStatus
+      showFilterRole
+     />
+     <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+      <Grid item xs={12} sm={12}>
+       <Grid container mb={2}>
+        <Grid item xs={12} sm={12} mb={2} bgcolor='transparent'>
+         <Grid container p={1}>
+          {securityUsers?.length > 0 ? (
+           filteredData.map((user, index) => (
+            <UsersCard
+             key={index}
+             user={user}
+             selectedCardId={selectedUserCard || index}
+             handleSelected={handleSelectedCard}
+             handleUserCard={handleUserCard}
+             handleMachineInNewTabCard={handleMachineInNewTabCard}
+            />
+           ))
+          ) : (
+           <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
+            <Trans i18nKey='no_found.label' values={{ value: 'Machine' }} />
+           </Typography>
+          )}
+         </Grid>
         </Grid>
        </Grid>
       </Grid>
      </Grid>
-    </Grid>
+    </Fragment>
    ) : (
     <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
      <Grid item xs={12} sm={12}>

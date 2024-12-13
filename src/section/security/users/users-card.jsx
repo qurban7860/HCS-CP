@@ -1,16 +1,17 @@
 import { memo } from 'react'
 import PropTypes from 'prop-types'
 import { Trans } from 'react-i18next'
-import { useSettingContext, ICON_NAME } from 'hook'
+import { useSettingContext, ICON_NAME, useUIMorph } from 'hook'
 import { Box, Grid, Typography, Link } from '@mui/material'
+import { IconTooltip, ChipsGrid } from 'component'
 import { useTheme } from '@mui/material/styles'
-import { GStyledListItemText, GStyledSpanBox, GStyledCard } from 'theme/style'
-import { IconTooltip } from 'component'
-import { LABEL, TYPOGRAPHY, KEY, FLEX } from 'constant'
+import { GStyledListItemText, GStyledSpanBox, GStyledCard, GStyledFieldChip } from 'theme/style'
+import { LABEL, TYPOGRAPHY, KEY, FLEX, SIZE } from 'constant'
 
 const UsersCard = ({ selectedCardId, handleSelected, handleUserCard, handleUserInNewTabCard, user }) => {
- const theme = useTheme()
  const { themeMode } = useSettingContext()
+ const theme = useTheme()
+ const { isDesktop } = useUIMorph()
 
  return (
   <GStyledCard onClick={event => handleSelected(event, user?._id)} selectedCardId={selectedCardId} value={user} mode={themeMode}>
@@ -21,32 +22,18 @@ const UsersCard = ({ selectedCardId, handleSelected, handleUserCard, handleUserI
        user && (
         <GStyledSpanBox>
          <Link
+          variant={isDesktop ? TYPOGRAPHY.H4 : TYPOGRAPHY.H6}
           onClick={event => handleUserCard(event, user._id)}
-          sx={{
-           color: themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
-           cursor: 'pointer'
-          }}>
-          <Typography color={themeMode === KEY.LIGHT ? 'common.black' : 'grey.400'} variant={TYPOGRAPHY.H4} sx={{ opacity: selectedCardId === user._id ? 0.7 : 1 }}>
-           {user?.name}
-          </Typography>
+          sx={{ color: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.howick.orange, cursor: 'pointer' }}>
+          {user?.name}
          </Link>
          &nbsp;
-         <IconTooltip
-          onClick={event => handleUserInNewTabCard(event, user._id)}
-          title={<Trans i18nKey='open_in_new_tab.label' values={{ value: 'Machine' }} />}
-          icon={ICON_NAME.OPEN_IN_NEW}
-          placement={KEY.RIGHT}
-          color={theme.palette.grey[500]}
-          dimension={15}
-          px={0}
-          iconOnly
-         />
         </GStyledSpanBox>
        )
       }
       secondary={
        <Typography variant={TYPOGRAPHY.BODY2} color='text.secondary'>
-        {user?.name}
+        {user?.email}
        </Typography>
       }
      />
@@ -54,6 +41,7 @@ const UsersCard = ({ selectedCardId, handleSelected, handleUserCard, handleUserI
    </Grid>
    <Grid item xs={2} flex={1} justifyContent={FLEX.FLEX_END} alignContent={KEY.RIGHT}>
     <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1}>
+     <ChipsGrid isRole chips={user?.roles} chipKey={'name'} />
      {user?.isActive ? (
       <IconTooltip
        title={LABEL.ACTIVE}

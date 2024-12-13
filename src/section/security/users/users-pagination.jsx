@@ -21,6 +21,7 @@ const UsersListPagination = ({
  currentFilterRole,
  showFilterRole,
  handleFilterRole,
+ noPaginationToolbar,
  ...other
 }) => {
  return (
@@ -44,6 +45,7 @@ const UsersListPagination = ({
     currentFilterRole={currentFilterRole}
     showFilterRole={showFilterRole}
     handleFilterRole={handleFilterRole}
+    noPaginationToolbar={noPaginationToolbar}
     disabled
     showLastButton
     showFirstButton
@@ -67,7 +69,8 @@ UsersListPagination.propTypes = {
  handleFilterStatus: PropTypes.func,
  currentFilterRole: PropTypes.any,
  showFilterRole: PropTypes.bool,
- handleFilterRole: PropTypes.func
+ handleFilterRole: PropTypes.func,
+ noPaginationToolbar: PropTypes.bool
 }
 
 export default memo(UsersListPagination)
