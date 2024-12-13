@@ -36,10 +36,10 @@ import { getProperty, getNestedProperty } from './get-property'
 export default function useFilter(comparator, params, initial, ChangePage, setFilterBy) {
  const [tableData, setTableData] = useState([])
  const [filterName, setFilterName] = useState('')
- const [filterStatus, setFilterStatus] = useState([])
+ const [filterStatus, setFilterStatus] = useState('active')
  const [filterRole, setFilterRole] = useState('all')
  const { setPage } = useTable({ defaultOrderBy: 'name' })
- const isFiltered = filterName !== '' || !!filterStatus.length
+ const isFiltered = filterName !== '' || filterStatus !== 'all' || filterRole !== 'all'
  const inputData = tableData
 
  const debouncedSearch = useRef(
@@ -95,9 +95,10 @@ export default function useFilter(comparator, params, initial, ChangePage, setFi
   setFilterName(event.target.value)
  }
 
- const handleFilterStatus = event => {
+ const handleFilterStatus = (event, value) => {
+  event.preventDefault()
   setPage(0)
-  setFilterStatus(event.target.value)
+  setFilterStatus(value)
  }
 
  const handleFilterRole = event => {
@@ -108,19 +109,20 @@ export default function useFilter(comparator, params, initial, ChangePage, setFi
  const handleResetFilter = () => {
   setFilterName('')
   setFilterRole('all')
-  setFilterStatus([])
+  setFilterStatus('active')
  }
 
  // useMemo is used to memoize the filteredData, so it will not be re-rendered if the data is not changed
  const filteredData = useMemo(() => {
   let filterVal = inputData
 
-  // Apply filtering
   if (filterVal) {
    filterVal = filterVal.filter(item => filterFunction(item, filterName, filterProperties))
 
-   if (filterStatus.length) {
-    filterVal = filterVal.filter(item => filterStatus.includes(item.status))
+   if (filterStatus === 'active') {
+    filterVal = filterVal.filter(obj => obj.isActive === true)
+   } else if (filterStatus === 'inActive') {
+    filterVal = filterVal.filter(obj => obj.isActive === false)
    }
 
    if (filterRole !== 'all') {
