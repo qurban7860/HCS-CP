@@ -1,3 +1,8 @@
+export const STATUS_BASE = {
+ ACTIVE: 'active',
+ INACTIVE: 'inactive'
+}
+
 export const STATUS = {
  PURCHASED: 'purchased',
  DE_COMMISIONED: 'decommissioned',
