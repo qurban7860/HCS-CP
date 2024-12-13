@@ -15,6 +15,8 @@ const UsersListPagination = ({
  handleChangeRowsPerPage,
  columnFilterButtonData,
  handleColumnButtonClick,
+ showFilterStatus,
+ handleFilterStatus,
  ...other
 }) => {
  return (
@@ -32,6 +34,9 @@ const UsersListPagination = ({
     rowsPerPage={rowsPerPage}
     columnFilterButtonData={columnFilterButtonData}
     columnButtonClickHandler={handleColumnButtonClick}
+    showFilterStatus={showFilterStatus}
+    handleFilterStatus={handleFilterStatus}
+    disabled
     showLastButton
     showFirstButton
     {...other}
@@ -48,7 +53,9 @@ UsersListPagination.propTypes = {
  handleChangePage: PropTypes.func,
  handleChangeRowsPerPage: PropTypes.func,
  columnFilterButtonData: PropTypes.array,
- handleColumnButtonClick: PropTypes.func
+ handleColumnButtonClick: PropTypes.func,
+ showFilterStatus: PropTypes.bool,
+ handleFilterStatus: PropTypes.func
 }
 
 export default memo(UsersListPagination)

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import { useSettingContext } from 'hook'
-import { TableHead, TableRow, TableSortLabel } from '@mui/material'
+import { TableHead, TableRow, TableSortLabel, Typography } from '@mui/material'
+import { TYPOGRAPHY } from 'constant'
 import { StyledHeaderTableCell } from './style'
 
 const UserHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
@@ -21,7 +22,9 @@ const UserHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
         sx={{ width: headCell.width, minWidth: headCell.minWidth }}>
         {onSort ? (
          <TableSortLabel hideSortIcon active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : 'asc'} onClick={() => onSort(headCell.id)} sx={{ textTransform: 'capitalize' }}>
-          {headCell.label}
+          <Typography variant={TYPOGRAPHY.OVERLINE0} p={0}>
+           {headCell.label}
+          </Typography>
          </TableSortLabel>
         ) : (
          headCell.label

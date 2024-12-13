@@ -27,7 +27,7 @@ import { GStyledTableHeaderBox } from 'theme/style'
 import { TableNoData, SkeletonTable, SearchBox, TableTitleBox } from 'component'
 import { UsersTable, UsersHeader, UsersListPagination, UsersCard, HEADER_ITEMS } from 'section/security'
 import { MARGIN, TABLE } from 'config'
-import { KEY, FLEX_DIR, TYPOGRAPHY } from 'constant'
+import { KEY, FLEX_DIR, TYPOGRAPHY, FLEX } from 'constant'
 import { applySort } from 'util'
 import { StyledScrollTableContainer } from './style'
 
@@ -94,7 +94,7 @@ const UsersListSection = ({ isArchived }) => {
  //   comparator: getComparator(order, orderBy)
  //  })
 
- const { filterName, handleFilterName, filteredData } = useFilter(getComparator(order, orderBy), tableData, initial, ChangeUserPage, setUserFilterBy)
+ const { filterName, handleFilterName, filteredData, filterStatus, handleFilterStatus } = useFilter(getComparator(order, orderBy), tableData, initial, ChangeUserPage, setUserFilterBy)
 
  const handleChangePage = (event, newPage) => {
   dispatch(ChangeUserPage(newPage))
@@ -175,6 +175,8 @@ const UsersListSection = ({ isArchived }) => {
          handleChangePage={handleChangePage}
          handleChangeRowsPerPage={handleChangeRowsPerPage}
          columnFilterButtonData={HEADER_ITEMS}
+         handleFilterStatus={handleFilterStatus}
+         showFilterStatus
         />
         <TableContainer>
          <Table>
@@ -188,9 +190,13 @@ const UsersListSection = ({ isArchived }) => {
              !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />
             )
            )}
-          {/* <TableNoData isNotFound={isNotFound} /> */}
          </Table>
         </TableContainer>
+       </Grid>
+       <Grid item xs={12} sm={12} mb={2}>
+        <Grid container display={FLEX.FLEX} justifyContent={KEY.CENTER} bgcolor='background.paper'>
+         <TableNoData isNotFound={isNotFound} />
+        </Grid>
        </Grid>
       </Grid>
      </Grid>
