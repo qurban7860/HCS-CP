@@ -95,6 +95,7 @@ export { default as TabContainer } from './tab/tab-container'
 export { default as TableNoData } from './table/no-data'
 export { default as TablePaginationCustom } from './table/table-pagination-custom'
 export { default as TableTitleBox } from './table/title-box'
+export { default as ColorizedStatusTextBox } from './table/colorized-status-text-box'
 // @table-tool
 export { default as LinkTableCell } from './table-tool/link-table-cell'
 export { default as LinkWrap } from './table-tool/link-wrap'
