@@ -83,7 +83,13 @@ const UsersListSection = ({ isArchived }) => {
   }
  }, [securityUsers, initial])
 
- const { filterName, handleFilterName, filteredData, filterStatus, handleFilterStatus } = useFilter(getComparator(order, orderBy), tableData, initial, ChangeUserPage, setUserFilterBy)
+ const { filterName, handleFilterName, filteredData, filterStatus, filterRole, handleFilterStatus, handleFilterRole } = useFilter(
+  getComparator(order, orderBy),
+  tableData,
+  initial,
+  ChangeUserPage,
+  setUserFilterBy
+ )
 
  const handleChangePage = (event, newPage) => {
   dispatch(ChangeUserPage(newPage))
@@ -166,7 +172,10 @@ const UsersListSection = ({ isArchived }) => {
          columnFilterButtonData={HEADER_ITEMS}
          currentFilterStatus={filterStatus}
          handleFilterStatus={handleFilterStatus}
+         currentFilterRole={filterRole}
+         handleFilterRole={handleFilterRole}
          showFilterStatus
+         showFilterRole
         />
         <TableContainer>
          <Table>
