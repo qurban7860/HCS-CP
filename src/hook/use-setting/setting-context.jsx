@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types'
-import { createContext, useEffect, useContext, useMemo, useCallback } from 'react'
+import { createContext, useContext, useMemo, useCallback } from 'react'
 import { useLocalStorage } from 'hook'
 import { themePreset } from 'theme'
 import { localStorageSpace } from 'util'
-import { defaultPreset, getPreset, presetsOption } from 'theme/preset'
 import { KEY } from 'constant'
 
 const initialState = {
