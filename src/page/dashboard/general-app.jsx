@@ -63,7 +63,7 @@ function GeneralAppPage() {
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
-   if (customerId && !contacts.length) {
+   if (customerId && !contacts?.length) {
     dispatch(getContacts(customerId))
    }
   }, 300)
