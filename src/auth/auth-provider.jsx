@@ -47,7 +47,8 @@ export function AuthProvider({ children }) {
      isSettingAccessAllowed,
      isSecurityUserAccessAllowed,
      isEmailAccessAllowed,
-     isDeveloper
+     isDeveloper,
+     isCustomerAdmin
     } = getUserAccess()
 
     dispatch({
@@ -66,7 +67,8 @@ export function AuthProvider({ children }) {
       isSettingAccessAllowed,
       isSecurityUserAccessAllowed,
       isEmailAccessAllowed,
-      isDeveloper
+      isDeveloper,
+      isCustomerAdmin
      }
     })
    } else {
@@ -85,7 +87,8 @@ export function AuthProvider({ children }) {
       isSettingAccessAllowed: false,
       isSecurityUserAccessAllowed: false,
       isEmailAccessAllowed: false,
-      isDeveloper: false
+      isDeveloper: false,
+      isCustomerAdmin: false
      }
     })
    }
@@ -106,7 +109,8 @@ export function AuthProvider({ children }) {
      isSettingAccessAllowed: false,
      isSecurityUserAccessAllowed: false,
      isEmailAccessAllowed: false,
-     isDeveloper: false
+     isDeveloper: false,
+     isCustomerAdmin: false
     }
    })
   }
@@ -171,7 +175,8 @@ export function AuthProvider({ children }) {
     isSettingAccessAllowed,
     isSecurityUserAccessAllowed,
     isEmailAccessAllowed,
-    isDeveloper
+    isDeveloper,
+    isCustomerAdmin
    } = getUserAccess(user?.roles, user?.dataAccessibilityLevel)
 
    const rolesArray = JSON.stringify(user.roles)
@@ -202,7 +207,8 @@ export function AuthProvider({ children }) {
      isSettingAccessAllowed,
      isSecurityUserAccessAllowed,
      isEmailAccessAllowed,
-     isDeveloper
+     isDeveloper,
+     isCustomerAdmin
     }
    })
    await getConfigs()
@@ -229,7 +235,8 @@ export function AuthProvider({ children }) {
    isSettingAccessAllowed,
    isSecurityUserAccessAllowed,
    isEmailAccessAllowed,
-   isDeveloper
+   isDeveloper,
+   isCustomerAdmin
   } = getUserAccess(user?.roles, user?.dataAccessibilityLevel)
 
   const rolesArray = JSON.stringify(user.roles)
@@ -256,7 +263,8 @@ export function AuthProvider({ children }) {
     isSettingAccessAllowed,
     isSecurityUserAccessAllowed,
     isEmailAccessAllowed,
-    isDeveloper
+    isDeveloper,
+    isCustomerAdmin
    }
   })
   await getConfigs()
@@ -314,6 +322,7 @@ export function AuthProvider({ children }) {
    isSecurityUserAccessAllowed: state.isSecurityUserAccessAllowed,
    isEmailAccessAllowed: state.isEmailAccessAllowed,
    isDeveloper: state.isDeveloper,
+   isCustomerAdmin: state.isCustomerAdmin,
    method: LOCAL_STORAGE_KEY.JWT,
    login,
    register,
@@ -335,6 +344,7 @@ export function AuthProvider({ children }) {
    state.isSecurityUserAccessAllowed,
    state.isEmailAccessAllowed,
    state.isDeveloper,
+   state.isCustomerAdmin,
    state.user,
    state.userId,
    state.userRoles,
