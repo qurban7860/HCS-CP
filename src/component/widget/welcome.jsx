@@ -1,19 +1,22 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { t } from 'i18next'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { useAuthContext } from 'auth/use-auth-context'
+import { useWebSocketContext } from 'auth/websocket-provider'
 import { useSettingContext, Icon, ICON_NAME, useResponsive } from 'hook'
 import { useTheme, useMediaQuery, Stack, Box, Grid, Card, Typography } from '@mui/material'
 import { SkeletonViewFormField } from 'component'
-import { GStyledWelcomeContainerDiv, GStyledWelcomeDescription, GStyledSpanBox, GStyledTopBorderDivider, GCardOption } from 'theme/style'
+import { GStyledWelcomeContainerDiv, GStyledWelcomeDescription, GStyledSpanBox, GStyledTopBorderDivider, GCardOption, GStyledMiniChip, GStyledNoPaddingFieldChip } from 'theme/style'
 import { KEY, TYPOGRAPHY } from 'constant'
 import { ASSET } from 'config'
 import { isCustomerAdmin } from 'util'
 
 function Welcome({ action, img, customer, isCustomerLoading, ...other }) {
+ const { onlineUsers } = useWebSocketContext()
+ const [customerOnlineUserIds, setCustomerOnlineUserIds] = useState(onlineUsers)
  const { customerMachines, isLoading } = useSelector(state => state.machine)
- const { securityUserTotalCount } = useSelector(state => state.user)
+ const { securityUsers, securityUserTotalCount } = useSelector(state => state.user)
  const { user } = useAuthContext()
  const { themeMode } = useSettingContext()
  const theme = useTheme()
@@ -22,6 +25,14 @@ function Welcome({ action, img, customer, isCustomerLoading, ...other }) {
  const isMobile = useResponsive('down', 'sm')
 
  const portalSyncedMachines = customerMachines?.filter(machine => machine?.portalKey)
+ //  const customerOnlineUserIds = securityUsers?.filter(({ _id }) => Array.isArray(onlineUsers) && onlineUsers.includes(_id))?.map(({ _id }) => _id)
+
+ useEffect(() => {
+  if (Array.isArray(onlineUsers)) {
+   const onlineUserIds = securityUsers?.filter(({ _id }) => onlineUsers.includes(_id))?.map(({ _id }) => _id)
+   setCustomerOnlineUserIds(onlineUserIds)
+  }
+ }, [onlineUsers, securityUsers])
 
  return (
   <GStyledWelcomeContainerDiv {...other}>
@@ -110,6 +121,7 @@ function Welcome({ action, img, customer, isCustomerLoading, ...other }) {
              <Typography variant={isDesktop ? TYPOGRAPHY.BODY1 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
               {securityUserTotalCount}
              </Typography>
+             <GStyledNoPaddingFieldChip roleClr={theme.palette.burnIn.altDark} label={customerOnlineUserIds?.length ? customerOnlineUserIds.length : 0} />
             </Fragment>
            )}
           </GStyledSpanBox>
