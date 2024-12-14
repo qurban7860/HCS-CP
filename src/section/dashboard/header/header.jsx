@@ -10,19 +10,15 @@ import { KEY } from 'constant'
 import ModeOption from './mode-option'
 import AccountPopover from './account-popover'
 import NotificationPopover from './notification-popover'
-// import { useWebSocketContext } from 'auth/websocket-provider'
 
 function Header() {
  const theme = useTheme()
  const navConfig = NavConfiguration()
  const { themeLayout, themeMode } = useSettingContext()
+
  const isNavHorizontal = themeLayout === 'horizontal'
  const isDesktop = useResponsive('up', 'lg')
  const isOffset = useOffSetTop(HEADER.H_DASHBOARD_DESKTOP) && !isNavHorizontal
-
- //  const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
- //  const aucklandTimeZone = TIMEZONE.AUCKLAND.timeZone
-
  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
  const [clockAnchor, setClockAnchor] = useState(null)
 
