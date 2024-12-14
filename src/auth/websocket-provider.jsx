@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useEffect, useState } from 'react'
+import { createContext, useContext, useMemo, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import useWebSocket from 'react-use-websocket'
 import { useAuthContext } from './use-auth-context'
@@ -7,15 +7,11 @@ import { RESPONSE, KEY, WEBSOCKET_EVENT } from 'constant'
 
 const WebSocketContext = createContext()
 
-export function useWebSocketContext() {
+export const useWebSocketContext = () => {
  return useContext(WebSocketContext)
 }
 
-WebSocketProvider.propTypes = {
- children: PropTypes.node
-}
-
-export function WebSocketProvider({ children }) {
+export const WebSocketProvider = ({ children }) => {
  const [token, setToken] = useState(null)
  const [onlineUsers, setOnlineUsers] = useState(0)
  const [notifications, setNotifications] = useState(null)
@@ -24,17 +20,20 @@ export function WebSocketProvider({ children }) {
  const WS_URL = token ? `${GLOBAL.SOCKET_URL}/?accessToken=${token}` : null
 
  const { sendMessage, sendJsonMessage, lastMessage, lastJsonMessage, readyState } = useWebSocket(WS_URL, {
-  onMessage: event => {
-   if (event.data instanceof Blob) {
-    getJsonFromBlob(event.data)
-     .then(json => {
-      handleWebSocketMessage(json)
-     })
-     .catch(error => {
-      console.error(RESPONSE.error.PARSING_JSON(error))
-     })
-   } else {
-    console.error(RESPONSE.error.PARSING_WEBSOCKET(event.data))
+  onMessage: async event => {
+   try {
+    let parsedData
+    if (event.data instanceof Blob) {
+     parsedData = await getJsonFromBlob(event.data)
+    } else if (typeof event.data === 'string') {
+     parsedData = JSON.parse(event.data)
+    } else {
+     parsedData = event.data
+    }
+    handleWebSocketMessage(parsedData)
+   } catch (error) {
+    console.error('Message parsing error:', error)
+    console.log('Original event data:', event.data)
    }
   },
   share: true,
@@ -45,7 +44,7 @@ export function WebSocketProvider({ children }) {
 
  const handleWebSocketMessage = json => {
   if (json.eventName === WEBSOCKET_EVENT.NEW_USER_LOGIN || json.eventName === WEBSOCKET_EVENT.NEW_NOTIFICATION) {
-   sendJsonMessage({ eventName: WEBSOCKET_EVENT.GET_NOTIFICATIONS })
+   sendJsonMessage({ eventName: WEBSOCKET_EVENT.GET_ONLINE_USERS })
   }
 
   if (json.eventName === WEBSOCKET_EVENT.LOGOUT) {
@@ -66,7 +65,11 @@ export function WebSocketProvider({ children }) {
   }
 
   if (json.eventName === WEBSOCKET_EVENT.USER_LOGGED_OUT) {
-   sendJsonMessage({ eventName: WEBSOCKET_EVENT.GET_ONLINE_USERS })
+   if (json?.userIds && json.userIds.length > 0) {
+    setOnlineUsers(json.userIds)
+   } else {
+    console.warn('Received invalid or empty userIds on USER_LOGGED_OUT')
+   }
   }
  }
 
@@ -113,4 +116,8 @@ export function WebSocketProvider({ children }) {
  )
 
  return <WebSocketContext.Provider value={contextValue}>{children}</WebSocketContext.Provider>
+}
+
+WebSocketProvider.propTypes = {
+ children: PropTypes.node
 }
