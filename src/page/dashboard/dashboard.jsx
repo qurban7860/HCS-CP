@@ -1,14 +1,16 @@
-import { memo, useEffect, useLayoutEffect, useState } from 'react'
+import { memo, useEffect, useLayoutEffect, useState, useRef } from 'react'
 import { useAuthContext } from 'auth/use-auth-context'
 import { t } from 'i18next'
 import _ from 'lodash'
 import debounce from 'lodash/debounce'
 import { dispatch, useSelector } from 'store'
+import { useWebSocketContext } from 'auth/websocket-provider'
 import { useResponsive } from 'hook'
 import {
  getContacts,
  getCustomerTickets,
  getSecurityUsers,
+ getOnlineUsers,
  getCustomerMachines,
  setMachineDialog,
  setMachineSiteDialog,
@@ -30,7 +32,7 @@ import { GLOBAL } from 'config'
 import { FLEX } from 'constant'
 import { toTitleCase } from 'util'
 
-function GeneralAppPage() {
+function Dashboard() {
  const { customer, isLoading, customerTickets, contacts, securityUsers, customerMachines } = useSelector(
   state => ({
    customer: state.customer.customer,
@@ -42,6 +44,7 @@ function GeneralAppPage() {
   _.isEqual
  )
  const { user } = useAuthContext()
+ const { onlineUsers } = useWebSocketContext()
  const customerId = user?.customer
  const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
 
@@ -50,6 +53,16 @@ function GeneralAppPage() {
 
  const [rateSelectedMachine, setRateSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
  const [totalSelectedMachine, setTotalSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
+
+ const prevOnlineUsersRef = useRef(onlineUsers)
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   dispatch(getOnlineUsers())
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [dispatch])
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
@@ -136,4 +149,4 @@ function GeneralAppPage() {
  )
 }
 
-export default memo(GeneralAppPage)
+export default memo(Dashboard)
