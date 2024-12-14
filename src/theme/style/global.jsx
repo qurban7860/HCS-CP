@@ -755,7 +755,7 @@ export const ButtonProps = {
  * @table :components ____________________________________________________________________________________________
  */
 
-// @root - GeneralAppPage - dashboard
+// @root - DashboardPage - dashboard
 export const GGStyledContainerSvg = styled(({ themeMode, ...other }) => <SvgColor icon={ASSET.BG_LOGO} {...other} />)(({ theme, themeMode }) => {
  return {
   color: themeMode === KEY.LIGHT ? theme.palette.success.main : theme.palette.common.white

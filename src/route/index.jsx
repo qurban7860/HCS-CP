@@ -20,7 +20,7 @@ import {
  // home:
  HomePage,
  // dashboard: general
- GeneralAppPage,
+ DashboardPage,
  // security:
  UserListPage,
  UserProfilePage,
@@ -105,7 +105,7 @@ export default function Router() {
      ),
      children: [
       { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
-      { path: 'app', element: <GeneralAppPage /> },
+      { path: 'app', element: <DashboardPage /> },
       { path: 'permission-denied', element: <FallbackPage {...FALLBACK.FORBIDDEN} /> },
       { path: 'blank', element: <BlankPage /> }
      ]
