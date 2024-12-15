@@ -519,6 +519,12 @@ export const GStyledNoPaddingFieldChip = styled(({ theme, ...other }) => <Chip {
  backgroundColor: roleColr
 }))
 
+export const GStyledNoPaddingChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, bgColor }) => ({
+ borderRadius: theme.spacing(0.2),
+ padding: theme.spacing(0),
+ backgroundColor: bgColor
+}))
+
 export const GStyledFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
  margin: theme.spacing(0.2),
  borderRadius: theme.spacing(0.4),
