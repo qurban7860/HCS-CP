@@ -1,4 +1,4 @@
-import { memo, useEffect, useLayoutEffect, useState, useRef } from 'react'
+import { memo, useEffect, useLayoutEffect, useState } from 'react'
 import { useAuthContext } from 'auth/use-auth-context'
 import { t } from 'i18next'
 import _ from 'lodash'
@@ -45,6 +45,7 @@ function Dashboard() {
  )
  const { user } = useAuthContext()
  const { onlineUsers } = useWebSocketContext()
+ const [customerOnlineUserIds, setCustomerOnlineUserIds] = useState(onlineUsers)
  const customerId = user?.customer
  const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
 
@@ -53,8 +54,6 @@ function Dashboard() {
 
  const [rateSelectedMachine, setRateSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
  const [totalSelectedMachine, setTotalSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
-
- const prevOnlineUsersRef = useRef(onlineUsers)
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
@@ -106,6 +105,16 @@ function Dashboard() {
   }
  }, [dispatch, customer?.ref, customerTickets])
 
+ useEffect(() => {
+  if (Array.isArray(onlineUsers) && Array.isArray(securityUsers)) {
+   const onlineUserIds = securityUsers.filter(user => onlineUsers.includes(user._id)).map(user => user._id)
+   setCustomerOnlineUserIds(prevIds => {
+    const isEqual = prevIds.length === onlineUserIds.length && prevIds.every((id, index) => id === onlineUserIds[index])
+    return isEqual ? prevIds : onlineUserIds
+   })
+  }
+ }, [onlineUsers, securityUsers])
+
  useLayoutEffect(() => {
   dispatch(setMachineDialog(false))
   dispatch(setMachineSiteDialog(false))
@@ -123,7 +132,7 @@ function Dashboard() {
   <Grid container>
    <Grid container spacing={3} mt={isMobile ? 0 : 2}>
     <Grid item xs={12}>
-     <Welcome customer={customer} isCustomerLoading={isLoading} title={toTitleCase(GLOBAL.APP_TAGLINE)} description={t('app_customer_tagline')} />
+     <Welcome customer={customer} isCustomerLoading={isLoading} title={toTitleCase(GLOBAL.APP_TAGLINE)} description={t('app_customer_tagline')} customerOnlineUserIds={customerOnlineUserIds} />
     </Grid>
     <Grid item xs={12}>
      <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>

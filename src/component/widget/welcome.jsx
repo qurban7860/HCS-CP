@@ -1,22 +1,19 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment } from 'react'
 import { t } from 'i18next'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { useAuthContext } from 'auth/use-auth-context'
-import { useWebSocketContext } from 'auth/websocket-provider'
 import { useSettingContext, Icon, ICON_NAME, useResponsive } from 'hook'
 import { useTheme, useMediaQuery, Stack, Box, Grid, Card, Typography } from '@mui/material'
 import { SkeletonViewFormField } from 'component'
-import { GStyledWelcomeContainerDiv, GStyledWelcomeDescription, GStyledSpanBox, GStyledTopBorderDivider, GCardOption, GStyledMiniChip, GStyledNoPaddingFieldChip } from 'theme/style'
+import { GStyledWelcomeContainerDiv, GStyledWelcomeDescription, GStyledSpanBox, GStyledTopBorderDivider, GCardOption, GStyledNoPaddingChip } from 'theme/style'
 import { KEY, TYPOGRAPHY } from 'constant'
 import { ASSET } from 'config'
 import { isCustomerAdmin } from 'util'
 
-function Welcome({ action, img, customer, isCustomerLoading, ...other }) {
- const { onlineUsers } = useWebSocketContext()
- const [customerOnlineUserIds, setCustomerOnlineUserIds] = useState(onlineUsers)
+function Welcome({ action, img, customer, isCustomerLoading, customerOnlineUserIds, ...other }) {
  const { customerMachines, isLoading } = useSelector(state => state.machine)
- const { securityUsers, securityUserTotalCount } = useSelector(state => state.user)
+ const { securityUserTotalCount } = useSelector(state => state.user)
  const { user } = useAuthContext()
  const { themeMode } = useSettingContext()
  const theme = useTheme()
@@ -25,14 +22,6 @@ function Welcome({ action, img, customer, isCustomerLoading, ...other }) {
  const isMobile = useResponsive('down', 'sm')
 
  const portalSyncedMachines = customerMachines?.filter(machine => machine?.portalKey)
- //  const customerOnlineUserIds = securityUsers?.filter(({ _id }) => Array.isArray(onlineUsers) && onlineUsers.includes(_id))?.map(({ _id }) => _id)
-
- useEffect(() => {
-  if (Array.isArray(onlineUsers)) {
-   const onlineUserIds = securityUsers?.filter(({ _id }) => onlineUsers.includes(_id))?.map(({ _id }) => _id)
-   setCustomerOnlineUserIds(onlineUserIds)
-  }
- }, [onlineUsers, securityUsers])
 
  return (
   <GStyledWelcomeContainerDiv {...other}>
@@ -121,7 +110,11 @@ function Welcome({ action, img, customer, isCustomerLoading, ...other }) {
              <Typography variant={isDesktop ? TYPOGRAPHY.BODY1 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
               {securityUserTotalCount}
              </Typography>
-             <GStyledNoPaddingFieldChip roleClr={theme.palette.burnIn.altDark} label={customerOnlineUserIds?.length ? customerOnlineUserIds.length : 0} />
+             <GStyledNoPaddingChip
+              bgColor={theme.palette.burnIn.altDark}
+              label={<Typography variant={TYPOGRAPHY.H6}>{customerOnlineUserIds?.length ? `${customerOnlineUserIds.length} Online` : '1 Online'}</Typography>}
+              size={'small'}
+             />
             </Fragment>
            )}
           </GStyledSpanBox>
@@ -143,7 +136,8 @@ Welcome.propTypes = {
  isCustomerLoading: PropTypes.bool,
  title: PropTypes.string,
  description: PropTypes.string,
- customer: PropTypes.object
+ customer: PropTypes.object,
+ customerOnlineUserIds: PropTypes.any
 }
 
 export default Welcome
