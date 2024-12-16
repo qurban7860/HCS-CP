@@ -117,23 +117,19 @@ export default function useFilter(comparator, params, initial, ChangePage, setFi
  // useMemo is used to memoize the filteredData, so it will not be re-rendered if the data is not changed
  const filteredData = useMemo(() => {
   let filterVal = inputData
-
   if (filterVal) {
    filterVal = filterVal.filter(item => filterFunction(item, filterName, filterProperties))
-
    if (filterStatus === 'active') {
     filterVal = filterVal.filter(obj => obj.isActive === true)
    } else if (filterStatus === 'inActive') {
     filterVal = filterVal.filter(obj => obj.isActive === false)
    }
-
    if (filterRole === KEY.CUSTOMER_ADMIN) {
     filterVal = filterVal.filter(item => item.roles.some(obj => obj.name === KEY.CUSTOMER_ADMIN))
    } else if (filterRole === KEY.CUSTOMER_USER) {
     filterVal = filterVal.filter(item => item.roles.some(obj => obj.name === KEY.CUSTOMER_USER))
    }
   }
-
   return filterVal
  }, [inputData, filterRole, filterName, filterFunction, filterStatus])
 
