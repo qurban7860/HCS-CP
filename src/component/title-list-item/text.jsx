@@ -3,12 +3,32 @@ import { useMediaQuery, useTheme, Box, ListItemText, Typography } from '@mui/mat
 import { useSettingContext } from 'hook'
 import { truncate } from 'util/truncate'
 import { TYPOGRAPHY, KEY } from 'constant'
+import { roleCoverUp } from 'util'
 
-const TitleListItemText = ({ truncatedName, tradingAliases }) => {
+const TitleListItemText = ({ truncatedName, tradingAliases, roles }) => {
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
+ const renderArr = arr => {
+  switch (arr) {
+   case 'roles':
+    return roles?.slice(0, 3)?.map((item, index) => (
+     <Typography key={index} color={theme.palette.grey[500]} variant={isDesktop ? TYPOGRAPHY.OVERLINE1 : TYPOGRAPHY.OVERLINE_MINI} mx={0.5}>
+      {roleCoverUp(item)}
+     </Typography>
+    ))
+   case 'tradingAliases':
+    return tradingAliases?.slice(0, 3)?.map((item, index) => (
+     <Typography key={index} color={theme.palette.grey[500]} variant={isDesktop ? TYPOGRAPHY.OVERLINE1 : TYPOGRAPHY.OVERLINE_MINI} mx={0.5}>
+      {item}
+     </Typography>
+    ))
+   default:
+    return null
+  }
+ }
 
  return (
   <ListItemText
@@ -24,12 +44,7 @@ const TitleListItemText = ({ truncatedName, tradingAliases }) => {
       flexWrap: 'wrap',
       overflow: 'auto'
      }}>
-     {tradingAliases &&
-      tradingAliases?.slice(0, 3)?.map((item, index) => (
-       <Typography key={index} color={theme.palette.grey[500]} variant={isDesktop ? TYPOGRAPHY.OVERLINE1 : TYPOGRAPHY.OVERLINE_MINI} mx={0.5}>
-        {item}
-       </Typography>
-      ))}
+     {tradingAliases ? renderArr('tradingAliases') : roles ? renderArr('roles') : null}
     </Box>
    }
   />
@@ -38,7 +53,8 @@ const TitleListItemText = ({ truncatedName, tradingAliases }) => {
 
 TitleListItemText.propTypes = {
  truncatedName: PropTypes.string.isRequired,
- tradingAliases: PropTypes.oneOfType([PropTypes.array, PropTypes.string])
+ tradingAliases: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
+ roles: PropTypes.oneOfType([PropTypes.array, PropTypes.string])
 }
 
 export default TitleListItemText
