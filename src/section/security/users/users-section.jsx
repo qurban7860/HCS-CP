@@ -11,18 +11,19 @@ import { PATH_MACHINE, PATH_SECURITY } from 'route/path'
 import {
  getSecurityUser,
  getSecurityUsers,
+ getOnlineUsers,
+ setUserDialog,
  setUserFilterBy,
  setSelectedUserCard,
  ChangeUserPage,
  ChangeUserRowsPerPage,
  resetSecurityUser,
  resetSecurityUsers,
- resetSelectedContactCard,
- getOnlineUsers
+ resetSelectedContactCard
 } from 'store/slice'
 import { Table, Grid, Typography, TableContainer } from '@mui/material'
 import { GStyledTableHeaderBox } from 'theme/style'
-import { TableNoData, SkeletonTable, SearchBox, TableTitleBox } from 'component'
+import { TableNoData, SkeletonTable, SearchBox, TableTitleBox, UserDialog } from 'component'
 import { UsersTable, UsersHeader, UsersListPagination, UsersCard, HEADER_ITEMS } from 'section/security'
 import { MARGIN, TABLE } from 'config'
 import { KEY, FLEX_DIR, TYPOGRAPHY, FLEX } from 'constant'
@@ -30,11 +31,9 @@ import { KEY, FLEX_DIR, TYPOGRAPHY, FLEX } from 'constant'
 const UsersListSection = ({ isArchived }) => {
  const [tableData, setTableData] = useState([])
  const { onlineUsers } = useWebSocketContext()
- const { securityUsers, selectedUserCard, initial, isLoading, userPage, userRowsPerPage } = useSelector(state => state.user)
- const { securityUser } = useSelector(state => state.user)
+ const { securityUser, securityUsers, selectedUserCard, initial, isLoading, userPage, userRowsPerPage } = useSelector(state => state.user)
  const { user, userId } = useAuthContext()
  const { themeMode } = useSettingContext()
- //   const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, getLogTypeConfigForGenerationAndType(5, 'ERP').tableColumns)
 
  const isMobile = useResponsive('down', 'sm')
  const navigate = useNavigate()
@@ -47,7 +46,7 @@ const UsersListSection = ({ isArchived }) => {
   onSort,
   setPage: setTablePage
  } = useTable({
-  defaultOrderBy: KEY.CREATED_AT,
+  defaultOrderBy: 'isOnline',
   defaultOrder: KEY.DESC
  })
 
@@ -92,7 +91,8 @@ const UsersListSection = ({ isArchived }) => {
   tableData,
   initial,
   ChangeUserPage,
-  setUserFilterBy
+  setUserFilterBy,
+  'isOnline'
  )
 
  const handleChangePage = (event, newPage) => {
@@ -116,6 +116,12 @@ const UsersListSection = ({ isArchived }) => {
   dispatch(getSecurityUser(id))
   const url = PATH_SECURITY.users.view(id)
   navigate(url)
+ }
+
+ const handleUserDialog = (event, userId) => {
+  event.preventDefault()
+  dispatch(getSecurityUser(userId))
+  dispatch(setUserDialog(true))
  }
 
  const handleMachineInNewTabCard = (event, id) => {
@@ -163,7 +169,7 @@ const UsersListSection = ({ isArchived }) => {
              user={user}
              selectedCardId={selectedUserCard || index}
              handleSelected={handleSelectedCard}
-             handleUserCard={handleUserCard}
+             handleUserCard={handleUserDialog}
              handleMachineInNewTabCard={handleMachineInNewTabCard}
             />
            ))
@@ -212,6 +218,7 @@ const UsersListSection = ({ isArchived }) => {
               row={row}
               columns={HEADER_ITEMS}
               onViewRow={() => {}}
+              handleNameOnClick={handleUserDialog}
               mode={themeMode}
               index={index}
               isArchived={isArchived}
@@ -233,6 +240,7 @@ const UsersListSection = ({ isArchived }) => {
      </Grid>
     </Grid>
    )}
+   <UserDialog />
   </Fragment>
  )
 }

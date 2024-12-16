@@ -1,9 +1,7 @@
 import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
 import { ICON_NAME, Icon, useSettingContext } from 'hook'
-import { PATH_MACHINE } from 'route/path'
 import { Box, TableBody, TableCell } from '@mui/material'
 import { ChipsGrid, CustomAvatar, LinkWrap, BadgeStatus } from 'component'
 import { useTheme } from '@mui/material/styles'
@@ -11,10 +9,9 @@ import { GStyledSpanBox } from 'theme/style'
 import { KEY, TYPOGRAPHY } from 'constant'
 import { StyledIconListItemText, StyledTableRow } from './style'
 
-const UsersTable = ({ columns, onViewRow, row, index, selected }) => {
+const UsersTable = ({ columns, onViewRow, row, index, selected, handleNameOnClick }) => {
  const { themeMode } = useSettingContext()
  const theme = useTheme()
- const navigate = useNavigate()
  const lowercaseRow = {}
  const { name, ...restOfRow } = row
  const activeColor = themeMode === KEY.DARK ? theme.palette.howick.burnIn : theme.palette.burnIn.altDark
@@ -23,15 +20,6 @@ const UsersTable = ({ columns, onViewRow, row, index, selected }) => {
  Object.entries(row).forEach(([key, value]) => {
   if (typeof key === 'string') lowercaseRow[key.toLocaleLowerCase()] = value
  })
-
- const handleOnClick = id => {
-  navigate(PATH_MACHINE.machines.view(id))
- }
-
- const openInNewPage = id => {
-  const url = PATH_MACHINE.machines.view(id)
-  window.open(url, '_blank')
- }
 
  return (
   <Fragment>
@@ -63,10 +51,9 @@ const UsersTable = ({ columns, onViewRow, row, index, selected }) => {
           </Box>
           <LinkWrap
            param={name}
-           onClick={() => {
-            handleOnClick(row?._id)
+           onClick={e => {
+            handleNameOnClick(e, row?._id)
            }}
-           openInNewTab={() => openInNewPage(row?._id)}
           />
          </GStyledSpanBox>
         ) : column.id === 'role' ? (
@@ -94,6 +81,7 @@ UsersTable.propTypes = {
  isArchived: PropTypes.bool,
  selected: PropTypes.bool,
  onViewRow: PropTypes.func,
+ handleNameOnClick: PropTypes.func,
  columns: PropTypes.array
 }
 

@@ -1,14 +1,13 @@
 import { memo } from 'react'
 import PropTypes from 'prop-types'
-import { Trans } from 'react-i18next'
 import { useSettingContext, ICON_NAME, useUIMorph } from 'hook'
 import { Box, Grid, Typography, Link } from '@mui/material'
-import { IconTooltip, ChipsGrid } from 'component'
+import { IconTooltip, ChipsGrid, CustomAvatar, BadgeStatus } from 'component'
 import { useTheme } from '@mui/material/styles'
-import { GStyledListItemText, GStyledSpanBox, GStyledCard, GStyledFieldChip } from 'theme/style'
-import { LABEL, TYPOGRAPHY, KEY, FLEX, SIZE } from 'constant'
+import { GStyledListItemText, GStyledSpanBox, GStyledCard } from 'theme/style'
+import { LABEL, TYPOGRAPHY, KEY, FLEX } from 'constant'
 
-const UsersCard = ({ selectedCardId, handleSelected, handleUserCard, handleUserInNewTabCard, user }) => {
+const UsersCard = ({ selectedCardId, handleSelected, handleUserCard, user }) => {
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  const { isDesktop } = useUIMorph()
@@ -21,6 +20,17 @@ const UsersCard = ({ selectedCardId, handleSelected, handleUserCard, handleUserI
       primary={
        user && (
         <GStyledSpanBox>
+         <Box mr={1}>
+          <CustomAvatar
+           inTableList
+           BadgeProps={{
+            badgeContent: <BadgeStatus status={user?.isOnline ? 'online' : 'offline'} />
+           }}
+           typography={TYPOGRAPHY.H6}
+           alt={'display name'}
+           name={user?.name}
+          />
+         </Box>
          <Link
           variant={isDesktop ? TYPOGRAPHY.H4 : TYPOGRAPHY.H6}
           onClick={event => handleUserCard(event, user._id)}
