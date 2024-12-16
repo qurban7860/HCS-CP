@@ -21,6 +21,7 @@ const initialState = {
  userDisplayName: null,
  userInviteDialog: false,
  userInviteConfirmDetails: null,
+ userDialog: false,
  securityUserTotalCount: 0,
  assignedUsers: [],
  signInLogs: [],
@@ -78,6 +79,9 @@ const userSlice = createSlice({
   },
   setUserFilterStatus(state, action) {
    state.userFilterStatus = action.payload
+  },
+  setUserDialog(state, action) {
+   state.userDialog = action.payload
   },
   getSecurityUserSuccess(state, action) {
    state.isLoading = false
@@ -173,6 +177,7 @@ export const {
  setUserInviteDialog,
  setUserInviteConfirmDetails,
  setSelectedUserCard,
+ setUserDialog,
  setUserFilterStatus,
  getSignInLogsSuccess,
  resetLoadingResetPasswordEmail,
