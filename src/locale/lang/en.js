@@ -359,6 +359,9 @@ const en = {
  old_password: {
   label: `Old Password`
  },
+ online: {
+  label: `Online`
+ },
  organization: {
   local: `organization`,
   label: `Organization`
@@ -376,6 +379,9 @@ const en = {
  },
  organization_name: {
   label: `Organization name`
+ },
+ phone: {
+  label: `Phone`
  },
  portal_synced: {
   label: `Portal Synced`
