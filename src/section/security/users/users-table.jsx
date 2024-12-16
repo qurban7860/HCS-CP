@@ -4,10 +4,11 @@ import { m } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ICON_NAME, Icon, useSettingContext } from 'hook'
 import { PATH_MACHINE } from 'route/path'
-import { TableBody, TableCell } from '@mui/material'
-import { ChipsGrid, LinkWrap } from 'component'
+import { Box, TableBody, TableCell } from '@mui/material'
+import { ChipsGrid, CustomAvatar, LinkWrap, BadgeStatus } from 'component'
 import { useTheme } from '@mui/material/styles'
-import { KEY } from 'constant'
+import { GStyledSpanBox } from 'theme/style'
+import { KEY, TYPOGRAPHY } from 'constant'
 import { StyledIconListItemText, StyledTableRow } from './style'
 
 const UsersTable = ({ columns, onViewRow, row, index, selected }) => {
@@ -48,13 +49,26 @@ const UsersTable = ({ columns, onViewRow, row, index, selected }) => {
         }}
         align={column?.numerical ? 'right' : 'left'}>
         {column.id === 'name' ? (
-         <LinkWrap
-          param={name}
-          onClick={() => {
-           handleOnClick(row?._id)
-          }}
-          openInNewTab={() => openInNewPage(row?._id)}
-         />
+         <GStyledSpanBox>
+          <Box mr={1}>
+           <CustomAvatar
+            inTableList
+            BadgeProps={{
+             badgeContent: <BadgeStatus status={restOfRow?.isOnline ? 'online' : 'offline'} />
+            }}
+            typography={TYPOGRAPHY.H6}
+            alt={'display name'}
+            name={name}
+           />
+          </Box>
+          <LinkWrap
+           param={name}
+           onClick={() => {
+            handleOnClick(row?._id)
+           }}
+           openInNewTab={() => openInNewPage(row?._id)}
+          />
+         </GStyledSpanBox>
         ) : column.id === 'role' ? (
          <ChipsGrid isRole chips={restOfRow?.roles} chipKey={'name'} />
         ) : column.id === 'isActive' ? (

@@ -1,10 +1,9 @@
 import { Fragment, useEffect, useState, memo, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
-import axios from 'axios'
 import { debounce } from 'lodash'
 import { Trans } from 'react-i18next'
-import { useAuthContext } from 'auth'
+import { useAuthContext, useWebSocketContext } from 'auth'
 import { useSelector, dispatch } from 'store'
 import { useNavigate } from 'react-router-dom'
 import { useTable, useFilter, getComparator, useSettingContext, useResponsive } from 'hook'
@@ -18,7 +17,8 @@ import {
  ChangeUserRowsPerPage,
  resetSecurityUser,
  resetSecurityUsers,
- resetSelectedContactCard
+ resetSelectedContactCard,
+ getOnlineUsers
 } from 'store/slice'
 import { Table, Grid, Typography, TableContainer } from '@mui/material'
 import { GStyledTableHeaderBox } from 'theme/style'
@@ -29,6 +29,7 @@ import { KEY, FLEX_DIR, TYPOGRAPHY, FLEX } from 'constant'
 
 const UsersListSection = ({ isArchived }) => {
  const [tableData, setTableData] = useState([])
+ const { onlineUsers } = useWebSocketContext()
  const { securityUsers, selectedUserCard, initial, isLoading, userPage, userRowsPerPage } = useSelector(state => state.user)
  const { securityUser } = useSelector(state => state.user)
  const { user, userId } = useAuthContext()
@@ -50,15 +51,13 @@ const UsersListSection = ({ isArchived }) => {
   defaultOrder: KEY.DESC
  })
 
- useLayoutEffect(() => {
-  dispatch(resetSecurityUser())
-  dispatch(resetSecurityUsers())
-  dispatch(resetSelectedContactCard())
-
-  if (userId !== securityUser?._id) {
-   dispatch(resetSecurityUser())
-  }
- }, [userId])
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   dispatch(getOnlineUsers())
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [dispatch])
 
  useEffect(() => {
   if (userId !== securityUser?._id) {
@@ -81,6 +80,12 @@ const UsersListSection = ({ isArchived }) => {
    setTableData(securityUsers || [])
   }
  }, [securityUsers, initial])
+
+ useLayoutEffect(() => {
+  dispatch(resetSecurityUser())
+  dispatch(resetSecurityUsers())
+  dispatch(resetSelectedContactCard())
+ }, [userId])
 
  const { filterName, handleFilterName, filteredData, filterStatus, filterRole, handleFilterStatus, handleFilterRole } = useFilter(
   getComparator(order, orderBy),
@@ -201,7 +206,17 @@ const UsersListSection = ({ isArchived }) => {
            .slice(userPage * userRowsPerPage, userPage * userRowsPerPage + userRowsPerPage)
            .map((row, index) =>
             row ? (
-             <UsersTable key={row._id} row={row} columns={HEADER_ITEMS} onViewRow={() => {}} mode={themeMode} index={index} isArchived={isArchived} selected={selected.includes(row._id)} />
+             <UsersTable
+              key={row._id}
+              onlineUsers={onlineUsers}
+              row={row}
+              columns={HEADER_ITEMS}
+              onViewRow={() => {}}
+              mode={themeMode}
+              index={index}
+              isArchived={isArchived}
+              selected={selected.includes(row._id)}
+             />
             ) : (
              !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />
             )
