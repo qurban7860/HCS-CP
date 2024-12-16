@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
+import { fDate } from 'util'
 
 const initialState = {
  initial: false,
@@ -9,6 +10,7 @@ const initialState = {
  isLoading: false,
  error: null,
  count: {},
+ countActiveTickets: 0,
  onlineUsers: [],
  erpLogs: []
 }
@@ -31,6 +33,12 @@ const countSlice = createSlice({
    state.success = false
    state.isLoading = false
   },
+  resetCountActiveTickets(state) {
+   state.countActiveTickets = 0
+   state.responseMessage = null
+   state.success = false
+   state.isLoading = false
+  },
   getCountSuccess(state, action) {
    state.isLoading = false
    state.success = true
@@ -41,6 +49,12 @@ const countSlice = createSlice({
    state.isLoading = false
    state.success = true
    state.onlineUsers = action.payload
+   state.initial = true
+  },
+  getCountActiveTicketsSuccess(state, action) {
+   state.isLoading = false
+   state.success = true
+   state.countActiveTickets = action.payload
    state.initial = true
   },
   setCountResponseMessage(state, action) {
@@ -82,6 +96,35 @@ export function getOnlineUsers() {
   try {
    const response = await axios.get(PATH_SERVER.DASHBOARD.MACHINE_COUNTRIES)
    dispatch(countSlice.actions.getOnlineUsersSuccess())
+  } catch (error) {
+   console.log(error)
+   dispatch(countSlice.actions.hasError(error.Message))
+  }
+ }
+}
+
+export function getCountActiveTickets(ref, period) {
+ return async dispatch => {
+  dispatch(countSlice.actions.startLoading())
+  try {
+   if (!ref) {
+    // if ref is invalid, throw a better error message and return, don't make the API call
+    return
+   }
+   const params = {
+    ref,
+    startAt: 0
+   }
+
+   if (period) {
+    const startDate = new Date()
+    startDate.setMonth(startDate.getMonth() - period)
+    params.startDate = fDate(startDate, 'yyyy-MM-dd')
+   }
+
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+   console.log('response', response)
+   dispatch(countSlice.actions.getCountActiveTicketsSuccess())
   } catch (error) {
    console.log(error)
    dispatch(countSlice.actions.hasError(error.Message))
