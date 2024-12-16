@@ -36,6 +36,7 @@ export default function useUserDefaultValues(user, customer) {
    customers: user?.customers || [],
    machines: user?.machines || [],
    isActive: user?.isActive,
+   isOnline: user?.isOnline,
    username: user?.username || '',
    multiFactorAuthentication: user?.multiFactorAuthentication,
    currentEmployee: user?.currentEmployee,
