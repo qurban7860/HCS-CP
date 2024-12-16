@@ -112,7 +112,12 @@ function Welcome({ action, img, customer, isCustomerLoading, customerOnlineUserI
              </Typography>
              <GStyledNoPaddingChip
               bgColor={theme.palette.burnIn.altDark}
-              label={<Typography variant={TYPOGRAPHY.H6}>{customerOnlineUserIds?.length ? `${customerOnlineUserIds.length} Online` : '1 Online'}</Typography>}
+              label={
+               <GStyledSpanBox>
+                {/* <Icon icon={ICON_NAME.ONLINE} sx={{ height: 10, width: 10 }} color={theme.palette.common.white} /> */}
+                <Typography variant={TYPOGRAPHY.H6}>{customerOnlineUserIds?.length ? `${customerOnlineUserIds.length} Online` : '1 Online'}</Typography>
+               </GStyledSpanBox>
+              }
               size={'small'}
              />
             </Fragment>
