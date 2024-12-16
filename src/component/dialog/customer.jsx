@@ -10,13 +10,12 @@ import { HowickResources } from 'section/common'
 import { Dialog, DialogContent, DialogTitle, DialogActions, Divider, Grid } from '@mui/material'
 import { GridViewField, GridViewTitle, Button, BadgeCardMedia, TitleListItemText, AuditBox } from 'component'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption } from 'theme/style'
-import { VIEW_FORM, TITLE, KEY, BUTTON, FLEX, SZ } from 'constant'
+import { KEY, BUTTON, FLEX, SZ } from 'constant'
 
 const CustomerDialog = () => {
  const navigate = useNavigate()
  const { themeMode } = useSettingContext()
  const { customer, isLoading, customerDialog } = useSelector(state => state.customer)
- const { CUSTOMER, SITE, ADDRESS } = VIEW_FORM
  const defaultValues = useCustomerDefaultValues(customer, null)
 
  const handleCustomerDialog = () => dispatch(setCustomerDialog(false))
@@ -42,50 +41,47 @@ const CustomerDialog = () => {
    <DialogContent dividers sx={{ px: 3 }}>
     <Grid item>
      <Grid container spacing={1} p={2} pb={1}>
-      <GridViewField heading={CUSTOMER.CUSTOMER_NAME} isLoading={isLoading}>
+      <GridViewField heading={t('organization.label')} isLoading={isLoading}>
        {defaultValues?.name}
       </GridViewField>
-      <GridViewField heading={CUSTOMER.CUSTOMER_CODE} isLoading={isLoading}>
-       {defaultValues?.code}
-      </GridViewField>
-      <GridViewField heading={VIEW_FORM.STATUS} isLoading={isLoading}>
+      <GridViewField heading={t('status.label')} isLoading={isLoading}>
        {defaultValues?.status}
       </GridViewField>
-      <GridViewField heading={VIEW_FORM.WEBSITE} isLoading={isLoading}>
+      <GridViewField heading={t('website.label')} isLoading={isLoading}>
        {defaultValues?.website}
       </GridViewField>
-      <GridViewField heading={CUSTOMER.TRADING_NAME} isLoading={isLoading} chip={defaultValues?.tradingName} />
+      <GridViewField heading={t('trading_name.label')} isLoading={isLoading} chip={defaultValues?.tradingName} />
      </Grid>
      <Divider variant={KEY.FULL_WIDTH} style={{ width: '100%', marginX: '20px' }} />
-     <GridViewTitle title={TITLE.SITE_INFO} />
+     <GridViewTitle title={t('site_information.label')} />
      <Grid container spacing={1} p={2} pb={1}>
-      <GridViewField heading={SITE.SITE_NAME} isLoading={isLoading}>
+      <GridViewField heading={t('site_name.label')} isLoading={isLoading}>
        {defaultValues?.name}
       </GridViewField>
-      <GridViewField heading={ADDRESS.STREET} isLoading={isLoading}>
+      <GridViewField heading={t('address.street.label')} isLoading={isLoading}>
        {defaultValues?.street}
       </GridViewField>
-      <GridViewField heading={ADDRESS.SUBURB} isLoading={isLoading}>
+      <GridViewField heading={t('address.suburb.label')} isLoading={isLoading}>
        {defaultValues?.suburb}
       </GridViewField>
-      <GridViewField heading={ADDRESS.CITY} isLoading={isLoading}>
+      <GridViewField heading={t('address.city.label')} isLoading={isLoading}>
        {defaultValues?.city}
       </GridViewField>
-      <GridViewField heading={ADDRESS.POST_CODE} isLoading={isLoading}>
+      <GridViewField heading={t('address.post_code.label')} isLoading={isLoading}>
        {defaultValues?.postCode}
       </GridViewField>
-      <GridViewField heading={ADDRESS.REGION} isLoading={isLoading}>
+      <GridViewField heading={t('address.region.label')} isLoading={isLoading}>
        {defaultValues?.region}
       </GridViewField>
-      <GridViewField heading={ADDRESS.STATE} isLoading={isLoading}>
+      <GridViewField heading={t('address.state.label')} isLoading={isLoading}>
        {defaultValues?.state}
       </GridViewField>
-      <GridViewField heading={ADDRESS.COUNTRY} isLoading={isLoading}>
+      <GridViewField heading={t('address.country.label')} isLoading={isLoading}>
        {defaultValues?.country}
       </GridViewField>
      </Grid>
      <Divider variant={KEY.FULL_WIDTH} style={{ width: '100%', marginX: '20px' }} />
-     <GridViewTitle title={TITLE.HOWICK_RESOURCES} />
+     <GridViewTitle title={t('howick_resources.label')} />
      <Grid container spacing={1}>
       <Grid item sm={12}>
        <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} isDialog />
