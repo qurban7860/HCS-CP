@@ -181,6 +181,9 @@ const en = {
  email: {
   label: `Email`
  },
+ filter_status: {
+  label: `Filter Status`
+ },
  financing_company: {
   label: `Financing Company`
  },
@@ -356,6 +359,9 @@ const en = {
  old_password: {
   label: `Old Password`
  },
+ online: {
+  label: `Online`
+ },
  organization: {
   local: `organization`,
   label: `Organization`
@@ -373,6 +379,9 @@ const en = {
  },
  organization_name: {
   label: `Organization name`
+ },
+ phone: {
+  label: `Phone`
  },
  portal_synced: {
   label: `Portal Synced`
@@ -510,6 +519,9 @@ const en = {
    label: `Roles`
   }
  },
+ row: {
+  label: `Row`
+ },
  save: {
   label: `Save`
  },
@@ -603,6 +615,7 @@ const en = {
  user: {
   local: `user`,
   label: `User`,
+  label_plural: `Users`,
   users: {
    label: `Users`
   }
@@ -612,6 +625,9 @@ const en = {
  },
  user_invite: {
   label: `User Invite`
+ },
+ users_list: {
+  label: `Users List`
  },
  view_jira: {
   label: `View in Jira`,

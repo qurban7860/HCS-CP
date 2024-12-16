@@ -1,11 +1,11 @@
 import { Fragment } from 'react'
 import { Navigate, useRoutes } from 'react-router-dom'
-import { AuthGuard, GuestGuard } from 'auth'
+import { AuthGuard, GuestGuard, RoleBasedGuard } from 'auth'
 import DashboardLayout from 'section/dashboard'
 import { useSettingContext, useHelmet } from 'hook'
 import { CustomerLayout } from 'section/crm/customer'
 import { PATH_AFTER_LOGIN } from 'global'
-import { FALLBACK } from 'constant'
+import { FALLBACK, KEY } from 'constant'
 import {
  // landing:
  LandingPage,
@@ -20,7 +20,7 @@ import {
  // home:
  HomePage,
  // dashboard: general
- GeneralAppPage,
+ DashboardPage,
  // security:
  UserListPage,
  UserProfilePage,
@@ -46,11 +46,7 @@ import {
 } from './element'
 
 export default function Router() {
- const { themeMode } = useSettingContext()
- const helmet = useHelmet({
-  title: 'Howick Portal',
-  description: 'Your comprehensive portal solution'
- })
+ const AdminRoles = ['Admin', KEY.CUSTOMER_ADMIN]
 
  return (
   <Fragment>
@@ -83,7 +79,9 @@ export default function Router() {
        path: 'user-invite',
        element: (
         <AuthGuard>
-         <DashboardLayout />
+         <RoleBasedGuard hasContent roles={AdminRoles}>
+          <DashboardLayout />
+         </RoleBasedGuard>
         </AuthGuard>
        ),
        children: [{ element: <UserInvitePage />, index: true }]
@@ -105,7 +103,7 @@ export default function Router() {
      ),
      children: [
       { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
-      { path: 'app', element: <GeneralAppPage /> },
+      { path: 'app', element: <DashboardPage /> },
       { path: 'permission-denied', element: <FallbackPage {...FALLBACK.FORBIDDEN} /> },
       { path: 'blank', element: <BlankPage /> }
      ]
@@ -135,7 +133,12 @@ export default function Router() {
        children: [
         {
          path: 'list',
-         element: <UserListPage />
+
+         element: (
+          <RoleBasedGuard hasContent roles={AdminRoles}>
+           <UserListPage />
+          </RoleBasedGuard>
+         )
         },
         {
          path: 'profile',

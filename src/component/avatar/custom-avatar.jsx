@@ -17,13 +17,12 @@ const getColorByName = name => {
  return 'default'
 }
 
-const CustomAvatar = forwardRef(({ color, name = '', justName, BadgeProps, children, typography = TYPOGRAPHY.H3, extension, sx, ...other }, ref) => {
+const CustomAvatar = forwardRef(({ color, name = '', justName, BadgeProps, children, typography = TYPOGRAPHY.H3, extension, inTableList = false, sx, ...other }, ref) => {
  const theme = useTheme()
  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
  const charAtName = getCharAtSecondName(name) ? getCharAtName(name) + getCharAtSecondName(name) : getCharAtName(name)
 
  const colorByName = getColorByName(name)
-
  const colr = color || colorByName
 
  const renderContent =
@@ -38,8 +37,22 @@ const CustomAvatar = forwardRef(({ color, name = '', justName, BadgeProps, child
     }}
     {...other}>
     {justName ? <Typography variant={TYPOGRAPHY.H0}>{name && charAtName}</Typography> : <Typography variant={typography}>{name && charAtName}</Typography>}
-
     {extension}
+    {children}
+   </Avatar>
+  ) : inTableList ? (
+   <Avatar
+    ref={ref}
+    sx={{
+     color: theme.palette[colr]?.contrastText,
+     backgroundColor: theme.palette[colr]?.main,
+     fontWeight: theme.typography.fontWeightBold,
+     width: isDesktop ? 24 : 20,
+     height: isDesktop ? 24 : 20,
+     ...sx
+    }}
+    {...other}>
+    {justName ? <Typography variant={TYPOGRAPHY.H0}>{name && charAtName}</Typography> : <Typography variant={typography}>{name && charAtName}</Typography>}
     {children}
    </Avatar>
   ) : (
@@ -74,6 +87,10 @@ CustomAvatar.propTypes = {
  children: PropTypes.node,
  BadgeProps: PropTypes.object,
  typography: PropTypes.string,
+ inTableList: PropTypes.bool,
+ isOnline: PropTypes.bool,
+ onlineUsers: PropTypes.any,
+ userId: PropTypes.string,
  color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error'])
 }
 

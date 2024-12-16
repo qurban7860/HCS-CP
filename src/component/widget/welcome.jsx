@@ -2,16 +2,19 @@ import { Fragment } from 'react'
 import { t } from 'i18next'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
+import { useAuthContext } from 'auth/use-auth-context'
 import { useSettingContext, Icon, ICON_NAME, useResponsive } from 'hook'
 import { useTheme, useMediaQuery, Stack, Box, Grid, Card, Typography } from '@mui/material'
 import { SkeletonViewFormField } from 'component'
-import { GStyledWelcomeContainerDiv, GStyledWelcomeDescription, GStyledSpanBox, GStyledTopBorderDivider, GCardOption } from 'theme/style'
+import { GStyledWelcomeContainerDiv, GStyledWelcomeDescription, GStyledSpanBox, GStyledTopBorderDivider, GCardOption, GStyledNoPaddingChip } from 'theme/style'
 import { KEY, TYPOGRAPHY } from 'constant'
 import { ASSET } from 'config'
+import { isCustomerAdmin } from 'util'
 
-function Welcome({ action, img, customer, isCustomerLoading, ...other }) {
+function Welcome({ action, img, customer, isCustomerLoading, customerOnlineUserIds, ...other }) {
  const { customerMachines, isLoading } = useSelector(state => state.machine)
  const { securityUserTotalCount } = useSelector(state => state.user)
+ const { user } = useAuthContext()
  const { themeMode } = useSettingContext()
  const theme = useTheme()
 
@@ -94,27 +97,33 @@ function Welcome({ action, img, customer, isCustomerLoading, ...other }) {
            </Fragment>
           )}
          </GStyledSpanBox>
-         <GStyledSpanBox px={2}>
-          {isLoading ? (
-           () => <SkeletonViewFormField />
-          ) : (
-           <Fragment>
-            <Icon
-             icon={ICON_NAME.USERS}
-             color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]}
-             sx={{
-              width: 15
-             }}
-            />
-            <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
-             {t('user.users.label') + ':'}
-            </Typography>
-            <Typography variant={isDesktop ? TYPOGRAPHY.BODY1 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
-             {securityUserTotalCount} {t('user.users.label')}
-            </Typography>
-           </Fragment>
-          )}
-         </GStyledSpanBox>
+         {isCustomerAdmin(user) && (
+          <GStyledSpanBox px={2}>
+           {isLoading ? (
+            () => <SkeletonViewFormField />
+           ) : (
+            <Fragment>
+             <Icon icon={ICON_NAME.USERS} color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]} sx={{ width: 15 }} />
+             <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+              {t(securityUserTotalCount > 1 ? 'user.users.label' : 'user.label') + ':'}
+             </Typography>
+             <Typography variant={isDesktop ? TYPOGRAPHY.BODY1 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+              {securityUserTotalCount}
+             </Typography>
+             <GStyledNoPaddingChip
+              bgColor={theme.palette.burnIn.altDark}
+              label={
+               <GStyledSpanBox>
+                {/* <Icon icon={ICON_NAME.ONLINE} sx={{ height: 10, width: 10 }} color={theme.palette.common.white} /> */}
+                <Typography variant={TYPOGRAPHY.H6}>{customerOnlineUserIds?.length ? `${customerOnlineUserIds.length} Online` : '1 Online'}</Typography>
+               </GStyledSpanBox>
+              }
+              size={'small'}
+             />
+            </Fragment>
+           )}
+          </GStyledSpanBox>
+         )}
         </Box>
        </Card>
       </Box>
@@ -132,7 +141,8 @@ Welcome.propTypes = {
  isCustomerLoading: PropTypes.bool,
  title: PropTypes.string,
  description: PropTypes.string,
- customer: PropTypes.object
+ customer: PropTypes.object,
+ customerOnlineUserIds: PropTypes.any
 }
 
 export default Welcome

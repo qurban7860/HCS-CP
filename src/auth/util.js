@@ -95,6 +95,7 @@ export const getUserAccess = (roles, accessLevel) => {
  let isSettingAccessAllowed = false
  let isSecurityUserAccessAllowed = false
  let isEmailAccessAllowed = false
+ let isCustomerAdmin = false
 
  if (userRoles?.some(role => role?.roleType?.toLowerCase() === 'superadmin')) {
   isAllAccessAllowed = true
@@ -151,6 +152,8 @@ export const getUserAccess = (roles, accessLevel) => {
   isSettingAccessAllowed = false
   isSecurityUserAccessAllowed = false
   isEmailAccessAllowed = false
+ } else if (userRoles?.some(role => role?.name?.toLowerCase() === 'customeradmin')) {
+  isCustomerAdmin = true
  }
 
  return {
@@ -163,6 +166,7 @@ export const getUserAccess = (roles, accessLevel) => {
   isSecurityReadOnly,
   isSettingAccessAllowed,
   isSecurityUserAccessAllowed,
-  isEmailAccessAllowed
+  isEmailAccessAllowed,
+  isCustomerAdmin
  }
 }

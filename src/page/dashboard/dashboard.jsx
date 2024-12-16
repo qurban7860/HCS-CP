@@ -4,11 +4,13 @@ import { t } from 'i18next'
 import _ from 'lodash'
 import debounce from 'lodash/debounce'
 import { dispatch, useSelector } from 'store'
+import { useWebSocketContext } from 'auth/websocket-provider'
 import { useResponsive } from 'hook'
 import {
  getContacts,
  getCustomerTickets,
  getSecurityUsers,
+ getOnlineUsers,
  getCustomerMachines,
  setMachineDialog,
  setMachineSiteDialog,
@@ -30,7 +32,7 @@ import { GLOBAL } from 'config'
 import { FLEX } from 'constant'
 import { toTitleCase } from 'util'
 
-function GeneralAppPage() {
+function Dashboard() {
  const { customer, isLoading, customerTickets, contacts, securityUsers, customerMachines } = useSelector(
   state => ({
    customer: state.customer.customer,
@@ -42,6 +44,8 @@ function GeneralAppPage() {
   _.isEqual
  )
  const { user } = useAuthContext()
+ const { onlineUsers } = useWebSocketContext()
+ const [customerOnlineUserIds, setCustomerOnlineUserIds] = useState(onlineUsers)
  const customerId = user?.customer
  const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
 
@@ -50,6 +54,14 @@ function GeneralAppPage() {
 
  const [rateSelectedMachine, setRateSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
  const [totalSelectedMachine, setTotalSelectedMachine] = useState(() => (customerMachines?.length > 0 ? allMachineDefault : allMachineDefault))
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+   dispatch(getOnlineUsers())
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [dispatch])
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
@@ -63,7 +75,7 @@ function GeneralAppPage() {
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
-   if (customerId && !contacts.length) {
+   if (customerId && !contacts?.length) {
     dispatch(getContacts(customerId))
    }
   }, 300)
@@ -93,6 +105,16 @@ function GeneralAppPage() {
   }
  }, [dispatch, customer?.ref, customerTickets])
 
+ useEffect(() => {
+  if (Array.isArray(onlineUsers) && Array.isArray(securityUsers)) {
+   const onlineUserIds = securityUsers.filter(user => onlineUsers.includes(user._id)).map(user => user._id)
+   setCustomerOnlineUserIds(prevIds => {
+    const isEqual = prevIds.length === onlineUserIds.length && prevIds.every((id, index) => id === onlineUserIds[index])
+    return isEqual ? prevIds : onlineUserIds
+   })
+  }
+ }, [onlineUsers, securityUsers])
+
  useLayoutEffect(() => {
   dispatch(setMachineDialog(false))
   dispatch(setMachineSiteDialog(false))
@@ -110,7 +132,7 @@ function GeneralAppPage() {
   <Grid container>
    <Grid container spacing={3} mt={isMobile ? 0 : 2}>
     <Grid item xs={12}>
-     <Welcome customer={customer} isCustomerLoading={isLoading} title={toTitleCase(GLOBAL.APP_TAGLINE)} description={t('app_customer_tagline')} />
+     <Welcome customer={customer} isCustomerLoading={isLoading} title={toTitleCase(GLOBAL.APP_TAGLINE)} description={t('app_customer_tagline')} customerOnlineUserIds={customerOnlineUserIds} />
     </Grid>
     <Grid item xs={12}>
      <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
@@ -136,4 +158,4 @@ function GeneralAppPage() {
  )
 }
 
-export default memo(GeneralAppPage)
+export default memo(Dashboard)

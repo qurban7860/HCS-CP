@@ -1,4 +1,4 @@
-import { Fragment, useState, useCallback } from 'react'
+import { Fragment, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import { useSelector } from 'react-redux'

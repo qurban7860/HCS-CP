@@ -15,12 +15,15 @@ import { useSelector } from 'react-redux'
 export const useHelmet = (config = {}) => {
  const { user } = useAuthContext()
  const { customer } = useSelector(state => state.customer)
+ const { machine } = useSelector(state => state.machine)
+
  const ROUTE_TITLES = {
   // auth
   '/auth/login': 'Log in',
   '/auth/register': 'Register',
   '/auth/reset-password': 'Reset Password',
   '/auth/new-password': 'New Password',
+  '/auth/user-invite': 'Invite a User',
   // dashboard
   '/dashboard': 'Dashboard',
   '/dashboard/app': 'Dashboard',
@@ -29,8 +32,9 @@ export const useHelmet = (config = {}) => {
   '/home': 'Home',
   // security
   '/security/users/profile': user ? user.displayName : 'User Profile',
+  '/security/users/list': 'Users',
   // product
-  '/products/machines': 'Machines List',
+  '/products/machines': 'Machines',
   '/products/machines/:id/view': 'Machine Details',
   '/products/machines/:id/logs': 'Machine Logs',
   '/products/machines/:id/graphs': 'Machine Graphs',
@@ -51,14 +55,15 @@ export const useHelmet = (config = {}) => {
 
  const matchRoute = pathname => {
   const dynamicRoutes = [
-   { pattern: /^\/products\/machines\/[^/]+\/view$/, title: 'Machine Details' },
-   { pattern: /^\/products\/machines\/[^/]+\/logs$/, title: 'Machine Logs' },
-   { pattern: /^\/products\/machines\/[^/]+\/graphs$/, title: 'Machine Graphs' },
-   { pattern: /^\/products\/machines\/[^/]+\/support$/, title: 'Machine Support' },
-   { pattern: /^\/crm\/customers\/[^/]+\/view$/, title: customer ? customer.name : 'Organization Overview' },
-   { pattern: /^\/crm\/customers\/[^/]+\/contacts$/, title: 'Customer Contacts' },
-   { pattern: /^\/crm\/customers\/[^/]+\/sites$/, title: 'Customer Sites' },
-   { pattern: /^\/crm\/customers\/[^/]+\/support$/, title: 'Customer Support' }
+   { pattern: /^\/products\/machines\/[^/]+\/view$/, title: machine ? `${machine.serialNo} Overview` : 'Machine Overview' },
+   { pattern: /^\/products\/machines\/[^/]+\/logs$/, title: machine ? `${machine.serialNo} Logs` : 'Machine Logs' },
+   { pattern: /^\/products\/machines\/[^/]+\/graphs$/, title: machine ? `${machine.serialNo} Graphs` : 'Machine Graphs' },
+   { pattern: /^\/products\/machines\/[^/]+\/support$/, title: machine ? `${machine.serialNo} Support Tickets` : 'Machine Support Tickets' },
+   { pattern: /^\/crm\/customers\/[^/]+\/view$/, title: customer ? `${customer.name} Overview` : 'Organization Overview' },
+   { pattern: /^\/crm\/customers\/[^/]+\/contacts$/, title: 'Contacts' },
+   { pattern: /^\/crm\/customers\/[^/]+\/sites$/, title: 'Sites' },
+   { pattern: /^\/crm\/customers\/[^/]+\/support$/, title: 'Support Tickets' },
+   { pattern: /^\/security\/users\/[^/]+\/list$/, title: 'Users' }
    //    {pattern: '/' ,  title: ''}
   ]
   if (ROUTE_TITLES[pathname]) {
@@ -74,18 +79,13 @@ export const useHelmet = (config = {}) => {
 
  const { title = 'Howick Portal', description = 'Comprehensive Portal Solution' } = config
 
- //  const pageTitle = useMemo(() => {
- //   const pathname = window.location.pathname
- //   return matchRoute(pathname)
- //  }, [window.location.pathname])
-
  useEffect(() => {
   const pageTitle = matchRoute(location.pathname)
-  document.title = `${pageTitle}  •  ${title}`
+  document.title = window.location.pathname === '/' ? pageTitle : `${pageTitle} • ${title}`
  }, [location.pathname, title])
 
  const pageTitle = 'Howick Portal'
- const fullTitle = window.location.pathname === '/' ? pageTitle : `${title} • ${pageTitle}`
+ const fullTitle = window.location.pathname === '/' ? pageTitle : ` ${pageTitle} • ${title} `
 
  return (
   <Helmet>

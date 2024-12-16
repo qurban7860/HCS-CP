@@ -20,9 +20,9 @@ export const UserInvitePage = Loadable(lazy(() => import('page/auth/user-invite'
 export const Login = Loadable(lazy(() => import('section/auth/login')))
 // home
 export const HomePage = Loadable(lazy(() => import('page/home/home')))
-// dashboard: general
+// dashboard
+export const DashboardPage = Loadable(lazy(() => import('page/dashboard/dashboard')))
 export const LandingPage = Loadable(lazy(() => import('page/landing/landing')))
-export const GeneralAppPage = Loadable(lazy(() => import('page/dashboard/general-app')))
 // machine
 export const MachinePage = Loadable(lazy(() => import('page/product/machine/machine')))
 export const MachinesListPage = Loadable(lazy(() => import('page/product/machines/machines')))

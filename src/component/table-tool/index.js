@@ -4,6 +4,7 @@ export { default as LinkTableCellWithIconTarget } from './link-table-cell-icon-t
 export { default as LinkTableCellWithIcon } from './link-table-cell-icon'
 export { default as LinkDialogTableCellTarget } from './link-table-cell-target'
 export { default as LinkTableCell } from './link-table-cell'
+export { default as LinkWrap } from './link-wrap'
 export { default as ListItemHeader } from './list-item-header'
 export { default as ListItem } from './list-item'
 export { default as TableCard } from './table-card'

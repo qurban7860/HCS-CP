@@ -95,12 +95,12 @@ export const GStyledCard = styled(({ theme, selectedCardId, c, mode, ...other })
  marginBottom: theme.spacing(2),
  marginLeft: theme.spacing(2),
  marginRight: theme.spacing(2),
- marginTop: selectedCardId === value._id || selectedCardId === value.key ? theme.spacing(2) : theme.spacing(0),
+ marginTop: selectedCardId === value?._id || selectedCardId === value?.key ? theme.spacing(2) : theme.spacing(0),
  width: '100%',
  cursor: 'pointer',
- borderBottom: selectedCardId === value._id || selectedCardId === value.key ? `2px solid ${mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}` : '',
+ borderBottom: selectedCardId === value?._id || selectedCardId === value?.key ? `2px solid ${mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}` : '',
  backgroundColor:
-  selectedCardId === value._id || selectedCardId === value.key
+  selectedCardId === value?._id || selectedCardId === value?.key
    ? mode === KEY.LIGHT
      ? theme.palette.grey[300]
      : theme.palette.howick.darkGrey
@@ -491,6 +491,13 @@ export const GStyledSupportStatusFieldChip = styled(({ theme, status, ...other }
    : theme.palette.howick.lightGray
 }))
 
+export const GStyledNoPaddingFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView, isNoBg }) => ({
+ overflowWrap: 'break-word',
+ backgroundColor: 'transparent',
+ //  border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
+ borderRadius: isMachineView && theme.spacing(0.2)
+}))
+
 export const GStyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView, isNoBg }) => ({
  overflowWrap: 'break-word',
  backgroundColor:
@@ -505,6 +512,17 @@ export const GStyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ..
  height: !isMachineView && '5rem',
  border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
  borderRadius: isMachineView && theme.spacing(0.2)
+}))
+
+export const GStyledNoPaddingFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, roleColr }) => ({
+ borderRadius: theme.spacing(0.4),
+ backgroundColor: roleColr
+}))
+
+export const GStyledNoPaddingChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, bgColor }) => ({
+ borderRadius: theme.spacing(0.2),
+ padding: theme.spacing(0),
+ backgroundColor: bgColor
 }))
 
 export const GStyledFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
@@ -743,7 +761,7 @@ export const ButtonProps = {
  * @table :components ____________________________________________________________________________________________
  */
 
-// @root - GeneralAppPage - dashboard
+// @root - DashboardPage - dashboard
 export const GGStyledContainerSvg = styled(({ themeMode, ...other }) => <SvgColor icon={ASSET.BG_LOGO} {...other} />)(({ theme, themeMode }) => {
  return {
   color: themeMode === KEY.LIGHT ? theme.palette.success.main : theme.palette.common.white

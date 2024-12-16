@@ -2,8 +2,10 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { debounce } from 'lodash'
 import { dispatch } from 'store'
 import { useTable } from 'hook'
-import { filterProperties, moduleFilter } from './query-pool'
+import { applySort } from 'util'
+import { filterProperties } from './query-pool'
 import { getProperty, getNestedProperty } from './get-property'
+import { KEY } from 'constant'
 
 /**
  * don't remove------------------using useFilter hook-----------------
@@ -32,126 +34,118 @@ import { getProperty, getNestedProperty } from './get-property'
  * @param orderBy - string, param to be sorted, came from  useTable hook
  */
 
-export default function useFilter(comparator, params, initial, ChangePage, setFilterBy) {
-  const [tableData, setTableData] = useState([])
-  const [filterName, setFilterName] = useState('')
-  const [filterStatus, setFilterStatus] = useState([])
-  const [filterRole, setFilterRole] = useState('all')
-  const { setPage } = useTable({ defaultOrderBy: 'name' })
-  const isFiltered = filterName !== '' || !!filterStatus.length
-  const inputData = tableData
+export default function useFilter(comparator, params, initial, ChangePage, setFilterBy, defaultOrderBy) {
+ const [tableData, setTableData] = useState([])
+ const [filterName, setFilterName] = useState('')
+ const [filterStatus, setFilterStatus] = useState('active')
+ const [filterRole, setFilterRole] = useState('all')
+ const { setPage } = useTable({ defaultOrderBy: defaultOrderBy || 'name' })
+ const isFiltered = filterName !== '' || filterStatus !== 'all' || filterRole !== 'all'
+ const inputData = tableData
 
-  const debouncedSearch = useRef(
-    debounce((value) => {
-      dispatch(ChangePage(0))
-      dispatch(setFilterBy(value))
-    }, 500)
-  )
+ const debouncedSearch = useRef(
+  debounce(value => {
+   dispatch(ChangePage(0))
+   dispatch(setFilterBy(value))
+  }, 500)
+ )
 
-  useEffect(() => {
-    if (initial) {
-      setTableData(params)
-    }
-  }, [params, initial])
-
-  // filterFunction is a callback function that is used to filter the data, normalizing the parameters
-  const filterFunction = useCallback(
-    (filterParameter, filterValue, properties) => {
-      const lowerCaseFilterName = filterName?.toLowerCase()
-
-      return properties.some((property) => {
-        const propertyValue = getProperty(filterParameter, property)
-        if (!propertyValue) {
-          return false
-        }
-
-        const lowerCasePropertyValue = String(propertyValue)?.toLowerCase()
-        if (lowerCasePropertyValue.includes(lowerCaseFilterName)) {
-          return true
-        }
-        // *still under development | this is for nested properties
-        const nestedProperties = property.split('.').slice(0, -1)
-
-        if (nestedProperties.length > 0) {
-          const nestedPropertyValue = getNestedProperty(filterParameter, nestedProperties)
-          const lowerCaseNestedPropertyValue = String(nestedPropertyValue)?.toLowerCase()
-          return lowerCaseNestedPropertyValue.includes(lowerCaseFilterName)
-        }
-
-        return false
-      })
-    },
-    [filterName]
-  )
-
-  const handleFilterName = (event) => {
-    debouncedSearch.current(event.target.value)
-    setPage(0)
-    setFilterName(event.target.value)
+ useEffect(() => {
+  if (initial) {
+   const sortedData = applySort({
+    inputData: params,
+    comparator: comparator
+   })
+   setTableData(sortedData)
   }
+ }, [params, initial, comparator])
 
-  const handleFilterStatus = (event) => {
-    setPage(0)
-    setFilterStatus(event.target.value)
-  }
+ // filterFunction is a callback function that is used to filter the data, normalizing the parameters
+ const filterFunction = useCallback(
+  (filterParameter, filterValue, properties) => {
+   const lowerCaseFilterName = filterName?.toLowerCase()
 
-  const handleFilterRole = (event) => {
-    setPage(0)
-    setFilterRole(event.target.value)
-  }
-
-  const handleResetFilter = () => {
-    setFilterName('')
-    setFilterRole('all')
-    setFilterStatus([])
-  }
-
-  // useMemo is used to memoize the filteredData, so it will not be re-rendered if the data is not changed
-  const filteredData = useMemo(() => {
-    const filterArr = []
-    const stabilizedThis = inputData ? inputData.map((el, index) => [el, index]) : []
-    const inputSub = inputData
-
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0])
-      if (order !== 0) return order
-      return a[1] - b[1]
-    })
-
-    const filteredInputData = stabilizedThis.map((el) => el[0])
-
-    if (filteredInputData) {
-      filterArr.push((item) => filterFunction(item, filterName, filterProperties))
+   return properties.some(property => {
+    const propertyValue = getProperty(filterParameter, property)
+    if (!propertyValue) {
+     return false
     }
 
-    let filterVal = filteredInputData?.filter((item) => filterArr.every((fn) => fn(item)))
+    const lowerCasePropertyValue = String(propertyValue)?.toLowerCase()
+    if (lowerCasePropertyValue.includes(lowerCaseFilterName)) {
+     return true
+    }
+    // *still under development | this is for nested properties
+    const nestedProperties = property.split('.').slice(0, -1)
 
-    try {
-      filterVal = moduleFilter(inputSub, filterName)
-    } catch (error) {
-      console.error(error)
+    if (nestedProperties.length > 0) {
+     const nestedPropertyValue = getNestedProperty(filterParameter, nestedProperties)
+     const lowerCaseNestedPropertyValue = String(nestedPropertyValue)?.toLowerCase()
+     return lowerCaseNestedPropertyValue.includes(lowerCaseFilterName)
     }
 
-    if (filterStatus.length) {
-      filterVal = filteredData.filter((item) => filterStatus.includes(item.status))
-    }
+    return false
+   })
+  },
+  [filterName]
+ )
 
-    if (filterRole !== 'all') {
-      filterVal = filterVal.filter((item) => item.role === filterRole)
-    }
+ const handleFilterName = event => {
+  debouncedSearch.current(event.target.value)
+  setPage(0)
+  setFilterName(event.target.value)
+ }
 
-    return filterVal
-  }, [inputData, comparator, filterRole, filterName, filterFunction, filterStatus])
+ const handleFilterStatus = (event, value) => {
+  event.preventDefault()
+  setPage(0)
+  setFilterStatus(value)
+ }
 
-  return {
-    filterName,
-    filterRole,
-    filterStatus,
-    isFiltered,
-    handleFilterName,
-    handleFilterStatus,
-    handleFilterRole,
-    handleResetFilter,
-    filteredData
+ const handleFilterRole = (event, value) => {
+  event.preventDefault()
+  setPage(0)
+  setFilterRole(value)
+ }
+
+ const handleResetFilter = () => {
+  setFilterName('')
+  setFilterRole('all')
+  setFilterStatus('active')
+ }
+
+ // useMemo is used to memoize the filteredData, so it will not be re-rendered if the data is not changed
+ const filteredData = useMemo(() => {
+  let filterVal = inputData
+
+  if (filterVal) {
+   filterVal = filterVal.filter(item => filterFunction(item, filterName, filterProperties))
+
+   if (filterStatus === 'active') {
+    filterVal = filterVal.filter(obj => obj.isActive === true)
+   } else if (filterStatus === 'inActive') {
+    filterVal = filterVal.filter(obj => obj.isActive === false)
+   }
+
+   if (filterRole === KEY.CUSTOMER_ADMIN) {
+    filterVal = filterVal.filter(item => item.roles.some(obj => obj.name === KEY.CUSTOMER_ADMIN))
+   } else if (filterRole === KEY.CUSTOMER_USER) {
+    filterVal = filterVal.filter(item => item.roles.some(obj => obj.name === KEY.CUSTOMER_USER))
+   }
   }
+
+  return filterVal
+ }, [inputData, filterRole, filterName, filterFunction, filterStatus])
+
+ return {
+  filterName,
+  filterRole,
+  filterStatus,
+  isFiltered,
+  handleFilterName,
+  handleFilterStatus,
+  handleFilterRole,
+  handleResetFilter,
+  filteredData
+ }
 }

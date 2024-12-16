@@ -40,7 +40,7 @@ export const PATH_PAGE = {
  comingSoon: '/coming-soon',
  maintenance: '/maintenance',
  badRequest: '/400',
- forbidden: '/403',
+ 403: '/403',
  notFound: '/404',
  internalServerError: '/500',
  components: '/components',

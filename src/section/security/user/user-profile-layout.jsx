@@ -96,7 +96,7 @@ const UserProfileLayout = () => {
        </Grid>
        <Grid container pl={2}>
         <Grid item xs={12} sm={12}>
-         {isDesktop && <GridViewField heading={VIEW_FORM.ROLES} isLoading={isLoading} rolesChip={defaultValues?.roles} isNoBg />}
+         {isDesktop && <GridViewField heading={defaultValues?.roles > 1 ? t('role.roles.label') : t('role.label')} isLoading={isLoading} rolesChip={defaultValues?.roles} isNoBg />}
         </Grid>
        </Grid>
       </Grid>

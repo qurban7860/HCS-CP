@@ -1,4 +1,5 @@
 import { KEY } from 'constant'
+import { alpha } from '@mui/material'
 
 /**
  * Returns the role name based on the provided role object.
@@ -10,4 +11,11 @@ import { KEY } from 'constant'
 export const roleCoverUp = role => {
  if (!role || !role.name) return ''
  return role.name === KEY.CUSTOMER_ADMIN ? 'Admin' : 'User'
+}
+
+export const isCustomerAdmin = user => user?.roles?.some(role => role?.name === KEY.CUSTOMER_ADMIN)
+
+export const roleColr = (role, theme, mode) => {
+ if (!role || !role.name) return ''
+ return role.name === KEY.CUSTOMER_ADMIN ? (mode === KEY.LIGHT ? theme.palette.howick.orange : theme.palette.orange.darker) : mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]
 }

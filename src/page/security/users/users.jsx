@@ -1,7 +1,7 @@
-import { MachineListSection } from 'section/product'
+import { UsersListSection } from 'section/security'
 
 const UsersList = () => {
- return <MachineListSection />
+ return <UsersListSection />
 }
 
 export default UsersList

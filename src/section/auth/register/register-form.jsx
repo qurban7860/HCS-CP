@@ -3,7 +3,7 @@ import { t } from 'i18next'
 import { Trans } from 'react-i18next'
 import { yupResolver } from '@hookform/resolvers/yup'
 import useResponsive from 'hook/use-responsive'
-import { snack } from 'hook'
+import { snack, useSettingContext } from 'hook'
 import { dispatch } from 'store'
 import { useForm, Controller } from 'react-hook-form'
 import { registerCustomer } from 'store/slice'
@@ -34,6 +34,7 @@ function RegisterForm() {
  const serialNoRegEx = new RegExp(REGEX.SERIAL_NO)
 
  const theme = useTheme()
+ const { themeMode } = useSettingContext()
  const isMobile = useResponsive('down', 'sm')
 
  const getCountryByLocale = () => {
@@ -304,10 +305,9 @@ function RegisterForm() {
        color={KEY.INHERIT}
        size={SIZE.LARGE}
        type={KEY.SUBMIT}
-       variant={KEY.CONTAINED}
+       mode={themeMode}
        loading={isSubmitting}
-       disabled={Object.keys(errors).length > 0 || !isFormComplete}
-       sx={RADIUS.BORDER}>
+       disabled={Object.keys(errors).length > 0 || !isFormComplete}>
        {t('register.label').toUpperCase()}
       </GStyledLoadingButton>
      </Grid>
