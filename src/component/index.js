@@ -11,6 +11,8 @@ export { default as CustomAvatar } from './avatar/custom-avatar'
 export { default as AuditBox } from './audit/audit-box'
 // @badge
 export { default as BadgeCardMedia } from './badge/badge-card-media'
+// @badge-status
+export { default as BadgeStatus } from './badge-status/badge-status'
 // @back-button
 export { default as Button } from './button/button'
 export { default as BackButton } from './button/back-button/back-button'
