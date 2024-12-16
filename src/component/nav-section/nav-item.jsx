@@ -1,11 +1,10 @@
-import { forwardRef } from 'react'
+import { Fragment, forwardRef } from 'react'
 import PropTypes from 'prop-types'
 import { Link as RouterLink } from 'react-router-dom'
-import { Icon, ICON_NAME, useSettingContext, useResponsive } from 'hook'
-import { Box, Tooltip, ListItemText, Link } from '@mui/material'
+import { Icon, useSettingContext, useResponsive } from 'hook'
+import { Box, ListItemText, Link } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useLocale } from 'locale'
-import { RoleBasedGuard } from 'auth'
 import { Iconify } from 'component/iconify'
 import { GStyledTooltip } from 'theme/style'
 import { StyledItem, StyledIcon } from './style'
@@ -13,7 +12,7 @@ import { KEY, TYPOGRAPHY } from 'constant'
 
 const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, onListItemClick, ...other }, ref) => {
  const { t } = useLocale()
- const { title, path, icon, info, children, disabled, caption, roles } = item
+ const { title, path, icon, info, children, disabled, caption } = item
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  const isMobile = useResponsive('down', 'sm')
@@ -93,7 +92,7 @@ const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, onListI
   )
  }
 
- return <RoleBasedGuard roles={roles}> {renderItem()} </RoleBasedGuard>
+ return <Fragment> {renderItem()} </Fragment>
 })
 
 NavItem.displayName = 'NavItem'
