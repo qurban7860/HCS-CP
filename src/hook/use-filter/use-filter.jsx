@@ -34,12 +34,12 @@ import { KEY } from 'constant'
  * @param orderBy - string, param to be sorted, came from  useTable hook
  */
 
-export default function useFilter(comparator, params, initial, ChangePage, setFilterBy) {
+export default function useFilter(comparator, params, initial, ChangePage, setFilterBy, defaultOrderBy) {
  const [tableData, setTableData] = useState([])
  const [filterName, setFilterName] = useState('')
  const [filterStatus, setFilterStatus] = useState('active')
  const [filterRole, setFilterRole] = useState('all')
- const { setPage } = useTable({ defaultOrderBy: 'name' })
+ const { setPage } = useTable({ defaultOrderBy: defaultOrderBy || 'name' })
  const isFiltered = filterName !== '' || filterStatus !== 'all' || filterRole !== 'all'
  const inputData = tableData
 
