@@ -4,7 +4,7 @@ import { t } from 'i18next'
 import { Trans } from 'react-i18next'
 import { useSelector, dispatch } from 'store'
 import { useAuthContext } from 'auth'
-import { useTable, useFilter, getComparator, useSettingContext, useResponsive } from 'hook'
+import { useTable, useTempFilter, getComparator, useSettingContext, useResponsive } from 'hook'
 import {
  getCustomer,
  getSecurityUser,
@@ -80,7 +80,7 @@ const TicketsListSection = () => {
  }, [customerTickets, initial])
 
  const defaultValues = useTicketsDefaultValues(tableData && tableData)
- const { filterName, handleFilterName, filteredData } = useFilter(getComparator(order, orderBy), tableData, initial, ChangeCustomerTicketPage, setCustomerTicketFilterBy, 'created')
+ const { filterName, handleFilterName, filteredData } = useTempFilter(getComparator(order, orderBy), tableData, initial, ChangeCustomerTicketPage, setCustomerTicketFilterBy)
 
  const handleChangePage = (event, newPage) => {
   if (newPage < Math.ceil(filteredData.length / customerTicketRowsPerPage)) {
