@@ -71,7 +71,7 @@ export const moduleFilter = (inputSub, filterName) => {
    // security
    filterParams?.email?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
    filterParams?.phone?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
-   `${filterParams?.roles?.map(obj => obj.name)}`.join(', ').toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
+   //  `${filterParams?.roles?.map(obj => obj.name)}`?.join(', ').toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
    //  techparam
    filterParams?.techParamValue?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
    filterParams?.techParam?.category?.name?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0 ||
