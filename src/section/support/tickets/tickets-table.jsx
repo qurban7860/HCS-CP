@@ -4,7 +4,7 @@ import { ICON_NAME } from 'hook'
 import { TableBody, TableCell, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useSettingContext } from 'hook'
-import { GStyledTableChip, GStyledSupportStatusFieldChip } from 'theme/style'
+import { GStyledSupportStatusFieldChip } from 'theme/style'
 import { LinkTableCell } from 'component/table-tool'
 import { GLOBAL } from 'config/global'
 import { LABEL, TYPOGRAPHY, SIZE } from 'constant'
@@ -12,7 +12,6 @@ import { normalizer, fDate } from 'util'
 import { StyledTableRow } from './style'
 
 const TicketsTable = ({ ticket, mode, index, handleCustomerTicket }) => {
- const theme = useTheme()
  const { themeMode } = useSettingContext()
 
  const renderStatus = fields => {

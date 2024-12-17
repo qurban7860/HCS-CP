@@ -42,7 +42,7 @@ const TicketsListSection = () => {
   orderBy,
   setPage: setTablePage
  } = useTable({
-  defaultOrderBy: KEY.CREATED_AT,
+  defaultOrderBy: 'created',
   defaultOrder: KEY.DESC
  })
 
@@ -62,9 +62,7 @@ const TicketsListSection = () => {
     }
    }
   }, 300)
-
   debouncedDispatch()
-
   return () => {
    debouncedDispatch.cancel()
    dispatch(resetCustomerTickets())
@@ -82,7 +80,7 @@ const TicketsListSection = () => {
  }, [customerTickets, initial])
 
  const defaultValues = useTicketsDefaultValues(tableData && tableData)
- const { filterName, handleFilterName, filteredData } = useFilter(getComparator(order, orderBy), tableData, initial, ChangeCustomerTicketPage, setCustomerTicketFilterBy)
+ const { filterName, handleFilterName, filteredData } = useFilter(getComparator(order, orderBy), tableData, initial, ChangeCustomerTicketPage, setCustomerTicketFilterBy, 'created')
 
  const handleChangePage = (event, newPage) => {
   if (newPage < Math.ceil(filteredData.length / customerTicketRowsPerPage)) {
