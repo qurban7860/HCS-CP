@@ -8,7 +8,7 @@ import { getProperty, getNestedProperty } from './get-property'
 import { KEY } from 'constant'
 
 /**
- * don't remove------------------using useFilter hook-----------------
+ * ----------------------using useFilter hook-----------------------------
  *
  * @param {*} comparator - getComparator(order, orderBy), used to sort the data by assigned order, came from  useTable hook
  * @param {*} params - dataset to be filtered
@@ -22,7 +22,7 @@ import { KEY } from 'constant'
  *
  * @example
  * const {
- *  filterName,
+ * filterName,
  * filterStatus,
  * isFiltered,
  * handleFilterName,
