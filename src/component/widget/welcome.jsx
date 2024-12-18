@@ -22,6 +22,8 @@ function Welcome({ action, img, customer, isCustomerLoading, customerOnlineUserI
  const isMobile = useResponsive('down', 'sm')
 
  const portalSyncedMachines = customerMachines?.filter(machine => machine?.portalKey)
+ const decoilerMachines = customerMachines?.filter(machine => machine?.name?.toLowerCase().includes('decoiler'))
+ const ribbedMachines = customerMachines?.filter(machine => machine?.name?.toLowerCase().includes('3600'))
 
  return (
   <GStyledWelcomeContainerDiv {...other}>
@@ -49,7 +51,7 @@ function Welcome({ action, img, customer, isCustomerLoading, customerOnlineUserI
          {isCustomerLoading ? (
           () => <SkeletonViewFormField />
          ) : (
-          <Typography variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H4} m={2}>
+          <Typography variant={isDesktop ? TYPOGRAPHY.H4 : TYPOGRAPHY.H5} m={2}>
            {customer.name}
           </Typography>
          )}
@@ -70,8 +72,50 @@ function Welcome({ action, img, customer, isCustomerLoading, customerOnlineUserI
             <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
              {(customerMachines?.length > 1 ? t('machine.machines.label') : t('machine.label')) + ':'}
             </Typography>
-            <Typography variant={isDesktop ? TYPOGRAPHY.BODY1 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
-             {customerMachines?.length} {KEY.MACHINES}
+            <Typography variant={isDesktop ? TYPOGRAPHY.H6 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+             {customerMachines?.length}
+            </Typography>
+           </Fragment>
+          )}
+         </GStyledSpanBox>
+         <GStyledSpanBox px={2}>
+          {isLoading ? (
+           () => <SkeletonViewFormField />
+          ) : (
+           <Fragment>
+            <Icon
+             icon={ICON_NAME.DECOILER_DEF}
+             color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]}
+             sx={{
+              width: 15
+             }}
+            />
+            <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+             {(decoilerMachines?.length > 1 ? t('decoiler.decoilers.label') : t('decoiler.label')) + ':'}
+            </Typography>
+            <Typography variant={isDesktop ? TYPOGRAPHY.H6 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+             {decoilerMachines?.length} / {customerMachines?.length}
+            </Typography>
+           </Fragment>
+          )}
+         </GStyledSpanBox>
+         <GStyledSpanBox px={2}>
+          {isLoading ? (
+           () => <SkeletonViewFormField />
+          ) : (
+           <Fragment>
+            <Icon
+             icon={ICON_NAME.RIBBED}
+             color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]}
+             sx={{
+              width: 15
+             }}
+            />
+            <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+             {t('x_tenda.label') + ':'}
+            </Typography>
+            <Typography variant={isDesktop ? TYPOGRAPHY.H6 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+             {ribbedMachines?.length} / {customerMachines?.length}
             </Typography>
            </Fragment>
           )}
@@ -91,8 +135,8 @@ function Welcome({ action, img, customer, isCustomerLoading, customerOnlineUserI
             <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
              {t('portal_synced.label') + ':'}
             </Typography>
-            <Typography variant={isDesktop ? TYPOGRAPHY.BODY1 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
-             {portalSyncedMachines?.length} / {customerMachines?.length} {customerMachines?.length > 1 ? t('machine.machines.label') : t('machine.label')}
+            <Typography variant={isDesktop ? TYPOGRAPHY.H6 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+             {portalSyncedMachines?.length} / {customerMachines?.length}
             </Typography>
            </Fragment>
           )}
@@ -107,7 +151,7 @@ function Welcome({ action, img, customer, isCustomerLoading, customerOnlineUserI
              <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
               {t(securityUserTotalCount > 1 ? 'user.users.label' : 'user.label') + ':'}
              </Typography>
-             <Typography variant={isDesktop ? TYPOGRAPHY.BODY1 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+             <Typography variant={isDesktop ? TYPOGRAPHY.H6 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
               {securityUserTotalCount}
              </Typography>
              <GStyledNoPaddingChip
