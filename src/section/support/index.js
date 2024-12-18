@@ -5,3 +5,4 @@ export { default as TicketsTableHeader } from './tickets/tickets-table-header'
 export { default as TicketCard } from './tickets/ticket-card'
 
 export * from './default-values/default-values'
+export * from './tickets/tickets-header-items'
