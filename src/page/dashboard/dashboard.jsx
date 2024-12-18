@@ -1,13 +1,12 @@
 import { memo, useEffect, useLayoutEffect, useState } from 'react'
-import { useAuthContext } from 'auth/use-auth-context'
 import { t } from 'i18next'
 import _ from 'lodash'
 import debounce from 'lodash/debounce'
-import { dispatch, useSelector } from 'store'
+import { useAuthContext } from 'auth/use-auth-context'
 import { useWebSocketContext } from 'auth/websocket-provider'
 import { useResponsive } from 'hook'
+import { dispatch, useSelector } from 'store'
 import {
- getContacts,
  getQuickActiveCustomerTicket,
  getSecurityUsers,
  getOnlineUsers,
@@ -73,16 +72,6 @@ function Dashboard() {
   debounceFetch()
   return () => debounceFetch.cancel()
  }, [customerId, customerMachines, dispatch])
-
- useEffect(() => {
-  const debounceFetch = debounce(() => {
-   if (customerId && !contacts?.length) {
-    dispatch(getContacts(customerId))
-   }
-  }, 300)
-  debounceFetch()
-  return () => debounceFetch.cancel()
- }, [customerId, contacts, dispatch])
 
  useEffect(() => {
   const debounceFetch = debounce(() => {

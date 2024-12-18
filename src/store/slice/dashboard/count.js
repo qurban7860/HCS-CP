@@ -13,6 +13,7 @@ const initialState = {
  count: {},
  countActiveTickets: 0,
  quickActiveCustomerTickets: [],
+ quickActiveCustomerMachines: [],
  onlineUsers: [],
  erpLogs: []
 }
@@ -47,6 +48,12 @@ const countSlice = createSlice({
    state.success = false
    state.isLoading = false
   },
+  resetQuickActiveCustomerMachines(state) {
+   state.quickActiveCustomerMachines = []
+   state.responseMessage = null
+   state.success = false
+   state.isLoading = false
+  },
   getCountSuccess(state, action) {
    state.isLoading = false
    state.success = true
@@ -69,6 +76,12 @@ const countSlice = createSlice({
    state.isLoading = false
    state.success = true
    state.countActiveTickets = action.payload
+   state.initial = true
+  },
+  getQuickActiveCustomerMachinesSuccess(state, action) {
+   state.isLoading = false
+   state.success = true
+   state.quickActiveCustomerMachines = action.payload
    state.initial = true
   },
   setCountResponseMessage(state, action) {
@@ -182,6 +195,29 @@ export function getQuickActiveCustomerTicket(ref, page, pageSize, id) {
    dispatch(countSlice.actions.getQuickActiveCustomerTicketSuccess(openTickets))
   } catch (error) {
    console.log(error)
+   dispatch(countSlice.actions.hasError(error.Message))
+   throw error
+  }
+ }
+}
+
+export function getQuickActiveCustomerMachines(id) {
+ return async dispatch => {
+  dispatch(countSlice.actions.startLoading())
+  try {
+   const params = {
+    customer: id,
+    isActive: true,
+    isArchived: false
+    // portalKey:
+   }
+   const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.viaCustomer(id, false), {
+    params
+   })
+   const portalSyncedMachines = response.data.filter(machine => machine.portalKey)
+   dispatch(countSlice.actions.getQuickActiveCustomerMachinesSuccess(portalSyncedMachines))
+  } catch (error) {
+   console.error(error)
    dispatch(countSlice.actions.hasError(error.Message))
    throw error
   }
