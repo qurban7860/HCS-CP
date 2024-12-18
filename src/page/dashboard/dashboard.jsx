@@ -19,8 +19,7 @@ import {
  resetContact,
  resetCustomerTickets,
  resetMachines,
- resetSecurityUsers,
- resetContacts
+ resetSecurityUsers
 } from 'store/slice'
 import { useCustomerDefaultValues } from 'section/crm/customer'
 import { SupportTicketWidget } from 'section/crm/support'
@@ -32,14 +31,16 @@ import { FLEX } from 'constant'
 import { toTitleCase } from 'util'
 
 function Dashboard() {
- const { customer, isLoading, contacts, securityUsers, customerMachines, quickActiveCustomerTickets } = useSelector(
+ const { customer, isLoading, securityUsers, customerMachines, quickActiveCustomerTickets, activeUsersCount, onlineUsersCount } = useSelector(
   state => ({
    customer: state.customer.customer,
    isLoading: state.customer.isLoading,
    customerTickets: state.customerTicket.customerTickets,
    securityUsers: state.user.securityUsers,
    customerMachines: state.machine.customerMachines,
-   quickActiveCustomerTickets: state.count.quickActiveCustomerTickets
+   quickActiveCustomerTickets: state.count.quickActiveCustomerTickets,
+   activeUsersCount: state.count.activeUsersCount,
+   onlineUsersCount: state.count.onlineUsersCount
   }),
   _.isEqual
  )
@@ -47,7 +48,6 @@ function Dashboard() {
  const { onlineUsers } = useWebSocketContext()
  const [customerOnlineUserIds, setCustomerOnlineUserIds] = useState(onlineUsers)
  const customerId = user?.customer
- const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
 
  const isMobile = useResponsive('down', 'sm')
  const allMachineDefault = { _id: null, name: 'All' }
@@ -75,7 +75,7 @@ function Dashboard() {
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
-   if (customerId && !securityUsers.length) {
+   if (customerId && !securityUsers?.length) {
     dispatch(getSecurityUsers(customerId))
    }
   }, 300)
@@ -111,7 +111,6 @@ function Dashboard() {
   dispatch(setContactDialog(false))
   dispatch(resetCustomerMachines())
   dispatch(resetContact())
-  dispatch(resetContacts())
   dispatch(resetMachines())
   dispatch(resetSecurityUsers())
   dispatch(resetMachineSiteDialogData())
