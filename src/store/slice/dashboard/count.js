@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
-import { COMPLETED_STATUSES } from 'constant'
+import { COMPLETED_STATUSES, REGEX, DEBUG } from 'constant'
 import { fDate, normalizer } from 'util'
 
+const regEx = new RegExp(REGEX.SUCCESS_CODE)
 const initialState = {
  initial: false,
  responseMessage: null,
@@ -12,6 +13,8 @@ const initialState = {
  error: null,
  count: {},
  countActiveTickets: 0,
+ activeUsersCount: 0,
+ onlineUsersCount: 0,
  quickActiveCustomerTickets: [],
  quickActiveCustomerMachines: [],
  onlineUsers: [],
@@ -53,6 +56,12 @@ const countSlice = createSlice({
    state.responseMessage = null
    state.success = false
    state.isLoading = false
+  },
+  setActiveUsersCount(state, action) {
+   state.activeUsersCount = action.payload
+  },
+  setOnlineUsersCount(state, action) {
+   state.onlineUsersCount = action.payload
   },
   getCountSuccess(state, action) {
    state.isLoading = false
@@ -219,6 +228,30 @@ export function getQuickActiveCustomerMachines(id) {
   } catch (error) {
    console.error(error)
    dispatch(countSlice.actions.hasError(error.Message))
+   throw error
+  }
+ }
+}
+
+export function getQuickActiveAndOnlineSecurityUsers(id) {
+ return async dispatch => {
+  dispatch(countSlice.actions.startLoading())
+  try {
+   const response = await axios.get(PATH_SERVER.SECURITY.USER.list, {
+    params: {
+     isArchived: false,
+     isActive: true,
+     customer: id
+    }
+   })
+   if (regEx.test(response.status)) {
+    const Data = response.data?.filter(user => user.customer?._id === id)
+    const OnlineUsersCount = Data?.filter(user => user.isOnline)?.length
+    dispatch(countSlice.actions.setActiveUsersCount(Data?.length))
+    dispatch(countSlice.actions.setOnlineUsersCount(OnlineUsersCount))
+   }
+  } catch (error) {
+   console.error(DEBUG.GET_SECURITY_USERS_ERROR, error)
    throw error
   }
  }
