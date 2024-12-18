@@ -8,7 +8,7 @@ import { useWebSocketContext } from 'auth/websocket-provider'
 import { useResponsive } from 'hook'
 import {
  getContacts,
- getCustomerTickets,
+ getQuickActiveCustomerTicket,
  getSecurityUsers,
  getOnlineUsers,
  getCustomerMachines,
@@ -33,13 +33,14 @@ import { FLEX } from 'constant'
 import { toTitleCase } from 'util'
 
 function Dashboard() {
- const { customer, isLoading, customerTickets, contacts, securityUsers, customerMachines } = useSelector(
+ const { customer, isLoading, contacts, securityUsers, customerMachines, quickActiveCustomerTickets } = useSelector(
   state => ({
    customer: state.customer.customer,
    isLoading: state.customer.isLoading,
    customerTickets: state.customerTicket.customerTickets,
    securityUsers: state.user.securityUsers,
-   customerMachines: state.machine.customerMachines
+   customerMachines: state.machine.customerMachines,
+   quickActiveCustomerTickets: state.count.quickActiveCustomerTickets
   }),
   _.isEqual
  )
@@ -95,15 +96,15 @@ function Dashboard() {
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
-   if (customer?.ref && customerId && !customerTickets?.issues?.length) {
-    dispatch(getCustomerTickets(customer?.ref, 3, customerId))
+   if (customer?.ref && customerId && !quickActiveCustomerTickets?.length) {
+    dispatch(getQuickActiveCustomerTicket(customer?.ref, 3, customerId))
    }
   }, 300)
   debounceFetch()
   return () => {
    debounceFetch.cancel()
   }
- }, [dispatch, customer?.ref, customerTickets])
+ }, [dispatch, customer?.ref, quickActiveCustomerTickets])
 
  useEffect(() => {
   if (Array.isArray(onlineUsers) && Array.isArray(securityUsers)) {
@@ -142,7 +143,7 @@ function Dashboard() {
       <Grid item xs={12} sm={4}>
        <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
         <Grid item xs={12} sm={12}>
-         <SupportTicketWidget value={defaultValues} />
+         <SupportTicketWidget value={quickActiveCustomerTickets} />
         </Grid>
        </Grid>
       </Grid>
