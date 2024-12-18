@@ -171,6 +171,12 @@ const en = {
  date: {
   label: `Date`
  },
+ decoiler: {
+  label: `Decoiler`,
+  decoilers: {
+   label: `Decoilers`
+  }
+ },
  department: {
   label: `Department`
  },
@@ -649,6 +655,9 @@ const en = {
  },
  work_order: {
   label: `Work Order`
+ },
+ x_tenda: {
+  label: `X-TENDA™`
  },
  details: `details`,
  checkout: `checkout`,
