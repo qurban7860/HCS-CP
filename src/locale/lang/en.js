@@ -134,6 +134,9 @@ const en = {
    label: `Columns`
   }
  },
+ created: {
+  label: `Created`
+ },
  customer: {
   label: `Customer`
  },
@@ -239,6 +242,9 @@ const en = {
  },
  installation_date: {
   label: `Installation Date`
+ },
+ issue: {
+  label: `Issue`
  },
  key_detail: {
   label: `Key Detail`,
@@ -599,6 +605,9 @@ const en = {
  },
  technical_contact: {
   label: `Technical Contact`
+ },
+ ticket_number: {
+  label: `Ticket Number`
  },
  time_zone: {
   label: `Time Zone`,
