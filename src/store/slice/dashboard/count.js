@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
-import { fDate } from 'util'
+import { COMPLETED_STATUSES } from 'constant'
+import { fDate, normalizer } from 'util'
 
 const initialState = {
  initial: false,
@@ -11,6 +12,7 @@ const initialState = {
  error: null,
  count: {},
  countActiveTickets: 0,
+ quickActiveCustomerTickets: [],
  onlineUsers: [],
  erpLogs: []
 }
@@ -39,10 +41,22 @@ const countSlice = createSlice({
    state.success = false
    state.isLoading = false
   },
+  resetQuickActiveCustomerTickets(state) {
+   state.quickActiveCustomerTickets = []
+   state.responseMessage = null
+   state.success = false
+   state.isLoading = false
+  },
   getCountSuccess(state, action) {
    state.isLoading = false
    state.success = true
    state.count = action.payload
+   state.initial = true
+  },
+  getQuickActiveCustomerTicketSuccess(state, action) {
+   state.isLoading = false
+   state.success = true
+   state.quickActiveCustomerTickets = action.payload
    state.initial = true
   },
   getOnlineUsersSuccess(state, action) {
@@ -143,6 +157,33 @@ export function getERPLogs(machineId) {
   } catch (error) {
    console.log(error)
    dispatch(countSlice.actions.hasError(error.Message))
+  }
+ }
+}
+
+export function getQuickActiveCustomerTicket(ref, page, pageSize, id) {
+ return async dispatch => {
+  dispatch(countSlice.actions.startLoading())
+  try {
+   const params = {
+    ref
+   }
+   params.pagination = {
+    page,
+    pageSize
+   }
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKET(id), { params })
+   const tickets = response.data.issues.map(ticket => ({
+    key: ticket.key,
+    status: ticket.fields?.status?.name,
+    machine: ticket.fields?.customfield_10069
+   }))
+   const openTickets = tickets?.filter(ticket => !COMPLETED_STATUSES.includes(normalizer(ticket?.status)))
+   dispatch(countSlice.actions.getQuickActiveCustomerTicketSuccess(openTickets))
+  } catch (error) {
+   console.log(error)
+   dispatch(countSlice.actions.hasError(error.Message))
+   throw error
   }
  }
 }
