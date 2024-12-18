@@ -142,6 +142,7 @@ const ICON_LOC = {
  MODE_DARK: _getIcon('moon'),
  PARENT: _getIcon('parent'),
  PORTAL_SYNC: _getIcon('portal-sync'),
+ RIBBED: _getIcon('ribbed'),
  SETTING: _getIcon('setting'),
  US: _getCountryIcon('usa')
 }
@@ -243,6 +244,7 @@ export const ICON_LOC_NAME = {
  US: 'US',
  PARENT: 'PARENT',
  PORTAL_SYNC: 'PORTAL_SYNC',
+ RIBBED: 'RIBBED',
  SETTING: 'SETTING'
 }
 
