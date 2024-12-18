@@ -35,7 +35,19 @@ const SupportTicketWidget = ({ value, handleMachineDialog, handleMachineSiteDial
   <Grid container mb={2}>
    <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={openTickets?.length}>
     <GStyledSpanBox>
-     <FormHeader label={openTickets?.length > 1 ? t('active_support_ticket.active_support_tickets.label') : t('active_support_ticket.label')} />
+     <FormHeader
+      nodeLabel
+      label={
+       <GStyledSpanBox display={FLEX.FLEX} justifyContent={FLEX.SPACE_BETWEEN}>
+        <Typography variant={TYPOGRAPHY.H6} color='common.white'>
+         {openTickets?.length > 1 ? t('active_support_ticket.active_support_tickets.label') : t('active_support_ticket.label')}
+        </Typography>
+        <Typography variant={TYPOGRAPHY.H5} color='common.white'>
+         {openTickets?.length}
+        </Typography>
+       </GStyledSpanBox>
+      }
+     />
     </GStyledSpanBox>
     <Grid
      container
@@ -46,12 +58,12 @@ const SupportTicketWidget = ({ value, handleMachineDialog, handleMachineSiteDial
      }}>
      <Grid container p={2}>
       {openTickets?.length > 0 ? (
-       openTickets?.map((mach, index) => (
+       openTickets?.map((tix, index) => (
         <Fragment key={index}>
          <Grid item xs={8}>
           <GStyledListItemText
            primary={
-            mach?.fields?.status?.name === 'Open' && (
+            tix?.fields?.status?.name === 'Open' && (
              <GStyledSpanBox>
               <IconButton
                size={SIZE.MEDIUM}
@@ -64,7 +76,7 @@ const SupportTicketWidget = ({ value, handleMachineDialog, handleMachineSiteDial
                 m: 0
                }}>
                <Typography color={themeMode === KEY.LIGHT ? 'common.black' : 'grey.400'} variant={TYPOGRAPHY.H4}>
-                {mach?.key}
+                {tix?.key}
                </Typography>
               </IconButton>
              </GStyledSpanBox>
@@ -72,7 +84,7 @@ const SupportTicketWidget = ({ value, handleMachineDialog, handleMachineSiteDial
            }
            secondary={
             <Typography variant={TYPOGRAPHY.BODY2} color='text.secondary'>
-             {mach?.fields?.customfield_10069}
+             {tix?.fields?.customfield_10069}
             </Typography>
            }
           />
@@ -84,12 +96,12 @@ const SupportTicketWidget = ({ value, handleMachineDialog, handleMachineSiteDial
             icon={ICON_NAME.JIRA}
             color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
             dimension={18}
-            onClick={() => openInNewPage(mach?.key)}
+            onClick={() => openInNewPage(tix?.key)}
            />
            <GStyledSupportStatusFieldChip
-            status={normalizer(mach?.fields?.status.name)}
+            status={normalizer(tix?.fields?.status.name)}
             mode={themeMode}
-            label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{mach?.fields?.status.name}</Typography>}
+            label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{tix?.fields?.status.name}</Typography>}
             size={SIZE.SMALL}
            />
           </GStyledSpanBox>
