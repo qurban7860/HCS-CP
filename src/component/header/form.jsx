@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useIcon, useSettingContext } from 'hook'
+import { Icon, useSettingContext } from 'hook'
 import { Typography } from '@mui/material'
 import { GStyledSpanBox } from 'theme/style'
 import { KEY, LABEL, VARIANT } from 'constant'
@@ -7,17 +7,15 @@ import { StyledHeaderBox } from './style'
 
 const { TYPOGRAPHY } = VARIANT
 
-const FormHeader = ({ label = LABEL.HEADER, textSize = TYPOGRAPHY.H6, icon }) => {
+const FormHeader = ({ label = LABEL.HEADER, textSize = TYPOGRAPHY.H6, icon, nodeLabel }) => {
  const { themeMode } = useSettingContext()
-
- const { Icon: LocIcon, iconSrc: framaSrc } = useIcon(icon)
 
  return (
   <StyledHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2}>
    {icon ? (
     <GStyledSpanBox>
-     <LocIcon
-      icon={framaSrc}
+     <Icon
+      icon={icon}
       color='common.white'
       sx={{
        alignItems: 'center',
@@ -25,10 +23,12 @@ const FormHeader = ({ label = LABEL.HEADER, textSize = TYPOGRAPHY.H6, icon }) =>
       }}
      />
      &nbsp; &nbsp;
-     <Typography variant='overline2' color='common.white' gutterBottom>
+     <Typography variant={TYPOGRAPHY.OVERLINE2} color='common.white' gutterBottom>
       {label}
      </Typography>
     </GStyledSpanBox>
+   ) : nodeLabel ? (
+    label
    ) : (
     <Typography variant={textSize} color='common.white' gutterBottom>
      {label}
@@ -39,9 +39,10 @@ const FormHeader = ({ label = LABEL.HEADER, textSize = TYPOGRAPHY.H6, icon }) =>
 }
 
 FormHeader.propTypes = {
- label: PropTypes.string,
+ label: PropTypes.any,
  textSize: PropTypes.oneOf(Object.values(TYPOGRAPHY)),
- icon: PropTypes.string
+ icon: PropTypes.string,
+ nodeLabel: PropTypes.node
 }
 
 export default FormHeader
