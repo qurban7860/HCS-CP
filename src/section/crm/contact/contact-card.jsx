@@ -75,7 +75,7 @@ const ContactCard = ({ selectedCardId, value, handleContactCard, c }) => {
 }
 
 ContactCard.propTypes = {
- selectedCardId: PropTypes.string,
+ selectedCardId: PropTypes.any,
  value: PropTypes.any,
  handleContactCard: PropTypes.func,
  contact: PropTypes.any,

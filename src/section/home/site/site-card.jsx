@@ -59,7 +59,7 @@ const SiteCard = ({ isMain, selectedCardId, handleSiteCard, site }) => {
 
 SiteCard.propTypes = {
  isMain: PropTypes.bool,
- selectedCardId: PropTypes.string,
+ selectedCardId: PropTypes.any,
  handleContactCard: PropTypes.func,
  handleSiteCard: PropTypes.func,
  contact: PropTypes.any,
