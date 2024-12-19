@@ -336,6 +336,9 @@ const en = {
   },
   mode_tooltip: `Toggle {{value}} mode`
  },
+ model: {
+  label: `Model`
+ },
  name: {
   key: `name`,
   label: `Name`
@@ -556,6 +559,9 @@ const en = {
   label: `Session Inactivity`,
   content: `You are about to be logged out, stay or you'll be logged out in {{countdown}} seconds.`,
   content_2: `You are about to be logged out.`
+ },
+ serial_number: {
+  label: `Serial Number`
  },
  shipping_date: {
   label: `Shipping Date`
