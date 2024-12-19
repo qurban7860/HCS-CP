@@ -841,10 +841,9 @@ export const GStyledChowBox = styled(Box)(({ theme }) => ({
  paddingBottom: theme.spacing(2)
 }))
 
-export const GStyledScrollableHeightLockGrid = styled(Grid)(({ theme, mode, totalCount }) =>
- totalCount < 5
-  ? {}
-  : {
+export const GStyledScrollableHeightLockGrid = styled(Grid)(({ theme, mode, totalCount, isMobile }) =>
+ totalCount > 5 && !isMobile
+  ? {
      position: 'relative',
      '&::after': {
       content: '""',
@@ -860,6 +859,7 @@ export const GStyledScrollableHeightLockGrid = styled(Grid)(({ theme, mode, tota
         : `linear-gradient(to bottom, rgba(0,0,0,0.1), ${alpha(theme.palette.grey[700], 0.5)})`
      }
     }
+  : {}
 )
 
 export const GStyledHeaderCardContainer = styled(Card)(({ theme, height = 180 }) => ({
