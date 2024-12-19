@@ -1,15 +1,18 @@
 import { Fragment, useState } from 'react'
 import { useOffSetTop, useResponsive, Clock, useSettingContext, Icon, ICON_NAME } from 'hook'
-import { AppBar, Toolbar, Stack, Badge, IconButton, Box } from '@mui/material'
+import { AppBar, Toolbar, Stack, Badge, IconButton, Box, Typography } from '@mui/material'
 import { NavSection, PopoverDefault, DrawerMenu } from 'component'
 import { LogoIcon } from 'component/logo'
 import { useTheme } from '@mui/material/styles'
 import { bgBlur } from 'theme/style'
-import { HEADER, GLOBAL, NavConfiguration } from 'config'
-import { KEY } from 'constant'
+import { GLOBAL } from 'config/global'
+import { HEADER, NavConfiguration } from 'config'
+import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 import ModeOption from './mode-option'
 import AccountPopover from './account-popover'
 import NotificationPopover from './notification-popover'
+
+const ENV = 'dev'
 
 function Header() {
  const theme = useTheme()
@@ -32,34 +35,39 @@ function Header() {
 
  const renderContent = (
   <Fragment>
-   <Stack direction='row' justifyContent='flex-start'>
+   <Stack direction={FLEX.FLEX} justifyContent={FLEX.FLEX_START} sx={{ position: KEY.RELATIVE }}>
     {isDesktop && (
-     <Badge
-      overlap='circular'
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      color='primary'
-      variant='dot'
-      badgeContent={GLOBAL.VERSION}
-      sx={{
-       '.MuiBadge-dot': {
-        backgroundColor: GLOBAL.ENV === 'dev' || GLOBAL.ENV === 'development' ? GLOBAL.DEV_COLOR : 'transparent'
-       }
-      }}>
+     <Fragment>
       <LogoIcon />
-     </Badge>
+      {GLOBAL.ENV === ENV && (
+       <Box
+        bgcolor={theme.palette.burnIn.main}
+        sx={{
+         position: KEY.ABSOLUTE,
+         bottom: -10,
+         width: '100%',
+         height: 5
+        }}>
+        <Stack>
+         <Typography variant={TYPOGRAPHY.CAPTION}>{GLOBAL.ENV.toUpperCase()}</Typography>
+         <Typography variant={TYPOGRAPHY.CAPTION1}>{GLOBAL.VERSION}</Typography>
+        </Stack>
+       </Box>
+      )}
+     </Fragment>
     )}
    </Stack>
    {!isDesktop ? (
     <Fragment>
      <Box
-      justifyContent={'space-between'}
+      justifyContent={FLEX.SPACE_BETWEEN}
       sx={{
-       display: 'flex',
-       justifyContent: 'space-between',
-       alignItems: 'center',
+       display: FLEX.FLEX,
+       justifyContent: FLEX.SPACE_BETWEEN,
+       alignItems: KEY.CENTER,
        width: '100%'
       }}>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ display: FLEX.FLEX, alignItems: KEY.CENTER }}>
        <IconButton sx={{ mr: 1, color: 'text.primary' }} onClick={toggleMobileMenu}>
         <Icon icon={ICON_NAME.MENU} color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze} />
        </IconButton>
@@ -67,7 +75,7 @@ function Header() {
         <Icon icon={ICON_NAME.CLOCK} color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze} />
        </IconButton>
       </Box>
-      <Box justifyContent={'flex-end'} sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box justifyContent={FLEX.FLEX_END} sx={{ display: FLEX.FLEX, alignItems: KEY.CENTER }}>
        <AccountPopover />
       </Box>
       <DrawerMenu navConfig={navConfig} open={mobileMenuOpen} onClose={toggleMobileMenu} />
@@ -78,10 +86,10 @@ function Header() {
     </Fragment>
    ) : (
     <Fragment>
-     <Stack flexGrow={1} direction='row' alignItems='center' justifyContent='flex-start' spacing={{ xs: 0.5, sm: 4 }} ml={5}>
+     <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_START} spacing={{ xs: 0.5, sm: 4 }} ml={5}>
       <NavSection data={navConfig} />
      </Stack>
-     <Stack flexGrow={1} direction='row' alignItems='center' justifyContent='flex-end' spacing={{ xs: 0.5, sm: 2 }}>
+     <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_END} spacing={{ xs: 0.5, sm: 2 }}>
       {/* {localTimeZone !== aucklandTimeZone && <Clock local={localTimeZone} city={'cleveland'} />} */}
       <Clock main city={KEY.AUCKLAND} />
       <ModeOption />
@@ -96,9 +104,9 @@ function Header() {
  return (
   <AppBar
    sx={{
-    boxShadow: 'none',
+    boxShadow: KEY.NONE,
     height: HEADER.H_MOBILE,
-    position: 'fixed',
+    position: KEY.FIXED,
     top: 0,
     zIndex: theme.zIndex.appBar + 1,
     ...bgBlur({
@@ -114,7 +122,7 @@ function Header() {
      })
     })
    }}>
-   <Toolbar sx={{ height: 1, color: 'text.primary', position: 'sticky' }}>{renderContent}</Toolbar>
+   <Toolbar sx={{ height: 1, color: 'text.primary', position: KEY.STICKY }}>{renderContent}</Toolbar>
   </AppBar>
  )
 }
