@@ -2,57 +2,63 @@ import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { ICON_NAME, useIcon } from 'hook'
-import { Box, TableBody, TableCell } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import { LinkTableCell } from 'component/table-tool'
+import { ICON_NAME, Icon, useSettingContext } from 'hook'
 import { PATH_MACHINE } from 'route/path'
-import { fDate } from 'util'
+import { TableBody, TableCell } from '@mui/material'
+import { LinkWrap } from 'component'
+import { useTheme } from '@mui/material/styles'
+import { GStyledSpanBox } from 'theme/style'
 import { KEY } from 'constant'
 import { StyledIconListItemText, StyledTableRow } from './style'
 
-const MachineTable = ({ machine, mode, index, isArchived }) => {
+const MachineTable = ({ columns, onViewRow, machine, index, selected }) => {
+ const { themeMode } = useSettingContext()
  const theme = useTheme()
  const navigate = useNavigate()
+ const lowercaseRow = {}
 
- const { Icon, iconSrc: activeSrc } = useIcon(ICON_NAME.ACTIVE)
- const { iconSrc: inactiveSrc } = useIcon(ICON_NAME.INACTIVE)
-
- const activeColor = mode === KEY.DARK ? theme.palette.howick.burnIn : theme.palette.burnIn.altDark
+ const activeColor = themeMode === KEY.DARK ? theme.palette.howick.burnIn : theme.palette.burnIn.altDark
  const inactiveColor = theme.palette.howick.error
 
- const handleOnClick = id => {
+ const handleOnClick = (event, id) => {
+  event.preventDefault()
   navigate(PATH_MACHINE.machines.view(id))
  }
 
+ Object.entries(machine).forEach(([key, value]) => {
+  if (typeof key === 'string') lowercaseRow[key.toLocaleLowerCase()] = value
+ })
+
  const openInNewPage = id => {
   const url = PATH_MACHINE.machines.view(id)
-  window.open(url, '_blank')
+  window.open(url, KEY.BLANK)
  }
 
  return (
   <Fragment>
    <TableBody>
-    <StyledTableRow index={index} mode={mode} machine={machine}>
-     <LinkTableCell
-      param={machine?.serialNo}
-      onClick={() => {
-       handleOnClick(machine?._id)
-      }}
-      openInNewTab={() => openInNewPage(machine?._id)}
-     />
-     <TableCell>{machine?.name}</TableCell>
-     <TableCell>
-      <Box>{machine?.machineModel?.name}</Box>
-     </TableCell>
-     <TableCell>{fDate(machine?.installationDate)}</TableCell>
-     <TableCell>{fDate(machine?.shippingDate)}</TableCell>
-     <TableCell>{machine?.status?.name}</TableCell>
-     <TableCell>
-      <StyledIconListItemText inActive={machine?.isActive}>
-       <m.div>{machine?.isActive ? <Icon icon={activeSrc} color={activeColor} /> : <Icon icon={inactiveSrc} color={inactiveColor} />}</m.div>
-      </StyledIconListItemText>
-     </TableCell>
+    <StyledTableRow index={index} mode={themeMode} machine={machine} selected={selected}>
+     {columns?.map((column, index) => {
+      const cellValue = lowercaseRow?.[column.id.toLocaleLowerCase()] || ''
+      return (
+       <TableCell key={index} onClick={onViewRow} sx={{ cursor: 'pointer', '&:hover': { transform: 'scale(0.97)', transition: 'ease-in-out 0.2s' } }} align={column?.numerical ? 'right' : 'left'}>
+        {column.checked &&
+         (column.id === 'serialNo' ? (
+          <GStyledSpanBox>
+           <LinkWrap param={machine?.serialNo} onClick={e => handleOnClick(e, machine?._id)} openInNewTab={() => openInNewPage(machine?._id)} />
+          </GStyledSpanBox>
+         ) : column.id === 'isActive' ? (
+          <StyledIconListItemText inActive={machine?.isActive}>
+           <m.div>{machine?.isActive ? <Icon icon={ICON_NAME.ACTIVE} color={activeColor} /> : <Icon icon={ICON_NAME.INACTIVE} color={inactiveColor} />}</m.div>
+          </StyledIconListItemText>
+         ) : column?.value ? (
+          column?.value(machine)
+         ) : (
+          cellValue
+         ))}
+       </TableCell>
+      )
+     })}
     </StyledTableRow>
    </TableBody>
   </Fragment>
@@ -61,9 +67,12 @@ const MachineTable = ({ machine, mode, index, isArchived }) => {
 
 MachineTable.propTypes = {
  machine: PropTypes.object,
- mode: PropTypes.string,
  index: PropTypes.number,
- isArchived: PropTypes.bool
+ isArchived: PropTypes.bool,
+ selected: PropTypes.bool,
+ onViewRow: PropTypes.func,
+ handleOnClick: PropTypes.func,
+ columns: PropTypes.array
 }
 
 export default MachineTable

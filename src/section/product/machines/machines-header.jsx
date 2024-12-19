@@ -1,24 +1,48 @@
 import PropTypes from 'prop-types'
-import { TableHead, TableRow } from '@mui/material'
+import { useSettingContext } from 'hook'
+import { TableHead, TableRow, TableSortLabel, Typography } from '@mui/material'
 import { StyledHeaderTableCell } from './style'
-import { HEADER } from './constant'
+import { TYPOGRAPHY } from 'constant'
 
-const MachineHeader = ({ mode }) => {
+const MachineHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
+ const { themeMode } = useSettingContext()
+
  return (
   <TableHead>
    <TableRow>
-    {HEADER.map(item => (
-     <StyledHeaderTableCell key={item.key} item={item} mode={mode}>
-      {item.label}
-     </StyledHeaderTableCell>
-    ))}
+    {dataFiltered.length > 0 &&
+     columns?.map((headCell, index) => {
+      if (!headCell?.checked) return null
+      return (
+       <StyledHeaderTableCell
+        key={headCell.id}
+        mode={themeMode}
+        align={headCell?.align}
+        sortDirection={orderBy === headCell.id ? order : false}
+        sx={{ width: headCell.width, minWidth: headCell.minWidth }}>
+        {onSort ? (
+         <TableSortLabel hideSortIcon active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : 'asc'} onClick={() => onSort(headCell.id)} sx={{ textTransform: 'capitalize' }}>
+          <Typography variant={TYPOGRAPHY.OVERLINE0} p={0}>
+           {headCell.label}
+          </Typography>
+         </TableSortLabel>
+        ) : (
+         headCell.label
+        )}
+       </StyledHeaderTableCell>
+      )
+     })}
    </TableRow>
   </TableHead>
  )
 }
 
 MachineHeader.propTypes = {
- mode: PropTypes.string
+ dataFiltered: PropTypes.array,
+ columns: PropTypes.array,
+ orderBy: PropTypes.string,
+ order: PropTypes.string,
+ onSort: PropTypes.func
 }
 
 export default MachineHeader
