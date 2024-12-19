@@ -247,7 +247,7 @@ function TablePaginationCustom({
 
 TablePaginationCustom.propTypes = {
  sx: PropTypes.object,
- data: PropTypes.object,
+ data: PropTypes.any,
  count: PropTypes.number,
  dense: PropTypes.bool,
  disabled: PropTypes.bool,
