@@ -1,4 +1,3 @@
-import { min } from 'date-fns'
 import { t } from 'i18next'
 
 export const HEADER_ITEMS = [

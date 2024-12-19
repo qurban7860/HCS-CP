@@ -33,7 +33,7 @@ const MachineNav = ({ renderedTab, navigatePage, value, isLoading }) => {
    {value?.isPortalSynced && (
     <IconTooltip title={t('portal_synced.label')} icon={ICON_NAME.PORTAL_SYNC} color={theme.palette.howick.bronze} tooltipColor={theme.palette.howick.bronze} dimension={isMobile ? 15 : 20} iconOnly />
    )}
-   {DECOILER_TYPE_ARR.some(type => value?.machineModel?.includes(type)) && (
+   {DECOILER_TYPE_ARR.some(type => value?.machineModel?.includes(type)) ? (
     <IconTooltip
      title={LABEL.DECOILER(value?.machineModel)}
      icon={ICON_NAME.DECOILER_DEF}
@@ -41,7 +41,9 @@ const MachineNav = ({ renderedTab, navigatePage, value, isLoading }) => {
      dimension={isMobile ? 15 : 20}
      iconOnly
     />
-   )}
+   ) : value?.machineModel?.includes('3600') ? (
+    <IconTooltip title={t('x_tenda.label')} icon={ICON_NAME.RIBBED} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} dimension={isMobile ? 15 : 20} iconOnly />
+   ) : null}
    {value?.isActive ? (
     <IconTooltip
      title={LABEL.ACTIVE}

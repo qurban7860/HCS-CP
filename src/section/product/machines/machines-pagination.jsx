@@ -2,27 +2,42 @@ import { memo } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
 import { Box } from '@mui/material'
-import { StyledTablePagination } from './style'
+import { TablePaginationCustom } from 'component'
 import { LABEL } from 'constant'
 
-const MachineListPagination = ({ rowsPerPageOptions = [5, 10, 15, 20, 30, 50], data, page, mode, rowsPerPage, handleChangePage, handleChangeRowsPerPage, ...other }) => {
+const MachineListPagination = ({
+ rowsPerPageOptions = [5, 10, 15, 20, 30, 50],
+ data,
+ page,
+ mode,
+ rowsPerPage,
+ handleChangePage,
+ handleChangeRowsPerPage,
+ columnFilterButtonData,
+ handleColumnButtonClick,
+ currentFilterStatus,
+ showFilterStatus,
+ handleFilterStatus,
+ ...other
+}) => {
  return (
-  <Box
-   sx={{
-    position: 'relative'
-   }}>
-   <StyledTablePagination
+  <Box sx={{ position: 'relative' }}>
+   <TablePaginationCustom
     count={data?.length ?? 0}
     component={m.div}
     colSpan={2}
     data={data}
-    mode={mode}
     page={page}
     labelRowsPerPage={LABEL.ROWS}
     rowsPerPageOptions={rowsPerPageOptions}
     onPageChange={handleChangePage}
     onRowsPerPageChange={handleChangeRowsPerPage}
     rowsPerPage={rowsPerPage}
+    columnFilterButtonData={columnFilterButtonData}
+    columnButtonClickHandler={handleColumnButtonClick}
+    currentFilterStatus={currentFilterStatus}
+    showFilterStatus={showFilterStatus}
+    handleFilterStatus={handleFilterStatus}
     showLastButton
     showFirstButton
     {...other}
@@ -38,7 +53,12 @@ MachineListPagination.propTypes = {
  rowsPerPage: PropTypes.number,
  rowsPerPageOptions: PropTypes.array,
  handleChangePage: PropTypes.func,
- handleChangeRowsPerPage: PropTypes.func
+ handleChangeRowsPerPage: PropTypes.func,
+ columnFilterButtonData: PropTypes.array,
+ handleColumnButtonClick: PropTypes.func,
+ currentFilterStatus: PropTypes.any,
+ showFilterStatus: PropTypes.bool,
+ handleFilterStatus: PropTypes.func
 }
 
 export default memo(MachineListPagination)

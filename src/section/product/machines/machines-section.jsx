@@ -22,10 +22,10 @@ import {
  resetSecurityUser,
  resetSelectedContactCard
 } from 'store/slice'
+import { MachineTable, MachineHeader, MachineListPagination, MachinesCard, HEADER_ITEMS } from 'section/product'
 import { Table, Grid, Typography } from '@mui/material'
 import { GStyledTableHeaderBox } from 'theme/style'
 import { TableNoData, SkeletonTable, SearchBox, TableTitleBox } from 'component'
-import { MachineTable, MachineHeader, MachineListPagination, MachinesCard } from 'section/product'
 import { MARGIN, TABLE } from 'config'
 import { KEY, FLEX_DIR, TYPOGRAPHY } from 'constant'
 import { StyledScrollTableContainer } from './style'
@@ -47,7 +47,9 @@ const MachineListSection = ({ isArchived }) => {
  const {
   order,
   orderBy,
-  setPage: setTablePage
+  selected,
+  setPage: setTablePage,
+  onSort
  } = useTable({
   defaultOrderBy: KEY.CREATED_AT,
   defaultOrder: KEY.DESC
@@ -57,7 +59,6 @@ const MachineListSection = ({ isArchived }) => {
   dispatch(resetMachine())
   dispatch(resetMachines())
   dispatch(resetSelectedContactCard())
-
   if (userId !== securityUser?._id) {
    dispatch(resetSecurityUser())
   }
@@ -83,7 +84,7 @@ const MachineListSection = ({ isArchived }) => {
   }
  }, [machines, initial])
 
- const { filterName, handleFilterName, filteredData } = useFilter(getComparator(order, orderBy), tableData, initial, ChangeMachinePage, setMachineFilterBy)
+ const { filterName, handleFilterName, filteredData, filterStatus, handleFilterStatus } = useFilter(getComparator(order, orderBy), tableData, initial, ChangeMachinePage, setMachineFilterBy)
 
  const handleChangePage = (event, newPage) => {
   if (newPage < Math.ceil(filteredData.length / machineRowsPerPage)) {
@@ -165,14 +166,22 @@ const MachineListSection = ({ isArchived }) => {
          rowsPerPage={machineRowsPerPage}
          handleChangePage={handleChangePage}
          handleChangeRowsPerPage={handleChangeRowsPerPage}
+         columnFilterButtonData={HEADER_ITEMS}
+         currentFilterStatus={filterStatus}
+         handleFilterStatus={handleFilterStatus}
+         showFilterStatus
         />
         <StyledScrollTableContainer>
          <Table>
-          <MachineHeader mode={themeMode} />
+          <MachineHeader columns={HEADER_ITEMS} dataFiltered={filteredData} orderBy={orderBy} order={order} onSort={onSort} />
           {(isLoading ? [...Array(machineRowsPerPage)] : filteredData)
            .slice(machinePage * machineRowsPerPage, machinePage * machineRowsPerPage + machineRowsPerPage)
            .map((row, index) =>
-            row ? <MachineTable key={row._id} machine={row} mode={themeMode} index={index} isArchived={isArchived} /> : !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />
+            row ? (
+             <MachineTable key={row._id} machine={row} index={index} columns={HEADER_ITEMS} onViewRow={() => {}} selected={selected.includes(row._id)} isArchived={isArchived} />
+            ) : (
+             !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />
+            )
            )}
           <TableNoData isNotFound={isNotFound} />
          </Table>

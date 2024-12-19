@@ -1,14 +1,13 @@
 import { memo, useEffect, useLayoutEffect, useState } from 'react'
-import { useAuthContext } from 'auth/use-auth-context'
 import { t } from 'i18next'
 import _ from 'lodash'
 import debounce from 'lodash/debounce'
-import { dispatch, useSelector } from 'store'
+import { useAuthContext } from 'auth/use-auth-context'
 import { useWebSocketContext } from 'auth/websocket-provider'
 import { useResponsive } from 'hook'
+import { dispatch, useSelector } from 'store'
 import {
- getContacts,
- getCustomerTickets,
+ getQuickActiveCustomerTicket,
  getSecurityUsers,
  getOnlineUsers,
  getCustomerMachines,
@@ -20,8 +19,7 @@ import {
  resetContact,
  resetCustomerTickets,
  resetMachines,
- resetSecurityUsers,
- resetContacts
+ resetSecurityUsers
 } from 'store/slice'
 import { useCustomerDefaultValues } from 'section/crm/customer'
 import { SupportTicketWidget } from 'section/crm/support'
@@ -33,13 +31,16 @@ import { FLEX } from 'constant'
 import { toTitleCase } from 'util'
 
 function Dashboard() {
- const { customer, isLoading, customerTickets, contacts, securityUsers, customerMachines } = useSelector(
+ const { customer, isLoading, securityUsers, customerMachines, quickActiveCustomerTickets, activeUsersCount, onlineUsersCount } = useSelector(
   state => ({
    customer: state.customer.customer,
    isLoading: state.customer.isLoading,
    customerTickets: state.customerTicket.customerTickets,
    securityUsers: state.user.securityUsers,
-   customerMachines: state.machine.customerMachines
+   customerMachines: state.machine.customerMachines,
+   quickActiveCustomerTickets: state.count.quickActiveCustomerTickets,
+   activeUsersCount: state.count.activeUsersCount,
+   onlineUsersCount: state.count.onlineUsersCount
   }),
   _.isEqual
  )
@@ -47,7 +48,6 @@ function Dashboard() {
  const { onlineUsers } = useWebSocketContext()
  const [customerOnlineUserIds, setCustomerOnlineUserIds] = useState(onlineUsers)
  const customerId = user?.customer
- const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
 
  const isMobile = useResponsive('down', 'sm')
  const allMachineDefault = { _id: null, name: 'All' }
@@ -75,17 +75,7 @@ function Dashboard() {
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
-   if (customerId && !contacts?.length) {
-    dispatch(getContacts(customerId))
-   }
-  }, 300)
-  debounceFetch()
-  return () => debounceFetch.cancel()
- }, [customerId, contacts, dispatch])
-
- useEffect(() => {
-  const debounceFetch = debounce(() => {
-   if (customerId && !securityUsers.length) {
+   if (customerId && !securityUsers?.length) {
     dispatch(getSecurityUsers(customerId))
    }
   }, 300)
@@ -95,15 +85,15 @@ function Dashboard() {
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
-   if (customer?.ref && customerId && !customerTickets?.issues?.length) {
-    dispatch(getCustomerTickets(customer?.ref, 3, customerId))
+   if (customer?.ref && customerId && !quickActiveCustomerTickets?.length) {
+    dispatch(getQuickActiveCustomerTicket(customer?.ref, 3, customerId))
    }
   }, 300)
   debounceFetch()
   return () => {
    debounceFetch.cancel()
   }
- }, [dispatch, customer?.ref, customerTickets])
+ }, [dispatch, customer?.ref, quickActiveCustomerTickets])
 
  useEffect(() => {
   if (Array.isArray(onlineUsers) && Array.isArray(securityUsers)) {
@@ -121,7 +111,6 @@ function Dashboard() {
   dispatch(setContactDialog(false))
   dispatch(resetCustomerMachines())
   dispatch(resetContact())
-  dispatch(resetContacts())
   dispatch(resetMachines())
   dispatch(resetSecurityUsers())
   dispatch(resetMachineSiteDialogData())
@@ -142,7 +131,7 @@ function Dashboard() {
       <Grid item xs={12} sm={4}>
        <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
         <Grid item xs={12} sm={12}>
-         <SupportTicketWidget value={defaultValues} />
+         <SupportTicketWidget value={quickActiveCustomerTickets} />
         </Grid>
        </Grid>
       </Grid>

@@ -1,7 +1,6 @@
 import { styled, alpha } from '@mui/material/styles'
 import { TableContainer, TablePagination, TableRow, TableCell, ListItemText } from '@mui/material'
 import { KEY } from 'constant'
-import { HEADER } from './header'
 
 export const StyledTablePagination = styled(TablePagination)(({ theme, mode, page, data, rowsPerPage }) => ({
  '.MuiTablePagination-toolbar': {
@@ -54,8 +53,8 @@ export const StyledHeaderTableCell = styled(({ theme, mode, item, ...other }) =>
  whiteSpace: 'nowrap',
  position: 'sticky',
  top: 0,
- zIndex: 1,
- width: item.key === KEY.FIELDS_SUMMARY ? '30%' : item.key === KEY.FIELDS_CREATED ? '10%' : item.key === 'fields.status.statusCategory.name' ? '25%' : `calc(100% / ${HEADER.length})`
+ zIndex: 1
+ //  width: item?.key === KEY.FIELDS_SUMMARY ? '30%' : item.key === KEY.FIELDS_CREATED ? '10%' : item.key === 'fields.status.statusCategory.name' ? '25%' : `calc(100% / ${HEADER.length})`
 }))
 
 export const StyledIconListItemText = styled(({ theme, inActive, ...other }) => <ListItemText {...other} />)(({ theme, inActive }) => ({
@@ -82,8 +81,8 @@ export const StyledTableRow = styled(({ theme, mode, index, fields, key, ...othe
  cursor: 'pointer',
  '&:hover': {
   backgroundColor: mode === KEY.DARK ? theme.palette.grey[700] : theme.palette.common.white
- },
- width: fields?.summary ? '30%' : fields?.created ? '10%' : fields?.status?.statusCategory?.name ? '25%' : `calc(100% / ${HEADER.length})`
+ }
+ //  width: fields?.summary ? '30%' : fields?.created ? '10%' : fields?.status?.statusCategory?.name ? '25%' : `calc(100% / ${HEADER.length})`
 }))
 
 export const StyledScrollTableContainer = styled(TableContainer)(({ theme }) => ({

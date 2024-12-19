@@ -1,7 +1,6 @@
 import { styled, alpha } from '@mui/material/styles'
 import { TableContainer, TablePagination, TableRow, TableCell, ListItemText } from '@mui/material'
 import { KEY } from 'constant'
-import { HEADER } from './constant'
 
 export const StyledTablePagination = styled(TablePagination)(({ theme, mode, page, data, rowsPerPage }) => ({
  '.MuiTablePagination-toolbar': {
@@ -54,8 +53,8 @@ export const StyledHeaderTableCell = styled(({ theme, mode, item, ...other }) =>
  whiteSpace: 'nowrap',
  position: 'sticky',
  top: 0,
- zIndex: 1,
- width: item.key === KEY.SERIAL_NO ? '5%' : item.key === KEY.NAME ? '30%' : item.key === 'isActive' ? '5%' : `calc(100% / ${HEADER.length})`
+ zIndex: 1
+ //  width: item.key === KEY.SERIAL_NO ? '5%' : item.key === KEY.NAME ? '30%' : item.key === 'isActive' ? '5%' : `calc(100% / ${HEADER.length})`
 }))
 
 export const StyledIconListItemText = styled(({ theme, inActive, ...other }) => <ListItemText {...other} />)(({ theme, inActive }) => ({
@@ -82,8 +81,8 @@ export const StyledTableRow = styled(({ theme, mode, index, machine, ...other })
  cursor: 'pointer',
  '&:hover': {
   backgroundColor: mode === KEY.DARK ? theme.palette.grey[700] : theme.palette.common.white
- },
- width: machine?.serialNo ? '5%' : machine?.name ? '30%' : machine?.isActive.toString() ? '5%' : `calc(100% / ${HEADER.length})`
+ }
+ //  width: machine?.serialNo ? '5%' : machine?.name ? '30%' : machine?.isActive.toString() ? '5%' : `calc(100% / ${HEADER.length})`
 }))
 
 export const StyledScrollTableContainer = styled(TableContainer)(({ theme }) => ({

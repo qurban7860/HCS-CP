@@ -2,10 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
 import { fDate } from 'util'
-// import goodlog from 'good-logs'
 
 const TAG = 'customer-ticket'
-
 const initialState = {
  initial: false,
  customerTicketResponseMessage: null,
@@ -222,7 +220,6 @@ export function getCustomerTicketByKey(ref, key) {
    const params = {
     ref
    }
-
    const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
    let customerTicket = response.data.issues.find(ticket => ticket.key === key)
 

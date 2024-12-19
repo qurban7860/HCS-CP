@@ -2,13 +2,11 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { debounce } from 'lodash'
 import { dispatch } from 'store'
 import { useTable } from 'hook'
-import { applySort } from 'util'
-import { filterProperties } from './query-pool'
+import { filterProperties, moduleFilter } from './query-pool'
 import { getProperty, getNestedProperty } from './get-property'
-import { KEY } from 'constant'
 
 /**
- * ----------------------using useFilter hook-----------------------------
+ * don't remove------------------using useFilter hook-----------------
  *
  * @param {*} comparator - getComparator(order, orderBy), used to sort the data by assigned order, came from  useTable hook
  * @param {*} params - dataset to be filtered
@@ -22,7 +20,7 @@ import { KEY } from 'constant'
  *
  * @example
  * const {
- * filterName,
+ *  filterName,
  * filterStatus,
  * isFiltered,
  * handleFilterName,
@@ -34,13 +32,13 @@ import { KEY } from 'constant'
  * @param orderBy - string, param to be sorted, came from  useTable hook
  */
 
-export default function useFilter(comparator, params, initial, ChangePage, setFilterBy, defaultOrderBy) {
+export default function useTempFilter(comparator, params, initial, ChangePage, setFilterBy) {
  const [tableData, setTableData] = useState([])
  const [filterName, setFilterName] = useState('')
- const [filterStatus, setFilterStatus] = useState('active')
+ const [filterStatus, setFilterStatus] = useState([])
  const [filterRole, setFilterRole] = useState('all')
- const { setPage } = useTable({ defaultOrderBy: defaultOrderBy || 'name' })
- const isFiltered = filterName !== '' || filterStatus !== 'all' || filterRole !== 'all'
+ const { setPage } = useTable({ defaultOrderBy: 'name' })
+ const isFiltered = filterName !== '' || !!filterStatus.length
  const inputData = tableData
 
  const debouncedSearch = useRef(
@@ -52,13 +50,9 @@ export default function useFilter(comparator, params, initial, ChangePage, setFi
 
  useEffect(() => {
   if (initial) {
-   const sortedData = applySort({
-    inputData: params,
-    comparator: comparator
-   })
-   setTableData(sortedData)
+   setTableData(params)
   }
- }, [params, initial, comparator])
+ }, [params, initial])
 
  // filterFunction is a callback function that is used to filter the data, normalizing the parameters
  const filterFunction = useCallback(
@@ -96,42 +90,58 @@ export default function useFilter(comparator, params, initial, ChangePage, setFi
   setFilterName(event.target.value)
  }
 
- const handleFilterStatus = (event, value) => {
-  event.preventDefault()
+ const handleFilterStatus = event => {
   setPage(0)
-  setFilterStatus(value)
+  setFilterStatus(event.target.value)
  }
 
- const handleFilterRole = (event, value) => {
-  event.preventDefault()
+ const handleFilterRole = event => {
   setPage(0)
-  setFilterRole(value)
+  setFilterRole(event.target.value)
  }
 
  const handleResetFilter = () => {
   setFilterName('')
   setFilterRole('all')
-  setFilterStatus('active')
+  setFilterStatus([])
  }
 
  // useMemo is used to memoize the filteredData, so it will not be re-rendered if the data is not changed
  const filteredData = useMemo(() => {
-  let filterVal = inputData
-  if (filterVal) {
-   filterVal = filterVal.filter(item => filterFunction(item, filterName, filterProperties))
-   if (filterStatus === 'active') {
-    filterVal = filterVal.filter(obj => obj.isActive === true)
-   } else if (filterStatus === 'inActive') {
-    filterVal = filterVal.filter(obj => obj.isActive === false)
-   }
-   if (filterRole === KEY.CUSTOMER_ADMIN) {
-    filterVal = filterVal.filter(item => item.roles.some(obj => obj.name === KEY.CUSTOMER_ADMIN))
-   } else if (filterRole === KEY.CUSTOMER_USER) {
-    filterVal = filterVal.filter(item => item.roles.some(obj => obj.name === KEY.CUSTOMER_USER))
-   }
+  const filterArr = []
+  const stabilizedThis = inputData ? inputData.map((el, index) => [el, index]) : []
+  const inputSub = inputData
+
+  stabilizedThis.sort((a, b) => {
+   const order = comparator(a[0], b[0])
+   if (order !== 0) return order
+   return a[1] - b[1]
+  })
+
+  const filteredInputData = stabilizedThis.map(el => el[0])
+
+  if (filteredInputData) {
+   filterArr.push(item => filterFunction(item, filterName, filterProperties))
   }
+
+  let filterVal = filteredInputData?.filter(item => filterArr.every(fn => fn(item)))
+
+  try {
+   filterVal = moduleFilter(inputSub, filterName)
+  } catch (error) {
+   console.error(error)
+  }
+
+  if (filterStatus.length) {
+   filterVal = filteredData.filter(item => filterStatus.includes(item.status))
+  }
+
+  if (filterRole !== 'all') {
+   filterVal = filterVal.filter(item => item.role === filterRole)
+  }
+
   return filterVal
- }, [inputData, filterRole, filterName, filterFunction, filterStatus])
+ }, [inputData, comparator, filterRole, filterName, filterFunction, filterStatus])
 
  return {
   filterName,

@@ -5,7 +5,7 @@ import debounce from 'lodash/debounce'
 import { t } from 'i18next'
 import { Trans } from 'react-i18next'
 import { dispatch, useSelector } from 'store'
-import { useSettingContext, useFilter, useTable, getComparator, ICON_NAME } from 'hook'
+import { useSettingContext, useTempFilter, useTable, getComparator, ICON_NAME } from 'hook'
 import {
  getCustomer,
  getSite,
@@ -88,7 +88,7 @@ const SiteTab = () => {
 
  const defaultValues = useSiteDefaultValues(site, customer)
  const isMain = useCallback(s => defaultValues?.customerMainSiteId === s?._id, [defaultValues])
- const { filterName, handleFilterName, filteredData } = useFilter(getComparator(order, orderBy), sites, initial, ChangeSitePage, setSiteFilterBy)
+ const { filterName, handleFilterName, filteredData } = useTempFilter(getComparator(order, orderBy), sites, initial, ChangeSitePage, setSiteFilterBy)
 
  const latLong = useMemo(
   () => [
@@ -136,7 +136,7 @@ const SiteTab = () => {
   </Typography>
  )
 
- const renderContent = () => {
+ const renderList = () => {
   if (sites?.length > 0) {
    return isDesktop ? renderDesktopView() : renderMobileView()
   } else {
@@ -195,7 +195,7 @@ const SiteTab = () => {
         </Grid>
        )}
        <Grid container gap={2} p={1} height={isDesktop ? 100 : 'auto'}>
-        {renderContent()}
+        {renderList()}
        </Grid>
       </Grid>
      </Grid>

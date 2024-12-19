@@ -1,8 +1,8 @@
 import { memo } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
-import { Box, TablePagination } from '@mui/material'
-import { StyledTablePagination } from './style'
+import { Box } from '@mui/material'
+import { TablePaginationCustom } from 'component'
 import { KEY, LABEL } from 'constant'
 
 const TicketsListPagination = ({
@@ -14,6 +14,8 @@ const TicketsListPagination = ({
  rowsPerPage,
  handleChangePage,
  handleChangeRowsPerPage,
+ columnFilterButtonData,
+ handleColumnButtonClick,
  ...other
 }) => {
  return (
@@ -21,7 +23,7 @@ const TicketsListPagination = ({
    sx={{
     position: KEY.RELATIVE
    }}>
-   <StyledTablePagination
+   <TablePaginationCustom
     count={data?.length ?? 0}
     component={m.div}
     colSpan={2}
@@ -33,6 +35,9 @@ const TicketsListPagination = ({
     onPageChange={handleChangePage}
     onRowsPerPageChange={handleChangeRowsPerPage}
     rowsPerPage={rowsPerPage}
+    columnFilterButtonData={columnFilterButtonData}
+    columnButtonClickHandler={handleColumnButtonClick}
+    disabled
     showLastButton
     showFirstButton
     {...other}
@@ -48,7 +53,9 @@ TicketsListPagination.propTypes = {
  rowsPerPage: PropTypes.number,
  handleChangePage: PropTypes.func,
  handleChangeRowsPerPage: PropTypes.func,
- rowsPerPageOptions: PropTypes.array
+ rowsPerPageOptions: PropTypes.array,
+ columnFilterButtonData: PropTypes.array,
+ handleColumnButtonClick: PropTypes.func
 }
 
 export default memo(TicketsListPagination)

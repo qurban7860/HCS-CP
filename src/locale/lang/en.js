@@ -134,6 +134,9 @@ const en = {
    label: `Columns`
   }
  },
+ created: {
+  label: `Created`
+ },
  customer: {
   label: `Customer`
  },
@@ -167,6 +170,12 @@ const en = {
 
  date: {
   label: `Date`
+ },
+ decoiler: {
+  label: `Decoiler`,
+  decoilers: {
+   label: `Decoilers`
+  }
  },
  department: {
   label: `Department`
@@ -239,6 +248,9 @@ const en = {
  },
  installation_date: {
   label: `Installation Date`
+ },
+ issue: {
+  label: `Issue`
  },
  key_detail: {
   label: `Key Detail`,
@@ -323,6 +335,9 @@ const en = {
    label: `Modes`
   },
   mode_tooltip: `Toggle {{value}} mode`
+ },
+ model: {
+  label: `Model`
  },
  name: {
   key: `name`,
@@ -545,6 +560,9 @@ const en = {
   content: `You are about to be logged out, stay or you'll be logged out in {{countdown}} seconds.`,
   content_2: `You are about to be logged out.`
  },
+ serial_number: {
+  label: `Serial Number`
+ },
  shipping_date: {
   label: `Shipping Date`
  },
@@ -600,6 +618,9 @@ const en = {
  technical_contact: {
   label: `Technical Contact`
  },
+ ticket_number: {
+  label: `Ticket Number`
+ },
  time_zone: {
   label: `Time Zone`,
   time_zones: {
@@ -640,6 +661,9 @@ const en = {
  },
  work_order: {
   label: `Work Order`
+ },
+ x_tenda: {
+  label: `X-TENDA™`
  },
  details: `details`,
  checkout: `checkout`,

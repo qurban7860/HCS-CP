@@ -4,7 +4,7 @@ import { t } from 'i18next'
 import { Trans } from 'react-i18next'
 import { useSelector, dispatch } from 'store'
 import { useAuthContext } from 'auth'
-import { useTable, useFilter, getComparator, useSettingContext, useResponsive } from 'hook'
+import { useTable, useTempFilter, getComparator, useSettingContext, useResponsive } from 'hook'
 import {
  getCustomer,
  getSecurityUser,
@@ -17,7 +17,7 @@ import {
  ChangeCustomerTicketRowsPerPage,
  resetCustomerTickets
 } from 'store/slice'
-import { TicketsTable, TicketsTableHeader, TicketsListPagination, TicketCard, useTicketsDefaultValues } from 'section/support'
+import { TicketsTable, TicketsTableHeader, TicketsListPagination, TicketCard, useTicketsDefaultValues, HEADER_ITEMS } from 'section/support'
 import { Table, Grid, TableContainer, Typography } from '@mui/material'
 import { TableNoData, SkeletonTable, SearchBox, TableTitleBox, HowickLoader, SupportTicketDialog } from 'component'
 import { GStyledTableHeaderBox } from 'theme/style'
@@ -40,9 +40,10 @@ const TicketsListSection = () => {
  const {
   order,
   orderBy,
-  setPage: setTablePage
+  setPage: setTablePage,
+  onSort
  } = useTable({
-  defaultOrderBy: KEY.CREATED_AT,
+  defaultOrderBy: 'created',
   defaultOrder: KEY.DESC
  })
 
@@ -62,9 +63,7 @@ const TicketsListSection = () => {
     }
    }
   }, 300)
-
   debouncedDispatch()
-
   return () => {
    debouncedDispatch.cancel()
    dispatch(resetCustomerTickets())
@@ -82,7 +81,7 @@ const TicketsListSection = () => {
  }, [customerTickets, initial])
 
  const defaultValues = useTicketsDefaultValues(tableData && tableData)
- const { filterName, handleFilterName, filteredData } = useFilter(getComparator(order, orderBy), tableData, initial, ChangeCustomerTicketPage, setCustomerTicketFilterBy)
+ const { filterName, handleFilterName, filteredData } = useTempFilter(getComparator(order, orderBy), tableData, initial, ChangeCustomerTicketPage, setCustomerTicketFilterBy)
 
  const handleChangePage = (event, newPage) => {
   if (newPage < Math.ceil(filteredData.length / customerTicketRowsPerPage)) {
@@ -162,21 +161,23 @@ const TicketsListSection = () => {
        <Grid item xs={12} sm={12} mb={2} bgcolor='background.paper'>
         <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
         <TicketsListPagination
+         count={filteredData?.length || 0}
          mode={themeMode}
          data={filteredData}
          page={customerTicketPage}
          rowsPerPage={customerTicketRowsPerPage}
          handleChangePage={handleChangePage}
          handleChangeRowsPerPage={handleChangeRowsPerPage}
+         columnFilterButtonData={HEADER_ITEMS}
         />
         <TableContainer>
          <Table>
-          <TicketsTableHeader mode={themeMode} />
+          <TicketsTableHeader columns={HEADER_ITEMS} dataFiltered={filteredData} orderBy={orderBy} order={order} onSort={onSort} />
           {(isLoading ? [...Array(customerTicketRowsPerPage)] : filteredData)
            .slice(customerTicketPage * customerTicketRowsPerPage, customerTicketPage * customerTicketRowsPerPage + customerTicketRowsPerPage)
            .map((row, index) =>
             row ? (
-             <TicketsTable key={row.key} handleCustomerTicket={handleCustomerTicketCard} ticket={row} mode={themeMode} index={index} />
+             <TicketsTable key={row.key} columns={HEADER_ITEMS} handleCustomerTicket={handleCustomerTicketCard} ticket={row} mode={themeMode} index={index} />
             ) : (
              !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />
             )
