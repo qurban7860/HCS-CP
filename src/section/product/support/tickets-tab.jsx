@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useLayoutEffect, useState, memo } from 'react'
 import { Trans } from 'react-i18next'
 import { dispatch, useSelector } from 'store'
-import { useSettingContext, useFilter, useTable, getComparator } from 'hook'
+import { useSettingContext, useTable, getComparator, useTempFilter } from 'hook'
 import {
  getMachineTicketByKey,
  getMachineTickets,
@@ -63,7 +63,7 @@ const TicketsTab = () => {
  const defaultValues = useTicketsDefaultValues(tableData && tableData)
  const ticket = useTicketDefaultValues(machineTicket)
 
- const { filterName, handleFilterName, filteredData } = useFilter(getComparator(order, orderBy), tableData || [], initial, ChangeMachineTicketPage, setMachineTicketFilterBy)
+ const { filterName, handleFilterName, filteredData } = useTempFilter(getComparator(order, orderBy), tableData || [], initial, ChangeMachineTicketPage, setMachineTicketFilterBy)
 
  const handleMachineTicketCard = (event, machineTicketKey) => {
   event.preventDefault()

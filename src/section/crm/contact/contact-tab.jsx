@@ -3,14 +3,13 @@ import { Trans } from 'react-i18next'
 import debounce from 'lodash/debounce'
 import { useParams } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
-import { useSettingContext, useFilter, useTable, getComparator } from 'hook'
+import { useSettingContext, useTempFilter, useTable, getComparator, useUIMorph } from 'hook'
 import { getCustomer, setSelectedContactCard, resetContact, getContact, getContacts, ChangeContactPage, setContactFilterBy, resetSelectedContactCard, resetContacts } from 'store/slice'
 import { useContactDefaultValues } from 'section/crm'
 import { ContactCard, fieldsContactConfig } from 'section/crm/contact'
 import { CommonFieldsCard } from 'section/common'
-import { useMediaQuery, Grid, Typography } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import { DropdownDefault, AuditBox, CustomerDialog, SearchBox } from 'component'
-import { useTheme } from '@mui/material/styles'
 import { GStyledScrollableHeightLockGrid } from 'theme/style'
 import { MARGIN } from 'config'
 import { KEY, TYPOGRAPHY, FLEX_DIR } from 'constant'
@@ -18,14 +17,13 @@ import { KEY, TYPOGRAPHY, FLEX_DIR } from 'constant'
 const ContactTab = () => {
  const { contact, contacts, initial, isLoading, selectedContactCard, fromDialog } = useSelector(state => state.contact)
  const { customer, customerDialog } = useSelector(state => state.customer)
+ const { isDesktop, isMobile } = useUIMorph()
  const { id } = useParams()
- const theme = useTheme()
- const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
  const { themeMode } = useSettingContext()
  const { order, orderBy } = useTable({
   defaultOrderBy: KEY.CREATED_AT,
-  defaultOrder: KEY.DESC
+  defaultOrder: 'asc'
  })
 
  useEffect(() => {
@@ -60,7 +58,7 @@ const ContactTab = () => {
   }, 300)
   debounceFetch()
   return () => debounceFetch.cancel()
- }, [dispatch, contacts])
+ }, [contacts, fromDialog])
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
@@ -71,9 +69,14 @@ const ContactTab = () => {
   }, 300)
   debounceFetch()
   return () => debounceFetch.cancel()
- }, [dispatch, contacts])
+ }, [contacts, fromDialog])
 
- const { filterName, handleFilterName, filteredData } = useFilter(getComparator(order, orderBy), contacts, initial, ChangeContactPage, setContactFilterBy)
+ useLayoutEffect(() => {
+  dispatch(resetContact())
+  dispatch(resetContacts())
+ }, [])
+
+ const { filterName, handleFilterName, filteredData } = useTempFilter(getComparator(order, orderBy), contacts, initial, ChangeContactPage, setContactFilterBy)
 
  const handleContactCard = (event, contactId) => {
   event.preventDefault()
@@ -85,9 +88,7 @@ const ContactTab = () => {
  const renderDesktopView = () =>
   filteredData.map((contact, index) => <ContactCard key={contact?._id} selectedCardId={selectedContactCard || index} value={defaultValues} handleContactCard={handleContactCard} c={contact} />)
 
- const renderMobileView = () => (
-  <DropdownDefault filteredData={filteredData} selectedCard={selectedContactCard} i18nKey={'contact.contacts.label'} onChange={e => handleContactCard(e, e.target.value)} />
- )
+ const renderMobileView = () => <DropdownDefault filteredData={contacts} selectedCard={selectedContactCard} i18nKey={'contact.contacts.label'} onChange={e => handleContactCard(e, e.target.value)} />
 
  const renderNoContacts = () => (
   <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.secondary' align='center' sx={{ mt: 2 }}>
@@ -95,18 +96,13 @@ const ContactTab = () => {
   </Typography>
  )
 
- const renderContent = () => {
+ const renderList = () => {
   if (contacts?.length > 0) {
    return isDesktop ? renderDesktopView() : renderMobileView()
   } else {
    return renderNoContacts()
   }
  }
-
- useLayoutEffect(() => {
-  dispatch(resetContact())
-  dispatch(resetContacts())
- }, [])
 
  return (
   <Fragment>
@@ -119,9 +115,9 @@ const ContactTab = () => {
          <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
         </Grid>
        )}
-       <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={contacts?.length}>
-        <Grid container gap={2} p={1} height={isDesktop ? 100 : 'auto'}>
-         {renderContent()}
+       <GStyledScrollableHeightLockGrid isMobile={isMobile} mode={themeMode} totalCount={contacts?.length}>
+        <Grid container gap={2} p={1} height={'auto'} sx={{ maxHeight: 600, overflow: 'auto' }}>
+         {renderList()}
         </Grid>
        </GStyledScrollableHeightLockGrid>
       </Grid>
