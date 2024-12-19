@@ -118,6 +118,11 @@ const typography = {
   lineHeight: 1.5,
   fontSize: pxToRem(12)
  },
+ caption1: {
+  fontFamily: FONT_SECONDARY,
+  lineHeight: 1.5,
+  fontSize: pxToRem(8)
+ },
  overlineMini: {
   fontWeight: 700,
   lineHeight: 1.5,

@@ -29,6 +29,7 @@ export const TYPOGRAPHY = {
  BODY1: 'body1',
  BODY2: 'body2',
  CAPTION: 'caption',
+ CAPTION1: 'caption1',
  OVERLINE_MINI: 'overlineMini',
  OVERLINE: 'overline',
  OVERLINE0: 'overline0',
