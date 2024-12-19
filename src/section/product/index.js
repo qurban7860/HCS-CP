@@ -5,6 +5,8 @@ export { default as MachineTable } from './machines/machines-table'
 export { default as MachineHeader } from './machines/machines-header'
 export { default as MachineListPagination } from './machines/machines-pagination'
 export { default as MachinesCard } from './machines/machines-card'
+export * from './machines/machines-header-items'
+
 export { default as useMachineDefaultValues } from './machine/default-values/default-values'
 export * from './machine'
 
