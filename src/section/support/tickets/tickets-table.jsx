@@ -27,7 +27,7 @@ const TicketsTable = ({ columns, onViewRow, ticket, mode, index, handleCustomerT
     onClick={e => {
      handleCustomerTicket(e, fields?.customfield_10069, key)
     }}
-    // disabled for now; enable once Jira auth is refactored to take customer based token
+    // disabled for now; enable once Jira auth is refactored to take customer based token #1629
     // openInNewTab={() => openInNewPage(key)}
     tooltipTitle={LABEL.VIEW_IN_JIRA}
     icon={ICON_NAME.JIRA}
