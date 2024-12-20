@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types'
-import { t } from 'i18next'
-import { useSettingContext, ICON_NAME } from 'hook'
+import { useSettingContext } from 'hook'
 import { Box, Grid, Typography, Link } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledListItemText, GStyledSpanBox, GStyledSupportListCard, GStyledSupportStatusFieldChip } from 'theme/style'
-import { IconTooltip } from 'component'
 import { TYPOGRAPHY, KEY, FLEX, SIZE } from 'constant'
 import { normalizer } from 'util/format'
 import { truncate } from 'util'
@@ -28,13 +26,15 @@ const TicketCard = ({ selectedCardId, handleSelected, handleTicketCard, handleTi
           {ticket?.key}
          </Link>
          &nbsp;
+         {/*
+          disabled for now; enable once Jira auth is refactored to take customer based token #1629
          <IconTooltip
           title={t('view_jira.view_jira_in_new_tab.label')}
           icon={ICON_NAME.JIRA}
           color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
           dimension={18}
           onClick={() => handleTicketInNewTabCard(ticket?.key)}
-         />
+         /> */}
         </GStyledSpanBox>
        )
       }

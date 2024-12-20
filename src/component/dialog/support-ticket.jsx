@@ -4,10 +4,9 @@ import { useSettingContext, ICON_NAME } from 'hook'
 import { setCustomerTicketDialog } from 'store/slice'
 import { useTicketDefaultValues } from 'section/support'
 import { useMediaQuery, Grid, Dialog, DialogContent, DialogActions, DialogTitle, Divider, Typography, Box } from '@mui/material'
-import { GridViewField, GridViewTitle, AuditBox, Button } from 'component'
+import { GridViewField, GridViewTitle, AuditBox } from 'component'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledSupportStatusFieldChip, GStyledCloseButton, GBackdropPropsOption } from 'theme/style'
-import { GLOBAL } from 'config/global'
 import { TYPOGRAPHY, FLEX, SIZE, KEY, FLEX_DIR } from 'constant'
 import { normalizer } from 'util/format'
 import { parseArrDesc } from 'util/parse-arr-desc'
@@ -22,11 +21,11 @@ const SupportTicketDialog = () => {
  const defaultValues = useTicketDefaultValues(customerTicket)
  const handleDialog = () => dispatch(setCustomerTicketDialog(false))
 
- const handleCustomerTicketOverview = jiraKey => {
-  dispatch(setCustomerTicketDialog(false))
-  const url = GLOBAL.JIRA_URL + jiraKey
-  window.open(url, KEY.BLANK)
- }
+ //  const handleCustomerTicketOverview = jiraKey => {
+ //   dispatch(setCustomerTicketDialog(false))
+ //   const url = GLOBAL.JIRA_URL + jiraKey
+ //   window.open(url, KEY.BLANK)
+ //  }
 
  return (
   <Dialog disableEnforceFocus maxWidth={KEY.LG} open={customerTicketDialog} onClose={handleDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
@@ -106,7 +105,8 @@ const SupportTicketDialog = () => {
        <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog}>
         {t('close.label').toUpperCase()}
        </GStyledCloseButton>
-       <Button label={t('view_jira.label')} icon={ICON_NAME.JIRA} onClick={() => handleCustomerTicketOverview(defaultValues?.key)} />
+       {/*  disabled for now; enable once Jira auth is refactored to take customer based token #1629  */}
+       {/* <Button label={t('view_jira.label')} icon={ICON_NAME.JIRA} onClick={() => handleCustomerTicketOverview(defaultValues?.key)} /> */}
       </Grid>
      </Grid>
     </Grid>
