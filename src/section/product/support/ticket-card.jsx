@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types'
 import { t as trans } from 'i18next'
-import { useSettingContext, ICON_NAME } from 'hook'
+import { useSettingContext } from 'hook'
 import { useMediaQuery, Box, Grid, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledSupportCard, GStyledListItemText, GStyledSpanBox, GStyledSupportStatusFieldChip } from 'theme/style'
-import { IconTooltip } from 'component'
-import { GLOBAL } from 'config/global'
-import { LABEL, TYPOGRAPHY, KEY, FLEX, SIZE } from 'constant'
+import { TYPOGRAPHY, KEY, SIZE } from 'constant'
 import { normalizer } from 'util/format'
 
 const TicketCard = ({ selectedCardId, value, handleMachineTicketCard, t }) => {
@@ -14,10 +12,10 @@ const TicketCard = ({ selectedCardId, value, handleMachineTicketCard, t }) => {
  const theme = useTheme()
  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
- const openInNewPage = jiraKey => {
-  const url = GLOBAL.JIRA_URL + jiraKey
-  window.open(url, KEY.BLANK)
- }
+ //  const openInNewPage = jiraKey => {
+ //   const url = GLOBAL.JIRA_URL + jiraKey
+ //   window.open(url, KEY.BLANK)
+ //  }
 
  return (
   <GStyledSupportCard onClick={event => handleMachineTicketCard(event, t.key)} selectedCardId={selectedCardId} s={t} mode={themeMode}>
@@ -50,17 +48,19 @@ const TicketCard = ({ selectedCardId, value, handleMachineTicketCard, t }) => {
      </Box>
     </Box>
    </Grid>
-   <Grid item xs={2} flex={1} justifyContent={FLEX.FLEX_END} alignContent={KEY.RIGHT}>
-    <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1}>
-     <IconTooltip
-      title={LABEL.VIEW_IN_JIRA}
-      icon={ICON_NAME.JIRA}
-      color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
-      dimension={18}
-      onClick={() => openInNewPage(t.key)}
-     />
+   {/*
+    disabled for now; enable once Jira auth is refactored to take customer based token #1629
+    <Grid item xs={2} flex={1} justifyContent={FLEX.FLEX_END} alignContent={KEY.RIGHT}>
+        <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1}>
+        <IconTooltip
+        title={LABEL.VIEW_IN_JIRA}
+        icon={ICON_NAME.JIRA}
+        color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
+        dimension={18}
+        onClick={() => openInNewPage(t.key)}
+        />
     </GStyledSpanBox>
-   </Grid>
+   </Grid> */}
   </GStyledSupportCard>
  )
 }
