@@ -21,7 +21,6 @@ import {
  resetMachines,
  resetSecurityUsers
 } from 'store/slice'
-import { useCustomerDefaultValues } from 'section/crm/customer'
 import { SupportTicketWidget } from 'section/crm/support'
 import { ProductionTotalGraphWidget, ProductionRateGraphWidget } from 'section/dashboard'
 import { Grid } from '@mui/material'
@@ -31,16 +30,14 @@ import { FLEX } from 'constant'
 import { toTitleCase } from 'util'
 
 function Dashboard() {
- const { customer, isLoading, securityUsers, customerMachines, quickActiveCustomerTickets, activeUsersCount, onlineUsersCount } = useSelector(
+ const { customer, isLoading, securityUsers, customerMachines, quickActiveCustomerTickets } = useSelector(
   state => ({
    customer: state.customer.customer,
    isLoading: state.customer.isLoading,
    customerTickets: state.customerTicket.customerTickets,
    securityUsers: state.user.securityUsers,
    customerMachines: state.machine.customerMachines,
-   quickActiveCustomerTickets: state.count.quickActiveCustomerTickets,
-   activeUsersCount: state.count.activeUsersCount,
-   onlineUsersCount: state.count.onlineUsersCount
+   quickActiveCustomerTickets: state.count.quickActiveCustomerTickets
   }),
   _.isEqual
  )
