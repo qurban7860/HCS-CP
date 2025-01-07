@@ -73,6 +73,9 @@ const en = {
  cancel: {
   label: `Cancel`
  },
+ category: {
+  label: `Category`
+ },
  change_password: {
   label: `Change Password`
  },
@@ -313,6 +316,9 @@ const en = {
   machines: {
    label: `Machines`
   }
+ },
+ machine_category: {
+  label: `Machine Category`
  },
  machine_serial_number: {
   label: `Machine Serial Number`
