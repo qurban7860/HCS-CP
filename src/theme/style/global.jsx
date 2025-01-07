@@ -126,7 +126,7 @@ export const GStyledMachinePanelCard = styled(({ theme, selectedCardId, c, mode,
  marginLeft: selectedCardId === value?._id || selectedCardId === value?.key ? theme.spacing(2) : theme.spacing(0),
  width: '100%',
  cursor: 'pointer',
- borderBottom: selectedCardId === value?._id || selectedCardId === value?.key ? `2px solid ${mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}` : '',
+ borderRight: selectedCardId === value?._id || selectedCardId === value?.key ? `9px solid ${mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}` : '',
  backgroundColor:
   selectedCardId === value?._id || selectedCardId === value?.key
    ? mode === KEY.LIGHT
@@ -137,9 +137,7 @@ export const GStyledMachinePanelCard = styled(({ theme, selectedCardId, c, mode,
    : theme.palette.grey[800],
  '&:hover': {
   backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.howick.darkGrey,
-  marginLeft: theme.spacing(0),
-  marginRight: theme.spacing(0),
-  marginBottom: theme.spacing(4)
+  marginLeft: theme.spacing(2)
  },
  transition: 'ease-in-out 0.2s'
 }))
