@@ -78,7 +78,7 @@ const MachinesCard = ({ selectedCardId, handleSelected, handleMachineCard, handl
 }
 
 MachinesCard.propTypes = {
- selectedCardId: PropTypes.number,
+ selectedCardId: PropTypes.string,
  value: PropTypes.any,
  contact: PropTypes.any,
  machine: PropTypes.any,
