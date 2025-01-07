@@ -234,7 +234,6 @@ export const PATH_SERVER = {
  },
  /**
   * NOTE: this is current under the name jira module
-  *
   * @module /jira
   */
  SUPPORT: {
