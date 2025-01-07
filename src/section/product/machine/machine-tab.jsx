@@ -9,7 +9,6 @@ import {
  getConnectedMachineDialog,
  setMachineDialog,
  setMachineSiteDialog,
- setSelectedMachine,
  setMachineFilterBy,
  ChangeMachinePage,
  resetCustomer,
@@ -22,10 +21,10 @@ import {
 import { useTempFilter, useSettingContext, getComparator, useTable, useUIMorph } from 'hook'
 import { CommonFieldsCard } from 'section/common'
 import { useMachineDefaultValues, fieldsKeyConfig, fieldsMachineInformationConfig } from 'section/product'
-import { MachineConnectionWidget, MachineCard, MachineFieldsCard } from 'section/product/machine'
+import { MachineConnectionListCard, MachineCard, MachineFieldsCard } from 'section/product/machine'
 import { HowickResources } from 'section/common'
-import { Box, Grid, useMediaQuery } from '@mui/material'
-import { AuditBox, SearchBox } from 'component'
+import { Grid } from '@mui/material'
+import { AuditBox, HowickLoader, SearchBox } from 'component'
 import { GStyledScrollableHeightLockGrid } from 'theme/style'
 import { MARGIN } from 'config'
 import { FLEX_DIR, KEY } from 'constant'
@@ -33,7 +32,7 @@ import { FLEX_DIR, KEY } from 'constant'
 const MachineTab = () => {
  const { id } = useParams()
  const { themeMode } = useSettingContext()
- const { machine, machines, setSelectedMachine, isLoading, initial } = useSelector(state => state.machine)
+ const { machine, machines, isLoading, initial } = useSelector(state => state.machine)
  const { customer } = useSelector(state => state.customer)
  const { isDesktop, isMobile } = useUIMorph()
 
@@ -56,11 +55,18 @@ const MachineTab = () => {
  useEffect(() => {
   const debounce = _.debounce(() => {
    dispatch(getMachine(id))
-   dispatch(getMachines())
   }, 300)
   debounce()
   return () => debounce.cancel()
  }, [id, dispatch])
+
+ useEffect(() => {
+  const debounce = _.debounce(() => {
+   dispatch(getMachines())
+  }, 300)
+  debounce()
+  return () => debounce.cancel()
+ }, [dispatch])
 
  useEffect(() => {
   if (machine?.customer) {
@@ -88,9 +94,7 @@ const MachineTab = () => {
  const handleSelectedMachine = (event, machineId) => {
   event.preventDefault()
   dispatch(resetMachine())
-  dispatch(resetSelectedMachine())
   dispatch(getMachine(machineId))
-  dispatch(setSelectedMachine)
  }
 
  return (
@@ -101,9 +105,15 @@ const MachineTab = () => {
       {machines.length >= 5 && <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />}
       <GStyledScrollableHeightLockGrid isMobile={isMobile} mode={themeMode} totalCount={machines?.length}>
        <Grid container gap={2} p={1} height={'auto'} sx={{ maxHeight: 600, overflow: 'auto' }}>
-        {filteredData.map((mach, index) => (
-         <MachineCard key={mach?._id} selectedCardId={mach?._id} value={defaultValues} handleMachineCard={handleSelectedMachine} machine={mach} />
-        ))}
+        {isLoading ? (
+         <Grid item xs={12} md={12}>
+          <HowickLoader mode={themeMode} height={200} />
+         </Grid>
+        ) : (
+         filteredData.map((mach, index) => (
+          <MachineCard key={mach?._id} selectedCardId={machine?._id} value={defaultValues} handleSelected={handleSelectedMachine} handleMachineCard={handleSelectedMachine} machine={mach} />
+         ))
+        )}
        </Grid>
       </GStyledScrollableHeightLockGrid>
      </Grid>
@@ -120,7 +130,7 @@ const MachineTab = () => {
      />
      {!isDesktop && machines.length >= 5 && (
       <Grid item xs={12}>
-       <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
+       <MachineConnectionListCard value={defaultValues} isLoading={isLoading} handleConnectionDialog={handleConnectedMachineDialog} />
       </Grid>
      )}
      <CommonFieldsCard isChildren i18nKey={'howick_resources.label'} defaultValues={defaultValues} isLoading={isLoading}>
