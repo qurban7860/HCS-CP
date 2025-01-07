@@ -24,8 +24,8 @@ const initialState = {
  machines: [],
  machineTotalCount: 0,
  activeMachines: [],
- allMachines: [],
  customerMachines: [],
+ machineCategories: [],
  activeCustomerMachines: [],
  machineLatLongCoordinates: [],
  machineGallery: [],
@@ -103,12 +103,6 @@ const machineSlice = createSlice({
    state.activeMachines = action.payload
    state.initial = true
   },
-  getAllMachinesSuccess(state, action) {
-   state.isLoading = false
-   state.success = true
-   state.allMachines = action.payload
-   state.initial = true
-  },
   getConnectedMachineSuccess(state, action) {
    state.isLoading = false
    state.success = true
@@ -120,6 +114,12 @@ const machineSlice = createSlice({
    state.success = true
    state.customerMachines = action.payload
    state.machineTotalCount = action.payload.length
+   state.initial = true
+  },
+  getMachineCategoriesSuccess(state, action) {
+   state.isLoading = false
+   state.success = true
+   state.machineCategories = action.payload
    state.initial = true
   },
   getActiveCustomerMachinesSuccess(state, action) {
@@ -194,11 +194,11 @@ const machineSlice = createSlice({
    state.success = false
    state.isLoading = false
   },
-  resetAllMachines(state, action) {
+  resetMachineCategories(state) {
+   state.machineCategories = []
+   state.responseMessage = null
+   state.success = false
    state.isLoading = false
-   state.success = true
-   state.allMachines = []
-   state.initial = true
   },
   resetConnectedMachineDialog(state) {
    state.connectedMachineDialog = {}
@@ -272,11 +272,11 @@ export const {
  setSelectedMachine,
  setSelectedMachineCard,
  resetCustomerMachines,
+ resetMachineCategories,
  resetActiveCustomerMachines,
  resetMachine,
  resetMachines,
  resetActiveMachines,
- resetAllMachines,
  resetMachineSiteDialogData,
  resetConnectedMachineDialog,
  resetSelectedMachine,
@@ -379,6 +379,24 @@ export function getMachineSiteDialogData(id) {
   try {
    const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.detail(id))
    dispatch(machineSlice.actions.getMachineSiteDialogSuccess(response.data))
+  } catch (error) {
+   console.error(error)
+   dispatch(machineSlice.actions.hasError(error.Message))
+   throw error
+  }
+ }
+}
+
+export function getMachineCategories() {
+ return async dispatch => {
+  dispatch(machineSlice.actions.startLoading())
+  try {
+   const response = await axios.get(PATH_SERVER.PRODUCT.CATEGORIES.categories, {
+    params: {
+     isArchived: false
+    }
+   })
+   dispatch(machineSlice.actions.getMachineCategoriesSuccess(response.data))
   } catch (error) {
    console.error(error)
    dispatch(machineSlice.actions.hasError(error.Message))
