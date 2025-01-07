@@ -5,7 +5,8 @@ import { useTable } from 'hook'
 import { applySort } from 'util'
 import { filterProperties } from './query-pool'
 import { getProperty, getNestedProperty } from './get-property'
-import { KEY } from 'constant'
+import { DECOILER_TYPE_ARR, KEY, REGEX } from 'constant'
+import { normalizer } from 'util'
 
 /**
  * ----------------------using useFilter hook-----------------------------
@@ -34,13 +35,14 @@ import { KEY } from 'constant'
  * @param orderBy - string, param to be sorted, came from  useTable hook
  */
 
-export default function useFilter(comparator, params, initial, ChangePage, setFilterBy, defaultOrderBy) {
+export default function useFilter(comparator, params, initial, ChangePage, setFilterBy, defaultOrderBy, categoryTypes = []) {
  const [tableData, setTableData] = useState([])
  const [filterName, setFilterName] = useState('')
  const [filterStatus, setFilterStatus] = useState('active')
  const [filterRole, setFilterRole] = useState('all')
+ const [filterCategory, setFilterCategory] = useState(KEY.FRAMA_MACHINE)
  const { setPage } = useTable({ defaultOrderBy: defaultOrderBy || 'name' })
- const isFiltered = filterName !== '' || filterStatus !== 'all' || filterRole !== 'all'
+ const isFiltered = filterName !== '' || filterStatus !== 'all' || filterRole !== 'all' || filterCategory !== 'all'
  const inputData = tableData
 
  const debouncedSearch = useRef(
@@ -108,10 +110,17 @@ export default function useFilter(comparator, params, initial, ChangePage, setFi
   setFilterRole(value)
  }
 
+ const handleFilterCategory = (event, value) => {
+  event.preventDefault()
+  setPage(0)
+  setFilterCategory(value)
+ }
+
  const handleResetFilter = () => {
   setFilterName('')
   setFilterRole('all')
   setFilterStatus('active')
+  setFilterCategory('all')
  }
 
  // useMemo is used to memoize the filteredData, so it will not be re-rendered if the data is not changed
@@ -129,18 +138,35 @@ export default function useFilter(comparator, params, initial, ChangePage, setFi
    } else if (filterRole === KEY.CUSTOMER_USER) {
     filterVal = filterVal.filter(item => item.roles.some(obj => obj.name === KEY.CUSTOMER_USER))
    }
+   if (filterCategory === KEY.DECOILER) {
+    filterVal = filterVal.filter(item => DECOILER_TYPE_ARR.some(type => normalizer(item.machineModel.name).includes(normalizer(type))))
+   } else if (filterCategory === KEY.FRAMA_MACHINE) {
+    filterVal = filterVal.filter(item => normalizer(item.machineModel.name).includes(KEY.FRAMA))
+   } else if (filterCategory === KEY.H_SERIES_MACHINE) {
+    filterVal = filterVal.filter(item => new RegExp(REGEX.H_SERIES).test(item.machineModel.name))
+   } else if (filterCategory === KEY.CUSTOM_MACHINE) {
+    filterVal = filterVal.filter(item => normalizer(item.machineModel.name).includes(KEY.CUSTOM))
+   } else if (filterCategory === KEY.SPEEDFLOOR) {
+    filterVal = filterVal.filter(item => normalizer(item.machineModel.name).includes(KEY.SPEEDFLOOR))
+   } else if (filterCategory === KEY.STEEL_FRAMER_18GUAGE) {
+    filterVal = filterVal.filter(item => normalizer(item.machineModel.name).includes(KEY.STEEL_FRAMER_18GUAGE))
+   } else if (filterCategory === KEY.TOPHAT_MACHINE) {
+    filterVal = filterVal.filter(item => normalizer(item.machineModel.name).includes(KEY.TOPHAT_MACHINE || 'TH'))
+   }
   }
   return filterVal
- }, [inputData, filterRole, filterName, filterFunction, filterStatus])
+ }, [inputData, filterRole, filterName, filterFunction, filterStatus, filterCategory])
 
  return {
   filterName,
   filterRole,
   filterStatus,
+  filterCategory,
   isFiltered,
   handleFilterName,
   handleFilterStatus,
   handleFilterRole,
+  handleFilterCategory,
   handleResetFilter,
   filteredData
  }
