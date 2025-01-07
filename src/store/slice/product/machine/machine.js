@@ -30,6 +30,7 @@ const initialState = {
  machineLatLongCoordinates: [],
  machineGallery: [],
  selectedMachineCard: null,
+ selectedMachine: null,
  transferDialogBoxVisibility: false,
  accountManager: null,
  supportManager: null,
@@ -163,6 +164,9 @@ const machineSlice = createSlice({
    state.success = true
    state.initial = true
   },
+  setSelectedMachine(state, action) {
+   state.selectedMachine = action.payload
+  },
   setSelectedMachineCard(state, action) {
    state.selectedMachineCard = action.payload
   },
@@ -207,6 +211,9 @@ const machineSlice = createSlice({
    state.responseMessage = null
    state.success = false
    state.isLoading = false
+  },
+  resetSelectedMachine(state) {
+   state.selectedMachine = null
   },
   resetSelectedMachineCard(state) {
    state.selectedMachineCard = null
@@ -262,6 +269,7 @@ export const {
  setMachineParent,
  setMachineConnected,
  setIsDecoiler,
+ setSelectedMachine,
  setSelectedMachineCard,
  resetCustomerMachines,
  resetActiveCustomerMachines,
@@ -271,6 +279,7 @@ export const {
  resetAllMachines,
  resetMachineSiteDialogData,
  resetConnectedMachineDialog,
+ resetSelectedMachine,
  resetSelectedMachineCard,
  setMachineResponseMessage,
  setTransferDialogBoxVisibility,

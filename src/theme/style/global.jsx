@@ -116,6 +116,34 @@ export const GStyledCard = styled(({ theme, selectedCardId, c, mode, ...other })
  transition: 'ease-in-out 0.2s'
 }))
 
+export const GStyledMachinePanelCard = styled(({ theme, selectedCardId, c, mode, ...other }) => <Card {...other} />)(({ theme, selectedCardId, value, mode }) => ({
+ display: 'flex',
+ flexDirection: 'row',
+ justifyContent: 'space-between',
+ alignItems: 'center',
+ padding: theme.spacing(1),
+ marginBottom: theme.spacing(1),
+ marginLeft: selectedCardId === value?._id || selectedCardId === value?.key ? theme.spacing(2) : theme.spacing(0),
+ width: '100%',
+ cursor: 'pointer',
+ borderBottom: selectedCardId === value?._id || selectedCardId === value?.key ? `2px solid ${mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}` : '',
+ backgroundColor:
+  selectedCardId === value?._id || selectedCardId === value?.key
+   ? mode === KEY.LIGHT
+     ? theme.palette.grey[300]
+     : theme.palette.howick.darkGrey
+   : mode === KEY.LIGHT
+   ? theme.palette.grey[200]
+   : theme.palette.grey[800],
+ '&:hover': {
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.howick.darkGrey,
+  marginLeft: theme.spacing(0),
+  marginRight: theme.spacing(0),
+  marginBottom: theme.spacing(4)
+ },
+ transition: 'ease-in-out 0.2s'
+}))
+
 export const GStyledSupportListCard = styled(({ theme, selectedCardId, c, mode, ...other }) => <Card {...other} />)(({ theme, selectedCardId, value, mode }) => ({
  display: 'flex',
  flexDirection: 'row',
@@ -537,6 +565,14 @@ export const GStyledMiniChip = styled(({ theme, ...other }) => <Chip {...other} 
  borderRadius: theme.spacing(0.2),
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
+}))
+
+export const GStyledChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, color, bgColor }) => ({
+ //  margin: theme.spacing(0.2),
+ borderRadius: theme.spacing(0.2),
+ // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
+ backgroundColor: bgColor,
+ color: color
 }))
 
 export const GStyledMachineChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
