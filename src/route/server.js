@@ -178,6 +178,15 @@ export const PATH_SERVER = {
     * @param {*} modelId
     */
    detail: modelId => _url(_PRODUCT, 'models', modelId)
+  },
+  /**
+   * @submodule /products/cate
+   */
+  CATEGORIES: {
+   /**
+    * /products/categories
+    */
+   categories: _url(_PRODUCT, 'categories')
   }
  },
 
