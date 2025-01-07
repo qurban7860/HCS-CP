@@ -15,9 +15,13 @@ const MachineListPagination = ({
  handleChangeRowsPerPage,
  columnFilterButtonData,
  handleColumnButtonClick,
- currentFilterStatus,
  showFilterStatus,
+ currentFilterStatus,
  handleFilterStatus,
+ showFilterCategory,
+ currentFilterCategory,
+ handleFilterCategory,
+ categoryTypes,
  ...other
 }) => {
  return (
@@ -38,6 +42,10 @@ const MachineListPagination = ({
     currentFilterStatus={currentFilterStatus}
     showFilterStatus={showFilterStatus}
     handleFilterStatus={handleFilterStatus}
+    showFilterCategory={showFilterCategory}
+    currentFilterCategory={currentFilterCategory}
+    handleFilterCategory={handleFilterCategory}
+    categoryTypes={categoryTypes}
     showLastButton
     showFirstButton
     {...other}
@@ -56,9 +64,13 @@ MachineListPagination.propTypes = {
  handleChangeRowsPerPage: PropTypes.func,
  columnFilterButtonData: PropTypes.array,
  handleColumnButtonClick: PropTypes.func,
- currentFilterStatus: PropTypes.any,
  showFilterStatus: PropTypes.bool,
- handleFilterStatus: PropTypes.func
+ currentFilterStatus: PropTypes.any,
+ handleFilterStatus: PropTypes.func,
+ showFilterCategory: PropTypes.bool,
+ currentFilterCategory: PropTypes.any,
+ handleFilterCategory: PropTypes.func,
+ categoryTypes: PropTypes.array
 }
 
 export default memo(MachineListPagination)
