@@ -3,7 +3,8 @@ const REGEX = {
  ERROR_CODE: /^[4][0-9][0-9]$/,
  SUCCESS_CODE: /^[^2]*/,
  SERIAL_NO: /^\d{5}$/,
- PASSWORD: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/
+ PASSWORD: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/,
+ H_SERIES: /^H\d{3}$/
 }
 
 export default REGEX
