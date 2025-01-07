@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles'
 import { GStyledTablePaginationCustom, GStyledMachineChip, GStyledSpanBox } from 'theme/style'
 import { KEY, TYPOGRAPHY } from 'constant'
 import { STATUS_TYPES, ROLE_TYPES } from 'config'
-import { normalizer, charAtText } from 'util'
+import { normalizer, charAtText, removeWord } from 'util'
 
 function TablePaginationCustom({
  count,
@@ -24,6 +24,10 @@ function TablePaginationCustom({
  currentFilterRole,
  showFilterRole = false,
  handleFilterRole,
+ showFilterCategory = false,
+ currentFilterCategory,
+ handleFilterCategory,
+ categoryTypes,
  rowsPerPageOptions = [10, 20, 50, 100],
  columnFilterButtonData = [],
  columnButtonClickHandler = () => {},
@@ -34,6 +38,7 @@ function TablePaginationCustom({
  const [anchorEl, setAnchorEl] = useState(null)
  const [filterStatusAnchorEl, setFilterStatusAnchorEl] = useState(null)
  const [filterRoleAnchorEl, setFilterRoleAnchorEl] = useState(null)
+ const [filterCategoryAnchorEl, setFilterCategoryAnchorEl] = useState(null)
 
  const { themeMode } = useSettingContext()
  const theme = useTheme()
@@ -56,6 +61,10 @@ function TablePaginationCustom({
 
  const handleFilterRoleClose = () => {
   setFilterRoleAnchorEl(null)
+ }
+
+ const handleFilterCategoryClose = () => {
+  setFilterCategoryAnchorEl(null)
  }
 
  const filteredRowsPerPageOptions = rowsPerPageOptions.filter(option => option <= data.length)
@@ -203,7 +212,45 @@ function TablePaginationCustom({
       </Menu>
      </Box>
     )}
+
+    {showFilterCategory && (
+     <Box
+      sx={{
+       pl: { xs: 0, md: 2 },
+       width: '100%',
+       mb: { xs: 1, md: 0 }
+      }}>
+      <Button
+       fullWidth
+       startIcon={<Icon icon={ICON_NAME.CATEGORY} />}
+       variant='outlined'
+       onClick={e => setFilterCategoryAnchorEl(e.currentTarget)}
+       sx={{
+        color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[0],
+        border: `1px solid ${themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[0]}`
+       }}>
+       <GStyledSpanBox>
+        <Typography variant={TYPOGRAPHY.BODY2}>{t('category.label') + ': '}</Typography>
+        <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE1 : TYPOGRAPHY.OVERLINE}>&nbsp;{removeWord(currentFilterCategory, 'machine')}</Typography>
+        {!filterCategoryAnchorEl ? <Icon icon={ICON_NAME.CHEVRON_DOWN} /> : <Icon icon={ICON_NAME.CHEVRON_UP} />}
+       </GStyledSpanBox>
+      </Button>
+      <Menu
+       id='category-menu'
+       anchorEl={filterCategoryAnchorEl}
+       open={!!filterCategoryAnchorEl}
+       onClose={handleFilterCategoryClose}
+       PaperProps={{ style: { width: isDesktop ? '25ch' : '90%', maxHeight: 300, overflowY: 'auto' } }}>
+       {categoryTypes?.map(column => (
+        <MenuItem dense sx={{ p: 1 }} key={column._id} onClick={e => handleFilterCategory(e, normalizer(column.name))} value={column.name}>
+         <Typography variant={TYPOGRAPHY.BODY2}>{removeWord(column.name, 'machine')}</Typography>
+        </MenuItem>
+       ))}
+      </Menu>
+     </Box>
+    )}
    </Box>
+
    {!noPaginationToolbar && (
     <GStyledTablePaginationCustom
      labelRowsPerPage={t('row.label') + ':'}
@@ -257,6 +304,10 @@ TablePaginationCustom.propTypes = {
  showFilterRole: PropTypes.bool,
  currentFilterRole: PropTypes.any,
  handleFilterRole: PropTypes.func,
+ showFilterCategory: PropTypes.bool,
+ currentFilterCategory: PropTypes.any,
+ handleFilterCategory: PropTypes.func,
+ categoryTypes: PropTypes.array,
  component: PropTypes.elementType,
  onChangeDense: PropTypes.func,
  rowsPerPage: PropTypes.number,
