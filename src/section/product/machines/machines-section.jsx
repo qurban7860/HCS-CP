@@ -100,13 +100,15 @@ const MachineListSection = ({ isArchived }) => {
   tableData,
   initial,
   ChangeMachinePage,
-  setMachineFilterBy
+  setMachineFilterBy,
+  'serialNo',
+  KEY.ROLLFORMER
  )
 
  const MACHINES = machineCategories?.filter(category => !DECOILER_TYPE_ARR.some(type => category?.name?.includes(type)))
  const filteredDataCategories = Array.from(new Set(machines.map(mach => mach?.machineModel?.category)))
  const FILTERED_MACHINES_CATEGORY = MACHINES.filter(category => filteredDataCategories.includes(category?._id))
- const CATEGORIES = [{ _id: 'all', name: 'All' }, { _id: 'decoiler', name: 'Decoiler' }, ...FILTERED_MACHINES_CATEGORY]
+ const CATEGORIES = [{ _id: 'all', name: 'All' }, { _id: 'decoiler', name: 'Decoiler' }, { _id: 'rollformer', name: 'Rollformer' }, ...FILTERED_MACHINES_CATEGORY]
 
  const handleChangePage = (event, newPage) => {
   if (newPage < Math.ceil(filteredData.length / machineRowsPerPage)) {
