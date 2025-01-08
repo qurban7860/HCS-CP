@@ -1,14 +1,14 @@
-import { color, m } from 'framer-motion'
+import { m } from 'framer-motion'
 import { styled, alpha } from '@mui/material/styles'
 import { Popover, ListItemText, Card, Chip, Grid, Divider, Container, Skeleton, Box, Typography, IconButton, Tab, Tabs, TablePagination, Drawer } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { bgBlur } from 'theme/style'
-import { RADIUS, ASSET } from 'config'
+import { ASSET } from 'config'
+import { RADIUS } from 'config/layout'
 import { PATH_AUTH } from 'route/path'
 import { KEY, SUPPORT_STATUS } from 'constant'
 import { SvgColor } from 'component/svg-color'
-import { normalizer } from 'util'
 
 // :branding __________________________________________________________________________________________________
 // dashboard - welcome
@@ -197,6 +197,7 @@ export const GStyledSiteCard = styled(({ theme, selectedCardId, s, mode, ...othe
  justifyContent: 'space-between',
  alignItems: 'center',
  padding: theme.spacing(1),
+ borderRadius: RADIUS.BORDER.borderRadius,
  marginTop: selectedCardId === site?._id ? theme.spacing(2) : theme.spacing(0),
  width: '300px',
  cursor: 'pointer',
@@ -296,7 +297,7 @@ export const GStyledTableChip = styled(({ theme, ...other }) => <Chip {...other}
  margin: theme.spacing(0.2),
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
  // backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.howick.midBlue,
- borderRadius: 2,
+ borderRadius: RADIUS.BORDER.borderRadius,
  height: '24px',
  overflow: 'hidden',
  textOverflow: 'ellipsis',
@@ -499,7 +500,7 @@ export const GStyledScrollChipBox = styled(({ theme, mode, ...other }) => <Box {
 
 export const GStyledSupportStatusFieldChip = styled(({ theme, status, ...other }) => <Chip {...other} />)(({ theme, status, mode }) => ({
  margin: theme.spacing(0.2),
- borderRadius: theme.spacing(0.4),
+ borderRadius: RADIUS.BORDER.borderRadius,
  color: status === SUPPORT_STATUS.OPEN || status === SUPPORT_STATUS.UNDER_REVIEW ? theme.palette.common.black : theme.palette.common.white,
  backgroundColor:
   status === SUPPORT_STATUS.OPEN || status === SUPPORT_STATUS.UNDER_REVIEW
@@ -836,7 +837,8 @@ export const GStyledGlobalCard = styled(Card)(({ theme }) => ({
 
 export const GStyledTransparentCard = styled(Card)(({ theme }) => ({
  backgroundColor: 'transparent',
- boxShadow: 'none'
+ boxShadow: 'none',
+ borderRadius: RADIUS.BORDER.borderRadius
 }))
 
 /**
@@ -901,7 +903,8 @@ export const GStyledHeaderCardContainer = styled(Card)(({ theme, height = 180 })
  height,
  position: 'sticky',
  top: '60px',
- zIndex: 4
+ zIndex: 4,
+ borderRadius: RADIUS.BORDER.borderRadius
 }))
 
 /**
@@ -945,6 +948,7 @@ export const GCardOption = mode => {
   margintop: 10,
   paddingtop: 2,
   sx: {
+   borderRadius: RADIUS.BORDER.borderRadius,
    backgroundColor: mode === KEY.LIGHT ? 'background.default' : 'background.paper',
    backgroundImage: `url(${mode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
    backgroundSize: 'cover'
@@ -959,6 +963,7 @@ export const GCardNoHeightOption = mode => {
   margintop: 10,
   paddingtop: 2,
   sx: {
+   borderRadius: RADIUS.BORDER.borderRadius,
    backgroundColor: mode === KEY.LIGHT ? 'background.default' : 'background.paper',
    backgroundImage: `url(${mode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
    backgroundSize: 'cover',
