@@ -81,6 +81,8 @@ const KEY = {
  USERNAME: 'username',
  PASSWORD: 'password',
  CURRENT_PASSWORD: 'current-password',
+ PARENT: 'parent',
+ ROLLFORMER: 'rollformer',
 
  // default
  AUTO: 'auto',
