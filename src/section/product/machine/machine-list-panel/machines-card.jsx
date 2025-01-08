@@ -22,8 +22,7 @@ const MachinesCard = ({ selectedCardId, handleSelected, handleMachineCard, handl
          <Link
           onClick={event => handleMachineCard(event, machine._id)}
           sx={{
-           color: themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
-           cursor: 'pointer'
+           color: themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange
           }}>
           <Typography color={themeMode === KEY.LIGHT ? 'common.black' : 'grey.400'} variant={TYPOGRAPHY.H4} sx={{ opacity: selectedCardId === machine._id ? 0.7 : 1 }}>
            {machine?.serialNo}
@@ -31,7 +30,10 @@ const MachinesCard = ({ selectedCardId, handleSelected, handleMachineCard, handl
          </Link>
          &nbsp;
          <IconTooltip
-          onClick={event => handleMachineInNewTabCard(event, machine._id)}
+          onClick={event => {
+           event.stopPropagation()
+           handleMachineInNewTabCard(event, machine._id)
+          }}
           title={<Trans i18nKey='open_in_new_tab.label' values={{ value: 'Machine' }} />}
           color={theme.palette.grey[500]}
           icon={ICON_NAME.OPEN_IN_NEW}
