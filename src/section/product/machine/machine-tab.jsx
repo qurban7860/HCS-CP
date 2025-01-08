@@ -21,6 +21,7 @@ import {
  getMachines
 } from 'store/slice'
 import { useTempFilter, useSettingContext, getComparator, useTable, useUIMorph, Icon, ICON_NAME } from 'hook'
+import { PATH_MACHINE } from 'route/path'
 import { CommonFieldsCard } from 'section/common'
 import { useMachineDefaultValues, fieldsKeyConfig, fieldsMachineInformationConfig } from 'section/product'
 import { MachineConnectionListCard, MachineCard, MachineFieldsCard } from 'section/product/machine'
@@ -128,6 +129,11 @@ const MachineTab = () => {
   dispatch(getMachine(machineId))
  }
 
+ const handleMachineInNewTabCard = (event, machineId) => {
+  event.preventDefault()
+  const url = PATH_MACHINE.machines.view(machineId)
+  window.open(url, KEY.BLANK)
+ }
  const renderCategoryChipContainer = () => {
   return (
    <Grid container mb={1} sx={{ backgroundColor: 'transparent' }}>
@@ -160,7 +166,15 @@ const MachineTab = () => {
       <GStyledScrollableHeightLockGrid isMobile={isMobile} mode={themeMode} totalCount={machines?.length}>
        <Grid container gap={2} p={1} height={'auto'} sx={{ maxHeight: 600, overflow: 'auto' }}>
         {filteredData.map((mach, index) => (
-         <MachineCard key={mach?._id} selectedCardId={machine?._id} value={defaultValues} handleSelected={handleSelectedMachine} handleMachineCard={handleSelectedMachine} machine={mach} />
+         <MachineCard
+          key={mach?._id}
+          selectedCardId={machine?._id}
+          value={defaultValues}
+          handleSelected={handleSelectedMachine}
+          handleMachineCard={handleSelectedMachine}
+          handleMachineInNewTabCard={handleMachineInNewTabCard}
+          machine={mach}
+         />
         ))}
        </Grid>
       </GStyledScrollableHeightLockGrid>
