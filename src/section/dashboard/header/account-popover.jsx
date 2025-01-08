@@ -11,6 +11,7 @@ import { PATH_AUTH, PATH_SECURITY } from 'route/path'
 import { Box, Divider, Dialog, Typography, Stack, MenuItem, Link } from '@mui/material'
 import { CustomAvatar, MenuPopover, IconButtonAnimate, ChangePasswordDialog, DisplayDialog } from 'component'
 import { themePreset } from 'theme'
+import { RADIUS } from 'config/layout'
 import { TYPOGRAPHY } from 'constant'
 import { isCustomerAdmin } from 'util'
 import { OPTION } from './util'
@@ -96,7 +97,7 @@ export default function AccountPopover() {
        content: "''",
        width: '100%',
        height: '100%',
-       borderRadius: '50%',
+       borderRadius: RADIUS.CHIP.borderRadius,
        position: 'absolute'
       }
      })
@@ -111,7 +112,7 @@ export default function AccountPopover() {
      vertical: 'bottom',
      horizontal: 'right'
     }}
-    sx={{ width: 200, p: 0, borderRadius: 0.4 }}>
+    sx={{ width: 200, p: 0, ...RADIUS.BORDER }}>
     <Box sx={{ my: 1.5, px: 2.5, overflowX: 'hidden', mr: 1.5 }}>
      <Typography variant={TYPOGRAPHY.SUBTITLE2} noWrap>
       {customer?.name || 'Organization'}

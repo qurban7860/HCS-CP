@@ -6,70 +6,72 @@ import { getRatio } from './utility'
 import { ASSET } from 'config'
 
 const Image = forwardRef(({ ratio, disabledEffect = false, effect = 'blur', sx, borderRadius = '0px 0px 40px 40px', ...other }, ref) => {
-  const content = (
-    <Box
-      component={LazyLoadImage}
-      wrapperClassName="wrapper"
-      effect={disabledEffect ? undefined : effect}
-      placeholderSrc={disabledEffect ? ASSET.TRANSPARENT : ASSET.PLACEHOLDER}
-      sx={{ width: 1, height: 1, objectFit: 'cover', borderRadius }}
-      {...other}
-    />
-  )
+ const content = (
+  <Box
+   component={LazyLoadImage}
+   wrapperClassName='wrapper'
+   effect={disabledEffect ? undefined : effect}
+   placeholderSrc={disabledEffect ? ASSET.TRANSPARENT : ASSET.PLACEHOLDER}
+   sx={{ width: 1, height: 1, objectFit: 'cover', borderRadius }}
+   {...other}
+  />
+ )
 
-  if (ratio) {
-    return (
-      <Box
-        ref={ref}
-        component="span"
-        sx={{
-          width: 1,
-          lineHeight: 1,
-          display: 'block',
-          overflow: 'hidden',
-          position: 'relative',
-          pt: getRatio(ratio),
-          '& .wrapper': {
-            top: 0,
-            left: 0,
-            width: 1,
-            height: 1,
-            position: 'absolute',
-            backgroundSize: 'cover !important'
-          },
-          ...sx
-        }}>
-        {content}
-      </Box>
-    )
-  }
-
+ if (ratio) {
   return (
-    <Box
-      ref={ref}
-      component="span"
-      sx={{
-        lineHeight: 1,
-        display: 'block',
-        overflow: 'hidden',
-        position: 'relative',
-        '& .wrapper': {
-          width: 1,
-          height: 1,
-          backgroundSize: 'cover !important'
-        },
-        ...sx
-      }}>
-      {content}
-    </Box>
+   <Box
+    ref={ref}
+    component='span'
+    sx={{
+     width: 1,
+     lineHeight: 1,
+     display: 'block',
+     overflow: 'hidden',
+     position: 'relative',
+     pt: getRatio(ratio),
+     '& .wrapper': {
+      top: 0,
+      left: 0,
+      width: 1,
+      height: 1,
+      position: 'absolute',
+      backgroundSize: 'cover !important'
+     },
+     ...sx
+    }}>
+    {content}
+   </Box>
   )
+ }
+
+ return (
+  <Box
+   ref={ref}
+   component='span'
+   sx={{
+    lineHeight: 1,
+    display: 'block',
+    overflow: 'hidden',
+    position: 'relative',
+    '& .wrapper': {
+     width: 1,
+     height: 1,
+     backgroundSize: 'cover !important'
+    },
+    ...sx
+   }}>
+   {content}
+  </Box>
+ )
 })
 
+Image.displayName = 'Image'
 Image.propTypes = {
-  sx: PropTypes.object,
-  effect: PropTypes.string,
-  disabledEffect: PropTypes.bool,
-  ratio: PropTypes.oneOf(['4/3', '3/4', '6/4', '4/6', '16/9', '9/16', '21/9', '9/21', '1/1'])
+ sx: PropTypes.object,
+ effect: PropTypes.string,
+ disabledEffect: PropTypes.bool,
+ borderRadius: PropTypes.string,
+ ratio: PropTypes.oneOf(['4/3', '3/4', '6/4', '4/6', '16/9', '9/16', '21/9', '9/21', '1/1'])
 }
 
 export default Image

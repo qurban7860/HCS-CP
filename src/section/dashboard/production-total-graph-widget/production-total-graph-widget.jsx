@@ -11,6 +11,7 @@ import { useMediaQuery, useTheme, Grid, Autocomplete, TextField } from '@mui/mat
 import { FormHeader, SkeletonGraphLoader } from 'component'
 import { GStyledSpanBox, GStyledLoadingButton } from 'theme/style'
 import { GLOBAL } from 'config'
+import { RADIUS } from 'config/layout'
 import { KEY, FLEX, FLEX_DIR } from 'constant'
 
 const LOG_TYPE = 'erp'
@@ -68,7 +69,7 @@ const ProductionTotalGraphWidget = ({ selectedMachine, setSelectedMachine }) => 
 
  return (
   <Grid container mb={2}>
-   <Grid item mb={2} bgcolor='background.paper' borderRadius={2} xs={12}>
+   <Grid item mb={2} bgcolor='background.paper' borderRadius={RADIUS.BORDER.borderRadius} xs={12}>
     <GStyledSpanBox>
      <FormHeader label={`${LOG_PERIOD} Production Total`} />
     </GStyledSpanBox>

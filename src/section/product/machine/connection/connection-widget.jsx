@@ -1,5 +1,6 @@
 import { Fragment, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { Trans } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Icon, ICON_NAME } from 'hook'
 import { dispatch } from 'store'
@@ -11,9 +12,9 @@ import { useSettingContext } from 'hook'
 import { FormHeader, IconTooltip } from 'component'
 import { PATH_MACHINE } from 'route/path'
 import { GStyledListItemText, GStyledSpanBox } from 'theme/style'
+import { RADIUS } from 'config/layout'
 import { TYPOGRAPHY, SIZE, LABEL, KEY, FLEX } from 'constant'
 import { truncate } from 'util/truncate'
-import { Trans } from 'react-i18next'
 
 const MachineConnectionWidget = ({ value, handleConnectedMachineDialog }) => {
  const { customer } = useSelector(state => state.customer)
@@ -55,7 +56,7 @@ const MachineConnectionWidget = ({ value, handleConnectedMachineDialog }) => {
               target={KEY.BLANK}
               sx={{
                padding: 0.5,
-               borderRadius: 2,
+               borderRadius: RADIUS.BORDER.borderRadius,
                m: 0
               }}>
               <Typography color={themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white} variant={value?.machineConnection?.length > 1 ? TYPOGRAPHY.H4 : TYPOGRAPHY.H3}>
@@ -123,7 +124,7 @@ const MachineConnectionWidget = ({ value, handleConnectedMachineDialog }) => {
               target={KEY.BLANK}
               sx={{
                padding: 0.5,
-               borderRadius: 2,
+               borderRadius: RADIUS.BORDER.borderRadius,
                m: 0
               }}>
               <Typography color={themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white} variant={value?.parentConnection?.length > 1 ? TYPOGRAPHY.H4 : TYPOGRAPHY.H3}>

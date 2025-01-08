@@ -8,6 +8,7 @@ import { Grid, Typography, IconButton, Divider } from '@mui/material'
 import { FormHeader, HowickLoader } from 'component'
 import { GStyledListItemText, GStyledSpanBox, GStyledSupportStatusFieldChip, GStyledScrollableHeightLockGrid } from 'theme/style'
 import { normalizer } from 'util/format'
+import { RADIUS } from 'config/layout'
 import { VARIANT, SIZE, KEY, FLEX } from 'constant'
 
 const { TYPOGRAPHY } = VARIANT
@@ -61,8 +62,8 @@ const SupportTicketWidget = ({ value }) => {
               target={KEY.BLANK}
               sx={{
                padding: 0,
-               borderRadius: 2,
-               m: 0
+               m: 0,
+               ...RADIUS.BORDER
               }}>
               <Typography color={themeMode === KEY.LIGHT ? 'common.black' : 'grey.400'} variant={TYPOGRAPHY.H4}>
                {tix?.key}

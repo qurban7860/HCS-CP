@@ -3,25 +3,22 @@ import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import { Trans } from 'react-i18next'
 import { m } from 'framer-motion'
-import { useIcon, Icon, ICON_NAME, useSettingContext } from 'hook'
-import { useSelector } from 'react-redux'
+import { Icon, ICON_NAME, useSettingContext } from 'hook'
 import { Grid, Typography, IconButton, Divider, Box, Card } from '@mui/material'
-import { useTheme, alpha } from '@mui/material/styles'
-import { GStyledListItemText, GStyledSpanBox, GStyledTooltip, GStyledTopBorderDivider, GStyledScrollableHeightLockGrid, GCardNoHeightOption } from 'theme/style'
-import { FormHeader, SkeletonViewFormField, IconTooltip, GridViewTitle } from 'component'
+import { useTheme } from '@mui/material/styles'
+import { GStyledListItemText, GStyledSpanBox, GStyledTooltip, GStyledTopBorderDivider, GCardNoHeightOption } from 'theme/style'
+import { SkeletonViewFormField, IconTooltip, GridViewTitle } from 'component'
 import { PATH_MACHINE } from 'route/path'
 import { VARIANT, SIZE, LABEL, KEY, DECOILER_TYPE_ARR, FLEX } from 'constant'
+import { RADIUS } from 'config/layout'
 import { truncate } from 'util'
 
 const { TYPOGRAPHY } = VARIANT
 
 const MachineConnectionListCard = ({ value, handleConnectionDialog, handleConnectionNewTab, machineTotalCount }) => {
  const [loading, setLoading] = useState(false)
- const { customerMachines } = useSelector(state => state.machine)
  const theme = useTheme()
  const { themeMode } = useSettingContext()
-
- const { Icon: LocIcon, iconSrc } = useIcon(ICON_NAME.DECOILER_DEF)
 
  return (
   <Box>
@@ -54,7 +51,7 @@ const MachineConnectionListCard = ({ value, handleConnectionDialog, handleConnec
                  target={KEY.BLANK}
                  sx={{
                   padding: 0,
-                  borderRadius: 2,
+                  borderRadius: RADIUS.BORDER.borderRadius,
                   m: 0
                  }}>
                  <Typography color={'grey.600'} variant={TYPOGRAPHY.H3}>
@@ -136,7 +133,7 @@ const MachineConnectionListCard = ({ value, handleConnectionDialog, handleConnec
                  target={KEY.BLANK}
                  sx={{
                   padding: 0.5,
-                  borderRadius: 2,
+                  borderRadius: RADIUS.BORDER.borderRadius,
                   m: 0
                  }}>
                  <Typography variant={value?.parentConnection?.length > 1 ? TYPOGRAPHY.H4 : TYPOGRAPHY.H3}>{mach?.machine?.serialNo}</Typography>

@@ -8,6 +8,7 @@ import { useTheme } from '@mui/material/styles'
 import { GStyledSpanBox, GStyledTooltip } from 'theme/style'
 import { SvgFlagIcon, IconTooltip } from 'component'
 import { SkeletonViewFormField } from 'component/skeleton'
+import { RADIUS } from 'config/layout'
 import { SIZE, VARIANT, KEY, LABEL, FLEX } from 'constant'
 import { roleCoverUp } from 'util/role'
 import { StyledDefaultTypography, StyledFieldGrid, StyledChipGrid, StyledFieldChip, StyledFlagBox } from './style'
@@ -84,8 +85,8 @@ const ViewFormField = ({
          target={KEY.BLANK}
          sx={{
           padding: 0.5,
-          borderRadius: 2,
-          m: 0
+          m: 0,
+          ...RADIUS.BORDER
          }}>
          <WebIcon icon={openInSrc} width={15} />
         </IconButton>
@@ -107,8 +108,8 @@ const ViewFormField = ({
           target={KEY.BLANK}
           sx={{
            padding: 0.5,
-           borderRadius: 2,
-           m: 0
+           m: 0,
+           ...RADIUS.BORDER
           }}>
           <WebIcon icon={openInSrc} width={15} />
          </IconButton>

@@ -1,6 +1,6 @@
 import { useTheme } from '@mui/material/styles'
 import { Icon, ICON_NAME, useSettingContext, StyledCard } from 'hook'
-import { RADIUS } from 'config'
+import { RADIUS } from 'config/layout'
 import { KEY } from 'constant'
 
 /**
@@ -18,7 +18,7 @@ function ModeOption() {
    mode={themeMode}
    sx={{
     '&: MuiIconButton-root': {
-     borderRadius: 0
+     borderRadius: RADIUS.BORDER.borderRadius
     }
    }}>
    <Icon icon={themeMode === KEY.LIGHT ? ICON_NAME.MODE_LIGHT : ICON_NAME.MODE_LIGHT} color={theme.palette.secondary.main} />

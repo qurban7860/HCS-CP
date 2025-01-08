@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
-import { t } from 'i18next'
-import { Icon, ICON_NAME } from 'hook'
 import { useTheme, alpha, Box, Typography } from '@mui/material'
+import { RADIUS } from 'config/layout'
 import { TYPOGRAPHY } from 'constant'
 
 const RHFRequiredTextFieldWrapper = ({ condition, children }) => {
@@ -20,7 +19,7 @@ const RHFRequiredTextFieldWrapper = ({ condition, children }) => {
      borderRight: condition ? '.2em solid red' : `.2em solid ${theme.palette.burnIn.altDark}`,
      //  color: 'common.white',
      //  backgroundColor: condition ? theme.palette.error.main : theme.palette.burnIn.altDark,
-     borderRadius: '0.2em'
+     borderRadius: RADIUS.FORM.borderRadius
     }}>
     {condition ? <Typography variant={TYPOGRAPHY.OVERLINE0}>{'*'}</Typography> : ''}
    </Box>

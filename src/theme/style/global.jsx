@@ -542,33 +542,33 @@ export const GStyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ..
 }))
 
 export const GStyledNoPaddingFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, roleColr }) => ({
- borderRadius: theme.spacing(0.4),
+ borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
  backgroundColor: roleColr
 }))
 
 export const GStyledNoPaddingChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, bgColor }) => ({
- borderRadius: theme.spacing(0.2),
+ borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
  padding: theme.spacing(0),
  backgroundColor: bgColor
 }))
 
 export const GStyledFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
  margin: theme.spacing(0.2),
- borderRadius: theme.spacing(0.4),
+ borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
 }))
 
 export const GStyledMiniChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
  //  margin: theme.spacing(0.2),
- borderRadius: theme.spacing(0.2),
+ borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
 }))
 
 export const GStyledChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, color, bgColor }) => ({
  //  margin: theme.spacing(0.2),
- borderRadius: theme.spacing(0.2),
+ borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
  backgroundColor: bgColor,
  color: color
@@ -576,7 +576,7 @@ export const GStyledChip = styled(({ theme, ...other }) => <Chip {...other} />)(
 
 export const GStyledMachineChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
  margin: theme.spacing(0.2),
- borderRadius: theme.spacing(0.4),
+ borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
  color: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[300]
@@ -613,7 +613,7 @@ export const GStyledIconButton = styled(IconButton, {
   duration: theme.transitions.duration.shorter
  }),
  ...(shape === 'rounded' && {
-  borderRadius: Number(theme.shape.borderRadius) * 1.5
+  borderRadius: theme.spacing(RADIUS.CHIP.borderRadius)
  }),
  ...(!filled && {
   opacity: 0.48,
@@ -643,7 +643,7 @@ export const GStyledPopover = styled(Popover)(({ theme }) => ({
   boxShadow: 'none',
   size: '100%',
   overflow: 'hidden',
-  borderRadius: 0
+  borderRadius: theme.spacing(RADIUS.CHIP.borderRadius)
  },
  '& .MuiPopover-paper': {
   overflow: 'hidden'
@@ -888,7 +888,7 @@ export const GStyledScrollableHeightLockGrid = styled(Grid)(({ theme, mode, tota
       left: 0,
       width: '100%',
       height: '30px',
-      borderRadius: '0 0 2px 2px',
+      borderRadius: RADIUS.CUSTOM.borderRadius,
       backgroundImage:
        mode === KEY.LIGHT
         ? `linear-gradient(to bottom, rgba(255,255,255,0.1), ${alpha(theme.palette.grey[500], 0.5)})`

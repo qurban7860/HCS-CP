@@ -8,6 +8,7 @@ import { useTheme, alpha } from '@mui/material/styles'
 import { GStyledListItemText, GStyledSpanBox, GStyledTooltip, GStyledScrollableHeightLockGrid } from 'theme/style'
 import { FormHeader, SkeletonViewFormField, IconTooltip } from 'component'
 import { PATH_MACHINE } from 'route/path'
+import { RADIUS } from 'config/layout'
 import { VARIANT, SIZE, LABEL, KEY, DECOILER_TYPE_ARR, FLEX } from 'constant'
 
 const { TYPOGRAPHY } = VARIANT
@@ -22,7 +23,7 @@ const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog
 
  return (
   <Grid container mb={2}>
-   <Grid item mb={2} bgcolor='background.paper' borderRadius={2}>
+   <Grid item mb={2} bgcolor='background.paper' borderRadius={RADIUS.BORDER.borderRadius}>
     <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={machineTotalCount}>
      <GStyledSpanBox>
       <FormHeader label={LABEL.MACHINE(machineTotalCount)} />
@@ -51,8 +52,8 @@ const MachineListWidget = ({ value, handleMachineDialog, handleMachineSiteDialog
                 target={KEY.BLANK}
                 sx={{
                  padding: 0,
-                 borderRadius: 2,
-                 m: 0
+                 m: 0,
+                 ...RADIUS.BORDER
                 }}>
                 <Typography color={themeMode === KEY.LIGHT ? 'common.black' : 'grey.400'} variant={TYPOGRAPHY.H4}>
                  {mach?.serialNo}

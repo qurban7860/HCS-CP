@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import { ConfigProvider } from 'antd'
 import { useSettingContext } from 'hook'
 import { useTheme } from '@mui/material/styles'
+import { RADIUS } from 'config/layout'
 import { KEY } from 'constant'
 import { AntDSDatePickerWrapper } from './style'
 
@@ -57,7 +58,7 @@ export default function RHFDatePicker({ name, label, defaultValue, helperText, e
          placeholder={label}
          style={{
           width: '100%',
-          borderRadius: '2px',
+          borderRadius: RADIUS.FORM.borderRadius,
           color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400],
           backgroundColor: themeMode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[600],
           '& .antPickerSuffix': {

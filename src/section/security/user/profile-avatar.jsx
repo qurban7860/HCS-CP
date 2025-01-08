@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import { ICON_NAME, useSettingContext, Icon } from 'hook'
 import { Box, Badge, Chip } from '@mui/material'
 import { CustomAvatar } from 'component'
-import { RADIUS } from 'config'
+import { RADIUS } from 'config/layout'
 import { KEY, FLEX } from 'constant'
 
 const ProfileAvatar = ({ value }) => {
@@ -53,7 +53,7 @@ const ProfileAvatar = ({ value }) => {
      sx={{
       width: 250,
       height: 250,
-      borderRadius: RADIUS.BORDER_RADIUS,
+      borderRadius: RADIUS.BORDER.borderRadius,
       borderColor: themeMode === KEY.LIGHT ? 'success.main' : 'grey.400',
       borderWidth: 5
      }}

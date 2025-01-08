@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import countries from 'i18n-iso-countries'
 import enLocale from 'i18n-iso-countries/langs/en.json'
+import { RADIUS } from 'config/layout'
 
 import { GStyledTooltip } from 'theme/style'
 
@@ -24,7 +25,7 @@ const SvgFlagIcon = ({ country, dimension = 24, color = '#FFF', ...other }) => {
    //   {...other}>
 
    <GStyledTooltip title={country} placement='top' disableFocusListener tooltipcolor={color} color={color}>
-    <img src={_getCountryIcon(country)} alt={country} style={{ borderRadius: 2, height: dimension }} />
+    <img src={_getCountryIcon(country)} alt={country} style={{ borderRadius: RADIUS.BORDER.borderRadius, height: dimension }} />
    </GStyledTooltip>
 
    // </Button>

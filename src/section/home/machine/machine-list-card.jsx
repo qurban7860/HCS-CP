@@ -10,6 +10,7 @@ import { IconTooltip, GridViewTitle, HowickLoader } from 'component'
 import { useTheme } from '@mui/material/styles'
 import { GStyledListItemText, GStyledSpanBox, GStyledTooltip, GStyledTopBorderDivider, GCardNoHeightOption } from 'theme/style'
 import { PATH_MACHINE } from 'route/path'
+import { RADIUS } from 'config/layout'
 import { TYPOGRAPHY, SIZE, LABEL, KEY, DECOILER_TYPE_ARR, FLEX } from 'constant'
 
 const MachineListCard = ({ handleMachineDialog, machineTotalCount }) => {
@@ -48,7 +49,7 @@ const MachineListCard = ({ handleMachineDialog, machineTotalCount }) => {
                  target={KEY.BLANK}
                  sx={{
                   padding: 0,
-                  borderRadius: 2,
+                  borderRadius: RADIUS.BORDER.borderRadius,
                   m: 0
                  }}>
                  <Typography color={themeMode === KEY.LIGHT ? 'common.black' : 'grey.400'} variant={TYPOGRAPHY.H4}>

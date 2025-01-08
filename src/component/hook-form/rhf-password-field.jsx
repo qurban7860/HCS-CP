@@ -4,6 +4,7 @@ import { Icon, ICON_NAME, useSettingContext } from 'hook'
 import { useFormContext, Controller } from 'react-hook-form'
 import { useMediaQuery, TextField, InputAdornment, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import { RADIUS } from 'config/layout'
 import { KEY } from 'constant'
 
 export default function RHFPasswordField({ name, helperText, Error, ...other }) {
@@ -40,7 +41,7 @@ export default function RHFPasswordField({ name, helperText, Error, ...other }) 
        ...(isDesktop ? theme.typography.body1 : theme.typography.body2)
       },
       '& .MuiOutlinedInput-notchedOutline': {
-       borderRadius: 0.4,
+       borderRadius: RADIUS.FORM.borderRadius,
        color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0',
        ...(isDesktop ? theme.typography.body1 : theme.typography.body2)
       },

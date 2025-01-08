@@ -4,7 +4,7 @@ import { useIcon, useSettingContext } from 'hook'
 import { Button, alpha, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTooltip } from 'theme/style'
-import { ICON } from 'config/layout'
+import { ICON, RADIUS } from 'config/layout'
 import { KEY, LABEL, VARIANT } from 'constant'
 
 const { TOOLTIP } = ICON
@@ -58,7 +58,7 @@ export default function IconTooltip({
        width: dimension,
        margin: 0.5,
        cursor: cursor ? 'pointer' : 'arrow',
-       ':hover': { color: noHoverAction ? color : convertToAlpha(color, 0.5), borderRadius: 1 }
+       ':hover': { color: noHoverAction ? color : convertToAlpha(color, 0.5), borderRadius: RADIUS.CHIP.borderRadius }
       }}
       icon={iconSrc}
       onClick={onClick}
@@ -93,7 +93,7 @@ export default function IconTooltip({
         width: dimension,
         margin: 0.5,
         cursor: cursor ? 'pointer' : 'arrow',
-        ':hover': { color: noHoverAction ? color : convertToAlpha(color, 0.5), borderRadius: 1 }
+        ':hover': { color: noHoverAction ? color : convertToAlpha(color, 0.5), borderRadius: RADIUS.CHIP.borderRadius }
        }}
        icon={iconSrc}
        onClick={onClick}

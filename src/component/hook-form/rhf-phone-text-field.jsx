@@ -1,10 +1,10 @@
-import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Icon, ICON_NAME } from 'hook'
 import { useFormContext, Controller } from 'react-hook-form'
-import { TextField, InputAdornment, Autocomplete } from '@mui/material'
+import { TextField, InputAdornment } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useSettingContext } from 'hook'
+import { RADIUS } from 'config/layout'
 import { KEY } from 'constant'
 
 RHFPhoneTextField.propTypes = {
@@ -42,7 +42,7 @@ export default function RHFPhoneTextField({ name, helperText, Error, ...other })
        ...theme.typography.body1
       },
       '& .MuiOutlinedInput-notchedOutline': {
-       borderRadius: 0.4,
+       borderRadius: RADIUS.FORM.borderRadius,
        color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0',
        ...theme.typography.body1
       },

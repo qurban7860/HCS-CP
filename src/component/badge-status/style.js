@@ -1,4 +1,5 @@
 import { styled } from '@mui/material/styles'
+import { RADIUS } from 'config/layout'
 import { KEY } from 'constant'
 
 export const StyledBadgeStatus = styled('span')(({ theme, ownerState, mode }) => {
@@ -8,12 +9,12 @@ export const StyledBadgeStatus = styled('span')(({ theme, ownerState, mode }) =>
   width: 10,
   height: 10,
   display: 'flex',
-  borderRadius: '50%',
+  borderRadius: RADIUS.BORDER.borderRadius,
   alignItems: 'center',
   justifyContent: 'center',
   '&:before, &:after': {
    content: "''",
-   borderRadius: 1,
+   borderRadius: RADIUS.BORDER.borderRadius,
    backgroundColor: theme.palette.common.white
   },
 
@@ -51,7 +52,7 @@ export const StyledBadgeStatus = styled('span')(({ theme, ownerState, mode }) =>
    '&:before': {
     width: 6,
     height: 6,
-    borderRadius: '50%'
+    borderRadius: RADIUS.BORDER.borderRadius
    }
   }),
 

@@ -6,7 +6,8 @@ import { useSettingContext } from 'hook'
 import { useFormContext, Controller } from 'react-hook-form'
 import { TextField, Select, MenuItem, InputAdornment, useTheme, useMediaQuery, Box, Typography, Stack, Button } from '@mui/material'
 import { Icon, ICON_NAME } from 'hook'
-import { BUTTON, TYPOGRAPHY, KEY } from 'constant'
+import { RADIUS } from 'config/layout'
+import { TYPOGRAPHY, KEY } from 'constant'
 
 RHFFilteredSearchBar.propTypes = {
  name: PropTypes.string.isRequired,
@@ -146,7 +147,7 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
             boxShadow: 'none',
             borderRight: isMobile ? 'none' : '2px solid',
             borderBottom: isMobile ? '2px solid' : 'none',
-            borderRadius: 0,
+            borderRadius: RADIUS.FORM.borderRadius,
             borderColor: 'divider',
             //    paddingRight: 1,
             marginRight: 1,
