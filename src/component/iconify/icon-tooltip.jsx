@@ -14,7 +14,7 @@ export default function IconTooltip({
  iconOnly = false,
  isActiveIcon = false,
  onClick,
- color = '#1976d2',
+ color = '#1976D2',
  textColor,
  buttonColor,
  tooltipColor,

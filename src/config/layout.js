@@ -90,6 +90,9 @@ export const RADIUS = {
  },
  CUSTOM: {
   borderRadius: '0 0 2px 2px'
+ },
+ BADGE: {
+  borderRadius: '50%'
  }
 }
 

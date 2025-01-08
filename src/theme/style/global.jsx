@@ -522,7 +522,7 @@ export const GStyledNoPaddingFieldGrid = styled(({ theme, mode, isMachineView, i
  overflowWrap: 'break-word',
  backgroundColor: 'transparent',
  //  border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
- borderRadius: isMachineView && theme.spacing(0.2)
+ borderRadius: isMachineView && RADIUS.BORDER.borderRadius
 }))
 
 export const GStyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView, isNoBg }) => ({
@@ -538,7 +538,7 @@ export const GStyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ..
  padding: '0.5rem 0.5rem',
  height: !isMachineView && '5rem',
  border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
- borderRadius: isMachineView && theme.spacing(0.2)
+ borderRadius: isMachineView && RADIUS.BORDER.borderRadius
 }))
 
 export const GStyledNoPaddingFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, roleColr }) => ({
@@ -902,7 +902,7 @@ export const GStyledHeaderCardContainer = styled(Card)(({ theme, height = 180 })
  marginBottom: theme.spacing(1),
  height,
  position: 'sticky',
- top: '60px',
+ top: '80px',
  zIndex: 4,
  borderRadius: RADIUS.BORDER.borderRadius
 }))

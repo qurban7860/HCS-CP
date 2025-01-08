@@ -37,7 +37,7 @@ export const StyledChipGrid = styled(Grid)(({ theme, isNoBg, mode }) => ({
 
 export const StyledFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
  margin: theme.spacing(0.2),
- borderRadius: theme.spacing(RADIUS.FORM.borderRadius),
+ borderRadius: RADIUS.FORM.borderRadius,
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
 }))

@@ -9,12 +9,12 @@ export const StyledBadgeStatus = styled('span')(({ theme, ownerState, mode }) =>
   width: 10,
   height: 10,
   display: 'flex',
-  borderRadius: RADIUS.BORDER.borderRadius,
+  borderRadius: RADIUS.BADGE.borderRadius,
   alignItems: 'center',
   justifyContent: 'center',
   '&:before, &:after': {
    content: "''",
-   borderRadius: RADIUS.BORDER.borderRadius,
+   borderRadius: RADIUS.BADGE.borderRadius,
    backgroundColor: theme.palette.common.white
   },
 
@@ -52,7 +52,7 @@ export const StyledBadgeStatus = styled('span')(({ theme, ownerState, mode }) =>
    '&:before': {
     width: 6,
     height: 6,
-    borderRadius: RADIUS.BORDER.borderRadius
+    borderRadius: RADIUS.BADGE.borderRadius
    }
   }),
 
