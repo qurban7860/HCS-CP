@@ -1,4 +1,4 @@
-import { Fragment, useEffect, memo, useLayoutEffect } from 'react'
+import { Fragment, useEffect, memo, useLayoutEffect, useRef } from 'react'
 import _ from 'lodash'
 import { useSelector, dispatch } from 'store'
 import { useParams } from 'react-router-dom'
@@ -7,6 +7,7 @@ import {
  getMachine,
  setCustomerDialog,
  getConnectedMachineDialog,
+ getMachineCategories,
  setMachineDialog,
  setMachineSiteDialog,
  setMachineFilterBy,
@@ -15,26 +16,29 @@ import {
  resetConnectedMachineDialog,
  resetMachineSiteDialogData,
  resetSelectedMachine,
+ resetMachineCategories,
  resetMachine,
  getMachines
 } from 'store/slice'
-import { useTempFilter, useSettingContext, getComparator, useTable, useUIMorph } from 'hook'
+import { useTempFilter, useSettingContext, getComparator, useTable, useUIMorph, Icon, ICON_NAME } from 'hook'
 import { CommonFieldsCard } from 'section/common'
 import { useMachineDefaultValues, fieldsKeyConfig, fieldsMachineInformationConfig } from 'section/product'
 import { MachineConnectionListCard, MachineCard, MachineFieldsCard } from 'section/product/machine'
 import { HowickResources } from 'section/common'
-import { Grid } from '@mui/material'
-import { AuditBox, HowickLoader, SearchBox } from 'component'
-import { GStyledScrollableHeightLockGrid } from 'theme/style'
+import { useTheme, Grid, Box } from '@mui/material'
+import { AuditBox, SearchBox } from 'component'
+import { GStyledScrollableHeightLockGrid, GStyledChip } from 'theme/style'
 import { MARGIN } from 'config'
 import { FLEX_DIR, KEY } from 'constant'
 
 const MachineTab = () => {
+ const { machine, machines, machineCategories, isLoading, initial } = useSelector(state => state.machine)
+ const { customer } = useSelector(state => state.customer)
  const { id } = useParams()
  const { themeMode } = useSettingContext()
- const { machine, machines, isLoading, initial } = useSelector(state => state.machine)
- const { customer } = useSelector(state => state.customer)
+ const selectedMachineRef = useRef(null)
  const { isDesktop, isMobile } = useUIMorph()
+ const theme = useTheme()
 
  const { order, orderBy } = useTable({
   defaultOrderBy: KEY.CREATED_AT,
@@ -48,6 +52,7 @@ const MachineTab = () => {
   dispatch(resetMachine())
   dispatch(resetSelectedMachine())
   dispatch(resetCustomer())
+  dispatch(resetMachineCategories())
   dispatch(resetConnectedMachineDialog())
   dispatch(resetMachineSiteDialogData())
  }, [dispatch])
@@ -69,13 +74,40 @@ const MachineTab = () => {
  }, [dispatch])
 
  useEffect(() => {
+  const debounce = _.debounce(() => {
+   dispatch(getMachineCategories())
+  }, 300)
+  debounce()
+  return () => debounce.cancel()
+ }, [dispatch])
+
+ useEffect(() => {
   if (machine?.customer) {
    dispatch(getCustomer(machine?.customer._id))
   }
  }, [machine?.customer, dispatch])
 
+ useEffect(() => {
+  if (selectedMachineRef.current) {
+   selectedMachineRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+ }, [machine?._id])
+
  const defaultValues = useMachineDefaultValues(machine, customer)
- const { filterName, handleFilterName, filteredData } = useTempFilter(getComparator(order, orderBy), machines, initial, ChangeMachinePage, setMachineFilterBy)
+ const { filterName, handleFilterName, filteredData, filterCategory, handleFilterCategory } = useTempFilter(
+  getComparator(order, orderBy),
+  machines,
+  initial,
+  ChangeMachinePage,
+  setMachineFilterBy,
+  'all'
+ )
+
+ const CATEGORIES = [
+  { _id: 'all', name: 'All' },
+  { _id: 'decoiler', name: <Icon icon={ICON_NAME.DECOILER_DEF} color={'grey.500'} sx={{ height: 15, width: 15 }} /> },
+  { _id: 'machine', name: <Icon icon={ICON_NAME.FRAMA} color={'grey.500'} sx={{ height: 15, width: 15 }} /> }
+ ]
 
  const handleCustomerDialog = (event, customerId) => {
   event.preventDefault()
@@ -93,27 +125,43 @@ const MachineTab = () => {
 
  const handleSelectedMachine = (event, machineId) => {
   event.preventDefault()
-  dispatch(resetMachine())
   dispatch(getMachine(machineId))
+ }
+
+ const renderCategoryChipContainer = () => {
+  return (
+   <Grid container mb={1} sx={{ backgroundColor: 'transparent' }}>
+    {CATEGORIES.map(category => (
+     <GStyledChip
+      key={category._id}
+      label={category.name}
+      bgColor={filterCategory === category._id ? (themeMode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[900]) : undefined}
+      onClick={event => handleFilterCategory(event, category._id)}
+      sx={{ p: 0, m: 0.5 }}
+     />
+    ))}
+   </Grid>
+  )
  }
 
  return (
   <Fragment>
    <Grid container columnSpacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
     {isDesktop && (
-     <Grid item xs={12} md={12} lg={3}>
-      {machines.length >= 5 && <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />}
+     <Grid item xs={12} md={12} lg={3} sx={{ position: 'sticky', top: 0 }}>
+      {machines.length >= 5 ? (
+       <Box>
+        <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
+        {renderCategoryChipContainer()}
+       </Box>
+      ) : (
+       renderCategoryChipContainer()
+      )}
       <GStyledScrollableHeightLockGrid isMobile={isMobile} mode={themeMode} totalCount={machines?.length}>
        <Grid container gap={2} p={1} height={'auto'} sx={{ maxHeight: 600, overflow: 'auto' }}>
-        {isLoading ? (
-         <Grid item xs={12} md={12}>
-          <HowickLoader mode={themeMode} height={200} />
-         </Grid>
-        ) : (
-         filteredData.map((mach, index) => (
-          <MachineCard key={mach?._id} selectedCardId={machine?._id} value={defaultValues} handleSelected={handleSelectedMachine} handleMachineCard={handleSelectedMachine} machine={mach} />
-         ))
-        )}
+        {filteredData.map((mach, index) => (
+         <MachineCard key={mach?._id} selectedCardId={machine?._id} value={defaultValues} handleSelected={handleSelectedMachine} handleMachineCard={handleSelectedMachine} machine={mach} />
+        ))}
        </Grid>
       </GStyledScrollableHeightLockGrid>
      </Grid>
