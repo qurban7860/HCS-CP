@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types'
 import { Popover } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import { RADIUS } from 'config/layout'
+import { MENU_POPOVER_ARROW } from 'constant/component'
 import getPosition from './get-position'
 import { StyledArrow } from './style'
-import { MENU_POPOVER_ARROW } from 'constant/component'
 
 MenuPopover.propTypes = {
  sx: PropTypes.object,
@@ -33,7 +34,7 @@ function MenuPopover({ open, children, arrow = 'top-right', disabledArrow, sx, .
      '& .MuiMenuItem-root': {
       px: 1,
       typography: 'body2',
-      borderRadius: 0.75,
+      borderRadius: RADIUS.FORM.borderRadius,
       '& svg': { mr: 2, width: 20, height: 20, flexShrink: 0 }
      },
      ...sx

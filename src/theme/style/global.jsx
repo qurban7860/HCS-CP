@@ -1,14 +1,14 @@
-import { color, m } from 'framer-motion'
+import { m } from 'framer-motion'
 import { styled, alpha } from '@mui/material/styles'
 import { Popover, ListItemText, Card, Chip, Grid, Divider, Container, Skeleton, Box, Typography, IconButton, Tab, Tabs, TablePagination, Drawer } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { bgBlur } from 'theme/style'
-import { RADIUS, ASSET } from 'config'
+import { ASSET } from 'config'
+import { RADIUS } from 'config/layout'
 import { PATH_AUTH } from 'route/path'
 import { KEY, SUPPORT_STATUS } from 'constant'
 import { SvgColor } from 'component/svg-color'
-import { normalizer } from 'util'
 
 // :branding __________________________________________________________________________________________________
 // dashboard - welcome
@@ -116,6 +116,32 @@ export const GStyledCard = styled(({ theme, selectedCardId, c, mode, ...other })
  transition: 'ease-in-out 0.2s'
 }))
 
+export const GStyledMachinePanelCard = styled(({ theme, selectedCardId, c, mode, ...other }) => <Card {...other} />)(({ theme, selectedCardId, value, mode }) => ({
+ display: 'flex',
+ flexDirection: 'row',
+ justifyContent: 'space-between',
+ alignItems: 'center',
+ padding: theme.spacing(1),
+ marginBottom: theme.spacing(1),
+ marginLeft: selectedCardId === value?._id || selectedCardId === value?.key ? theme.spacing(2) : theme.spacing(0),
+ width: '100%',
+ cursor: 'pointer',
+ borderRight: selectedCardId === value?._id || selectedCardId === value?.key ? `9px solid ${mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}` : '',
+ backgroundColor:
+  selectedCardId === value?._id || selectedCardId === value?.key
+   ? mode === KEY.LIGHT
+     ? theme.palette.grey[300]
+     : theme.palette.howick.darkGrey
+   : mode === KEY.LIGHT
+   ? theme.palette.grey[200]
+   : theme.palette.grey[800],
+ '&:hover': {
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.howick.darkGrey,
+  marginLeft: theme.spacing(2)
+ },
+ transition: 'ease-in-out 0.2s'
+}))
+
 export const GStyledSupportListCard = styled(({ theme, selectedCardId, c, mode, ...other }) => <Card {...other} />)(({ theme, selectedCardId, value, mode }) => ({
  display: 'flex',
  flexDirection: 'row',
@@ -171,6 +197,7 @@ export const GStyledSiteCard = styled(({ theme, selectedCardId, s, mode, ...othe
  justifyContent: 'space-between',
  alignItems: 'center',
  padding: theme.spacing(1),
+ borderRadius: RADIUS.BORDER.borderRadius,
  marginTop: selectedCardId === site?._id ? theme.spacing(2) : theme.spacing(0),
  width: '300px',
  cursor: 'pointer',
@@ -270,7 +297,7 @@ export const GStyledTableChip = styled(({ theme, ...other }) => <Chip {...other}
  margin: theme.spacing(0.2),
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
  // backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.howick.midBlue,
- borderRadius: 2,
+ borderRadius: RADIUS.BORDER.borderRadius,
  height: '24px',
  overflow: 'hidden',
  textOverflow: 'ellipsis',
@@ -473,7 +500,7 @@ export const GStyledScrollChipBox = styled(({ theme, mode, ...other }) => <Box {
 
 export const GStyledSupportStatusFieldChip = styled(({ theme, status, ...other }) => <Chip {...other} />)(({ theme, status, mode }) => ({
  margin: theme.spacing(0.2),
- borderRadius: theme.spacing(0.4),
+ borderRadius: RADIUS.BORDER.borderRadius,
  color: status === SUPPORT_STATUS.OPEN || status === SUPPORT_STATUS.UNDER_REVIEW ? theme.palette.common.black : theme.palette.common.white,
  backgroundColor:
   status === SUPPORT_STATUS.OPEN || status === SUPPORT_STATUS.UNDER_REVIEW
@@ -495,7 +522,7 @@ export const GStyledNoPaddingFieldGrid = styled(({ theme, mode, isMachineView, i
  overflowWrap: 'break-word',
  backgroundColor: 'transparent',
  //  border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
- borderRadius: isMachineView && theme.spacing(0.2)
+ borderRadius: isMachineView && RADIUS.BORDER.borderRadius
 }))
 
 export const GStyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView, isNoBg }) => ({
@@ -511,37 +538,45 @@ export const GStyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ..
  padding: '0.5rem 0.5rem',
  height: !isMachineView && '5rem',
  border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
- borderRadius: isMachineView && theme.spacing(0.2)
+ borderRadius: isMachineView && RADIUS.BORDER.borderRadius
 }))
 
 export const GStyledNoPaddingFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, roleColr }) => ({
- borderRadius: theme.spacing(0.4),
+ borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
  backgroundColor: roleColr
 }))
 
 export const GStyledNoPaddingChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, bgColor }) => ({
- borderRadius: theme.spacing(0.2),
+ borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
  padding: theme.spacing(0),
  backgroundColor: bgColor
 }))
 
 export const GStyledFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
  margin: theme.spacing(0.2),
- borderRadius: theme.spacing(0.4),
+ borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
 }))
 
 export const GStyledMiniChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
  //  margin: theme.spacing(0.2),
- borderRadius: theme.spacing(0.2),
+ borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
 }))
 
+export const GStyledChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, color, bgColor }) => ({
+ //  margin: theme.spacing(0.2),
+ borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
+ // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
+ backgroundColor: bgColor,
+ color: color
+}))
+
 export const GStyledMachineChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
  margin: theme.spacing(0.2),
- borderRadius: theme.spacing(0.4),
+ borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
  color: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[300]
@@ -578,7 +613,7 @@ export const GStyledIconButton = styled(IconButton, {
   duration: theme.transitions.duration.shorter
  }),
  ...(shape === 'rounded' && {
-  borderRadius: Number(theme.shape.borderRadius) * 1.5
+  borderRadius: theme.spacing(RADIUS.CHIP.borderRadius)
  }),
  ...(!filled && {
   opacity: 0.48,
@@ -608,7 +643,7 @@ export const GStyledPopover = styled(Popover)(({ theme }) => ({
   boxShadow: 'none',
   size: '100%',
   overflow: 'hidden',
-  borderRadius: 0
+  borderRadius: theme.spacing(RADIUS.CHIP.borderRadius)
  },
  '& .MuiPopover-paper': {
   overflow: 'hidden'
@@ -802,7 +837,8 @@ export const GStyledGlobalCard = styled(Card)(({ theme }) => ({
 
 export const GStyledTransparentCard = styled(Card)(({ theme }) => ({
  backgroundColor: 'transparent',
- boxShadow: 'none'
+ boxShadow: 'none',
+ borderRadius: RADIUS.BORDER.borderRadius
 }))
 
 /**
@@ -852,7 +888,7 @@ export const GStyledScrollableHeightLockGrid = styled(Grid)(({ theme, mode, tota
       left: 0,
       width: '100%',
       height: '30px',
-      borderRadius: '0 0 2px 2px',
+      borderRadius: RADIUS.CUSTOM.borderRadius,
       backgroundImage:
        mode === KEY.LIGHT
         ? `linear-gradient(to bottom, rgba(255,255,255,0.1), ${alpha(theme.palette.grey[500], 0.5)})`
@@ -866,8 +902,9 @@ export const GStyledHeaderCardContainer = styled(Card)(({ theme, height = 180 })
  marginBottom: theme.spacing(1),
  height,
  position: 'sticky',
- top: '60px',
- zIndex: 4
+ top: '80px',
+ zIndex: 4,
+ borderRadius: RADIUS.BORDER.borderRadius
 }))
 
 /**
@@ -911,6 +948,7 @@ export const GCardOption = mode => {
   margintop: 10,
   paddingtop: 2,
   sx: {
+   borderRadius: RADIUS.BORDER.borderRadius,
    backgroundColor: mode === KEY.LIGHT ? 'background.default' : 'background.paper',
    backgroundImage: `url(${mode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
    backgroundSize: 'cover'
@@ -925,6 +963,7 @@ export const GCardNoHeightOption = mode => {
   margintop: 10,
   paddingtop: 2,
   sx: {
+   borderRadius: RADIUS.BORDER.borderRadius,
    backgroundColor: mode === KEY.LIGHT ? 'background.default' : 'background.paper',
    backgroundImage: `url(${mode === KEY.LIGHT ? ASSET.BG_STROKE_GREY_LOGO : ASSET.BG_STROKE_BRONZE_LOGO})`,
    backgroundSize: 'cover',

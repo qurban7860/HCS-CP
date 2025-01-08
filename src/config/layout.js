@@ -74,7 +74,25 @@ export const BRAND_RESP = isMobile => {
 
 export const RADIUS = {
  BORDER: {
-  borderRadius: 2
+  borderRadius: 1.5
+ },
+ CHIP: {
+  borderRadius: 0.4
+ },
+ CHART: {
+  borderRadius: 1
+ },
+ AVATAR: {
+  borderRadius: 1
+ },
+ FORM: {
+  borderRadius: 1
+ },
+ CUSTOM: {
+  borderRadius: '0 0 2px 2px'
+ },
+ BADGE: {
+  borderRadius: '50%'
  }
 }
 

@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import _ from 'lodash'
+import { t } from 'i18next'
 import { ICON_NAME, useSettingContext } from 'hook'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
@@ -9,8 +9,8 @@ import { Grid, Typography, IconButton, Divider, Box, Card } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GridViewTitle, IconTooltip } from 'component'
 import { GStyledListItemText, GStyledSpanBox, GCardNoHeightOption, GStyledTopBorderDivider } from 'theme/style'
+import { RADIUS } from 'config/layout'
 import { VARIANT, SIZE, LABEL, KEY, FLEX } from 'constant'
-import { t } from 'i18next'
 
 const { TYPOGRAPHY } = VARIANT
 
@@ -63,7 +63,7 @@ const ContactListCard = ({ value, handleContactDialog }) => {
                   target={KEY.BLANK}
                   sx={{
                    padding: 0,
-                   borderRadius: 2,
+                   borderRadius: RADIUS.BORDER.borderRadius,
                    m: 0
                   }}
                   onClick={() => handleContactDialog(c._id)}>

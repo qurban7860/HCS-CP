@@ -3,7 +3,8 @@ import { useSettingContext } from 'hook'
 import { useFormContext, Controller } from 'react-hook-form'
 import { useMediaQuery, Autocomplete, TextField } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { TYPOGRAPHY, KEY } from 'constant'
+import { RADIUS } from 'config/layout'
+import { KEY } from 'constant'
 
 RHFAutocomplete.propTypes = {
  name: PropTypes.string,
@@ -34,7 +35,7 @@ export default function RHFAutocomplete({ name, label, helperText, Error, ...oth
        ...theme.typography.body1
       },
       '& .MuiOutlinedInput-notchedOutline': {
-       borderRadius: 0.4,
+       borderRadius: RADIUS.FORM.borderRadius,
        color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0',
        ...theme.typography.body1
       },

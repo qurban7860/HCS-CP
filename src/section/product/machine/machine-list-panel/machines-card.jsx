@@ -5,14 +5,14 @@ import { useSettingContext, ICON_NAME } from 'hook'
 import { Box, Grid, Typography, Link } from '@mui/material'
 import { IconTooltip } from 'component'
 import { useTheme } from '@mui/material/styles'
-import { GStyledListItemText, GStyledSpanBox, GStyledCard } from 'theme/style'
+import { GStyledListItemText, GStyledSpanBox, GStyledMachinePanelCard } from 'theme/style'
 import { LABEL, TYPOGRAPHY, KEY, FLEX, DECOILER_TYPE_ARR } from 'constant'
 
 const MachinesCard = ({ selectedCardId, handleSelected, handleMachineCard, handleMachineInNewTabCard, machine }) => {
  const theme = useTheme()
  const { themeMode } = useSettingContext()
  return (
-  <GStyledCard onClick={event => handleSelected(event, machine?._id)} selectedCardId={selectedCardId} value={machine} mode={themeMode}>
+  <GStyledMachinePanelCard onClick={event => handleSelected(event, machine?._id)} selectedCardId={selectedCardId} value={machine} mode={themeMode}>
    <Grid item xs={10}>
     <Box height={50}>
      <GStyledListItemText
@@ -22,8 +22,7 @@ const MachinesCard = ({ selectedCardId, handleSelected, handleMachineCard, handl
          <Link
           onClick={event => handleMachineCard(event, machine._id)}
           sx={{
-           color: themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
-           cursor: 'pointer'
+           color: themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange
           }}>
           <Typography color={themeMode === KEY.LIGHT ? 'common.black' : 'grey.400'} variant={TYPOGRAPHY.H4} sx={{ opacity: selectedCardId === machine._id ? 0.7 : 1 }}>
            {machine?.serialNo}
@@ -31,7 +30,10 @@ const MachinesCard = ({ selectedCardId, handleSelected, handleMachineCard, handl
          </Link>
          &nbsp;
          <IconTooltip
-          onClick={event => handleMachineInNewTabCard(event, machine._id)}
+          onClick={event => {
+           event.stopPropagation()
+           handleMachineInNewTabCard(event, machine._id)
+          }}
           title={<Trans i18nKey='open_in_new_tab.label' values={{ value: 'Machine' }} />}
           color={theme.palette.grey[500]}
           icon={ICON_NAME.OPEN_IN_NEW}
@@ -73,7 +75,7 @@ const MachinesCard = ({ selectedCardId, handleSelected, handleMachineCard, handl
      )}
     </GStyledSpanBox>
    </Grid>
-  </GStyledCard>
+  </GStyledMachinePanelCard>
  )
 }
 

@@ -32,6 +32,11 @@ export const fieldsMachineInformationConfig = [
   gridSize: 12
  },
  {
+  key: 'supportExpireDate',
+  type: 'supportExpireChip',
+  value: defaultValues => defaultValues?.supportExpireDate
+ },
+ {
   key: 'customer',
   heading: 'organization.label',
   value: defaultValues => defaultValues?.customer,
@@ -63,16 +68,6 @@ export const fieldsMachineInformationConfig = [
   key: 'financialCompany',
   heading: 'financing_company.label',
   value: defaultValues => defaultValues?.financialCompany
- },
- {
-  key: 'supplier',
-  heading: 'supplier.label',
-  value: defaultValues => defaultValues?.supplier
- },
- {
-  key: 'supportExpireDate',
-  heading: 'support_expiration.label',
-  value: defaultValues => defaultValues?.supportExpireDate
  },
  {
   key: 'purchaseDate',

@@ -1,6 +1,7 @@
 export { default } from './machine-layout'
 export { default as MachineConnectionWidget } from './connection/connection-widget'
 export { default as MachineConnectionListCard } from './connection/connection-card'
+export { default as MachineCard } from './machine-list-panel/machines-card'
 export { default as MachineHistoryWidget } from './history/history-widget'
 export { default as MachineSiteWidget } from './site/site-widget'
 export { default as MachineTab } from './machine-tab'

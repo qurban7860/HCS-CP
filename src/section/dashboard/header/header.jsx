@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react'
-import { useOffSetTop, useResponsive, Clock, useSettingContext, Icon, ICON_NAME } from 'hook'
-import { AppBar, Toolbar, Stack, Badge, IconButton, Box, Typography } from '@mui/material'
+import { useOffSetTop, useResponsive, Clock, useSettingContext, useUIMorph, Icon, ICON_NAME } from 'hook'
+import { AppBar, Toolbar, Stack, IconButton, Box, Typography } from '@mui/material'
 import { NavSection, PopoverDefault, DrawerMenu } from 'component'
 import { LogoIcon } from 'component/logo'
 import { useTheme } from '@mui/material/styles'
@@ -18,9 +18,9 @@ function Header() {
  const theme = useTheme()
  const navConfig = NavConfiguration()
  const { themeLayout, themeMode } = useSettingContext()
-
+ const { isDesktop, IsBreakpointUp } = useUIMorph()
  const isNavHorizontal = themeLayout === 'horizontal'
- const isDesktop = useResponsive('up', 'lg')
+
  const isOffset = useOffSetTop(HEADER.H_DASHBOARD_DESKTOP) && !isNavHorizontal
  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
  const [clockAnchor, setClockAnchor] = useState(null)
@@ -48,10 +48,12 @@ function Header() {
          width: '100%',
          height: 5
         }}>
-        <Stack>
-         <Typography variant={TYPOGRAPHY.CAPTION}>{GLOBAL.ENV.toUpperCase()}</Typography>
-         <Typography variant={TYPOGRAPHY.CAPTION1}>{GLOBAL.VERSION}</Typography>
-        </Stack>
+        {IsBreakpointUp('1200') && (
+         <Stack mt={1}>
+          <Typography variant={TYPOGRAPHY.CAPTION}>{GLOBAL.ENV.toUpperCase()}</Typography>
+          <Typography variant={TYPOGRAPHY.CAPTION1}>{GLOBAL.VERSION}</Typography>
+         </Stack>
+        )}
        </Box>
       )}
      </Fragment>
@@ -91,7 +93,7 @@ function Header() {
      </Stack>
      <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_END} spacing={{ xs: 0.5, sm: 2 }}>
       {/* {localTimeZone !== aucklandTimeZone && <Clock local={localTimeZone} city={'cleveland'} />} */}
-      <Clock main city={KEY.AUCKLAND} />
+      {/* <Clock main city={KEY.AUCKLAND} /> */}
       <ModeOption />
       <NotificationPopover />
       <AccountPopover />

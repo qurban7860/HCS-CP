@@ -2,6 +2,7 @@ import { FLEX, FLEX_DIR } from './flex'
 import { VIEW_FORM } from './view-form'
 import { VARIANT, FONT_WEIGHT } from './variant'
 import { SZ } from './size'
+import { MACHINE_CATEGORY } from './model'
 
 const ORIENTATION = {
  HORIZONTAL: 'horizontal',
@@ -72,6 +73,7 @@ const KEY = {
  SUBMIT: 'submit',
  NUMBER: 'number',
  INHERIT: 'inherit',
+ CUSTOM: 'custom',
  NONE: 'none',
  TEXT: 'text',
  EMAIL: 'email',
@@ -79,6 +81,8 @@ const KEY = {
  USERNAME: 'username',
  PASSWORD: 'password',
  CURRENT_PASSWORD: 'current-password',
+ PARENT: 'parent',
+ ROLLFORMER: 'rollformer',
 
  // default
  AUTO: 'auto',
@@ -122,15 +126,16 @@ const KEY = {
  CENTER: 'center',
  RELATIVE: 'relative',
  ...CSS,
- ...MODULES,
- ...VIEW_FORM,
- ...ORIENTATION,
- ...VARIANT,
- ...SZ,
  ...FLEX,
  ...FLEX_DIR,
  ...FONT_WEIGHT,
- ...ROLES
+ ...MACHINE_CATEGORY,
+ ...MODULES,
+ ...ORIENTATION,
+ ...SZ,
+ ...ROLES,
+ ...VIEW_FORM,
+ ...VARIANT
 }
 
 export default KEY

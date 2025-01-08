@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles'
 import { Typography, Grid, Chip, Box } from '@mui/material'
+import { RADIUS } from 'config/layout'
 import { KEY } from 'constant'
-import { ASSET } from 'config/asset-directory'
 
 export const StyledDefaultTypography = styled(Typography)(({ theme }) => ({
  display: 'flex',
@@ -22,7 +22,7 @@ export const StyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ...
  padding: '0.5rem 0.5rem',
  height: isMobile ? '4rem' : '5rem',
  border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
- borderRadius: isMachineView && theme.spacing(1)
+ borderRadius: isMachineView && theme.spacing(RADIUS.FORM.borderRadius)
 }))
 
 export const StyledChipGrid = styled(Grid)(({ theme, isNoBg, mode }) => ({
@@ -37,7 +37,7 @@ export const StyledChipGrid = styled(Grid)(({ theme, isNoBg, mode }) => ({
 
 export const StyledFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
  margin: theme.spacing(0.2),
- borderRadius: theme.spacing(0.4),
+ borderRadius: RADIUS.FORM.borderRadius,
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
 }))

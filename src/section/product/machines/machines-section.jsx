@@ -13,12 +13,14 @@ import {
  getMachine,
  getMachines,
  getSecurityUser,
+ getMachineCategories,
  setMachineFilterBy,
  setSelectedMachineCard,
  ChangeMachinePage,
  ChangeMachineRowsPerPage,
  resetMachine,
  resetMachines,
+ resetMachineCategories,
  resetSecurityUser,
  resetSelectedContactCard
 } from 'store/slice'
@@ -27,12 +29,12 @@ import { Table, Grid, Typography } from '@mui/material'
 import { GStyledTableHeaderBox } from 'theme/style'
 import { TableNoData, SkeletonTable, SearchBox, TableTitleBox } from 'component'
 import { MARGIN, TABLE } from 'config'
-import { KEY, FLEX_DIR, TYPOGRAPHY } from 'constant'
+import { KEY, FLEX_DIR, TYPOGRAPHY, DECOILER_TYPE_ARR } from 'constant'
 import { StyledScrollTableContainer } from './style'
 
 const MachineListSection = ({ isArchived }) => {
  const [tableData, setTableData] = useState([])
- const { machines, selectedMachineCard, initial, isLoading, machinePage, machineRowsPerPage } = useSelector(state => state.machine)
+ const { machines, machineCategories, selectedMachineCard, initial, isLoading, machinePage, machineRowsPerPage } = useSelector(state => state.machine)
  const { securityUser } = useSelector(state => state.user)
  const { userId } = useAuthContext()
  const { themeMode } = useSettingContext()
@@ -51,13 +53,14 @@ const MachineListSection = ({ isArchived }) => {
   setPage: setTablePage,
   onSort
  } = useTable({
-  defaultOrderBy: KEY.CREATED_AT,
+  defaultOrderBy: 'serialNo',
   defaultOrder: KEY.DESC
  })
 
  useLayoutEffect(() => {
   dispatch(resetMachine())
   dispatch(resetMachines())
+  dispatch(resetMachineCategories())
   dispatch(resetSelectedContactCard())
   if (userId !== securityUser?._id) {
    dispatch(resetSecurityUser())
@@ -79,12 +82,33 @@ const MachineListSection = ({ isArchived }) => {
  }, [dispatch, machinePage, machineRowsPerPage])
 
  useEffect(() => {
+  const debouncedDispatch = _.debounce(() => {
+   dispatch(getMachineCategories())
+  }, 300)
+  debouncedDispatch()
+  return () => debouncedDispatch.cancel()
+ }, [dispatch])
+
+ useEffect(() => {
   if (initial) {
    setTableData(machines || [])
   }
  }, [machines, initial])
 
- const { filterName, handleFilterName, filteredData, filterStatus, handleFilterStatus } = useFilter(getComparator(order, orderBy), tableData, initial, ChangeMachinePage, setMachineFilterBy)
+ const { filterName, handleFilterName, filteredData, filterStatus, handleFilterStatus, filterCategory, handleFilterCategory } = useFilter(
+  getComparator(order, orderBy),
+  tableData,
+  initial,
+  ChangeMachinePage,
+  setMachineFilterBy,
+  'serialNo',
+  KEY.ROLLFORMER
+ )
+
+ const MACHINES = machineCategories?.filter(category => !DECOILER_TYPE_ARR.some(type => category?.name?.includes(type)))
+ const filteredDataCategories = Array.from(new Set(machines.map(mach => mach?.machineModel?.category)))
+ const FILTERED_MACHINES_CATEGORY = MACHINES.filter(category => filteredDataCategories.includes(category?._id))
+ const CATEGORIES = [{ _id: 'all', name: 'All' }, { _id: 'decoiler', name: 'Decoiler' }, { _id: 'rollformer', name: 'Rollformer' }, ...FILTERED_MACHINES_CATEGORY]
 
  const handleChangePage = (event, newPage) => {
   if (newPage < Math.ceil(filteredData.length / machineRowsPerPage)) {
@@ -169,7 +193,11 @@ const MachineListSection = ({ isArchived }) => {
          columnFilterButtonData={HEADER_ITEMS}
          currentFilterStatus={filterStatus}
          handleFilterStatus={handleFilterStatus}
+         currentFilterCategory={filterCategory}
+         handleFilterCategory={handleFilterCategory}
+         categoryTypes={CATEGORIES}
          showFilterStatus
+         showFilterCategory
         />
         <StyledScrollTableContainer>
          <Table>

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import { useSettingContext, useUIMorph } from 'hook'
-import { useMediaQuery, useTheme, Chip, Typography } from '@mui/material'
+import { useTheme, Chip, Typography } from '@mui/material'
 import { GStyledNoPaddingFieldGrid, GStyledNoPaddingFieldChip } from 'theme/style'
-import { KEY, SIZE, TYPOGRAPHY } from 'constant'
+import { SIZE, TYPOGRAPHY } from 'constant'
 import { roleCoverUp, roleColr } from 'util/role'
 
 const ChipsGrid = ({ chips, chipKey, isRole }) => {

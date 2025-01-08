@@ -10,7 +10,7 @@ MotionLazyContainer.propTypes = {
 export default function MotionLazyContainer({ children }) {
  return (
   <LazyMotion strict features={loadFeatures}>
-   <Box component={m.div} style={{ height: '100vh' }}>
+   <Box component={m.div} sx={{ height: '100vh' }}>
     {children}
    </Box>
   </LazyMotion>

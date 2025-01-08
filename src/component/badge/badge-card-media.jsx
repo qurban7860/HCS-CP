@@ -4,6 +4,7 @@ import { m } from 'framer-motion'
 import { Badge, Chip } from '@mui/material'
 import { CustomAvatar } from 'component'
 import { Icon, ICON_NAME } from 'hook'
+import { RADIUS } from 'config/layout'
 import { KEY, SIZE, VARIANT } from 'constant'
 
 const BadgeCardMedia = ({ dimension = 70, customer, typographyVariant, user }) => {
@@ -63,7 +64,7 @@ const BadgeCardMedia = ({ dimension = 70, customer, typographyVariant, user }) =
      typography={typographyVariant}
      sx={{
       objectFit: 'hidden',
-      borderRadius: '5%',
+      borderRadius: RADIUS.BORDER.borderRadius,
       marginRight: 2,
       height: dimension,
       width: dimension

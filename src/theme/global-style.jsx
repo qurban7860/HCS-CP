@@ -3,6 +3,7 @@ import { useSettingContext } from 'hook'
 import useResponsive from 'hook/use-responsive'
 import { GlobalStyles } from '@mui/material'
 import { alpha, useTheme } from '@mui/material/styles'
+import { RADIUS } from 'config/layout'
 import { ASSET } from 'config/asset-directory'
 import { KEY } from 'constant'
 
@@ -18,7 +19,7 @@ function GlobalStyle() {
    styles={{
     '*': {
      boxSizing: 'border-box',
-     borderRadius: 0.4,
+     borderRadius: RADIUS.BORDER.borderRadius,
      scrollBehavior: 'smooth',
      scrollbarWidth: 'thin'
     },

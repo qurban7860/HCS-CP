@@ -2,13 +2,12 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import { Trans } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { Icon, ICON_NAME, useSettingContext } from 'hook'
-import { Box, Card, CardContent, Typography, Grid, Paper, List, ListItem, ListItemIcon, ListItemText, Avatar, Chip, Stack, Button } from '@mui/material'
+import { Box, Card, CardContent, Typography, Grid, Paper, List, ListItem, ListItemIcon, ListItemText, Avatar, Chip, Stack } from '@mui/material'
 import { GStyledLoadingButton } from 'theme/style'
 import { GLOBAL } from 'config/global'
+import { RADIUS } from 'config/layout'
 import { SIZE, TYPOGRAPHY, VARIANT } from 'constant'
-import { delay } from 'util'
 
 const RegisterSuccessCard = ({ submittedData }) => {
  const [loading, setLoading] = useState(false)
@@ -29,7 +28,7 @@ const RegisterSuccessCard = ({ submittedData }) => {
     sx={{
      border: 1,
      borderColor: theme => theme.palette.divider,
-     borderRadius: 1
+     ...RADIUS.BORDER
     }}>
     <CardContent sx={{ boxShadow: 0 }}>
      <Box sx={{ textAlign: 'center', mb: 4 }}>
@@ -157,7 +156,7 @@ const RegisterSuccessCard = ({ submittedData }) => {
         <Stack direction='row' spacing={1} sx={{ mt: 1, flexWrap: 'wrap', gap: 1 }}>
          &nbsp;
          {submittedData.machineSerialNos.map((serial, index) => (
-          <Chip key={index} label={<Typography variant={TYPOGRAPHY.H6}>{serial}</Typography>} variant='outlined' size='small' sx={{ borderRadius: 0.2 }} />
+          <Chip key={index} label={<Typography variant={TYPOGRAPHY.H6}>{serial}</Typography>} variant='outlined' size='small' sx={{ ...RADIUS.CHIP }} />
          ))}
         </Stack>
        </Grid>

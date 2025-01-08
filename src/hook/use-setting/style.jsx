@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types'
 import { alpha, styled } from '@mui/material/styles'
 import { CardActionArea, Radio, FormControlLabel, Stack, Box } from '@mui/material'
-import { NAV, RADIUS } from 'config'
-import { KEY } from 'constant'
+import { NAV, RADIUS } from 'config/layout'
 
 export const StyledWrap = styled(Box)(() => ({
  gap: 8,
@@ -30,7 +29,7 @@ export const StyledCircleColor = styled('div', {
 })(({ selected, color, theme }) => ({
  width: 12,
  height: 12,
- borderRadius: '50%',
+ borderRadius: RADIUS.BORDER.borderRadius,
  backgroundColor: color,
  transition: theme.transitions.create(['width', 'height'], {
   easing: theme.transitions.easing.easeInOut,
@@ -76,8 +75,6 @@ export function LayoutIcon({ layout }) {
 
  const SPACING = 0.5
 
- const RADIUS = 0.5
-
  const isNavHorizontal = layout === 'horizontal'
 
  const isNavMini = layout === 'mini'
@@ -85,8 +82,8 @@ export function LayoutIcon({ layout }) {
  const styles = {
   width: 1,
   height: 1,
-  borderRadius: RADIUS,
-  position: 'absolute'
+  position: 'absolute',
+  ...RADIUS.BORDER
  }
 
  return (
@@ -96,22 +93,22 @@ export function LayoutIcon({ layout }) {
      mr: SPACING,
      width: WIDTH,
      opacity: 0.72,
-     borderRadius: RADIUS,
+     ...RADIUS.BORDER,
      bgcolor: 'currentColor',
      ...(isNavHorizontal && {
       width: 1,
       mb: SPACING,
       height: HEIGHT,
-      borderRadius: RADIUS / 1.5
+      ...RADIUS.BORDER
      }),
      ...(isNavMini && {
       width: WIDTH / 2,
-      borderRadius: RADIUS / 2
+      ...RADIUS.BORDER
      })
     }}
    />
 
-   <Box sx={{ flexGrow: 1, position: 'relative', borderRadius: RADIUS }}>
+   <Box sx={{ flexGrow: 1, position: 'relative', ...RADIUS.BORDER }}>
     <Box sx={{ ...styles, opacity: 0.16, bgcolor: 'currentColor' }} />
     <Box sx={{ ...styles, opacity: 0.48, border: `solid 1px currentColor` }} />
    </Box>

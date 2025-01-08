@@ -9,6 +9,7 @@ import { Grid, Typography, IconButton, Divider, Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { FormHeader, IconTooltip } from 'component'
 import { GStyledListItemText, GStyledSpanBox } from 'theme/style'
+import { RADIUS } from 'config/layout'
 import { VARIANT, SIZE, LABEL, KEY, FLEX } from 'constant'
 
 const { TYPOGRAPHY } = VARIANT
@@ -55,7 +56,7 @@ const ContactListWidget = ({ value, handleContactDialog }) => {
                target={KEY.BLANK}
                sx={{
                 padding: 0,
-                borderRadius: 2,
+                ...RADIUS.BORDER,
                 m: 0
                }}
                onClick={() => handleContactDialog(c._id)}>
