@@ -15,11 +15,15 @@ import { normalizer } from 'util'
  * @param {*} params - dataset to be filtered
  * @param {*} initial - initial state of the dataset, usually comes from the reducer
  * @returns filteredData - filtered data, rename to dataFiltered
- * @returns isFiltered - boolean, true if filterName or filterStatus is not empty
+ * @returns isFiltered - boolean, true if filterName, filterRole, filterCategory or filterStatus is not empty
  * @returns filterName - string, initial value of the filterName
  * @returns filterStatus - array, initial value of the filterStatus
+ * @returns filterRole - array, initial value of the filterRole
+ * @returns filterCategory - array, initial value of the filterCategory
  * @returns handleFilterName - function, handle filterName change
  * @returns handleFilterStatus - function, handle filterStatus change
+ * @returns handleFilterRole - function, handle filter role change
+ * @returns handleFilterCategory - array, initial value of the filterCategory
  *
  * @example
  * const {
@@ -35,12 +39,12 @@ import { normalizer } from 'util'
  * @param orderBy - string, param to be sorted, came from  useTable hook
  */
 
-export default function useFilter(comparator, params, initial, ChangePage, setFilterBy, defaultOrderBy, categoryTypes = []) {
+export default function useFilter(comparator, params, initial, ChangePage, setFilterBy, defaultOrderBy, setCategoryDefault = 'all') {
  const [tableData, setTableData] = useState([])
  const [filterName, setFilterName] = useState('')
  const [filterStatus, setFilterStatus] = useState('active')
  const [filterRole, setFilterRole] = useState('all')
- const [filterCategory, setFilterCategory] = useState(KEY.FRAMA_MACHINE)
+ const [filterCategory, setFilterCategory] = useState(setCategoryDefault)
  const { setPage } = useTable({ defaultOrderBy: defaultOrderBy || 'name' })
  const isFiltered = filterName !== '' || filterStatus !== 'all' || filterRole !== 'all' || filterCategory !== 'all'
  const inputData = tableData
@@ -139,19 +143,21 @@ export default function useFilter(comparator, params, initial, ChangePage, setFi
     filterVal = filterVal.filter(item => item.roles.some(obj => obj.name === KEY.CUSTOMER_USER))
    }
    if (filterCategory === KEY.DECOILER) {
-    filterVal = filterVal.filter(item => DECOILER_TYPE_ARR.some(type => normalizer(item.machineModel.name).includes(normalizer(type))))
+    filterVal = filterVal.filter(item => DECOILER_TYPE_ARR.some(type => normalizer(item?.machineModel?.name).includes(normalizer(type))))
    } else if (filterCategory === KEY.FRAMA_MACHINE) {
-    filterVal = filterVal.filter(item => normalizer(item.machineModel.name).includes(KEY.FRAMA))
+    filterVal = filterVal.filter(item => normalizer(item?.machineModel?.name)?.includes(KEY.FRAMA))
    } else if (filterCategory === KEY.H_SERIES_MACHINE) {
-    filterVal = filterVal.filter(item => new RegExp(REGEX.H_SERIES).test(item.machineModel.name))
+    filterVal = filterVal.filter(item => new RegExp(REGEX.H_SERIES).test(item?.machineModel?.name))
    } else if (filterCategory === KEY.CUSTOM_MACHINE) {
-    filterVal = filterVal.filter(item => normalizer(item.machineModel.name).includes(KEY.CUSTOM))
+    filterVal = filterVal.filter(item => normalizer(item?.machineModel?.name)?.includes(KEY.CUSTOM))
    } else if (filterCategory === KEY.SPEEDFLOOR) {
-    filterVal = filterVal.filter(item => normalizer(item.machineModel.name).includes(KEY.SPEEDFLOOR))
+    filterVal = filterVal.filter(item => normalizer(item?.machineModel?.name)?.includes(KEY.SPEEDFLOOR))
    } else if (filterCategory === KEY.STEEL_FRAMER_18GUAGE) {
-    filterVal = filterVal.filter(item => normalizer(item.machineModel.name).includes(KEY.STEEL_FRAMER_18GUAGE))
+    filterVal = filterVal.filter(item => normalizer(item?.machineModel?.name)?.includes(KEY.STEEL_FRAMER_18GUAGE))
    } else if (filterCategory === KEY.TOPHAT_MACHINE) {
-    filterVal = filterVal.filter(item => normalizer(item.machineModel.name).includes(KEY.TOPHAT_MACHINE || 'TH'))
+    filterVal = filterVal.filter(item => normalizer(item?.machineModel?.name)?.includes(KEY.TOPHAT_MACHINE || 'TH'))
+   } else if (filterCategory === KEY.ROLLFORMER) {
+    filterVal = filterVal.filter(item => !DECOILER_TYPE_ARR.some(type => normalizer(item.machineModel.name).includes(normalizer(type))))
    }
   }
   return filterVal
