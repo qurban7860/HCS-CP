@@ -154,7 +154,7 @@ const MachineTab = () => {
   <Fragment>
    <Grid container columnSpacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
     {isDesktop && (
-     <Grid item xs={12} md={12} lg={3} sx={{ position: 'sticky', top: 0 }}>
+     <Grid item xs={12} md={12} lg={3} sx={{ position: 'sticky', top: 265, zIndex: 99, alignSelf: 'flex-start' }}>
       {machines.length >= 5 ? (
        <Box>
         <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
