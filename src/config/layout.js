@@ -74,7 +74,7 @@ export const BRAND_RESP = isMobile => {
 
 export const RADIUS = {
  BORDER: {
-  borderRadius: 2
+  borderRadius: 1
  }
 }
 
