@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { useAuthContext } from 'auth/use-auth-context'
 import { useSettingContext, Icon, ICON_NAME, useResponsive } from 'hook'
-import { useTheme, useMediaQuery, Stack, Box, Grid, Card, Typography } from '@mui/material'
+import { useTheme, useMediaQuery, Stack, Box, Grid, Card, Typography, Badge } from '@mui/material'
 import { SkeletonViewFormField } from 'component'
 import { GStyledWelcomeContainerDiv, GStyledWelcomeDescription, GStyledSpanBox, GStyledTopBorderDivider, GCardOption, GStyledNoPaddingChip } from 'theme/style'
 import { KEY, TYPOGRAPHY } from 'constant'
@@ -154,16 +154,25 @@ function Welcome({ action, img, customer, isCustomerLoading, customerOnlineUserI
              <Typography variant={isDesktop ? TYPOGRAPHY.H6 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
               {securityUserTotalCount}
              </Typography>
-             <GStyledNoPaddingChip
-              bgColor={theme.palette.burnIn.altDark}
-              label={
-               <GStyledSpanBox>
-                {/* <Icon icon={ICON_NAME.ONLINE} sx={{ height: 10, width: 10 }} color={theme.palette.common.white} /> */}
-                <Typography variant={TYPOGRAPHY.H6}>{customerOnlineUserIds?.length ? `${customerOnlineUserIds.length} Online` : '1 Online'}</Typography>
-               </GStyledSpanBox>
-              }
-              size={'small'}
-             />
+             <Badge
+              color='burnIn'
+              badgeContent={customerOnlineUserIds?.length || 1}
+              anchorOrigin={{
+               vertical: 'top',
+               horizontal: 'right'
+              }}>
+              <GStyledNoPaddingChip
+               variant={'outlined'}
+               border={`1px solid ${themeMode === KEY.LIGHT ? theme.palette.burnIn.main : theme.palette.burnIn.main}`}
+               label={
+                <GStyledSpanBox>
+                 <Icon icon={ICON_NAME.ONLINE} sx={{ height: 10, width: 10 }} color={theme.palette.burnIn.main} /> &nbsp;
+                 <Typography variant={TYPOGRAPHY.OVERLINE2}>{t('online.label')}</Typography>
+                </GStyledSpanBox>
+               }
+               size={'small'}
+              />
+             </Badge>
             </Fragment>
            )}
           </GStyledSpanBox>
