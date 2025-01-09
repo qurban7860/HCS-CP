@@ -44,7 +44,7 @@ export const StyledBadgeStatus = styled('span')(({ theme, ownerState, mode }) =>
   }),
 
   ...(status === 'online' && {
-   backgroundColor: mode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.howick.burnIn
+   backgroundColor: theme.palette.burnIn.main
   }),
 
   ...(status === 'invisible' && {
