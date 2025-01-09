@@ -3,13 +3,13 @@ import { t } from 'i18next'
 import { dispatch, useSelector } from 'store'
 import { useAuthContext } from 'auth/use-auth-context'
 import { Icon, useSettingContext, useUIMorph } from 'hook'
-import { setUserDialog, archiveSecurityUser } from 'store/slice'
+import { setUserDialog, archiveSecurityUser, updateStatusSecurityUser } from 'store/slice'
 import { ICON_NAME } from 'hook'
 import { useUserDefaultValues } from 'section'
-import { useTheme, Dialog, DialogContent, DialogTitle, DialogActions, Divider, Grid, Typography } from '@mui/material'
-import { GridViewField, TitleListItemText, AuditBox, CustomAvatar, ConfirmDialog } from 'component'
-import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption, GStyledNoPaddingChip, GStyledDefLoadingButton } from 'theme/style'
-import { KEY, FLEX, SZ, TYPOGRAPHY, SIZE } from 'constant'
+import { useTheme, Dialog, DialogContent, DialogTitle, DialogActions, Divider, Grid, Typography, FormControlLabel, Switch, Box } from '@mui/material'
+import { GridViewField, TitleListItemText, AuditBox, CustomAvatar, ConfirmDialog, IconTooltip } from 'component'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption, GStyledNoPaddingChip, GStyledDefLoadingButton, GStyledSwitch } from 'theme/style'
+import { KEY, FLEX, SZ, TYPOGRAPHY, SIZE, FLEX_DIR } from 'constant'
 import { toTitleCase } from 'util'
 
 const UserDialog = () => {
@@ -33,6 +33,11 @@ const UserDialog = () => {
   setOpenArchiveModal(false)
  }
 
+ const handleUpdateStatusUser = () => {
+  dispatch(updateStatusSecurityUser(securityUser._id, !securityUser.isActive))
+  setOpenUpdateStatusModal(false)
+ }
+
  return (
   <Fragment>
    <Dialog disableEnforceFocus maxWidth={SZ.LG} open={userDialog} onClose={handleDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
@@ -45,14 +50,29 @@ const UserDialog = () => {
       padding: theme.spacing(2)
      }}>
      <GStyledSpanBox sx={{ justifyContent: FLEX.SPACE_BETWEEN }}>
-      <TitleListItemText truncatedName={defaultValues?.name} roles={defaultValues?.roles} />
+      <TitleListItemText
+       truncatedName={defaultValues?.name}
+       icon={
+        <IconTooltip
+         title={defaultValues?.isActive ? t('active.label') : t('inactive.label')}
+         icon={defaultValues?.isActive ? ICON_NAME.ACTIVE : ICON_NAME.INACTIVE}
+         color={defaultValues?.isActive ? (themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main) : theme.palette.error.main}
+         tooltipColor={defaultValues?.isActive ? (themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main) : theme.palette.error.main}
+         tooltipTextColor={theme.palette.common.white}
+         iconOnly
+         dimension={15}
+        />
+       }
+       roles={defaultValues?.roles}
+      />
       <GStyledSpanBox gap={1}>
        {securityUser?.isOnline && (
         <GStyledNoPaddingChip
          label={
           <GStyledSpanBox>
-           <Icon icon={ICON_NAME.ONLINE} color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main} sx={{ height: 15, width: 15 }} />
-           <Typography variant={TYPOGRAPHY.H6}>{t('online.label')}</Typography>
+           <Icon icon={ICON_NAME.ONLINE} color={theme.palette.burnIn.main} sx={{ height: 15, width: 15 }} />
+           &nbsp;
+           <Typography variant={TYPOGRAPHY.OVERLINE2}>{t('online.label')}</Typography>
           </GStyledSpanBox>
          }
          icon={ICON_NAME.ONLINE}
@@ -93,27 +113,43 @@ const UserDialog = () => {
      </Grid>
      <AuditBox value={defaultValues} pb={0} />
     </DialogContent>
-    <DialogActions>
-     <Grid item sm={12}>
-      <Grid container justifyContent={FLEX.FLEX_END} display={FLEX.FLEX} gap={2}>
-       {!isAdmin && !isSelf && (
-        <GStyledDefLoadingButton
-         isLoading={isLoading}
-         type={'button'}
-         mode={themeMode}
-         textColor={theme.palette.error.contrastText}
-         bgColor={theme.palette.error.dark}
-         onClick={() => setOpenArchiveModal(true)}>
-         <Icon icon={ICON_NAME.TRASH} sx={{ height: 15, width: 15 }} />
-         &nbsp;
-         {t('delete_user.label').toUpperCase()}
-        </GStyledDefLoadingButton>
-       )}
-       <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog} gap={2}>
-        {t('close.label').toUpperCase()}
-       </GStyledCloseButton>
-      </Grid>
-     </Grid>
+    <DialogActions sx={{ display: FLEX.FLEX, justifyContent: FLEX.SPACE_BETWEEN }}>
+     {!isAdmin && !isSelf && (
+      <Box>
+       <FormControlLabel
+        onClick={handleUpdateStatusUser}
+        control={
+         <GStyledSwitch
+          checked={defaultValues?.isActive ? true : false}
+          mode={themeMode}
+          isActive={defaultValues?.isActive}
+          color={defaultValues?.isActive ? (themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main) : theme.palette.error.dark}
+         />
+        }
+        label={
+         <Typography variant={TYPOGRAPHY.BODY2} color={themeMode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]}>
+          {defaultValues?.isActive ? t('deactivate.label') : t('activate.label')}
+         </Typography>
+        }
+       />
+      </Box>
+     )}
+     <GStyledSpanBox gap={1}>
+      {!isAdmin && !isSelf && (
+       <GStyledDefLoadingButton
+        isLoading={isLoading}
+        type={'button'}
+        mode={themeMode}
+        textColor={theme.palette.error.contrastText}
+        bgColor={theme.palette.error.dark}
+        onClick={() => setOpenArchiveModal(true)}>
+        {t('delete.label').toUpperCase()}
+       </GStyledDefLoadingButton>
+      )}
+      <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog} gap={2}>
+       {t('close.label').toUpperCase()}
+      </GStyledCloseButton>
+     </GStyledSpanBox>
     </DialogActions>
    </Dialog>
    {openArchiveModal && (
