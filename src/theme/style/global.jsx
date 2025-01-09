@@ -1,6 +1,6 @@
 import { m } from 'framer-motion'
 import { styled, alpha } from '@mui/material/styles'
-import { Popover, ListItemText, Card, Chip, Grid, Divider, Container, Skeleton, Box, Typography, IconButton, Tab, Tabs, TablePagination, Drawer } from '@mui/material'
+import { Popover, ListItemText, Card, Chip, Switch, Grid, Divider, Container, Skeleton, Box, Typography, IconButton, Tab, Tabs, TablePagination, Drawer } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { bgBlur } from 'theme/style'
@@ -472,6 +472,42 @@ export const GStyledTooltip = styled(({ className, mode, green, disabled, ...pro
   }
  })
 )
+
+export const GStyledSwitch = styled(({ theme, mode, ...other }) => <Switch {...other} />)(({ theme, mode, isActive }) => ({
+ padding: 8,
+ '& .MuiSwitch-track': {
+  borderRadius: RADIUS.BORDER.borderRadius,
+  backgroundColor: isActive ? (mode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main) : theme.palette.error.dark,
+  opacity: 1,
+  '&::before, &::after': {
+   content: '""',
+   position: 'absolute',
+   top: '50%',
+   transform: 'translateY(-50%)',
+   width: 16,
+   height: 16
+  },
+  '&::before': {
+   backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+    theme.palette.common.black
+   )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+   left: 12
+  },
+  '&::after': {
+   backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+    theme.palette.common.white
+   )}" d="M19,13H5V11H19V13Z" /></svg>')`,
+   right: 10
+  }
+ },
+ '& .MuiSwitch-thumb': {
+  boxShadow: 'none',
+  width: 18,
+
+  borderRadius: RADIUS.BORDER.borderRadius,
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.grey[500]
+ }
+}))
 
 export const GStyledTabs = styled(({ theme, mode, ...other }) => <Tabs {...other} />)(({ theme, mode }) => ({
  '& .MuiTabs-root': {
