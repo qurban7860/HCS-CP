@@ -6,10 +6,10 @@ import { Icon, useSettingContext, useUIMorph } from 'hook'
 import { setUserDialog, archiveSecurityUser, updateStatusSecurityUser } from 'store/slice'
 import { ICON_NAME } from 'hook'
 import { useUserDefaultValues } from 'section'
-import { useTheme, Dialog, DialogContent, DialogTitle, DialogActions, Divider, Grid, Typography, FormControlLabel, Switch, Box } from '@mui/material'
+import { useTheme, Dialog, DialogContent, DialogTitle, DialogActions, Divider, Grid, Typography, FormControlLabel, Box } from '@mui/material'
 import { GridViewField, TitleListItemText, AuditBox, CustomAvatar, ConfirmDialog, IconTooltip } from 'component'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption, GStyledNoPaddingChip, GStyledDefLoadingButton, GStyledSwitch } from 'theme/style'
-import { KEY, FLEX, SZ, TYPOGRAPHY, SIZE, FLEX_DIR } from 'constant'
+import { KEY, FLEX, SZ, TYPOGRAPHY, SIZE } from 'constant'
 import { toTitleCase } from 'util'
 
 const UserDialog = () => {
@@ -33,9 +33,10 @@ const UserDialog = () => {
   setOpenArchiveModal(false)
  }
 
- const handleUpdateStatusUser = () => {
-  dispatch(updateStatusSecurityUser(securityUser._id, !securityUser.isActive))
-  setOpenUpdateStatusModal(false)
+ const handleUpdateStatusUser = async () => {
+  const securityUserData = { isActive: !securityUser.isActive }
+  await dispatch(updateStatusSecurityUser(securityUser._id, securityUserData))
+  //   setOpenUpdateStatusModal(false)
  }
 
  return (
@@ -113,14 +114,14 @@ const UserDialog = () => {
      </Grid>
      <AuditBox value={defaultValues} pb={0} />
     </DialogContent>
-    <DialogActions sx={{ display: FLEX.FLEX, justifyContent: FLEX.SPACE_BETWEEN }}>
+    <DialogActions sx={{ display: FLEX.FLEX, justifyContent: !isAdmin && !isSelf ? FLEX.SPACE_BETWEEN : FLEX.FLEX_END }}>
      {!isAdmin && !isSelf && (
       <Box>
        <FormControlLabel
-        onClick={handleUpdateStatusUser}
         control={
          <GStyledSwitch
-          checked={defaultValues?.isActive ? true : false}
+          checked={!!defaultValues?.isActive}
+          onChange={handleUpdateStatusUser}
           mode={themeMode}
           isActive={defaultValues?.isActive}
           color={defaultValues?.isActive ? (themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main) : theme.palette.error.dark}

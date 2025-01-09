@@ -245,16 +245,12 @@ export function archiveSecurityUser(id) {
  }
 }
 
-export function updateStatusSecurityUser(id, isActive) {
+export function updateStatusSecurityUser(id, data) {
  return async dispatch => {
   dispatch(userSlice.actions.startLoading())
   try {
-   const response = await axios.patch(PATH_SERVER.SECURITY.USER.detail(id), {
-    params: {
-     isActive
-    }
-   })
-   dispatch(userSlice.actions.getSecurityUserSuccess(response.data))
+   const response = await axios.patch(PATH_SERVER.SECURITY.USER.detail(id), data)
+   dispatch(userSlice.actions.stopLoading())
    return response
   } catch (error) {
    dispatch(userSlice.actions.hasError(error.Message))
