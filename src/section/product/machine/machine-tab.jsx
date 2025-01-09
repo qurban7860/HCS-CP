@@ -29,7 +29,7 @@ import { HowickResources } from 'section/common'
 import { useTheme, Grid, Box } from '@mui/material'
 import { AuditBox, SearchBox } from 'component'
 import { GStyledScrollableHeightLockGrid, GStyledChip } from 'theme/style'
-import { MARGIN } from 'config'
+import { MARGIN, NAV } from 'config/layout'
 import { FLEX_DIR, KEY } from 'constant'
 
 const MachineTab = () => {
@@ -164,7 +164,7 @@ const MachineTab = () => {
        renderCategoryChipContainer()
       )}
       <GStyledScrollableHeightLockGrid isMobile={isMobile} mode={themeMode} totalCount={machines?.length}>
-       <Grid container gap={2} p={1} height={'auto'} sx={{ maxHeight: 600, overflow: 'auto' }}>
+       <Grid container gap={2} p={1} height={'auto'} sx={{ maxHeight: NAV.H_MAX_SIDE_PANEL, overflow: 'auto' }}>
         {filteredData.map((mach, index) => (
          <MachineCard
           key={mach?._id}

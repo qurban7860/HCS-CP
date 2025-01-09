@@ -8,12 +8,12 @@ import { Grid, Typography, IconButton, Divider } from '@mui/material'
 import { FormHeader, HowickLoader } from 'component'
 import { GStyledListItemText, GStyledSpanBox, GStyledSupportStatusFieldChip, GStyledScrollableHeightLockGrid } from 'theme/style'
 import { normalizer } from 'util/format'
-import { RADIUS } from 'config/layout'
+import { NAV, RADIUS } from 'config/layout'
 import { VARIANT, SIZE, KEY, FLEX } from 'constant'
 
 const { TYPOGRAPHY } = VARIANT
 
-const SupportTicketWidget = ({ value }) => {
+const SupportTicketWidget = ({ value, handleCustomerTicket }) => {
  const { isLoading } = useSelector(state => state.count)
  const { themeMode } = useSettingContext()
 
@@ -27,7 +27,6 @@ const SupportTicketWidget = ({ value }) => {
    <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={value?.length}>
     <GStyledSpanBox>
      <FormHeader
-      nodeLabel
       label={
        <GStyledSpanBox display={FLEX.FLEX} justifyContent={FLEX.SPACE_BETWEEN}>
         <Typography variant={TYPOGRAPHY.H6} color='common.white'>
@@ -43,13 +42,13 @@ const SupportTicketWidget = ({ value }) => {
     <Grid
      container
      sx={{
-      height: value?.length < 5 ? 'auto' : '400px',
+      height: value?.length < 5 ? 'auto' : NAV.H_MAX_WIDGET,
       overflow: KEY.AUTO,
       scrollBehavior: 'smooth'
      }}>
      {value?.length > 0 ? (
       value?.map((tix, index) => (
-       <Grid container key={index} spacing={4} p={2}>
+       <Grid container key={index} spacing={4} p={2} width={NAV.W_WIDGET}>
         <Grid item xs={8} sm={8}>
          <GStyledListItemText
           primary={
@@ -57,6 +56,7 @@ const SupportTicketWidget = ({ value }) => {
             <GStyledSpanBox>
              <IconButton
               size={SIZE.MEDIUM}
+              onClick={event => handleCustomerTicket(event, tix?.machineSerialNo, tix?.key)}
               color={themeMode === KEY.LIGHT ? 'grey.800' : 'common.white'}
               aria-label='view'
               target={KEY.BLANK}
@@ -89,7 +89,7 @@ const SupportTicketWidget = ({ value }) => {
             dimension={18}
             onClick={() => openInNewPage(tix?.key)}
            /> */}
-          <GStyledSupportStatusFieldChip status={normalizer(tix?.status)} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE_MINI}>{tix?.status}</Typography>} size={SIZE.SMALL} />
+          <GStyledSupportStatusFieldChip status={normalizer(tix?.status)} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE}>{tix?.status}</Typography>} size={SIZE.SMALL} />
          </GStyledSpanBox>
         </Grid>
         {index !== value?.length - 1 && <Divider variant='fullWidth' style={{ width: '100%', marginBottom: '10px' }} />}
@@ -101,8 +101,8 @@ const SupportTicketWidget = ({ value }) => {
       </m.div>
      ) : (
       <Grid container>
-       <Grid item xs={12} sx={{ width: '350px' }}>
-        <Grid container justifyContent={'space-between'}>
+       <Grid item xs={12} sx={{ width: NAV.W_WIDGET }}>
+        <Grid container justifyContent={FLEX.SPACE_BETWEEN} p={2}>
          <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
           <Trans i18nKey='no_found.label' values={{ value: 'active support ticket' }} />
          </Typography>
@@ -120,7 +120,8 @@ SupportTicketWidget.propTypes = {
  value: PropTypes.any,
  handleMachineDialog: PropTypes.func,
  handleMachineSiteDialog: PropTypes.func,
- ticketTotalCount: PropTypes.number
+ ticketTotalCount: PropTypes.number,
+ handleCustomerTicket: PropTypes.func
 }
 
 export default SupportTicketWidget

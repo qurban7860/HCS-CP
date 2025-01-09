@@ -11,7 +11,7 @@ import { CommonFieldsCard } from 'section/common'
 import { Grid, Typography } from '@mui/material'
 import { DropdownDefault, AuditBox, CustomerDialog, SearchBox } from 'component'
 import { GStyledScrollableHeightLockGrid } from 'theme/style'
-import { MARGIN } from 'config'
+import { MARGIN, NAV } from 'config/layout'
 import { KEY, TYPOGRAPHY, FLEX_DIR } from 'constant'
 
 const ContactTab = () => {
@@ -116,7 +116,7 @@ const ContactTab = () => {
         </Grid>
        )}
        <GStyledScrollableHeightLockGrid isMobile={isMobile} mode={themeMode} totalCount={contacts?.length}>
-        <Grid container gap={2} p={1} height={'auto'} sx={{ maxHeight: 600, overflow: 'auto' }}>
+        <Grid container gap={2} p={1} height={'auto'} sx={{ maxHeight: NAV.H_MAX_SIDE_PANEL, overflow: 'auto' }}>
          {renderList()}
         </Grid>
        </GStyledScrollableHeightLockGrid>
