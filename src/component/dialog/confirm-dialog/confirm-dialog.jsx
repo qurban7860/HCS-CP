@@ -15,7 +15,7 @@ function ConfirmDialog({ title, content, action, open, onClose, onClick, actionB
    </DialogTitle>
    {content && <DialogContent sx={{ typography: TYPOGRAPHY.BODY2, pt: 2 }}> {content} </DialogContent>}
    <DialogActions>
-    <GStyledCloseButton onClick={onClose}>{t(i18SubButtonLabel).toUpperCase()}</GStyledCloseButton>
+    <GStyledCloseButton onClick={onClose}>{t(i18SubButtonLabel)}</GStyledCloseButton>
     {action ? (
      action
     ) : (
