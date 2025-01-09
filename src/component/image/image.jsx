@@ -5,7 +5,7 @@ import { Box } from '@mui/material'
 import { getRatio } from './utility'
 import { ASSET } from 'config'
 
-const Image = forwardRef(({ ratio, disabledEffect = false, effect = 'blur', sx, borderRadius = '0px 0px 40px 40px', ...other }, ref) => {
+const Image = forwardRef(({ ratio, disabledEffect = false, effect = 'blur', sx, borderRadius, ...other }, ref) => {
  const content = (
   <Box
    component={LazyLoadImage}
