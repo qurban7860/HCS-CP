@@ -69,7 +69,7 @@ const IdleManager = () => {
    onClose={handleLogout}
    title={t('session_inactivity.label')}
    content={showStay ? <Trans i18nKey='session_inactivity.content' values={{ countdown }} /> : t('session_inactivity.content_2')}
-   subButton={t('logout.label')}
+   i18SubButtonLabel={'logout.label'}
    action={
     showStay ? (
      <LoadingButton variant={VARIANT.CONTAINED} color='primary' onClick={handleStillHere}>

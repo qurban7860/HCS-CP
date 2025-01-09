@@ -1,6 +1,6 @@
 import { m } from 'framer-motion'
 import { styled, alpha } from '@mui/material/styles'
-import { Popover, ListItemText, Card, Chip, Grid, Divider, Container, Skeleton, Box, Typography, IconButton, Tab, Tabs, TablePagination, Drawer } from '@mui/material'
+import { Popover, ListItemText, Card, Chip, Switch, Grid, Divider, Container, Skeleton, Box, Typography, IconButton, Tab, Tabs, TablePagination, Drawer } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { bgBlur } from 'theme/style'
@@ -373,6 +373,17 @@ export const GStyledLoadingButton = styled(({ theme, isLoading, ...other }) => <
  }
 }))
 
+export const GStyledDefLoadingButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, textColor, bgColor, mode }) => ({
+ backgroundColor: bgColor,
+ color: textColor,
+ '&:disabled': {
+  backgroundColor: alpha(bgColor, 0.5)
+ },
+ '&:hover': {
+  backgroundColor: alpha(bgColor, 0.8)
+ }
+}))
+
 export const GStyledBackButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700],
  color: mode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
@@ -383,11 +394,11 @@ export const GStyledBackButton = styled(({ theme, isLoading, ...other }) => <Loa
 }))
 
 export const GStyledCloseButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
- backgroundColor: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
- color: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
+ backgroundColor: theme.palette.howick.orange,
+ color: theme.palette.common.black,
  '&:hover': {
-  backgroundColor: mode === KEY.LIGHT ? theme.palette.error.main : theme.palette.error.dark,
-  color: mode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
+  backgroundColor: theme.palette.orange.darker,
+  color: theme.palette.common.white
  }
  //  paddingTop: theme.spacing(1.5),
  //  paddingBottom: theme.spacing(1.5)
@@ -461,6 +472,42 @@ export const GStyledTooltip = styled(({ className, mode, green, disabled, ...pro
   }
  })
 )
+
+export const GStyledSwitch = styled(({ theme, mode, ...other }) => <Switch {...other} />)(({ theme, mode, isActive }) => ({
+ padding: 8,
+ '& .MuiSwitch-track': {
+  borderRadius: RADIUS.BORDER.borderRadius,
+  backgroundColor: isActive ? (mode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main) : theme.palette.error.dark,
+  opacity: 1,
+  '&::before, &::after': {
+   content: '""',
+   position: 'absolute',
+   top: '50%',
+   transform: 'translateY(-50%)',
+   width: 16,
+   height: 16
+  },
+  '&::before': {
+   backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+    theme.palette.common.black
+   )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+   left: 12
+  },
+  '&::after': {
+   backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+    theme.palette.common.white
+   )}" d="M19,13H5V11H19V13Z" /></svg>')`,
+   right: 10
+  }
+ },
+ '& .MuiSwitch-thumb': {
+  boxShadow: 'none',
+  width: 18,
+
+  borderRadius: RADIUS.BORDER.borderRadius,
+  backgroundColor: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.grey[500]
+ }
+}))
 
 export const GStyledTabs = styled(({ theme, mode, ...other }) => <Tabs {...other} />)(({ theme, mode }) => ({
  '& .MuiTabs-root': {
@@ -546,9 +593,10 @@ export const GStyledNoPaddingFieldChip = styled(({ theme, ...other }) => <Chip {
  backgroundColor: roleColr
 }))
 
-export const GStyledNoPaddingChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, bgColor }) => ({
+export const GStyledNoPaddingChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, bgColor, border }) => ({
  borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
  padding: theme.spacing(0),
+ border: border,
  backgroundColor: bgColor
 }))
 

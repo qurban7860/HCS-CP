@@ -231,6 +231,34 @@ export function getSecurityUser(id) {
  }
 }
 
+export function archiveSecurityUser(id) {
+ return async dispatch => {
+  dispatch(userSlice.actions.startLoading())
+  try {
+   const response = await axios.patch(PATH_SERVER.SECURITY.USER.detail(id), { isArchived: true })
+   dispatch(userSlice.actions.getSecurityUserSuccess(response.data))
+   return response
+  } catch (error) {
+   dispatch(userSlice.actions.hasError(error.Message))
+   throw error
+  }
+ }
+}
+
+export function updateStatusSecurityUser(id, data) {
+ return async dispatch => {
+  dispatch(userSlice.actions.startLoading())
+  try {
+   const response = await axios.patch(PATH_SERVER.SECURITY.USER.detail(id), data)
+   dispatch(userSlice.actions.stopLoading())
+   return response
+  } catch (error) {
+   dispatch(userSlice.actions.hasError(error.Message))
+   throw error
+  }
+ }
+}
+
 // export function getUserInviteConfirmDetails(data) {
 //  return async dispatch => {
 //   dispatch(userSlice.actions.startLoading())

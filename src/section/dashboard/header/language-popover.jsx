@@ -4,6 +4,7 @@ import { MenuItem, Stack, Typography } from '@mui/material'
 import { Image, MenuPopover } from 'component'
 import { RADIUS } from 'config/layout'
 import shadow from 'theme/shadow'
+import { TYPOGRAPHY } from 'constant'
 
 export default function LanguagePopover() {
  const { allLang, currentLang, onChangeLang } = useLocale()
@@ -33,8 +34,7 @@ export default function LanguagePopover() {
     sx={{
      justifyContent: 'space-between'
     }}>
-    <Typography variant='body2'>{t('language.label')}</Typography>
-
+    <Typography variant={TYPOGRAPHY.BODY2}>{t('language.label')}</Typography>
     <Image
      disabledEffect
      alt={currentLang.label}
