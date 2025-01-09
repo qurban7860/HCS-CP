@@ -18,8 +18,13 @@ const en = {
    label: `No active tickets found`
   }
  },
+ activate: {
+  label: `Activate`,
+  toggle_to_acitvate: `Toggle to activate`
+ },
  activate_user: {
-  label: `Activate User`
+  label: `Activate User`,
+  toggle_to_acitvate: `Toggle to deactivate`
  },
  address: {
   label: `Address`,
@@ -183,6 +188,9 @@ const en = {
 
  date: {
   label: `Date`
+ },
+ deactivate: {
+  label: `Deactivate`
  },
  deactivate_user: {
   label: `Deactivate User`
