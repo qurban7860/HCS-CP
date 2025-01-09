@@ -1,4 +1,4 @@
-import { memo, useEffect, useLayoutEffect, useState } from 'react'
+import { Fragment, memo, useEffect, useLayoutEffect, useState } from 'react'
 import { t } from 'i18next'
 import _ from 'lodash'
 import debounce from 'lodash/debounce'
@@ -11,12 +11,16 @@ import {
  getSecurityUsers,
  getOnlineUsers,
  getCustomerMachines,
+ getCustomerTicketBySerialNoAndKey,
+ setCustomerTicketDialog,
+ setSelectedCustomerTicketCard,
  setMachineDialog,
  setMachineSiteDialog,
  setContactDialog,
  resetCustomerMachines,
  resetMachineSiteDialogData,
  resetContact,
+ resetCustomerTicket,
  resetCustomerTickets,
  resetMachines,
  resetSecurityUsers
@@ -24,13 +28,14 @@ import {
 import { SupportTicketWidget } from 'section/crm/support'
 import { ProductionTotalGraphWidget, ProductionRateGraphWidget } from 'section/dashboard'
 import { Grid } from '@mui/material'
+import { SupportTicketDialog } from 'component'
 import { Welcome } from 'component/widget'
 import { GLOBAL } from 'config'
 import { FLEX } from 'constant'
 import { toTitleCase } from 'util'
 
 function Dashboard() {
- const { customer, isLoading, securityUsers, customerMachines, quickActiveCustomerTickets } = useSelector(
+ const { customer, isLoading, securityUsers, customerMachines, customerTickets, quickActiveCustomerTickets } = useSelector(
   state => ({
    customer: state.customer.customer,
    isLoading: state.customer.isLoading,
@@ -112,35 +117,46 @@ function Dashboard() {
   dispatch(resetSecurityUsers())
   dispatch(resetMachineSiteDialogData())
   dispatch(resetCustomerTickets())
+  dispatch(resetCustomerTicket())
  }, [dispatch])
 
+ const handleCustomerTicket = (event, machineSerialNo, customerTicketKey) => {
+  event.preventDefault()
+  dispatch(getCustomerTicketBySerialNoAndKey(machineSerialNo, customerTicketKey))
+  dispatch(setSelectedCustomerTicketCard(customerTicketKey))
+  dispatch(setCustomerTicketDialog(true))
+ }
+
  return (
-  <Grid container>
-   <Grid container spacing={3} mt={isMobile ? 0 : 2}>
-    <Grid item xs={12}>
-     <Welcome customer={customer} isCustomerLoading={isLoading} title={toTitleCase(GLOBAL.APP_TAGLINE)} description={t('app_customer_tagline')} customerOnlineUserIds={customerOnlineUserIds} />
-    </Grid>
-    <Grid item xs={12}>
-     <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
-      <Grid item xs={12} sm={8}>
-       <ProductionTotalGraphWidget selectedMachine={totalSelectedMachine} setSelectedMachine={setTotalSelectedMachine} />
-      </Grid>
-      <Grid item xs={12} sm={4}>
-       <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
-        <Grid item xs={12} sm={12}>
-         <SupportTicketWidget value={quickActiveCustomerTickets} />
+  <Fragment>
+   <Grid container>
+    <Grid container spacing={3} mt={isMobile ? 0 : 2}>
+     <Grid item xs={12}>
+      <Welcome customer={customer} isCustomerLoading={isLoading} title={toTitleCase(GLOBAL.APP_TAGLINE)} description={t('app_customer_tagline')} customerOnlineUserIds={customerOnlineUserIds} />
+     </Grid>
+     <Grid item xs={12}>
+      <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
+       <Grid item xs={12} sm={8}>
+        <ProductionTotalGraphWidget selectedMachine={totalSelectedMachine} setSelectedMachine={setTotalSelectedMachine} />
+       </Grid>
+       <Grid item xs={12} sm={4}>
+        <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
+         <Grid item xs={12} md={12}>
+          <SupportTicketWidget value={quickActiveCustomerTickets} handleCustomerTicket={handleCustomerTicket} />
+         </Grid>
         </Grid>
        </Grid>
       </Grid>
      </Grid>
-    </Grid>
-    <Grid item xs={12}>
-     <Grid item xs={12} sm={8}>
-      <ProductionRateGraphWidget selectedMachine={rateSelectedMachine} setSelectedMachine={setRateSelectedMachine} />
+     <Grid item xs={12}>
+      <Grid item xs={12} sm={8}>
+       <ProductionRateGraphWidget selectedMachine={rateSelectedMachine} setSelectedMachine={setRateSelectedMachine} />
+      </Grid>
      </Grid>
     </Grid>
    </Grid>
-  </Grid>
+   {customerTickets && <SupportTicketDialog />}
+  </Fragment>
  )
 }
 
