@@ -249,7 +249,11 @@ export function updateStatusSecurityUser(id, isActive) {
  return async dispatch => {
   dispatch(userSlice.actions.startLoading())
   try {
-   const response = await axios.patch(PATH_SERVER.SECURITY.USER.detail(id), { isActive })
+   const response = await axios.patch(PATH_SERVER.SECURITY.USER.detail(id), {
+    params: {
+     isActive
+    }
+   })
    dispatch(userSlice.actions.getSecurityUserSuccess(response.data))
    return response
   } catch (error) {
