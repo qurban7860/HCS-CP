@@ -18,6 +18,9 @@ const en = {
    label: `No active tickets found`
   }
  },
+ activate_user: {
+  label: `Activate User`
+ },
  address: {
   label: `Address`,
   addresses: {
@@ -158,6 +161,13 @@ const en = {
  default_profile: {
   label: `Default Profile`
  },
+ delete: {
+  label: `Delete`
+ },
+ delete_user: {
+  label: `Delete User`,
+  confirm_delete_user: `Are you sure you want to delete {{user}}?`
+ },
  detail: {
   label: `Detail`,
   details: {
@@ -173,6 +183,9 @@ const en = {
 
  date: {
   label: `Date`
+ },
+ deactivate_user: {
+  label: `Deactivate User`
  },
  decoiler: {
   label: `Decoiler`,
