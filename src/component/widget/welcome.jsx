@@ -160,6 +160,11 @@ function Welcome({ action, img, customer, isCustomerLoading, customerOnlineUserI
               anchorOrigin={{
                vertical: 'top',
                horizontal: 'right'
+              }}
+              sx={{
+               '& .MuiBadge-badge': {
+                border: `3px solid ${themeMode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.burnIn.main}`
+               }
               }}>
               <GStyledNoPaddingChip
                variant={'outlined'}
