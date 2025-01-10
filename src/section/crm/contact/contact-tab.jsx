@@ -11,7 +11,7 @@ import { CommonFieldsCard } from 'section/common'
 import { Grid, Typography } from '@mui/material'
 import { DropdownDefault, AuditBox, CustomerDialog, SearchBox } from 'component'
 import { GStyledScrollableHeightLockGrid, GStyledStickyGrid } from 'theme/style'
-import { MARGIN, NAV } from 'config/layout'
+import { MARGIN, NAV, SPACING } from 'config/layout'
 import { KEY, TYPOGRAPHY, FLEX_DIR } from 'constant'
 
 const ContactTab = () => {
@@ -106,7 +106,7 @@ const ContactTab = () => {
 
  return (
   <Fragment>
-   <Grid container columnSpacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+   <Grid container columnSpacing={SPACING.COLUMN_SPACING} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
     <GStyledStickyGrid item xs={12} md={3}>
      {contacts.length >= 5 && (
       <Grid item xs={12}>

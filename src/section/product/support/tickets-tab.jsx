@@ -20,7 +20,7 @@ import { MachineSupportTicketDialog, AuditBox, CustomerDialog, SearchBox, TableN
 import { GCardOption, GStyledStickyGrid, GStyledTopBorderDivider, GStyledScrollableHeightLockGrid, GStyledSpanBox, GStyledFieldChip, GStyledSupportStatusFieldChip } from 'theme/style'
 import { normalizer } from 'util/format'
 import { GLOBAL } from 'config/global'
-import { MARGIN, NAV } from 'config/layout'
+import { MARGIN, NAV, SPACING } from 'config/layout'
 import { KEY, FLEX, TYPOGRAPHY, FLEX_DIR, VARIANT, SIZE } from 'constant'
 
 const TicketsTab = () => {
@@ -147,7 +147,7 @@ const TicketsTab = () => {
  return (
   <Fragment>
    {isDesktop ? (
-    <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+    <Grid container columnSpacing={SPACING.COLUMN_SPACING} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
      <GStyledStickyGrid item xs={12} sm={3}>
       {renderSidebar()}
      </GStyledStickyGrid>

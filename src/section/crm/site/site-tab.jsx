@@ -27,7 +27,7 @@ import { GridViewTitle, GridViewField, AuditBox, CustomerDialog, SearchBox, Goog
 import { useTheme } from '@mui/material/styles'
 import { GCardOption, GStyledTopBorderDivider, GStyledSiteMapBox, GStyledSpanBox } from 'theme/style'
 import { truncate } from 'util'
-import { MARGIN } from 'config'
+import { MARGIN, SPACING } from 'config/layout'
 import { KEY, TYPOGRAPHY, FLEX_DIR, LABEL } from 'constant'
 
 const SiteTab = () => {
@@ -185,7 +185,7 @@ const SiteTab = () => {
 
  return (
   <Fragment>
-   <Grid container columnSpacing={2} flexDirection={FLEX_DIR.COLUMN} {...MARGIN.PAGE_PROP}>
+   <Grid container columnSpacing={SPACING.COLUMN_SPACING} flexDirection={FLEX_DIR.COLUMN} {...MARGIN.PAGE_PROP}>
     <Grid item xs={12} sm={12} mb={isDesktop && 2}>
      <Grid container gap={2}>
       <Grid item xs={12} md={12}>

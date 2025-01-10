@@ -25,7 +25,8 @@ export const MARGIN = {
 }
 
 export const SPACING = {
- TAB: 2
+ TAB: 2,
+ COLUMN_SPACING: 2
 }
 
 export const PADDING = {

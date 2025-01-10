@@ -29,7 +29,7 @@ import { HowickResources } from 'section/common'
 import { useTheme, Grid, Box } from '@mui/material'
 import { AuditBox, SearchBox } from 'component'
 import { GStyledScrollableHeightLockGrid, GStyledChip, GStyledStickyGrid } from 'theme/style'
-import { MARGIN, NAV } from 'config/layout'
+import { MARGIN, NAV, SPACING } from 'config/layout'
 import { FLEX_DIR, KEY } from 'constant'
 
 const MachineTab = () => {
@@ -152,7 +152,7 @@ const MachineTab = () => {
 
  return (
   <Fragment>
-   <Grid container columnSpacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+   <Grid container columnSpacing={SPACING.COLUMN_SPACING} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
     {isDesktop && (
      <GStyledStickyGrid item xs={12} md={12} lg={3}>
       {machines.length >= 5 ? (

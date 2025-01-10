@@ -25,7 +25,7 @@ import { useCustomerDefaultValues } from 'section/crm/customer'
 import { useTheme, Grid } from '@mui/material'
 import { GStyledScrollableHeightLockGrid } from 'theme/style'
 import { AuditBox, SiteCarousel, ChowBox, MachineDialog, SiteDialog, ContactDialog } from 'component'
-import { MARGIN } from 'config'
+import { MARGIN, SPACING } from 'config/layout'
 import { FLEX_DIR } from 'constant'
 
 const HomeTab = () => {
@@ -108,7 +108,7 @@ const HomeTab = () => {
 
  return (
   <Fragment>
-   <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+   <Grid container columnSpacing={SPACING.COLUMN_SPACING} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
     <Grid item sm={12} lg={12}>
      <ChowBox title={sites?.length > 1 ? t('site.sites.label') : t('site.label')}>
       <SiteCarousel sites={sites} theme={theme} themeMode={themeMode} isMain={isMain} />

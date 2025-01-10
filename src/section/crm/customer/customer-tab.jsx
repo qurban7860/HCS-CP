@@ -7,7 +7,7 @@ import { Grid } from '@mui/material'
 import { AuditBox } from 'component'
 import { HowickResources } from 'section/common'
 import { useCustomerDefaultValues, fieldsKeyConfig, fieldSiteInformationConfig, CustomerFieldsCard } from 'section/crm/customer'
-import { MARGIN } from 'config'
+import { MARGIN, SPACING } from 'config/layout'
 import { FLEX_DIR } from 'constant'
 
 const CustomerTab = () => {
@@ -47,7 +47,7 @@ const CustomerTab = () => {
 
  return (
   <Fragment>
-   <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+   <Grid container columnSpacing={SPACING.COLUMN_SPACING} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
     <Grid item sm={12} lg={12}>
      <CustomerFieldsCard i18nKey={'key_detail.key_details.label'} defaultValues={defaultValues} fieldsConfig={fieldsKeyConfig} isLoading={isLoading} />
      <CustomerFieldsCard i18nKey={'site_information.label'} defaultValues={defaultValues} fieldsConfig={fieldSiteInformationConfig} isLoading={isLoading} />
