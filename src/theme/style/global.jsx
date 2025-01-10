@@ -5,7 +5,7 @@ import { LoadingButton } from '@mui/lab'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { bgBlur } from 'theme/style'
 import { ASSET } from 'config'
-import { RADIUS } from 'config/layout'
+import { MARGIN, NAV, PADDING, RADIUS } from 'config/layout'
 import { PATH_AUTH } from 'route/path'
 import { KEY, SUPPORT_STATUS } from 'constant'
 import { SvgColor } from 'component/svg-color'
@@ -114,6 +114,22 @@ export const GStyledCard = styled(({ theme, selectedCardId, c, mode, ...other })
   marginBottom: theme.spacing(4)
  },
  transition: 'ease-in-out 0.2s'
+}))
+
+export const GStyledStickyGrid = styled(({ theme, selectedCardId, c, mode, ...other }) => <Grid {...other} />)(({ theme }) => ({
+ position: 'sticky',
+ top: NAV.T_STICKY_SIDE_PANEL,
+ zIndex: 9,
+ alignSelf: 'flex-start'
+}))
+
+export const GStyledStickyDiv = styled('div')(({ theme, top, zIndex, height = 'auto' }) => ({
+ position: 'sticky',
+ alignSelf: 'flex-start',
+ width: '100%',
+ height,
+ top,
+ zIndex
 }))
 
 export const GStyledMachinePanelCard = styled(({ theme, selectedCardId, c, mode, ...other }) => <Card {...other} />)(({ theme, selectedCardId, value, mode }) => ({
@@ -947,11 +963,21 @@ export const GStyledScrollableHeightLockGrid = styled(Grid)(({ theme, mode, tota
 )
 
 export const GStyledHeaderCardContainer = styled(Card)(({ theme, height = 180 }) => ({
- marginBottom: theme.spacing(1),
+ marginBottom: MARGIN.NAV_HEADER_TO_PAGE.marginBottom,
  height,
  position: 'sticky',
- top: '80px',
- zIndex: 4,
+ top: NAV.T_STICKY_NAV,
+ zIndex: 10,
+ borderRadius: RADIUS.BORDER.borderRadius
+}))
+
+export const GStyledControllerCardContainer = styled(Card)(({ theme, height = 180 }) => ({
+ marginBottom: MARGIN.NAV_HEADER_TO_PAGE.marginBottom,
+ height,
+ position: 'sticky',
+ top: NAV.T_STICKY_NAV_CONTROLLER,
+ zIndex: 10,
+ padding: theme.spacing(PADDING.CONTROLLER_CARD_CONTAINER.padding),
  borderRadius: RADIUS.BORDER.borderRadius
 }))
 
