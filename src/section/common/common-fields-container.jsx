@@ -36,7 +36,7 @@ const CommonFieldsContainer = ({ defaultValues, fieldsConfig, i18nKey, isLoading
        )
       case 'supportDescription':
        return (
-        <Box m={2} width={'100%'}>
+        <Box key={field.key} m={2} width={'100%'}>
          <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={theme.palette.grey[600]}>
           {t('description.label')}
          </Typography>
