@@ -8,12 +8,13 @@ import { useSettingContext } from 'hook'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { getLogs, getLogGraphData, setSelectedSearchFilter, ChangeLogPage, resetLogs, resetLogsGraphData } from 'store/slice'
 import { addLogSchema } from 'schema'
-import { Grid } from '@mui/material'
-import { MotionLazyContainer, HowickLoader } from 'component'
-import FormProvider from 'component/hook-form'
 import { LogsTableController, useLogDefaultValues } from 'section/log/logs'
 import { ERPProductionTotal, ERPProductionRate } from 'section/log'
-import { FLEX } from 'constant'
+import { Grid } from '@mui/material'
+import { HowickLoader } from 'component'
+import FormProvider from 'component/hook-form'
+import { GStyledStickyDiv } from 'theme/style'
+import { NAV } from 'config/layout'
 
 const MachineGraphsTab = () => {
  const { logPage, logRowsPerPage, isLoading, logsGraphData, selectedSearchFilter } = useSelector(state => state.log)
@@ -140,24 +141,26 @@ const MachineGraphsTab = () => {
 
  return (
   <Fragment>
-   <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
-    <Grid container spacing={2} mt={3}>
-     <Grid item xs={12} sm={12}>
-      <LogsTableController
-       customers={customers}
-       handleCustomerChange={handleCustomerChange}
-       customerMachines={customerMachines}
-       handleMachineChange={handleMachineChange}
-       handleLogTypeChange={handleLogTypeChange}
-       handlePeriodChange={handlePeriodChange}
-       setSelectedFilter={setSelectedSearchFilter}
-       isGraphPage={() => true}
-       methods={methods}
-       onGetLogs={onGetLogs}
-      />
+   <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_CONTROLLER} zIndex={7}>
+    <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
+     <Grid container spacing={2}>
+      <Grid item xs={12} sm={12}>
+       <LogsTableController
+        customers={customers}
+        handleCustomerChange={handleCustomerChange}
+        customerMachines={customerMachines}
+        handleMachineChange={handleMachineChange}
+        handleLogTypeChange={handleLogTypeChange}
+        handlePeriodChange={handlePeriodChange}
+        setSelectedFilter={setSelectedSearchFilter}
+        isGraphPage={() => true}
+        methods={methods}
+        onGetLogs={onGetLogs}
+       />
+      </Grid>
      </Grid>
-    </Grid>
-   </FormProvider>
+    </FormProvider>
+   </GStyledStickyDiv>
    {isLoading ? (
     <HowickLoader height={300} width={303} mode={themeMode} />
    ) : logGraphType.key === 'production_total' ? (
