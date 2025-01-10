@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useLayoutEffect, useState, memo } from 'react'
 import { Trans } from 'react-i18next'
 import { dispatch, useSelector } from 'store'
-import { useSettingContext, useTable, getComparator, useTempFilter } from 'hook'
+import { useSettingContext, useTable, getComparator, useTempFilter, useUIMorph } from 'hook'
 import {
  getMachineTicketByKey,
  getMachineTickets,
@@ -15,13 +15,13 @@ import {
 import { useTicketsDefaultValues, useTicketDefaultValues, TicketCard as MachineTicketCard } from 'section/support'
 import { CommonFieldsContainer } from 'section/common'
 import { TicketCard, fieldsTicketBasicInfoConfig, fieldsTicketQuickSpecsConfig } from 'section/product'
-import { useMediaQuery, Divider, Grid, Card, Typography, Box } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import { GCardOption, GStyledTopBorderDivider, GStyledSpanBox, GStyledFieldChip, GStyledSupportStatusFieldChip } from 'theme/style'
+import { Divider, Grid, Card, Typography, Box } from '@mui/material'
 import { MachineSupportTicketDialog, AuditBox, CustomerDialog, SearchBox, TableNoData, HowickLoader } from 'component'
+import { useTheme } from '@mui/material/styles'
+import { GCardOption, GStyledStickyGrid, GStyledTopBorderDivider, GStyledScrollableHeightLockGrid, GStyledSpanBox, GStyledFieldChip, GStyledSupportStatusFieldChip } from 'theme/style'
 import { normalizer } from 'util/format'
 import { GLOBAL } from 'config/global'
-import { MARGIN } from 'config'
+import { MARGIN, NAV } from 'config/layout'
 import { KEY, FLEX, TYPOGRAPHY, FLEX_DIR, VARIANT, SIZE } from 'constant'
 
 const TicketsTab = () => {
@@ -29,10 +29,8 @@ const TicketsTab = () => {
  const { machineTicket, machineTickets, initial, isLoading, selectedMachineTicketCard } = useSelector(state => state.machineTicket)
  const { machine } = useSelector(state => state.machine)
  const { customerDialog } = useSelector(state => state.customer)
-
- const theme = useTheme()
  const { themeMode } = useSettingContext()
- const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
+ const { isMobile, isDesktop } = useUIMorph()
  const { order, orderBy } = useTable({
   defaultOrderBy: 'created',
   defaultOrder: 'desc'
@@ -122,14 +120,14 @@ const TicketsTab = () => {
 
  const renderSidebar = () => {
   return (
-   <Grid container mb={2}>
-    <Grid item lg={12} sm={12} mb={2}>
-     {filteredData?.length >= 5 && (
-      <Grid item sm={12} pb={2}>
-       <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
-      </Grid>
-     )}
-     <Grid container p={1}>
+   <Fragment>
+    {filteredData?.length >= 5 && (
+     <Grid item sm={12} pb={2}>
+      <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
+     </Grid>
+    )}
+    <GStyledScrollableHeightLockGrid isMobile={isMobile} mode={themeMode} totalCount={filteredData?.length}>
+     <Grid container gap={2} p={1} height={'auto'} sx={{ maxHeight: NAV.H_MAX_SIDE_PANEL, overflow: 'auto' }}>
       {filteredData?.length > 0 && !isLoading ? (
        defaultValues?.map((t, index) => <TicketCard key={index} selectedCardId={selectedMachineTicketCard || index} value={t} handleMachineTicketCard={handleMachineTicketCard} t={t} />)
       ) : isLoading ? (
@@ -142,8 +140,8 @@ const TicketsTab = () => {
        </Typography>
       )}
      </Grid>
-    </Grid>
-   </Grid>
+    </GStyledScrollableHeightLockGrid>
+   </Fragment>
   )
  }
 
@@ -151,9 +149,9 @@ const TicketsTab = () => {
   <Fragment>
    {isDesktop ? (
     <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
-     <Grid item xs={12} sm={3} sx={{ height: '600px', overflow: KEY.AUTO, scrollBehavior: 'smooth' }}>
+     <GStyledStickyGrid item xs={12} sm={3}>
       {renderSidebar()}
-     </Grid>
+     </GStyledStickyGrid>
      <Grid item xs={12} md={9}>
       {machineTickets?.issues?.length > 0 && !isLoading ? (
        <Fragment>
