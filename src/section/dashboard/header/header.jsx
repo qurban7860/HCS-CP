@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react'
-import { useOffSetTop, useResponsive, Clock, useSettingContext, useUIMorph, Icon, ICON_NAME } from 'hook'
+import { useOffSetTop, Clock, useSettingContext, useUIMorph, Icon, ICON_NAME } from 'hook'
 import { AppBar, Toolbar, Stack, IconButton, Box, Typography } from '@mui/material'
 import { NavSection, PopoverDefault, DrawerMenu } from 'component'
 import { LogoIcon } from 'component/logo'
@@ -35,7 +35,7 @@ function Header() {
 
  const renderContent = (
   <Fragment>
-   <Stack direction={FLEX.FLEX} justifyContent={FLEX.FLEX_START} sx={{ position: KEY.RELATIVE }}>
+   <Stack display={FLEX.FLEX} justifyContent={FLEX.FLEX_START} sx={{ position: KEY.RELATIVE }}>
     {isDesktop && (
      <Fragment>
       <LogoIcon />
