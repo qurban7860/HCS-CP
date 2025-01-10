@@ -8,6 +8,7 @@ import { Clock, ICON_NAME, useSettingContext } from 'hook'
 import { MachineTabsContainer, TABS } from 'section/product/machine'
 import { GStyledHeaderCardContainer, GStyledTopBorderDivider, GStyledSpanBox, GStyledFieldGrid, GStyledTab } from 'theme/style'
 import { KEY, LABEL, TYPOGRAPHY, FLEX, FLEX_DIR, DECOILER_TYPE_ARR } from 'constant'
+import { NAV } from 'config/layout'
 import { truncate } from 'util'
 import { a11yProps } from 'util/a11y.js'
 import 'swiper/css'
@@ -63,7 +64,7 @@ const MachineNav = ({ renderedTab, navigatePage, value, isLoading }) => {
 
  return (
   <Fragment>
-   <GStyledHeaderCardContainer height={160}>
+   <GStyledHeaderCardContainer height={NAV.H_NAV_DEFAULT}>
     <GStyledTopBorderDivider mode={themeMode} />
     <Grid container spacing={2} flexDirection={FLEX_DIR.COLUMN} px={isMobile ? 1 : 1.5}>
      <Grid container flexDirection={FLEX_DIR.ROW} p={2}>

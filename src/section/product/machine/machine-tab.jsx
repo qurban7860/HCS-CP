@@ -28,7 +28,7 @@ import { MachineConnectionListCard, MachineCard, MachineFieldsCard } from 'secti
 import { HowickResources } from 'section/common'
 import { useTheme, Grid, Box } from '@mui/material'
 import { AuditBox, SearchBox } from 'component'
-import { GStyledScrollableHeightLockGrid, GStyledChip } from 'theme/style'
+import { GStyledScrollableHeightLockGrid, GStyledChip, GStyledStickyGrid } from 'theme/style'
 import { MARGIN, NAV } from 'config/layout'
 import { FLEX_DIR, KEY } from 'constant'
 
@@ -154,7 +154,7 @@ const MachineTab = () => {
   <Fragment>
    <Grid container columnSpacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
     {isDesktop && (
-     <Grid item xs={12} md={12} lg={3} sx={{ position: 'sticky', top: 265, zIndex: 99, alignSelf: 'flex-start' }}>
+     <GStyledStickyGrid item xs={12} md={12} lg={3}>
       {machines.length >= 5 ? (
        <Box>
         <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
@@ -178,7 +178,7 @@ const MachineTab = () => {
         ))}
        </Grid>
       </GStyledScrollableHeightLockGrid>
-     </Grid>
+     </GStyledStickyGrid>
     )}
     <Grid item xs={12} sm={12} lg={9}>
      <MachineFieldsCard i18nKey={'key_detail.key_details.label'} defaultValues={defaultValues} fieldsConfig={fieldsKeyConfig} isLoading={isLoading} handleDialog={handleCustomerDialog} />
