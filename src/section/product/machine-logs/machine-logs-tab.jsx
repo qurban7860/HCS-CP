@@ -7,12 +7,12 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { getLogs, ChangeLogPage, resetLogs } from 'store/slice'
 import { addLogSchema } from 'schema'
-import { Grid } from '@mui/material'
-import { MotionLazyContainer } from 'component'
-import FormProvider from 'component/hook-form'
 import { LogsTableController, useLogDefaultValues } from 'section/log/logs'
 import { MachineLogsTable } from 'section/product'
-import { FLEX } from 'constant'
+import { Grid } from '@mui/material'
+import { GStyledStickyDiv } from 'theme/style'
+import FormProvider from 'component/hook-form'
+import { NAV, SPACING } from 'config/layout'
 
 const MachineLogsTab = () => {
  const [selectedSearchFilter, setSelectedSearchFilter] = useState('')
@@ -110,22 +110,24 @@ const MachineLogsTab = () => {
 
  return (
   <Fragment>
-   <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
-    <Grid container spacing={2}>
-     <Grid item xs={12} md={12}>
-      <LogsTableController
-       customers={customers}
-       handleCustomerChange={handleCustomerChange}
-       customerMachines={customerMachines}
-       handleMachineChange={handleMachineChange}
-       handleLogTypeChange={handleLogTypeChange}
-       isGraphPage={isGraphPage}
-       methods={methods}
-       onGetLogs={onGetLogs}
-      />
+   <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_CONTROLLER} zIndex={12}>
+    <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
+     <Grid container spacing={SPACING.TAB}>
+      <Grid item xs={12} md={12}>
+       <LogsTableController
+        customers={customers}
+        handleCustomerChange={handleCustomerChange}
+        customerMachines={customerMachines}
+        handleMachineChange={handleMachineChange}
+        handleLogTypeChange={handleLogTypeChange}
+        isGraphPage={isGraphPage}
+        methods={methods}
+        onGetLogs={onGetLogs}
+       />
+      </Grid>
      </Grid>
-    </Grid>
-   </FormProvider>
+    </FormProvider>
+   </GStyledStickyDiv>
    <MachineLogsTable isLogsPage={false} logType={logType} payload={payload} />
   </Fragment>
  )
