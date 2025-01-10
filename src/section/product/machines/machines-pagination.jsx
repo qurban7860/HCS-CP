@@ -59,7 +59,7 @@ MachineListPagination.propTypes = {
  mode: PropTypes.string,
  page: PropTypes.number,
  rowsPerPage: PropTypes.number,
- rowsPerPageOptions: PropTypes.array,
+ rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),
  handleChangePage: PropTypes.func,
  handleChangeRowsPerPage: PropTypes.func,
  columnFilterButtonData: PropTypes.array,
