@@ -42,7 +42,7 @@ export const fieldsSiteConfig = [
   additionalProps: defaultValues => ({
    isNoBg: true
   }),
-  gridSize: 6
+  gridSize: 4
  },
  {
   key: 'long',
@@ -51,6 +51,6 @@ export const fieldsSiteConfig = [
   additionalProps: defaultValues => ({
    isNoBg: true
   }),
-  gridSize: 6
+  gridSize: 4
  }
 ]
