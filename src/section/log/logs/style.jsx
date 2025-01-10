@@ -42,13 +42,13 @@ export const StyledTablePagination = styled(TablePagination)(({ theme, mode, pag
 
 export const StyledHeaderTableCell = styled(({ theme, mode, item, ...other }) => <TableCell {...other} />)(({ theme, mode, item }) => ({
  backgroundColor: mode === KEY.LIGHT ? theme.palette.background.default : theme.palette.grey[800],
- borderBottom: `2px solid ${mode === KEY.LIGHT ? theme.palette.howick.bronze : theme.palette.howick.blue} !important`,
+ //  borderBottom: `2px solid ${mode === KEY.LIGHT ? theme.palette.howick.bronze : theme.palette.howick.blue} !important`,
  color: mode === KEY.DARK ? 'common.white' : 'common.black',
  fontWeight: 'bold',
  fontSize: '1.1rem',
  padding: '0.5rem 1rem',
  paddingBottom: '1rem',
- overflow: 'hidden',
+ //  overflow: 'hidden',
  textOverflow: 'ellipsis',
  whiteSpace: 'nowrap',
  position: 'sticky',

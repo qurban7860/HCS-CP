@@ -4,17 +4,16 @@ import { t } from 'i18next'
 import { useSelector } from 'react-redux'
 import { useSettingContext } from 'hook'
 import { setSelectedSearchFilter } from 'store/slice'
-import { Box, Card, Stack } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { RHFAutocomplete, RHFDatePicker, RHFFilteredSearchBar } from 'component/hook-form'
 import { useTheme } from '@mui/material/styles'
-import { GStyledLoadingButton } from 'theme/style'
+import { GStyledLoadingButton, GStyledControllerCardContainer } from 'theme/style'
 import { LOG_TYPE_CONFIG, logGraphTypes } from 'config'
-import { KEY } from 'constant'
+import { NAV } from 'config/layout'
 
 const LogsTableController = ({ customers, handleCustomerChange, customerMachines, handleMachineChange, handleLogTypeChange, handlePeriodChange, isLogsPage, isGraphPage, methods, onGetLogs }) => {
  const { selectedSearchFilter } = useSelector(state => state.log)
  const { themeMode } = useSettingContext()
- const theme = useTheme()
 
  const { watch, setValue, handleSubmit, trigger } = methods
  const { dateFrom, dateTo, logType } = watch()
@@ -27,15 +26,10 @@ const LogsTableController = ({ customers, handleCustomerChange, customerMachines
  )
 
  return (
-  <Card
-   sx={{
-    p: 3,
-    background: themeMode === KEY.LIGHT ? theme.palette.background.default : theme.palette.grey[800],
-    color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white
-   }}>
+  <GStyledControllerCardContainer height={isGraphPage ? 'auto' : NAV.H_NAV_LOG_CONTROLLER}>
    <Stack spacing={2}>
     {isLogsPage && (
-     <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }}>
+     <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)' }}>
       <RHFAutocomplete
        required
        name='customer'
@@ -66,7 +60,7 @@ const LogsTableController = ({ customers, handleCustomerChange, customerMachines
 
     {!isGraphPage() && (
      <Fragment>
-      <Box display='grid' gap={2} gridTemplateColumns={{ xs: '1fr', sm: 'repeat(2, 1fr)' }} sx={{ flexGrow: 1 }}>
+      <Box display='grid' gap={2} gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)' }} sx={{ flexGrow: 1 }}>
        <RHFDatePicker
         label='Start Date'
         name='dateFrom'
@@ -156,7 +150,7 @@ const LogsTableController = ({ customers, handleCustomerChange, customerMachines
      </Stack>
     )}
    </Stack>
-  </Card>
+  </GStyledControllerCardContainer>
  )
 }
 

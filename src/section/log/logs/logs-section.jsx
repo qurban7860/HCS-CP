@@ -8,14 +8,16 @@ import { Icon, ICON_NAME, useResponsive, useSettingContext } from 'hook'
 import { useSelector, dispatch } from 'store'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
+import { addLogSchema } from 'schema'
 import { getCustomers, getLogGraphData, getLogs, ChangeLogPage, resetLogsGraphData, resetLogs, getCustomerMachines } from 'store/slice'
+import { LogsTableController, ERPProductionTotal, ERPProductionRate, useLogDefaultValues } from 'section/log'
+import { MachineLogsTable } from 'section/product'
 import { useMediaQuery, useTheme, Grid, Button, Typography } from '@mui/material'
 import { HowickLoader, TableTitleBox } from 'component'
 import FormProvider from 'component/hook-form'
-import { LogsTableController, ERPProductionTotal, ERPProductionRate, useLogDefaultValues } from 'section/log'
-import { MachineLogsTable } from 'section/product'
-import { addLogSchema } from 'schema'
-import { FLEX, KEY, TYPOGRAPHY } from 'constant'
+import { GStyledStickyDiv } from 'theme/style'
+import { NAV } from 'config/layout'
+import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 
 const LogsSection = ({ isArchived }) => {
  const [pageType, setPageType] = useState('')
@@ -192,41 +194,43 @@ const LogsSection = ({ isArchived }) => {
  }
 
  return (
-  <Fragment>
-   <Grid container sx={{ display: FLEX.FLEX, justifyContent: FLEX.SPACE_BETWEEN }}>
-    <TableTitleBox title={t('log.logs.label')} />
-    <Button
-     size='small'
-     startIcon={<Icon icon={pageType === 'graph' ? ICON_NAME.LIST : ICON_NAME.GRAPH} sx={{ mr: 0.3 }} />}
-     variant='outlined'
-     sx={{
-      mr: 1,
-      color: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
-      borderColor: theme.palette.grey[500]
-     }}
-     onClick={() => handleOnClick('erpLog', handleErpLogToggle)}>
-     {(!isMobile || expandedButton === 'erpLog') && <Typography variant={isDesktop ? TYPOGRAPHY.BODY0 : TYPOGRAPHY.BODY2}>{pageType === 'graph' ? 'Machine Logs' : 'See Graph'}</Typography>}
-    </Button>
-   </Grid>
-
-   <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
-    <Grid container spacing={2} mt={3}>
-     <Grid item xs={12} sm={12}>
-      <LogsTableController
-       customers={customers}
-       handleCustomerChange={handleCustomerChange}
-       customerMachines={customerMachines}
-       handleMachineChange={handleMachineChange}
-       handleLogTypeChange={handleLogTypeChange}
-       handlePeriodChange={handlePeriodChange}
-       isLogsPage={true}
-       isGraphPage={isGraphPage}
-       methods={methods}
-       onGetLogs={onGetLogs}
-      />
-     </Grid>
+  <Grid container rowGap={2} flexDirection={FLEX_DIR.COLUMN}>
+   <GStyledStickyDiv top={0} zIndex={11} height={20}>
+    <Grid container sx={{ display: FLEX.FLEX, justifyContent: FLEX.SPACE_BETWEEN }}>
+     <TableTitleBox title={t('log.logs.label')} />
+     <Button
+      size='small'
+      startIcon={<Icon icon={pageType === 'graph' ? ICON_NAME.LIST : ICON_NAME.GRAPH} sx={{ mr: 0.3 }} />}
+      variant='outlined'
+      sx={{
+       color: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
+       borderColor: theme.palette.grey[500]
+      }}
+      onClick={() => handleOnClick('erpLog', handleErpLogToggle)}>
+      {(!isMobile || expandedButton === 'erpLog') && <Typography variant={isDesktop ? TYPOGRAPHY.BODY0 : TYPOGRAPHY.BODY2}>{pageType === 'graph' ? 'Machine Logs' : 'See Graph'}</Typography>}
+     </Button>
     </Grid>
-   </FormProvider>
+   </GStyledStickyDiv>
+   <GStyledStickyDiv top={NAV.T_STICKY_NAV_LOGS_CONTROLLER} zIndex={11}>
+    <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
+     <Grid container spacing={2} mt={3}>
+      <Grid item xs={12} sm={12}>
+       <LogsTableController
+        customers={customers}
+        handleCustomerChange={handleCustomerChange}
+        customerMachines={customerMachines}
+        handleMachineChange={handleMachineChange}
+        handleLogTypeChange={handleLogTypeChange}
+        handlePeriodChange={handlePeriodChange}
+        isLogsPage={true}
+        isGraphPage={isGraphPage}
+        methods={methods}
+        onGetLogs={onGetLogs}
+       />
+      </Grid>
+     </Grid>
+    </FormProvider>
+   </GStyledStickyDiv>
    {!isGraphPage() && <MachineLogsTable isLogsPage logType={logType} payload={payload} />}
    {isGraphPage() && (
     <Fragment>
@@ -239,7 +243,7 @@ const LogsSection = ({ isArchived }) => {
      )}
     </Fragment>
    )}
-  </Fragment>
+  </Grid>
  )
 }
 
