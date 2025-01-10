@@ -23,20 +23,32 @@ const TableNoData = ({ isNotFound, ticketNotFound, logNotFound }) => {
      </TableRow>
     </TableBody>
    ) : logNotFound ? (
-    <EmptyContent
-     {...FALLBACK.NO_LOG}
-     sx={{
-      color: themeMode === 'dark' ? 'text.secondary' : 'grey.700'
-     }}
-    />
+    <TableBody>
+     <TableRow>
+      <TableCell colSpan={12}>
+       <EmptyContent
+        {...FALLBACK.NO_LOG}
+        sx={{
+         color: themeMode === 'dark' ? 'text.secondary' : 'grey.700'
+        }}
+       />
+      </TableCell>
+     </TableRow>
+    </TableBody>
    ) : (
     ticketNotFound && (
-     <EmptyContent
-      {...FALLBACK.NO_TICKET}
-      sx={{
-       color: themeMode === 'dark' ? 'text.secondary' : 'grey.700'
-      }}
-     />
+     <TableBody>
+      <TableRow>
+       <TableCell colSpan={12}>
+        <EmptyContent
+         {...FALLBACK.NO_TICKET}
+         sx={{
+          color: themeMode === 'dark' ? 'text.secondary' : 'grey.700'
+         }}
+        />
+       </TableCell>
+      </TableRow>
+     </TableBody>
     )
    )}
   </Fragment>
