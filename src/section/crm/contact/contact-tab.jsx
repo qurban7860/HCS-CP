@@ -10,7 +10,7 @@ import { ContactCard, fieldsContactConfig } from 'section/crm/contact'
 import { CommonFieldsCard } from 'section/common'
 import { Grid, Typography } from '@mui/material'
 import { DropdownDefault, AuditBox, CustomerDialog, SearchBox } from 'component'
-import { GStyledScrollableHeightLockGrid } from 'theme/style'
+import { GStyledScrollableHeightLockGrid, GStyledStickyGrid } from 'theme/style'
 import { MARGIN, NAV } from 'config/layout'
 import { KEY, TYPOGRAPHY, FLEX_DIR } from 'constant'
 
@@ -107,22 +107,18 @@ const ContactTab = () => {
  return (
   <Fragment>
    <Grid container columnSpacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
-    <Grid item xs={12} md={3}>
-     <Grid container gap={2}>
-      <Grid item xs={12} md={12}>
-       {contacts.length >= 5 && (
-        <Grid item xs={12}>
-         <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
-        </Grid>
-       )}
-       <GStyledScrollableHeightLockGrid isMobile={isMobile} mode={themeMode} totalCount={contacts?.length}>
-        <Grid container gap={2} p={1} height={'auto'} sx={{ maxHeight: NAV.H_MAX_SIDE_PANEL, overflow: 'auto' }}>
-         {renderList()}
-        </Grid>
-       </GStyledScrollableHeightLockGrid>
+    <GStyledStickyGrid item xs={12} md={3}>
+     {contacts.length >= 5 && (
+      <Grid item xs={12}>
+       <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
       </Grid>
-     </Grid>
-    </Grid>
+     )}
+     <GStyledScrollableHeightLockGrid isMobile={isMobile} mode={themeMode} totalCount={contacts?.length}>
+      <Grid container gap={2} p={1} height={'auto'} sx={{ maxHeight: NAV.H_MAX_SIDE_PANEL, overflow: 'auto' }}>
+       {renderList()}
+      </Grid>
+     </GStyledScrollableHeightLockGrid>
+    </GStyledStickyGrid>
 
     <Grid item xs={12} md={9}>
      <CommonFieldsCard defaultValues={defaultValues} fieldsConfig={fieldsContactConfig} isLoading={isLoading} withStatusIcon />
