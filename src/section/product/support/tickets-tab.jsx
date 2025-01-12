@@ -15,6 +15,7 @@ import {
 import { useTicketsDefaultValues, useTicketDefaultValues, TicketCard as MachineTicketCard } from 'section/support'
 import { CommonFieldsContainer } from 'section/common'
 import { TicketCard, fieldsTicketBasicInfoConfig, fieldsTicketQuickSpecsConfig } from 'section/product'
+import { NoData } from 'section'
 import { Divider, Grid, Card, Typography, Box } from '@mui/material'
 import { MachineSupportTicketDialog, AuditBox, CustomerDialog, SearchBox, TableNoData, HowickLoader } from 'component'
 import { GCardOption, GStyledStickyGrid, GStyledTopBorderDivider, GStyledScrollableHeightLockGrid, GStyledSpanBox, GStyledFieldChip, GStyledSupportStatusFieldChip } from 'theme/style'
@@ -175,7 +176,7 @@ const TicketsTab = () => {
        </Fragment>
       ) : (
        <Box display={FLEX.CENTER} justifyContent={FLEX.CENTER} alignItems={FLEX.CENTER} style={{ height: '100%' }}>
-        <TableNoData ticketNotFound={isNotFound} />
+        <NoData ticketNotFound={isNotFound} />
        </Box>
       )}
      </Grid>
