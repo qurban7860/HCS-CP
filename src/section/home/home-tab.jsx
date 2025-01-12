@@ -23,8 +23,8 @@ import { ContactListCard, MachineListCard } from 'section/home'
 import { HowickResources, CommonFieldsCard } from 'section/common'
 import { useCustomerDefaultValues } from 'section/crm/customer'
 import { useTheme, Grid } from '@mui/material'
-import { GStyledScrollableHeightLockGrid } from 'theme/style'
 import { AuditBox, SiteCarousel, ChowBox, MachineDialog, SiteDialog, ContactDialog } from 'component'
+import { GStyledBottomScrollableHeightLockGrid } from 'theme/style'
 import { MARGIN, SPACING } from 'config/layout'
 import { FLEX_DIR } from 'constant'
 
@@ -115,14 +115,14 @@ const HomeTab = () => {
      </ChowBox>
      <Grid container rowGap={2} columnSpacing={2}>
       <Grid item xs={12} sm={6}>
-       <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={contacts?.length}>
+       <GStyledBottomScrollableHeightLockGrid mode={themeMode} totalCount={contacts?.length}>
         <ContactListCard value={defaultValues} handleContactDialog={handleContactDialog} />
-       </GStyledScrollableHeightLockGrid>
+       </GStyledBottomScrollableHeightLockGrid>
       </Grid>
       <Grid item xs={12} sm={6} mb={5}>
-       <GStyledScrollableHeightLockGrid mode={themeMode} totalCount={machineTotalCount}>
+       <GStyledBottomScrollableHeightLockGrid mode={themeMode} totalCount={machineTotalCount}>
         <MachineListCard className='machines-widget' handleMachineDialog={handleConnectedMachineDialog} machineTotalCount={machineTotalCount} />
-       </GStyledScrollableHeightLockGrid>
+       </GStyledBottomScrollableHeightLockGrid>
       </Grid>
      </Grid>
      <CommonFieldsCard isChildren i18nKey={'howick_resources.label'} defaultValues={defaultValues} isLoading={isLoading}>
