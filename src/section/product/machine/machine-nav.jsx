@@ -70,7 +70,7 @@ const MachineNav = ({ renderedTab, navigatePage, value, isLoading }) => {
      <Grid container flexDirection={FLEX_DIR.ROW} p={2}>
       <Grid item xs={12} sm={8} display={FLEX.FLEX} alignItems={KEY.TOP}>
        <GStyledSpanBox>
-        <GStyledFieldGrid my={2} isLoading={isLoading} mode={themeMode} isNoBg isMachineView>
+        <GStyledFieldGrid my={2} mode={themeMode} isNoBg isMachineView>
          <Typography variant={isMobile ? TYPOGRAPHY.H2 : TYPOGRAPHY.H2}>{truncate(value?.serialNo, 5)}</Typography>
         </GStyledFieldGrid>
         &nbsp;
@@ -84,7 +84,7 @@ const MachineNav = ({ renderedTab, navigatePage, value, isLoading }) => {
        {isMobile && (
         <PopoverCombo withBackButton id={menuId} open={menuOpen} anchorEl={menuAnchor} onClose={toggleMenu} toggleMenu={toggleMenu}>
          <Box sx={{ flexGrow: 1, display: 'flex' }}>
-          <TabContainer tabsClasses={tabsClasses.scrollButtons} orientation={KEY.VERTICAL} currentTab={renderedTab} setCurrentTab={tab => navigatePage(tab)} isNotAbsolute>
+          <TabContainer tabsClasses={tabsClasses} orientation={KEY.VERTICAL} currentTab={renderedTab} setCurrentTab={tab => navigatePage(tab)} isNotAbsolute>
            {TABS(null).map(tab => (
             <GStyledTab
              className='tab'
