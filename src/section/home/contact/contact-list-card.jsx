@@ -1,6 +1,7 @@
 import { Fragment, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
+import { Trans } from 'react-i18next'
 import { ICON_NAME, useSettingContext } from 'hook'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
@@ -101,7 +102,7 @@ const ContactListCard = ({ value, handleContactDialog }) => {
          ))
         ) : (
          <Typography variant={TYPOGRAPHY.OVERLINE1} color='text.no'>
-          {LABEL.NO_CONTACT_FOUND}
+          <Trans i18nKey='no_found.label' values={{ value: 'contact' }} />
          </Typography>
         )}
        </Grid>
