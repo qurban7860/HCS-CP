@@ -14,7 +14,7 @@ const CustomerTabsContainer = ({ value, renderedTab, disableTab, navigatePage })
  return (
   <GStyledSpanBox gap={2}>
    <StyledTabBox>
-    <TabContainer tabsClasses={tabsClasses.scrollButtons} currentTab={renderedTab} setCurrentTab={tab => navigatePage(tab)}>
+    <TabContainer tabsClasses={tabsClasses} currentTab={renderedTab} setCurrentTab={tab => navigatePage(tab)}>
      <BackButton alongTab />
      {TABS(value).map(tab => (
       <StyledTab

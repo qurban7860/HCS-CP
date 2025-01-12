@@ -69,7 +69,7 @@ const CustomerNav = ({ renderedTab, navigatePage, value, isLoading }) => {
        {isMobile && (
         <PopoverCombo withBackButton id={menuId} open={menuOpen} anchorEl={menuAnchor} onClose={toggleMenu} toggleMenu={toggleMenu}>
          <Box sx={{ flexGrow: 1, display: 'flex' }}>
-          <TabContainer tabsClasses={tabsClasses.scrollButtons} orientation={KEY.VERTICAL} currentTab={renderedTab} setCurrentTab={tab => navigatePage(tab)} isNotAbsolute>
+          <TabContainer tabsClasses={tabsClasses} orientation={KEY.VERTICAL} currentTab={renderedTab} setCurrentTab={tab => navigatePage(tab)} isNotAbsolute>
            {TABS(null).map(tab => (
             <GStyledTab
              className='tab'
