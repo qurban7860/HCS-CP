@@ -32,7 +32,7 @@ const MachineDialog = () => {
  }
 
  return (
-  <Dialog disableEnforceFocus maxWidth={KEY.LG} open={machineDialog} onClose={handleDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
+  <Dialog maxWidth={KEY.LG} open={machineDialog} onClose={handleDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle>
     <GStyledSpanBox>

@@ -8,7 +8,7 @@ import { PATH_CUSTOMER } from 'route/path'
 import { useCustomerDefaultValues } from 'section/crm'
 import { HowickResources } from 'section/common'
 import { Dialog, DialogContent, DialogTitle, DialogActions, Divider, Grid } from '@mui/material'
-import { GridViewField, GridViewTitle, Button, BadgeCardMedia, TitleListItemText, AuditBox } from 'component'
+import { GridViewField, GridViewTitle, Button, BadgeCardMedia, TitleTextIcon, AuditBox } from 'component'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption } from 'theme/style'
 import { KEY, BUTTON, FLEX, SZ } from 'constant'
 
@@ -26,14 +26,14 @@ const CustomerDialog = () => {
  }
 
  return (
-  <Dialog disableEnforceFocus maxWidth={SZ.LG} open={customerDialog} onClose={handleCustomerDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
+  <Dialog maxWidth={SZ.LG} open={customerDialog} onClose={handleCustomerDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle>
     <GStyledSpanBox
      sx={{
       justifyContent: FLEX.SPACE_BETWEEN
      }}>
-     <TitleListItemText truncatedName={defaultValues?.name} tradingAliases={defaultValues?.tradingName} />
+     <TitleTextIcon truncatedName={defaultValues?.name} tradingAliases={defaultValues?.tradingName} />
      <BadgeCardMedia customer={customer} dimension={40} />
     </GStyledSpanBox>
    </DialogTitle>
