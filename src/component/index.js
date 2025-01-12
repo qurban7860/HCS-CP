@@ -104,6 +104,7 @@ export { default as LinkTableCell } from './table-tool/link-table-cell'
 export { default as LinkWrap } from './table-tool/link-wrap'
 // @title-list-item
 export { default as TitleListItemText } from './title-list-item/text'
+export { default as TitleTextIcon } from './title-list-item/text-icon'
 // @scroll to top
 export { default as ScrollToTop } from './scroll-to-top/scroll-to-top'
 // @scrollbar
