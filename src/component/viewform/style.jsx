@@ -10,7 +10,7 @@ export const StyledDefaultTypography = styled(Typography)(({ theme }) => ({
  flexGrow: 1
 }))
 
-export const StyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView, isNoBg, isMobile }) => ({
+export const StyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, isMobile, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView, isNoBg, isMobile }) => ({
  backgroundColor:
   mode === KEY.LIGHT && !isMachineView && !isNoBg
    ? theme.palette.grey[100]
@@ -25,7 +25,7 @@ export const StyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ...
  borderRadius: isMachineView && theme.spacing(RADIUS.FORM.borderRadius)
 }))
 
-export const StyledChipGrid = styled(Grid)(({ theme, isNoBg, mode }) => ({
+export const StyledChipGrid = styled(({ theme, isNoBg, mode,...other}) => <Grid {...other}/>)(({ theme, isNoBg, mode }) => ({
  marginTop: theme.spacing(-2),
  marginBottom: 0,
  display: 'flex',
