@@ -228,13 +228,9 @@ const UsersListSection = ({ isArchived }) => {
              !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />
             )
            )}
+         <TableNoData isNotFound={isNotFound} />
          </Table>
         </TableContainer>
-       </Grid>
-       <Grid item xs={12} sm={12} mb={2}>
-        <Grid container display={FLEX.FLEX} justifyContent={KEY.CENTER} bgcolor='background.paper'>
-         <TableNoData isNotFound={isNotFound} />
-        </Grid>
        </Grid>
       </Grid>
      </Grid>
