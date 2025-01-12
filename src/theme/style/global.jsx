@@ -116,7 +116,7 @@ export const GStyledCard = styled(({ theme, selectedCardId, c, mode, ...other })
  transition: 'ease-in-out 0.2s'
 }))
 
-export const GStyledStickyGrid = styled(({ theme, selectedCardId, c, mode, ...other }) => <Grid {...other} />)(({ theme }) => ({
+export const GStyledStickyGrid = styled(({ theme, ...other }) => <Grid {...other} />)(({ theme }) => ({
  position: 'sticky',
  top: NAV.T_STICKY_SIDE_PANEL,
  zIndex: 9,
@@ -469,7 +469,7 @@ export const GStyledCustomAvatar = styled('div')(({ theme }) => ({
  height: { xs: 110, md: 110 }
 }))
 
-export const GStyledTooltip = styled(({ className, mode, green, disabled, ...props }) => <Tooltip {...props} arrow classes={{ popper: className }} />)(
+export const GStyledTooltip = styled(({ className, mode, green, disabled, tooltipTextColor, ...props }) => <Tooltip {...props} arrow classes={{ popper: className }} />)(
  ({ theme, mode, tooltipcolor, green, disabled, tooltipTextColor }) => ({
   [`& .${tooltipClasses.arrow}`]: {
    color: disabled ? theme.palette.action.disabled : tooltipcolor
@@ -581,7 +581,7 @@ export const GStyledSupportStatusFieldChip = styled(({ theme, status, ...other }
    : theme.palette.howick.lightGray
 }))
 
-export const GStyledNoPaddingFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView, isNoBg }) => ({
+export const GStyledNoPaddingFieldGrid = styled(({ theme, mode, isMachineView, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView }) => ({
  overflowWrap: 'break-word',
  backgroundColor: 'transparent',
  //  border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
@@ -604,7 +604,7 @@ export const GStyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ..
  borderRadius: isMachineView && RADIUS.BORDER.borderRadius
 }))
 
-export const GStyledNoPaddingFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, roleColr }) => ({
+export const GStyledNoPaddingFieldChip = styled(({ theme, roleColr, ...other }) => <Chip {...other} />)(({ theme, roleColr }) => ({
  borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
  backgroundColor: roleColr
 }))
@@ -630,7 +630,7 @@ export const GStyledMiniChip = styled(({ theme, ...other }) => <Chip {...other} 
  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
 }))
 
-export const GStyledChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, color, bgColor }) => ({
+export const GStyledChip = styled(({ theme, color, bgColor, ...other }) => <Chip {...other} />)(({ theme, color, bgColor }) => ({
  //  margin: theme.spacing(0.2),
  borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
@@ -941,22 +941,52 @@ export const GStyledChowBox = styled(Box)(({ theme }) => ({
  paddingBottom: theme.spacing(2)
 }))
 
-export const GStyledScrollableHeightLockGrid = styled(Grid)(({ theme, mode, totalCount, isMobile }) =>
+export const GStyledScrollableHeightLockGrid = styled(({ theme, mode, totalCount, isMobile, ...other }) => <Grid {...other} />)(({ theme, mode, totalCount, isMobile }) =>
  totalCount > 5 && !isMobile
   ? {
      position: 'relative',
+     overflow:'hidden',
+     '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '15px',
+      backdropFilter: 'blur(2px)',
+      background: 'transparent',
+      zIndex: 1,
+     },
      '&::after': {
       content: '""',
       position: 'absolute',
       bottom: 0,
       left: 0,
       width: '100%',
-      height: '30px',
-      borderRadius: RADIUS.CUSTOM.borderRadius,
-      backgroundImage:
-       mode === KEY.LIGHT
-        ? `linear-gradient(to bottom, rgba(255,255,255,0.1), ${alpha(theme.palette.grey[500], 0.5)})`
-        : `linear-gradient(to bottom, rgba(0,0,0,0.1), ${alpha(theme.palette.grey[700], 0.5)})`
+      height: '40px',
+      backdropFilter: 'blur(2px)',
+      background: `linear-gradient(to top, ${theme.palette.background.default} 0%, rgba(255, 255, 255, 0) 100%)`,
+      zIndex: 1
+     }
+    }
+  : {}
+)
+
+export const GStyledBottomScrollableHeightLockGrid = styled(({ theme, mode, totalCount, isMobile, ...other }) => <Grid {...other} />)(({ theme, mode, totalCount, isMobile }) =>
+ totalCount > 5 && !isMobile
+  ? {
+     position: 'relative',
+     overflow: 'hidden',
+     '&::after': {
+      content: '""',
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      width: '100%',
+      height: '40px',
+      backdropFilter: 'blur(2px)',
+      background: `linear-gradient(to top, ${theme.palette.background.default} 0%, rgba(255, 255, 255, 0) 100%)`,
+      zIndex: 1
      }
     }
   : {}
