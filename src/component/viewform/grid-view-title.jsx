@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { Grid, Typography } from '@mui/material'
-import { VARIANT, TITLE } from 'constant'
+import { VARIANT } from 'constant'
 
 const { TYPOGRAPHY } = VARIANT
 
@@ -15,7 +15,9 @@ const GridViewTitle = ({ title, variant = TYPOGRAPHY.OVERLINE2, gridSize = 12 })
 }
 
 GridViewTitle.propTypes = {
-  title: PropTypes.string
+  title: PropTypes.string,
+  variant: PropTypes.string,
+  gridSize: PropTypes.number
 }
 
 export default GridViewTitle
