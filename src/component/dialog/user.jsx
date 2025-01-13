@@ -7,7 +7,7 @@ import { setUserDialog, archiveSecurityUser, updateStatusSecurityUser } from 'st
 import { ICON_NAME } from 'hook'
 import { useUserDefaultValues } from 'section'
 import { useTheme, Dialog, DialogContent, DialogTitle, DialogActions, Divider, Grid, Typography, FormControlLabel, Box } from '@mui/material'
-import { GridViewField, TitleListItemText, AuditBox, CustomAvatar, ConfirmDialog, IconTooltip } from 'component'
+import { GridViewField, TitleListItemText, AuditBox, CustomAvatar, ConfirmDialog, IconTooltip, TitleTextIcon } from 'component'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption, GStyledNoPaddingChip, GStyledDefLoadingButton, GStyledSwitch } from 'theme/style'
 import { KEY, FLEX, SZ, TYPOGRAPHY, SIZE } from 'constant'
 import { toTitleCase } from 'util'
@@ -41,7 +41,7 @@ const UserDialog = () => {
 
  return (
   <Fragment>
-   <Dialog disableEnforceFocus maxWidth={SZ.LG} open={userDialog} onClose={handleDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
+   <Dialog maxWidth={SZ.LG} open={userDialog} onClose={handleDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
     <GStyledTopBorderDivider mode={themeMode} />
     <DialogTitle
      sx={{
@@ -51,7 +51,7 @@ const UserDialog = () => {
       padding: theme.spacing(2)
      }}>
      <GStyledSpanBox sx={{ justifyContent: FLEX.SPACE_BETWEEN }}>
-      <TitleListItemText
+      <TitleTextIcon
        truncatedName={defaultValues?.name}
        icon={
         <IconTooltip
