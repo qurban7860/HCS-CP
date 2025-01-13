@@ -53,16 +53,17 @@ const ContactCard = ({ selectedCardId, value, handleContactCard, c }) => {
       title={LABEL.CONTACT_THIS(c.firstName, c.phone)}
       icon={ICON_NAME.PHONE}
       color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
-      dimension={18}
+      tooltipColor={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
       disabled={!c.phone}
-      isActiveIcon
+      cursor={!c.phone}
+      dimension={18}
       iconOnly
-      cursor={c.phone !== null}
      />
      <IconTooltip
       title={notEmployed ? LABEL.NOT_EMPLOYED : LABEL.CURRENTLY_EMPLOYED}
       icon={notEmployed ? ICON_NAME.NOT_EMPLOYED : ICON_NAME.CURRENTLY_EMPLOYED}
       color={notEmployed ? theme.palette.error.dark : !notEmployed && themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+      tooltipColor={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
       dimension={18}
       disabled={!c.phone}
       isActiveIcon
