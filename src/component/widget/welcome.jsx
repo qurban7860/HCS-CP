@@ -46,142 +46,143 @@ function Welcome({ action, img, customer, isCustomerLoading, customerOnlineUserI
       <Box m={2}>
        <Card {...GCardOption(themeMode)}>
         <GStyledTopBorderDivider mode={themeMode} />
-        <GStyledSpanBox px={2}>
-         <Icon icon={ICON_NAME.COMPANY} color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]} />
-         {isCustomerLoading ? (
-          () => <SkeletonViewFormField />
-         ) : (
+        {isCustomerLoading ? (
+         <Grid item xs={12} sm={12} width={'100%'} px={2}>
+          <SkeletonViewFormField />
+         </Grid>
+        ) : (
+         <GStyledSpanBox px={2}>
+          <Icon icon={ICON_NAME.COMPANY} color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]} />
           <Typography variant={isDesktop ? TYPOGRAPHY.H4 : TYPOGRAPHY.H5} m={2}>
            {customer.name}
           </Typography>
-         )}
-        </GStyledSpanBox>
+         </GStyledSpanBox>
+        )}
         <Box mb={2}>
-         <GStyledSpanBox px={2}>
-          {isLoading ? (
-           () => <SkeletonViewFormField />
-          ) : (
-           <Fragment>
-            <Icon
-             icon={ICON_NAME.FRAMA}
-             color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]}
-             sx={{
-              width: 15
-             }}
-            />
-            <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
-             {(customerMachines?.length > 1 ? t('machine.machines.label') : t('machine.label')) + ':'}
-            </Typography>
-            <Typography variant={isDesktop ? TYPOGRAPHY.H6 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
-             {customerMachines?.length}
-            </Typography>
-           </Fragment>
-          )}
-         </GStyledSpanBox>
-         <GStyledSpanBox px={2}>
-          {isLoading ? (
-           () => <SkeletonViewFormField />
-          ) : (
-           <Fragment>
-            <Icon
-             icon={ICON_NAME.DECOILER_DEF}
-             color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]}
-             sx={{
-              width: 15
-             }}
-            />
-            <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
-             {(decoilerMachines?.length > 1 ? t('decoiler.decoilers.label') : t('decoiler.label')) + ':'}
-            </Typography>
-            <Typography variant={isDesktop ? TYPOGRAPHY.H6 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
-             {decoilerMachines?.length} / {customerMachines?.length}
-            </Typography>
-           </Fragment>
-          )}
-         </GStyledSpanBox>
-         <GStyledSpanBox px={2}>
-          {isLoading ? (
-           () => <SkeletonViewFormField />
-          ) : (
-           <Fragment>
-            <Icon
-             icon={ICON_NAME.RIBBED}
-             color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]}
-             sx={{
-              width: 15
-             }}
-            />
-            <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
-             {t('x_tenda.label') + ':'}
-            </Typography>
-            <Typography variant={isDesktop ? TYPOGRAPHY.H6 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
-             {ribbedMachines?.length} / {customerMachines?.length}
-            </Typography>
-           </Fragment>
-          )}
-         </GStyledSpanBox>
-         <GStyledSpanBox px={2}>
-          {isLoading ? (
-           () => <SkeletonViewFormField />
-          ) : (
-           <Fragment>
-            <Icon
-             icon={ICON_NAME.PORTAL_SYNC}
-             color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]}
-             sx={{
-              width: 15
-             }}
-            />
-            <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
-             {t('portal_synced.label') + ':'}
-            </Typography>
-            <Typography variant={isDesktop ? TYPOGRAPHY.H6 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
-             {portalSyncedMachines?.length} / {customerMachines?.length}
-            </Typography>
-           </Fragment>
-          )}
-         </GStyledSpanBox>
-         {isCustomerAdmin(user) && (
+         {isLoading ? (
+          <Grid item xs={12} sm={12} width={'100%'} px={2}>
+           <SkeletonViewFormField />
+          </Grid>
+         ) : (
           <GStyledSpanBox px={2}>
-           {isLoading ? (
-            () => <SkeletonViewFormField />
-           ) : (
-            <Fragment>
-             <Icon icon={ICON_NAME.USERS} color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]} sx={{ width: 15 }} />
-             <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
-              {t(securityUserTotalCount > 1 ? 'user.users.label' : 'user.label') + ':'}
-             </Typography>
-             <Typography variant={isDesktop ? TYPOGRAPHY.H6 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
-              {securityUserTotalCount}
-             </Typography>
-             <Badge
-              color='burnIn'
-              badgeContent={customerOnlineUserIds?.length || 1}
-              anchorOrigin={{
-               vertical: 'top',
-               horizontal: 'right'
-              }}
-              sx={{
-               '& .MuiBadge-badge': {
-                border: `3px solid ${themeMode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.burnIn.main}`
-               }
-              }}>
-              <GStyledNoPaddingChip
-               variant={'outlined'}
-               border={`1px solid ${themeMode === KEY.LIGHT ? theme.palette.burnIn.main : theme.palette.burnIn.main}`}
-               label={
-                <GStyledSpanBox>
-                 <Icon icon={ICON_NAME.ONLINE} sx={{ height: 10, width: 10 }} color={theme.palette.burnIn.main} /> &nbsp;
-                 <Typography variant={TYPOGRAPHY.OVERLINE2}>{t('online.label')}</Typography>
-                </GStyledSpanBox>
-               }
-               size={'small'}
-              />
-             </Badge>
-            </Fragment>
-           )}
+           <Icon
+            icon={ICON_NAME.FRAMA}
+            color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]}
+            sx={{
+             width: 15
+            }}
+           />
+           <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+            {(customerMachines?.length > 1 ? t('machine.machines.label') : t('machine.label')) + ':'}
+           </Typography>
+           <Typography variant={isDesktop ? TYPOGRAPHY.H6 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+            {customerMachines?.length}
+           </Typography>
           </GStyledSpanBox>
          )}
+         {isLoading ? (
+          <Grid item xs={12} sm={12} width={'100%'} px={2}>
+           <SkeletonViewFormField />
+          </Grid>
+         ) : (
+          <GStyledSpanBox px={2}>
+           <Icon
+            icon={ICON_NAME.DECOILER_DEF}
+            color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]}
+            sx={{
+             width: 15
+            }}
+           />
+           <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+            {(decoilerMachines?.length > 1 ? t('decoiler.decoilers.label') : t('decoiler.label')) + ':'}
+           </Typography>
+           <Typography variant={isDesktop ? TYPOGRAPHY.H6 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+            {decoilerMachines?.length} / {customerMachines?.length}
+           </Typography>
+          </GStyledSpanBox>
+         )}
+         {isLoading ? (
+          <Grid item xs={12} sm={12} width={'100%'} px={2}>
+           <SkeletonViewFormField />
+          </Grid>
+         ) : (
+          <GStyledSpanBox px={2}>
+           <Icon
+            icon={ICON_NAME.RIBBED}
+            color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]}
+            sx={{
+             width: 15
+            }}
+           />
+           <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+            {t('x_tenda.label') + ':'}
+           </Typography>
+           <Typography variant={isDesktop ? TYPOGRAPHY.H6 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+            {ribbedMachines?.length} / {customerMachines?.length}
+           </Typography>
+          </GStyledSpanBox>
+         )}
+         {isLoading ? (
+          <Grid item xs={12} sm={12} width={'100%'} px={2}>
+           <SkeletonViewFormField />
+          </Grid>
+         ) : (
+          <GStyledSpanBox px={2}>
+           <Icon
+            icon={ICON_NAME.PORTAL_SYNC}
+            color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]}
+            sx={{
+             width: 15
+            }}
+           />
+           <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+            {t('portal_synced.label') + ':'}
+           </Typography>
+           <Typography variant={isDesktop ? TYPOGRAPHY.H6 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+            {portalSyncedMachines?.length} / {customerMachines?.length}
+           </Typography>
+          </GStyledSpanBox>
+         )}
+         {isCustomerAdmin(user) &&
+          (isLoading ? (
+           <Grid item xs={12} sm={12} width={'100%'} px={2}>
+            <SkeletonViewFormField />
+           </Grid>
+          ) : (
+           <GStyledSpanBox px={2}>
+            <Icon icon={ICON_NAME.USERS} color={themeMode === KEY.LIGHT ? theme.palette.grey[600] : theme.palette.grey[400]} sx={{ width: 15 }} />
+            <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.OVERLINE} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+             {t(securityUserTotalCount > 1 ? 'user.users.label' : 'user.label') + ':'}
+            </Typography>
+            <Typography variant={isDesktop ? TYPOGRAPHY.H6 : TYPOGRAPHY.SUBTITLE2} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[500]} mx={1}>
+             {securityUserTotalCount}
+            </Typography>
+            <Badge
+             color='burnIn'
+             badgeContent={customerOnlineUserIds?.length || 1}
+             anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right'
+             }}
+             sx={{
+              '& .MuiBadge-badge': {
+               border: `3px solid ${themeMode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.burnIn.main}`
+              }
+             }}>
+             <GStyledNoPaddingChip
+              variant={'outlined'}
+              border={`1px solid ${themeMode === KEY.LIGHT ? theme.palette.burnIn.main : theme.palette.burnIn.main}`}
+              label={
+               <GStyledSpanBox>
+                <Icon icon={ICON_NAME.ONLINE} sx={{ height: 10, width: 10 }} color={theme.palette.burnIn.main} /> &nbsp;
+                <Typography variant={TYPOGRAPHY.OVERLINE2}>{t('online.label')}</Typography>
+               </GStyledSpanBox>
+              }
+              size={'small'}
+             />
+            </Badge>
+           </GStyledSpanBox>
+          ))}
         </Box>
        </Card>
       </Box>
