@@ -377,7 +377,7 @@ export const GStyledRightBorderDivider = styled(({ theme, mode, ...other }) => <
  borderWidth: 5
 }))
 
-export const GStyledLoadingButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
+export const GStyledLoadingButton = styled(({ theme, isLoading, mode, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
  backgroundColor: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
  color: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
  '&:disabled': {
@@ -389,7 +389,7 @@ export const GStyledLoadingButton = styled(({ theme, isLoading, ...other }) => <
  }
 }))
 
-export const GStyledDefLoadingButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, textColor, bgColor, mode }) => ({
+export const GStyledDefLoadingButton = styled(({ theme, isLoading, textColor, bgColor, mode, ...other }) => <LoadingButton {...other} />)(({ theme, textColor, bgColor, mode, isLoading }) => ({
  backgroundColor: bgColor,
  color: textColor,
  '&:disabled': {
@@ -409,7 +409,7 @@ export const GStyledBackButton = styled(({ theme, isLoading, ...other }) => <Loa
  }
 }))
 
-export const GStyledCloseButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
+export const GStyledCloseButton = styled(({ theme, isLoading, mode, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
  backgroundColor: theme.palette.howick.orange,
  color: theme.palette.common.black,
  '&:hover': {
@@ -489,7 +489,7 @@ export const GStyledTooltip = styled(({ className, mode, green, disabled, toolti
  })
 )
 
-export const GStyledSwitch = styled(({ theme, mode, ...other }) => <Switch {...other} />)(({ theme, mode, isActive }) => ({
+export const GStyledSwitch = styled(({ theme, mode, isActive, ...other }) => <Switch {...other} />)(({ theme, mode, isActive }) => ({
  padding: 8,
  '& .MuiSwitch-track': {
   borderRadius: RADIUS.BORDER.borderRadius,
@@ -609,7 +609,7 @@ export const GStyledNoPaddingFieldChip = styled(({ theme, roleColr, ...other }) 
  backgroundColor: roleColr
 }))
 
-export const GStyledNoPaddingChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, bgColor, border }) => ({
+export const GStyledNoPaddingChip = styled(({ theme, bgColor, border, ...other }) => <Chip {...other} />)(({ theme, bgColor, border }) => ({
  borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
  padding: theme.spacing(0),
  border: border,
@@ -861,7 +861,7 @@ export const ButtonProps = {
  */
 
 // @root - DashboardPage - dashboard
-export const GGStyledContainerSvg = styled(({ themeMode, ...other }) => <SvgColor icon={ASSET.BG_LOGO} {...other} />)(({ theme, themeMode }) => {
+export const GGStyledContainerSvg = styled(({ theme, themeMode, ...other }) => <SvgColor icon={ASSET.BG_LOGO} {...other} />)(({ theme, themeMode }) => {
  return {
   color: themeMode === KEY.LIGHT ? theme.palette.success.main : theme.palette.common.white
  }
