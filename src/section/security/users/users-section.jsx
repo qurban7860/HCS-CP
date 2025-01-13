@@ -26,7 +26,7 @@ import { GStyledTableHeaderBox } from 'theme/style'
 import { TableNoData, SkeletonTable, SearchBox, TableTitleBox, UserDialog } from 'component'
 import { UsersTable, UsersHeader, UsersListPagination, UsersCard, HEADER_ITEMS } from 'section/security'
 import { MARGIN, TABLE } from 'config'
-import { KEY, FLEX_DIR, TYPOGRAPHY, FLEX } from 'constant'
+import { KEY, FLEX_DIR, TYPOGRAPHY } from 'constant'
 
 const UsersListSection = ({ isArchived }) => {
  const [tableData, setTableData] = useState([])
@@ -84,6 +84,7 @@ const UsersListSection = ({ isArchived }) => {
   dispatch(resetSecurityUser())
   dispatch(resetSecurityUsers())
   dispatch(resetSelectedContactCard())
+  dispatch(setUserDialog(false))
  }, [userId])
 
  const { filterName, handleFilterName, filteredData, filterStatus, filterRole, handleFilterStatus, handleFilterRole } = useFilter(
