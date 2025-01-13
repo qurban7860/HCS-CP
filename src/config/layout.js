@@ -1,3 +1,5 @@
+import { TYPOGRAPHY } from "constant"
+
 /**
  * Layout configuration for the application
  *
@@ -101,6 +103,10 @@ export const BRAND_RESP = isMobile => {
    opacity: 0.2
   }
  }
+}
+
+export const TEXT_SIZE = {
+DIALOG_TITLE_VARIANT: TYPOGRAPHY.H5,
 }
 
 export const RADIUS = {
