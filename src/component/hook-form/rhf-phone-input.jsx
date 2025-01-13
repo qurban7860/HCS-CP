@@ -11,7 +11,7 @@ RHFPhoneInput.propTypes = {
  inputProps: PropTypes.object
 }
 
-export default function RHFPhoneInput({ name, label, flagSize, defaultCountry, onChange, inputProps, ...other }) {
+export default function RHFPhoneInput({ name, label, defaultCountry, inputProps, ...other }) {
  const { control, setValue } = useFormContext()
 
  return (
@@ -23,7 +23,6 @@ export default function RHFPhoneInput({ name, label, flagSize, defaultCountry, o
      value={field.value}
      name={name}
      label={label}
-     flagSize={flagSize || 'medium'}
      defaultCountry={defaultCountry || 'NZ'}
      onChange={newValue => setValue(name, newValue, { shouldValidate: true })}
      inputProps={{ ...inputProps, maxLength: 13 }}
