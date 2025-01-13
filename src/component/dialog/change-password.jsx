@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogTitle, Divider, DialogActions, Box, Typogr
 import { RHFTextField, RHFPasswordField } from 'component'
 import FormProvider from 'component/hook-form'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledLoadingButton, GBackdropPropsOption, GStyledCloseButton } from 'theme/style'
+import { TEXT_SIZE } from 'config/layout'
 import { TYPOGRAPHY, FLEX, KEY } from 'constant'
 
 function ChangePasswordDialog() {
@@ -62,14 +63,11 @@ function ChangePasswordDialog() {
  }
 
  return (
-  <Dialog disableEnforceFocus fullWidth maxWidth='sm' open={changePasswordDialog} onClose={handleChangePasswordDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
+  <Dialog fullWidth maxWidth='sm' open={changePasswordDialog} onClose={handleChangePasswordDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle>
-    <GStyledSpanBox
-     sx={{
-      justifyContent: FLEX.SPACE_BETWEEN
-     }}>
-     <Typography variant={isMobile ? TYPOGRAPHY.H5 : TYPOGRAPHY.H3}>{t('change_password.label').toUpperCase()}</Typography> &nbsp;
+    <GStyledSpanBox sx={{ justifyContent: FLEX.SPACE_BETWEEN }}>
+     <Typography variant={TEXT_SIZE.DIALOG_TITLE_VARIANT}>{t('change_password.label').toUpperCase()}</Typography> &nbsp;
     </GStyledSpanBox>
    </DialogTitle>
    <Divider orientation='horizontal' flexItem />
