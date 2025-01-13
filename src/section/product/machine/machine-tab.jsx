@@ -164,7 +164,7 @@ const MachineTab = () => {
        renderCategoryChipContainer()
       )}
       <GStyledScrollableHeightLockGrid isMobile={isMobile} mode={themeMode} totalCount={machines?.length}>
-        <Grid container gap={2} p={1} height={'auto'} sx={{ maxHeight: NAV.H_MAX_SIDE_PANEL, overflow: 'auto' }}>
+        <Grid container gap={2} p={1} py={2} pb={4} height={'auto'} sx={{ maxHeight: NAV.H_MAX_SIDE_PANEL, overflow: 'auto' }}>
          {filteredData.map((mach, index) => (
           <MachineCard
            key={mach?._id}
