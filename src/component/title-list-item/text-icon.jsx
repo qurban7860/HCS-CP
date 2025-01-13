@@ -58,7 +58,7 @@ TitleTextIcon.propTypes = {
  truncatedName: PropTypes.string.isRequired,
  tradingAliases: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
  roles: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
- icon: PropTypes.node
+ icon: PropTypes.any
 }
 
 export default TitleTextIcon
