@@ -1,29 +1,34 @@
-import { Fragment, memo, useState } from 'react'
+import { Fragment, memo, useState, useRef } from 'react'
 import { t } from 'i18next'
 import { dispatch, useSelector } from 'store'
 import { useAuthContext } from 'auth/use-auth-context'
-import { Icon, useSettingContext, useUIMorph } from 'hook'
-import { setUserDialog, archiveSecurityUser, updateStatusSecurityUser } from 'store/slice'
+import { Icon, snack, useSettingContext, useUIMorph } from 'hook'
+import { setUserDialog, archiveSecurityUser, updateStatusSecurityUser, sendUserInvite } from 'store/slice'
 import { ICON_NAME } from 'hook'
 import { useUserDefaultValues } from 'section'
 import { useTheme, Dialog, DialogContent, DialogTitle, DialogActions, Divider, Grid, Typography, FormControlLabel, Box } from '@mui/material'
-import { GridViewField, TitleListItemText, AuditBox, CustomAvatar, ConfirmDialog, IconTooltip, TitleTextIcon } from 'component'
+import { GridViewField, DefaultPopper, AuditBox, CustomAvatar, ConfirmDialog, IconTooltip, TitleTextIcon } from 'component'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption, GStyledNoPaddingChip, GStyledDefLoadingButton, GStyledSwitch } from 'theme/style'
 import { KEY, FLEX, SZ, TYPOGRAPHY, SIZE } from 'constant'
 import { toTitleCase } from 'util'
+import { delay } from 'util'
 
 const UserDialog = () => {
  const [openArchiveModal, setOpenArchiveModal] = useState(false)
  const [openUpdateStatusModal, setOpenUpdateStatusModal] = useState(false)
+ const [openSendInvitePopper, setOpenSendInvitePopper] = useState(false)
+ const [inviteSent, setInviteSent] = useState(false)
+ const [openAnchorEl, setOpenAnchorEl] = useState(null)
  const { securityUser, isLoading, userDialog } = useSelector(state => state.user)
  const { customer } = useSelector(state => state.customer)
  const { userId } = useAuthContext()
  const { themeMode } = useSettingContext()
  const { isDesktop } = useUIMorph()
+ const navRef = useRef(null)
  const theme = useTheme()
  const defaultValues = useUserDefaultValues(securityUser, customer)
 
- const isAdmin = securityUser?.roles?.some(role => role.name === 'CustomerAdmin')
+ const isAdmin = securityUser?.roles?.some(role => role.name === KEY.CUSTOMER_ADMIN)
  const isSelf = securityUser?._id === userId
 
  const handleDialog = () => dispatch(setUserDialog(false))
@@ -36,7 +41,20 @@ const UserDialog = () => {
  const handleUpdateStatusUser = async () => {
   const securityUserData = { isActive: !securityUser.isActive }
   await dispatch(updateStatusSecurityUser(securityUser._id, securityUserData))
-  //   setOpenUpdateStatusModal(false)
+ }
+
+ const handleSendUserInvite = async () => {
+  await dispatch(sendUserInvite(securityUser._id))
+  setInviteSent(true)
+  snack(t('invite_sent.label'), KEY.SUCCESS)
+  delay(2000).then(() => {
+    setOpenSendInvitePopper(false)
+  })
+ }
+
+ const handleClick = event => {
+  setOpenSendInvitePopper(true)
+  setOpenAnchorEl(event.currentTarget)
  }
 
  return (
@@ -135,6 +153,7 @@ const UserDialog = () => {
        />
       </Box>
      )}
+
      <GStyledSpanBox gap={1}>
       {!isAdmin && !isSelf && (
        <GStyledDefLoadingButton
@@ -147,12 +166,30 @@ const UserDialog = () => {
         {t('delete.label').toUpperCase()}
        </GStyledDefLoadingButton>
       )}
-      <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog} gap={2}>
+      <GStyledDefLoadingButton textColor={theme.palette.common.white} bgColor={theme.palette.howick.darkBlue} onClick={handleClick} gap={2}>
+       {t('send_invite.label').toUpperCase()}
+      </GStyledDefLoadingButton>
+      <GStyledCloseButton onClick={handleDialog} gap={2}>
        {t('close.label').toUpperCase()}
       </GStyledCloseButton>
      </GStyledSpanBox>
     </DialogActions>
    </Dialog>
+
+   {openSendInvitePopper && (
+    <DefaultPopper
+     openPopper={openSendInvitePopper}
+     openAnchorEl={openAnchorEl}
+     isLoading={isLoading}
+     content={!inviteSent ? `Send an invite to ${toTitleCase(defaultValues?.name)}?` : `Invite sent to ${toTitleCase(defaultValues?.name)}`}
+     i18ConfirmButtonLabel={'yes.label'}
+     i18CancelButtonLabel={'no.label'}
+     onConfirmClick={handleSendUserInvite}
+     onCancelClick={() => setOpenSendInvitePopper(false)}
+     disableCancel={inviteSent}
+     disableConfirm={inviteSent}
+    />
+   )}
    {openArchiveModal && (
     <ConfirmDialog
      open={openArchiveModal}
