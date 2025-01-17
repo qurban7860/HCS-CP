@@ -1,5 +1,3 @@
-// create function that parse address object
-
 export function parseAddress(address) {
   const street = address?.street || ''
   const city = address?.city || ''
