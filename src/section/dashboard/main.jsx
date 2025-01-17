@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useResponsive, useSettingContext } from 'hook'
-import { HEADER } from 'config'
+import { HEADER } from 'config/layout'
 
 const SPACING = 8
 
@@ -41,7 +41,7 @@ export default function Main({ children, sx, ...other }) {
    component='main'
    sx={{
     py: `${HEADER.H_MOBILE + SPACING}px`,
-    height: '100vh',
+    height: `calc(100vh - ${HEADER.H_MOBILE + SPACING}px)`,
     ...(isDesktop && {
      px: 2,
      py: `${HEADER.H_DASHBOARD_DESKTOP + SPACING}px`,
