@@ -65,6 +65,7 @@ export const ASSET = {
  NZ_MADE: _sponsor('nz-made.png'),
  ICON: _brand('icon.svg'),
  LOGO: _brand('logo.svg'),
+ LOGO_WHITE: _brand('logo-white.svg'),
  LOGO_DARK: _brand('logo-dark.svg'),
  TRANSPARENT: _image('transparent.png'),
  PARENT: _icon('parent.svg'),
