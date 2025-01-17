@@ -31,6 +31,9 @@ const en = {
   addresses: {
    label: `Addresses`
   },
+  main_site: {
+   label: `Main Site`
+  },
   street: {
    label: `Street`
   },
@@ -214,6 +217,9 @@ const en = {
  email: {
   label: `Email`
  },
+ enable_portal_access: {
+  label: `Enable Portal Access`
+ },
  filter_status: {
   label: `Filter Status`
  },
@@ -263,6 +269,9 @@ const en = {
  },
  invite_user: {
   label: `Invite a User`
+ },
+ invite_sent: {
+  label: `Invite Sent`
  },
  inactive: {
   label: `Inactive`
@@ -448,6 +457,9 @@ const en = {
    label: `Quick Specs`
   }
  },
+ no: {
+  label: `No`
+ },
  no_found: {
   label: `No {{value}} Found`
  },
@@ -573,6 +585,9 @@ const en = {
  select_filter: {
   label: `Select Filter`
  },
+ send_invite: {
+  label: `Send Invite`
+ },
  send_invitation: {
   label: `Send Invitation`
  },
@@ -692,27 +707,9 @@ const en = {
  x_tenda: {
   label: `X-TENDA™`
  },
- details: `details`,
- checkout: `checkout`,
- calendar: `calendar`,
- analytics: `analytics`,
- ecommerce: `e-commerce`,
- management: `management`,
- menu_level: `menu level`,
- menu_level_2a: `menu level 2a`,
- menu_level_2b: `menu level 2b`,
- menu_level_3a: `menu level 3a`,
- menu_level_3b: `menu level 3b`,
- menu_level_4a: `menu level 4a`,
- menu_level_4b: `menu level 4b`,
- item_disabled: `item disabled`,
- item_label: `item label`,
- item_caption: `item caption`,
- item_external_link: `item external link`,
- other_cases: `other cases`,
- item_by_roles: `item by roles`,
- only_admin_can_see_this_item: `Only admin can see this item`,
- app_customer_tagline: `Portal for convenient and efficient management of machines, their updates and support.`
+ yes: {
+  label: `Yes`
+ }
 }
 
 export default en
