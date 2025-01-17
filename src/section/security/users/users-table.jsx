@@ -60,7 +60,7 @@ const UsersTable = ({ columns, onViewRow, row, index, selected, handleNameOnClic
          <ChipsGrid isRole chips={restOfRow?.roles} chipKey={'name'} />
         ) : column.id === 'isActive' ? (
          <StyledIconListItemText inActive={restOfRow?.isActive}>
-          <m.div>{restOfRow?.isActive ? <Icon icon={ICON_NAME.ACTIVE} color={activeColor} /> : <Icon icon={ICON_NAME.INACTIVE} color={inactiveColor} />}</m.div>
+          <m.div>{restOfRow?.isActive ? <Icon icon={ICON_NAME.ACTIVE} color={activeColor} sx={{height: 15, width: 15}}/> : <Icon icon={ICON_NAME.INACTIVE} color={inactiveColor} sx={{height: 15, width: 15}} />}</m.div>
          </StyledIconListItemText>
         ) : (
          cellValue
