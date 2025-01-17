@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { t } from 'i18next'
 import Carousel from 'react-material-ui-carousel'
 import { ICON_NAME } from 'hook'
 import { Box, Card } from '@mui/material'
@@ -45,13 +46,26 @@ const SiteCarousel = ({ sites, theme, themeMode, isMain }) => {
            gap: 1
           }}>
           {site.isActive ? (
-           <IconTooltip title={LABEL.ACTIVE} icon={ICON_NAME.ACTIVE} color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main} isActiveIcon iconOnly />
+           <IconTooltip
+            title={t('active.label')}
+            icon={ICON_NAME.ACTIVE}
+            color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+            tooltipColor={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
+            iconOnly
+           />
           ) : (
-           <IconTooltip title={LABEL.INACTIVE} icon={ICON_NAME.INACTIVE} color={theme.palette.error.main} />
+           <IconTooltip title={t('inactive.label')} icon={ICON_NAME.INACTIVE} color={theme.palette.error.main} />
           )}
 
           {isMain(site) && (
-           <IconTooltip title={LABEL.MAIN_SITE} icon={ICON_NAME.MAIN_SITE} color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange} dimension={20} iconOnly />
+           <IconTooltip
+            title={t('address.main_site.label')}
+            icon={ICON_NAME.MAIN_SITE}
+            color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}
+            tooltipColor={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange}
+            dimension={20}
+            iconOnly
+           />
           )}
          </Box>
 
