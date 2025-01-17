@@ -341,7 +341,7 @@ export function addAndInviteSecurityUser(param) {
     roles: param.roles.map(role => role?._id),
     dataAccessibilityLevel: 'RESTRICTED',
     // machines: param.machines?.map(machines => machines?._id),
-    isInvite: true,
+    isInvite: param.isInvite,
     isActive: true,
     currentEmployee: false,
     multiFactorAuthentication: param.multiFactorAuthentication
