@@ -25,9 +25,9 @@ import { UserInviteSchema } from 'schema'
 import { useUserInviteDefaultValues } from 'section/auth'
 import { Grid, Box, Checkbox, Typography } from '@mui/material'
 import { RHFRequiredTextFieldWrapper, UserInviteSuccessDialog } from 'component'
-import FormProvider, { RHFTextField, RHFAutocomplete, RHFPhoneInput } from 'component/hook-form'
+import FormProvider, { RHFTextField, RHFAutocomplete, RHFPhoneInput, RHFCheckbox } from 'component/hook-form'
 import { GStyledLoadingButton, GStyledSpanBox, GStyledFieldChip } from 'theme/style'
-import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, TYPOGRAPHY, FLEX_DIR } from 'constant'
+import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, TYPOGRAPHY, FLEX_DIR, FLEX } from 'constant'
 import { delay, getCountryCode, roleCoverUp } from 'util'
 
 const FORM_EL = {
@@ -35,7 +35,8 @@ const FORM_EL = {
  name: 'name',
  phone: 'phone',
  email: 'email',
- roles: 'roles'
+ roles: 'roles',
+ isInvite: 'isInvite'
 }
 
 /**
@@ -46,7 +47,13 @@ function UserInviteForm() {
  const [isFormComplete, setIsFormComplete] = useState(false)
  const [isSuccessState, setIsSuccessState] = useState(false)
  const [isConfirming, setIsConfirming] = useState(false)
- const { customer, activeContacts, securityUserTotalCount, customerRoles, userInviteDialog } = useSelector(
+ const {
+  customer,
+  activeContacts,
+  securityUserTotalCount,
+  customerRoles,
+  userInviteDialog
+ } = useSelector(
   state => ({
    customer: state.customer.customer,
    activeContacts: state.contact.activeContacts,
@@ -100,7 +107,7 @@ function UserInviteForm() {
   return () => debounceFetch.cancel()
  }, [user.customer, customerRoles, dispatch])
 
- const defaultValues = useUserInviteDefaultValues(customer)
+ const defaultValues = useUserInviteDefaultValues(customer, activeContacts)
  const methods = useForm({
   resolver: yupResolver(UserInviteSchema),
   defaultValues,
@@ -109,17 +116,28 @@ function UserInviteForm() {
 
  const {
   reset,
+  setValue,
   setError,
   watch,
   handleSubmit,
   formState: { errors, isSubmitting, isSubmitSuccessful }
  } = methods
 
- const { email, contact, name, roles, phone } = watch()
+ const { email, contact, name, roles, phone, isInvite } = watch()
 
  const checkFormCompletion = useCallback(() => {
   setIsFormComplete(!!name && !!REGEX.EMAIL.test(email) && !!contact && roles.length > 0)
  }, [name, email, contact, roles])
+
+ useEffect(() => {
+  if (contact) {
+   const selectedContact = activeContacts.find(activeContact => activeContact?._id === contact?._id)
+   if (selectedContact) {
+    setValue(FORM_EL.name, `${selectedContact.firstName} ${selectedContact.lastName}`)
+    if (selectedContact.email) setValue(FORM_EL.email, selectedContact.email)
+   }
+  }
+ }, [contact, activeContacts, setValue, name])
 
  useEffect(() => {
   if (!isSuccessState) {
@@ -127,9 +145,10 @@ function UserInviteForm() {
   }
  }, [checkFormCompletion])
 
+
  const handleConfirmation = async () => {
   setIsConfirming(true)
-  await Promise.all([dispatch(setUserInviteConfirmDetails({ customer, name, email, phone, roles })), dispatch(setUserInviteDialog(true))])
+  await Promise.all([dispatch(setUserInviteConfirmDetails({ customer, name, email, phone, roles, isInvite })), dispatch(setUserInviteDialog(true))])
  }
 
  useEffect(() => {
@@ -174,6 +193,7 @@ function UserInviteForm() {
     ...data,
     customer
    }
+   console.log('Data:', Data)
    const response = await dispatch(addAndInviteSecurityUser(Data))
    await delay(2000)
    if (REGEX.SUCCESS_CODE.test(response.status)) {
@@ -227,9 +247,11 @@ function UserInviteForm() {
       <RHFRequiredTextFieldWrapper condition={!name}>
        <RHFTextField
         name={FORM_EL.name}
+        type={KEY.TEXT}
         label={t('full_name.label')}
-        autoComplete={KEY.NAME}
-        aria-label={KEY.NAME}
+        autoComplete={FORM_EL.name}
+        aria-label={FORM_EL.name}
+        error={!!errors.name}
         helperText={errors.contactPersonName ? errors.contactPersonName.message : ''}
         required
        />
@@ -267,7 +289,7 @@ function UserInviteForm() {
        multiple
        disableCloseOnSelect
        filterSelectedOptions
-       name='roles'
+       name={FORM_EL.roles}
        label={t('role.roles.label')}
        options={customerRoles}
        getOptionLabel={option => roleCoverUp(option)}
@@ -285,10 +307,15 @@ function UserInviteForm() {
        renderTags={(value, getTagProps) =>
         value.map((option, index) => {
          const { key, ...tagProps } = getTagProps({ index })
-         return <GStyledFieldChip key={option?._id} label={roleCoverUp(option)} mode={themeMode} {...tagProps} />
+         return <GStyledFieldChip key={option?._id} label={<Typography variant={TYPOGRAPHY.BODY2}>{roleCoverUp(option)}</Typography>} mode={themeMode} {...tagProps} />
         })
        }
       />
+     </Grid>
+    </Grid>
+    <Grid container direction={{ xs: FLEX_DIR.COLUMN, md: FLEX_DIR.ROW }} justifyContent={FLEX.FLEX_END} sx={{my:5}}>
+     <Grid item xs={12} sm={4} md={2} display={FLEX.FLEX} justifyContent={FLEX.FLEX_END}>
+      <RHFCheckbox name={FORM_EL.isInvite} label={t('enable_portal_access.label')} error={!!errors.isInvite} helperText={errors.isInvite ? errors.isInvite.message : ''} />
      </Grid>
     </Grid>
     <Grid container direction={{ xs: 'column', md: 'row' }} justifyContent={KEY.CENTER}>
@@ -299,7 +326,6 @@ function UserInviteForm() {
        size={SIZE.LARGE}
        type={'button'}
        variant={KEY.CONTAINED}
-       //    isLoading={isConfirming}
        loading={isConfirming}
        mode={themeMode}
        onClick={handleConfirmation}
