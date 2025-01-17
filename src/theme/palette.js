@@ -184,6 +184,8 @@ export default function palette(themeMode) {
    no: GREY[800]
   },
   background: BACKGROUND,
+// HPS-1672
+//   howick: HOWICK,
   action: {
    ...COMMON.action,
    // hover: GREY[200],
