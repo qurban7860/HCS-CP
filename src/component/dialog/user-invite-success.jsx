@@ -10,6 +10,7 @@ import { useMediaQuery, Grid, Dialog, DialogContent, DialogTitle, DialogActions,
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledCloseButton, GStyledLoadingButton, GBackdropPropsOption } from 'theme/style'
 import { PATH_AFTER_LOGIN } from 'config/global'
+import { TEXT_SIZE } from 'config/layout'
 import { TYPOGRAPHY, FLEX, KEY, FLEX_DIR } from 'constant'
 import { roleCoverUp } from 'util'
 
@@ -60,7 +61,7 @@ const UserInviteSuccessDialog = ({ action, onConfirm, setIsConfirming, isSubmitS
        </Avatar>
       </Grid>
      ) : (
-      <Typography variant={isDesktop ? TYPOGRAPHY.H4 : TYPOGRAPHY.H5}>{t('confirm_user_details.label').toUpperCase()} &nbsp;</Typography>
+      <Typography variant={TEXT_SIZE.DIALOG_TITLE_VARIANT}>{t('confirm_user_details.label').toUpperCase()} &nbsp;</Typography>
      )}
     </Grid>
    </DialogTitle>
@@ -112,7 +113,7 @@ const UserInviteSuccessDialog = ({ action, onConfirm, setIsConfirming, isSubmitS
          </Grid>
         )}
 
-        <Grid item xs={12}>
+        <Grid item xs={12} md={6}>
          <Typography color='text.secondary' variant={TYPOGRAPHY.OVERLINE0}>
           {userInviteConfirmDetails?.roles?.length > 1 ? t('role.roles.label') : t('role.label')}
          </Typography>
@@ -123,6 +124,16 @@ const UserInviteSuccessDialog = ({ action, onConfirm, setIsConfirming, isSubmitS
           ))}
          </Stack>
         </Grid>
+
+        <Grid item xs={12} md={6}>
+         <Typography color='text.secondary' variant={TYPOGRAPHY.OVERLINE0}>
+          {t('enable_portal_access.label')}
+         </Typography>
+         <Typography variant={TYPOGRAPHY.BODY1} sx={{ mb: 2 }}>
+          &nbsp;{userInviteConfirmDetails?.isInvite ? t('yes.label') : t('no.label')}
+         </Typography>
+        </Grid>
+
        </Grid>
       </Grid>
      </Grid>
