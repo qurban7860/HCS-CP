@@ -1,4 +1,4 @@
-import { Fragment, memo, useState, useRef } from 'react'
+import { Fragment, memo, useState } from 'react'
 import { t } from 'i18next'
 import { dispatch, useSelector } from 'store'
 import { useAuthContext } from 'auth/use-auth-context'
@@ -8,7 +8,8 @@ import { ICON_NAME } from 'hook'
 import { useUserDefaultValues } from 'section'
 import { useTheme, Dialog, DialogContent, DialogTitle, DialogActions, Divider, Grid, Typography, FormControlLabel, Box } from '@mui/material'
 import { GridViewField, DefaultPopper, AuditBox, CustomAvatar, ConfirmDialog, IconTooltip, TitleTextIcon } from 'component'
-import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption, GStyledNoPaddingChip, GStyledDefLoadingButton, GStyledSwitch } from 'theme/style'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption, GStyledNoPaddingChip, GStyledIconLoadingButton, GStyledSwitch } from 'theme/style'
+import { ICON } from 'config/layout'
 import { KEY, FLEX, SZ, TYPOGRAPHY, SIZE } from 'constant'
 import { toTitleCase } from 'util'
 import { delay } from 'util'
@@ -17,14 +18,12 @@ const UserDialog = () => {
  const [openArchiveModal, setOpenArchiveModal] = useState(false)
  const [openUpdateStatusModal, setOpenUpdateStatusModal] = useState(false)
  const [openSendInvitePopper, setOpenSendInvitePopper] = useState(false)
- const [inviteSent, setInviteSent] = useState(false)
  const [openAnchorEl, setOpenAnchorEl] = useState(null)
  const { securityUser, isLoading, userDialog } = useSelector(state => state.user)
  const { customer } = useSelector(state => state.customer)
  const { userId } = useAuthContext()
  const { themeMode } = useSettingContext()
  const { isDesktop } = useUIMorph()
- const navRef = useRef(null)
  const theme = useTheme()
  const defaultValues = useUserDefaultValues(securityUser, customer)
 
@@ -45,16 +44,10 @@ const UserDialog = () => {
 
  const handleSendUserInvite = async () => {
   await dispatch(sendUserInvite(securityUser._id))
-  setInviteSent(true)
-  snack(t('invite_sent.label'), KEY.SUCCESS)
+  snack(t('invite_sent.label'), 'success')
   delay(2000).then(() => {
     setOpenSendInvitePopper(false)
   })
- }
-
- const handleClick = event => {
-  setOpenSendInvitePopper(true)
-  setOpenAnchorEl(event.currentTarget)
  }
 
  return (
@@ -94,7 +87,6 @@ const UserDialog = () => {
            <Typography variant={TYPOGRAPHY.OVERLINE2}>{t('online.label')}</Typography>
           </GStyledSpanBox>
          }
-         icon={ICON_NAME.ONLINE}
          variant={KEY.CONTAINED}
          bgColor={themeMode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[700]}
          size={SIZE.SMALL}
@@ -156,19 +148,25 @@ const UserDialog = () => {
 
      <GStyledSpanBox gap={1}>
       {!isAdmin && !isSelf && (
-       <GStyledDefLoadingButton
+       <GStyledIconLoadingButton
         isLoading={isLoading}
         type={'button'}
         mode={themeMode}
         textColor={theme.palette.error.contrastText}
         bgColor={theme.palette.error.dark}
         onClick={() => setOpenArchiveModal(true)}>
-        {t('delete.label').toUpperCase()}
-       </GStyledDefLoadingButton>
+        <Icon icon={ICON_NAME.TRASH} sx={{...ICON.SIZE_XS }}/>&nbsp;{t('delete.label').toUpperCase()}
+       </GStyledIconLoadingButton>
       )}
-      <GStyledDefLoadingButton textColor={theme.palette.common.white} bgColor={theme.palette.howick.darkBlue} onClick={handleClick} gap={2}>
-       {t('send_invite.label').toUpperCase()}
-      </GStyledDefLoadingButton>
+      <DefaultPopper
+        openPopper={openSendInvitePopper}
+        openAnchorEl={openAnchorEl}
+        isLoading={isLoading}
+        content={`Send an Howick Portal invitation to ${toTitleCase(defaultValues?.name)}?`}
+        i18ConfirmButtonLabel={'yes.label'}
+        i18CancelButtonLabel={'no.label'}
+        onConfirmClick={handleSendUserInvite}
+        />
       <GStyledCloseButton onClick={handleDialog} gap={2}>
        {t('close.label').toUpperCase()}
       </GStyledCloseButton>
@@ -176,20 +174,6 @@ const UserDialog = () => {
     </DialogActions>
    </Dialog>
 
-   {openSendInvitePopper && (
-    <DefaultPopper
-     openPopper={openSendInvitePopper}
-     openAnchorEl={openAnchorEl}
-     isLoading={isLoading}
-     content={!inviteSent ? `Send an invite to ${toTitleCase(defaultValues?.name)}?` : `Invite sent to ${toTitleCase(defaultValues?.name)}`}
-     i18ConfirmButtonLabel={'yes.label'}
-     i18CancelButtonLabel={'no.label'}
-     onConfirmClick={handleSendUserInvite}
-     onCancelClick={() => setOpenSendInvitePopper(false)}
-     disableCancel={inviteSent}
-     disableConfirm={inviteSent}
-    />
-   )}
    {openArchiveModal && (
     <ConfirmDialog
      open={openArchiveModal}
