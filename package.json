@@ -37,6 +37,7 @@
     "i18next-browser-languagedetector": "^7.2.0",
     "lodash.debounce": "^4.0.8",
     "mapbox-gl": "^3.1.2",
+    "material-ui-popup-state": "^5.3.3",
     "mui-chips-input": "^2.1.4",
     "mui-tel-input": "^5.1.2",
     "notistack": "^3.0.1",
