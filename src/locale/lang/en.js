@@ -271,7 +271,7 @@ const en = {
   label: `Invite a User`
  },
  invite_sent: {
-  label: `Invite Sent`
+  label: `Howick Portal invitation Sent`
  },
  inactive: {
   label: `Inactive`
