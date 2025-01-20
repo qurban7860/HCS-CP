@@ -14,6 +14,7 @@ import { GridViewField, GridViewTitle, IconTooltip, Button, AuditBox } from 'com
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption } from 'theme/style'
 import { VIEW_FORM, TITLE, TYPOGRAPHY, FLEX, LABEL, KEY, FLEX_DIR, BUTTON } from 'constant'
+import { delay } from 'util'
 
 const ContactDialog = ({ contact }) => {
  const { isLoading, contactDialog } = useSelector(state => state.contact)
@@ -35,9 +36,11 @@ const ContactDialog = ({ contact }) => {
   dispatch(setContactDialog(false))
   dispatch(resetSelectedContactCard())
   navigate(PATH_CUSTOMER.customers.contacts.view(customerId))
-  dispatch(setFromDialog(true))
-  dispatch(setSelectedContactCard(defaultValues?.id))
-  dispatch(getContact(customerId, defaultValues?.id))
+  delay(200).then(() => {
+      dispatch(setFromDialog(true))
+      dispatch(setSelectedContactCard(defaultValues?.id))
+      dispatch(getContact(customerId, defaultValues?.id))
+  })
  }
 
  return (
