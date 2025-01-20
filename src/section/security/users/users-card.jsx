@@ -26,7 +26,7 @@ const UsersCard = ({ selectedCardId, handleSelected, handleUserCard, user }) => 
            BadgeProps={{
             badgeContent: <BadgeStatus status={user?.isOnline ? 'online' : 'offline'} />
            }}
-           typography={TYPOGRAPHY.H6}
+           typography={!isDesktop ? TYPOGRAPHY.OVERLINE_MINI : TYPOGRAPHY.H6}
            alt={'display name'}
            name={user?.name}
           />

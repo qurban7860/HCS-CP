@@ -386,7 +386,9 @@ export const GStyledLoadingButton = styled(({ theme, isLoading, mode, ...other }
  '&:hover': {
   backgroundColor: mode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.darkBlue,
   color: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.white
- }
+ },
+ paddingTop: theme.spacing(1),
+ paddingBottom: theme.spacing(1)
 }))
 
 export const GStyledDefLoadingButton = styled(({ theme, isLoading, textColor, bgColor, mode, ...other }) => <LoadingButton {...other} />)(({ theme, textColor, bgColor, mode, isLoading }) => ({
@@ -397,8 +399,21 @@ export const GStyledDefLoadingButton = styled(({ theme, isLoading, textColor, bg
  },
  '&:hover': {
   backgroundColor: alpha(bgColor, 0.8)
- }
+ },
+ paddingTop: theme.spacing(1),
+ paddingBottom: theme.spacing(1)
 }))
+
+export const GStyledIconLoadingButton = styled(({ theme, isLoading, textColor, bgColor, mode, ...other }) => <LoadingButton {...other} />)(({ theme, textColor, bgColor, mode, isLoading }) => ({
+  backgroundColor: bgColor,
+  color: textColor,
+  '&:disabled': {
+   backgroundColor: alpha(bgColor, 0.5)
+  },
+  '&:hover': {
+   backgroundColor: alpha(bgColor, 0.8)
+  }
+ }))
 
 export const GStyledBackButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700],
@@ -415,9 +430,9 @@ export const GStyledCloseButton = styled(({ theme, isLoading, mode, ...other }) 
  '&:hover': {
   backgroundColor: theme.palette.orange.darker,
   color: theme.palette.common.white
- }
- //  paddingTop: theme.spacing(1.5),
- //  paddingBottom: theme.spacing(1.5)
+ },
+  paddingTop: theme.spacing(1),
+  paddingBottom: theme.spacing(1)
 }))
 
 export const GStyledLoadingScreenDiv = styled('div')(({ theme }) => ({

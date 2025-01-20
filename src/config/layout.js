@@ -6,6 +6,10 @@ import { TYPOGRAPHY } from "constant"
  * Dimensions are in pixels
  *
  */
+export const DELAY = {
+    DIALOG: 200,
+    SNACKBAR: 500
+}
 export const HEADER = {
  H_MOBILE: 64,
  H_MAIN_DESKTOP: 88,
@@ -75,6 +79,10 @@ export const ICON = {
  NAV_ITEM_HORIZONTAL: 22,
  NAV_ITEM_MINI: 22,
  DEFAULT_SIZE: 30,
+ SIZE_XS: {
+    width: 15,
+    height: 15
+ },
  TOOLTIP: 24
 }
 
