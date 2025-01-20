@@ -1,76 +1,65 @@
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
-import { useSettingContext } from 'hook'
-import { useTheme, Fade, Paper, Typography, Popper, Box } from '@mui/material'
-import { GStyledDefLoadingButton } from 'theme/style'
+import { Icon, ICON_NAME, useSettingContext } from 'hook'
+import PopupState, { bindToggle, bindPopper } from 'material-ui-popup-state'
+import { useTheme, Fade, Card, Typography, Popper, Box } from '@mui/material'
+import { GStyledDefLoadingButton, GStyledIconLoadingButton, GStyledTopBorderDivider } from 'theme/style'
+import { delay } from 'util'
+import { FLEX, KEY } from 'constant'
 
 const DefaultPopper = ({ content, openPopper, openAnchorEl, isLoading, onConfirmClick, i18ConfirmButtonLabel, onCancelClick, i18CancelButtonLabel, disableConfirm, disableCancel }) => {
  const { themeMode } = useSettingContext()
  const theme = useTheme()
+
  return (
-  <Popper
-   id={'popper'}
-   open={openPopper}
-   anchorEl={openAnchorEl}
-   placement='bottom'
-   disablePortal={false}
-   transition
-   modifiers={[
-    {
-     name: 'flip',
-     enabled: true,
-     options: {
-      altBoundary: true,
-      rootBoundary: 'document',
-      padding: 8
-     }
-    },
-    {
-     name: 'preventOverflow',
-     enabled: true,
-     options: {
-      boundary: 'window'
-     }
-    },
-    {
-     name: 'arrow',
-     enabled: true,
-     options: {
-      element: '[data-popper-arrow]'
-     }
-    }
-   ]}
-   sx={{ zIndex: theme.zIndex.modal + 12 }}>
-   <Fade in={openPopper} timeout={350}>
-    <Paper>
-     <Typography sx={{ p: 2 }}>{content}</Typography>
-     <Box gap={2}>
-      <GStyledDefLoadingButton
-       isLoading={isLoading}
-       type={'button'}
-       mode={themeMode}
-       textColor={theme.palette.common.white}
-       bgColor={theme.palette.howick.darkBlue}
-       onClick={onConfirmClick}
-       disabled={isLoading || disableConfirm}>
-       {t(i18ConfirmButtonLabel).toUpperCase()}
-      </GStyledDefLoadingButton>
-      <span>
-       <GStyledDefLoadingButton
-        isLoading={isLoading}
-        type={'button'}
-        mode={themeMode}
-        textColor={theme.palette.error.contrastText}
-        bgColor={theme.palette.error.dark}
-        onClick={onCancelClick}
-        disabled={isLoading || disableCancel}>
-        {t(i18CancelButtonLabel).toUpperCase()}
-       </GStyledDefLoadingButton>
-      </span>
-     </Box>
-    </Paper>
-   </Fade>
-  </Popper>
+  <PopupState variant='popper' popupId='demo-popup-popper'>
+   {popupState => (
+    <div>
+    <GStyledIconLoadingButton textColor={theme.palette.common.white} bgColor={theme.palette.grey[500]} {...bindToggle(popupState)} gap={2}>
+        <Icon icon={ICON_NAME.MAIL_USER} sx={{ width: 15, height: 15, p: 0 }}/> &nbsp; {t('send_invite.label').toUpperCase()}
+    </GStyledIconLoadingButton>
+     <Popper {...bindPopper(popupState)} transition sx={{ zIndex: theme.zIndex.modal + 12 }} placement='bottom-end'>
+      {({ TransitionProps }) => (
+       <Fade  {...TransitionProps} timeout={350}>
+        <Card sx={{ paddingBottom: 2 }}  >
+        <GStyledTopBorderDivider mode={themeMode} />
+         <Typography sx={{ p: 2 }}>{content}</Typography>
+         <Box display={FLEX.FLEX} justifyContent={KEY.CENTER} gap={2}>
+          <GStyledDefLoadingButton
+           isLoading={isLoading}
+           type={'button'}
+           mode={themeMode}
+           textColor={theme.palette.common.white}
+           bgColor={theme.palette.howick.midBlue}
+           onClick={() => {
+            onConfirmClick()
+            delay(500).then(() => {
+                    popupState.close()
+                })
+            }}
+           disabled={isLoading}>
+           {t(i18ConfirmButtonLabel).toUpperCase()}
+          </GStyledDefLoadingButton>
+          <span>
+           <GStyledDefLoadingButton
+            isLoading={isLoading}
+            type={'button'}
+            mode={themeMode}
+            textColor={theme.palette.error.contrastText}
+            bgColor={theme.palette.error.dark}
+            onClick={() => popupState.close()}
+            disabled={isLoading}>
+            {t(i18CancelButtonLabel).toUpperCase()}
+           </GStyledDefLoadingButton>
+          </span>
+         </Box>
+        </Card>
+       </Fade>
+      )}
+     </Popper>
+    </div>
+   )}
+  </PopupState>
  )
 }
 
