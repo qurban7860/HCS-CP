@@ -11,7 +11,7 @@ const ChipsGrid = ({ chips, chipKey, isRole }) => {
  const theme = useTheme()
 
  return chips && typeof chips === 'object' && chips.length > 0 ? (
-  <GStyledNoPaddingFieldGrid container mode={themeMode}>
+  <GStyledNoPaddingFieldGrid container mode={themeMode} gap={1}>
    {chips?.map((chip, index) => (
     <GStyledNoPaddingFieldChip
      key={index}
