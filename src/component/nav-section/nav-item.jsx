@@ -1,11 +1,10 @@
 import { Fragment, forwardRef } from 'react'
 import PropTypes from 'prop-types'
 import { Link as RouterLink } from 'react-router-dom'
-import { Icon, useSettingContext, useResponsive } from 'hook'
+import { Icon, ICON_NAME, useSettingContext, useResponsive } from 'hook'
 import { Box, ListItemText, Link } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useLocale } from 'locale'
-import { Iconify } from 'component/iconify'
 import { GStyledTooltip } from 'theme/style'
 import { StyledItem, StyledIcon } from './style'
 import { KEY, TYPOGRAPHY } from 'constant'
@@ -64,7 +63,7 @@ const NavItem = forwardRef(({ item, depth, open, active, isExternalLink, onListI
     </GStyledTooltip>
    )} */}
 
-   {!!children && <Iconify icon={subItem ? 'eva:chevron-right-fill' : 'eva:chevron-down-fill'} width={16} sx={{ ml: 0.5, flexShrink: 0 }} />}
+   {!!children && <Icon icon={subItem ? ICON_NAME.CHEVRON_RIGHT : ICON_NAME.CHEVRON_DOWN } width={16} sx={{ ml: 0.5, flexShrink: 0 }} />}
   </StyledItem>
  )
 
