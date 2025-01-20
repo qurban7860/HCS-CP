@@ -7,14 +7,17 @@ import { useAuthContext, useWebSocketContext } from 'auth'
 import { useSelector, dispatch } from 'store'
 import { useNavigate } from 'react-router-dom'
 import { useTable, useFilter, getComparator, useSettingContext, useResponsive } from 'hook'
-import { PATH_MACHINE, PATH_SECURITY } from 'route/path'
+import { PATH_MACHINE, PATH_SECURITY, PATH_CUSTOMER } from 'route/path'
 import {
  getSecurityUser,
  getSecurityUsers,
  getOnlineUsers,
+ getContact,
+ setFromDialog,
  setUserDialog,
  setUserFilterBy,
  setSelectedUserCard,
+ setSelectedContactCard,
  ChangeUserPage,
  ChangeUserRowsPerPage,
  resetSecurityUser,
@@ -25,6 +28,7 @@ import { Table, Grid, Typography, TableContainer } from '@mui/material'
 import { GStyledTableHeaderBox } from 'theme/style'
 import { TableNoData, SkeletonTable, SearchBox, TableTitleBox, UserDialog } from 'component'
 import { UsersTable, UsersHeader, UsersListPagination, UsersCard, HEADER_ITEMS } from 'section/security'
+import { delay } from 'util'
 import { MARGIN, TABLE } from 'config'
 import { KEY, FLEX_DIR, TYPOGRAPHY } from 'constant'
 
@@ -122,7 +126,9 @@ const UsersListSection = ({ isArchived }) => {
  const handleUserDialog = (event, userId) => {
   event.preventDefault()
   dispatch(getSecurityUser(userId))
-  dispatch(setUserDialog(true))
+  delay(200).then(() => {
+    dispatch(setUserDialog(true))
+  })
  }
 
  const handleMachineInNewTabCard = (event, id) => {
@@ -132,6 +138,16 @@ const UsersListSection = ({ isArchived }) => {
   dispatch(getSecurityUser(id))
   const url = PATH_MACHINE.machines.view(id)
   window.open(url, KEY.BLANK)
+ }
+
+ const handleNavigateToContact = (contactId) => {
+  dispatch(resetSelectedContactCard())
+  navigate(PATH_CUSTOMER.customers.contacts.view(user.customer))
+  delay(200).then(() => {
+      dispatch(setFromDialog(true))
+      dispatch(setSelectedContactCard(contactId))
+      dispatch(getContact(user.customer, contactId))
+  })
  }
 
  const isNotFound = !isLoading && !filteredData.length
@@ -220,6 +236,7 @@ const UsersListSection = ({ isArchived }) => {
               columns={HEADER_ITEMS}
               onViewRow={() => {}}
               handleNameOnClick={handleUserDialog}
+              handleNavigateToContact={handleNavigateToContact}
               mode={themeMode}
               index={index}
               isArchived={isArchived}
