@@ -13,6 +13,7 @@ import {
  getSecurityUsers,
  getOnlineUsers,
  getContact,
+ getContacts,
  setFromDialog,
  setUserDialog,
  setUserFilterBy,
@@ -33,14 +34,15 @@ import { MARGIN, TABLE } from 'config'
 import { KEY, FLEX_DIR, TYPOGRAPHY } from 'constant'
 
 const UsersListSection = ({ isArchived }) => {
- const [tableData, setTableData] = useState([])
- const { onlineUsers } = useWebSocketContext()
+ const [tableData, setTableData]                                                                        = useState([])
  const { securityUser, securityUsers, selectedUserCard, initial, isLoading, userPage, userRowsPerPage } = useSelector(state => state.user)
- const { user, userId } = useAuthContext()
- const { themeMode } = useSettingContext()
+ const { contacts }                                                                                     = useSelector(state => state.contact)
+ const { onlineUsers }                                                                                  = useWebSocketContext()
+ const { user, userId }                                                                                 = useAuthContext()
+ const { themeMode }                                                                                    = useSettingContext()
 
- const isMobile = useResponsive('down', 'sm')
- const navigate = useNavigate()
+ const isMobile    = useResponsive('down', 'sm')
+ const navigate    = useNavigate()
  const denseHeight = TABLE.DENSE_HEIGHT
 
  const {
@@ -70,6 +72,16 @@ const UsersListSection = ({ isArchived }) => {
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
+   if (!contacts.length) {
+    dispatch(getContacts(user.customer))
+   }
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [contacts, dispatch])
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
    if (user.customer) {
     dispatch(getSecurityUsers(user.customer))
    }
@@ -80,6 +92,8 @@ const UsersListSection = ({ isArchived }) => {
 
  useEffect(() => {
   if (initial) {
+   // FIX_THIS: filter the data and only show where the invitationStatus is not
+  //  const SecurityUsers = securityUsers.filter(user => user.invitationStatus != true)
    setTableData(securityUsers || [])
   }
  }, [securityUsers, initial])
@@ -127,7 +141,7 @@ const UsersListSection = ({ isArchived }) => {
   event.preventDefault()
   dispatch(getSecurityUser(userId))
   delay(200).then(() => {
-    dispatch(setUserDialog(true))
+   dispatch(setUserDialog(true))
   })
  }
 
@@ -140,13 +154,13 @@ const UsersListSection = ({ isArchived }) => {
   window.open(url, KEY.BLANK)
  }
 
- const handleNavigateToContact = (contactId) => {
+ const handleNavigateToContact = contactId => {
   dispatch(resetSelectedContactCard())
   navigate(PATH_CUSTOMER.customers.contacts.view(user.customer))
   delay(200).then(() => {
-      dispatch(setFromDialog(true))
-      dispatch(setSelectedContactCard(contactId))
-      dispatch(getContact(user.customer, contactId))
+   dispatch(setFromDialog(true))
+   dispatch(setSelectedContactCard(contactId))
+   dispatch(getContact(user.customer, contactId))
   })
  }
 
@@ -246,7 +260,7 @@ const UsersListSection = ({ isArchived }) => {
              !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />
             )
            )}
-         <TableNoData isNotFound={isNotFound} />
+          <TableNoData isNotFound={isNotFound} />
          </Table>
         </TableContainer>
        </Grid>
