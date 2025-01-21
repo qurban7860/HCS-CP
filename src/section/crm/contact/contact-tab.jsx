@@ -26,10 +26,7 @@ const { customerRoles }                                                         
  const { isDesktop, isMobile } = useUIMorph()
  const { id }                  = useParams()
  const { themeMode }           = useSettingContext()
- const { order, orderBy }      = useTable({
-                                            defaultOrderBy: KEY.CREATED_AT,
-                                            defaultOrder  : 'asc'
-                                          })
+ const { order, orderBy }      = useTable({ defaultOrderBy: KEY.CREATED_AT, defaultOrder  : 'asc' })
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
