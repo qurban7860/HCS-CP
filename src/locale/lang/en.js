@@ -401,6 +401,10 @@ const en = {
    last: 'Check your email (<1>{{email}}</1>) for the invitation link'
   }
  },
+ new_contact: {
+   label: `New Contact`,
+   helper_text: `If the contact is not listed, please add them as a contact first or just by ticking the box below.`
+ },
  new_password: {
   label: `New Password`
  },
