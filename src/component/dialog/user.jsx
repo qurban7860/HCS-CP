@@ -162,11 +162,11 @@ const UserDialog = () => {
         openPopper={openSendInvitePopper}
         openAnchorEl={openAnchorEl}
         isLoading={isLoading}
-        content={`Send an Howick Portal invitation to ${toTitleCase(defaultValues?.name)}?`}
+        content={t('send_portal_invite.label', { user: toTitleCase(defaultValues?.name) })}
         i18ConfirmButtonLabel={'yes.label'}
         i18CancelButtonLabel={'no.label'}
         onConfirmClick={handleSendUserInvite}
-        />
+      />
       <GStyledCloseButton onClick={handleDialog} gap={2}>
        {t('close.label').toUpperCase()}
       </GStyledCloseButton>
