@@ -1,6 +1,7 @@
 import { Fragment, memo } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
+import { useSelector } from 'store'
 import { ICON_NAME, Icon, useSettingContext } from 'hook'
 import { Box, Link, TableBody, TableCell, Typography } from '@mui/material'
 import { ChipsGrid, CustomAvatar, LinkWrap, BadgeStatus } from 'component'
@@ -11,6 +12,7 @@ import { KEY, TYPOGRAPHY, SIZE } from 'constant'
 import { StyledIconListItemText, StyledTableRow } from './style'
 
 const UsersTable = ({ columns, onViewRow, row, index, selected, handleNameOnClick, handleNavigateToContact }) => {
+ const { contacts } = useSelector(state => state.contact)
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  const lowercaseRow = {}
@@ -22,8 +24,10 @@ const UsersTable = ({ columns, onViewRow, row, index, selected, handleNameOnClic
   if (typeof key === 'string') lowercaseRow[key.toLocaleLowerCase()] = value
  })
 
- const contactFullName = `${restOfRow?.contact?.firstName}`
- const isUserContact = name?.toLowerCase().includes(restOfRow?.contact?.firstName?.toLowerCase()) || restOfRow?.contact?.email?.toLowerCase().includes(restOfRow?.email?.toLowerCase())
+
+ const isUserContact = contacts?.some(contact => contact?.email === restOfRow?.email)
+ const UserContact = isUserContact ? contacts?.find(contact => contact?.email === restOfRow?.email) : null
+ const contactName = isUserContact && UserContact?.firstName
 
  return (
   <Fragment>
@@ -75,7 +79,7 @@ const UsersTable = ({ columns, onViewRow, row, index, selected, handleNameOnClic
             <Link onClick={() => handleNavigateToContact(restOfRow?.contact?._id)}>
                 <GStyledFieldChip
                 mode={themeMode}
-                label={<Typography variant={TYPOGRAPHY.OVERLINE1}>{contactFullName}</Typography>}
+                label={<Typography variant={TYPOGRAPHY.OVERLINE1}>{contactName}</Typography>}
                 icon={<Icon icon={ICON_NAME.CONTACT_DEFAULT} color={theme.palette.common.white} sx={{ ...ICON.SIZE_XS }} />}
                 size={SIZE.SMALL}
                 />
