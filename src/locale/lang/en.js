@@ -251,6 +251,9 @@ const en = {
  graph_type: {
   label: `Graph Type`
  },
+ has_active_user_account: {
+    label: `Has an Active User Account`
+ },
  hmi_version: {
   label: `HMI Version`
  },
@@ -571,7 +574,8 @@ const en = {
   label: `Role`,
   roles: {
    label: `Roles`
-  }
+  },
+  placeholder: `Select Role/s`
  },
  row: {
   label: `Row`
@@ -590,6 +594,9 @@ const en = {
  },
  send_invitation: {
   label: `Send Invitation`
+ },
+ send_portal_invite: {
+    label: `Send an Howick Portal invitation to {{user}}?`
  },
  send_reset_password_request: {
   label: `Send Reset Password Request`
