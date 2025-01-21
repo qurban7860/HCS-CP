@@ -46,31 +46,25 @@ const FORM_EL = {
 function UserInviteForm() {
  const [isFormComplete, setIsFormComplete] = useState(false)
  const [isSuccessState, setIsSuccessState] = useState(false)
- const [isConfirming, setIsConfirming] = useState(false)
+ const [isConfirming, setIsConfirming]     = useState(false)
  const {
-  customer,
-  activeContacts,
-  securityUserTotalCount,
-  customerRoles,
-  userInviteDialog
- } = useSelector(
-  state => ({
-   customer: state.customer.customer,
-   activeContacts: state.contact.activeContacts,
-   securityUserTotalCount: state.user.securityUserTotalCount,
-   userInviteDialog: state.user.userInviteDialog,
-   customerRoles: state.role.customerRoles
-  }),
-  _.isEqual
- )
+        customer,
+        activeContacts,
+        securityUserTotalCount,
+        customerRoles,
+        userInviteDialog } = useSelector(state => ({
+                                                    customer              : state.customer.customer,
+                                                    activeContacts        : state.contact.activeContacts,
+                                                    securityUserTotalCount: state.user.securityUserTotalCount,
+                                                    userInviteDialog      : state.user.userInviteDialog,
+                                                    customerRoles         : state.role.customerRoles
+                                                    }), _.isEqual)
 
- const { user } = useAuthContext()
+ const { user }      = useAuthContext()
  const { themeMode } = useSettingContext()
-
- const regEx = new RegExp(REGEX.ERROR_CODE)
- const isMobile = useResponsive('down', 'sm')
-
- const countryCode = getCountryCode(customer?.mainSite?.address?.country) || KEY.DEFAULT_COUNTRY_CODE
+ const regEx         = new RegExp(REGEX.ERROR_CODE)
+ const isMobile      = useResponsive('down', 'sm')
+ const countryCode   = getCountryCode(customer?.mainSite?.address?.country) || KEY.DEFAULT_COUNTRY_CODE
 
  const fetchCustomer = useCallback(() => {
   if (user?.customer && !customer) {
@@ -193,7 +187,6 @@ function UserInviteForm() {
     ...data,
     customer
    }
-   console.log('Data:', Data)
    const response = await dispatch(addAndInviteSecurityUser(Data))
    await delay(2000)
    if (REGEX.SUCCESS_CODE.test(response.status)) {
