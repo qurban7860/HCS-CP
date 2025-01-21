@@ -25,7 +25,7 @@ export const fieldsContactConfig = [
  {
   key: 'loginEmail',
   heading: 'email.label',
-  value: defaultValues => defaultValues?.loginEmail,
+  value: defaultValues => defaultValues?.email,
   gridSize: 6
  },
  {
