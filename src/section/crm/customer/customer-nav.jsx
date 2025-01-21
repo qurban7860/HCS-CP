@@ -40,7 +40,7 @@ const CustomerNav = ({ renderedTab, navigatePage, value, isLoading }) => {
      icon={ICON_NAME.ACTIVE}
      color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
      tooltipColor={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
-     isActiveIcon
+     tooltipTextColor={themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black}
      iconOnly
      dimension={isMobile ? 15 : 20}
     />
