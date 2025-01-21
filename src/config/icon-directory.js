@@ -123,6 +123,7 @@ const ICON_WEB = {
  TIX_STATUS          : _getWebIcon('chevron-up'),
  UPDATE              : _getWebIcon('update'),
  USERS               : _getWebIcon('account-group'),
+ USER_ACTIVE         : _getWebIcon('account-check'),
  WARNING             : _getWebIcon('warning'),
  WWW                 : _getWebIcon('world-wide-web')
 }
