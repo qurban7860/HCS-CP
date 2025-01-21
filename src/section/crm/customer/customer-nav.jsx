@@ -13,26 +13,19 @@ import 'swiper/css'
 
 const CustomerNav = ({ renderedTab, navigatePage, value, isLoading }) => {
  const [menuAnchor, setMenuAnchor] = useState(null)
-
- const theme = useTheme()
- const { themeMode } = useSettingContext()
- const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
-
- const menuOpen = Boolean(menuAnchor)
- const menuId = menuOpen ? 'machine-menu' : undefined
- const toggleMenu = event => {
-  setMenuAnchor(menuAnchor ? null : event.currentTarget)
- }
+ const theme                       = useTheme()
+ const { themeMode }               = useSettingContext()
+ const isMobile                    = useMediaQuery(theme.breakpoints.down('sm'))
+ const menuOpen                    = Boolean(menuAnchor)
+ const menuId                      = menuOpen ? 'machine-menu' : undefined
+ const toggleMenu                  = event => { setMenuAnchor(menuAnchor ? null : event.currentTarget) }
 
  const renderStatusIcons = () => (
   <Grid
    container
    justifyContent={FLEX.FLEX_END}
    gap={isMobile ? 0.5 : 2}
-   sx={{
-    flexWrap: 'wrap',
-    alignItems: KEY.CENTER
-   }}>
+   sx={{ flexWrap  : 'wrap', alignItems: KEY.CENTER }}>
    <SvgFlagIcon country={value?.country} color={themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.bronze} dimension={isMobile ? 15 : 20} />
    {value?.isActive ? (
     <IconTooltip
@@ -101,10 +94,10 @@ const CustomerNav = ({ renderedTab, navigatePage, value, isLoading }) => {
 }
 
 CustomerNav.propTypes = {
- current: PropTypes.number,
- value: PropTypes.any,
- isLoading: PropTypes.bool,
- renderedTab: PropTypes.number,
+ current     : PropTypes.number,
+ value       : PropTypes.any,
+ isLoading   : PropTypes.bool,
+ renderedTab : PropTypes.number,
  navigatePage: PropTypes.func
 }
 
