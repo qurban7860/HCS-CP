@@ -8,13 +8,13 @@ import { setUserInviteDialog, setUserInviteContactDetails } from 'store/slice'
 import { PATH_SECURITY } from 'route/path'
 import { useMediaQuery, Grid, Dialog, DialogContent, DialogTitle, DialogActions, Divider, Typography, Avatar, Stack, Chip, Box, Autocomplete, TextField } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledCloseButton, GStyledLoadingButton, GBackdropPropsOption, GStyledFieldChip } from 'theme/style'
+import { GStyledTopBorderDivider, GStyledCloseButton, GStyledLoadingButton, GBackdropPropsOption, GStyledFieldChip, GStyledSpanBox } from 'theme/style'
 import { PATH_AFTER_LOGIN } from 'config/global'
 import { TEXT_SIZE } from 'config/layout'
 import { TYPOGRAPHY, FLEX, KEY, FLEX_DIR } from 'constant'
 import { roleCoverUp } from 'util'
 
-const UserInviteSuccessDialog = ({ action, onConfirm, setIsConfirming, isSubmitSuccessful, userData, enableRoleDropdown, title }) => {
+const UserInviteSuccessDialog = ({ action, onConfirm, setIsConfirming, isSubmitSuccessful, userData, enableRoleDropdown, title, addAsContact }) => {
  const { userInviteConfirmDetails, userInviteDialog } = useSelector(state => state.user)
  const { customerRoles } = useSelector(state => state.role)
  const { customer } = useSelector(state => state.customer)
@@ -62,7 +62,7 @@ const UserInviteSuccessDialog = ({ action, onConfirm, setIsConfirming, isSubmitS
        </Avatar>
       </Grid>
      ) : (
-      <Typography variant={TEXT_SIZE.DIALOG_TITLE_VARIANT}>{title.toUpperCase() || t('confirm_user_details.label').toUpperCase()} &nbsp;</Typography>
+      <Typography variant={TEXT_SIZE.DIALOG_TITLE_VARIANT}>{title?.toUpperCase() || t('confirm_user_details.label').toUpperCase()} &nbsp;</Typography>
      )}
     </Grid>
    </DialogTitle>
@@ -74,6 +74,18 @@ const UserInviteSuccessDialog = ({ action, onConfirm, setIsConfirming, isSubmitS
      </Grid>
     ) : (
      <Grid container spacing={2} flexDirection={FLEX_DIR.COLUMN}>
+      {addAsContact && (
+       <Grid item xs={12} sm={12}>
+        <Grid container>
+        <GStyledSpanBox>
+        <Icon icon={ICON_NAME.CONTACT_NEW} color={theme.palette.orange.dark} sx={{ width: 10, height: 10 }}/> &nbsp;
+         <Typography variant={TYPOGRAPHY.OVERLINE0} color={theme.palette.howick.orange}>
+          {t('new_contact.label')}
+         </Typography>
+        </GStyledSpanBox>
+        </Grid>
+       </Grid>
+      )}
       <Grid item xs={12} sm={12} pb={1}>
        <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
@@ -198,7 +210,8 @@ UserInviteSuccessDialog.propTypes = {
  isSubmitSuccessful: PropTypes.bool,
  userData: PropTypes.object,
  enableRoleDropdown: PropTypes.bool,
- title: PropTypes.string
+ title: PropTypes.string,
+ addAsContact: PropTypes.bool
 }
 
 export default memo(UserInviteSuccessDialog)
