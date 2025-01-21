@@ -377,7 +377,7 @@ export const GStyledRightBorderDivider = styled(({ theme, mode, ...other }) => <
  borderWidth: 5
 }))
 
-export const GStyledLoadingButton = styled(({ theme, isLoading, mode, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
+export const GStyledLoadingButton = styled(({ theme, mode, ...other }) => <LoadingButton {...other} />)(({ theme,  mode }) => ({
  backgroundColor: mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange,
  color: mode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black,
  '&:disabled': {
@@ -493,13 +493,13 @@ export const GStyledTooltip = styled(({ className, mode, green, disabled, toolti
    fontSize: '1rem',
    backgroundColor: disabled ? theme.palette.action.disabled : tooltipcolor,
    color:
-    tooltipTextColor || mode === KEY.LIGHT
+    tooltipTextColor || (mode === KEY.LIGHT
      ? theme.palette.common.black
      : green && mode !== KEY.LIGHT
      ? theme.palette.burnIn.contrastText
      : disabled
      ? theme.palette.action.disabledText
-     : theme.palette.common.white
+     : theme.palette.common.white)
   }
  })
 )
@@ -635,7 +635,7 @@ export const GStyledFieldChip = styled(({ theme, ...other }) => <Chip {...other}
  margin: theme.spacing(0.2),
  borderRadius: theme.spacing(RADIUS.CHIP.borderRadius),
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
- backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
+ backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]
 }))
 
 export const GStyledMiniChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
