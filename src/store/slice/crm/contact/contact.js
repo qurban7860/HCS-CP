@@ -229,3 +229,29 @@ export function getActiveContacts(customerId, isCustomerArchived = false) {
   }
  }
 }
+
+export function addContactFromUserInvite(customerId, params) {
+    return async dispatch => {
+        dispatch(contactSlice.actions.startLoading())
+        try {
+            const firstName = params.name?.split(' ')[0]
+            const lastName  = params.name?.split(' ')[1]
+
+            let data = {
+                customer : params.customer,
+                firstName: firstName,
+                lastName : lastName,
+                phone    : params.phone,
+                email    : params.email,
+                isActive : true,
+            }
+            const response = await axios.post(PATH_SERVER.CRM.CUSTOMER.listContact(customerId), data)
+            dispatch(contactSlice.actions.setContactResponseMessage('Contact added'))
+            return response;
+        } catch (error) {
+            console.log(error)
+            dispatch(contactSlice.actions.hasError(error.Message))
+            throw error
+        }
+    }
+}
