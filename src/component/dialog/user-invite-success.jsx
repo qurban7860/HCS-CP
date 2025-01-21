@@ -132,7 +132,7 @@ const UserInviteSuccessDialog = ({ action, onConfirm, setIsConfirming, isSubmitS
            }
            onChange={(event, newValue) => {
             setRole(newValue)
-            handleUpdateUserInviteContactDetails(newValue)
+            handleUpdateUserInviteContactDetails(event, newValue)
            }}
           />
          ) : (
