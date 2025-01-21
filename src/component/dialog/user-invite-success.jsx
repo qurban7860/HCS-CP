@@ -42,8 +42,7 @@ const UserInviteSuccessDialog = ({ action, onConfirm, setIsConfirming, isSubmitS
  }
 
  const handleUpdateUserInviteContactDetails = async (event, newValue) => {
-  await dispatch(setUserInviteContactDetails({ ...userData, roles: role }))
-  console.log(role)
+  await dispatch(setUserInviteContactDetails({ ...userData, roles: newValue }))
  }
 
  return (
