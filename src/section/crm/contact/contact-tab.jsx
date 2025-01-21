@@ -120,13 +120,10 @@ const handleOpenConfirmDialog = async () => {
 }
 
  const handleAddAndSendUserInvite = async () => {
-    // get the id of the recently added user
     setIsConfirming(true)
     const customerUserRole = customerRoles.find((role) => role?.name === KEY.CUSTOMER_USER)
     const updateUserData = !userInviteContactDetails?.roles?.length ? { ...userData, roles: [customerUserRole] } : userInviteContactDetails
     const response = await dispatch(addAndInviteSecurityUser(updateUserData))
-    console.log(' updateUserData', updateUserData)
-    // check if the response is successful
     if (!response.status >= 200 && response.status < 300) {
         snack('Error occured', { variant: 'error' })
         setIsConfirming(false)
@@ -136,7 +133,7 @@ const handleOpenConfirmDialog = async () => {
     setUserInviteDialog(false)
     setIsConfirming(false)
     snack(t('invite_sent.label'), { variant: 'success' })
-   }
+  }
 
  const renderDesktopView = () =>
   filteredData.map((contact, index) => <ContactCard key={contact?._id} selectedCardId={selectedContactCard || index} value={defaultValues} handleContactCard={handleContactCard} c={contact} />)
