@@ -270,6 +270,9 @@ const en = {
  invite: {
   label: `Invite`
  },
+ invite_pending: {
+   label: `Invitation Pending`
+ },
  invite_user: {
   label: `Invite a User`
  },
@@ -554,6 +557,7 @@ const en = {
    check_email: `Check your E-mail for the password reset link.`
   },
   success: {
+   created_contact: `Contact created`,
    logged_in: 'Logged in',
    logged_out: 'Logged out',
    register_request_submitted: 'Registration request submitted',
