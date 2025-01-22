@@ -1,22 +1,21 @@
+import { t } from 'i18next'
 import { useSettingContext } from 'hook'
-import { Button } from '@mui/material'
-import { BUTTON, COLOR, KEY } from 'constant'
+import { useTheme } from '@mui/material'
+import { GStyledDefLoadingButton } from 'theme/style'
+import { KEY, SIZE } from 'constant'
 import { PATH_DASHBOARD } from 'route/path'
 
 const FallbackButton = () => {
  const { themeMode } = useSettingContext()
+ const theme = useTheme()
  return (
-  <Button
+  <GStyledDefLoadingButton
    onClick={() => window.open(PATH_DASHBOARD.general.app, '_self')}
-   variant={themeMode === KEY.LIGHT ? 'contained' : 'contained'}
-   size='small'
-   sx={{
-    color: themeMode === KEY.LIGHT ? 'grey.300' : 'common.white',
-    backgroundColor: themeMode === KEY.LIGHT ? 'howick.bronze' : COLOR.PRIMARY,
-    borderColor: themeMode === KEY.LIGHT ? 'howick.darkBlue' : 'common.white'
-   }}>
-   {BUTTON.GO_BACK}
-  </Button>
+   size={SIZE.LARGE}
+   bgColor={themeMode === KEY.LIGHT ? theme.palette.howick.bronze : theme.palette.howick.orange}
+   textColor={themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black}>
+   {t('go_back.label').toUpperCase()}
+  </GStyledDefLoadingButton>
  )
 }
 
