@@ -23,6 +23,8 @@ const initialState = {
  userInviteConfirmDetails   : null,
  userInviteContactDetails   : null,
  userDialog                 : false,
+ userInvites                : [],
+ userInvite                 : null,
  securityUserTotalCount     : 0,
  assignedUsers              : [],
  signInLogs                 : [],
@@ -43,6 +45,9 @@ const userSlice = createSlice({
  reducers: {
   startLoading(state) {
    state.isLoading = true
+  },
+  stopLoading(state) {
+    state.isLoading = false
   },
   hasError(state, action) {
    state.isLoading = false
@@ -123,6 +128,18 @@ const userSlice = createSlice({
    state.userInviteConfirmDetails = action.payload
    state.initial                  = true
   },
+  getUserInvitesSuccess(state, action) {
+    state.userInvites = action.payload;
+    state.isLoading   = false;
+    state.success     = true;
+    state.initial     = true;
+  },
+  getUserInviteSuccess(state, action) {
+    state.isLoading = false;
+    state.success = true;
+    state.userInvite = action.payload;
+    state.initial = true;
+  },
   resetLoadingResetPasswordEmail(state, action) {
    state.isLoadingResetPasswordEmail = false
   },
@@ -155,6 +172,18 @@ const userSlice = createSlice({
    state.responseMessage = null
    state.success         = false
    state.isLoading       = false
+  },
+  resetUserInvites(state) {
+    state.userInvites     = []
+    state.responseMessage = null;
+    state.success         = false;
+    state.isLoading       = false;
+  },
+  resetUserInvite(state) {
+    state.userInvite      = null
+    state.responseMessage = null;
+    state.success         = false;
+    state.isLoading       = false;
   },
   resetSelectedUserCard(state) {
    state.selectedUserCard = null
@@ -198,6 +227,8 @@ export const {
  resetSecurityUsers,
  resetSignInLogs,
  resetSelectedUserCard,
+ resetUserInvites,
+ resetUserInvite,
  setUserFilterBy,
  ChangeUserRowsPerPage,
  ChangeUserPage
@@ -271,18 +302,6 @@ export function updateStatusSecurityUser(id, data) {
  }
 }
 
-// export function getUserInviteConfirmDetails(data) {
-//  return async dispatch => {
-//   dispatch(userSlice.actions.startLoading())
-//   try {
-//    return  dispatch(userSlice.actions.getSecurityUserSuccess(data))
-//   } catch (error) {
-//    console.error(DEBUG.GET_SECURITY_USERS_ERROR, error)
-//    throw error
-//   }
-//  }
-// }
-
 export function setLoginUser(userId, User) {
  return async dispatch => {
   dispatch(userSlice.actions.setSecurityUserProperties({ userId, User }))
@@ -352,7 +371,7 @@ export function addAndInviteSecurityUser(param) {
     password                 : param.password,
     roles                    : param.roles?.map(role => role?._id),
     dataAccessibilityLevel   : 'RESTRICTED',
-    isInvite                 : param.isInvite,
+    isInvite                 : true,
     isActive                 : true,
     currentEmployee          : false,
     multiFactorAuthentication: param.multiFactorAuthentication
@@ -435,4 +454,56 @@ export function newUserPassword(data) {
    throw error
   }
  }
+}
+
+export function getUserInvites() {
+  return async dispatch => {
+    dispatch(userSlice.actions.startLoading())
+    try {
+      const reponse = await axios.get(PATH_SERVER.SECURITY.INVITES.list)
+
+      console.log(reponse.data)
+      dispatch(userSlice.actions.getUserInvitesSuccess(reponse.data))
+      dispatch(userSlice.actions.setResponseMessage('Invites fetched'))
+    } catch (error) {
+      dispatch(userSlice.actions.hasError(error.Message))
+      console.error(error)
+      throw error
+    }
+  }
+}
+
+export function getUserInvite(inviteId) {
+  return async dispatch => {
+    dispatch(userSlice.actions.startLoading())
+    try {
+      const reponse = await axios.get(PATH_SERVER.SECURITY.INVITES.detail(inviteId))
+      dispatch(userSlice.actions.getUserInviteSuccess(reponse.data))
+      dispatch(userSlice.actions.setResponseMessage('Invites fetched'))
+    } catch (error) {
+      dispatch(userSlice.actions.hasError(error.Message))
+      console.error(error)
+      throw error
+    }
+  }
+}
+
+
+export function getUserInviteByEmail(email) {
+  return async dispatch => {
+    dispatch(userSlice.actions.startLoading())
+    try {
+      const reponse = await axios.get(PATH_SERVER.SECURITY.INVITES.list, {
+        params: {
+          receiverInvitationEmail: email
+        }
+      })
+      dispatch(userSlice.actions.getUserInviteSuccess(reponse.data))
+      dispatch(userSlice.actions.setResponseMessage('Invites fetched'))
+    } catch (error) {
+      dispatch(userSlice.actions.hasError(error.Message))
+      console.error(error)
+      throw error
+    }
+  }
 }
