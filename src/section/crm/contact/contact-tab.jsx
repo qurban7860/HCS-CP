@@ -5,7 +5,7 @@ import debounce from 'lodash/debounce'
 import { useParams } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
 import { useSettingContext, useTempFilter, useTable, getComparator, useUIMorph, snack } from 'hook'
-import { getCustomer, setSelectedContactCard, setUserInviteDialog, resetContact, getContact, getContacts, ChangeContactPage, setContactFilterBy, resetSelectedContactCard, resetContacts, getCustomerRoles, addAndInviteSecurityUser } from 'store/slice'
+import { getCustomer, setSelectedContactCard, setUserInviteDialog, resetContact, getContact, getContacts, ChangeContactPage, setContactFilterBy, resetSelectedContactCard, resetContacts, getCustomerRoles, addAndInviteSecurityUser, resetUserInvite, resetUserInvites, getUserInviteByEmail } from 'store/slice'
 import { ContactCard, fieldsContactConfig } from 'section/crm/contact'
 import { useContactDefaultValues } from 'section/crm'
 import { CommonFieldsCard } from 'section/common'
@@ -13,15 +13,16 @@ import { Grid, Typography } from '@mui/material'
 import { DropdownDefault, AuditBox, CustomerDialog, SearchBox, UserInviteSuccessDialog } from 'component'
 import { GStyledScrollableHeightLockGrid, GStyledStickyGrid, GStyledLoadingButton } from 'theme/style'
 import { MARGIN, NAV, SPACING } from 'config/layout'
-import { KEY, TYPOGRAPHY, FLEX_DIR } from 'constant'
+import { KEY, TYPOGRAPHY, FLEX_DIR, INVITATION_STATUS } from 'constant'
 
 const ContactTab = () => {
 const [isConfirming, setIsConfirming]                                            = useState(false)
 const [isSubmitSuccessful, setIsSubmitSuccessful]                                = useState(false)
 const { contact, contacts, initial, isLoading, selectedContactCard, fromDialog } = useSelector(state => state.contact)
 const { customer, customerDialog }                                               = useSelector(state => state.customer)
-const { securityUsers, userInviteDialog, userInviteContactDetails }              = useSelector(state => state.user)
+const { securityUsers, userInviteDialog, userInviteContactDetails, userInvite }  = useSelector(state => state.user)
 const { customerRoles }                                                          = useSelector(state => state.role)
+const isUserInvitePending                                                        = userInvite ? userInvite?.some((invite) => invite.invitationStatus === INVITATION_STATUS.PENDING) : false
 
  const { isDesktop, isMobile } = useUIMorph()
  const { id }                  = useParams()
@@ -47,6 +48,14 @@ const { customerRoles }                                                         
   debounceFetch()
   return () => debounceFetch.cancel()
  }, [id, contacts, dispatch])
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
+    dispatch(getUserInviteByEmail(contact?.email))
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [contact?.email, dispatch])
 
  const defaultValues = useContactDefaultValues(contact, customer)
 
@@ -86,7 +95,9 @@ const { customerRoles }                                                         
  useLayoutEffect(() => {
   dispatch(resetContact())
   dispatch(resetContacts())
+  dispatch(resetUserInvite())
   dispatch(setUserInviteDialog(false))
+  dispatch(resetUserInvites())
  }, [])
 
  const { filterName, handleFilterName, filteredData } = useTempFilter(getComparator(order, orderBy), contacts, initial, ChangeContactPage, setContactFilterBy)
@@ -97,12 +108,6 @@ const { customerRoles }                                                         
   dispatch(resetContact())
   dispatch(getContact(id, contactId))
  }
-
-// handle add this contact as a user via invite user then send invite
-// click the button that opens up the confirmation dialog (success card?)
-// close the confirm dialog then sends an invite via the id generated
-
-// params neaded: customerId, contactId, fullName, email, roles (a dropdown to select), isActive
 
 const userData = {
     customer  : customer,
@@ -173,7 +178,7 @@ const handleOpenConfirmDialog = async () => {
     </GStyledStickyGrid>
 
     <Grid item xs={12} md={9}>
-     <CommonFieldsCard defaultValues={defaultValues} fieldsConfig={fieldsContactConfig} isLoading={isLoading} contactHasActiveUser={contactHasActiveUser} handleUserInvite={handleOpenConfirmDialog}  withStatusIcon isContactsPage />
+     <CommonFieldsCard defaultValues={defaultValues} fieldsConfig={fieldsContactConfig} isLoading={isLoading} contactHasActiveUser={contactHasActiveUser} handleUserInvite={handleOpenConfirmDialog} isUserInvitePending={isUserInvitePending}  withStatusIcon isContactsPage />
     </Grid>
    </Grid>
    <AuditBox value={defaultValues} />
