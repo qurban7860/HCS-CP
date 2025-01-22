@@ -37,12 +37,14 @@ export default function RHFCountryAutocomplete({ name, label, helperText, Error,
       if (typeof option === 'string') return option
       return `${option?.label || ''} (${option?.code || ''})`
      }}
-     renderOption={(props, option) => (
-      <Box component='li' sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-       <img loading='lazy' width='20' srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`} src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`} alt='' />
-       {option.label} ({option.code})
-      </Box>
-     )}
+     renderOption={(props, option) =>  {
+      return (
+        <Box key={option.code} component='li' sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+        <img loading='lazy' width='20' srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`} src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`} alt='' />
+        {option.label} ({option.code})
+        </Box>
+      )}
+     }
      autoHighlight
      autoSelect
      renderInput={params => <RHFTextField name={name} label={label} required={required} error={!!error || !!Error} helperText={error ? error?.message : helperText} {...params} />}

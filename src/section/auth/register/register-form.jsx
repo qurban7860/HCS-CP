@@ -152,7 +152,7 @@ function RegisterForm() {
    return
   }
   console.error('Unexpected error:', error)
-  snack(t('responses.error.unable_to_process_request'), { variant: COLOR.ERROR })
+  snack(`Error occured: ${error}`, { variant: COLOR.ERROR })
   setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
    type: 'unexpected',
    message: error?.message || t('responses.error.unexpected_error')
@@ -301,7 +301,6 @@ function RegisterForm() {
      <Grid item xs={12} sm={4} md={4}>
       <GStyledLoadingButton
        fullWidth
-       isLoading={isSubmitting}
        color={KEY.INHERIT}
        size={SIZE.LARGE}
        type={KEY.SUBMIT}
