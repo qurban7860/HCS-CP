@@ -411,7 +411,7 @@ export const GStyledIconLoadingButton = styled(({ theme, isLoading, textColor, b
    backgroundColor: alpha(bgColor, 0.5)
   },
   '&:hover': {
-   backgroundColor: alpha(bgColor, 0.8)
+   backgroundColor: bgColor
   }
  }))
 
