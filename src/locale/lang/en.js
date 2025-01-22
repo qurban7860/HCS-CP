@@ -26,6 +26,9 @@ const en = {
   label: `Activate User`,
   toggle_to_acitvate: `Toggle to deactivate`
  },
+ add_new_contact:{
+   label: `Add New Contact`
+ },
  address: {
   label: `Address`,
   addresses: {
