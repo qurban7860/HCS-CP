@@ -174,15 +174,16 @@ function UserInviteForm() {
    setIsSuccessState(true)
    setIsConfirming(false)
    const Data = {...data, customer}
-
    if (addAsContact) {
-       await dispatch(addContactFromUserInvite(customer?._id, Data))
+    const newContactResponse = await dispatch(addContactFromUserInvite(customer?._id, Data))
+        if (newContactResponse.status !== 201) {
+        snack('Error occured in creating the contact, unable to proceed', { variant: COLOR.ERROR })
+        throw new Error('Error occured in creating the contact, unable to proceed')
+        }
+    snack(t('responses.success.contact_created'), { variant: COLOR.SUCCESS })
+    const { customerCategory } = newContactResponse.data
+    Data.contact = customerCategory
    }
-
-   const newContact = activeContacts.find(activeContact => activeContact?.email === Data?.email)
-   if (!newContact) throw new Error('Contact not found, unable to proceed')
-
-   Data.contact = newContact?._id
 
    const response = await dispatch(addAndInviteSecurityUser(Data))
    await delay(2000)
