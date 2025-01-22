@@ -1,16 +1,20 @@
 import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
+import { useAuthContext } from 'auth'
 import { useSettingContext, Icon, ICON_NAME } from 'hook'
 import { useTheme, Box, Card, Grid, Link } from '@mui/material'
 import { GridViewField, GridViewTitle, IconTooltip } from 'component'
 import { GCardOption, GStyledTopBorderDivider, GStyledSpanBox, GStyledIconLoadingButton } from 'theme/style'
-import { KEY, FLEX } from 'constant'
 import { truncate } from 'util'
+import { ICON } from 'config/layout'
+import { KEY, FLEX } from 'constant'
 
-const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, handleDialog, isChildren, children, withStatusIcon, isContactsPage, contactHasActiveUser, handleUserInvite }) => {
+const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, handleDialog, isChildren, children, withStatusIcon, isContactsPage, contactHasActiveUser, handleUserInvite, isUserInvitePending }) => {
  const { themeMode } = useSettingContext()
- const theme = useTheme()
+ const theme         = useTheme()
+ const { user }      = useAuthContext()
+ const isUserAdmin   = user?.roles.some(role => role.name === KEY.CUSTOMER_ADMIN)
 
  const renderFields = config => {
   return (
@@ -61,7 +65,8 @@ const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, han
      {withStatusIcon && (
       <Grid item xs={12} sm={12} mt={1.5}>
        <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={2}>
-       {isContactsPage && (
+
+       {isContactsPage && isUserAdmin && (
           contactHasActiveUser ? (
             <IconTooltip
               title={t('has_active_user_account.label')}
@@ -71,9 +76,13 @@ const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, han
               tooltipTextColor={theme.palette.common.white}
               iconOnly
             />
+          ) : isUserInvitePending ? (
+            <GStyledIconLoadingButton textColor={theme.palette.common.black} bgColor={theme.palette.grey[200]} onClick={handleUserInvite} disabled={isUserInvitePending} gap={2}>
+              <Icon icon={ICON_NAME.MAIL_USER} sx={{ p: 0, ...ICON.SIZE_XS }}/> &nbsp; {t('invite_pending.label').toUpperCase()}
+            </GStyledIconLoadingButton>
           ) : (
             <GStyledIconLoadingButton textColor={theme.palette.common.white} bgColor={theme.palette.howick.midBlue} onClick={handleUserInvite} gap={2}>
-              <Icon icon={ICON_NAME.MAIL_USER} sx={{ width: 15, height: 15, p: 0 }}/> &nbsp; {t('send_invite.label').toUpperCase()}
+              <Icon icon={ICON_NAME.MAIL_USER} sx={{ p: 0, ...ICON.SIZE_XS }}/> &nbsp; {t('send_invite.label').toUpperCase()}
             </GStyledIconLoadingButton>
           )
         )}
@@ -106,17 +115,18 @@ const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, han
 }
 
 CommonFieldsCard.propTypes = {
- defaultValues: PropTypes.object,
- fieldsConfig: PropTypes.array,
- children: PropTypes.node,
- i18nKey: PropTypes.string,
- handleDialog: PropTypes.func,
- isLoading: PropTypes.bool,
- isChildren: PropTypes.bool,
- withStatusIcon: PropTypes.bool,
- isContactsPage: PropTypes.bool,
+ defaultValues       : PropTypes.object,
+ fieldsConfig        : PropTypes.array,
+ children            : PropTypes.node,
+ i18nKey             : PropTypes.string,
+ handleDialog        : PropTypes.func,
+ isLoading           : PropTypes.bool,
+ isChildren          : PropTypes.bool,
+ withStatusIcon      : PropTypes.bool,
+ isContactsPage      : PropTypes.bool,
  contactHasActiveUser: PropTypes.bool,
- handleUserInvite: PropTypes.func
+ handleUserInvite    : PropTypes.func,
+ isUserInvitePending : PropTypes.bool
 }
 
 export default CommonFieldsCard
