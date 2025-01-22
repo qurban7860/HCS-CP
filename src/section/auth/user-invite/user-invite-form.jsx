@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, Fragment } from 'react'
-import _, { add } from 'lodash'
+import _ from 'lodash'
 import debounce from 'lodash.debounce'
 import { t } from 'i18next'
 import { useSelector } from 'react-redux'
@@ -165,7 +165,7 @@ function UserInviteForm() {
    return
   }
   console.error('Unexpected error:', error)
-  snack(t('responses.error.unable_to_process_request'), { variant: COLOR.ERROR })
+  snack(error, { variant: COLOR.ERROR })
   setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, { type: 'unexpected', message: error?.message || t('responses.error.unexpected_error') })
  }
 
@@ -180,7 +180,7 @@ function UserInviteForm() {
         snack('Error occured in creating the contact, unable to proceed', { variant: COLOR.ERROR })
         throw new Error('Error occured in creating the contact, unable to proceed')
         }
-    snack(t('responses.success.contact_created'), { variant: COLOR.SUCCESS })
+    snack(t('responses.success.created_contact'), { variant: COLOR.SUCCESS })
     const { customerCategory } = newContactResponse.data
     Data.contact = customerCategory
    }
