@@ -23,7 +23,7 @@ const UserProfileLayout = () => {
  const { securityUser, isLoading }  = useSelector(state => state.user)
  const { userId }                   = useAuthContext()
  const { themeMode }                = useSettingContext()
- const { isDesktop }                = useUIMorph
+ const { isDesktop }                = useUIMorph()
  const theme                        = useTheme()
 
  useEffect(() => {
@@ -63,7 +63,6 @@ const UserProfileLayout = () => {
      color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
      tooltipColor={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
      dimension={isDesktop ? 20 : 15}
-     isActiveIcon
      iconOnly
     />
    ) : (
