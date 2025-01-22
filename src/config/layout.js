@@ -1,9 +1,9 @@
 import { TYPOGRAPHY } from "constant"
 
 /**
- * Layout configuration for the application
+ * Design Tokens for the application
  *
- * Dimensions are in pixels
+ * - Dimensions are in pixels
  *
  */
 export const DELAY = {
@@ -79,6 +79,7 @@ export const ICON = {
  NAV_ITEM_HORIZONTAL: 22,
  NAV_ITEM_MINI: 22,
  DEFAULT_SIZE: 30,
+
  SIZE_XS: {
     width: 15,
     height: 15
