@@ -80,10 +80,21 @@ export const ICON = {
  NAV_ITEM_MINI: 22,
  DEFAULT_SIZE: 30,
 
+ SIZE_MD: {
+    width: 30,
+    height: 30
+ },
+
+ SIZE_SM: {
+    width: 20,
+    height: 20
+ },
+
  SIZE_XS: {
     width: 15,
     height: 15
  },
+
  TOOLTIP: 24
 }
 
