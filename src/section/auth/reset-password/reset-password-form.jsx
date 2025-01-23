@@ -88,7 +88,6 @@ export default function ResetPasswordForm() {
     <GStyledLoadingButton
      fullWidth
      mode={themeMode}
-     isLoading={isSubmitting}
      size={SIZE.LARGE}
      type={KEY.SUBMIT}
      variant='contained'

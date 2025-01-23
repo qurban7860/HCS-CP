@@ -15,7 +15,7 @@ const DefaultPopper = ({ content, openPopper, openAnchorEl, isLoading, onConfirm
   <PopupState variant='popper' popupId='demo-popup-popper'>
    {popupState => (
     <div>
-    <GStyledIconLoadingButton textColor={theme.palette.common.white} bgColor={theme.palette.grey[500]} {...bindToggle(popupState)} gap={2}>
+    <GStyledIconLoadingButton loading={isLoading}  textColor={theme.palette.common.white} bgColor={theme.palette.grey[500]} {...bindToggle(popupState)} gap={2}>
         <Icon icon={ICON_NAME.MAIL_USER} sx={{ width: 15, height: 15, p: 0 }}/> &nbsp; {t('send_invite.label').toUpperCase()}
     </GStyledIconLoadingButton>
      <Popper {...bindPopper(popupState)} transition sx={{ zIndex: theme.zIndex.modal + 12 }} placement='bottom-end'>
@@ -26,8 +26,8 @@ const DefaultPopper = ({ content, openPopper, openAnchorEl, isLoading, onConfirm
          <Typography sx={{ p: 2 }}>{content}</Typography>
          <Box display={FLEX.FLEX} justifyContent={KEY.CENTER} gap={2}>
           <GStyledDefLoadingButton
-           isLoading={isLoading}
            type={'button'}
+           loading={isLoading}
            mode={themeMode}
            textColor={theme.palette.common.white}
            bgColor={theme.palette.howick.midBlue}
@@ -42,8 +42,8 @@ const DefaultPopper = ({ content, openPopper, openAnchorEl, isLoading, onConfirm
           </GStyledDefLoadingButton>
           <span>
            <GStyledDefLoadingButton
-            isLoading={isLoading}
             type={'button'}
+            loading={isLoading}
             mode={themeMode}
             textColor={theme.palette.error.contrastText}
             bgColor={theme.palette.error.dark}

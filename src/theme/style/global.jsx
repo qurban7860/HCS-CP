@@ -400,7 +400,7 @@ export const GStyledLoadingButton = styled(({ theme, mode, ...other }) => <Loadi
  paddingBottom: theme.spacing(1)
 }))
 
-export const GStyledDefLoadingButton = styled(({ theme, isLoading, textColor, bgColor, mode, ...other }) => <LoadingButton {...other} />)(({ theme, textColor, bgColor, mode, isLoading }) => ({
+export const GStyledDefLoadingButton = styled(({ theme, textColor, bgColor, mode, ...other }) => <LoadingButton {...other} />)(({ theme, textColor, bgColor, mode }) => ({
  backgroundColor: bgColor,
  color: textColor,
  '&:disabled': {
@@ -413,7 +413,7 @@ export const GStyledDefLoadingButton = styled(({ theme, isLoading, textColor, bg
  paddingBottom: theme.spacing(1)
 }))
 
-export const GStyledIconLoadingButton = styled(({ theme, isLoading, textColor, bgColor, mode, ...other }) => <LoadingButton {...other} />)(({ theme, textColor, bgColor, mode, isLoading }) => ({
+export const GStyledIconLoadingButton = styled(({ theme, textColor, bgColor, mode, ...other }) => <LoadingButton {...other} />)(({ theme, textColor, bgColor, mode }) => ({
   backgroundColor: bgColor,
   color: textColor,
   '&:disabled': {
@@ -424,7 +424,7 @@ export const GStyledIconLoadingButton = styled(({ theme, isLoading, textColor, b
   }
  }))
 
-export const GStyledBackButton = styled(({ theme, isLoading, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
+export const GStyledBackButton = styled(({ theme, ...other }) => <LoadingButton {...other} />)(({ theme, mode }) => ({
  backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700],
  color: mode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
  '&:hover': {
@@ -433,7 +433,7 @@ export const GStyledBackButton = styled(({ theme, isLoading, ...other }) => <Loa
  }
 }))
 
-export const GStyledCloseButton = styled(({ theme, isLoading, mode, ...other }) => <LoadingButton {...other} />)(({ theme, isLoading, mode }) => ({
+export const GStyledCloseButton = styled(({ theme, mode, ...other }) => <LoadingButton {...other} />)(({ theme, mode }) => ({
  backgroundColor: theme.palette.howick.orange,
  color: theme.palette.common.black,
  '&:hover': {

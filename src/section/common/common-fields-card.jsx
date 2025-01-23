@@ -77,11 +77,11 @@ const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, han
               iconOnly
             />
           ) : isUserInvitePending ? (
-            <GStyledIconLoadingButton textColor={theme.palette.common.black} bgColor={theme.palette.grey[200]} onClick={handleUserInvite} disabled={isUserInvitePending} gap={2}>
+            <GStyledIconLoadingButton loading={isLoading} textColor={theme.palette.common.black} bgColor={theme.palette.grey[200]} onClick={handleUserInvite} disabled={isUserInvitePending} gap={2}>
               <Icon icon={ICON_NAME.MAIL_USER} sx={{ p: 0, ...ICON.SIZE_XS }}/> &nbsp; {t('invite_pending.label').toUpperCase()}
             </GStyledIconLoadingButton>
           ) : (
-            <GStyledIconLoadingButton textColor={theme.palette.common.white} bgColor={theme.palette.howick.midBlue} onClick={handleUserInvite} gap={2}>
+            <GStyledIconLoadingButton loading={isLoading} textColor={theme.palette.common.white} bgColor={theme.palette.howick.midBlue} onClick={handleUserInvite} gap={2}>
               <Icon icon={ICON_NAME.MAIL_USER} sx={{ p: 0, ...ICON.SIZE_XS }}/> &nbsp; {t('send_invite.label').toUpperCase()}
             </GStyledIconLoadingButton>
           )

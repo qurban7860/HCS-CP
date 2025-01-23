@@ -149,7 +149,7 @@ const UserDialog = () => {
      <GStyledSpanBox gap={1}>
       {!isAdmin && !isSelf && (
        <GStyledIconLoadingButton
-        isLoading={isLoading}
+        loading={isLoading}
         type={'button'}
         mode={themeMode}
         textColor={theme.palette.error.contrastText}
