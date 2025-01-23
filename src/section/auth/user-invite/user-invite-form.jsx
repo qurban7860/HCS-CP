@@ -174,6 +174,7 @@ function UserInviteForm() {
    setIsSuccessState(true)
    setIsConfirming(false)
    const Data = {...data, customer}
+
    if (addAsContact) {
     const newContactResponse = await dispatch(addContactFromUserInvite(customer?._id, Data))
         if (newContactResponse.status !== 201) {
@@ -331,6 +332,7 @@ function UserInviteForm() {
        {t('send_invitation.label').toUpperCase()}
       </GStyledLoadingButton>
      </Grid>
+     {/* spacer  */}
      <Box height={{ xs: 50, md: 100 }} />
     </Grid>
 
