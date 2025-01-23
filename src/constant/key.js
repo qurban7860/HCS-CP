@@ -35,6 +35,8 @@ const SUPPORT_TICKET_DESC_TYPES = {
  HEADING: 'heading'
 }
 
+export const PHONE_TYPES = ['MOBILE', 'HOME', 'WORK', 'FAX', 'OTHERS']
+
 const CSS = {
  // @position
  START: 'start',
