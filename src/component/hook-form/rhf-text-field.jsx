@@ -1,3 +1,4 @@
+import { forwardRef } from 'react'
 import PropTypes from 'prop-types'
 import { useFormContext, Controller } from 'react-hook-form'
 import { useMediaQuery, TextField } from '@mui/material'
@@ -6,7 +7,7 @@ import { useSettingContext } from 'hook'
 import { RADIUS } from 'config/layout'
 import { KEY } from 'constant'
 
-export default function RHFTextField({ name, helperText, Error, ...other }) {
+ const RHFTextField = forwardRef(({ name, helperText, Error, ...other }, ref) => {
  const { control } = useFormContext()
  const { themeMode } = useSettingContext()
  const theme = useTheme()
@@ -64,10 +65,14 @@ export default function RHFTextField({ name, helperText, Error, ...other }) {
    )}
   />
  )
-}
+})
 
+RHFTextField.displayName = 'RHFTextField'
 RHFTextField.propTypes = {
  name: PropTypes.string,
  helperText: PropTypes.node,
  Error: PropTypes.bool
 }
+
+
+export default RHFTextField
