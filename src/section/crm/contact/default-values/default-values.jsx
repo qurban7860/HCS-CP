@@ -70,7 +70,12 @@ export function useAddContactDefaultValues(customer) {
    isActive    : true,
    phoneNumbers: [{ type: UPDATED_PHONE_TYPES[0], countryCode: '64' }],
    email       : '',
-   country     : COUNTRY.find(contry => contry?.label?.toLocaleLowerCase() === 'New Zealand'.toLocaleLowerCase()) || null
+   street      : '',
+   suburb      : '',
+   region      : '',
+   postcode    : '',
+   city        : '',
+   country : COUNTRY.find(contry => contry?.label?.toLocaleLowerCase() === 'New Zealand'.toLocaleLowerCase()) || null
   }),
   [customer]
  )
