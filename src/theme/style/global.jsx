@@ -309,6 +309,15 @@ export const GStyledScrollContainerGrid = styled(Box)(({ theme }) => ({
  height: '100%'
 }))
 
+export const GStyledCustomPhoneInputBox = styled(({ theme, ...other}) => <Box {...other}/>)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  flex: '1 1 auto',
+  minWidth: 300,
+  marginLeft: { xs: 'auto',  sm: 0 },
+  marginTop: 1
+}))
+
 export const GStyledTableChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
  margin: theme.spacing(0.2),
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
