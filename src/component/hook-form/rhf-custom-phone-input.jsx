@@ -1,9 +1,10 @@
 import { Fragment } from 'react'
-import { Icon, ICON_NAME } from 'hook'
-import { TextField, InputAdornment, Autocomplete } from '@mui/material'
 import PropTypes from 'prop-types'
+import { Icon, ICON_NAME } from 'hook'
 import { useFormContext, Controller } from 'react-hook-form'
-import { Iconify } from 'component/iconify'
+import { TextField, InputAdornment, Autocomplete } from '@mui/material'
+import { ICON } from 'config/layout'
+import { PHONE_TYPES } from 'constant/key'
 import RHFTextField from './rhf-text-field'
 
 RHFCustomPhoneInput.propTypes = {
@@ -39,7 +40,7 @@ export default function RHFCustomPhoneInput({ name, value, index, label, isRegis
       startAdornment: (
        <Fragment>
         <InputAdornment position='start'>
-         <Icon icon={ICON_NAME.PHONE} sx={{ width: 25, height: 25 }} />
+         <Icon icon={ICON_NAME.PHONE} sx={{ ...ICON.SIZE_XS }} />
          {!isRegister && (
           <Fragment>
            <Autocomplete
@@ -47,13 +48,14 @@ export default function RHFCustomPhoneInput({ name, value, index, label, isRegis
             defaultValue={value?.type || 'PHONE'}
             size='small'
             value={value?.type || null}
-            sx={{ width: '50px', mx: 1 }}
-            options={['PHONE', 'FAX', 'CELL', 'OTHERS']}
+            sx={{ width: 70, mx: 1 }}
+            options={PHONE_TYPES}
+            isOptionEqualToValue={(option, value) => option === value}
             onChange={(event, newValue) => {
              setValue(name, { ...value, type: newValue }, { shouldValidate: true })
             }}
-            renderInput={params => <RHFTextField {...params} name={`${name}.type`} variant='standard' size='small' placeholder='Type' sx={{ mb: 0.9 }} />}
-           />{' '}
+            renderInput={params => <RHFTextField {...params} name={`${name}.type`} size='small' placeholder='Type' sx={{ mb: 0.9, backgroundColor: 'transparent' }} />}
+           />
            {'+'}
           </Fragment>
          )}
@@ -72,7 +74,7 @@ export default function RHFCustomPhoneInput({ name, value, index, label, isRegis
              setValue(name, { ...value, countryCode: inputValue }, { shouldValidate: true })
             }}
             placeholder={countryCodePlaceholder || '00'}
-            sx={{ width: '60px', mx: 1 }}
+            sx={{ width: 40, mx: 1 }}
            />
            |
           </Fragment>
@@ -87,7 +89,7 @@ export default function RHFCustomPhoneInput({ name, value, index, label, isRegis
           value={value?.extensions || ''}
           variant='standard'
           placeholder='Ext.'
-          sx={{ width: '80px', mx: 1 }}
+          sx={{ width: 40, mx: 1 }}
           InputProps={{
            inputProps: {
             maxLength: 10
