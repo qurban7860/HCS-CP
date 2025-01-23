@@ -46,10 +46,6 @@ export default function Main({ children, sx, ...other }) {
      px: 2,
      py: `${HEADER.H_DASHBOARD_DESKTOP + SPACING}px`,
      width: '100%'
-     // width: `calc(100% - ${NAV.W_DASHBOARD}px)`,
-     // ...(isNavMini && {
-     //   width: `calc(100% - ${NAV.W_DASHBOARD_MINI}px)`,
-     // }),
     }),
     ...sx
    }}
