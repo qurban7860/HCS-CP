@@ -26,8 +26,8 @@ const en = {
   label: `Activate User`,
   toggle_to_acitvate: `Toggle to deactivate`
  },
- add_new_contact:{
-   label: `Add New Contact`
+ add_new_contact: {
+  label: `Add New Contact`
  },
  address: {
   label: `Address`,
@@ -255,7 +255,7 @@ const en = {
   label: `Graph Type`
  },
  has_active_user_account: {
-    label: `Has an Active User Account`
+  label: `Has an Active User Account`
  },
  hmi_version: {
   label: `HMI Version`
@@ -277,7 +277,7 @@ const en = {
   label: `Invite`
  },
  invite_pending: {
-   label: `Invitation Pending`
+  label: `Invitation Pending`
  },
  invite_user: {
   label: `Invite a User`
@@ -311,6 +311,9 @@ const en = {
  },
  last_name: {
   label: `Last Name`
+ },
+ leave: {
+  label: `Leave`
  },
  legend: {
   label: `Legend`,
@@ -411,8 +414,8 @@ const en = {
   }
  },
  new_contact: {
-   label: `New Contact`,
-   helper_text: `If the contact is not listed, please add them as a contact first or just by ticking the box below.`
+  label: `New Contact`,
+  helper_text: `If the contact is not listed, please add them as a contact first or just by ticking the box below.`
  },
  new_password: {
   label: `New Password`
@@ -560,7 +563,8 @@ const en = {
   label: `Responses`,
   messages: {
    pre_reset: 'Enter your email address below and we will send you instructions on how to reset your password.',
-   check_email: `Check your E-mail for the password reset link.`
+   check_email: `Check your E-mail for the password reset link.`,
+   form_dirty: `The form has unsaved changes. Are you sure you want to leave?`
   },
   success: {
    created_contact: `Contact created`,
@@ -611,7 +615,7 @@ const en = {
   label: `Send Invitation`
  },
  send_portal_invite: {
-    label: `Send an Howick Portal invitation to {{user}}?`
+  label: `Send an Howick Portal invitation to {{user}}?`
  },
  send_reset_password_request: {
   label: `Send Reset Password Request`
@@ -693,6 +697,9 @@ const en = {
  },
  trading_name: {
   label: `Trading Name / Alias`
+ },
+ unsaved_changes: {
+  label: `Unsaved Changes`
  },
  username: {
   label: `Username`
