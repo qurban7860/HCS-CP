@@ -5,7 +5,7 @@ import { SetPasswordSchema } from 'schema'
 import { dispatch, useSelector } from 'store'
 import { PATH_PAGE, PATH_AUTH } from 'route/path'
 import { verifiedUserInvite, updateUserInvite } from 'store/slice'
-import { snack, useResponsive } from 'hook'
+import { snack, useResponsive, useSettingContext } from 'hook'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useSetPasswordDefaultValues } from 'section/auth/default-value'
@@ -19,8 +19,9 @@ import { delay } from 'util'
 
 function SetPasswordForm() {
  const [isFormComplete, setIsFormComplete] = useState(false)
- const { id, code, expiry } = useParams()
  const { verifiedInvite } = useSelector(state => state.user)
+ const { id, code, expiry } = useParams()
+ const { themeMode } = useSettingContext()
  const expired = new Date(expiry).getTime() > new Date().getTime()
 
  const navigate = useNavigate()
@@ -153,11 +154,10 @@ function SetPasswordForm() {
 
     <GStyledLoadingButton
      sx={{ justifySelf: 'flex-end', display: 'flex' }}
-     isLoading={isSubmitting}
      color={KEY.INHERIT}
-     size={SIZE.LARGE}
+     size={SIZE.SMALL}
      type={KEY.SUBMIT}
-     variant={KEY.CONTAINED}
+     mode={themeMode}
      loading={isSubmitSuccessful || isSubmitting}
      disabled={!isFormComplete}>
      {t('submit.label').toUpperCase()}
