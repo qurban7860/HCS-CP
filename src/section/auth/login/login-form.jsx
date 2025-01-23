@@ -104,11 +104,9 @@ function LoginForm() {
    <GStyledLoadingButton
     fullWidth
     className='portal-button'
-    isLoading={isSubmitting}
-    size={SIZE.LARGE}
+    size={SIZE.SMALL}
     type={KEY.SUBMIT}
     mode={themeMode}
-    variant={KEY.CONTAINED}
     loading={isSubmitSuccessful || isSubmitting}
     sx={RADIUS.BORDER}>
     {t('login.label').toUpperCase()}
