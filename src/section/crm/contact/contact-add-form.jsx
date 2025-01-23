@@ -1,17 +1,17 @@
-import { useEffect, useState, useCallback } from 'react'
+import { Fragment, useEffect, useState, useCallback } from 'react'
 import { t } from 'i18next'
 import { useSelector } from 'store'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { snack, useSettingContext, useUIMorph } from 'hook'
+import { snack, useSettingContext } from 'hook'
 import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
-import { addContact } from 'store/slice'
+import { addContact, setContactFormVisibility } from 'store/slice'
 import { ContactSchema } from 'schema'
 import { useAddContactDefaultValues } from 'section/crm/contact'
 import { useTheme, Typography, Grid, Box, Card } from '@mui/material'
-import { GridViewTitle, RHFRequiredTextFieldWrapper } from 'component'
+import { GridViewTitle, RHFRequiredTextFieldWrapper, ConfirmDialog } from 'component'
 import FormProvider, { RHFTextField, RHFCountryAutocomplete, RHFCustomPhoneInput } from 'component/hook-form'
-import { delay } from 'util'
+import { delay, deepEqual } from 'util'
 import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, COLOR, TYPOGRAPHY, FLEX } from 'constant'
 import { GStyledLoadingButton, GStyledCustomPhoneInputBox, GCardOption, GStyledTopBorderDivider, GStyledCloseButton, GStyledSpanBox } from 'theme/style'
 
@@ -21,16 +21,12 @@ import { GStyledLoadingButton, GStyledCustomPhoneInputBox, GCardOption, GStyledT
  */
 function ContactAddForm() {
  const [isFormComplete, setIsFormComplete] = useState(false)
- const { customer }                        = useSelector(state => state.customer)
- const { contacts }                        = useSelector(state => state.contact)
-
+ const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
+ const { customer } = useSelector(state => state.customer)
+ const { contacts } = useSelector(state => state.contact)
  const regEx = new RegExp(REGEX.ERROR_CODE)
- const serialNoRegEx = new RegExp(REGEX.SERIAL_NO)
-
  const theme = useTheme()
  const { themeMode } = useSettingContext()
- const { isMobile } = useUIMorph()
-
  const defaultValues = useAddContactDefaultValues(customer)
 
  const methods = useForm({
@@ -44,20 +40,20 @@ function ContactAddForm() {
   setValue,
   watch,
   handleSubmit,
-  formState: { errors, isSubmitting },
-  clearErrors
+  formState: { errors, isSubmitting }
  } = methods
- const { firstName, lastName, email, country, phoneNumbers } = watch()
+
+ const { firstName, email, country, phoneNumbers } = watch()
  const checkFormCompletion = useCallback(() => {
-  setIsFormComplete(!!firstName && !!lastName && !!email && !!country)
- }, [firstName, lastName, country, email])
+  setIsFormComplete(!!firstName && REGEX.EMAIL.test(email) && !!country)
+ }, [firstName, country, email])
 
  useEffect(() => {
-    checkFormCompletion()
+  checkFormCompletion()
  }, [checkFormCompletion])
 
  useEffect(() => {
-  phoneNumbers?.forEach((pN, index) => {
+  phoneNumbers?.forEach((ph, index) => {
    if (!phoneNumbers[index]?.contactNumber || phoneNumbers[index]?.contactNumber === undefined) {
     setValue(`phoneNumbers[${index}].countryCode`, country?.phone?.replace(/[^0-9]/g, ''))
    }
@@ -82,7 +78,48 @@ function ContactAddForm() {
   setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, { type: 'unexpected', message: error?.message || t('responses.error.unexpected_error') })
  }
 
-// handle the cancel: it should clear everything up/ reset etc.
+ const handleCancel = async () => {
+  await dispatch(setContactFormVisibility(false))
+  setOpenConfirmDialog(false)
+  reset(defaultValues)
+ }
+
+
+ const isFormDirty = Object.keys(defaultValues).some(key => !deepEqual(watch(key), defaultValues[key]))
+
+ useEffect(() => {
+  const handleBeforeUnload = event => {
+   if (isFormDirty) {
+    event.preventDefault()
+    event.returnValue = t('responses.messages.form_dirty')
+   }
+  }
+  const handlePopState = event => {
+   if (isFormDirty) {
+    const confirmation = window.confirm(t('responses.messages.form_dirty'))
+    if (!confirmation) {
+     event.preventDefault()
+     history.pushState(null, document.title, window.location.href)
+    } else {
+     reset(defaultValues)
+    }
+   }
+  }
+  window.addEventListener('beforeunload', handleBeforeUnload)
+  window.addEventListener('popstate', handlePopState)
+  return () => {
+   window.removeEventListener('beforeunload', handleBeforeUnload)
+   window.removeEventListener('popstate', handlePopState)
+  }
+ }, [isFormDirty])
+
+ const handleConfirmCancel = () => {
+  if (isFormDirty) {
+   setOpenConfirmDialog(true)
+   return
+  }
+  handleCancel()
+ }
 
  const onSubmit = async data => {
   try {
@@ -107,135 +144,145 @@ function ContactAddForm() {
  }
 
  return (
-  <Box mb={2}>
-   <Card {...GCardOption(themeMode)}>
-    <GStyledTopBorderDivider mode={themeMode} />
-    <Grid container spacing={1} px={3}>
-     {/* layout title */}
-     <Grid item xs={12} sm={12} mt={1.5}>
-      <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={2}>
-       <Typography sx={{ color: 'grey.400' }} variant={TYPOGRAPHY.H3}>
-        {t('add_new_contact.label').toUpperCase()}
-       </Typography>
-      </GStyledSpanBox>
-     </Grid>
-
-     <GridViewTitle title={''} />
-     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      {/* personal information */}
-      <Grid item lg={12} sm={12}>
-       <Grid container spacing={2} p={1} pb={5}>
-        <Grid item xs={12} sm={12}>
-         <GridViewTitle title={t('personal_information.label')} />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-         <RHFRequiredTextFieldWrapper condition={!firstName}>
-          <RHFTextField
-           name='firstName'
-           label={t('first_name.label')}
-           autoComplete={LABEL.NAME}
-           aria-label={t('first_name.label')}
-           helperText={errors.firstName ? errors.firstName.message : ''}
-           required
-          />
-         </RHFRequiredTextFieldWrapper>
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-         <RHFRequiredTextFieldWrapper condition={!lastName}>
+  <Fragment>
+   <Box mb={2}>
+    <Card {...GCardOption(themeMode)}>
+     <GStyledTopBorderDivider mode={themeMode} />
+     <Grid container spacing={1} px={3}>
+      {/* layout title */}
+      <Grid item xs={12} sm={12} mt={1.5}>
+       <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={2}>
+        <Typography sx={{ color: 'grey.400' }} variant={TYPOGRAPHY.H3}>
+         {t('add_new_contact.label').toUpperCase()}
+        </Typography>
+       </GStyledSpanBox>
+      </Grid>
+      <GridViewTitle title={''} />
+      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+       {/* personal information */}
+       <Grid item lg={12} sm={12}>
+        <Grid container spacing={2} p={1} pb={5}>
+         <Grid item xs={12} sm={12}>
+          <GridViewTitle title={t('personal_information.label')} />
+         </Grid>
+         <Grid item xs={12} sm={6} md={6}>
+          <RHFRequiredTextFieldWrapper condition={!firstName}>
+           <RHFTextField
+            name='firstName'
+            label={t('first_name.label')}
+            autoComplete={LABEL.NAME}
+            aria-label={t('first_name.label')}
+            helperText={errors.firstName ? errors.firstName.message : ''}
+            required
+           />
+          </RHFRequiredTextFieldWrapper>
+         </Grid>
+         <Grid item xs={12} sm={6} md={6}>
           <RHFTextField name='lastName' label={t('last_name.label')} autoComplete={KEY.NAME} aria-label={KEY.NAME} helperText={errors.lastName ? errors.lastName.message : ''} required />
-         </RHFRequiredTextFieldWrapper>
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-         <RHFRequiredTextFieldWrapper condition={!email}>
-          <RHFTextField name='email' label={t('email.label')} autoComplete={KEY.EMAIL} aria-label={t('email.label')} helperText={errors.email ? errors.email.message : ''} required />
-         </RHFRequiredTextFieldWrapper>
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-        {phoneNumbers?.map((ph, index) => (
-            <GStyledCustomPhoneInputBox key={index}>
-                <RHFCustomPhoneInput
-                name={`phoneNumbers[${index}]`}
-                value={ph}
-                label={ph?.type || 'Contact Number'}
-                index={index}
-                helperText={errors.phoneNumbers ? errors.phoneNumbers.message : ''}
-                sx={{ flex: 1 }}
-                />
-            </GStyledCustomPhoneInputBox>
-        ))}
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-         <RHFTextField name='title' label={t('title.label')} autoComplete={KEY.TITLE} aria-label={KEY.TITLE} helperText={errors.title ? errors.title.message : ''} />
-        </Grid>
-        {/* address information  */}
-        <Grid item xs={12} sm={12}>
-         <GridViewTitle title={t('address_information.label')} />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-         <RHFTextField
-          name='street'
-          label={t('address.street.label')}
-          autoComplete={KEY.ADDRESS.STREET}
-          aria-label={t('address.street.label')}
-          helperText={errors.street ? errors.street.message : ''}
-         />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-         <RHFTextField
-          name='suburb'
-          label={t('address.suburb.label')}
-          autoComplete={KEY.ADDRESS.SUBURB}
-          aria-label={t('address.suburb.label')}
-          helperText={errors.suburb ? errors.suburb.message : ''}
-         />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-         <RHFTextField name='city' label={t('address.city.label')} autoComplete={KEY.ADDRESS.CITY} aria-label={t('address.city.label')} helperText={errors.city ? errors.city.message : ''} />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-         <RHFTextField
-          name='postcode'
-          label={t('address.post_code.label')}
-          autoComplete={KEY.ADDRESS.POST_CODE}
-          aria-label={t('address.post_code.label')}
-          helperText={errors.postcode ? errors.postcode.message : ''}
-         />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-         <RHFTextField
-          name='region'
-          label={t('address.region.label')}
-          autoComplete={KEY.ADDRESS.REGION}
-          aria-label={t('address.region.label')}
-          helperText={errors.region ? errors.region.message : ''}
-         />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-         <RHFCountryAutocomplete fullWidth name='country' label={t('country.label')} helperText={errors.country ? errors.country.message : ''} required />
+         </Grid>
+         <Grid item xs={12} sm={6} md={6}>
+          <RHFRequiredTextFieldWrapper condition={REGEX.EMAIL.test(email) === false}>
+           <RHFTextField name='email' label={t('email.label')} autoComplete={KEY.EMAIL} aria-label={t('email.label')} helperText={errors.email ? errors.email.message : ''} required />
+          </RHFRequiredTextFieldWrapper>
+         </Grid>
+         <Grid item xs={12} sm={6} md={6}>
+          {phoneNumbers?.map((ph, index) => (
+           <GStyledCustomPhoneInputBox key={index}>
+            <RHFCustomPhoneInput
+             name={`phoneNumbers[${index}]`}
+             value={ph}
+             label={ph?.type || 'Contact Number'}
+             index={index}
+             helperText={errors.phoneNumbers ? errors.phoneNumbers.message : ''}
+             sx={{ flex: 1 }}
+            />
+           </GStyledCustomPhoneInputBox>
+          ))}
+         </Grid>
+         <Grid item xs={12} sm={6} md={6}>
+          <RHFTextField name='title' label={t('title.label')} autoComplete={KEY.TITLE} aria-label={KEY.TITLE} helperText={errors.title ? errors.title.message : ''} />
+         </Grid>
+         {/* address information  */}
+         <Grid item xs={12} sm={12}>
+          <GridViewTitle title={t('address_information.label')} />
+         </Grid>
+         <Grid item xs={12} sm={6} md={6}>
+          <RHFTextField
+           name='street'
+           label={t('address.street.label')}
+           autoComplete={KEY.ADDRESS.STREET}
+           aria-label={t('address.street.label')}
+           helperText={errors.street ? errors.street.message : ''}
+          />
+         </Grid>
+         <Grid item xs={12} sm={6} md={6}>
+          <RHFTextField
+           name='suburb'
+           label={t('address.suburb.label')}
+           autoComplete={KEY.ADDRESS.SUBURB}
+           aria-label={t('address.suburb.label')}
+           helperText={errors.suburb ? errors.suburb.message : ''}
+          />
+         </Grid>
+         <Grid item xs={12} sm={6} md={6}>
+          <RHFTextField name='city' label={t('address.city.label')} autoComplete={KEY.ADDRESS.CITY} aria-label={t('address.city.label')} helperText={errors.city ? errors.city.message : ''} />
+         </Grid>
+         <Grid item xs={12} sm={6} md={6}>
+          <RHFTextField
+           name='postcode'
+           label={t('address.post_code.label')}
+           autoComplete={KEY.ADDRESS.POST_CODE}
+           aria-label={t('address.post_code.label')}
+           helperText={errors.postcode ? errors.postcode.message : ''}
+          />
+         </Grid>
+         <Grid item xs={12} sm={6} md={6}>
+          <RHFTextField
+           name='region'
+           label={t('address.region.label')}
+           autoComplete={KEY.ADDRESS.REGION}
+           aria-label={t('address.region.label')}
+           helperText={errors.region ? errors.region.message : ''}
+          />
+         </Grid>
+         <Grid item xs={12} sm={6} md={6}>
+          <RHFCountryAutocomplete fullWidth name='country' label={t('country.label')} helperText={errors.country ? errors.country.message : ''} required />
+         </Grid>
         </Grid>
        </Grid>
-      </Grid>
 
-      <Grid container direction={{ xs: 'column', md: 'row' }} justifyContent={FLEX.FLEX_END}>
-       <Grid item xs={12} sm={12} md={6}>
-        <GStyledSpanBox gap={2}>
-        {/* TODO: handle the cancel: it should clear everything up/ reset etc. */}
-         <GStyledCloseButton fullWidth onClick={() => {}}>
-          {t('cancel.label').toUpperCase()}
-         </GStyledCloseButton>
-
-         <GStyledLoadingButton fullWidth color={KEY.INHERIT} type={KEY.SUBMIT} mode={themeMode} loading={isSubmitting} disabled={Object.keys(errors).length > 0}>
-          {t('add_new_contact.label').toUpperCase()}
-         </GStyledLoadingButton>
-        </GStyledSpanBox>
+       <Grid container direction={{ xs: 'column', md: 'row' }} justifyContent={FLEX.FLEX_END}>
+        <Grid item xs={12} sm={12} md={6}>
+         <GStyledSpanBox gap={2}>
+          <GStyledCloseButton fullWidth onClick={handleConfirmCancel}>
+           {t('cancel.label').toUpperCase()}
+          </GStyledCloseButton>
+          <GStyledLoadingButton fullWidth color={KEY.INHERIT} type={KEY.SUBMIT} mode={themeMode} loading={isSubmitting} disabled={Object.keys(errors).length > 0 || !isFormComplete}>
+           {t('add_new_contact.label').toUpperCase()}
+          </GStyledLoadingButton>
+         </GStyledSpanBox>
+        </Grid>
+        {/* Spacer */}
+        <Box height={{ xs: 50, md: 100 }} />
        </Grid>
-       {/* Spacer */}
-       <Box height={{ xs: 50, md: 100 }} />
-      </Grid>
-     </FormProvider>
-    </Grid>
-   </Card>
-  </Box>
+      </FormProvider>
+     </Grid>
+    </Card>
+   </Box>
+   {openConfirmDialog && (
+    <ConfirmDialog
+     open={openConfirmDialog}
+     onClose={() => setOpenConfirmDialog(false)}
+     title={t('unsaved_changes.label')}
+     content={t('responses.messages.form_dirty')}
+     onClick={handleCancel}
+     actionButtonBgColor={theme.palette.error.dark}
+     actionButtonTextColor={theme.palette.error.contrastText}
+     i18ActionButtonLabel={'leave.label'}
+     i18SubButtonLabel={'stay.label'}
+    />
+   )}
+  </Fragment>
  )
 }
 
