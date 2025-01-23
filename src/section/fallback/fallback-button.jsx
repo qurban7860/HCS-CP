@@ -11,7 +11,7 @@ const FallbackButton = () => {
  return (
   <GStyledDefLoadingButton
    onClick={() => window.open(PATH_DASHBOARD.general.app, '_self')}
-   size={SIZE.LARGE}
+   size={SIZE.MEDIUM}
    bgColor={themeMode === KEY.LIGHT ? theme.palette.howick.bronze : theme.palette.howick.orange}
    textColor={themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black}>
    {t('go_back.label').toUpperCase()}
