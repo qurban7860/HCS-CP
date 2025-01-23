@@ -47,6 +47,7 @@ function _getMeteoIcon(icon) {
 const ICON_WEB = {
  A_BACK              : _getAnimatedIcon('chevron-small-left'),
  ACTIVE              : _getWebIcon('checkbox-marked-circle'),
+ ADD                 : _getWebIcon('add-bold'),
  ALERT_OUTLINE       : _getWebIcon('alert-triangle-outline'),
  ALERT_OCTAGON       : _getWebIcon('alert-octagon'),
  BACK                : _getWebIcon('chevron-left'),
@@ -154,6 +155,7 @@ const ICON_LOC = {
 
 export const ICON_WEB_NAME = {
    // @web
+ADD                 : 'ADD',
 A_BACK              : 'A_BACK',
 ACTIVE              : 'ACTIVE',
 ALERT_OUTLINE       : 'ALERT_OUTLINE',
