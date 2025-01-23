@@ -200,27 +200,23 @@ const ContactTab = () => {
         {renderList()}
        </Grid>
       </GStyledScrollableHeightLockGrid>
-      <Grid item xs={12} display={'flex'} justifyContent={'right'} mt={2}>
-       <GStyledIconLoadingButton
-        loading={isLoading}
-        bgColor={contactFormVisibility ? theme.palette.howick.orange : theme.palette.howick.darkBlue}
-        textColor={contactFormVisibility ? theme.palette.common.black : theme.palette.common.white}
-        type={'button'}
-        variant={KEY.CONTAINED}
-        mode={themeMode}
-        onClick={handleSwitchLayout}
-        sx={{ transition: 'ease-in-out width 0.3s' }}>
-        {!contactFormVisibility ? (
+      {!contactFormVisibility && (
+       <Grid item xs={12} display={'flex'} justifyContent={'right'} mt={2}>
+        <GStyledIconLoadingButton
+         loading={isLoading}
+         bgColor={contactFormVisibility ? theme.palette.howick.orange : theme.palette.howick.darkBlue}
+         textColor={contactFormVisibility ? theme.palette.common.black : theme.palette.common.white}
+         type={'button'}
+         variant={KEY.CONTAINED}
+         mode={themeMode}
+         onClick={handleSwitchLayout}
+         sx={{ transition: 'ease-in-out width 0.3s' }}>
          <Fragment>
           <Icon icon={ICON_NAME.ADD} sx={{ ...ICON.SIZE_XS }} /> {t('add_new_contact.label').toUpperCase()}
          </Fragment>
-        ) : (
-         <Fragment>
-          <Icon icon={ICON_NAME.CHEVRON_LEFT} sx={{ ...ICON.SIZE_XS }} /> {t('cancel.label').toUpperCase()}
-         </Fragment>
-        )}
-       </GStyledIconLoadingButton>
-      </Grid>
+        </GStyledIconLoadingButton>
+       </Grid>
+      )}
      </GStyledStickyGrid>
      <Grid item xs={12} md={9} sx={{ transition: 'ease-in-out width 0.3s' }}>
       {contactFormVisibility ? (
