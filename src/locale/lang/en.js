@@ -270,6 +270,9 @@ const en = {
  howick_website: {
   label: `Howick Website`
  },
+ invitation_portal_access: {
+  label: `Invitation for Portal Access`
+ },
  invite: {
   label: `Invite`
  },
@@ -565,11 +568,12 @@ const en = {
    logged_out: 'Logged out',
    register_request_submitted: 'Registration request submitted',
    user_invite_request_submitted: 'User invite request submitted',
-   details_updated: 'User details updated, navigating you to the Log in page...',
+   details_updated: 'User details updated',
    password_updated: 'Password updated',
    reset_request_submitted: 'Password reset request submitted'
   },
   error: {
+   email_already_exists: 'Email already exists',
    form_check_errors: 'Please check the form for errors',
    invalid_credentials: 'Invalid credentials',
    machine_serial_invalid: 'Machine serial number provided is invalid',
