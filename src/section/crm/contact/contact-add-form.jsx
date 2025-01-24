@@ -20,14 +20,14 @@ import { GStyledLoadingButton, GStyledCustomPhoneInputBox, GCardOption, GStyledT
  * @returns {JSX.Element}
  */
 function ContactAddForm() {
- const [isFormComplete, setIsFormComplete] = useState(false)
+ const [isFormComplete, setIsFormComplete]       = useState(false)
  const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
- const { customer } = useSelector(state => state.customer)
- const { contacts } = useSelector(state => state.contact)
- const regEx = new RegExp(REGEX.ERROR_CODE)
- const theme = useTheme()
- const { themeMode } = useSettingContext()
- const defaultValues = useAddContactDefaultValues(customer)
+ const { customer }                              = useSelector(state => state.customer)
+ const { contacts }                              = useSelector(state => state.contact)
+ const regEx                                     = new RegExp(REGEX.ERROR_CODE)
+ const theme                                     = useTheme()
+ const { themeMode }                             = useSettingContext()
+ const defaultValues                             = useAddContactDefaultValues(customer)
 
  const methods = useForm({
   resolver: yupResolver(ContactSchema),
@@ -83,7 +83,6 @@ function ContactAddForm() {
   setOpenConfirmDialog(false)
   reset(defaultValues)
  }
-
 
  const isFormDirty = Object.keys(defaultValues).some(key => !deepEqual(watch(key), defaultValues[key]))
 
