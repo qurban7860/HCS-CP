@@ -8,34 +8,30 @@ import { dispatch } from 'store'
 import { useForm, Controller } from 'react-hook-form'
 import { registerCustomer } from 'store/slice'
 import { RegisterSchema } from 'schema'
-import { useRegisterDefaultValues } from 'section/auth'
-import { useTheme, Typography, Grid, Link, Box } from '@mui/material'
+import { useRegisterDefaultValues, RegisterSuccessCard } from 'section/auth'
+import { Typography, Grid, Link, Box } from '@mui/material'
 import { AutocompleteScrollChipContainer, RHFRequiredTextFieldWrapper } from 'component'
 import FormProvider, { RHFTextField, RHFCountryAutocomplete, RHFPhoneTextField } from 'component/hook-form'
-import { GLOBAL } from 'config/global'
-import { RADIUS } from 'config'
-import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, COUNTRY, TYPOGRAPHY, FLEX_DIR } from 'constant'
 import { GStyledLoadingButton, GStyledCenteredTextBox } from 'theme/style'
-import { RegisterSuccessCard } from 'section/auth'
-import { delay } from 'util'
+import { delay, deepEqual } from 'util'
+import { GLOBAL } from 'config/global'
+import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, COUNTRY, TYPOGRAPHY, FLEX_DIR } from 'constant'
 
 /**
  * [!Note]: This will be refined
  * @returns {JSX.Element}
  */
 function RegisterForm() {
- const [isFormComplete, setIsFormComplete] = useState(false)
- const [isTyping, setIsTyping] = useState(false)
- const [rows, setRows] = useState(1)
- const [submittedData, setSubmittedData] = useState(null)
- const [isSuccessState, setIsSuccessState] = useState(false)
+ const [isFormComplete, setIsFormComplete]       = useState(false)
+ const [isTyping, setIsTyping]                   = useState(false)
+ const [rows, setRows]                           = useState(1)
+ const [submittedData, setSubmittedData]         = useState(null)
+ const [isSuccessState, setIsSuccessState]       = useState(false)
 
- const regEx = new RegExp(REGEX.ERROR_CODE)
+ const regEx         = new RegExp(REGEX.ERROR_CODE)
  const serialNoRegEx = new RegExp(REGEX.SERIAL_NO)
-
- const theme = useTheme()
  const { themeMode } = useSettingContext()
- const isMobile = useResponsive('down', 'sm')
+ const isMobile      = useResponsive('down', 'sm')
 
  const getCountryByLocale = () => {
   const locale = Intl.DateTimeFormat().resolvedOptions().locale || 'en-NZ'
@@ -50,13 +46,11 @@ function RegisterForm() {
     position => {
      const userCountry = getCountryByLocale()
      setValue('country', userCountry)
-     //  updatePhoneCountryCode(userCountry)
     },
     error => {
      console.error('Error getting user location:', error)
      const userCountry = getCountryByLocale()
      setValue('country', userCountry)
-     //  updatePhoneCountryCode(userCountry)
     }
    )
   } else {
@@ -104,13 +98,40 @@ function RegisterForm() {
  }
 
  useEffect(() => {
-  if (!isSuccessState && machineSerialNos.length > 0 && machineSerialNos[machineSerialNos.length - 1].length === 5) {
-   setValue(
-    'machineSerialNos',
-    machineSerialNos.filter(serialNumber => validateSerialNumber(serialNumber))
-   )
-  }
- }, [machineSerialNos, setValue])
+     if (!isSuccessState && machineSerialNos.length > 0 && machineSerialNos[machineSerialNos.length - 1].length === 5) {
+         setValue(
+             'machineSerialNos',
+             machineSerialNos.filter(serialNumber => validateSerialNumber(serialNumber))
+            )
+        }
+    }, [machineSerialNos, setValue])
+
+ const isFormDirty = Object.keys(defaultValues).some(key => !deepEqual(watch(key), defaultValues[key]))
+ useEffect(() => {
+    const handleBeforeUnload = event => {
+     if (isFormDirty) {
+      event.preventDefault()
+      event.returnValue = t('responses.messages.form_dirty')
+     }
+    }
+    const handlePopState = event => {
+     if (isFormDirty) {
+      const confirmation = window.confirm(t('responses.messages.form_dirty'))
+      if (!confirmation) {
+       event.preventDefault()
+       history.pushState(null, document.title, window.location.href)
+      } else {
+       reset(defaultValues)
+      }
+     }
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    window.addEventListener('popstate', handlePopState)
+    return () => {
+     window.removeEventListener('beforeunload', handleBeforeUnload)
+     window.removeEventListener('popstate', handlePopState)
+    }
+   }, [isFormDirty])
 
  const handleValidateSerialNumbers = (event, newValue, reason, details) => {
   if (event.target.value?.length > 0) {
@@ -144,15 +165,15 @@ function RegisterForm() {
    return
   }
   if (error?.MessageCode && regEx.test(error.MessageCode)) {
-   snack('Error in sending form', { variant: COLOR.ERROR })
+   snack(t('responses.error.default'), { variant: COLOR.ERROR })
    setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
     type: 'submission',
     message: error.MessageCode
    })
    return
   }
-  console.error('Unexpected error:', error)
-  snack(t('responses.error.unable_to_process_request'), { variant: COLOR.ERROR })
+  console.error(t('responses.error.unexpected_error'), error)
+  snack(`Error occured: ${error}`, { variant: COLOR.ERROR })
   setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
    type: 'unexpected',
    message: error?.message || t('responses.error.unexpected_error')
@@ -301,7 +322,6 @@ function RegisterForm() {
      <Grid item xs={12} sm={4} md={4}>
       <GStyledLoadingButton
        fullWidth
-       isLoading={isSubmitting}
        color={KEY.INHERIT}
        size={SIZE.LARGE}
        type={KEY.SUBMIT}

@@ -1,31 +1,33 @@
 import { useState, useEffect } from 'react'
 import { t } from 'i18next'
-import { LoadingButton } from '@mui/lab'
+import { Trans } from 'react-i18next'
 import { useIdleTimer } from 'react-idle-timer'
 import { useAuthContext } from 'auth'
+import { useTheme } from '@mui/material/styles'
 import { ConfirmDialog } from 'component/dialog'
+import { GStyledDefLoadingButton } from 'theme/style'
 import { GLOBAL } from 'config/global'
 import { VARIANT } from 'constant'
-import { Trans } from 'react-i18next'
 
 const IdleManager = () => {
- const [openModal, setOpenModal] = useState(false)
+ const [openModal, setOpenModal]   = useState(false)
  const { logout, isAuthenticated } = useAuthContext()
- const [showStay, setShowStay] = useState(true)
- const [countdown, setCountdown] = useState(10)
+ const [showStay, setShowStay]     = useState(true)
+ const [countdown, setCountdown]   = useState(10)
+ const theme                       = useTheme()
 
- const idleTimeout = 14 * GLOBAL.IDLE_TIME
+ const idleTimeout                 = 14 * GLOBAL.IDLE_TIME
 
  const handleIdle = () => {
   setOpenModal(true)
  }
 
  const { activate } = useIdleTimer({
-  timeout: idleTimeout,
+  timeout         : idleTimeout,
   promptBeforeIdle: GLOBAL.IDLE_TIME * 2,
-  onPrompt: handleIdle,
-  debounce: 500,
-  disabled: !isAuthenticated
+  onPrompt        : handleIdle,
+  debounce        : 500,
+  disabled        : !isAuthenticated
  })
 
  useEffect(() => {
@@ -72,9 +74,9 @@ const IdleManager = () => {
    i18SubButtonLabel={'logout.label'}
    action={
     showStay ? (
-     <LoadingButton variant={VARIANT.CONTAINED} color='primary' onClick={handleStillHere}>
-      {t('stay.label')}
-     </LoadingButton>
+     <GStyledDefLoadingButton variant={VARIANT.CONTAINED} type={'button'} bgColor={theme.palette.howick.darkBlue} onClick={handleStillHere}>
+      {t('stay.label').toUpperCase()}
+     </GStyledDefLoadingButton>
     ) : null
    }
   />

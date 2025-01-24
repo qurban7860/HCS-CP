@@ -98,7 +98,20 @@ export const PATH_SERVER = {
    * /security/forgetPassword/verifyToken
    */
   NEW_PASSWORD: _url(_SECURITY, 'forgetPassword', 'verifyToken'),
-
+  /**
+   * @submodule /security/invites
+   */
+  INVITES: {
+    /**
+    * /security/invites
+    */
+    list: _url(_SECURITY, 'invites'),
+      /**
+    * /security/invites/:inviteId
+    * @param {*} inviteId - string
+    */
+   detail: inviteId => _url(_SECURITY, 'invites', inviteId)
+  },
   /**
    * /security/invites/sendUserInvite/:userId
    * @param {string} userId

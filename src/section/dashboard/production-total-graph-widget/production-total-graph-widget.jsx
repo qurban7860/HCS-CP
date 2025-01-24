@@ -106,7 +106,7 @@ const ProductionTotalGraphWidget = ({ selectedMachine, setSelectedMachine }) => 
        </Grid>
        <Grid item xs={12} sm={6}>
         <Grid container justifyContent={FLEX.FLEX_END}>
-         <GStyledLoadingButton mode={themeMode} fullWidth={isMobile} isLoading={isLoading} onClick={handleRefresh} variant='filled' size='large'>
+         <GStyledLoadingButton mode={themeMode} fullWidth={isMobile} onClick={handleRefresh} variant='filled' size='large'>
           <Icon icon={ICON_NAME.REFRESH} />
          </GStyledLoadingButton>
         </Grid>

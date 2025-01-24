@@ -2,9 +2,9 @@ import { Fragment, useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useLocation } from 'react-router-dom'
 import { useActiveLink, useSettingContext } from 'hook'
+import { KEY } from 'constant'
 import { GStyledPopover } from './style'
 import NavItem from './nav-item'
-import { KEY } from 'constant'
 
 NavListY.propTypes = {
  data: PropTypes.object.isRequired,

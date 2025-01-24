@@ -1,24 +1,18 @@
 import PropTypes from 'prop-types'
+import { t } from 'i18next'
 import { noCase } from 'change-case'
 import { useState, memo, Fragment } from 'react'
-import { useNavigate } from 'react-router'
-import { useLocale } from 'locale'
 import { useWebSocketContext } from 'auth/websocket-provider'
-import { Box, List, Badge, Avatar, Divider, Typography, ListItemText, ListItemAvatar, ListItemButton, Tooltip, IconButton, Grid } from '@mui/material'
+import { Box, Badge, Avatar, Typography, ListItemText, ListItemAvatar, ListItemButton, Tooltip, IconButton, Grid } from '@mui/material'
 import { fDateTime, fToNow } from 'util'
 import { Iconify } from 'component/iconify'
-import { Scrollbar } from 'component/scrollbar'
 import { MenuPopover } from 'component/menu-popover'
 import { IconButtonAnimate } from 'component/animate'
-import { ICON } from 'constant/icon'
 
 function NotificationPopover() {
- const userId = localStorage.getItem('userId')
  const [openPopover, setOpenPopover] = useState(null)
  const [totalUnRead, setTotalUnRead] = useState(0)
  const { notifications, sendJsonMessage } = useWebSocketContext()
- const navigate = useNavigate()
- const { t } = useLocale()
 
  const handleOpenPopover = event => {
   setOpenPopover(event.currentTarget)
@@ -164,14 +158,6 @@ function renderNotification(notification) {
 
  if (notification.type === 'SERVICE-GLOBAL') {
   const { status } = extraInfo
-
-  if (status === 'SUBMITTED') {
-   rendered.icon = ICON.DOCUMENT_ACTIVE.icon
-   rendered.color = ICON.DOCUMENT_ACTIVE.color
-  } else {
-   rendered.icon = ICON.DOCUMENT_ACTIVE.icon
-   rendered.color = ICON.DOCUMENT_ACTIVE.color
-  }
  }
 
  return rendered

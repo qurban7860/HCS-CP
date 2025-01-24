@@ -83,7 +83,7 @@ function ChangePasswordDialog() {
     <DialogActions>
      <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
       <GStyledCloseButton onClick={handleChangePasswordDialog}>{t('close.label').toUpperCase()}</GStyledCloseButton>
-      <GStyledLoadingButton className='portal-button' isLoading={isSubmitting} type={KEY.SUBMIT} mode={themeMode} loading={isSubmitting}>
+      <GStyledLoadingButton className='portal-button' type={KEY.SUBMIT} mode={themeMode} loading={isSubmitting}>
        {t('change_password.label').toUpperCase()}
       </GStyledLoadingButton>
      </Grid>

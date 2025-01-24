@@ -2,9 +2,9 @@ import PropTypes from 'prop-types'
 import { Fragment } from 'react'
 import { SnackbarProvider as NotistackProvider, useSnackbar } from 'notistack'
 import { Slide, IconButton } from '@mui/material'
-import { useIcon, ICON_NAME } from 'hook'
-import { ICON_WEB_NAME } from 'config/icon-directory'
-import { COLOR, KEY } from 'constant'
+import { Icon, ICON_NAME } from 'hook'
+import { ICON } from 'config/layout'
+import { KEY } from 'constant'
 import { StyledSnackContent, StyledSnackIconMDiv } from './style'
 
 SnackProvider.propTypes = {
@@ -18,15 +18,13 @@ export default function SnackProvider({ children }) {
   closeSnackbar(key)
  }
 
- const { Icon, iconSrc: closeIcon } = useIcon(ICON_NAME.CHEVRON_RIGHT)
-
  return (
   <Fragment>
    <NotistackProvider
     dense
-    maxSnack={5}
+    maxSnack={2}
     preventDuplicate
-    autoHideDuration={3000}
+    autoHideDuration={2000}
     TransitionComponent={Slide}
     anchorOrigin={{ vertical: KEY.BOTTOM, horizontal: KEY.RIGHT }}
     Components={{
@@ -36,18 +34,19 @@ export default function SnackProvider({ children }) {
      error: StyledSnackContent,
      info: StyledSnackContent
     }}
+    // TODO: clean this up; use the SnackIcon component instead
     iconVariant={{
-     info: <SnackIcon icon={ICON_WEB_NAME.INFO} color='howick.orange' />,
-     success: <SnackIcon icon={ICON_WEB_NAME.CHECK_CIRCLE} color='howick.midBlue' />,
-     warning: <SnackIcon icon={ICON_WEB_NAME.WARNING} color='warning.main' />,
-     error: <SnackIcon icon={ICON_WEB_NAME.ALERT_OCTAGON} color='common.white' />
+     info: <Icon icon={ICON_NAME.INFO} color='howick.orange' sx={{ marginRight: 1, ...ICON.SIZE_XS }} />,
+     success: <Icon icon={ICON_NAME.CHECK_CIRCLE} color={'burnIn.altDark'} sx={{ marginRight: 1,  ...ICON.SIZE_XS }} />,
+     warning: <Icon icon={ICON_NAME.WARNING} color='warning.main' sx={{ marginRight: 1, ...ICON.SIZE_XS }} />,
+     error: <Icon icon={ICON_NAME.ALERT_OCTAGON} color='common.white' sx={{ marginRight: 1, ...ICON.SIZE_XS }} />
     }}
     action={key => (
      <IconButton size='small' onClick={onClose(key)}>
-      <Icon icon={closeIcon} />
+      <Icon icon={ICON_NAME.CHEVRON_RIGHT} />
      </IconButton>
     )}>
-    {children}
+    &nbsp;{children}
    </NotistackProvider>
   </Fragment>
  )
@@ -59,10 +58,9 @@ SnackIcon.propTypes = {
 }
 
 function SnackIcon({ icon, color }) {
- const { Icon, iconSrc } = useIcon(icon)
  return (
   <StyledSnackIconMDiv initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ duration: 0.3 }}>
-   <Icon icon={iconSrc} color={color} width={18} />
+   <Icon icon={icon} color={color} sx={{ ...ICON.SIZE_XS }} />
   </StyledSnackIconMDiv>
  )
 }

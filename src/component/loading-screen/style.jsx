@@ -1,14 +1,14 @@
 import { m } from 'framer-motion'
 import { styled, keyframes } from '@mui/material/styles'
-import { Box } from '@mui/material'
+import { alpha, Box } from '@mui/material'
 import { KEY } from 'constant'
 
 export const StyledRootDiv = styled(m.div)(({ theme }) => ({
- height: '100vh',
- display: 'flex',
- flexDirection: 'row',
- justifyContent: 'center',
- alignItems: 'center',
+ height         : '100vh',
+ display        : 'flex',
+ flexDirection  : 'row',
+ justifyContent : 'center',
+ alignItems     : 'center',
  backgroundColor: theme.palette.background.default
 }))
 
@@ -29,6 +29,16 @@ const slideDown = keyframes`
   }
 `
 
+const slideDownFrame = keyframes`
+  0% {
+    transform: scaleY(0);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+`
+
+
 const slideUp = keyframes`
   0% {
     opacity: 0;
@@ -36,6 +46,15 @@ const slideUp = keyframes`
   }
   100% {
     opacity: 1;
+    transform: scaleY(1);
+  }
+`
+
+const slideUpFrame= keyframes`
+  0% {
+    transform: scaleY(0);
+  }
+  100% {
     transform: scaleY(1);
   }
 `
@@ -64,7 +83,7 @@ const rotateDiagonalReverse = keyframes`
 
 export const StyledAnimatedPath = styled('path')(({ theme, mode, strokeColor }) => ({
  fill: 'none',
- stroke: !strokeColor && (mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[500]),
+ stroke: !strokeColor && (mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.common.white),
  strokeWidth: 1.5,
  strokeMiterlimit: 100,
  strokeDasharray: 1000,
@@ -89,24 +108,24 @@ export const LoaderContainer = styled(Box)(({ theme }) => ({
  height: '128px'
 }))
 
-export const MainBeam = styled(Box)(({ theme, bottom }) => ({
+export const MainBeam = styled(Box)(({ theme, bottom, mode }) => ({
  position: 'absolute',
  top: bottom ? 'auto' : '32px',
  bottom: bottom ? '32px' : 'auto',
  left: 0,
  width: '100%',
  height: '4px',
- backgroundColor: theme.palette.grey[200],
+ backgroundColor: alpha(mode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.common.white, 0.5),
  transform: bottom ? 'scaleX(-1)' : 'none'
 }))
 
-export const AnimatedFill = styled(Box)(({ theme }) => ({
+export const AnimatedFill = styled(Box)(({ theme, mode }) => ({
  position: 'absolute',
  top: 0,
  left: 0,
  height: '100%',
- backgroundColor: theme.palette.grey[300],
- animation: `${grow} 2s ease-in-out infinite`,
+ backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.common.white,
+ animation: `${grow} 2s ease-in-out infinite alternate`,
  width: '100%'
 }))
 
@@ -120,31 +139,49 @@ export const BeamsContainer = styled(Box)(({ bottom }) => ({
  transform: bottom ? 'scaleX(-1)' : 'none'
 }))
 
-export const VerticalBeam = styled(Box)(({ theme, index, bottom }) => ({
+export const VerticalBeam = styled(Box)(({ theme, index, bottom, mode }) => ({
  position: 'absolute',
  top: bottom ? 'auto' : 0,
  bottom: bottom ? 0 : 'auto',
- height: '16px',
+ height: '30px',
  width: '4px',
- backgroundColor: theme.palette.grey[200],
+ backgroundColor: alpha(mode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.common.white, 0.5),
  left: `${(index + 1) * 12.5}%`,
  transformOrigin: bottom ? 'bottom' : 'top',
- animation: `${bottom ? slideUp : slideDown} 0.5s ease-out ${index * 0.1}s`,
+ animation: `${bottom ? slideUp : slideDown} 0.5s ease-out ${2 + index * 0.4}s infinite alternate`,
  animationFillMode: 'forwards',
  opacity: 0,
- transform: 'scaleY(0)'
+ transform: 'scaleY(0)',
+ borderRadius: 0
 }))
 
-export const DiagonalBeam = styled(Box)(({ theme, index, bottom }) => ({
+export const UpFrame = styled(Box)(({ theme, index, bottom, mode }) => ({
+  // position: 'absolute',
+  // top: bottom ? 'auto' : 0,
+  // bottom: bottom ? 0 : 'auto',
+  // height: '30px',
+  // width: '4px',
+  // backgroundColor: alpha(mode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.common.white, 0.5),
+  // left: `${(index + 1) * 12.5}%`,
+  transformOrigin: bottom ? 'center' : 'top',
+  animation: `${bottom ? slideUpFrame : slideDownFrame} 0.5s ease-out`,
+  animationFillMode: 'forwards',
+  // opacity: 0,
+  transform: 'scaleY(0)',
+  borderRadius: 0
+ }))
+
+
+export const DiagonalBeam = styled(Box)(({ theme, index, bottom, mode }) => ({
  position: 'absolute',
  top: bottom ? 'auto' : 0,
  bottom: bottom ? 0 : 'auto',
- height: '24px',
+ height: '40px',
  width: '4px',
- backgroundColor: theme.palette.grey[200],
+ backgroundColor: alpha(mode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.common.white, 0.5),
  left: `${(index + 1) * 12.5}%`,
  transformOrigin: bottom ? 'bottom left' : 'top left',
- animation: `${bottom ? rotateDiagonalReverse : rotateDiagonal} 0.5s ease-out ${0.8 + index * 0.1}s`,
+ animation: `${bottom ? rotateDiagonalReverse : rotateDiagonal} 0.5s ease-out alternate`,
  animationFillMode: 'forwards',
  opacity: 0,
  transform: bottom ? 'rotate(-45deg) scaleY(0)' : 'rotate(45deg) scaleY(0)'

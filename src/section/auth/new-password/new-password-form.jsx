@@ -120,7 +120,6 @@ export default function NewPasswordForm() {
     <GStyledLoadingButton
      fullWidth
      mode={themeMode}
-     isLoading={isSubmitting}
      size={SIZE.LARGE}
      type={KEY.SUBMIT}
      variant='contained'

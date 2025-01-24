@@ -84,7 +84,7 @@ export const StyledTableRow = styled(({ theme, mode, index, machine, ...other })
  '&:hover': {
   backgroundColor: mode === KEY.DARK ? theme.palette.grey[700] : theme.palette.common.white
  },
- width: user?.name ? '5%' : user?.email ? '30%' : user?.isActive.toString() ? '5%' : `calc(100% / ${HEADER_ITEMS.length})`
+ width: user?.name ? '5%' : user?.email ? '30%' : user?.isActive.toString() ? '2%' : `calc(100% / ${HEADER_ITEMS.length})`
 }))
 
 export const StyledScrollTableContainer = styled(TableContainer)(({ theme }) => ({

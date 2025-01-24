@@ -4,6 +4,7 @@ export const GLOBAL = {
  APP_TITLE             : 'Howick Portal',
  APP_BRANCH            : 'HOWICK PORTAL',
  APP_BRANDING          : 'Portal',
+ APP_COMPANY_NAME      : 'Howick ltd.',
  APP_TAGLINE           : 'Shaping the World of Construction',
  APP_CUSTOMER_TAGLINE  : 'The Portal for convenient & efficient machine management, update and support.',
  APP_NAME              : import.meta.env.VITE_NAME,

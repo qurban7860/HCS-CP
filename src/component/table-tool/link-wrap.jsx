@@ -13,7 +13,7 @@ function LinkWrap({ align, onClick, param, stringLength, tooltipTitle, openInNew
 
  return (
   <GStyledSpanBox gap={1}>
-   <Link onClick={onClick} sx={{ color: themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange }}>
+   <Link onClick={onClick} sx={{ color: themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.common.white }}>
     <Typography variant={isMobile ? TYPOGRAPHY.BODY2 : TYPOGRAPHY.H6}>{useLimitString(param, stringLength || 30)}</Typography>
    </Link>
    {openInNewTab && (

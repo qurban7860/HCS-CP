@@ -26,10 +26,19 @@ const en = {
   label: `Activate User`,
   toggle_to_acitvate: `Toggle to deactivate`
  },
+ add_new_contact: {
+  label: `Add New Contact`
+ },
+ add_as_contact: {
+  label: `Add as Contact`
+ },
  address: {
   label: `Address`,
   addresses: {
    label: `Addresses`
+  },
+  main_site: {
+   label: `Main Site`
   },
   street: {
    label: `Street`
@@ -214,6 +223,9 @@ const en = {
  email: {
   label: `Email`
  },
+ enable_portal_access: {
+  label: `Enable Portal Access`
+ },
  filter_status: {
   label: `Filter Status`
  },
@@ -245,6 +257,9 @@ const en = {
  graph_type: {
   label: `Graph Type`
  },
+ has_active_user_account: {
+  label: `Has an Active User Account`
+ },
  hmi_version: {
   label: `HMI Version`
  },
@@ -258,11 +273,20 @@ const en = {
  howick_website: {
   label: `Howick Website`
  },
+ invitation_portal_access: {
+  label: `Invitation for Portal Access`
+ },
  invite: {
   label: `Invite`
  },
+ invite_pending: {
+  label: `Invitation Pending`
+ },
  invite_user: {
   label: `Invite a User`
+ },
+ invite_sent: {
+  label: `Howick Portal invitation Sent`
  },
  inactive: {
   label: `Inactive`
@@ -290,6 +314,9 @@ const en = {
  },
  last_name: {
   label: `Last Name`
+ },
+ leave: {
+  label: `Leave`
  },
  legend: {
   label: `Legend`,
@@ -389,6 +416,10 @@ const en = {
    last: 'Check your email (<1>{{email}}</1>) for the invitation link'
   }
  },
+ new_contact: {
+  label: `New Contact`,
+  helper_text: `If the contact is not listed, please add them as a contact first or just by ticking the box below.`
+ },
  new_password: {
   label: `New Password`
  },
@@ -447,6 +478,9 @@ const en = {
   quick_specs: {
    label: `Quick Specs`
   }
+ },
+ no: {
+  label: `No`
  },
  no_found: {
   label: `No {{value}} Found`
@@ -532,22 +566,28 @@ const en = {
   label: `Responses`,
   messages: {
    pre_reset: 'Enter your email address below and we will send you instructions on how to reset your password.',
-   check_email: `Check your E-mail for the password reset link.`
+   check_email: `Check your E-mail for the password reset link.`,
+   form_dirty: `The form has unsaved changes. Are you sure you want to leave?`
   },
   success: {
+   created_contact: `Contact created`,
    logged_in: 'Logged in',
    logged_out: 'Logged out',
    register_request_submitted: 'Registration request submitted',
    user_invite_request_submitted: 'User invite request submitted',
-   details_updated: 'User details updated, navigating you to the Log in page...',
+   details_updated: 'User details updated',
    password_updated: 'Password updated',
    reset_request_submitted: 'Password reset request submitted'
   },
   error: {
+   default: 'An error occurred',
+   email_already_exists: 'Email already exists',
+   failed_submission: 'Failed to submit',
    form_check_errors: 'Please check the form for errors',
    invalid_credentials: 'Invalid credentials',
    machine_serial_invalid: 'Machine serial number provided is invalid',
    something_went_wrong: 'Something went wrong',
+   unable_create_contact: 'Unable to create contact',
    unable_to_process_request: 'Unable to process your request',
    unable_save_details: 'Unable to save details',
    unable_read_error_message: 'Unable to read error message',
@@ -559,7 +599,8 @@ const en = {
   label: `Role`,
   roles: {
    label: `Roles`
-  }
+  },
+  placeholder: `Select Role/s`
  },
  row: {
   label: `Row`
@@ -573,8 +614,14 @@ const en = {
  select_filter: {
   label: `Select Filter`
  },
+ send_invite: {
+  label: `Send Invite`
+ },
  send_invitation: {
   label: `Send Invitation`
+ },
+ send_portal_invite: {
+  label: `Send an Howick Portal invitation to {{user}}?`
  },
  send_reset_password_request: {
   label: `Send Reset Password Request`
@@ -657,6 +704,9 @@ const en = {
  trading_name: {
   label: `Trading Name / Alias`
  },
+ unsaved_changes: {
+  label: `Unsaved Changes`
+ },
  username: {
   label: `Username`
  },
@@ -692,27 +742,9 @@ const en = {
  x_tenda: {
   label: `X-TENDA™`
  },
- details: `details`,
- checkout: `checkout`,
- calendar: `calendar`,
- analytics: `analytics`,
- ecommerce: `e-commerce`,
- management: `management`,
- menu_level: `menu level`,
- menu_level_2a: `menu level 2a`,
- menu_level_2b: `menu level 2b`,
- menu_level_3a: `menu level 3a`,
- menu_level_3b: `menu level 3b`,
- menu_level_4a: `menu level 4a`,
- menu_level_4b: `menu level 4b`,
- item_disabled: `item disabled`,
- item_label: `item label`,
- item_caption: `item caption`,
- item_external_link: `item external link`,
- other_cases: `other cases`,
- item_by_roles: `item by roles`,
- only_admin_can_see_this_item: `Only admin can see this item`,
- app_customer_tagline: `Portal for convenient and efficient management of machines, their updates and support.`
+ yes: {
+  label: `Yes`
+ }
 }
 
 export default en

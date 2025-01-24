@@ -2,19 +2,23 @@ import { Fragment, memo, useState } from 'react'
 import { t } from 'i18next'
 import { dispatch, useSelector } from 'store'
 import { useAuthContext } from 'auth/use-auth-context'
-import { Icon, useSettingContext, useUIMorph } from 'hook'
-import { setUserDialog, archiveSecurityUser, updateStatusSecurityUser } from 'store/slice'
+import { Icon, snack, useSettingContext, useUIMorph } from 'hook'
+import { setUserDialog, archiveSecurityUser, updateStatusSecurityUser, sendUserInvite } from 'store/slice'
 import { ICON_NAME } from 'hook'
 import { useUserDefaultValues } from 'section'
 import { useTheme, Dialog, DialogContent, DialogTitle, DialogActions, Divider, Grid, Typography, FormControlLabel, Box } from '@mui/material'
-import { GridViewField, TitleListItemText, AuditBox, CustomAvatar, ConfirmDialog, IconTooltip, TitleTextIcon } from 'component'
-import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption, GStyledNoPaddingChip, GStyledDefLoadingButton, GStyledSwitch } from 'theme/style'
+import { GridViewField, DefaultPopper, AuditBox, CustomAvatar, ConfirmDialog, IconTooltip, TitleTextIcon } from 'component'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption, GStyledNoPaddingChip, GStyledIconLoadingButton, GStyledSwitch } from 'theme/style'
+import { ICON } from 'config/layout'
 import { KEY, FLEX, SZ, TYPOGRAPHY, SIZE } from 'constant'
 import { toTitleCase } from 'util'
+import { delay } from 'util'
 
 const UserDialog = () => {
  const [openArchiveModal, setOpenArchiveModal] = useState(false)
  const [openUpdateStatusModal, setOpenUpdateStatusModal] = useState(false)
+ const [openSendInvitePopper, setOpenSendInvitePopper] = useState(false)
+ const [openAnchorEl, setOpenAnchorEl] = useState(null)
  const { securityUser, isLoading, userDialog } = useSelector(state => state.user)
  const { customer } = useSelector(state => state.customer)
  const { userId } = useAuthContext()
@@ -23,7 +27,7 @@ const UserDialog = () => {
  const theme = useTheme()
  const defaultValues = useUserDefaultValues(securityUser, customer)
 
- const isAdmin = securityUser?.roles?.some(role => role.name === 'CustomerAdmin')
+ const isAdmin = securityUser?.roles?.some(role => role.name === KEY.CUSTOMER_ADMIN)
  const isSelf = securityUser?._id === userId
 
  const handleDialog = () => dispatch(setUserDialog(false))
@@ -36,7 +40,14 @@ const UserDialog = () => {
  const handleUpdateStatusUser = async () => {
   const securityUserData = { isActive: !securityUser.isActive }
   await dispatch(updateStatusSecurityUser(securityUser._id, securityUserData))
-  //   setOpenUpdateStatusModal(false)
+ }
+
+ const handleSendUserInvite = async () => {
+  await dispatch(sendUserInvite(securityUser._id))
+  snack(t('invite_sent.label'), 'success')
+  delay(2000).then(() => {
+    setOpenSendInvitePopper(false)
+  })
  }
 
  return (
@@ -76,7 +87,6 @@ const UserDialog = () => {
            <Typography variant={TYPOGRAPHY.OVERLINE2}>{t('online.label')}</Typography>
           </GStyledSpanBox>
          }
-         icon={ICON_NAME.ONLINE}
          variant={KEY.CONTAINED}
          bgColor={themeMode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[700]}
          size={SIZE.SMALL}
@@ -135,24 +145,35 @@ const UserDialog = () => {
        />
       </Box>
      )}
+
      <GStyledSpanBox gap={1}>
       {!isAdmin && !isSelf && (
-       <GStyledDefLoadingButton
-        isLoading={isLoading}
+       <GStyledIconLoadingButton
+        loading={isLoading}
         type={'button'}
         mode={themeMode}
         textColor={theme.palette.error.contrastText}
         bgColor={theme.palette.error.dark}
         onClick={() => setOpenArchiveModal(true)}>
-        {t('delete.label').toUpperCase()}
-       </GStyledDefLoadingButton>
+        <Icon icon={ICON_NAME.TRASH} sx={{...ICON.SIZE_XS }}/>&nbsp;{t('delete.label').toUpperCase()}
+       </GStyledIconLoadingButton>
       )}
-      <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleDialog} gap={2}>
+      <DefaultPopper
+        openPopper={openSendInvitePopper}
+        openAnchorEl={openAnchorEl}
+        isLoading={isLoading}
+        content={t('send_portal_invite.label', { user: toTitleCase(defaultValues?.name) })}
+        i18ConfirmButtonLabel={'yes.label'}
+        i18CancelButtonLabel={'no.label'}
+        onConfirmClick={handleSendUserInvite}
+      />
+      <GStyledCloseButton onClick={handleDialog} gap={2}>
        {t('close.label').toUpperCase()}
       </GStyledCloseButton>
      </GStyledSpanBox>
     </DialogActions>
    </Dialog>
+
    {openArchiveModal && (
     <ConfirmDialog
      open={openArchiveModal}

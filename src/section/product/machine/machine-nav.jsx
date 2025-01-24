@@ -1,10 +1,10 @@
 import { Fragment, useState } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
-import { Grid, Typography, Box, useMediaQuery, tabsClasses } from '@mui/material'
+import { Grid, Typography, Box, tabsClasses } from '@mui/material'
 import { IconTooltip, TabContainer, PopoverCombo } from 'component'
 import { useTheme } from '@mui/material/styles'
-import { Clock, ICON_NAME, useSettingContext } from 'hook'
+import { Clock, ICON_NAME, useSettingContext, useUIMorph } from 'hook'
 import { MachineTabsContainer, TABS } from 'section/product/machine'
 import { GStyledHeaderCardContainer, GStyledTopBorderDivider, GStyledSpanBox, GStyledFieldGrid, GStyledTab } from 'theme/style'
 import { KEY, LABEL, TYPOGRAPHY, FLEX, FLEX_DIR, DECOILER_TYPE_ARR } from 'constant'
@@ -15,18 +15,13 @@ import 'swiper/css'
 
 const MachineNav = ({ renderedTab, navigatePage, value, isLoading }) => {
  const [menuAnchor, setMenuAnchor] = useState(null)
- const { themeMode } = useSettingContext()
- const theme = useTheme()
+ const { themeMode }               = useSettingContext()
+ const theme                       = useTheme()
+ const {isMobile}                  = useUIMorph()
+ const menuOpen                    = Boolean(menuAnchor)
+ const menuId                      = menuOpen ? 'machine-menu' : undefined
 
- const isDesktop = useMediaQuery(theme.breakpoints.up('lg'))
- const isTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'))
- const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
-
- const menuOpen = Boolean(menuAnchor)
- const menuId = menuOpen ? 'machine-menu' : undefined
- const toggleMenu = event => {
-  setMenuAnchor(menuAnchor ? null : event.currentTarget)
- }
+ const toggleMenu                  = event => {setMenuAnchor(menuAnchor ? null : event.currentTarget)}
 
  const renderMachineStatusIcons = () => (
   <Grid container justifyContent={FLEX.FLEX_END} gap={isMobile ? 0.5 : 2} sx={{ flexWrap: 'wrap', alignItems: KEY.CENTER }}>

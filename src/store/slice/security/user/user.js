@@ -5,35 +5,38 @@ import { DEBUG, REGEX } from 'constant'
 
 const regEx = new RegExp(REGEX.SUCCESS_CODE)
 const initialState = {
- initial: false,
- responseMessage: null,
- isLoading: false,
- success: false,
- error: null,
+ initial                    : false,
+ responseMessage            : null,
+ isLoading                  : false,
+ success                    : false,
+ error                      : null,
  isLoadingResetPasswordEmail: false,
- securityUsers: [],
- securityUser: null,
- loggedInUser: null,
- user: null,
- userId: null,
- userEmail: null,
- userLogin: null,
- userDisplayName: null,
- userInviteDialog: false,
- userInviteConfirmDetails: null,
- userDialog: false,
- securityUserTotalCount: 0,
- assignedUsers: [],
- signInLogs: [],
- changePasswordDialog: false,
- userRoles: [],
- verifiedInvite: null,
- userFilterStatus: 'active',
- employeeFilterList: 'all',
- selectedUserCard: null,
- userFilterBy: '',
- userPage: 0,
- userRowsPerPage: 10
+ securityUsers              : [],
+ securityUser               : null,
+ loggedInUser               : null,
+ user                       : null,
+ userId                     : null,
+ userEmail                  : null,
+ userLogin                  : null,
+ userDisplayName            : null,
+ userInviteDialog           : false,
+ userInviteConfirmDetails   : null,
+ userInviteContactDetails   : null,
+ userDialog                 : false,
+ userInvites                : [],
+ userInvite                 : null,
+ securityUserTotalCount     : 0,
+ assignedUsers              : [],
+ signInLogs                 : [],
+ changePasswordDialog       : false,
+ userRoles                  : [],
+ verifiedInvite             : null,
+ userFilterStatus           : 'active',
+ employeeFilterList         : 'all',
+ selectedUserCard           : null,
+ userFilterBy               : '',
+ userPage                   : 0,
+ userRowsPerPage            : 10
 }
 
 const userSlice = createSlice({
@@ -42,6 +45,9 @@ const userSlice = createSlice({
  reducers: {
   startLoading(state) {
    state.isLoading = true
+  },
+  stopLoading(state) {
+    state.isLoading = false
   },
   hasError(state, action) {
    state.isLoading = false
@@ -77,6 +83,9 @@ const userSlice = createSlice({
   setUserInviteConfirmDetails(state, action) {
    state.userInviteConfirmDetails = action.payload
   },
+  setUserInviteContactDetails(state, action) {
+    state.userInviteContactDetails = action.payload
+   },
   setUserFilterStatus(state, action) {
    state.userFilterStatus = action.payload
   },
@@ -84,67 +93,97 @@ const userSlice = createSlice({
    state.userDialog = action.payload
   },
   getSecurityUserSuccess(state, action) {
-   state.isLoading = false
-   state.success = true
+   state.isLoading    = false
+   state.success      = true
    state.securityUser = action.payload
-   state.initial = true
+   state.initial      = true
   },
   getSecurityUsersSuccess(state, action) {
-   state.isLoading = false
-   state.success = true
-   state.securityUsers = action.payload
+   state.isLoading              = false
+   state.success                = true
+   state.securityUsers          = action.payload
    state.securityUserTotalCount = action.payload.length
-   state.initial = true
+   state.initial                = true
   },
   getLoggedInSecurityUserSuccess(state, action) {
-   state.isLoading = false
-   state.success = true
+   state.isLoading    = false
+   state.success      = true
    state.loggedInUser = action.payload
-   state.initial = true
+   state.initial      = true
   },
   getSignInLogsSuccess(state, action) {
-   state.isLoading = false
-   state.success = true
+   state.isLoading  = false
+   state.success    = true
    state.signInLogs = action.payload
-   state.initial = true
+   state.initial    = true
   },
   getVerifiedInvite(state, action) {
-   state.isLoading = false
-   state.success = true
+   state.isLoading      = false
+   state.success        = true
    state.verifiedInvite = action.payload
   },
   getUserInviteConfirmDetailsSuccess(state, action) {
-   state.isLoading = false
-   state.success = true
+   state.isLoading                = false
+   state.success                  = true
    state.userInviteConfirmDetails = action.payload
-   state.initial = true
+   state.initial                  = true
+  },
+  getUserInvitesSuccess(state, action) {
+    state.userInvites = action.payload;
+    state.isLoading   = false;
+    state.success     = true;
+    state.initial     = true;
+  },
+  getUserInviteSuccess(state, action) {
+    state.isLoading = false;
+    state.success = true;
+    state.userInvite = action.payload;
+    state.initial = true;
   },
   resetLoadingResetPasswordEmail(state, action) {
    state.isLoadingResetPasswordEmail = false
   },
   resetSecurityUser(state) {
-   state.securityUser = {}
+   state.securityUser    = {}
    state.responseMessage = null
-   state.success = false
-   state.isLoading = false
+   state.success         = false
+   state.isLoading       = false
   },
   resetSecurityUsers(state) {
-   state.securityUsers = []
+   state.securityUsers   = []
    state.responseMessage = null
-   state.success = false
-   state.isLoading = false
+   state.success         = false
+   state.isLoading       = false
   },
   resetUserInviteConfirmDetails(state) {
    state.userInviteConfirmDetails = null
-   state.responseMessage = null
-   state.success = false
-   state.isLoading = false
+   state.responseMessage          = null
+   state.success                  = false
+   state.isLoading                = false
   },
+  resetUserInviteContactDetails(state) {
+    state.userInviteConfirmDetails = null
+    state.responseMessage          = null
+    state.success                  = false
+    state.isLoading                = false
+   },
   resetSignInLogs(state) {
-   state.signInLogs = []
+   state.signInLogs      = []
    state.responseMessage = null
-   state.success = false
-   state.isLoading = false
+   state.success         = false
+   state.isLoading       = false
+  },
+  resetUserInvites(state) {
+    state.userInvites     = []
+    state.responseMessage = null;
+    state.success         = false;
+    state.isLoading       = false;
+  },
+  resetUserInvite(state) {
+    state.userInvite      = null
+    state.responseMessage = null;
+    state.success         = false;
+    state.isLoading       = false;
   },
   resetSelectedUserCard(state) {
    state.selectedUserCard = null
@@ -176,16 +215,20 @@ export const {
  setSecurityUserProperties,
  setUserInviteDialog,
  setUserInviteConfirmDetails,
+ setUserInviteContactDetails,
  setSelectedUserCard,
  setUserDialog,
  setUserFilterStatus,
  getSignInLogsSuccess,
  resetLoadingResetPasswordEmail,
  resetUserInviteConfirmDetails,
+ resetUserInviteContactDetails,
  resetSecurityUser,
  resetSecurityUsers,
  resetSignInLogs,
  resetSelectedUserCard,
+ resetUserInvites,
+ resetUserInvite,
  setUserFilterBy,
  ChangeUserRowsPerPage,
  ChangeUserPage
@@ -199,8 +242,8 @@ export function getSecurityUsers(id) {
   try {
    const response = await axios.get(PATH_SERVER.SECURITY.USER.list, {
     params: {
-     isArchived: false,
-     customer: id
+     isArchived      : false,
+     customer        : id
     }
    })
    if (regEx.test(response.status)) {
@@ -258,18 +301,6 @@ export function updateStatusSecurityUser(id, data) {
   }
  }
 }
-
-// export function getUserInviteConfirmDetails(data) {
-//  return async dispatch => {
-//   dispatch(userSlice.actions.startLoading())
-//   try {
-//    return  dispatch(userSlice.actions.getSecurityUserSuccess(data))
-//   } catch (error) {
-//    console.error(DEBUG.GET_SECURITY_USERS_ERROR, error)
-//    throw error
-//   }
-//  }
-// }
 
 export function setLoginUser(userId, User) {
  return async dispatch => {
@@ -331,20 +362,20 @@ export function addAndInviteSecurityUser(param) {
   dispatch(userSlice.actions.startLoading())
   try {
    const data = {
-    customer: param.customer?._id,
-    contact: param.contact?._id,
-    name: param.name,
-    phone: param.phone,
-    email: param.email,
-    login: param.email,
-    password: param.password,
-    roles: param.roles.map(role => role?._id),
-    dataAccessibilityLevel: 'RESTRICTED',
-    // machines: param.machines?.map(machines => machines?._id),
-    isInvite: true,
-    isActive: true,
-    currentEmployee: false,
+    customer                 : param.customer?._id,
+    contact                  : param.contact?._id,
+    name                     : param.name,
+    phone                    : param.phone,
+    email                    : param.email,
+    login                    : param.email,
+    password                 : param.password,
+    roles                    : param.roles?.map(role => role?._id),
+    dataAccessibilityLevel   : 'RESTRICTED',
+    isInvite                 : true,
+    isActive                 : true,
+    currentEmployee          : false,
     multiFactorAuthentication: param.multiFactorAuthentication
+    // machines: param.machines?.map(machines => machines?._id),
    }
    const response = await axios.post(PATH_SERVER.SECURITY.USER.list, data)
    return response
@@ -407,8 +438,8 @@ export function newUserPassword(data) {
   dispatch(userSlice.actions.startLoading())
   try {
    const params = {
-    token: data.token,
-    userId: data.userId,
+    token   : data.token,
+    userId  : data.userId,
     password: data.password
    }
 
@@ -423,4 +454,56 @@ export function newUserPassword(data) {
    throw error
   }
  }
+}
+
+export function getUserInvites() {
+  return async dispatch => {
+    dispatch(userSlice.actions.startLoading())
+    try {
+      const reponse = await axios.get(PATH_SERVER.SECURITY.INVITES.list)
+
+      console.log(reponse.data)
+      dispatch(userSlice.actions.getUserInvitesSuccess(reponse.data))
+      dispatch(userSlice.actions.setResponseMessage('Invites fetched'))
+    } catch (error) {
+      dispatch(userSlice.actions.hasError(error.Message))
+      console.error(error)
+      throw error
+    }
+  }
+}
+
+export function getUserInvite(inviteId) {
+  return async dispatch => {
+    dispatch(userSlice.actions.startLoading())
+    try {
+      const reponse = await axios.get(PATH_SERVER.SECURITY.INVITES.detail(inviteId))
+      dispatch(userSlice.actions.getUserInviteSuccess(reponse.data))
+      dispatch(userSlice.actions.setResponseMessage('Invites fetched'))
+    } catch (error) {
+      dispatch(userSlice.actions.hasError(error.Message))
+      console.error(error)
+      throw error
+    }
+  }
+}
+
+
+export function getUserInviteByEmail(email) {
+  return async dispatch => {
+    dispatch(userSlice.actions.startLoading())
+    try {
+      const reponse = await axios.get(PATH_SERVER.SECURITY.INVITES.list, {
+        params: {
+          receiverInvitationEmail: email
+        }
+      })
+      dispatch(userSlice.actions.getUserInviteSuccess(reponse.data))
+      dispatch(userSlice.actions.setResponseMessage('Invites fetched'))
+    } catch (error) {
+      dispatch(userSlice.actions.hasError(error.Message))
+      console.error(error)
+      throw error
+    }
+  }
 }

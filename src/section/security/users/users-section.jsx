@@ -7,14 +7,18 @@ import { useAuthContext, useWebSocketContext } from 'auth'
 import { useSelector, dispatch } from 'store'
 import { useNavigate } from 'react-router-dom'
 import { useTable, useFilter, getComparator, useSettingContext, useResponsive } from 'hook'
-import { PATH_MACHINE, PATH_SECURITY } from 'route/path'
+import { PATH_MACHINE, PATH_SECURITY, PATH_CUSTOMER } from 'route/path'
 import {
  getSecurityUser,
  getSecurityUsers,
  getOnlineUsers,
+ getContact,
+ getContacts,
+ setFromDialog,
  setUserDialog,
  setUserFilterBy,
  setSelectedUserCard,
+ setSelectedContactCard,
  ChangeUserPage,
  ChangeUserRowsPerPage,
  resetSecurityUser,
@@ -25,18 +29,20 @@ import { Table, Grid, Typography, TableContainer } from '@mui/material'
 import { GStyledTableHeaderBox } from 'theme/style'
 import { TableNoData, SkeletonTable, SearchBox, TableTitleBox, UserDialog } from 'component'
 import { UsersTable, UsersHeader, UsersListPagination, UsersCard, HEADER_ITEMS } from 'section/security'
+import { delay } from 'util'
 import { MARGIN, TABLE } from 'config'
 import { KEY, FLEX_DIR, TYPOGRAPHY } from 'constant'
 
 const UsersListSection = ({ isArchived }) => {
- const [tableData, setTableData] = useState([])
- const { onlineUsers } = useWebSocketContext()
+ const [tableData, setTableData]                                                                        = useState([])
  const { securityUser, securityUsers, selectedUserCard, initial, isLoading, userPage, userRowsPerPage } = useSelector(state => state.user)
- const { user, userId } = useAuthContext()
- const { themeMode } = useSettingContext()
+ const { contacts }                                                                                     = useSelector(state => state.contact)
+ const { onlineUsers }                                                                                  = useWebSocketContext()
+ const { user, userId }                                                                                 = useAuthContext()
+ const { themeMode }                                                                                    = useSettingContext()
 
- const isMobile = useResponsive('down', 'sm')
- const navigate = useNavigate()
+ const isMobile    = useResponsive('down', 'sm')
+ const navigate    = useNavigate()
  const denseHeight = TABLE.DENSE_HEIGHT
 
  const {
@@ -66,6 +72,16 @@ const UsersListSection = ({ isArchived }) => {
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
+   if (!contacts.length) {
+    dispatch(getContacts(user.customer))
+   }
+  }, 300)
+  debounceFetch()
+  return () => debounceFetch.cancel()
+ }, [contacts, dispatch])
+
+ useEffect(() => {
+  const debounceFetch = debounce(() => {
    if (user.customer) {
     dispatch(getSecurityUsers(user.customer))
    }
@@ -76,6 +92,8 @@ const UsersListSection = ({ isArchived }) => {
 
  useEffect(() => {
   if (initial) {
+   // FIX_THIS: filter the data and only show where the invitationStatus is not
+  //  const SecurityUsers = securityUsers.filter(user => user.invitationStatus != true)
    setTableData(securityUsers || [])
   }
  }, [securityUsers, initial])
@@ -122,7 +140,9 @@ const UsersListSection = ({ isArchived }) => {
  const handleUserDialog = (event, userId) => {
   event.preventDefault()
   dispatch(getSecurityUser(userId))
-  dispatch(setUserDialog(true))
+  delay(200).then(() => {
+   dispatch(setUserDialog(true))
+  })
  }
 
  const handleMachineInNewTabCard = (event, id) => {
@@ -132,6 +152,16 @@ const UsersListSection = ({ isArchived }) => {
   dispatch(getSecurityUser(id))
   const url = PATH_MACHINE.machines.view(id)
   window.open(url, KEY.BLANK)
+ }
+
+ const handleNavigateToContact = contactId => {
+  dispatch(resetSelectedContactCard())
+  navigate(PATH_CUSTOMER.customers.contacts.view(user.customer))
+  delay(200).then(() => {
+   dispatch(setFromDialog(true))
+   dispatch(setSelectedContactCard(contactId))
+   dispatch(getContact(user.customer, contactId))
+  })
  }
 
  const isNotFound = !isLoading && !filteredData.length
@@ -220,6 +250,7 @@ const UsersListSection = ({ isArchived }) => {
               columns={HEADER_ITEMS}
               onViewRow={() => {}}
               handleNameOnClick={handleUserDialog}
+              handleNavigateToContact={handleNavigateToContact}
               mode={themeMode}
               index={index}
               isArchived={isArchived}
@@ -229,7 +260,7 @@ const UsersListSection = ({ isArchived }) => {
              !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />
             )
            )}
-         <TableNoData isNotFound={isNotFound} />
+          <TableNoData isNotFound={isNotFound} />
          </Table>
         </TableContainer>
        </Grid>

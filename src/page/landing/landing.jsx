@@ -52,29 +52,23 @@ const Landing = () => {
  const headingRef = useRef(null)
  const descriptionRef = useRef(null)
  const buttonRef = useRef(null)
- const brandLabelRef = useRef(null)
- const brandRefs = useRef([])
  useGSAP(() => {
-  const tl = gsap.timeline({ defaults: { ease: 'power4.out', duration: 0.6 } })
-
-  tl.from(headingRef.current, { y: 50, opacity: 0 }).from(descriptionRef.current, { y: 50, opacity: 0 }).from(brandLabelRef.current, { y: 30, opacity: 0 })
-  brandRefs.current.forEach((brandRef, index) => {
-   tl.from(brandRef, { y: 50, opacity: 0 }, '-=0.5')
-  })
+  const tl = gsap.timeline({ defaults: { ease: 'power4.out', duration: 0.4 } })
+  tl.from(headingRef.current, { y: 50, opacity: 0 }).from(descriptionRef.current, { y: 50, opacity: 0 })
   tl.from(buttonRef.current, { scale: 0, opacity: 0 })
  })
 
  const renderProductSection = (items, title) => (
   <Grid container spacing={styles.productGrid.spacing} direction={styles.productGrid.direction} ml={isMobile || isTablet || isMd ? 4 : 10}>
    <Grid item lg={isMobile || isTablet ? 12 : 9} m={isMobile || isTablet ? 0 : 3} width={400}>
-    <Typography ref={brandLabelRef} variant={OVERLINE} color='grey.500' sx={{ opacity: 0.5 }}>
+    <Typography variant={OVERLINE} color='grey.500' sx={{ opacity: 0.5 }}>
      {title.toUpperCase()}
     </Typography>
     <Grid container>
      {items.map((item, index) => (
       <Grid item key={index}>
        <GStyledBrandOverlayBox isMobile={isMobile}>
-        <img ref={el => (brandRefs.current[index] = el)} alt={item.name} src={item.image(themeMode)} style={BRAND_RESP(isTablet).LANDING_LOGO} className='product-item' />
+        <img alt={item.name} src={item.image(themeMode)} style={BRAND_RESP(isTablet).LANDING_LOGO} className='product-item' />
        </GStyledBrandOverlayBox>
       </Grid>
      ))}

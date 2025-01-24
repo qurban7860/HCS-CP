@@ -174,7 +174,7 @@ const RegisterSuccessCard = ({ submittedData }) => {
       </Grid>
      </Paper>
      <Box sx={{ textAlign: 'right' }}>
-      <GStyledLoadingButton mode={themeMode} loading={loading} isLoading={loading} variant={VARIANT.CONTAINED} color='primary' size={SIZE.LARGE} onClick={handleWebsite} rel='noopener noreferrer'>
+      <GStyledLoadingButton mode={themeMode} loading={loading} variant={VARIANT.OUTLINED} size={SIZE.SMALL} onClick={handleWebsite} rel='noopener noreferrer'>
        <Icon icon={ICON_NAME.WWW} /> &nbsp; {t('howick_website.label').toUpperCase()} <Icon icon={ICON_NAME.CHEVRON_RIGHT} />
       </GStyledLoadingButton>
      </Box>

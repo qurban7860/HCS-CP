@@ -12,7 +12,7 @@ import ModeOption from './mode-option'
 import AccountPopover from './account-popover'
 import NotificationPopover from './notification-popover'
 
-const ENV = 'dev'
+const DEV = 'dev'
 
 function Header() {
  const theme = useTheme()
@@ -39,23 +39,23 @@ function Header() {
     {isDesktop && (
      <Fragment>
       <LogoIcon />
-      {GLOBAL.ENV === ENV && (
-       <Box
-        bgcolor={theme.palette.burnIn.main}
+      <Box
+        bgcolor={GLOBAL.ENV === DEV  ? theme.palette.burnIn.main : theme.palette.background.default}
         sx={{
          position: KEY.ABSOLUTE,
          bottom: -10,
          width: '100%',
          height: 5
         }}>
-        {IsBreakpointUp('1200') && (
+      {GLOBAL.ENV === DEV && (
+        IsBreakpointUp(1200) && (
          <Stack mt={1}>
           <Typography variant={TYPOGRAPHY.CAPTION}>{GLOBAL.ENV.toUpperCase()}</Typography>
           <Typography variant={TYPOGRAPHY.CAPTION1}>{GLOBAL.VERSION}</Typography>
          </Stack>
-        )}
-       </Box>
+        )
       )}
+       </Box>
      </Fragment>
     )}
    </Stack>

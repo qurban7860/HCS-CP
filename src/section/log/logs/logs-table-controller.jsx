@@ -111,7 +111,7 @@ const LogsTableController = ({ customers, handleCustomerChange, customerMachines
          fullWidth
         />
        </Box>
-       <GStyledLoadingButton mode={themeMode} type='button' onClick={handleSubmit(onGetLogs)} variant='contained' size='small'>
+       <GStyledLoadingButton mode={themeMode} type={'button'} onClick={handleSubmit(onGetLogs)} variant='contained' size='small'>
         {t('log.button.get_logs').toUpperCase()}
        </GStyledLoadingButton>
       </Box>

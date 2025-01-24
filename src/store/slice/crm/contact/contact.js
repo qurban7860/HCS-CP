@@ -3,27 +3,25 @@ import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
 
 const initialState = {
- initial: false,
- formVisibility: false,
- contactEditFormVisibility: false,
- contactMoveFormVisibility: false,
+ initial               : false,
+ contactFormVisibility : false,
  contactResponseMessage: null,
- activeCardIndex: '',
- isExpanded: false,
- success: false,
- isLoading: false,
- error: null,
- contacts: [],
- activeContacts: [],
- spContacts: [],
- activeSpContacts: [],
- contactDialog: false,
- fromDialog: false,
- selectedContactCard: null,
- contact: null,
- contactFilterBy: '',
- contactPage: 0,
- contactRowsPerPage: 100
+ activeCardIndex       : '',
+ isExpanded            : false,
+ success               : false,
+ isLoading             : false,
+ error                 : null,
+ contacts              : [],
+ activeContacts        : [],
+ spContacts            : [],
+ activeSpContacts      : [],
+ contactDialog         : false,
+ fromDialog            : false,
+ selectedContactCard   : null,
+ contact               : null,
+ contactFilterBy       : '',
+ contactPage           : 0,
+ contactRowsPerPage    : 100
 }
 
 const contactSlice = createSlice({
@@ -32,95 +30,87 @@ const contactSlice = createSlice({
  reducers: {
   startLoading(state) {
    state.isLoading = true
-   state.error = null
+   state.error     = null
   },
   hasError(state, action) {
    state.isLoading = false
-   state.error = action.payload
-   state.initial = true
+   state.error     = action.payload
+   state.initial   = true
   },
   setContactFormVisibility(state, action) {
-   state.formVisibility = action.payload
-  },
-  setContactEditFormVisibility(state, action) {
-   state.contactEditFormVisibility = action.payload
+   state.contactFormVisibility = action.payload
   },
   setIsExpanded(state, action) {
    state.isExpanded = action.payload
-  },
-  setContactMoveFormVisibility(state, action) {
-   state.contactMoveFormVisibility = action.payload
   },
   setContactDialog(state, action) {
    state.contactDialog = action.payload
   },
   resetContact(state) {
-   state.contact = null
+   state.contact         = null
    state.responseMessage = null
-   state.success = false
-   state.isLoading = false
+   state.success         = false
+   state.isLoading       = false
   },
   resetContacts(state) {
-   state.contacts = []
+   state.contacts        = []
    state.responseMessage = null
-   state.success = false
-   state.isLoading = false
+   state.success         = false
+   state.isLoading       = false
   },
   resetActiveContacts(state) {
-   state.activeContacts = []
+   state.activeContacts  = []
    state.responseMessage = null
-   state.success = false
-   state.isLoading = false
+   state.success         = false
+   state.isLoading       = false
   },
   resetSelectedContactCard(state) {
    state.selectedContactCard = null
   },
-  resetContactFormsVisiblity(state) {
-   state.contactEditFormVisibility = false
-   state.contactMoveFormVisibility = false
-   state.formVisibility = false
+  resetContactFormVisiblity(state) {
+   state.contactFormVisibility = false
   },
   getContactsSuccess(state, action) {
    state.isLoading = false
-   state.success = true
-   state.contacts = action.payload
-   state.initial = true
+   state.success   = true
+   state.contacts  = action.payload
+   state.initial   = true
   },
   getActiveContactsSuccess(state, action) {
-   state.isLoading = false
-   state.success = true
+   state.isLoading      = false
+   state.success        = true
    state.activeContacts = action.payload
-   state.initial = true
+   state.initial        = true
   },
   getSPContactsSuccess(state, action) {
-   state.isLoading = false
-   state.success = true
+   state.isLoading  = false
+   state.success    = true
    state.spContacts = action.payload
-   state.initial = true
+   state.initial    = true
   },
   getActiveSPContactsSuccess(state, action) {
-   state.isLoading = false
-   state.success = true
+   state.isLoading        = false
+   state.success          = true
    state.activeSpContacts = action.payload
-   state.initial = true
+   state.initial          = true
   },
   resetActiveSPContacts(state, action) {
-   state.isLoading = false
-   state.success = true
+   state.isLoading        = false
+   state.success          = true
    state.activeSpContacts = []
-   state.initial = true
+   state.initial          = true
   },
   getContactSuccess(state, action) {
    state.isLoading = false
-   state.success = true
-   state.contact = action.payload
-   state.initial = true
+   state.success   = true
+   state.contact   = action.payload
+   state.initial   = true
   },
   setContactResponseMessage(state, action) {
    state.contactResponseMessage = action.payload
-   state.isLoading = false
-   state.success = true
-   state.initial = true
+   state.isLoading              = false
+   state.success                = true
+   state.initial                = true
   },
   setFromDialog(state, action) {
    state.fromDialog = action.payload
@@ -144,8 +134,6 @@ export default contactSlice.reducer
 
 export const {
  setContactFormVisibility,
- setContactEditFormVisibility,
- setContactMoveFormVisibility,
  setCardActiveIndex,
  setSelectedContactCard,
  setIsExpanded,
@@ -154,7 +142,7 @@ export const {
  resetContacts,
  resetActiveContacts,
  resetActiveSPContacts,
- resetContactFormsVisiblity,
+ resetContactFormVisiblity,
  resetSelectedContactCard,
  setContactResponseMessage,
  setContactFilterBy,
@@ -163,7 +151,7 @@ export const {
  setContactDialog
 } = contactSlice.actions
 
-// : thunks
+  // : thunks
 
 export function getContacts(customerId, isCustomerArchived = false) {
  return async dispatch => {
@@ -177,7 +165,7 @@ export function getContacts(customerId, isCustomerArchived = false) {
 
    if (isCustomerArchived) {
     params.archivedByCustomer = true
-    params.isArchived = true
+    params.isArchived         = true
    } else {
     params.isArchived = false
    }
@@ -215,7 +203,7 @@ export function getActiveContacts(customerId, isCustomerArchived = false) {
     orderBy: {
      createdAt: -1
     },
-    isActive: true,
+    isActive  : true,
     isArchived: false
    }
 
@@ -224,6 +212,80 @@ export function getActiveContacts(customerId, isCustomerArchived = false) {
    dispatch(contactSlice.actions.setContactResponseMessage('Contacts loaded'))
   } catch (error) {
    console.log(error)
+   dispatch(contactSlice.actions.hasError(error.Message))
+   throw error
+  }
+ }
+}
+
+export function addContactFromUserInvite(customerId, params) {
+ return async dispatch => {
+  dispatch(contactSlice.actions.startLoading())
+  try {
+   const firstName = params.name?.split(' ')[0]
+   const lastName  = params.name?.split(' ')[1]
+
+   let data = {
+    customer : params.customer,
+    firstName: firstName,
+    lastName : lastName,
+    phone    : params.phone,
+    email    : params.email,
+    isActive : true
+   }
+   const response = await axios.post(PATH_SERVER.CRM.CUSTOMER.listContact(customerId), data)
+   dispatch(contactSlice.actions.setContactResponseMessage('Contact added'))
+   return response
+  } catch (error) {
+   console.log(error)
+   dispatch(contactSlice.actions.hasError(error.Message))
+   throw error
+  }
+ }
+}
+
+export function addContact(customerId, params) {
+ return async dispatch => {
+  dispatch(contactSlice.actions.startLoading())
+  try {
+   let data = {
+    customer    : params.customer,
+    firstName   : params.firstName,
+    lastName    : params.lastName,
+    email       : params.email,
+    title       : params.title,
+    phoneNumbers: params?.phoneNumbers?.filter(ph => ph?.contactNumber !== '' || ph?.contactNumber !== undefined) || [],
+    department  : params.department,
+    isActive    : params.isActive,
+    address     : {}
+   }
+
+   if (params.street) {
+    data.address.street = params.street
+   }
+   if (params.suburb) {
+    data.address.suburb = params.suburb
+   }
+   if (params.city) {
+    data.address.city = params.city
+   }
+   if (params.region) {
+    data.address.region = params.region
+   }
+   if (params.postcode) {
+    data.address.postcode = params.postcode
+   }
+   if (params?.country?.label && params?.country !== null) {
+    data.address.country = params.country.label
+   }
+   const response = await axios.post(PATH_SERVER.CRM.CUSTOMER.listContact(customerId), data)
+   dispatch(getContact(response?.data?.customerCategory?.customer, response?.data?.customerCategory?._id))
+   dispatch(getContacts(response?.data?.customerCategory?.customer))
+   dispatch(contactSlice.actions.resetContactFormVisiblity())
+   dispatch(contactSlice.actions.setContactResponseMessage('Contact added'))
+   return response
+  } catch (error) {
+   console.error(error)
    dispatch(contactSlice.actions.hasError(error.Message))
    throw error
   }

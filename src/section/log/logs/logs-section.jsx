@@ -52,7 +52,7 @@ const LogsSection = ({ isArchived }) => {
 
  useEffect(() => {
   const debouncedDispatch = _.debounce(() => {
-   if (!customerMachines.length) {
+   if (!customers.length) {
     dispatch(getCustomers(null, null, isArchived, cancelTokenSource))
    }
   }, 300)

@@ -15,11 +15,11 @@ function ConfirmDialog({ title, content, action, open, onClose, onClick, actionB
    </DialogTitle>
    {content && <DialogContent sx={{ typography: TYPOGRAPHY.BODY2, pt: 2 }}> {content} </DialogContent>}
    <DialogActions>
-    <GStyledCloseButton onClick={onClose}>{t(i18SubButtonLabel)}</GStyledCloseButton>
+    <GStyledCloseButton onClick={onClose}>{t(i18SubButtonLabel).toUpperCase()}</GStyledCloseButton>
     {action ? (
      action
     ) : (
-     <GStyledDefLoadingButton isLoading={isLoading} type={'button'} textColor={actionButtonTextColor} bgColor={actionButtonBgColor} loading={isLoading} onClick={onClick}>
+     <GStyledDefLoadingButton type={'button'} textColor={actionButtonTextColor} bgColor={actionButtonBgColor} loading={isLoading} onClick={onClick}>
       {t(i18ActionButtonLabel).toUpperCase()}
      </GStyledDefLoadingButton>
     )}

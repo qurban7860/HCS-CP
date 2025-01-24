@@ -1,17 +1,16 @@
 import { useRef, useEffect, memo } from 'react'
 import { t } from 'i18next'
-import _ from 'lodash'
 import { useAuthContext } from 'auth/use-auth-context'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
 import { getSecurityUser, getCustomer, resetCustomer, setCustomerDialog } from 'store/slice'
-import { ICON_NAME, useSettingContext } from 'hook'
+import { ICON_NAME, useSettingContext, useUIMorph } from 'hook'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { editUserSchema } from 'schema'
 import { useUserDefaultValues, ProfileAvatar, fieldsUserConfig } from 'section/security'
 import { CommonFieldsContainer } from 'section/common'
-import { useMediaQuery, Grid, Card } from '@mui/material'
+import { Grid, Card } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GCardOption, GStyledTopBorderDivider, GStyledSpanBox, GStyledHeaderCardContainer, GStyledCenterGrid } from 'theme/style'
 import { MotionLazyContainer, BadgeCardMedia, ViewFormField, IconTooltip, GridViewField, AuditBox, CustomerDialog } from 'component'
@@ -21,11 +20,11 @@ import { truncate } from 'util/truncate'
 
 const UserProfileLayout = () => {
  const { customer, customerDialog } = useSelector(state => state.customer)
- const { securityUser, isLoading } = useSelector(state => state.user)
- const { userId } = useAuthContext()
- const { themeMode } = useSettingContext()
- const theme = useTheme()
- const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
+ const { securityUser, isLoading }  = useSelector(state => state.user)
+ const { userId }                   = useAuthContext()
+ const { themeMode }                = useSettingContext()
+ const { isDesktop }                = useUIMorph()
+ const theme                        = useTheme()
 
  useEffect(() => {
   if (userId !== securityUser?._id) {
@@ -54,7 +53,7 @@ const UserProfileLayout = () => {
    justifyContent={FLEX.FLEX_END}
    gap={isDesktop ? 2 : 0.5}
    sx={{
-    flexWrap: 'wrap',
+    flexWrap  : 'wrap',
     alignItems: KEY.CENTER
    }}>
    {defaultValues?.isActive ? (
@@ -64,7 +63,6 @@ const UserProfileLayout = () => {
      color={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
      tooltipColor={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
      dimension={isDesktop ? 20 : 15}
-     isActiveIcon
      iconOnly
     />
    ) : (

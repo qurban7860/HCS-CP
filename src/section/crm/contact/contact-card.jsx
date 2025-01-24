@@ -3,6 +3,7 @@ import { useSettingContext, ICON_NAME } from 'hook'
 import { useMediaQuery, Box, Grid, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledContactCard, GStyledListItemText, GStyledSpanBox } from 'theme/style'
+import { truncate } from 'util/truncate'
 import { IconTooltip } from 'component'
 import { LABEL, TYPOGRAPHY, KEY, FLEX } from 'constant'
 
@@ -34,7 +35,7 @@ const ContactCard = ({ selectedCardId, value, handleContactCard, c }) => {
           sx={{
            opacity: selectedCardId === c._id ? 0.7 : 1
           }}>
-          {fullName(c)}
+          {truncate(fullName(c),30)}
          </Typography>
         </GStyledSpanBox>
        )
