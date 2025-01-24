@@ -4,11 +4,11 @@ import { alpha, Box } from '@mui/material'
 import { KEY } from 'constant'
 
 export const StyledRootDiv = styled(m.div)(({ theme }) => ({
- height: '100vh',
- display: 'flex',
- flexDirection: 'row',
- justifyContent: 'center',
- alignItems: 'center',
+ height         : '100vh',
+ display        : 'flex',
+ flexDirection  : 'row',
+ justifyContent : 'center',
+ alignItems     : 'center',
  backgroundColor: theme.palette.background.default
 }))
 
@@ -181,7 +181,7 @@ export const DiagonalBeam = styled(Box)(({ theme, index, bottom, mode }) => ({
  backgroundColor: alpha(mode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.common.white, 0.5),
  left: `${(index + 1) * 12.5}%`,
  transformOrigin: bottom ? 'bottom left' : 'top left',
- animation: `${bottom ? rotateDiagonalReverse : rotateDiagonal} 0.5s ease-out ${0.8 + index * 0.1}s`,
+ animation: `${bottom ? rotateDiagonalReverse : rotateDiagonal} 0.5s ease-out alternate`,
  animationFillMode: 'forwards',
  opacity: 0,
  transform: bottom ? 'rotate(-45deg) scaleY(0)' : 'rotate(45deg) scaleY(0)'
