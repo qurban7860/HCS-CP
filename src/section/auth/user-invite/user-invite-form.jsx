@@ -1,7 +1,8 @@
-import { useEffect, useState, useCallback, Fragment } from 'react'
+import { Fragment, useEffect, useState, useCallback, useRef } from 'react'
 import _ from 'lodash'
 import debounce from 'lodash.debounce'
 import { t } from 'i18next'
+import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuthContext } from 'auth/use-auth-context'
@@ -18,18 +19,18 @@ import {
  setUserInviteDialog,
  setUserInviteConfirmDetails,
  resetUserInviteConfirmDetails,
- resetCustomer,
  resetActiveContacts,
  resetSecurityUsers
 } from 'store/slice'
 import { UserInviteSchema } from 'schema'
 import { useUserInviteDefaultValues } from 'section/auth'
-import { Grid, Box, Checkbox, Typography, FormControlLabel } from '@mui/material'
-import { RHFRequiredTextFieldWrapper, UserInviteSuccessDialog } from 'component'
+import { useTheme, Grid, Box, Checkbox, Typography, FormControlLabel } from '@mui/material'
+import { RHFRequiredTextFieldWrapper, UserInviteSuccessDialog, ConfirmDialog } from 'component'
 import FormProvider, { RHFTextField, RHFAutocomplete, RHFPhoneInput, RHFCheckbox } from 'component/hook-form'
-import { GStyledLoadingButton, GStyledSpanBox, GStyledFieldChip } from 'theme/style'
+import { GStyledLoadingButton, GStyledDefLoadingButton, GStyledSpanBox, GStyledFieldChip } from 'theme/style'
 import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, TYPOGRAPHY, FLEX_DIR, FLEX } from 'constant'
-import { delay, getCountryCode, roleCoverUp } from 'util'
+import { delay, getCountryCode, roleCoverUp, deepEqual } from 'util'
+import { PATH_DASHBOARD } from 'route/path'
 
 const FORM_EL = {
  contact: 'contact',
@@ -45,10 +46,11 @@ const FORM_EL = {
  * @returns {JSX.Element}
  */
 function UserInviteForm() {
- const [isFormComplete, setIsFormComplete] = useState(false)
- const [isSuccessState, setIsSuccessState] = useState(false)
- const [isConfirming, setIsConfirming] = useState(false)
- const [addAsContact, setAddAsContact] = useState(false)
+ const [isFormComplete, setIsFormComplete]       = useState(false)
+ const [isSuccessState, setIsSuccessState]       = useState(false)
+ const [isConfirming, setIsConfirming]           = useState(false)
+ const [addAsContact, setAddAsContact]           = useState(false)
+ const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
  const { customer, activeContacts, securityUserTotalCount, customerRoles, userInviteDialog } = useSelector(
   state => ({
    customer: state.customer.customer,
@@ -60,22 +62,29 @@ function UserInviteForm() {
   _.isEqual
  )
 
- const { user } = useAuthContext()
- const { themeMode } = useSettingContext()
- const regEx = new RegExp(REGEX.ERROR_CODE)
- const isMobile = useResponsive('down', 'sm')
- const countryCode = getCountryCode(customer?.mainSite?.address?.country) || KEY.DEFAULT_COUNTRY_CODE
+ const { user }         = useAuthContext()
+ const { themeMode }    = useSettingContext()
+ const theme            = useTheme()
+ const navigate         = useNavigate()
+ const regEx            = new RegExp(REGEX.ERROR_CODE)
+ const isMobile         = useResponsive('down', 'sm')
+ const countryCode      = getCountryCode(customer?.mainSite?.address?.country) || KEY.DEFAULT_COUNTRY_CODE
+ const fetchCustomerRef = useRef(false)
 
  const fetchCustomer = useCallback(() => {
-  if (user?.customer && !customer) {
+  if (user?.customer) {
    dispatch(getCustomer(user.customer))
   }
- }, [user?.customer, customer, dispatch])
+ }, [user?.customer, dispatch])
 
- useEffect(() => {
-  const timer = setTimeout(fetchCustomer, 300)
-  return () => clearTimeout(timer)
- }, [fetchCustomer])
+  useEffect(() => {
+   if (!user?.customer || fetchCustomerRef.current) return
+   fetchCustomerRef.current = true
+   const timer = setTimeout(() => {
+    fetchCustomer()
+   }, 300)
+   return () => clearTimeout(timer)
+  }, [user?.customer, fetchCustomer])
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
@@ -140,14 +149,54 @@ function UserInviteForm() {
   }
  }, [checkFormCompletion])
 
+ const isFormDirty = Object.keys(defaultValues).some(key => !deepEqual(watch(key), defaultValues[key]))
+ useEffect(() => {
+  const handleBeforeUnload = event => {
+   if (isFormDirty) {
+    event.preventDefault()
+    event.returnValue = t('responses.messages.form_dirty')
+   }
+  }
+  const handlePopState = event => {
+   if (isFormDirty) {
+    const confirmation = window.confirm(t('responses.messages.form_dirty'))
+    if (!confirmation) {
+     event.preventDefault()
+     history.pushState(null, document.title, window.location.href)
+    } else {
+     reset(defaultValues)
+    }
+   }
+  }
+  window.addEventListener('beforeunload', handleBeforeUnload)
+  window.addEventListener('popstate', handlePopState)
+  return () => {
+   window.removeEventListener('beforeunload', handleBeforeUnload)
+   window.removeEventListener('popstate', handlePopState)
+  }
+ }, [isFormDirty])
+
  const handleConfirmation = async () => {
   setIsConfirming(true)
   await Promise.all([dispatch(setUserInviteConfirmDetails({ customer, name, email, phone, roles, isInvite })), dispatch(setUserInviteDialog(true))])
  }
 
+ const handleCancel = async () => {
+  setOpenConfirmDialog(false)
+  reset(defaultValues)
+  navigate(PATH_DASHBOARD.root)
+ }
+
+ const handleConfirmCancel = () => {
+  if (isFormDirty) {
+   setOpenConfirmDialog(true)
+   return
+  }
+  handleCancel()
+ }
+
  useEffect(() => {
   dispatch(resetSecurityUsers())
-  dispatch(resetCustomer())
   dispatch(resetActiveContacts())
   dispatch(resetUserInviteConfirmDetails())
  }, [dispatch])
@@ -155,16 +204,17 @@ function UserInviteForm() {
  const handleSubmissionError = error => {
   if (error?.errors) {
    error.errors.forEach(({ field, message }) => {
-    setError(field, { type: 'validation', message })})
+    setError(field, { type: 'validation', message })
+   })
    snack(t('responses.error.form_check_errors'), { variant: COLOR.ERROR })
    return
   }
   if (error?.MessageCode && regEx.test(error.MessageCode)) {
-   snack('Error in sending form', { variant: COLOR.ERROR })
+   snack(t('responses.error.default'), { variant: COLOR.ERROR })
    setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, { type: 'submission', message: error.MessageCode })
    return
   }
-  console.error('Unexpected error:', error)
+  console.error(t('responses.error.unexpected_error'), error)
   snack(error, { variant: COLOR.ERROR })
   setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, { type: 'unexpected', message: error?.message || t('responses.error.unexpected_error') })
  }
@@ -173,14 +223,14 @@ function UserInviteForm() {
   try {
    setIsSuccessState(true)
    setIsConfirming(false)
-   const Data = {...data, customer}
+   const Data = { ...data, customer }
 
    if (addAsContact) {
     const newContactResponse = await dispatch(addContactFromUserInvite(customer?._id, Data))
-        if (newContactResponse.status !== 201) {
-        snack('Error occured in creating the contact, unable to proceed', { variant: COLOR.ERROR })
-        throw new Error('Error occured in creating the contact, unable to proceed')
-        }
+    if (newContactResponse.status !== 201) {
+     snack(t('responses.error.unable_create_contact'), { variant: COLOR.ERROR })
+     throw new Error(t('responses.error.unable_create_contact'))
+    }
     snack(t('responses.success.created_contact'), { variant: COLOR.SUCCESS })
     const { customerCategory } = newContactResponse.data
     Data.contact = customerCategory
@@ -194,8 +244,8 @@ function UserInviteForm() {
     setIsFormComplete(false)
     setIsSuccessState(false)
    } else {
-    console.error('Submission failed:', response)
-    snack('Submission failed', { variant: COLOR.ERROR })
+    console.error(t('responses.error.failed_submission'), response)
+    snack(t('responses.error.failed_submission'), { variant: COLOR.ERROR })
     setIsSuccessState(false)
     setIsConfirming(false)
    }
@@ -308,21 +358,21 @@ function UserInviteForm() {
      </Grid>
     </Grid>
     <Grid container direction={{ xs: FLEX_DIR.COLUMN, md: FLEX_DIR.ROW }} justifyContent={FLEX.FLEX_END} sx={{ my: 5 }}>
-     <Grid item xs={12} sm={4} md={2} display={FLEX.FLEX} justifyContent={FLEX.FLEX_END}>
+     <Grid item xs={12} sm={4} md={2} display={FLEX.FLEX} justifyContent={isMobile ? FLEX.FLEX_START : FLEX.FLEX_END}>
       <RHFCheckbox name={FORM_EL.isInvite} label={t('enable_portal_access.label')} error={!!errors.isInvite} helperText={errors.isInvite ? errors.isInvite.message : ''} />
      </Grid>
      {!contact && (
-      <Grid item xs={12} sm={4} md={2} display={FLEX.FLEX} justifyContent={FLEX.FLEX_END}>
-       <FormControlLabel value={addAsContact} control={<Checkbox />} label={'Add as contact'} labelPlacement='end' onChange={() => setAddAsContact(!addAsContact)} />
+      <Grid item xs={12} sm={4} md={2} display={FLEX.FLEX} justifyContent={isMobile ? FLEX.FLEX_START : FLEX.FLEX_END}>
+       <FormControlLabel value={addAsContact} control={<Checkbox />} label={t('add_as_contact.label')} labelPlacement='end' onChange={() => setAddAsContact(!addAsContact)} />
       </Grid>
      )}
     </Grid>
-    <Grid container direction={{ xs: 'column', md: 'row' }} justifyContent={KEY.CENTER}>
-     <Grid item xs={12} sm={4} md={4}>
+    <Grid container direction={{ xs: FLEX_DIR.COLUMN, md: FLEX_DIR.ROW }} justifyContent={KEY.CENTER}>
+     <Grid item xs={12} sm={4} md={4} >
       <GStyledLoadingButton
        fullWidth
        color={KEY.INHERIT}
-       size={SIZE.LARGE}
+       size={SIZE.SMALL}
        type={'button'}
        variant={KEY.CONTAINED}
        loading={isConfirming}
@@ -331,6 +381,20 @@ function UserInviteForm() {
        disabled={!isFormComplete}>
        {t('send_invitation.label').toUpperCase()}
       </GStyledLoadingButton>
+      &nbsp;
+      <GStyledDefLoadingButton
+       fullWidth
+       color={KEY.INHERIT}
+       size={SIZE.SMALL}
+       type={'button'}
+       variant={KEY.CONTAINED}
+       bgColor={themeMode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[800]}
+       textColor={themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white}
+       loading={isConfirming}
+       mode={themeMode}
+       onClick={handleConfirmCancel}>
+       {t('go_back.label').toUpperCase()}
+      </GStyledDefLoadingButton>
      </Grid>
      {/* spacer  */}
      <Box height={{ xs: 50, md: 100 }} />
@@ -350,6 +414,20 @@ function UserInviteForm() {
      />
     )}
    </FormProvider>
+
+   {openConfirmDialog && (
+       <ConfirmDialog
+        open={openConfirmDialog}
+        onClose={() => setOpenConfirmDialog(false)}
+        title={t('unsaved_changes.label')}
+        content={t('responses.messages.form_dirty')}
+        onClick={handleCancel}
+        actionButtonBgColor={theme.palette.error.dark}
+        actionButtonTextColor={theme.palette.error.contrastText}
+        i18ActionButtonLabel={'leave.label'}
+        i18SubButtonLabel={'stay.label'}
+       />
+      )}
   </Fragment>
  )
 }
