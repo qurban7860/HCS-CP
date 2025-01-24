@@ -29,6 +29,9 @@ const en = {
  add_new_contact: {
   label: `Add New Contact`
  },
+ add_as_contact: {
+  label: `Add as Contact`
+ },
  address: {
   label: `Address`,
   addresses: {
@@ -577,11 +580,14 @@ const en = {
    reset_request_submitted: 'Password reset request submitted'
   },
   error: {
+   default: 'An error occurred',
    email_already_exists: 'Email already exists',
+   failed_submission: 'Failed to submit',
    form_check_errors: 'Please check the form for errors',
    invalid_credentials: 'Invalid credentials',
    machine_serial_invalid: 'Machine serial number provided is invalid',
    something_went_wrong: 'Something went wrong',
+   unable_create_contact: 'Unable to create contact',
    unable_to_process_request: 'Unable to process your request',
    unable_save_details: 'Unable to save details',
    unable_read_error_message: 'Unable to read error message',
