@@ -13,16 +13,7 @@ export const UserInviteSchema = yup.object().shape({
   .required()
   .trim()
   .max(200),
- loginEmail: yup
-  .string()
-  .transform(value => value?.toLowerCase())
-  .email()
-  .label('Log in /  Email Address')
-  .trim()
-  .max(200),
  roles: yup.array().min(1, 'Please select at least one role').nullable().label('Roles').required(),
- machines: yup.array().nullable(),
  isInvite: yup.boolean().optional(),
- multiFactorAuthentication: yup.boolean(),
- currentEmployee: yup.boolean()
+ multiFactorAuthentication: yup.boolean()
 })
