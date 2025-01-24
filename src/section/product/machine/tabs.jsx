@@ -1,5 +1,4 @@
 import { ICON_NAME } from 'hook'
-import { KEY } from 'constant'
 import { t } from 'i18next'
 
 /**
