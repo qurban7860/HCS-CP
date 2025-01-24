@@ -21,7 +21,7 @@ export function RHFCheckbox({ name, label, helperText, ...other }) {
     render={({ field, fieldState: { error } }) => (
      <div>
       <FormControlLabel
-       control={<Checkbox {...field} checked={field.value} sx={{ borderRadius: 0.4, '& .MuiSvgIcon-root':{ color: themeMode === KEY.LIGHT ? 'howick.darkBlue' : 'howick.orange' }}} />}
+       control={<Checkbox {...field} checked={field.value} sx={{ borderRadius: 0.4 }} />}
        label={<Typography variant={TYPOGRAPHY.BODY2}>{label}</Typography>}
        {...other}
       />
