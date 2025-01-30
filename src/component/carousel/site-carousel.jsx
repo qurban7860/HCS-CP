@@ -1,29 +1,155 @@
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
-import Carousel from 'react-material-ui-carousel'
-import { ICON_NAME } from 'hook'
-import { Box, Card } from '@mui/material'
+import Carousel from 'react-multi-carousel'
+import { ICON_NAME, Icon } from 'hook'
+import { useTheme, Box, Card } from '@mui/material'
 import { GridViewField, IconTooltip } from 'component'
 import { GCardOption } from 'theme/style'
-import { LABEL, KEY, TYPOGRAPHY, ADDRESS } from 'constant'
+import { KEY, TYPOGRAPHY, ADDRESS } from 'constant'
 import { parseAddress } from 'util'
+import "react-multi-carousel/lib/styles.css";
+
+const CustomDot = ({ onClick, active, mode }) => {
+    const theme = useTheme()
+    return (
+      <button
+        className={active ? "active" : "inactive"}
+        onClick={onClick}
+        style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer',  color: active ?  (mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange) : (mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[600]) }}>
+        <Icon icon={ICON_NAME.MINIMIZE} dimension={15} />
+      </button>
+    )
+  }
+
+  CustomDot.propTypes = {
+    onClick: PropTypes.func,
+    active : PropTypes.bool,
+    mode   : PropTypes.string
+  }
+
+const CustomRight = ({ onClick, mode, theme, hasNext }) =>  {
+    return (
+        <button
+        className="arrow right"
+        onClick={onClick}
+        style={{
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                position: 'absolute',
+                top: '50%',
+                right: 0,
+                transform: 'translateY(-50%)',
+                zIndex: 1,
+            }}>
+            <Icon
+            icon={ICON_NAME.CHEVRON_RIGHT}
+            sx={{
+                width: 30,
+                height: 30,
+                color: hasNext
+                        ? mode === KEY.LIGHT
+                        ? theme.palette.howick.darkBlue
+                        : theme.palette.howick.orange
+                        : theme.palette.grey[500]}} />
+        </button>
+    )
+}
+
+CustomRight.propTypes = {
+    onClick: PropTypes.func,
+    active : PropTypes.bool,
+    mode   : PropTypes.string,
+    theme  : PropTypes.object,
+    hasNext: PropTypes.bool
+}
+
+const CustomLeft = ({ onClick, mode, theme, hasNext }) => {
+    return (
+    <button
+        className="arrow left"
+        onClick={onClick}
+        style={{
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                position: 'absolute',
+                top: '50%',
+                left: 0,
+                transform: 'translateY(-50%)',
+                zIndex: 1,
+            }}>
+            <Icon
+            icon={ICON_NAME.CHEVRON_LEFT}
+            sx={{
+                width: 30,
+                height: 30,
+                color: hasNext
+                        ? mode === KEY.LIGHT
+                        ? theme.palette.howick.darkBlue
+                        : theme.palette.howick.orange
+                        : theme.palette.grey[500]}} />
+    </button>
+  )
+}
+
+CustomLeft.propTypes = {
+    onClick: PropTypes.func,
+    active : PropTypes.bool,
+    mode   : PropTypes.string,
+    theme  : PropTypes.object,
+    hasNext: PropTypes.bool
+}
 
 const SiteCarousel = ({ sites, theme, themeMode, isMain }) => {
- return (
+    const isMoreThanOneSite = sites?.length > 1
+    const responsive = {
+        desktop: {
+          breakpoint: { max: 3000, min: 1024 },
+          items: isMoreThanOneSite ? 2 : 1,
+          partialVisibilityGutter: 30,
+        },
+        tablet: {
+          breakpoint: { max: 1024, min: 464 },
+          items: 1,
+          partialVisibilityGutter: 30
+        },
+        mobile: {
+          breakpoint: { max: 464, min: 0 },
+          items: 1,
+          partialVisibilityGutter: 10,
+        },
+      }
+
+return (
   <Box sx={{ width: '100%' }}>
    <Carousel
-    animation='slide'
-    indicators={true}
-    interval={null}
-    cycleNavigation={false}
-    navButtonsAlwaysVisible={true}
-    navButtonsProps={{
-     style: {
-      backgroundColor: 'transparent',
-      color: theme.palette.howick.darkBlue,
-      transform: 'scale(2)'
-     }
-    }}>
+      responsive={responsive}
+      autoPlay={isMoreThanOneSite}
+      autoPlaySpeed={isMoreThanOneSite && 10000}
+      keyBoardControl={true}
+      transitionDuration={5000}
+      additionalTransfrom={0}
+      customDot={<CustomDot mode={themeMode} />}
+      customRightArrow={<CustomRight mode={themeMode} theme={theme} hasNext />}
+      customLeftArrow={<CustomLeft mode={themeMode} theme={theme} hasNext />}
+      partialVisbile
+      pauseOnHover
+      arrows
+      infinite
+      showDots
+      swipeable
+      draggable
+      ssr
+      sliderClass=""
+      slidesToSlide={1}
+      customTransition="transform 1000ms ease-in-out"
+      containerClass="carousel-container"
+      renderButtonGroupOutside={false}
+      renderDotsOutside={false}
+      removeArrowOnDeviceType={["tablet", "mobile"]}
+      itemClass="carousel-item-padding-40-px"
+>
     {sites.map(site => (
      <Box key={site._id} sx={{ p: 2 }}>
       <Card {...GCardOption(themeMode)}>
