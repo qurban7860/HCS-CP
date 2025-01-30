@@ -154,6 +154,12 @@ const en = {
    label: `Columns`
   }
  },
+ create_ticket:{
+    label: `Create Ticket`
+ },
+ create_support_ticket:{
+    label: `Create Support Ticket`
+ },
  created: {
   label: `Created`
  },
