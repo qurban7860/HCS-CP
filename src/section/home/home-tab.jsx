@@ -18,15 +18,16 @@ import {
  resetContact,
  resetMachine
 } from 'store/slice'
-import { useSettingContext } from 'hook'
+import { useSettingContext, Icon, ICON_NAME } from 'hook'
 import { ContactListCard, MachineListCard } from 'section/home'
 import { HowickResources, CommonFieldsCard } from 'section/common'
 import { useCustomerDefaultValues } from 'section/crm/customer'
-import { useTheme, Grid } from '@mui/material'
+import { useTheme, Grid, Link } from '@mui/material'
 import { AuditBox, SiteCarousel, ChowBox, MachineDialog, SiteDialog, ContactDialog } from 'component'
-import { GStyledBottomScrollableHeightLockGrid } from 'theme/style'
-import { MARGIN, SPACING } from 'config/layout'
+import { GStyledBottomScrollableHeightLockGrid, GStyledIconLoadingButton } from 'theme/style'
+import { MARGIN, SPACING, ICON } from 'config/layout'
 import { FLEX_DIR } from 'constant'
+import { PATH_SUPPORT } from 'route/path'
 
 const HomeTab = () => {
  const { customerMachines, machineTotalCount, customer, isLoading, sites, contact, contacts } = useSelector(
@@ -109,6 +110,22 @@ const HomeTab = () => {
  return (
   <Fragment>
    <Grid container columnSpacing={SPACING.COLUMN_SPACING} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+   <Grid item sm={12} lg={12}>
+    <Grid container rowGap={2} columnSpacing={2} mb={2} display={'flex'} justifyContent={'flex-end'}>
+        <Grid item md={3} display={'flex'} justifyContent={'flex-end'} mx={2}>
+             <GStyledIconLoadingButton
+                loading={isLoading}
+                type={'button'}
+                mode={themeMode}
+                textColor={theme.palette.common.white}
+                bgColor={theme.palette.howick.midBlue}>
+                <Link href={PATH_SUPPORT.tickets.create} underline={'none'} color={'inherit'} sx={{ alignItems: 'center', display: 'flex' }}>
+                    <Icon icon={ICON_NAME.ADD} sx={{...ICON.SIZE_XS }}/>&nbsp;{t('create_support_ticket.label').toUpperCase()}
+                </Link>
+            </GStyledIconLoadingButton>
+        </Grid>
+    </Grid>
+   </Grid>
     <Grid item sm={12} lg={12}>
      <ChowBox title={sites?.length > 1 ? t('site.sites.label') : t('site.label')}>
       <SiteCarousel sites={sites} theme={theme} themeMode={themeMode} isMain={isMain} />
