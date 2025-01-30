@@ -180,11 +180,7 @@ export function AuthProvider({ children }) {
    } = getUserAccess(user?.roles, user?.dataAccessibilityLevel)
 
    const rolesArray = JSON.stringify(user.roles)
-
-   const userData = {
-    email: user.email
-   }
-
+   const userData = { email: user.email }
    localStorage.setItem(LOCAL_STORAGE_KEY.EMAIL, user.email)
    localStorage.setItem(LOCAL_STORAGE_KEY.NAME, user.displayName)
    localStorage.setItem(LOCAL_STORAGE_KEY.USER_ID, userId)
@@ -218,10 +214,7 @@ export function AuthProvider({ children }) {
 
  // :multi-factor code
  const muliFactorAuthentication = useCallback(async (code, userID) => {
-  const response = await axios.post(PATH_SERVER.SECURITY.MFA, {
-   code,
-   userID
-  })
+  const response = await axios.post(PATH_SERVER.SECURITY.MFA, { code, userID })
   const { accessToken, user, userId } = response.data
 
   const {
