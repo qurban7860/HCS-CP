@@ -137,6 +137,7 @@ function Dashboard() {
      <Grid item xs={12}>
       <Grid container spacing={2} justifyContent={FLEX.FLEX_END}>
        <Grid item xs={12} sm={8}>
+       {/* HPS-1704 disable this until its fully restructured */}
         <ProductionTotalGraphWidget selectedMachine={totalSelectedMachine} setSelectedMachine={setTotalSelectedMachine} />
        </Grid>
        <Grid item xs={12} sm={4}>
@@ -150,6 +151,7 @@ function Dashboard() {
      </Grid>
      <Grid item xs={12}>
       <Grid item xs={12} sm={8}>
+       {/* HPS-1704 disable this until its fully restructured */}
        <ProductionRateGraphWidget selectedMachine={rateSelectedMachine} setSelectedMachine={setRateSelectedMachine} />
       </Grid>
      </Grid>

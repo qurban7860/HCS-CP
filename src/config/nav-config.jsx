@@ -9,7 +9,8 @@ function NavConfiguration() {
   {
    subheader: 'general',
    items: [
-    { title: !isDesktop ? 'dashboard.label' : '|', path: PATH_DASHBOARD.general.app, icon: !isDesktop ? '' : ICON_NAME.DASHBOARD, caption: 'dashboard.label' },
+    // HPS-1704: disable dashboard for now while machine logs is being restructured
+    // { title: !isDesktop ? 'dashboard.label' : '|', path: PATH_DASHBOARD.general.app, icon: !isDesktop ? '' : ICON_NAME.DASHBOARD, caption: 'dashboard.label' },
     { title: 'home.label', path: PATH_HOME.root },
     { title: 'machine.label', path: PATH_MACHINE.machines.list },
     { title: 'log.label', path: PATH_LOGS.machines.list },

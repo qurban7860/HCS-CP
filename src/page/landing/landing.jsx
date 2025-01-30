@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { t } from 'i18next'
 import { useSettingContext, Icon, ICON_NAME } from 'hook'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
@@ -116,7 +117,8 @@ const Landing = () => {
       <Grid container flexDirection={FLEX_DIR.ROW} justifyContent={FLEX.FLEX_END} mt={isMobile ? 5 : 0}>
        <Grid item lg={2} mr={isMobile ? 2 : 10}>
         <Button ref={buttonRef} {...ButtonProps}>
-         {isAuthenticated ? BUTTON.DASHBOARD : BUTTON.LOGIN}
+       {/* HPS-1704 disable this until machine integration is fully restructured */}
+         {isAuthenticated ? t('home.label').toUpperCase() : t('login.label').toUpperCase()}
         </Button>
        </Grid>
       </Grid>

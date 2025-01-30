@@ -1,4 +1,4 @@
-import { PATH_DASHBOARD } from 'route/path'
+import { PATH_DASHBOARD, PATH_HOME } from 'route/path'
 
 export const GLOBAL = {
  APP_TITLE             : 'Howick Portal',
@@ -41,4 +41,4 @@ export const AUTH0_API = {
 
 export const MAP_API = import.meta.env.VITE_MAPBOX_API
 
-export const PATH_AFTER_LOGIN = PATH_DASHBOARD.general.app  // as '/dashboard/app'
+export const PATH_AFTER_LOGIN = PATH_HOME.root  // as '/dashboard/app'
