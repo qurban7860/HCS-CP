@@ -113,7 +113,7 @@ const HomeTab = () => {
      <ChowBox title={sites?.length > 1 ? t('site.sites.label') : t('site.label')}>
       <SiteCarousel sites={sites} theme={theme} themeMode={themeMode} isMain={isMain} />
      </ChowBox>
-     <Grid container rowGap={2} columnSpacing={2}>
+     <Grid container rowGap={2} columnSpacing={2} mb={2}>
       <Grid item xs={12} sm={6}>
        <GStyledBottomScrollableHeightLockGrid mode={themeMode} totalCount={contacts?.length}>
         <ContactListCard value={defaultValues} handleContactDialog={handleContactDialog} />
