@@ -2,8 +2,6 @@ import { Fragment } from 'react'
 import { Navigate, useRoutes } from 'react-router-dom'
 import { AuthGuard, GuestGuard, RoleBasedGuard } from 'auth'
 import DashboardLayout from 'section/dashboard'
-import { useSettingContext, useHelmet } from 'hook'
-import { CustomerLayout } from 'section/crm/customer'
 import { PATH_AFTER_LOGIN } from 'global'
 import { FALLBACK, KEY } from 'constant'
 import {
@@ -12,7 +10,6 @@ import {
  // auth:
  LoginPage,
  RegisterPage,
- VerifyCodePage,
  SetPasswordPage,
  ResetPasswordPage,
  NewPasswordPage,
