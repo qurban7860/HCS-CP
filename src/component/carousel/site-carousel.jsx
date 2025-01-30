@@ -133,7 +133,7 @@ return (
       customDot={<CustomDot mode={themeMode} />}
       customRightArrow={<CustomRight mode={themeMode} theme={theme} hasNext />}
       customLeftArrow={<CustomLeft mode={themeMode} theme={theme} hasNext />}
-      partialVisbile
+      partialVisible
       pauseOnHover
       arrows
       infinite
