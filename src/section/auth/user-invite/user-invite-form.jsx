@@ -22,6 +22,7 @@ import {
  resetActiveContacts,
  resetSecurityUsers
 } from 'store/slice'
+import { PATH_DASHBOARD } from 'route/path'
 import { UserInviteSchema } from 'schema'
 import { useUserInviteDefaultValues } from 'section/auth'
 import { useTheme, Grid, Box, Checkbox, Typography, FormControlLabel } from '@mui/material'
@@ -30,7 +31,6 @@ import FormProvider, { RHFTextField, RHFAutocomplete, RHFPhoneInput, RHFCheckbox
 import { GStyledLoadingButton, GStyledDefLoadingButton, GStyledSpanBox, GStyledFieldChip } from 'theme/style'
 import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, TYPOGRAPHY, FLEX_DIR, FLEX } from 'constant'
 import { delay, getCountryCode, roleCoverUp, deepEqual } from 'util'
-import { PATH_DASHBOARD } from 'route/path'
 
 const FORM_EL = {
  contact: 'contact',
