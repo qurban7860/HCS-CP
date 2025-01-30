@@ -43,6 +43,7 @@ export const CustomerSupportTicketsPage = Loadable(lazy(() => import('page/crm/s
 export const LogListPage = Loadable(lazy(() => import('page/log/logs')))
 // support
 export const TicketsListPage = Loadable(lazy(() => import('page/support/tickets/tickets')))
+export const TicketCreatePage = Loadable(lazy(() => import('page/support/ticket/ticket-create')))
 // user
 export const UserListPage = Loadable(lazy(() => import('page/security/users/users')))
 export const UserProfilePage = Loadable(lazy(() => import('page/security/user/user')))

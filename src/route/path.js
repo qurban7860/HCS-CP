@@ -106,8 +106,9 @@ export const PATH_MACHINE = {
 export const PATH_SUPPORT = {
  root: ROOTS_SUPPORT,
  tickets: {
-  list: conNex(ROOTS_SUPPORT, SUB_TICKETS),
-  view: id => conNex(ROOTS_SUPPORT, SUB_TICKETS, id, 'view')
+            list  : conNex(ROOTS_SUPPORT, SUB_TICKETS),
+            view  : id => conNex(ROOTS_SUPPORT, SUB_TICKETS, id, 'view'),
+            create: conNex(ROOTS_SUPPORT, SUB_TICKETS, 'create')
  }
 }
 
