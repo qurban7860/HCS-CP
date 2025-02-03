@@ -158,7 +158,7 @@ export function getCountActiveTickets(ref, period) {
     params.startDate = fDate(startDate, 'yyyy-MM-dd')
    }
 
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
    console.log('response', response)
    dispatch(countSlice.actions.getCountActiveTicketsSuccess())
   } catch (error) {

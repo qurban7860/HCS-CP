@@ -138,7 +138,7 @@ export function getMachineTickets(serialNo) {
     serialNo
    }
 
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
    response.data.issues.sort((a, b) => {
     if (a.fields.status.name === 'Completed') {
      return 1
@@ -178,7 +178,7 @@ export function getMachineTicketByKey(serialNo, key) {
     serialNo
    }
 
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
    let machineTicket = response.data.issues.find(ticket => ticket.key === key)
 
    dispatch(machineTicketSlice.actions.getMachineTicketRecordSuccess(machineTicket))

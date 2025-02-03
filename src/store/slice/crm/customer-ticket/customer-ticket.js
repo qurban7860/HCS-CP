@@ -150,7 +150,7 @@ export function getAllCustomerTickets(customers, page, pageSize) {
      page,
      pageSize
     }
-    const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+    const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
     responseData.push(response.data)
    }
 
@@ -182,7 +182,7 @@ export function getCustomerTickets(ref, period) {
     params.startDate = fDate(startDate, 'yyyy-MM-dd')
    }
 
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
    response.data.issues.sort((a, b) => {
     if (a.fields.status.name === 'Completed') {
      return 1
@@ -220,7 +220,7 @@ export function getCustomerTicketByKey(ref, key) {
    const params = {
     ref
    }
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
    let customerTicket = response.data.issues.find(ticket => ticket.key === key)
 
    dispatch(customerTicketSlice.actions.getCustomerTicketRecordSuccess(customerTicket))
@@ -239,7 +239,7 @@ export function getCustomerTicketBySerialNoAndKey(serialNo, key) {
    const params = {
     serialNo
    }
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
    let customerTicket = response.data.issues.find(ticket => ticket.key === key)
    dispatch(customerTicketSlice.actions.getCustomerTicketRecordSuccess(customerTicket))
   } catch (error) {
