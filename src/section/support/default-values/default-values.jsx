@@ -126,3 +126,32 @@ export function useTicketDefaultValues(issue) {
   }
  }, [issue])
 }
+
+export function useTicketCreateDefaultValues(customer) {
+    return useMemo(() => {
+     return {
+        customer: customer && customer._id || null,
+        machine: null,
+        issueType: null,
+        summary: '',
+        description: '',
+        priority: null,
+        status: null,
+        impact: null,
+        files: [],
+        changeType: null,
+        changeReason: null,
+        implementationPlan: '',
+        backoutPlan: '',
+        testPlan: '',
+        investigationReason: null,
+        rootCause: '',
+        workaround: '',
+        shareWith: false,
+        isActive: true,
+        plannedStartDate: new Date(),
+        plannedEndDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+     }
+    }, [customer])
+   }
+
