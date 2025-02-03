@@ -32,6 +32,9 @@ const en = {
  add_as_contact: {
   label: `Add as Contact`
  },
+ add_upload_file: {
+   label: `Add / Upload File`
+ },
  address: {
   label: `Address`,
   addresses: {
@@ -78,8 +81,26 @@ const en = {
  chat: `chat`,
  cards: `cards`,
  posts: `posts`,
+ allowed_format: {
+   label: `Allowed Format`,
+   allowed_formats: {
+    label: `Allowed Formats`
+   }
+ },
+ already_exists: {
+   label: `Already exists`
+ },
  assignee: {
   label: `Assignee`
+ },
+ attachment: {
+    label: `Attachment`,
+    attachments: {
+     label: `Attachments`
+    }
+ },
+ attach_file: {
+   label: `Attach File`
  },
  billing_contact: {
   label: `Billing Contact`
@@ -226,11 +247,17 @@ const en = {
   local: `document`,
   label: `Document`
  },
+ drop_select:{
+   label: `Drop or <select>select</select> files`
+ },
  email: {
   label: `Email`
  },
  enable_portal_access: {
   label: `Enable Portal Access`
+ },
+ file:{
+   label: `File`
  },
  filter_status: {
   label: `Filter Status`
@@ -525,6 +552,9 @@ const en = {
    label: `Phone Numbers`
   }
  },
+ pdf_view: {
+   label: `PDF View`
+ },
  personal_information: {
   label: `Personal Information`
  },
@@ -552,6 +582,9 @@ const en = {
  register_agreement: 'By clicking "Register" you agree to our <1>Privacy Policy</1>.',
  remember_me: {
   label: `Remember me`
+ },
+ remove_all: {
+   label: `Remove All`
  },
  reporter: {
   label: `Reporter`
@@ -617,6 +650,9 @@ const en = {
  search: {
   label: `Search`
  },
+ select: {
+   label: `Select`
+ },
  select_filter: {
   label: `Select Filter`
  },
@@ -677,6 +713,9 @@ const en = {
  },
  submitted_details: {
   label: `Submitted Details`
+ },
+ summary: {
+    label: `Summary`
  },
  support_manager: {
   label: `Support Manager`,
