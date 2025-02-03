@@ -80,18 +80,28 @@ export const ICON = {
  NAV_ITEM_MINI: 22,
  DEFAULT_SIZE: 30,
 
+ SIZE_X_LG_3: {
+   width : 80,
+   height: 80
+},
+
  SIZE_MD: {
-    width: 30,
+    width : 30,
     height: 30
  },
 
+ SIZE_SM_2: {
+   width : 24,
+   height: 24
+ },
+
  SIZE_SM: {
-    width: 20,
+    width : 20,
     height: 20
  },
 
  SIZE_XS: {
-    width: 15,
+    width : 15,
     height: 15
  },
 
@@ -100,7 +110,7 @@ export const ICON = {
 
 export const BADGE = {
  MACHINE: {
-  width: 70,
+  width : 70,
   height: 70
  }
 }
@@ -109,7 +119,7 @@ export const BRAND = {
  NAV_ICON: 40,
  AUTH_HEIGHT_LOGO: 120,
  LANDING_LOGO: {
-  width: 80,
+  width  : 80,
   opacity: 0.2
  }
 }
