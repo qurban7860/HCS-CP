@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState, useCallback, useRef } from 'react'
 import _ from 'lodash'
 import debounce from 'lodash.debounce'
 import { t } from 'i18next'
+import { enc, MD5, lib } from 'crypto-js';
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -15,32 +16,21 @@ import {
  getCustomer,
  getSecurityUsers,
  getActiveContacts,
- getCustomerRoles,
- setUserInviteDialog,
- setUserInviteConfirmDetails,
- resetUserInviteConfirmDetails,
- resetActiveContacts,
- resetSecurityUsers
+ getTicketSettings,
+ getCustomerMachines,
+ deleteFile,
+ resetTicketSettings,
+ resetCustomerMachines
 } from 'store/slice'
 import { PATH_DASHBOARD } from 'route/path'
-import { UserInviteSchema } from 'schema'
-import { useUserInviteDefaultValues } from 'section/auth'
-import { useTheme, Grid, Box, Checkbox, Typography, FormControlLabel } from '@mui/material'
-import { RHFRequiredTextFieldWrapper, UserInviteSuccessDialog, ConfirmDialog } from 'component'
+import { TicketSchema } from 'schema'
+import { useTicketCreateDefaultValues } from 'section/support'
+import { useTheme, Grid, Box, Checkbox, Typography, FormControlLabel, Card } from '@mui/material'
+import { RHFRequiredTextFieldWrapper, RHFUpload,  UserInviteSuccessDialog, ConfirmDialog, GridViewTitle } from 'component'
 import FormProvider, { RHFTextField, RHFAutocomplete, RHFPhoneInput, RHFCheckbox } from 'component/hook-form'
-import { GStyledLoadingButton, GStyledDefLoadingButton, GStyledSpanBox, GStyledFieldChip } from 'theme/style'
+import { GStyledLoadingButton, GStyledDefLoadingButton, GStyledSpanBox, GStyledFieldChip, GCardOption, GStyledTopBorderDivider } from 'theme/style'
 import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, TYPOGRAPHY, FLEX_DIR, FLEX } from 'constant'
 import { delay, getCountryCode, roleCoverUp, deepEqual } from 'util'
-
-const FORM_EL = {
- contact: 'contact',
- name: 'name',
- phone: 'phone',
- email: 'email',
- roles: 'roles',
- isInvite: 'isInvite'
-}
-
 /**
  * Creating a new ticket form
  * @returns {JSX.Element}
@@ -51,13 +41,15 @@ function TicketCreateForm() {
  const [isConfirming, setIsConfirming]           = useState(false)
  const [addAsContact, setAddAsContact]           = useState(false)
  const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
- const { customer, activeContacts, securityUserTotalCount, customerRoles, userInviteDialog } = useSelector(
+ const { customer, activeContacts, securityUserTotalCount, customerMachines, userInviteDialog, ticketSettings } = useSelector(
   state => ({
-   customer: state.customer.customer,
-   activeContacts: state.contact.activeContacts,
+   customer              : state.customer.customer,
+   activeContacts        : state.contact.activeContacts,
    securityUserTotalCount: state.user.securityUserTotalCount,
-   userInviteDialog: state.user.userInviteDialog,
-   customerRoles: state.role.customerRoles
+   userInviteDialog      : state.user.userInviteDialog,
+   customerMachines      : state.machine.customerMachines,
+   customerRoles         : state.role.customerRoles,
+   ticketSettings        : state.ticket.ticketSettings
   }),
   _.isEqual
  )
@@ -68,7 +60,6 @@ function TicketCreateForm() {
  const navigate         = useNavigate()
  const regEx            = new RegExp(REGEX.ERROR_CODE)
  const isMobile         = useResponsive('down', 'sm')
- const countryCode      = getCountryCode(customer?.mainSite?.address?.country) || KEY.DEFAULT_COUNTRY_CODE
  const fetchCustomerRef = useRef(false)
 
  const fetchCustomer = useCallback(() => {
@@ -102,17 +93,9 @@ function TicketCreateForm() {
   return () => debounceFetch.cancel()
  }, [user.customer, activeContacts, dispatch])
 
- useEffect(() => {
-  const debounceFetch = debounce(() => {
-   if (user.customer && !customerRoles.length) dispatch(getCustomerRoles())
-  }, 300)
-  debounceFetch()
-  return () => debounceFetch.cancel()
- }, [user.customer, customerRoles, dispatch])
-
- const defaultValues = useUserInviteDefaultValues(customer, activeContacts)
+ const defaultValues = useTicketCreateDefaultValues(customer)
  const methods = useForm({
-  resolver: yupResolver(UserInviteSchema),
+  resolver: yupResolver(TicketSchema('new')),
   defaultValues,
   mode: 'onChange'
  })
@@ -126,22 +109,21 @@ function TicketCreateForm() {
   formState: { errors, isSubmitting, isSubmitSuccessful }
  } = methods
 
- const { email, contact, name, roles, phone, isInvite } = watch()
- const isNewContact = contact || addAsContact === true
+ const { machine, issueType, summary, description, files } = watch()
 
  const checkFormCompletion = useCallback(() => {
-  setIsFormComplete((!!name && !!REGEX.EMAIL.test(email) && !!contact) || (addAsContact && roles.length > 0))
- }, [name, email, contact, roles])
+  setIsFormComplete(!!machine && !!issueType && !!summary && !!description)
+ }, [machine, issueType, summary, description])
 
- useEffect(() => {
-  if (contact) {
-   const selectedContact = activeContacts.find(activeContact => activeContact?._id === contact?._id)
-   if (selectedContact) {
-    setValue(FORM_EL.name, `${selectedContact.firstName} ${selectedContact.lastName}`)
-    if (selectedContact.email) setValue(FORM_EL.email, selectedContact.email)
-   }
-  }
- }, [contact, activeContacts, setValue, name])
+//  useEffect(() => {
+//   if (contact) {
+//    const selectedContact = activeContacts.find(activeContact => activeContact?._id === contact?._id)
+//    if (selectedContact) {
+//     setValue(FORM_EL.name, `${selectedContact.firstName} ${selectedContact.lastName}`)
+//     if (selectedContact.email) setValue(FORM_EL.email, selectedContact.email)
+//    }
+//   }
+//  }, [contact, activeContacts, setValue, name])
 
  useEffect(() => {
   if (!isSuccessState) {
@@ -178,7 +160,6 @@ function TicketCreateForm() {
 
  const handleConfirmation = async () => {
   setIsConfirming(true)
-  await Promise.all([dispatch(setUserInviteConfirmDetails({ customer, name, email, phone, roles, isInvite })), dispatch(setUserInviteDialog(true))])
  }
 
  const handleCancel = async () => {
@@ -196,10 +177,66 @@ function TicketCreateForm() {
  }
 
  useEffect(() => {
-  dispatch(resetSecurityUsers())
-  dispatch(resetActiveContacts())
-  dispatch(resetUserInviteConfirmDetails())
+    if (!customer) return
+    dispatch(getTicketSettings())
+    dispatch(getCustomerMachines(customer?._id))
+    return ()=> {
+        dispatch(resetTicketSettings())
+        dispatch(resetCustomerMachines())
+    }
  }, [dispatch])
+
+ const hashFilesMD5 = async (_files) => {
+    const hashPromises = _files.map((file) => new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => {
+        const arrayBuffer = reader.result;
+        const wordArray = MD5(lib.WordArray.create(arrayBuffer));
+        const hashHex = wordArray.toString(enc.Hex);
+        resolve(hashHex);
+      }
+      reader.onerror = () => {
+        reject(new Error(`Error reading file: ${file?.name || '' }`))
+      }
+      reader.readAsArrayBuffer(file);
+    }))
+    try {
+      const hashes = await Promise.all(hashPromises)
+      return hashes;
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
+  }
+
+  const handleDropMultiFile = useCallback(async (acceptedFiles) => {
+    const hashes = await hashFilesMD5(acceptedFiles)
+    const newFiles = ( Array.isArray(files) && files?.length > 0 ) ? [ ...files ] : []
+    acceptedFiles.forEach((file, index) => {
+      const eTag = hashes[index];
+      if( !newFiles?.some(( el ) => el?.eTag === eTag ) ){
+        const newFile = Object.assign(file, {
+          preview: URL.createObjectURL(file),
+          src: URL.createObjectURL(file),
+          isLoaded: true,
+          eTag,
+        });
+        newFiles.push(newFile)
+      }
+    });
+    setValue('files', newFiles, { shouldValidate: true })
+  }, [setValue, files])
+
+  const handleFileRemove = useCallback( async (inputFile) => {
+    try{
+      setValue('files', files?.filter((el) => ( inputFile?._id ? el?._id !== inputFile?._id : el !== inputFile )), { shouldValidate: true } )
+      if( inputFile?._id ){
+        dispatch(deleteFile( inputFile?.ticket, inputFile?._id))
+      }
+    } catch(e){
+      console.error(e)
+    }
+  }, [ setValue, files, dispatch ] )
 
  const handleSubmissionError = error => {
   if (error?.errors) {
@@ -257,115 +294,91 @@ function TicketCreateForm() {
 
  return (
   <Fragment>
-   <Grid container>
-    <Grid item xs={12} sm={12} md={12}>
-     {securityUserTotalCount && (
-      <GStyledSpanBox>
-       <Typography variant={TYPOGRAPHY.BODY1}>{t('total_users.label') + ':'}</Typography>
-       <Typography variant={TYPOGRAPHY.H5}>&nbsp;{securityUserTotalCount}</Typography>
-      </GStyledSpanBox>
-     )}
-    </Grid>
-   </Grid>
    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
     <Grid container my={4} direction={{ xs: 'column', md: 'row' }} flex={1} rowSpacing={4} gridAutoFlow={isMobile ? FLEX_DIR.COLUMN : FLEX_DIR.ROW} columnSpacing={2}>
-     <Grid item xs={12} sm={6} md={6}>
-      <RHFRequiredTextFieldWrapper condition={!isNewContact}>
-       <RHFAutocomplete
-        name={FORM_EL.contact}
-        label={!addAsContact ? t('contact.label') : name ? `${t('new_contact.label')}:  ${name}` : t('new_contact.label')}
-        options={activeContacts}
-        getOptionLabel={option => (!addAsContact ? `${option?.firstName || ''} ${option?.lastName || ''}` : name || '')}
-        isOptionEqualToValue={(option, value) => option?._id === value?._id}
-        renderOption={(props, option) => (
-         <li {...props} key={option?._id}>
-          {option?.firstName || ''} {option?.lastName || ''}
-         </li>
-        )}
-        helperText={errors.contact ? errors.contact.message : t('new_contact.helper_text')}
-        disabled={addAsContact}
-       />
-      </RHFRequiredTextFieldWrapper>
-     </Grid>
-     <Grid item xs={12} sm={6} md={6}>
-      <RHFRequiredTextFieldWrapper condition={!name}>
-       <RHFTextField
-        name={FORM_EL.name}
-        type={KEY.TEXT}
-        label={t('full_name.label')}
-        autoComplete={FORM_EL.name}
-        aria-label={FORM_EL.name}
-        error={!!errors.name}
-        helperText={errors.contactPersonName ? errors.contactPersonName.message : ''}
-        required
-       />
-      </RHFRequiredTextFieldWrapper>
-     </Grid>
-     <Grid item xs={12} sm={6} md={6}>
-      <RHFPhoneInput
-       name={FORM_EL.phone}
-       label={t('contact_number.label')}
-       autoComplete={KEY.PHONE}
-       placeholder={t('contact_number.label')}
-       aria-label={t('contact_number.label')}
-       error={!!errors.phone}
-       helperText={errors.phone ? errors.phone.message : ''}
-       defaultCountry={countryCode}
-      />
-     </Grid>
-     <Grid item xs={12} sm={6} md={6}>
-      <RHFRequiredTextFieldWrapper condition={REGEX.EMAIL.test(email) === false}>
-       <RHFTextField
-        name={FORM_EL.email}
-        type={KEY.EMAIL}
-        label={t('email.label')}
-        autoComplete={KEY.EMAIL}
-        aria-label={LABEL.LOGIN_EMAIL}
-        error={!!errors.email}
-        helperText={errors.email ? errors.email.message : ''}
-        required
-       />
-      </RHFRequiredTextFieldWrapper>
-     </Grid>
+        <Grid item xs={12} sm={12} md={4}>
+            <Box m={2}>
+                <Card {...GCardOption(themeMode)}>
+                    <GStyledTopBorderDivider mode={themeMode} />
+                    <Grid container spacing={2} p={1.5}>
+                            <Grid item xs={12} sm={12} md={12}>
+                                <RHFRequiredTextFieldWrapper condition={!machine}>
+                                    <RHFAutocomplete
+                                        name={'machine'}
+                                        label={t('machine.label')}
+                                        options={customerMachines || []}
+                                        isOptionEqualToValue={(option, value) => option._id === value._id}
+                                        getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
+                                        renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
+                                        helperText={errors.contact ? errors.contact.message : t('new_contact.helper_text')}
+                                    />
+                                    </RHFRequiredTextFieldWrapper>
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={12}>
+                                <RHFRequiredTextFieldWrapper condition={!issueType}>
+                                    <RHFAutocomplete
+                                        name="issueType"
+                                        label="Issue Type*"
+                                        options={ticketSettings?.issueTypes || []}
+                                        isOptionEqualToValue={(option, value) => option._id === value._id}
+                                        getOptionLabel={(option) => `${option.name || ''}`}
+                                        renderOption={(props, option) => (<li {...props} key={option?._id}> {option.name || ''} </li> )}
+                                    />
+                                </RHFRequiredTextFieldWrapper>
+                            </Grid>
+                    </Grid>
+                </Card>
+            </Box>
+        </Grid>
+        {issueType && machine && (
+            <Grid item xs={12} sm={8} md={8}>
+                <Box m={2}>
+                    <Card {...GCardOption(themeMode)}>
+                        <GStyledTopBorderDivider mode={themeMode} />
+                        <Grid container spacing={2} p={1.5}>
+                                <Grid item xs={12} sm={12} md={12}>
+                                    <RHFRequiredTextFieldWrapper condition={!summary}>
+                                        <RHFTextField
+                                            name={'summary'}
+                                            label={t('summary.label')}
+                                            aria-label={t('summary.label')}
+                                            error={!!errors.summary}
+                                            helperText={errors.summary ? errors.summary.message : ''}
+                                            required
+                                        />
+                                        </RHFRequiredTextFieldWrapper>
+                                </Grid>
+                                <Grid item xs={12} sm={12} md={12}>
+                                    <RHFRequiredTextFieldWrapper condition={!description}>
+                                        <RHFTextField name="description" label={t('description.label')} minRows={3} multiline />
+                                    </RHFRequiredTextFieldWrapper>
+                                </Grid>
+                        </Grid>
+                        <Grid container spacing={2} p={1.5}>
+                            <GridViewTitle title={t('attachment.attachments.label')} />
+                            <Grid item xs={12} sm={12} md={12}>
+                                <RHFUpload
+                                    name="files"
+                                    dropZone={true}
+                                    multiple
+                                    thumbnail
+                                    imagesOnly
+                                    onDrop={handleDropMultiFile}
+                                    onRemove={handleFileRemove}
+                                    onRemoveAll={() => setValue('files', '', { shouldValidate: true })}
+                                />
+                            </Grid>
+                        </Grid>
 
-     <Grid item xs={12} sm={6} md={6}>
-      <RHFAutocomplete
-       multiple
-       disableCloseOnSelect
-       filterSelectedOptions
-       name={FORM_EL.roles}
-       label={t('role.roles.label')}
-       options={customerRoles}
-       getOptionLabel={option => roleCoverUp(option)}
-       isOptionEqualToValue={(option, value) => option?._id === value?._id}
-       renderOption={(props, option, { selected }) => {
-        // eslint-disable-next-line react/prop-types
-        const { key, ...liProps } = props
-        return (
-         <li key={option?._id} {...liProps}>
-          <Checkbox checked={selected} />
-          {roleCoverUp(option)}
-         </li>
-        )
-       }}
-       renderTags={(value, getTagProps) =>
-        value.map((option, index) => {
-         const { key, ...tagProps } = getTagProps({ index })
-         return <GStyledFieldChip key={option?._id} label={<Typography variant={TYPOGRAPHY.BODY2}>{roleCoverUp(option)}</Typography>} mode={themeMode} {...tagProps} />
-        })
-       }
-      />
-     </Grid>
+                    </Card>
+                </Box>
+            </Grid>
+        )}
     </Grid>
     <Grid container direction={{ xs: FLEX_DIR.COLUMN, md: FLEX_DIR.ROW }} justifyContent={FLEX.FLEX_END} sx={{ my: 5 }}>
-     <Grid item xs={12} sm={4} md={2} display={FLEX.FLEX} justifyContent={isMobile ? FLEX.FLEX_START : FLEX.FLEX_END}>
+     {/* <Grid item xs={12} sm={4} md={2} display={FLEX.FLEX} justifyContent={isMobile ? FLEX.FLEX_START : FLEX.FLEX_END}>
       <RHFCheckbox name={FORM_EL.isInvite} label={t('enable_portal_access.label')} error={!!errors.isInvite} helperText={errors.isInvite ? errors.isInvite.message : ''} />
-     </Grid>
-     {!contact && (
-      <Grid item xs={12} sm={4} md={2} display={FLEX.FLEX} justifyContent={isMobile ? FLEX.FLEX_START : FLEX.FLEX_END}>
-       <FormControlLabel value={addAsContact} control={<Checkbox />} label={t('add_as_contact.label')} labelPlacement='end' onChange={() => setAddAsContact(!addAsContact)} />
-      </Grid>
-     )}
+     </Grid> */}
     </Grid>
     <Grid container direction={{ xs: FLEX_DIR.COLUMN, md: FLEX_DIR.ROW }} justifyContent={KEY.CENTER}>
      <Grid item xs={12} sm={4} md={4} >
@@ -379,7 +392,7 @@ function TicketCreateForm() {
        mode={themeMode}
        onClick={handleConfirmation}
        disabled={!isFormComplete}>
-       {t('send_invitation.label').toUpperCase()}
+       {t('create_support_ticket.label').toUpperCase()}
       </GStyledLoadingButton>
       &nbsp;
       <GStyledDefLoadingButton
