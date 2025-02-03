@@ -259,16 +259,45 @@ export const PATH_SERVER = {
   * @module /jira
   */
  SUPPORT: {
-  /**
-   * /jira/tickets
-   */
-  TICKETS: _url('jira', 'tickets'),
-  /**
-   * /jira/tickets/:ticketId
-   * @param {*} ticketId
-   * @returns
-   */
-  TICKET: ticketId => _url('jira', 'tickets', ticketId)
+          /**
+           * /jira/tickets
+           */
+          TICKETS: {
+            /**
+              * /jira/tickets
+              */
+            list: _url('jira', 'tickets'),
+            /**
+              * /jira/tickets/:ticketId
+              * @param {*} ticketId
+              * @returns
+              */
+            detail: ticketId => _url('jira', 'tickets', ticketId),
+            /**
+             * /jira/tickets/:ticketId/files
+             * @param {*} ticketId
+             * @returns
+             */
+            files: ticketId => _url('jira', 'tickets', ticketId, 'files'),
+             /**
+             * /jira/tickets/:ticketId/files/:fileId
+             * @param {*} ticketId
+             * @param {*} fileId
+             * @returns
+             */
+             file: (ticketId, fileId) => _url('jira', 'tickets', ticketId, 'files', fileId),
+          },
+          /**
+           * /jira/tickets/:ticketId
+           * @param {*} ticketId
+           * @returns
+           */
+          TICKET: ticketId => _url('jira', 'tickets', ticketId),
+          /**
+           * /tickets/settings
+           * @returns
+           */
+          TICKET_SETTINGS: _url('tickets', 'settings'),
  },
  /**
   * @module /productLogs
