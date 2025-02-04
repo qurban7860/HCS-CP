@@ -11,8 +11,7 @@ import { snack, useResponsive, useSettingContext } from 'hook'
 import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
 import {
- addAndInviteSecurityUser,
- addContactFromUserInvite,
+ createTicket,
  getCustomer,
  getSecurityUsers,
  getActiveContacts,
@@ -25,12 +24,12 @@ import {
 import { PATH_DASHBOARD } from 'route/path'
 import { TicketSchema } from 'schema'
 import { useTicketCreateDefaultValues } from 'section/support'
-import { useTheme, Grid, Box, Checkbox, Typography, FormControlLabel, Card } from '@mui/material'
-import { RHFRequiredTextFieldWrapper, RHFUpload,  UserInviteSuccessDialog, ConfirmDialog, GridViewTitle } from 'component'
-import FormProvider, { RHFTextField, RHFAutocomplete, RHFPhoneInput, RHFCheckbox } from 'component/hook-form'
-import { GStyledLoadingButton, GStyledDefLoadingButton, GStyledSpanBox, GStyledFieldChip, GCardOption, GStyledTopBorderDivider } from 'theme/style'
-import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, TYPOGRAPHY, FLEX_DIR, FLEX } from 'constant'
-import { delay, getCountryCode, roleCoverUp, deepEqual } from 'util'
+import { useTheme, Grid, Box, Card } from '@mui/material'
+import { RHFRequiredTextFieldWrapper, RHFUpload, ConfirmDialog, GridViewTitle } from 'component'
+import FormProvider, { RHFTextField, RHFAutocomplete, RHFDatePickr,  RHFTimePicker, RHFSwitch } from 'component/hook-form'
+import { GStyledLoadingButton, GStyledDefLoadingButton, GStyledStickyFormGrid, GCardOption, GStyledTopBorderDivider } from 'theme/style'
+import { REGEX, LOCAL_STORAGE_KEY, KEY, COLOR, FLEX_DIR } from 'constant'
+import { delay, deepEqual } from 'util'
 /**
  * Creating a new ticket form
  * @returns {JSX.Element}
@@ -41,7 +40,7 @@ function TicketCreateForm() {
  const [isConfirming, setIsConfirming]           = useState(false)
  const [addAsContact, setAddAsContact]           = useState(false)
  const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
- const { customer, activeContacts, securityUserTotalCount, customerMachines, userInviteDialog, ticketSettings } = useSelector(
+ const { customer, isLoading, activeContacts, securityUserTotalCount, customerMachines, userInviteDialog, ticketSettings } = useSelector(
   state => ({
    customer              : state.customer.customer,
    activeContacts        : state.contact.activeContacts,
@@ -49,6 +48,7 @@ function TicketCreateForm() {
    userInviteDialog      : state.user.userInviteDialog,
    customerMachines      : state.machine.customerMachines,
    customerRoles         : state.role.customerRoles,
+   isLoading             : state.ticket.isLoading,
    ticketSettings        : state.ticket.ticketSettings
   }),
   _.isEqual
@@ -97,33 +97,16 @@ function TicketCreateForm() {
  const methods = useForm({
   resolver: yupResolver(TicketSchema('new')),
   defaultValues,
-  mode: 'onChange'
+  mode          : 'onChange',
+  reValidateMode: 'onChange'
  })
 
- const {
-  reset,
-  setValue,
-  setError,
-  watch,
-  handleSubmit,
-  formState: { errors, isSubmitting, isSubmitSuccessful }
- } = methods
-
+ const { reset, setValue, setError, watch, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful }} = methods
  const { machine, issueType, summary, description, files } = watch()
 
  const checkFormCompletion = useCallback(() => {
   setIsFormComplete(!!machine && !!issueType && !!summary && !!description)
  }, [machine, issueType, summary, description])
-
-//  useEffect(() => {
-//   if (contact) {
-//    const selectedContact = activeContacts.find(activeContact => activeContact?._id === contact?._id)
-//    if (selectedContact) {
-//     setValue(FORM_EL.name, `${selectedContact.firstName} ${selectedContact.lastName}`)
-//     if (selectedContact.email) setValue(FORM_EL.email, selectedContact.email)
-//    }
-//   }
-//  }, [contact, activeContacts, setValue, name])
 
  useEffect(() => {
   if (!isSuccessState) {
@@ -158,10 +141,6 @@ function TicketCreateForm() {
   }
  }, [isFormDirty])
 
- const handleConfirmation = async () => {
-  setIsConfirming(true)
- }
-
  const handleCancel = async () => {
   setOpenConfirmDialog(false)
   reset(defaultValues)
@@ -181,18 +160,18 @@ function TicketCreateForm() {
     dispatch(getTicketSettings())
     dispatch(getCustomerMachines(customer?._id))
     return ()=> {
-        dispatch(resetTicketSettings())
-        dispatch(resetCustomerMachines())
+      dispatch(resetTicketSettings())
+      dispatch(resetCustomerMachines())
     }
  }, [dispatch])
 
  const hashFilesMD5 = async (_files) => {
     const hashPromises = _files.map((file) => new Promise((resolve, reject) => {
-      const reader = new FileReader()
+    const reader       = new FileReader()
       reader.onload = () => {
         const arrayBuffer = reader.result;
-        const wordArray = MD5(lib.WordArray.create(arrayBuffer));
-        const hashHex = wordArray.toString(enc.Hex);
+        const wordArray   = MD5(lib.WordArray.create(arrayBuffer));
+        const hashHex     = wordArray.toString(enc.Hex);
         resolve(hashHex);
       }
       reader.onerror = () => {
@@ -210,14 +189,14 @@ function TicketCreateForm() {
   }
 
   const handleDropMultiFile = useCallback(async (acceptedFiles) => {
-    const hashes = await hashFilesMD5(acceptedFiles)
+    const hashes   = await hashFilesMD5(acceptedFiles)
     const newFiles = ( Array.isArray(files) && files?.length > 0 ) ? [ ...files ] : []
     acceptedFiles.forEach((file, index) => {
       const eTag = hashes[index];
       if( !newFiles?.some(( el ) => el?.eTag === eTag ) ){
         const newFile = Object.assign(file, {
-          preview: URL.createObjectURL(file),
-          src: URL.createObjectURL(file),
+          preview : URL.createObjectURL(file),
+          src     : URL.createObjectURL(file),
           isLoaded: true,
           eTag,
         });
@@ -256,39 +235,15 @@ function TicketCreateForm() {
   setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, { type: 'unexpected', message: error?.message || t('responses.error.unexpected_error') })
  }
 
- const onSubmit = async data => {
+ const onSubmit = async (data) => {
   try {
-   setIsSuccessState(true)
-   setIsConfirming(false)
-   const Data = { ...data, customer }
-
-   if (addAsContact) {
-    const newContactResponse = await dispatch(addContactFromUserInvite(customer?._id, Data))
-    if (newContactResponse.status !== 201) {
-     snack(t('responses.error.unable_create_contact'), { variant: COLOR.ERROR })
-     throw new Error(t('responses.error.unable_create_contact'))
-    }
-    snack(t('responses.success.created_contact'), { variant: COLOR.SUCCESS })
-    const { customerCategory } = newContactResponse.data
-    Data.contact = customerCategory
-   }
-
-   const response = await dispatch(addAndInviteSecurityUser(Data))
-   await delay(2000)
-   if (REGEX.SUCCESS_CODE.test(response.status)) {
-    snack(t('responses.success.user_invite_request_submitted'), { variant: COLOR.SUCCESS })
-    reset()
-    setIsFormComplete(false)
-    setIsSuccessState(false)
-   } else {
-    console.error(t('responses.error.failed_submission'), response)
-    snack(t('responses.error.failed_submission'), { variant: COLOR.ERROR })
-    setIsSuccessState(false)
-    setIsConfirming(false)
-   }
+   await dispatch(createTicket(data))
+   await delay(1000)
+   reset()
+   snack(t('responses.success.ticket_created'), { variant: COLOR.SUCCESS })
+   navigate('/home')
   } catch (error) {
-   handleSubmissionError(error)
-   setIsSuccessState(false)
+    handleSubmissionError(error)
   }
  }
 
@@ -296,136 +251,207 @@ function TicketCreateForm() {
   <Fragment>
    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
     <Grid container my={4} direction={{ xs: 'column', md: 'row' }} flex={1} rowSpacing={4} gridAutoFlow={isMobile ? FLEX_DIR.COLUMN : FLEX_DIR.ROW} columnSpacing={2}>
-        <Grid item xs={12} sm={12} md={4}>
-            <Box m={2}>
+        <GStyledStickyFormGrid item xs={12} md={3}>
+            <Box mt={0} mb={2}>
                 <Card {...GCardOption(themeMode)}>
                     <GStyledTopBorderDivider mode={themeMode} />
                     <Grid container spacing={2} p={1.5}>
-                            <Grid item xs={12} sm={12} md={12}>
-                                <RHFRequiredTextFieldWrapper condition={!machine}>
-                                    <RHFAutocomplete
-                                        name={'machine'}
-                                        label={t('machine.label')}
-                                        options={customerMachines || []}
-                                        isOptionEqualToValue={(option, value) => option._id === value._id}
-                                        getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
-                                        renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
-                                        helperText={errors.contact ? errors.contact.message : t('new_contact.helper_text')}
-                                    />
-                                    </RHFRequiredTextFieldWrapper>
-                            </Grid>
-                            <Grid item xs={12} sm={12} md={12}>
-                                <RHFRequiredTextFieldWrapper condition={!issueType}>
-                                    <RHFAutocomplete
-                                        name="issueType"
-                                        label="Issue Type*"
-                                        options={ticketSettings?.issueTypes || []}
-                                        isOptionEqualToValue={(option, value) => option._id === value._id}
-                                        getOptionLabel={(option) => `${option.name || ''}`}
-                                        renderOption={(props, option) => (<li {...props} key={option?._id}> {option.name || ''} </li> )}
-                                    />
-                                </RHFRequiredTextFieldWrapper>
-                            </Grid>
+                        <Grid item xs={12} sm={12} md={12}>
+                          <RHFRequiredTextFieldWrapper condition={!machine}>
+                              <RHFAutocomplete
+                                  name={'machine'}
+                                  label={t('machine.label')}
+                                  options={customerMachines || []}
+                                  isOptionEqualToValue={(option, value) => option._id === value._id}
+                                  getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
+                                  renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
+                                  helperText={errors.machine ? errors.machine.message : '' }
+                                  required
+                              />
+                          </RHFRequiredTextFieldWrapper>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12}>
+                          <RHFRequiredTextFieldWrapper condition={!issueType}>
+                              <RHFAutocomplete
+                                  name="issueType"
+                                  label={t('issue_type.label')}
+                                  options={ticketSettings?.issueTypes || []}
+                                  isOptionEqualToValue={(option, value) => option._id === value._id}
+                                  getOptionLabel={(option) => `${option.name || ''}`}
+                                  renderOption={(props, option) => (<li {...props} key={option?._id}> {option.name || ''} </li> )}
+                                  required
+                              />
+                          </RHFRequiredTextFieldWrapper>
+                        </Grid>
                     </Grid>
                 </Card>
             </Box>
-        </Grid>
+            <Grid container direction={{ xs: FLEX_DIR.COLUMN, md: FLEX_DIR.ROW }} justifyContent={KEY.CENTER} gap={2}>
+              <Grid item xs={12} sm={12} md={12} >
+                <GStyledLoadingButton fullWidth color={KEY.INHERIT} type={KEY.SUBMIT} mode={themeMode} loading={isSubmitting} disabled={!isFormComplete}>
+                  {t('create_support_ticket.label').toUpperCase()}
+                </GStyledLoadingButton>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12}>
+                <GStyledDefLoadingButton
+                  fullWidth
+                  type={'button'}
+                  color={KEY.INHERIT}
+                  variant={KEY.CONTAINED}
+                  bgColor={themeMode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[800]}
+                  textColor={themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white}
+                  mode={themeMode}
+                  onClick={handleConfirmCancel}>
+                  {t('go_back.label').toUpperCase()}
+                  </GStyledDefLoadingButton>
+              </Grid>
+            </Grid>
+        </GStyledStickyFormGrid>
         {issueType && machine && (
-            <Grid item xs={12} sm={8} md={8}>
-                <Box m={2}>
+            <Grid item xs={12} sm={9} md={9}>
+                <Box m={2} mb={5} mt={0}>
                     <Card {...GCardOption(themeMode)}>
                         <GStyledTopBorderDivider mode={themeMode} />
-                        <Grid container spacing={2} p={1.5}>
+                          <Grid Grid container spacing={2} p={1.5}>
                                 <Grid item xs={12} sm={12} md={12}>
                                     <RHFRequiredTextFieldWrapper condition={!summary}>
-                                        <RHFTextField
-                                            name={'summary'}
-                                            label={t('summary.label')}
-                                            aria-label={t('summary.label')}
-                                            error={!!errors.summary}
-                                            helperText={errors.summary ? errors.summary.message : ''}
-                                            required
-                                        />
-                                        </RHFRequiredTextFieldWrapper>
+                                      <RHFTextField
+                                        name={'summary'}
+                                        label={t('summary.label')}
+                                        aria-label={t('summary.label')}
+                                        error={!!errors.summary}
+                                        helperText={errors.summary ? errors.summary.message : ''}
+                                        required
+                                      />
+                                    </RHFRequiredTextFieldWrapper>
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={12}>
                                     <RHFRequiredTextFieldWrapper condition={!description}>
                                         <RHFTextField name="description" label={t('description.label')} minRows={3} multiline />
                                     </RHFRequiredTextFieldWrapper>
                                 </Grid>
-                        </Grid>
+                          </Grid>
+                          <Grid container spacing={2} p={1.5}>
+                              <GridViewTitle title={t('attachment.attachments.label')} />
+                                <Grid item xs={12} sm={12} md={12}>
+                                    <RHFUpload
+                                      name="files"
+                                      dropZone={true}
+                                      multiple
+                                      thumbnail
+                                      imagesOnly
+                                      onDrop={handleDropMultiFile}
+                                      onRemove={handleFileRemove}
+                                      onRemoveAll={() => setValue('files', '', { shouldValidate: true })}
+                                    />
+                                </Grid>
+                          </Grid>
                         <Grid container spacing={2} p={1.5}>
-                            <GridViewTitle title={t('attachment.attachments.label')} />
-                            <Grid item xs={12} sm={12} md={12}>
-                                <RHFUpload
-                                    name="files"
-                                    dropZone={true}
-                                    multiple
-                                    thumbnail
-                                    imagesOnly
-                                    onDrop={handleDropMultiFile}
-                                    onRemove={handleFileRemove}
-                                    onRemoveAll={() => setValue('files', '', { shouldValidate: true })}
+                            <Grid item xs={12} sm={12} md={6}>
+                              <RHFRequiredTextFieldWrapper condition={!issueType}>
+                                  <RHFAutocomplete
+                                    name="priority"
+                                    label={t('priority.label')}
+                                    options={ticketSettings?.priorities || []}
+                                    isOptionEqualToValue={(option, value) => option._id === value._id}
+                                    getOptionLabel={(option) => `${option.name || ''}`}
+                                    renderOption={(props, option) => (<li {...props} key={option?._id}> {option.name && option.name} </li> )}
+                                  />
+                              </RHFRequiredTextFieldWrapper>
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={6}>
+                              <RHFRequiredTextFieldWrapper condition={!issueType}>
+                                <RHFAutocomplete
+                                  name="impact"
+                                  label={t('impact.label')}
+                                  options={ticketSettings?.impacts || []}
+                                  isOptionEqualToValue={(option, value) => option._id === value._id}
+                                  getOptionLabel={(option) => `${option.name || ''}`}
+                                  renderOption={(props, option) => (<li {...props} key={option?._id}> {option.name && option.name} </li> )}
                                 />
+                              </RHFRequiredTextFieldWrapper>
                             </Grid>
                         </Grid>
 
+                        {issueType?.name?.trim()?.toLowerCase() === 'change request' && (
+                          <Grid container spacing={2} p={1.5}>
+                            <Grid item xs={12} sm={12} md={6}>
+                              <RHFAutocomplete
+                                  name="changeType"
+                                  label={t('change_type.label')}
+                                  options={ticketSettings?.changeTypes || []}
+                                  isOptionEqualToValue={(option, value) => option._id === value._id}
+                                  getOptionLabel={(option) => `${option.name || ''}`}
+                                  renderOption={(props, option) => (<li {...props} key={option?._id}> {option.name && option.name} </li> )}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={6}>
+                              <RHFAutocomplete
+                                  name="changeReason"
+                                  label={t('change_reason.label')}
+                                  options={ticketSettings?.changeReasons || []}
+                                  isOptionEqualToValue={(option, value) => option._id === value._id}
+                                  getOptionLabel={(option) => `${option.name || ''}`}
+                                  renderOption={(props, option) => (<li {...props} key={option?._id}> {option.name && option.name} </li> )}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={12}>
+                              <RHFTextField name="implementationPlan" label={t('implementation_plan.label')} minRows={4} multiline />
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={12}>
+                              <RHFTextField name="backoutPlan" label={t('backout_plan.label')} minRows={4} multiline />
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={12}>
+                              <RHFTextField name="testPlan" label={t('test_plan.label')} minRows={4} multiline />
+                            </Grid>
+                          </Grid>
+                        )}
+                        {issueType?.name?.trim()?.toLowerCase() === 'service request' && (
+                          <Grid container spacing={2} p={1.5}>
+                            <Grid item xs={12} sm={12} md={12}>
+                              <RHFAutocomplete
+                                  name="investigationReason"
+                                  label={t('investigation_reason.label')}
+                                  options={ticketSettings?.investigationReasons || []}
+                                  isOptionEqualToValue={(option, value) => option._id === value._id}
+                                  getOptionLabel={(option) => `${option.name || ''}`}
+                                  renderOption={(props, option) => (<li {...props} key={option?._id}> {option.name && option.name} </li> )}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={12}>
+                              <RHFTextField name="rootCause" label={t('root_cause.label')} minRows={4} multiline />
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={12}>
+                              <RHFTextField name="workaround" label={t('workaround.label')} minRows={4} multiline />
+                            </Grid>
+                          </Grid>
+                        )}
+                        {issueType?.name?.trim()?.toLowerCase() === 'change request' && (
+                          <Grid container spacing={2} p={1.5}>
+                            <Grid item xs={12} sm={6} md={3}>
+                              <RHFDatePickr name="plannedStartDate" label={t('planned_start_date.label')} />
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={3}>
+                              <RHFTimePicker name="plannedStartDate" label={t('planned_start_time.label')} />
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={3}>
+                              <RHFDatePickr name="plannedEndDate" label={t('planned_end_date.label')}  />
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={3}>
+                              <RHFTimePicker name="plannedEndDate" label={t('planned_end_time.label')} />
+                            </Grid>
+                          </Grid>
+                        )}
+                        <Grid container spacing={2} p={2}>
+                          <Grid item xs={12} sm={4} md={2} >
+                            <RHFSwitch name={'shareWith'} label={t('set_private.label')} helperText={errors.shareWith ? errors.shareWith.message : ''} />
+                          </Grid>
+                        </Grid>
                     </Card>
                 </Box>
             </Grid>
-        )}
+          )}
     </Grid>
-    <Grid container direction={{ xs: FLEX_DIR.COLUMN, md: FLEX_DIR.ROW }} justifyContent={FLEX.FLEX_END} sx={{ my: 5 }}>
-     {/* <Grid item xs={12} sm={4} md={2} display={FLEX.FLEX} justifyContent={isMobile ? FLEX.FLEX_START : FLEX.FLEX_END}>
-      <RHFCheckbox name={FORM_EL.isInvite} label={t('enable_portal_access.label')} error={!!errors.isInvite} helperText={errors.isInvite ? errors.isInvite.message : ''} />
-     </Grid> */}
-    </Grid>
-    <Grid container direction={{ xs: FLEX_DIR.COLUMN, md: FLEX_DIR.ROW }} justifyContent={KEY.CENTER}>
-     <Grid item xs={12} sm={4} md={4} >
-      <GStyledLoadingButton
-       fullWidth
-       color={KEY.INHERIT}
-       size={SIZE.SMALL}
-       type={'button'}
-       variant={KEY.CONTAINED}
-       loading={isConfirming}
-       mode={themeMode}
-       onClick={handleConfirmation}
-       disabled={!isFormComplete}>
-       {t('create_support_ticket.label').toUpperCase()}
-      </GStyledLoadingButton>
-      &nbsp;
-      <GStyledDefLoadingButton
-       fullWidth
-       color={KEY.INHERIT}
-       size={SIZE.SMALL}
-       type={'button'}
-       variant={KEY.CONTAINED}
-       bgColor={themeMode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[800]}
-       textColor={themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white}
-       loading={isConfirming}
-       mode={themeMode}
-       onClick={handleConfirmCancel}>
-       {t('go_back.label').toUpperCase()}
-      </GStyledDefLoadingButton>
-     </Grid>
-     {/* spacer  */}
-     <Box height={{ xs: 50, md: 100 }} />
-    </Grid>
-
-    {userInviteDialog && (
-     <UserInviteSuccessDialog
-      setIsConfirming={setIsConfirming}
-      isSubmitSuccessful={isSubmitSuccessful}
-      addAsContact={addAsContact}
-      onConfirm={handleSubmit(onSubmit)}
-      action={
-       <GStyledLoadingButton color={KEY.INHERIT} type={KEY.SUBMIT} loading={isSubmitting} variant={KEY.CONTAINED} mode={themeMode}>
-        {t('confirm.label').toUpperCase()}
-       </GStyledLoadingButton>
-      }
-     />
-    )}
    </FormProvider>
 
    {openConfirmDialog && (
