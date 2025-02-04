@@ -102,9 +102,10 @@ export { default as SkeletonPDF } from './skeleton/skeleton-pdf'
 // @tab
 export { default as TabContainer } from './tab/tab-container'
 // @table
-export { default as TableNoData } from './table/no-data'
+export { default as TableNoData } from './table/table-no-data'
 export { default as TablePaginationCustom } from './table/table-pagination-custom'
-export { default as TableTitleBox } from './table/title-box'
+export { default as TableTitleBox } from './table/table-title-box'
+export { default as TableStickyTitleBox } from './table/table-sticky-title-box'
 export { default as ColorizedStatusTextBox } from './table/colorized-status-text-box'
 // @table-tool
 export { default as LinkTableCell } from './table-tool/link-table-cell'
