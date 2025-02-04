@@ -102,6 +102,9 @@ const en = {
  attach_file: {
    label: `Attach File`
  },
+ backout_plan: {
+  label: `Backout Plan`
+ },
  billing_contact: {
   label: `Billing Contact`
  },
@@ -116,6 +119,12 @@ const en = {
  },
  change_password: {
   label: `Change Password`
+ },
+ change_type: {
+  label: `Change Type`
+ },
+ change_reason: {
+  label: `Change Reason`
  },
  clear: {
   label: `Clear`
@@ -306,6 +315,15 @@ const en = {
  howick_website: {
   label: `Howick Website`
  },
+ impact: {
+  label: `Impact`
+ },
+ implementation_plan: {
+  label: `Implementation Plan`
+ },
+ investigation_reason: {
+  label: `Investigation Reason`
+ },
  invitation_portal_access: {
   label: `Invitation for Portal Access`
  },
@@ -332,6 +350,9 @@ const en = {
  },
  issue: {
   label: `Issue`
+ },
+ issue_type:{
+  label: `Issue Type`
  },
  key_detail: {
   label: `Key Detail`,
@@ -558,8 +579,23 @@ const en = {
  personal_information: {
   label: `Personal Information`
  },
+ planned_end_date: {
+  label: `Planned End Date`
+ },
+ planned_end_time: {
+  label: `Planned End Time`
+ },
+ planned_start_date: {
+  label: `Planned Start Date`
+ },
+ planned_start_time: {
+  label: `Planned Start Time`
+ },
  plc_version: {
   label: `PLC Version`
+ },
+ priority: {
+  label: `Priority`
  },
  product: `product`,
  production: {
@@ -616,7 +652,8 @@ const en = {
    user_invite_request_submitted: 'User invite request submitted',
    details_updated: 'User details updated',
    password_updated: 'Password updated',
-   reset_request_submitted: 'Password reset request submitted'
+   reset_request_submitted: 'Password reset request submitted',
+   ticket_created: 'Ticket created',
   },
   error: {
    default: 'An error occurred',
@@ -640,6 +677,9 @@ const en = {
    label: `Roles`
   },
   placeholder: `Select Role/s`
+ },
+ root_cause: {
+  label: `Root Cause`
  },
  row: {
   label: `Row`
@@ -678,6 +718,9 @@ const en = {
  },
  serial_number: {
   label: `Serial Number`
+ },
+ set_private: {
+  label: `Set Private`
  },
  shipping_date: {
   label: `Shipping Date`
@@ -737,6 +780,9 @@ const en = {
  technical_contact: {
   label: `Technical Contact`
  },
+ test_plan: {
+  label: `Test Plan`
+ },
  ticket_number: {
   label: `Ticket Number`
  },
@@ -780,6 +826,9 @@ const en = {
  },
  website: {
   label: `Website`
+ },
+ workaround: {
+  label: `Workaround`
  },
  work_order: {
   label: `Work Order`
