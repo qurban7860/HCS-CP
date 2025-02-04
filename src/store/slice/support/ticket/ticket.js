@@ -65,6 +65,10 @@ const supportSlice = createSlice({
     state.ticketSettings = action.payload
     state.initial        = true
   },
+  createTicketSuccess(state, action) {
+    state.isLoading = false
+    state.ticket    = action.payload
+  },
   deleteTicketFileSuccess(state, action) {
     const { id } = action.payload
     const array  = state.ticket.files
@@ -179,6 +183,44 @@ export function deleteFile(ticketId, fileId) {
         try {
             await axios.delete(PATH_SERVER.SUPPORT.TICKETS.file(ticketId, fileId))
             dispatch(supportSlice.actions.deleteTicketFileSuccess({ id: fileId }))
+        } catch (error) {
+            console.error(error)
+            dispatch(supportSlice.actions.hasError(error.Message))
+            throw error
+        }
+    }
+}
+
+export function createTicket(params) {
+    return async dispatch => {
+        dispatch(supportSlice.actions.startLoading())
+        try {
+            const formData = new FormData()
+            formData.append('customer', params?.customer?._id)
+            formData.append('machine', params?.machine?._id)
+            formData.append('issueType', params?.issueType?._id)
+            formData.append('summary', params?.summary || '')
+            formData.append('description', params?.description || '')
+            formData.append('changeType', params?.changeType?._id || null)
+            formData.append('impact', params?.impact?._id || null)
+            formData.append('priority', params?.priority?._id || null)
+            formData.append('status', params?.status?._id || null)
+            formData.append('changeReason', params?.changeReason?._id || null)
+            formData.append('investigationReason', params?.investigationReason?._id || null)
+            formData.append('implementationPlan', params?.implementationPlan || '')
+            formData.append('backoutPlan', params?.backoutPlan || '')
+            formData.append('testPlan', params?.testPlan || '')
+            formData.append('shareWith', params?.shareWith)
+            formData.append('isActive', params?.isActive)
+            formData.append('rootCause', params?.rootCause || '')
+            formData.append('workaround', params?.workaround || '')
+            formData.append('plannedStartDate', params?.plannedStartDate || '')
+            formData.append('plannedEndDate', params?.plannedEndDate || '');
+            (params?.files || []).forEach((file, index) => { formData.append(`images`, file) })
+
+            const response = await axios.post(PATH_SERVER.SUPPORT.TICKETS.list, formData)
+            dispatch(supportSlice.actions.createTicketSuccess(response.data))
+            return response
         } catch (error) {
             console.error(error)
             dispatch(supportSlice.actions.hasError(error.Message))
