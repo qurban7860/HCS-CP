@@ -1,17 +1,18 @@
 import { ASSET } from "config/asset-directory"
 
-const FORMAT_PDF         = ['pdf']
-const FORMAT_TEXT        = ['txt', 'odt', 'ott', 'rtf', 'csv']
-const FORMAT_PHOTOSHOP   = ['psd', 'psb', 'ai', 'tiff']
-const FORMAT_WORD        = ['doc', 'docx']
-const FORMAT_EXCEL       = ['xls', 'xlsx', 'ods']
-const FORMAT_ZIP         = ['zip', 'rar', 'iso']
-const FORMAT_ILLUSTRATOR = ['ai', 'esp']
-const FORMAT_POWERPOINT  = ['ppt', 'pptx', 'odp']
-const FORMAT_AUDIO       = ['wav', 'aif', 'mp3', 'aac']
-const FORMAT_IMG_VISIBLE = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg', 'webp', 'ico', 'jpe']
-const FORMAT_IMG         = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg', 'webp', 'ico', 'jpe', 'exr', 'hdr', 'pbm', 'pfm', 'pgm', 'pict', 'ppm', 'sgi', 'tga', 'dds', 'cr2', 'dng', 'heic', 'heif', 'jp2', 'nef', 'orf', 'pef', 'raf', 'rw2']
-const FORMAT_VIDEO       = ['m4v', 'avi', 'mpg', 'mp4', 'webm']
+const  FORMAT_PDF                 = ['pdf']
+const  FORMAT_TEXT                = ['txt', 'odt', 'ott', 'rtf', 'csv']
+const  FORMAT_PHOTOSHOP           = ['psd', 'psb', 'ai', 'tiff']
+const  FORMAT_WORD                = ['doc', 'docx']
+const  FORMAT_EXCEL               = ['xls', 'xlsx', 'ods']
+const  FORMAT_ZIP                 = ['zip', 'rar', 'iso']
+const  FORMAT_ILLUSTRATOR         = ['ai', 'esp']
+const  FORMAT_POWERPOINT          = ['ppt', 'pptx', 'odp']
+const  FORMAT_AUDIO               = ['wav', 'aif', 'mp3', 'aac']
+const  FORMAT_IMG_VISIBLE         = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg', 'webp', 'ico', 'jpe']
+const  FORMAT_IMG                 = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg', 'webp', 'ico', 'jpe', 'exr', 'hdr', 'pbm', 'pfm', 'pgm', 'pict', 'ppm', 'sgi', 'tga', 'dds', 'cr2', 'dng', 'heic', 'heif', 'jp2', 'nef', 'orf', 'pef', 'raf', 'rw2']
+const  FORMAT_VIDEO               = ['m4v', 'avi', 'mpg', 'mp4', 'webm']
+export const FORMAT_IMAGE_VISIBLE = ['jpg', 'jpeg', 'gif', 'bmp', 'png', 'svg', 'webp', 'ico', 'jpe', 'pdf']
 
 export function fileFormat(fileUrl) {
  let format
