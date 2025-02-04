@@ -263,25 +263,6 @@ export function AuthProvider({ children }) {
   await getConfigs()
  }, [])
 
- // :register --disabled
- const register = useCallback(async (firstName, lastName, email, password) => {
-  const response = await axios.post(PATH_SERVER.SECURITY.REGISTER, {
-   firstName,
-   lastName,
-   email,
-   password
-  })
-  const { accessToken, user } = response.data
-  localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, accessToken)
-
-  dispatch({
-   type: REDUCER_KEY.REGISTER,
-   payload: {
-    user
-   }
-  })
- }, [])
-
  // :logout
  const logout = useCallback(async () => {
   const userId = localStorage.getItem(LOCAL_STORAGE_KEY.USER_ID)
