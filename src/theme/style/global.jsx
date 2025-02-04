@@ -123,6 +123,20 @@ export const GStyledStickyGrid = styled(({ theme, ...other }) => <Grid {...other
  alignSelf: 'flex-start'
 }))
 
+export const GStyledStickyFormGrid = styled(({ theme, ...other }) => <Grid {...other} />)(({ theme }) => ({
+  position: 'sticky',
+  top: NAV.T_STICKY_FORM,
+  zIndex: 9,
+  alignSelf: 'flex-start'
+ }))
+
+ export const GStyledStickyBox = styled(({ theme, ...other }) => <Box {...other} />)(({ theme }) => ({
+  position: 'sticky',
+  top: NAV.T_STICKY_NAV,
+  zIndex: 9,
+  alignSelf: 'flex-start'
+ }))
+
 export const GStyledStickyDiv = styled('div')(({ theme, top, zIndex, height = 'auto' }) => ({
  position: 'sticky',
  alignSelf: 'flex-start',
