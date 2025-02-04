@@ -120,7 +120,7 @@ export function getMachineTicket(machineId, page, pageSize) {
     page,
     pageSize
    }
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKET(machineId), { params })
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.detail(machineId), { params })
    dispatch(machineTicketSlice.actions.getMachineTicketRecordSuccess(response.data))
   } catch (error) {
    console.log(error)

@@ -141,7 +141,7 @@ export function getSupportTicket(id) {
  return async dispatch => {
   dispatch(supportSlice.actions.startLoading())
   try {
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKET(id))
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.detail(id))
    if (regEx.test(response.status)) {
     dispatch(supportSlice.actions.getTicketSuccess(response.data))
    }
@@ -157,7 +157,7 @@ export function getTicketSettings(cancelToken) {
     return async (dispatch) => {
         dispatch(supportSlice.actions.startLoading())
         try {
-            const response = await axios.get(PATH_SERVER.SUPPORT.TICKET_SETTINGS, {
+            const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.settings, {
                 params: {
                     isArchived: false,
                     isActive: true

@@ -124,7 +124,7 @@ export function getCustomerTicket(ref, page, pageSize, id) {
     page,
     pageSize
    }
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKET(id), { params })
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.detail(id), { params })
    dispatch(customerTicketSlice.actions.getCustomerTicketRecordSuccess(response.data))
   } catch (error) {
    console.log(error)
