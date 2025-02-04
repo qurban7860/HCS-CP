@@ -3,17 +3,17 @@ import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import { Trans } from 'react-i18next'
 import { useDropzone } from 'react-dropzone'
-import { Icon, ICON_NAME } from 'hook'
+import { Icon, ICON_NAME, useSettingContext } from 'hook'
 import { useTheme, Box, Stack, Button, IconButton, Typography } from '@mui/material'
 import { UploadExtensionPopover, RejectionFiles } from 'component/upload'
 import { styled, alpha } from '@mui/material/styles'
 import { GStyledSpanBox } from 'theme/style'
 import { ALLOWED_DOC_EXT, ALLOWED_IMG_EXT } from 'config/upload'
 import { ICON } from 'config/layout'
-import { FLEX, FLEX_DIR, TYPOGRAPHY } from 'constant'
+import { FLEX, FLEX_DIR, TYPOGRAPHY, KEY } from 'constant'
 import { PreviewMultiFile, PreviewSingleFile } from './preview'
 
-const StyledDropZone = styled('div')(({ theme }) => ({
+const StyledDropZone = styled('div')(({ theme, mode }) => ({
  outline        : 'none',
  cursor         : 'pointer',
  overflow       : 'hidden',
@@ -21,49 +21,35 @@ const StyledDropZone = styled('div')(({ theme }) => ({
  padding        : theme.spacing(5),
  borderRadius   : theme.shape.borderRadius,
  transition     : theme.transitions.create('padding'),
- backgroundColor: theme.palette.grey[200],
+ backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[800],
  height         : 'auto',
  border         : `1px solid ${alpha(theme.palette.grey[200], 0.32)}`,
  '&:hover'      : { opacity: 0.72 }
 }))
 
-const StyledDropSmall = styled('div')(({ theme }) => ({
- outline        : 'none',
- cursor         : 'pointer',
- overflow       : 'hidden',
- position       : 'relative',
- padding        : theme.spacing(5),
- borderRadius   : theme.shape.borderRadius,
- transition     : theme.transitions.create('padding'),
- backgroundColor: theme.palette.background.neutral,
- height         : 'auto',
- border         : `1px solid ${alpha(theme.palette.grey[500], 0.32)}`,
- '&:hover'      : { opacity: 0.72 }
-}))
-
 Upload.propTypes = {
- sx: PropTypes.object,
- error: PropTypes.bool,
- files: PropTypes.array,
- file: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
- disabled: PropTypes.bool,
- multiple: PropTypes.bool,
- onDelete: PropTypes.func,
- onPreview: PropTypes.func,
- onRemove: PropTypes.func,
- onUpload: PropTypes.func,
- thumbnail: PropTypes.bool,
- rows: PropTypes.bool,
- hideFiles: PropTypes.bool,
- helperText: PropTypes.node,
+ sx         : PropTypes.object,
+ error      : PropTypes.bool,
+ files      : PropTypes.array,
+ file       : PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+ disabled   : PropTypes.bool,
+ multiple   : PropTypes.bool,
+ onDelete   : PropTypes.func,
+ onPreview  : PropTypes.func,
+ onRemove   : PropTypes.func,
+ onUpload   : PropTypes.func,
+ thumbnail  : PropTypes.bool,
+ rows       : PropTypes.bool,
+ hideFiles  : PropTypes.bool,
+ helperText : PropTypes.node,
  onRemoveAll: PropTypes.func,
- machine: PropTypes.string,
+ machine    : PropTypes.string,
  drawingPage: PropTypes.bool,
- imagesOnly: PropTypes.bool,
- dropZone: PropTypes.bool,
+ imagesOnly : PropTypes.bool,
+ dropZone   : PropTypes.bool,
  onLoadImage: PropTypes.func,
- onLoadPDF: PropTypes.func,
- onDownload: PropTypes.func
+ onLoadPDF  : PropTypes.func,
+ onDownload : PropTypes.func
 }
 
 export default function Upload({
@@ -97,7 +83,8 @@ export default function Upload({
   ...other
  })
  const [verifiedAnchorEl, setVerifiedAnchorEl] = useState(null)
- const theme = useTheme()
+ const { themeMode }                           = useSettingContext()
+ const theme                                   = useTheme()
  const handleExtensionsPopoverOpen = event => {
   setVerifiedAnchorEl(event.currentTarget)
  }
@@ -115,6 +102,7 @@ export default function Upload({
    {dropZone && (
     <Fragment>
      <StyledDropZone
+      mode={themeMode}
       {...getRootProps()}
       sx={{
        ...(isDragActive && {
@@ -144,6 +132,13 @@ export default function Upload({
       <Placeholder sx={{ ...(hasFile && {opacity: 0 }) }} />
       {hasFile && <PreviewSingleFile file={file} />}
      </StyledDropZone>
+     <GStyledSpanBox display={FLEX.FLEX} justifyContent={FLEX.FLEX_END} mr={1} gap={1}>
+                <Typography variant={TYPOGRAPHY.CAPTION}  sx={{ alignItems: 'center', mt: 0.5 }}>
+                    {t('allowed_format.allowed_formats.label')}
+                </Typography>
+            <Icon onClick={handleExtensionsPopoverOpen} icon={ICON_NAME.QUESTION_MARK} color={theme.palette.howick.blue} sx={{ cursor: 'pointer', ...ICON.SIZE_XS }} />
+        <UploadExtensionPopover open={verifiedAnchorEl} onClose={handleExtensionsPopoverClose} imagesOnly={imagesOnly} />
+    </GStyledSpanBox>
     </Fragment>
    )}
    <RejectionFiles fileRejections={fileRejections} />
@@ -240,13 +235,6 @@ export default function Upload({
     </Fragment>
    )}
    {helperText && helperText}
-   <GStyledSpanBox display={FLEX.FLEX} justifyContent={FLEX.FLEX_START} ml={1} gap={1}>
-                <Typography variant={TYPOGRAPHY.CAPTION}  sx={{ alignItems: 'center', mt: 0.5 }}>
-                    {t('allowed_format.allowed_formats.label')}
-                </Typography>
-            <Icon onClick={handleExtensionsPopoverOpen} icon={ICON_NAME.QUESTION_MARK} color={theme.palette.howick.blue} sx={{ cursor: 'pointer', ...ICON.SIZE_XS }} />
-        <UploadExtensionPopover open={verifiedAnchorEl} onClose={handleExtensionsPopoverClose} imagesOnly={imagesOnly} />
-    </GStyledSpanBox>
   </Box>
  )
 }
@@ -256,6 +244,8 @@ Placeholder.propTypes = {
 }
 
 function Placeholder({ sx, ...other }) {
+  const theme = useTheme()
+  const { themeMode } = useSettingContext()
  return (
   <Stack
    spacing={5}
@@ -270,10 +260,11 @@ function Placeholder({ sx, ...other }) {
    }}
    {...other}>
    <div>
+    <Icon icon={ICON_NAME.ATTACHMENTS} width={20} color={theme.palette.grey[500]} />
     <Typography variant={TYPOGRAPHY.OVERLINE1} sx={{ color: 'text.secondary' }}>
      <Trans
       i18nKey='drop_select.label'
-      components={{ select: <Typography variant={TYPOGRAPHY.OVERLINE1} component='span' sx={{ mx: 0.5, color: 'primary.main', fontWeight: 'bold' }} />}}
+      components={{ select: <Typography variant={TYPOGRAPHY.OVERLINE1} component='span' sx={{ mx: 0.5, color: themeMode === KEY.LIGHT ? 'primary.main' : 'howick.orange', fontWeight: 'bold' }} />}}
      />
     </Typography>
    </div>
