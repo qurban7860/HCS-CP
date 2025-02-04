@@ -6,7 +6,7 @@ import { m, AnimatePresence } from 'framer-motion'
 import { Button, ButtonGroup, Card, CardMedia, IconButton, Stack, Typography, Dialog, DialogTitle, Divider } from '@mui/material'
 import { FileThumbnail, SkeletonPDF, Lightbox } from 'component'
 import { varFade } from 'component/animate'
-import { fileData } from 'component/upload'
+import { fileData, FORMAT_IMAGE_VISIBLE } from 'component/upload'
 import { useTheme } from '@mui/material/styles'
 import { bgBlur } from 'theme/style'
 import { fData } from 'util/format'
@@ -78,8 +78,6 @@ function PreviewMultiFile({ thumbnail, onLoadImage, onLoadPDF, onDownload, files
   setSelectedImage(-1)
  }
 
- const FORMAT_IMG_VISIBBLE = ['jpg', 'jpeg', 'gif', 'bmp', 'png', 'svg', 'webp', 'ico', 'jpe', 'pdf']
-
  return (
   <AnimatePresence initial={false}>
    {files?.map((file, index) => {
@@ -107,7 +105,7 @@ function PreviewMultiFile({ thumbnail, onLoadImage, onLoadPDF, onDownload, files
          borderRadius: RADIUS.BORDER.borderRadius,
          my          : '0px !important'
         }}>
-        <CardMedia onClick={() => FORMAT_IMG_VISIBBLE.some(format => fileType?.match(format?.toLowerCase())) && handleOpenLightbox(index)}>
+        <CardMedia onClick={() => FORMAT_IMAGE_VISIBLE.some(format => fileType?.match(format?.toLowerCase())) && handleOpenLightbox(index)}>
          <FileThumbnail imageView file={file} sx={{ position: 'absolute' }} imgSx={{ position: 'absolute' }} />
         </CardMedia>
         <ButtonGroup
@@ -121,7 +119,7 @@ function PreviewMultiFile({ thumbnail, onLoadImage, onLoadPDF, onDownload, files
           transition: 'opacity 0.3s ease-in-out',
           width     : '100%'
          }}>
-         {FORMAT_IMG_VISIBBLE.some(format => fileType?.match(format)) && (
+         {FORMAT_IMAGE_VISIBLE.some(format => fileType?.match(format)) && (
           <Button sx={{ width: '50%', borderRadius: 0 }} onClick={() => (fileType === 'pdf' ? handleOpenPDF(file, fileName) : handleOpenLightbox(index))}>
            <Icon icon={ICON_NAME.PREVIEW} sx={{ ...ICON.SIZE_SM }} />
           </Button>
@@ -132,7 +130,7 @@ function PreviewMultiFile({ thumbnail, onLoadImage, onLoadPDF, onDownload, files
           </Button>
          )}
          <Button
-          sx={{ width: FORMAT_IMG_VISIBBLE.some(format => fileType?.match(format)) || (file?.uploaded && onDownload) ? '50%' : '100%', borderRadius: 0 }}
+          sx={{ width: FORMAT_IMAGE_VISIBLE.some(format => fileType?.match(format)) || (file?.uploaded && onDownload) ? '50%' : '100%', borderRadius: 0 }}
           color='error'
           onClick={() => onRemove(file)}>
           <Icon icon={ICON_NAME.CLOSE} sx={{ ...ICON.SIZE_SM }} />
