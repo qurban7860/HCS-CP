@@ -13,7 +13,7 @@ export const StyledDefaultTypography = styled(Typography)(({ theme }) => ({
 export const StyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, isMobile, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView, isNoBg, isMobile }) => ({
  backgroundColor:
   mode === KEY.LIGHT && !isMachineView && !isNoBg
-   ? theme.palette.grey[100]
+   ? theme.palette.grey[200]
    : (isMachineView || isNoBg) && mode === KEY.LIGHT
    ? 'transparent'
    : (isMachineView || isNoBg) && mode === KEY.DARK
