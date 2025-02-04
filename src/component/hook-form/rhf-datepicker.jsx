@@ -2,12 +2,13 @@ import PropTypes from 'prop-types'
 import { useFormContext, Controller } from 'react-hook-form'
 import { DatePicker } from 'antd'
 import enUS from 'antd/locale/en_US'
+import { useSettingContext } from 'hook'
 import dayjs from 'dayjs'
 import { ConfigProvider } from 'antd'
-import { useSettingContext } from 'hook'
+import { Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { RADIUS } from 'config/layout'
-import { KEY } from 'constant'
+import { KEY, TYPOGRAPHY } from 'constant'
 import { AntDSDatePickerWrapper } from './style'
 
 ConfigProvider.config({
@@ -43,6 +44,7 @@ export default function RHFDatePicker({ name, label, defaultValue, helperText, e
  return (
   <ConfigProvider locale={enUS} theme={antdTheme}>
    <AntDSDatePickerWrapper>
+   <Typography variant={TYPOGRAPHY.SUBTITLE2}>{label}</Typography>
     <div className='w-full'>
      <Controller
       name={name}
@@ -54,7 +56,7 @@ export default function RHFDatePicker({ name, label, defaultValue, helperText, e
          {...field}
          size={size}
          variant={variant}
-         label={label}
+         title={label}
          placeholder={label}
          style={{
           width: '100%',
