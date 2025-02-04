@@ -75,20 +75,20 @@ export function AuthProvider({ children }) {
     dispatch({
      type: REDUCER_KEY.INITIAL,
      payload: {
-      isAuthenticated: false,
-      user: null,
-      isAllAccessAllowed: false,
-      isDisableDelete: true,
-      isDashboardAccessLimited: true,
-      isDocumentAccessAllowed: false,
-      isDrawingAccessAllowed: false,
-      isSettingReadOnly: true,
-      isSecurityReadOnly: true,
-      isSettingAccessAllowed: false,
+      isAuthenticated            : false,
+      user                       : null,
+      isAllAccessAllowed         : false,
+      isDisableDelete            : true,
+      isDashboardAccessLimited   : true,
+      isDocumentAccessAllowed    : false,
+      isDrawingAccessAllowed     : false,
+      isSettingReadOnly          : true,
+      isSecurityReadOnly         : true,
+      isSettingAccessAllowed     : false,
       isSecurityUserAccessAllowed: false,
-      isEmailAccessAllowed: false,
-      isDeveloper: false,
-      isCustomerAdmin: false
+      isEmailAccessAllowed       : false,
+      isDeveloper                : false,
+      isCustomerAdmin            : false
      }
     })
    }
@@ -97,20 +97,20 @@ export function AuthProvider({ children }) {
    dispatch({
     type: REDUCER_KEY.INITIAL,
     payload: {
-     isAuthenticated: false,
-     user: null,
-     isAllAccessAllowed: false,
-     isDisableDelete: true,
-     isDashboardAccessLimited: true,
-     isDocumentAccessAllowed: false,
-     isDrawingAccessAllowed: false,
-     isSettingReadOnly: true,
-     isSecurityReadOnly: true,
-     isSettingAccessAllowed: false,
+     isAuthenticated            : false,
+     user                       : null,
+     isAllAccessAllowed         : false,
+     isDisableDelete            : true,
+     isDashboardAccessLimited   : true,
+     isDocumentAccessAllowed    : false,
+     isDrawingAccessAllowed     : false,
+     isSettingReadOnly          : true,
+     isSecurityReadOnly         : true,
+     isSettingAccessAllowed     : false,
      isSecurityUserAccessAllowed: false,
-     isEmailAccessAllowed: false,
-     isDeveloper: false,
-     isCustomerAdmin: false
+     isEmailAccessAllowed       : false,
+     isDeveloper                : false,
+     isCustomerAdmin            : false
     }
    })
   }
@@ -280,26 +280,25 @@ export function AuthProvider({ children }) {
 
  const memoizedValue = useMemo(
   () => ({
-   isInitialized: state.isInitialized,
-   isAuthenticated: state.isAuthenticated,
-   user: state.user,
-   userId: state.userId,
-   userRoles: state.userRoles,
-   isAllAccessAllowed: state.isAllAccessAllowed,
-   isDisableDelete: state.isDisableDelete,
-   isDashboardAccessLimited: state.isDashboardAccessLimited,
-   isDocumentAccessAllowed: state.isDocumentAccessAllowed,
-   isDrawingAccessAllowed: state.isDrawingAccessAllowed,
-   isSettingReadOnly: state.isSettingReadOnly,
-   isSecurityReadOnly: state.isSecurityReadOnly,
-   isSettingAccessAllowed: state.isSettingAccessAllowed,
+   isInitialized              : state.isInitialized,
+   isAuthenticated            : state.isAuthenticated,
+   user                       : state.user,
+   userId                     : state.userId,
+   userRoles                  : state.userRoles,
+   isAllAccessAllowed         : state.isAllAccessAllowed,
+   isDisableDelete            : state.isDisableDelete,
+   isDashboardAccessLimited   : state.isDashboardAccessLimited,
+   isDocumentAccessAllowed    : state.isDocumentAccessAllowed,
+   isDrawingAccessAllowed     : state.isDrawingAccessAllowed,
+   isSettingReadOnly          : state.isSettingReadOnly,
+   isSecurityReadOnly         : state.isSecurityReadOnly,
+   isSettingAccessAllowed     : state.isSettingAccessAllowed,
    isSecurityUserAccessAllowed: state.isSecurityUserAccessAllowed,
-   isEmailAccessAllowed: state.isEmailAccessAllowed,
-   isDeveloper: state.isDeveloper,
-   isCustomerAdmin: state.isCustomerAdmin,
-   method: LOCAL_STORAGE_KEY.JWT,
+   isEmailAccessAllowed       : state.isEmailAccessAllowed,
+   isDeveloper                : state.isDeveloper,
+   isCustomerAdmin            : state.isCustomerAdmin,
+   method                     : LOCAL_STORAGE_KEY.JWT,
    login,
-   register,
    logout,
    clearAllPersistedStates,
    muliFactorAuthentication
@@ -324,7 +323,6 @@ export function AuthProvider({ children }) {
    state.userRoles,
    login,
    logout,
-   register,
    muliFactorAuthentication,
    clearAllPersistedStates
   ]
