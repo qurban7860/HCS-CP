@@ -78,7 +78,9 @@ const supportSlice = createSlice({
   },
   createTicketSuccess(state, action) {
     state.isLoading = false
+    state.success   = true
     state.ticket    = action.payload
+    state.initial   = true
   },
   deleteTicketFileSuccess(state, action) {
     const { id } = action.payload
