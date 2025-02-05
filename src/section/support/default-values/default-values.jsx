@@ -127,7 +127,7 @@ export function useTicketDefaultValues(issue) {
  }, [issue])
 }
 
-export function useTicketCreateDefaultValues(customer) {
+export function useTicketCreateDefaultValues(customer, softwareVersion) {
     return useMemo(() => {
      return {
         customer           : customer && customer || null,
@@ -151,6 +151,10 @@ export function useTicketCreateDefaultValues(customer) {
         isActive           : true,
         plannedStartDate   : new Date(),
         plannedEndDate     : new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+        startTime          : null,
+        endTime            : null,
+        hlc                : softwareVersion?.hlc || '',
+        plc                : softwareVersion?.plc || '',
      }
     }, [customer])
    }
