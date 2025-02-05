@@ -2,24 +2,22 @@ import { createSlice } from '@reduxjs/toolkit'
 import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
 
-const TAG = 'machine-ticket'
-
 const initialState = {
- initial: false,
+ initial                     : false,
  machineTicketResponseMessage: null,
- success: false,
- isLoading: false,
- error: null,
- selectedMachineTicketCard: null,
- machineTicket: {},
- machineTickets: [],
- machineTicketDialog: false,
- machineTicketTotalCount: 0,
- machineTicketFilterBy: '',
- machineTicketFilterStatus: 'Open',
- machineTicketPage: 0,
- machineTicketRowsPerPage: 100,
- machineTicketTotalRows: 0
+ success                     : false,
+ isLoading                   : false,
+ error                       : null,
+ selectedMachineTicketCard   : null,
+ machineTicket               : {},
+ machineTickets              : [],
+ machineTicketDialog         : false,
+ machineTicketTotalCount     : 0,
+ machineTicketFilterBy       : '',
+ machineTicketFilterStatus   : 'Open',
+ machineTicketPage           : 0,
+ machineTicketRowsPerPage    : 100,
+ machineTicketTotalRows      : 0
 }
 
 const machineTicketSlice = createSlice({

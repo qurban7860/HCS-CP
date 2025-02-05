@@ -133,7 +133,7 @@ export function getActiveMachineModels(categoryId) {
   return async (dispatch) => {
     dispatch(modelSlice.actions.startLoading())
     try {
-      const response = await axios.get(`${CONFIG.SERVER_URL}products/models`, {
+      const response = await axios.get(PATH_SERVER.PRODUCT.MODEL.list, {
         params: {
           isActive: true,
           isArchived: false,

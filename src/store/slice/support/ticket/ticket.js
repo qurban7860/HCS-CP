@@ -5,21 +5,23 @@ import { fDate } from 'util/format'
 
 const regEx = /^[^2]*/
 const initialState = {
- initial              : false,
- ticketResponseMessage: null,
- success              : false,
- isLoading            : false,
- error                : null,
- ticket               : {},
- tickets              : [],
- ticketFilterBy       : '',
- ticketPage           : 0,
- ticketTotalCount     : 0,
- ticketRowsPerPage    : 10,
- ticketSettings       : [],
- totalRows            : 0,
- filterStatus         : 'Open',
- filterPeriod         : 3
+ initial                  : false,
+ ticketResponseMessage    : null,
+ success                  : false,
+ isLoading                : false,
+ error                    : null,
+ ticket                   : {},
+ tickets                  : [],
+ softwareVersion          : null,
+ ticketFilterBy           : '',
+ ticketPage               : 0,
+ ticketTotalCount         : 0,
+ ticketRowsPerPage        : 10,
+ ticketSettings           : [],
+ totalRows                : 0,
+ ticketCreateSuccessDialog: false,
+ filterStatus             : 'Open',
+ filterPeriod             : 3
 }
 
 const supportSlice = createSlice({
