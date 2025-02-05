@@ -6,25 +6,25 @@ import { MACHINE_CATEGORY } from './model'
 
 const ORIENTATION = {
  HORIZONTAL: 'horizontal',
- VERTICAL: 'vertical'
+ VERTICAL  : 'vertical'
 }
 
 const ROLES = {
  CUSTOMER_ADMIN: 'CustomerAdmin',
- CUSTOMER_USER: 'CustomerUser'
+ CUSTOMER_USER : 'CustomerUser'
 }
 
 const MODULES = {
- CRM: 'crm',
- PRODUCT: 'product',
- PRODUCTS: 'products',
- CUSTOMER: 'customer',
+ CRM      : 'crm',
+ PRODUCT  : 'product',
+ PRODUCTS : 'products',
+ CUSTOMER : 'customer',
  CUSTOMERS: 'customers',
- MACHINE: 'machine',
- MACHINES: 'machines',
- SITES: 'sites',
- CONTACTS: 'contacts',
- SUPPORT: 'support'
+ MACHINE  : 'machine',
+ MACHINES : 'machines',
+ SITES    : 'sites',
+ CONTACTS : 'contacts',
+ SUPPORT  : 'support'
 }
 
 const SUPPORT_TICKET_DESC_TYPES = {
@@ -38,25 +38,25 @@ const SUPPORT_TICKET_DESC_TYPES = {
 export const PHONE_TYPES = ['MOBILE', 'HOME', 'WORK', 'FAX', 'OTHERS']
 
 const CSS = {
- // @position
- START: 'start',
- END: 'end',
+   // @position
+ START   : 'start',
+ END     : 'end',
  POSITION: 'position',
  ABSOLUTE: 'absolute',
- FIXED: 'fixed',
- STICKY: 'sticky',
- // @display
- DISPLAY: 'display',
- BLOCK: 'block',
+ FIXED   : 'fixed',
+ STICKY  : 'sticky',
+   // @display
+ DISPLAY     : 'display',
+ BLOCK       : 'block',
  INLINE_BLOCK: 'inline-block',
- INLINE: 'inline',
- GRID: 'grid',
- // @overflow
- OVERFLOW: 'overflow',
+ INLINE      : 'inline',
+ GRID        : 'grid',
+   // @overflow
+ OVERFLOW  : 'overflow',
  OVERFLOW_X: 'overflow-x',
  OVERFLOW_Y: 'overflow-y',
- SCROLL: 'scroll',
- HIDDEN: 'hidden'
+ SCROLL    : 'scroll',
+ HIDDEN    : 'hidden'
 }
 
 /**
