@@ -46,6 +46,9 @@ const supportSlice = createSlice({
    state.success         = true
    state.initial         = true
   },
+  setTicketCreateSuccessDialog(state, action) {
+    state.ticketCreateSuccessDialog = action.payload
+  },
   getTicketsSuccess(state, action) {
    state.isLoading = false
    state.success   = true
@@ -114,7 +117,7 @@ const supportSlice = createSlice({
 export default supportSlice.reducer
 
 // actions
-export const { resetTicket, resetTickets, resetTicketSettings, setTicketResponseMessage, setTicketFilterBy, setFilterStatus, setFilterPeriod, ChangeTicketRowsPerPage, ChangeTicketPage } = supportSlice.actions
+export const { resetTicket, resetTickets, resetTicketSettings, resetSoftwareVersion, setTicketResponseMessage, setTicketFilterBy, setFilterStatus, setFilterPeriod, setTicketCreateSuccessDialog, ChangeTicketRowsPerPage, ChangeTicketPage } = supportSlice.actions
 
 // :thunks
 
