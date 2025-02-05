@@ -175,7 +175,13 @@ export const PATH_SERVER = {
         * @param {string} customerId
         * @param {boolean} isArchived
         */
-      viaCustomer: (customerId, isArchived) => _url(_PRODUCT, 'machines', `?customer=${customerId}&isArchived=${isArchived}`)
+      viaCustomer: (customerId, isArchived) => _url(_PRODUCT, 'machines', `?customer=${customerId}&isArchived=${isArchived}`),
+      /**
+       * /products/machines/:machineId/techparamvalues/softwareVersion
+       * @param {string} machineId
+       * @returns {string} - server_path to get software version of a machine
+       */
+      softwareVersion: (machineId) => _url(_PRODUCT, 'machines', machineId, 'techparamvalues', 'softwareVersion'),
     },
     /**
      * @submodule - /products/models
