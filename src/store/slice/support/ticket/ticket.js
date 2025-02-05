@@ -70,6 +70,12 @@ const supportSlice = createSlice({
     state.ticketSettings = action.payload
     state.initial        = true
   },
+  getSoftwareVersionSuccess(state, action) {
+    state.isLoading       = false
+    state.success         = true
+    state.softwareVersion = action.payload
+    state.initial         = true
+  },
   createTicketSuccess(state, action) {
     state.isLoading = false
     state.ticket    = action.payload
@@ -99,6 +105,12 @@ const supportSlice = createSlice({
   },
   resetTicketSettings(state) {
     state.ticketSettings  = []
+    state.responseMessage = null
+    state.success         = false
+    state.isLoading       = false
+  },
+  resetSoftwareVersion(state) {
+    state.softwareVersion = null
     state.responseMessage = null
     state.success         = false
     state.isLoading       = false
@@ -233,3 +245,18 @@ export function createTicket(params) {
         }
     }
 }
+
+export function getSoftwareVersion(machineId) {
+    return async (dispatch) => {
+      dispatch(supportSlice.actions.startLoading())
+      try {
+        const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.softwareVersion(machineId))
+        dispatch(supportSlice.actions.getSoftwareVersionSuccess(response.data))
+        return response
+      } catch (error) {
+        dispatch(supportSlice.actions.hasError(error.message))
+        console.error(error)
+        throw error
+      }
+    }
+  }
