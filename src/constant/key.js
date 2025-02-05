@@ -35,6 +35,13 @@ const SUPPORT_TICKET_DESC_TYPES = {
  HEADING: 'heading'
 }
 
+const SUPPORT_ISSUE_TYPES = {
+    SYSTEM_PROBLEM : 'system problem',
+    SERVICE_REQUEST: 'service request',
+    CHANGE_REQUEST : 'change request',
+    TASK           : 'task',
+}
+
 export const PHONE_TYPES = ['MOBILE', 'HOME', 'WORK', 'FAX', 'OTHERS']
 
 const CSS = {
@@ -134,6 +141,7 @@ const KEY = {
  ...MACHINE_CATEGORY,
  ...MODULES,
  ...ORIENTATION,
+ ...SUPPORT_ISSUE_TYPES,
  ...SZ,
  ...ROLES,
  ...VIEW_FORM,
