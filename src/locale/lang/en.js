@@ -773,6 +773,10 @@ const en = {
  support_expiration: {
   label: `Support Expiration`
  },
+ support_ticket_created: {
+  label: `Support Ticket Created`,
+  description: `A new support ticket has been created. You will receive an email with the ticket details.`
+ },
  support_tickets: {
   local: `support_tickets`,
   label: `Support Tickets`
@@ -817,6 +821,9 @@ const en = {
  },
  users_list: {
   label: `Users List`
+ },
+ view_ticket: {
+  label: `View Ticket`
  },
  view_jira: {
   label: `View in Jira`,
