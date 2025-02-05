@@ -84,7 +84,12 @@ export const ICON = {
  SIZE_X_LG_3: {
    width : 80,
    height: 80
-},
+ },
+
+ SIZE_MD_2: {
+   width : 40,
+   height: 40
+ },
 
  SIZE_MD: {
     width : 30,
