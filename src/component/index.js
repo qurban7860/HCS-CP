@@ -53,6 +53,7 @@ export { default as MachineSupportTicketDialog } from './dialog/machine-support-
 export { default as SupportTicketDialog } from './dialog/support-ticket'
 export { default as UserDialog } from './dialog/user'
 export { default as UserInviteSuccessDialog } from './dialog/user-invite-success'
+export { default as TicketCreateSuccessDialog } from './dialog/ticket-create-success'
 // @drawer
 export { default as DrawerMenu } from './drawer/menu'
 // @dropdown
