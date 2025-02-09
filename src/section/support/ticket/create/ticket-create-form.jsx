@@ -125,8 +125,8 @@ function TicketCreateForm() {
 
 useEffect(() => {
   if (softwareVersion) {
-    setValue('hlc', softwareVersion.hlc || '')
-    setValue('plc', softwareVersion.plc || '')
+    setValue('hlc', softwareVersion.hlc || t('not_applicable.abbr'))
+    setValue('plc', softwareVersion.plc || t('not_applicable.abbr'))
   }
 }, [softwareVersion, setValue]);
 
