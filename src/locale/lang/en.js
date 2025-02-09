@@ -539,6 +539,10 @@ const en = {
  no_found: {
   label: `No {{value}} Found`
  },
+ not_applicable: {
+  abbr: `N/A`,
+  label: `Not Applicable`
+ },
  not_provided: {
   label: `Not Provided`
  },
