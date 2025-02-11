@@ -3,13 +3,13 @@ import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
 import { Box } from '@mui/material'
 import { TablePaginationCustom } from 'component'
-import { StyledTablePagination } from './style'
-import { LABEL } from 'constant'
+import { KEY, LABEL } from 'constant'
 
 const UsersListPagination = ({
  rowsPerPageOptions = [5, 10, 15, 20, 30],
  data,
  page,
+ mode,
  rowsPerPage,
  handleChangePage,
  handleChangeRowsPerPage,
@@ -25,12 +25,13 @@ const UsersListPagination = ({
  ...other
 }) => {
  return (
-  <Box sx={{ position: 'relative' }}>
+  <Box sx={{ position: KEY.RELATIVE }}>
    <TablePaginationCustom
     count={data?.length ?? 0}
     component={m.div}
     colSpan={2}
     data={data}
+    mode={mode}
     page={page}
     labelRowsPerPage={LABEL.ROWS}
     rowsPerPageOptions={rowsPerPageOptions}
@@ -56,21 +57,22 @@ const UsersListPagination = ({
 }
 
 UsersListPagination.propTypes = {
- data: PropTypes.array,
- page: PropTypes.number,
- rowsPerPage: PropTypes.number,
- rowsPerPageOptions: PropTypes.array,
- handleChangePage: PropTypes.func,
+ data                   : PropTypes.array,
+ page                   : PropTypes.number,
+ mode                   : PropTypes.string,
+ rowsPerPage            : PropTypes.number,
+ rowsPerPageOptions     : PropTypes.array,
+ handleChangePage       : PropTypes.func,
  handleChangeRowsPerPage: PropTypes.func,
- columnFilterButtonData: PropTypes.array,
+ columnFilterButtonData : PropTypes.array,
  handleColumnButtonClick: PropTypes.func,
- currentFilterStatus: PropTypes.any,
- showFilterStatus: PropTypes.bool,
- handleFilterStatus: PropTypes.func,
- currentFilterRole: PropTypes.any,
- showFilterRole: PropTypes.bool,
- handleFilterRole: PropTypes.func,
- noPaginationToolbar: PropTypes.bool
+ currentFilterStatus    : PropTypes.any,
+ showFilterStatus       : PropTypes.bool,
+ handleFilterStatus     : PropTypes.func,
+ currentFilterRole      : PropTypes.any,
+ showFilterRole         : PropTypes.bool,
+ handleFilterRole       : PropTypes.func,
+ noPaginationToolbar    : PropTypes.bool
 }
 
 export default memo(UsersListPagination)

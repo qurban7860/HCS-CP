@@ -6,7 +6,6 @@ import { TablePaginationCustom } from 'component'
 import { KEY, LABEL } from 'constant'
 
 const TicketsListPagination = ({
- // check if how many max rows per page can be displayed from the data, and round it up to the nearest 5
  rowsPerPageOptions = [5, 10, 15, 20, 30],
  data,
  page,
@@ -19,10 +18,7 @@ const TicketsListPagination = ({
  ...other
 }) => {
  return (
-  <Box
-   sx={{
-    position: KEY.RELATIVE
-   }}>
+  <Box sx={{ position: KEY.RELATIVE }}>
    <TablePaginationCustom
     count={data?.length ?? 0}
     component={m.div}
@@ -47,14 +43,14 @@ const TicketsListPagination = ({
 }
 
 TicketsListPagination.propTypes = {
- data: PropTypes.array,
- mode: PropTypes.string,
- page: PropTypes.number,
- rowsPerPage: PropTypes.number,
- handleChangePage: PropTypes.func,
+ data                   : PropTypes.array,
+ mode                   : PropTypes.string,
+ page                   : PropTypes.number,
+ rowsPerPage            : PropTypes.number,
+ handleChangePage       : PropTypes.func,
  handleChangeRowsPerPage: PropTypes.func,
- rowsPerPageOptions: PropTypes.array,
- columnFilterButtonData: PropTypes.array,
+ rowsPerPageOptions     : PropTypes.array,
+ columnFilterButtonData : PropTypes.array,
  handleColumnButtonClick: PropTypes.func
 }
 

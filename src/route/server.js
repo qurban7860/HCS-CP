@@ -207,7 +207,6 @@ export const PATH_SERVER = {
       categories: _url(_PRODUCT, 'categories')
     }
  },
-
  /**
   * @module /crm
   */
