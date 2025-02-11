@@ -57,15 +57,15 @@ const MachineListSection = ({ isArchived }) => {
   defaultOrder: KEY.DESC
  })
 
- useLayoutEffect(() => {
-  dispatch(resetMachine())
-  dispatch(resetMachines())
-  dispatch(resetMachineCategories())
-  dispatch(resetSelectedContactCard())
-  if (userId !== securityUser?._id) {
-   dispatch(resetSecurityUser())
-  }
- }, [userId])
+//  useLayoutEffect(() => {
+//   dispatch(resetMachine())
+//   dispatch(resetMachines())
+//   dispatch(resetMachineCategories())
+//   dispatch(resetSelectedContactCard())
+//   if (userId !== securityUser?._id) {
+//    dispatch(resetSecurityUser())
+//   }
+//  }, [userId])
 
  useEffect(() => {
   if (userId !== securityUser?._id) {
