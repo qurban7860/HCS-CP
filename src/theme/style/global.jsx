@@ -599,24 +599,32 @@ export const GStyledScrollChipBox = styled(({ theme, mode, ...other }) => <Box {
  padding: '4px'
 }))
 
-export const GStyledSupportStatusFieldChip = styled(({ theme, status, ...other }) => <Chip {...other} />)(({ theme, status, mode }) => ({
+export const GStyledSupportStatusFieldChip = styled(({ theme, status, mode, ...other }) => <Chip {...other} />)(({ theme, status, mode }) => ({
  margin: theme.spacing(0.2),
  borderRadius: RADIUS.BORDER.borderRadius,
- color: status === SUPPORT_STATUS.OPEN || status === SUPPORT_STATUS.UNDER_REVIEW ? theme.palette.common.black : theme.palette.common.white,
+ color: status === SUPPORT_STATUS.TO_DO ? (mode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white) : theme.palette.common.black,
  backgroundColor:
-  status === SUPPORT_STATUS.OPEN || status === SUPPORT_STATUS.UNDER_REVIEW
+  mode === KEY.LIGHT ? (
+    status === SUPPORT_STATUS.TO_DO
    ? theme.palette.grey[400]
-   : status === SUPPORT_STATUS.WAITING_FOR_CUSTOMER || status === SUPPORT_STATUS.UNDER_INVESTIGATION || status === SUPPORT_STATUS.PENDING
-   ? theme.palette.howick.midBlue
    : status === SUPPORT_STATUS.IN_PROGRESS
    ? theme.palette.howick.orange
-   : status === SUPPORT_STATUS.WAITING_FOR_SUPPORT
-   ? theme.palette.grey[500]
-   : status === SUPPORT_STATUS.CANCELLED || status === SUPPORT_STATUS.CLOSED
+   : status === SUPPORT_STATUS.CANCELLED
    ? theme.palette.error.main
-   : status === SUPPORT_STATUS.RESOLVED || status === SUPPORT_STATUS.COMPLETED
+   : status === SUPPORT_STATUS.DONE
    ? theme.palette.burnIn.altDark
-   : theme.palette.howick.lightGray
+   : theme.palette.grey[200]
+  ) : (
+    status === SUPPORT_STATUS.TO_DO
+    ? theme.palette.grey[700]
+    : status === SUPPORT_STATUS.IN_PROGRESS
+    ? theme.palette.howick.orange
+    : status === SUPPORT_STATUS.CANCELLED
+    ? theme.palette.error.main
+    : status === SUPPORT_STATUS.DONE
+    ? theme.palette.burnIn.main
+    : theme.palette.grey[800]
+  )
 }))
 
 export const GStyledNoPaddingFieldGrid = styled(({ theme, mode, isMachineView, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView }) => ({
@@ -959,8 +967,8 @@ export const GStyledTableSkeleton = styled(({ theme, themeMode, ...other }) => <
 
 // @product - machines - machines-section
 export const GStyledTableHeaderBox = styled(Box)(({ theme }) => ({
- backgroundImage: `url(${ASSET.BG_STROKE_LOGO})`,
- backgroundSize: 'cover',
+ backgroundImage    : `url(${ASSET.BG_STROKE_LOGO})`,
+ backgroundSize     : 'cover',
  backgroundPositionY: 'center'
  //  backgroundSize: '150%'
 }))
