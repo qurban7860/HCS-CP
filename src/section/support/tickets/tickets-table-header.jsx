@@ -37,10 +37,10 @@ const TicketsTableHeader = ({ dataFiltered, columns, orderBy, order, onSort }) =
 
 TicketsTableHeader.propTypes = {
  dataFiltered: PropTypes.array,
- columns: PropTypes.array,
- orderBy: PropTypes.string,
- order: PropTypes.string,
- onSort: PropTypes.func
+ columns     : PropTypes.array,
+ orderBy     : PropTypes.string,
+ order       : PropTypes.string,
+ onSort      : PropTypes.func
 }
 
 export default TicketsTableHeader

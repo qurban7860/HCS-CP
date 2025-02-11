@@ -32,13 +32,13 @@ import { PATH_SUPPORT } from 'route/path'
 const HomeTab = () => {
  const { customerMachines, machineTotalCount, customer, isLoading, sites, contact, contacts } = useSelector(
   state => ({
-   customerMachines: state.machine.customerMachines,
+   customerMachines : state.machine.customerMachines,
    machineTotalCount: state.machine.machineTotalCount,
-   customer: state.customer.customer,
-   isLoading: state.customer.isLoading,
-   sites: state.site.sites,
-   contact: state.contact.contact,
-   contacts: state.contact.contacts
+   customer         : state.customer.customer,
+   isLoading        : state.customer.isLoading,
+   sites            : state.site.sites,
+   contact          : state.contact.contact,
+   contacts         : state.contact.contacts
   }),
   _.isEqual
  )

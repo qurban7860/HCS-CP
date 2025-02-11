@@ -8,15 +8,15 @@ import { TYPOGRAPHY } from 'constant'
 const MachineHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
  const { themeMode } = useSettingContext()
  const visuallyHidden = {
-  border: 0,
-  margin: -1,
-  padding: 0,
-  width: '1px',
-  height: '1px',
-  overflow: 'hidden',
-  position: 'absolute',
+  border    : 0,
+  margin    : -1,
+  padding   : 0,
+  width     : '1px',
+  height    : '1px',
+  overflow  : 'hidden',
+  position  : 'absolute',
   whiteSpace: 'nowrap',
-  clip: 'rect(0 0 0 0)'
+  clip      : 'rect(0 0 0 0)'
  }
 
  return (
