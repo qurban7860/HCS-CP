@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { t } from 'i18next'
 import { useSettingContext } from 'hook'
 import { TableHead, TableSortLabel, TableRow, Typography } from '@mui/material'
 import { TYPOGRAPHY } from 'constant'
@@ -22,12 +23,10 @@ const TicketsTableHeader = ({ dataFiltered, columns, orderBy, order, onSort }) =
         {onSort ? (
          <TableSortLabel hideSortIcon active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : 'asc'} onClick={() => onSort(headCell.id)} sx={{ textTransform: 'capitalize' }}>
           <Typography variant={TYPOGRAPHY.OVERLINE0} p={0}>
-           {headCell.label}
+            {t(headCell.label)}
           </Typography>
          </TableSortLabel>
-        ) : (
-         headCell.label
-        )}
+        ) : headCell.label }
        </StyledHeaderTableCell>
       )
      })}

@@ -1,11 +1,12 @@
-import { t } from 'i18next'
-import { fDate } from 'util/format'
+import { fDate } from 'util'
 
 export const HEADER_ITEMS = [
- { id: 'fields.created', label: t('created.label'), align: 'left', checked: true, value: fields => fDate(fields?.created) },
- { id: 'key', label: t('ticket_number.label'), align: 'left', checked: true, width: '10%' },
- { id: 'fields.summary', label: t('issue.label'), align: 'left', checked: true, value: fields => fields?.summary },
- { id: 'fields.customfield_10069', label: t('machine.label'), align: 'left', checked: true, width: '8%', value: fields => fields?.customfield_10069 },
- { id: 'fields.customfield_10070.value', label: t('machine_model.label'), align: 'left', checked: true, value: fields => fields?.customfield_10070?.value },
- { id: 'fields.status.statusCategory.name', label: t('status.label'), align: 'left', width: '10%', checked: true, value: fields => fields?.status?.statusCategory?.name }
+ { id: 'issueType.name', label: '', align: 'left', checked: true, value: () => {} },
+ { id: 'ticketNo', label: 'ticket_number.label', align: 'left', checked: true, width: '10%', value: (field) => field?.ticketNo },
+ { id: 'summary', label: 'summary.label', align: 'left', checked: true, allowColumn : true, width: '30%', value: (field) => field?.summary },
+ { id: 'machine.serialNo', label: 'machine.label', align: 'left', checked: true, width: '8%', allowColumn : true, value: (field) => field?.machine?.serialNo },
+ { id: 'machine.machineModel.name', label: 'machine_model.label', align: 'left', checked: true, allowColumn : true, value: (field) => field?.machine?.machineModel?.name },
+ { id: 'status.name', label: 'status.label', align: 'left', checked: true, allowColumn : true, width: '10%', value: (field) => field?.status?.name },
+ { id: 'priority.name', label: 'priority.label', align: 'left', checked: true, allowColumn : true, width: '10%', value: (field) => field?.priority?.name },
+ { id: 'createdAt', label: 'created_at.label', align: 'right', checked: true, value: (field) => fDate(field?.createdAt) },
 ]
