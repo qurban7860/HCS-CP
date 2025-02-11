@@ -143,6 +143,9 @@ const en = {
   contrast_tooltip: `Adjust the CONTRAST of the theme`
  },
  create: `create`,
+ created_at: {
+  label: `Created At`
+ },
  connected_machine: {
   label: `Connected Machine`,
   connected_machines: {
