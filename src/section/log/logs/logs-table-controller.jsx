@@ -5,8 +5,7 @@ import { useSelector } from 'react-redux'
 import { useSettingContext } from 'hook'
 import { setSelectedSearchFilter } from 'store/slice'
 import { Box, Stack } from '@mui/material'
-import { RHFAutocomplete, RHFDatePicker, RHFDatePickr, RHFFilteredSearchBar } from 'component/hook-form'
-import { useTheme } from '@mui/material/styles'
+import { RHFAutocomplete, RHFDatePickr, RHFFilteredSearchBar } from 'component/hook-form'
 import { GStyledLoadingButton, GStyledControllerCardContainer } from 'theme/style'
 import { LOG_TYPE_CONFIG, logGraphTypes } from 'config'
 import { NAV } from 'config/layout'
@@ -30,21 +29,6 @@ const LogsTableController = ({ customers, handleCustomerChange, customerMachines
    <Stack spacing={2}>
     {isLogsPage && (
      <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)' }}>
-      {/* <RHFAutocomplete
-       required
-       name='customer'
-       label={t('customer.label')}
-       options={customers || []}
-       isOptionEqualToValue={(option, value) => option._id === value._id}
-       getOptionLabel={option => `${option?.name || ''}`}
-       renderOption={(props, option) => (
-        <li {...props} key={option?._id}>
-         {option?.name || ''}{' '}
-        </li>
-       )}
-       onChange={(e, newValue) => handleCustomerChange(newValue)}
-       size='small'
-      /> */}
       <RHFAutocomplete
        name='machine'
        label={t('machine.label')}
