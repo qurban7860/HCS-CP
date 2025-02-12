@@ -15,17 +15,18 @@ import { toTitleCase } from 'util'
 import { delay } from 'util'
 
 const UserDialog = () => {
- const [openArchiveModal, setOpenArchiveModal] = useState(false)
- const [openUpdateStatusModal, setOpenUpdateStatusModal] = useState(false)
- const [openSendInvitePopper, setOpenSendInvitePopper] = useState(false)
- const [openAnchorEl, setOpenAnchorEl] = useState(null)
- const { securityUser, isLoading, userDialog } = useSelector(state => state.user)
- const { customer } = useSelector(state => state.customer)
- const { userId } = useAuthContext()
- const { themeMode } = useSettingContext()
- const { isDesktop } = useUIMorph()
- const theme = useTheme()
- const defaultValues = useUserDefaultValues(securityUser, customer)
+ const [openArchiveModal, setOpenArchiveModal]                 = useState(false)
+ const [openUpdateStatusModal, setOpenUpdateStatusModal]       = useState(false)
+ const [openSendInvitePopper, setOpenSendInvitePopper]         = useState(false)
+ const [openAnchorEl, setOpenAnchorEl]                         = useState(null)
+ const { securityUser, securityUsers,  isLoading, userDialog } = useSelector(state => state.user)
+ const { customer }                                            = useSelector(state => state.customer)
+ const { contact }                                             = useSelector(state => state.contact)
+ const { userId }                                              = useAuthContext()
+ const { themeMode }                                           = useSettingContext()
+ const { isDesktop }                                           = useUIMorph()
+ const theme                                                   = useTheme()
+ const defaultValues                                           = useUserDefaultValues(securityUser, customer)
 
  const isAdmin = securityUser?.roles?.some(role => role.name === KEY.CUSTOMER_ADMIN)
  const isSelf = securityUser?._id === userId
@@ -49,6 +50,9 @@ const UserDialog = () => {
     setOpenSendInvitePopper(false)
   })
  }
+
+//  check if user has already has a user
+ const contactHasActiveUser = securityUsers?.some(user => user.email === securityUser?.email && user.isActive)
 
  return (
   <Fragment>
@@ -158,7 +162,8 @@ const UserDialog = () => {
         <Icon icon={ICON_NAME.TRASH} sx={{...ICON.SIZE_XS }}/>&nbsp;{t('delete.label').toUpperCase()}
        </GStyledIconLoadingButton>
       )}
-      <DefaultPopper
+      {!contactHasActiveUser && (
+        <DefaultPopper
         openPopper={openSendInvitePopper}
         openAnchorEl={openAnchorEl}
         isLoading={isLoading}
@@ -167,6 +172,8 @@ const UserDialog = () => {
         i18CancelButtonLabel={'no.label'}
         onConfirmClick={handleSendUserInvite}
       />
+      )}
+
       <GStyledCloseButton onClick={handleDialog} gap={2}>
        {t('close.label').toUpperCase()}
       </GStyledCloseButton>
