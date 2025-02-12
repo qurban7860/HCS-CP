@@ -60,6 +60,16 @@ export const fieldsMachineInformationConfig = [
   value: defaultValues => defaultValues?.status
  },
  {
+    key    : 'hlc',
+    heading: 'hmi_version.label',
+    value  : defaultValues => defaultValues?.hlc
+},
+{
+    key    : 'plc',
+    heading: 'plc_version.label',
+    value  : defaultValues => defaultValues?.plc
+},
+ {
   key: 'workOrderRef',
   heading: 'work_order.label',
   value: defaultValues => defaultValues?.workOrderRef
