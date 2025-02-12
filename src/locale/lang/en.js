@@ -215,7 +215,8 @@ const en = {
   label: `Default Profile`
  },
  delete: {
-  label: `Delete`
+  label: `Delete`,
+  description: `You are about to delete this, this is irreversible , are you sure?`
  },
  delete_user: {
   label: `Delete User`,
@@ -233,7 +234,6 @@ const en = {
  group: {
   label: `Group`
  },
-
  date: {
   label: `Date`
  },
@@ -653,6 +653,7 @@ const en = {
   },
   success: {
    created_contact: `Contact created`,
+   delete_file: `File deleted`,
    logged_in: 'Logged in',
    logged_out: 'Logged out',
    register_request_submitted: 'Registration request submitted',
@@ -664,10 +665,12 @@ const en = {
   },
   error: {
    default: 'An error occurred',
+   delete_file: 'Failed to delete file',
    email_already_exists: 'Email already exists',
    failed_submission: 'Failed to submit',
    form_check_errors: 'Please check the form for errors',
    invalid_credentials: 'Invalid credentials',
+   loading_file: `Error loading file`,
    machine_serial_invalid: 'Machine serial number provided is invalid',
    something_went_wrong: 'Something went wrong',
    unable_create_contact: 'Unable to create contact',
@@ -837,6 +840,9 @@ const en = {
   view_jira_in_new_tab: {
    label: `View in Jira in a New Tab`
   }
+ },
+ unlimited: {
+  label: `Unlimited`
  },
  website: {
   label: `Website`
