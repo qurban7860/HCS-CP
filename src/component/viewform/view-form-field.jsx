@@ -35,13 +35,13 @@ const ViewFormField = ({
  customerLink,
  country
 }) => {
- const [open, setOpen] = useState(false)
+ const [open, setOpen]         = useState(false)
  const [anchorEl, setAnchorEl] = useState(null)
- const { themeMode } = useSettingContext()
- const { pathname } = useLocation()
- const theme = useTheme()
- const isMobile = useResponsive('down', 'sm')
- const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
+ const { themeMode }           = useSettingContext()
+ const { pathname }            = useLocation()
+ const theme                   = useTheme()
+ const isMobile                = useResponsive('down', 'sm')
+ const isDesktop               = useMediaQuery(theme.breakpoints.up('md'))
 
  const { Icon: WebIcon, iconSrc: openInSrc } = useIcon(ICON_NAME.OPEN_IN_NEW)
 
@@ -61,186 +61,188 @@ const ViewFormField = ({
  }
 
  return (
-  <StyledFieldGrid item xs={!isWidget && 12} sm={gridSize} mode={themeMode} isMachineView={isMachineView} isNoBg={isNoBg} isMobile={isMobile}>
-   <Typography variant={isMobile ? TYPOGRAPHY.OVERLINE : TYPOGRAPHY.OVERLINE0} color={theme.palette.grey[600]}>
-    {heading}
-   </Typography>
-   {isLoading ? (
-    <m.div>
-     <SkeletonViewFormField />
-    </m.div>
-   ) : (
     <Fragment>
-     {link ? (
-      <GStyledSpanBox>
-       <StyledDefaultTypography variant={variant}> &nbsp; {link} </StyledDefaultTypography> &nbsp;
-       <GStyledTooltip title={LABEL.GO_TO(heading)} placement={KEY.RIGHT} disableFocusListener tooltipcolor={theme.palette.grey[500]} color={theme.palette.grey[500]}>
-        <IconButton
-         onClick={() => window.open(`https://` + link, KEY.BLANK)}
-         size={SIZE.MEDIUM}
-         color={themeMode === KEY.LIGHT ? 'grey.800' : 'common.white'}
-         onMouseEnter={handleOpen}
-         onMouseLeave={handleClose}
-         aria-label='view'
-         target={KEY.BLANK}
-         sx={{
-          padding: 0.5,
-          m: 0,
-          ...RADIUS.BORDER
-         }}>
-         <WebIcon icon={openInSrc} width={15} />
-        </IconButton>
-       </GStyledTooltip>
-      </GStyledSpanBox>
-     ) : customerLink ? (
-      <GStyledSpanBox style={{ display: FLEX.FLEX, alignItems: 'center', justifyContent: 'space-between' }}>
-       <GStyledSpanBox>
-        <StyledDefaultTypography variant={variant}>&nbsp;{children}</StyledDefaultTypography>
+        <Typography variant={isMobile ? TYPOGRAPHY.OVERLINE : TYPOGRAPHY.OVERLINE0} color={themeMode === KEY.LIGHT ? theme.palette.grey[700] : theme.palette.grey[300]}>
+            {heading}
+        </Typography>
+        <StyledFieldGrid item xs={!isWidget && 12} sm={gridSize} mode={themeMode} isMachineView={isMachineView} isNoBg={isNoBg} isMobile={isMobile}>
+        {isLoading ? (
+            <m.div>
+            <SkeletonViewFormField />
+            </m.div>
+        ) : (
+            <Fragment>
+            {link ? (
+            <GStyledSpanBox>
+            <StyledDefaultTypography variant={variant}> &nbsp; {link} </StyledDefaultTypography> &nbsp;
+            <GStyledTooltip title={LABEL.GO_TO(heading)} placement={KEY.RIGHT} disableFocusListener tooltipcolor={theme.palette.grey[500]} color={theme.palette.grey[500]}>
+                <IconButton
+                onClick={() => window.open(`https://` + link, KEY.BLANK)}
+                size={SIZE.MEDIUM}
+                color={themeMode === KEY.LIGHT ? 'grey.800' : 'common.white'}
+                onMouseEnter={handleOpen}
+                onMouseLeave={handleClose}
+                aria-label='view'
+                target={KEY.BLANK}
+                sx={{
+                padding: 0.5,
+                m: 0,
+                ...RADIUS.BORDER
+                }}>
+                <WebIcon icon={openInSrc} width={15} />
+                </IconButton>
+            </GStyledTooltip>
+            </GStyledSpanBox>
+            ) : customerLink ? (
+            <GStyledSpanBox style={{ display: FLEX.FLEX, alignItems: 'center', justifyContent: 'space-between' }}>
+            <GStyledSpanBox>
+                <StyledDefaultTypography variant={variant}>&nbsp;{children}</StyledDefaultTypography>
 
-        <GStyledTooltip title={LABEL.VIEW_IN_NEW_TAB} placement={KEY.RIGHT} disableFocusListener tooltipcolor={theme.palette.grey[500]} color={theme.palette.grey[500]}>
-         <IconButton
-          onClick={() => window.open(customerLink, KEY.BLANK)}
-          size={SIZE.MEDIUM}
-          color={themeMode === KEY.LIGHT ? 'grey.800' : 'common.white'}
-          onMouseEnter={handleOpen}
-          onMouseLeave={handleClose}
-          aria-label='view'
-          target={KEY.BLANK}
-          sx={{
-           padding: 0.5,
-           m: 0,
-           ...RADIUS.BORDER
-          }}>
-          <WebIcon icon={openInSrc} width={15} />
-         </IconButton>
-        </GStyledTooltip>
-       </GStyledSpanBox>
-       <StyledFlagBox>
-        <SvgFlagIcon country={country} color={themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.bronze} dimension={16} />
-       </StyledFlagBox>
-      </GStyledSpanBox>
-     ) : (
-      // default
-      <m.div>
-       <StyledDefaultTypography variant={variant}>
-        {noBreakSpace ? '' : '\u00A0'} {children}
-       </StyledDefaultTypography>
-      </m.div>
-     )}
+                <GStyledTooltip title={LABEL.VIEW_IN_NEW_TAB} placement={KEY.RIGHT} disableFocusListener tooltipcolor={theme.palette.grey[500]} color={theme.palette.grey[500]}>
+                <IconButton
+                onClick={() => window.open(customerLink, KEY.BLANK)}
+                size={SIZE.MEDIUM}
+                color={themeMode === KEY.LIGHT ? 'grey.800' : 'common.white'}
+                onMouseEnter={handleOpen}
+                onMouseLeave={handleClose}
+                aria-label='view'
+                target={KEY.BLANK}
+                sx={{
+                padding: 0.5,
+                m: 0,
+                ...RADIUS.BORDER
+                }}>
+                <WebIcon icon={openInSrc} width={15} />
+                </IconButton>
+                </GStyledTooltip>
+            </GStyledSpanBox>
+            <StyledFlagBox>
+                <SvgFlagIcon country={country} color={themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.bronze} dimension={16} />
+            </StyledFlagBox>
+            </GStyledSpanBox>
+            ) : (
+            // default
+            <m.div>
+            <StyledDefaultTypography variant={variant}>
+                {noBreakSpace ? '' : '\u00A0'} {children}
+            </StyledDefaultTypography>
+            </m.div>
+            )}
 
-     {contact && typeof contact === 'object' && contact.length > 0 ? (
-      <StyledChipGrid container isNoBg={isNoBg} mode={themeMode}>
-       {contact.map((chip, index) => (
-        <StyledFieldChip
-         key={index}
-         mode={themeMode}
-         label={<Typography variant={isMobile ? TYPOGRAPHY.OVERLINE : TYPOGRAPHY.OVERLINE2}>{` ${chip?.firstName || ''} ${chip?.lastName || ''}`}</Typography>}
-         size={SIZE.SMALL}
-        />
-       ))}
-      </StyledChipGrid>
-     ) : (
-      contact && typeof contact?.firstName === 'string' && <Chip label={`${contact?.firstName || ''} ${contact?.lastName || ''}`} sx={{ m: 0.2 }} />
-     )}
+            {contact && typeof contact === 'object' && contact.length > 0 ? (
+            <StyledChipGrid container isNoBg={isNoBg} mode={themeMode}>
+            {contact.map((chip, index) => (
+                <StyledFieldChip
+                key={index}
+                mode={themeMode}
+                label={<Typography variant={isMobile ? TYPOGRAPHY.OVERLINE : TYPOGRAPHY.OVERLINE2}>{` ${chip?.firstName || ''} ${chip?.lastName || ''}`}</Typography>}
+                size={SIZE.SMALL}
+                />
+            ))}
+            </StyledChipGrid>
+            ) : (
+            contact && typeof contact?.firstName === 'string' && <Chip label={`${contact?.firstName || ''} ${contact?.lastName || ''}`} sx={{ m: 0.2 }} />
+            )}
 
-     {chip && typeof chip === 'object' && userRolesChip?.length > 0 ? (
-      <StyledChipGrid container mode={themeMode} isNoBg>
-       {chip?.map((c, index) => (
-        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE}>{c}</Typography>} size={SIZE.SMALL} />
-       ))}
-      </StyledChipGrid>
-     ) : Array.isArray(chip) ? (
-      <StyledChipGrid container mode={themeMode} isNoBg>
-       {chip?.map((c, index) => (
-        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE}>{c}</Typography>} size={SIZE.SMALL} />
-       ))}
-      </StyledChipGrid>
-     ) : (
-      chip && typeof chip === 'string' && <Chip label={chip} sx={{ m: 0.2 }} />
-     )}
+            {chip && typeof chip === 'object' && userRolesChip?.length > 0 ? (
+            <StyledChipGrid container mode={themeMode} isNoBg>
+            {chip?.map((c, index) => (
+                <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE}>{c}</Typography>} size={SIZE.SMALL} />
+            ))}
+            </StyledChipGrid>
+            ) : Array.isArray(chip) ? (
+            <StyledChipGrid container mode={themeMode} isNoBg>
+            {chip?.map((c, index) => (
+                <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE}>{c}</Typography>} size={SIZE.SMALL} />
+            ))}
+            </StyledChipGrid>
+            ) : (
+            chip && typeof chip === 'string' && <Chip label={chip} sx={{ m: 0.2 }} />
+            )}
 
-     {Array.isArray(phoneChips) && (
-      <StyledChipGrid container mode={themeMode} isNoBg>
-       {phoneChips?.map((p, index) => (
-        <StyledFieldChip
-         key={index}
-         mode={themeMode}
-         label={
-          <GStyledSpanBox>
-           {p?.type && (
-            <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE} fontWeight='bold'>
-             {p?.type} &nbsp;
-            </Typography>
-           )}
-           <Typography variant={isDesktop ? TYPOGRAPHY.BODY2 : TYPOGRAPHY.CAPTION}>
-            {p?.countryCode && `+${p?.countryCode} `} {p?.contactNumber && p?.contactNumber}
-            {p?.extensions && `(${p?.extensions})`}
-           </Typography>
-          </GStyledSpanBox>
-         }
-         size={SIZE.SMALL}
-        />
-       ))}
-      </StyledChipGrid>
-     )}
+            {Array.isArray(phoneChips) && (
+            <StyledChipGrid container mode={themeMode} isNoBg>
+            {phoneChips?.map((p, index) => (
+                <StyledFieldChip
+                key={index}
+                mode={themeMode}
+                label={
+                <GStyledSpanBox>
+                {p?.type && (
+                    <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE} fontWeight='bold'>
+                    {p?.type} &nbsp;
+                    </Typography>
+                )}
+                <Typography variant={isDesktop ? TYPOGRAPHY.BODY2 : TYPOGRAPHY.CAPTION}>
+                    {p?.countryCode && `+${p?.countryCode} `} {p?.contactNumber && p?.contactNumber}
+                    {p?.extensions && `(${p?.extensions})`}
+                </Typography>
+                </GStyledSpanBox>
+                }
+                size={SIZE.SMALL}
+                />
+            ))}
+            </StyledChipGrid>
+            )}
 
-     {primaryContact && primaryContact !== '' ? (
-      <StyledChipGrid container gap={1} isNoBg mode={themeMode}>
-       <IconTooltip icon={ICON_NAME.CONTACT} color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange} iconOnly dimension={15} />
-       {primaryContact}
-      </StyledChipGrid>
-     ) : (
-      primaryContact === '' && (
-       <StyledChipGrid container isNoBg mode={themeMode}>
-        <IconTooltip icon={ICON_NAME.CONTACT} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.darkGray} iconOnly dimension={15} />
-       </StyledChipGrid>
-      )
-     )}
+            {primaryContact && primaryContact !== '' ? (
+            <StyledChipGrid container gap={1} isNoBg mode={themeMode}>
+            <IconTooltip icon={ICON_NAME.CONTACT} color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange} iconOnly dimension={15} />
+            {primaryContact}
+            </StyledChipGrid>
+            ) : (
+            primaryContact === '' && (
+            <StyledChipGrid container isNoBg mode={themeMode}>
+                <IconTooltip icon={ICON_NAME.CONTACT} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.darkGray} iconOnly dimension={15} />
+            </StyledChipGrid>
+            )
+            )}
 
-     {userRolesChip && typeof userRolesChip === 'object' && userRolesChip.length > 0 ? (
-      <StyledChipGrid container mode={themeMode} isNoBg>
-       {userRolesChip?.map((r, index) => (
-        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE}>{r}</Typography>} size={SIZE.SMALL} />
-       ))}
-      </StyledChipGrid>
-     ) : (
-      userRolesChip && typeof userRolesChip === 'string' && userRolesChip.trim().length > 0 && <Chip label={userRolesChip} sx={{ m: 0.2 }} />
-     )}
+            {userRolesChip && typeof userRolesChip === 'object' && userRolesChip.length > 0 ? (
+            <StyledChipGrid container mode={themeMode} isNoBg>
+            {userRolesChip?.map((r, index) => (
+                <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE}>{r}</Typography>} size={SIZE.SMALL} />
+            ))}
+            </StyledChipGrid>
+            ) : (
+            userRolesChip && typeof userRolesChip === 'string' && userRolesChip.trim().length > 0 && <Chip label={userRolesChip} sx={{ m: 0.2 }} />
+            )}
 
-     {rolesChip && Array.isArray(rolesChip) && rolesChip.length > 0 && (
-      <StyledChipGrid container mode={themeMode} isNoBg>
-       &nbsp;
-       {rolesChip?.map((r, index) => (
-        <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isMobile ? TYPOGRAPHY.OVERLINE : TYPOGRAPHY.OVERLINE2}>{roleCoverUp(r)}</Typography>} size={SIZE.SMALL} />
-       ))}
-      </StyledChipGrid>
-     )}
-    </Fragment>
-   )}
-  </StyledFieldGrid>
+            {rolesChip && Array.isArray(rolesChip) && rolesChip.length > 0 && (
+            <StyledChipGrid container mode={themeMode} isNoBg>
+            &nbsp;
+            {rolesChip?.map((r, index) => (
+                <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isMobile ? TYPOGRAPHY.OVERLINE : TYPOGRAPHY.OVERLINE2}>{roleCoverUp(r)}</Typography>} size={SIZE.SMALL} />
+            ))}
+            </StyledChipGrid>
+            )}
+            </Fragment>
+        )}
+        </StyledFieldGrid>
+  </Fragment>
  )
 }
 
 ViewFormField.propTypes = {
- heading: PropTypes.string,
- children: PropTypes.node,
- node: PropTypes.node,
- gridSize: PropTypes.number,
- isLoading: PropTypes.bool,
- isWidget: PropTypes.bool,
- isNoBg: PropTypes.bool,
- noBreakSpace: PropTypes.bool,
- variant: PropTypes.oneOf(Object.values(TYPOGRAPHY)),
- contact: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
- chip: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
- phoneChips: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
- userRolesChip: PropTypes.any,
- rolesChip: PropTypes.array,
- link: PropTypes.string,
- customerLink: PropTypes.string,
+ heading       : PropTypes.string,
+ children      : PropTypes.node,
+ node          : PropTypes.node,
+ gridSize      : PropTypes.number,
+ isLoading     : PropTypes.bool,
+ isWidget      : PropTypes.bool,
+ isNoBg        : PropTypes.bool,
+ noBreakSpace  : PropTypes.bool,
+ variant       : PropTypes.oneOf(Object.values(TYPOGRAPHY)),
+ contact       : PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
+ chip          : PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
+ phoneChips    : PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
+ userRolesChip : PropTypes.any,
+ rolesChip     : PropTypes.array,
+ link          : PropTypes.string,
+ customerLink  : PropTypes.string,
  primaryContact: PropTypes.any,
- isMachineView: PropTypes.bool,
- country: PropTypes.string
+ isMachineView : PropTypes.bool,
+ country       : PropTypes.string
 }
 
 export default memo(ViewFormField)
