@@ -57,11 +57,11 @@ export const TABS = value => [
   label: t('graph.graphs.label'),
   icon: ICON_NAME.SUPPORT,
   disabled: false
- },
- {
-  id: 6,
-  label: 'Support Tickets',
-  icon: ICON_NAME.SUPPORT,
-  disabled: false
  }
+//  {
+//   id: 6,
+//   label: 'Support Tickets',
+//   icon: ICON_NAME.SUPPORT,
+//   disabled: false
+//  }
 ]
