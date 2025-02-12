@@ -29,10 +29,7 @@ const CustomerDialog = () => {
   <Dialog maxWidth={SZ.LG} open={customerDialog} onClose={handleCustomerDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle>
-    <GStyledSpanBox
-     sx={{
-      justifyContent: FLEX.SPACE_BETWEEN
-     }}>
+    <GStyledSpanBox sx={{ justifyContent: FLEX.SPACE_BETWEEN }}>
      <TitleTextIcon truncatedName={defaultValues?.name} tradingAliases={defaultValues?.tradingName} />
      <BadgeCardMedia customer={customer} dimension={40} />
     </GStyledSpanBox>
@@ -50,7 +47,6 @@ const CustomerDialog = () => {
       <GridViewField heading={t('website.label')} isLoading={isLoading}>
        {defaultValues?.website}
       </GridViewField>
-      <GridViewField heading={t('trading_name.label')} isLoading={isLoading} chip={defaultValues?.tradingName} />
      </Grid>
      <Divider variant={KEY.FULL_WIDTH} style={{ width: '100%', marginX: '20px' }} />
      <GridViewTitle title={t('site_information.label')} />

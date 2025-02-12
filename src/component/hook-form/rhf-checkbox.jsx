@@ -58,7 +58,6 @@ export function RHFMultiCheckbox({ row, name, label, options, spacing, helperTex
               {label}
             </FormLabel>
           )}
-
           <FormGroup
             sx={{
               ...(row && {

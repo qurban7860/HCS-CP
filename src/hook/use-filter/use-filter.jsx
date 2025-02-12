@@ -157,7 +157,7 @@ export default function useFilter(comparator, params, initial, ChangePage, setFi
    } else if (filterCategory === KEY.TOPHAT_MACHINE) {
     filterVal = filterVal.filter(item => normalizer(item?.machineModel?.name)?.includes(KEY.TOPHAT_MACHINE || 'TH'))
    } else if (filterCategory === KEY.ROLLFORMER) {
-    filterVal = filterVal.filter(item => !DECOILER_TYPE_ARR.some(type => normalizer(item.machineModel.name).includes(normalizer(type))))
+    filterVal = filterVal.filter(item => !DECOILER_TYPE_ARR.some(type => normalizer(item?.machineModel?.name)?.includes(normalizer(type))))
    }
   }
   return filterVal

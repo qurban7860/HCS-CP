@@ -5,21 +5,21 @@ import { fDate } from 'util'
 
 const TAG = 'customer-ticket'
 const initialState = {
- initial: false,
+ initial                      : false,
  customerTicketResponseMessage: null,
- success: false,
- isLoading: false,
- error: null,
- customerTicket: {},
- customerTickets: [],
- customerTicketDialog: false,
- selectedCustomerTicketCard: null,
- customerTicketTotalCount: 0,
- customerTicketFilterBy: '',
- customerTicketFilterStatus: 'Open',
- customerTicketPage: 0,
- customerTicketRowsPerPage: 10,
- customerTicketTotal: 0
+ success                      : false,
+ isLoading                    : false,
+ error                        : null,
+ customerTicket               : {},
+ customerTickets              : [],
+ customerTicketDialog         : false,
+ selectedCustomerTicketCard   : null,
+ customerTicketTotalCount     : 0,
+ customerTicketFilterBy       : '',
+ customerTicketFilterStatus   : 'To do',
+ customerTicketPage           : 0,
+ customerTicketRowsPerPage    : 10,
+ customerTicketTotal          : 0
 }
 
 const customerTicketSlice = createSlice({
@@ -31,49 +31,49 @@ const customerTicketSlice = createSlice({
   },
   hasError(state, action) {
    state.isLoading = false
-   state.error = action.payload
-   state.initial = true
+   state.error     = action.payload
+   state.initial   = true
   },
   getCustomerTicketRecordSuccess(state, action) {
-   state.isLoading = false
-   state.success = true
+   state.isLoading      = false
+   state.success        = true
    state.customerTicket = action.payload
-   state.initial = true
+   state.initial        = true
   },
   getCustomerTicketRecordsSuccess(state, action) {
-   state.isLoading = false
-   state.success = true
-   state.customerTickets = action.payload
+   state.isLoading           = false
+   state.success             = true
+   state.customerTickets     = action.payload
    state.customerTicketTotal = action.payload.total
-   state.initial = true
+   state.initial             = true
   },
   setCustomerTicketResponseMessage(state, action) {
    state.customerTicketResponseMessage = action.payload
-   state.isLoading = false
-   state.success = true
-   state.initial = true
+   state.isLoading                     = false
+   state.success                       = true
+   state.initial                       = true
   },
   resetCustomerTicketRecord(state, action) {
-   state.customerTicket = action.payload
+   state.customerTicket                = action.payload
    state.customerTicketResponseMessage = null
-   state.success = false
-   state.isLoading = false
+   state.success                       = false
+   state.isLoading                     = false
   },
   resetSelectedCustomerTicketCard(state, action) {
    state.selectedCustomerTicketCard = null
   },
   resetCustomerTicket(state) {
-   state.customerTicket = {}
+   state.customerTicket                = {}
    state.customerTicketResponseMessage = null
-   state.success = false
-   state.isLoading = false
+   state.success                       = false
+   state.isLoading                     = false
   },
   resetCustomerTickets(state) {
-   state.customerTickets = []
+   state.customerTickets               = []
    state.customerTicketResponseMessage = null
-   state.success = false
-   state.customerTicketTotalCount = 0
-   state.isLoading = false
+   state.success                       = false
+   state.customerTicketTotalCount      = 0
+   state.isLoading                     = false
   },
   setCustomerTicketDialog(state, action) {
    state.customerTicketDialog = action.payload
@@ -124,7 +124,7 @@ export function getCustomerTicket(ref, page, pageSize, id) {
     page,
     pageSize
    }
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKET(id), { params })
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.detail(id), { params })
    dispatch(customerTicketSlice.actions.getCustomerTicketRecordSuccess(response.data))
   } catch (error) {
    console.log(error)
@@ -150,7 +150,7 @@ export function getAllCustomerTickets(customers, page, pageSize) {
      page,
      pageSize
     }
-    const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+    const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
     responseData.push(response.data)
    }
 
@@ -163,48 +163,21 @@ export function getAllCustomerTickets(customers, page, pageSize) {
  }
 }
 
-export function getCustomerTickets(ref, period) {
+export function getCustomerTickets(customerId, page, pageSize) {
  return async dispatch => {
   dispatch(customerTicketSlice.actions.startLoading())
   try {
-   if (!ref) {
-    // if ref is invalid, throw a better error message and return, don't make the API call
-    return
-   }
    const params = {
-    ref,
-    startAt: 0
+    orderBy   : { createdAt: -1 },
+    // pagination: { page, pageSize },
+    isArchived: false
    }
+   // TODO: wait til the server cp route for customer tickets is ready, then change the PATH_SERVER
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
+   const customerTickets = response.data &&  response.data.data.filter(ticket => ticket.customer._id === customerId)
 
-   if (period) {
-    const startDate = new Date()
-    startDate.setMonth(startDate.getMonth() - period)
-    params.startDate = fDate(startDate, 'yyyy-MM-dd')
-   }
-
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
-   response.data.issues.sort((a, b) => {
-    if (a.fields.status.name === 'Completed') {
-     return 1
-    }
-    if (b.fields.status.name === 'Completed') {
-     return -1
-    }
-    if (a.fields.status.name === 'Resolved') {
-     return 1
-    }
-    if (b.fields.status.name === 'Resolved') {
-     return -1
-    }
-    if (a.fields.status.name === 'Closed') {
-     return 1
-    }
-    if (b.fields.status.name === 'Closed') {
-     return -1
-    }
-    return 0
-   })
-   dispatch(customerTicketSlice.actions.getCustomerTicketRecordsSuccess(response.data))
+   dispatch(customerTicketSlice.actions.getCustomerTicketRecordsSuccess(customerTickets))
+   return response
   } catch (error) {
    console.log(error)
    dispatch(customerTicketSlice.actions.hasError(error.Message))
@@ -220,7 +193,7 @@ export function getCustomerTicketByKey(ref, key) {
    const params = {
     ref
    }
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
    let customerTicket = response.data.issues.find(ticket => ticket.key === key)
 
    dispatch(customerTicketSlice.actions.getCustomerTicketRecordSuccess(customerTicket))
@@ -239,7 +212,7 @@ export function getCustomerTicketBySerialNoAndKey(serialNo, key) {
    const params = {
     serialNo
    }
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
    let customerTicket = response.data.issues.find(ticket => ticket.key === key)
    dispatch(customerTicketSlice.actions.getCustomerTicketRecordSuccess(customerTicket))
   } catch (error) {

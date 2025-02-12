@@ -1,5 +1,6 @@
 import { Fragment, useEffect, memo, useLayoutEffect, useRef } from 'react'
 import _ from 'lodash'
+import axios from 'axios'
 import { useSelector, dispatch } from 'store'
 import { useParams } from 'react-router-dom'
 import {
@@ -18,7 +19,9 @@ import {
  resetSelectedMachine,
  resetMachineCategories,
  resetMachine,
- getMachines
+ getMachines,
+ resetSoftwareVersion,
+ getSoftwareVersion
 } from 'store/slice'
 import { useTempFilter, useSettingContext, getComparator, useTable, useUIMorph, Icon, ICON_NAME } from 'hook'
 import { PATH_MACHINE } from 'route/path'
@@ -34,12 +37,16 @@ import { FLEX_DIR, KEY } from 'constant'
 
 const MachineTab = () => {
  const { machine, machines, machineCategories, isLoading, initial } = useSelector(state => state.machine)
- const { customer } = useSelector(state => state.customer)
- const { id } = useParams()
- const { themeMode } = useSettingContext()
- const selectedMachineRef = useRef(null)
- const { isDesktop, isMobile } = useUIMorph()
- const theme = useTheme()
+ const { customer }                                                 = useSelector(state => state.customer)
+ const { softwareVersion }                                          = useSelector(state => state.ticket)
+ const { id }                                                       = useParams()
+ const { themeMode }                                                = useSettingContext()
+ const selectedMachineRef                                           = useRef(null)
+ const { isDesktop, isMobile }                                      = useUIMorph()
+ const theme                                                        = useTheme()
+
+ const axiosToken = () => axios.CancelToken.source()
+ const cancelTokenSource = axiosToken()
 
  const { order, orderBy } = useTable({
   defaultOrderBy: KEY.CREATED_AT,
@@ -53,6 +60,7 @@ const MachineTab = () => {
   dispatch(resetMachine())
   dispatch(resetSelectedMachine())
   dispatch(resetCustomer())
+  dispatch(resetSoftwareVersion())
   dispatch(resetMachineCategories())
   dispatch(resetConnectedMachineDialog())
   dispatch(resetMachineSiteDialogData())
@@ -68,7 +76,17 @@ const MachineTab = () => {
 
  useEffect(() => {
   const debounce = _.debounce(() => {
-   dispatch(getMachines())
+   dispatch(getSoftwareVersion(id))
+  }, 300)
+  debounce()
+  return () => debounce.cancel()
+ }, [id, dispatch])
+
+ useEffect(() => {
+  const debounce = _.debounce(() => {
+    if (!machines?.length) {
+      dispatch(getMachines(null, null, false, cancelTokenSource, customer?._id))
+    }
   }, 300)
   debounce()
   return () => debounce.cancel()
@@ -94,7 +112,9 @@ const MachineTab = () => {
   }
  }, [machine?._id])
 
- const defaultValues = useMachineDefaultValues(machine, customer)
+ console.log('softwareversion', softwareVersion)
+
+ const defaultValues = useMachineDefaultValues(machine, customer, null, softwareVersion)
  const { filterName, handleFilterName, filteredData, filterCategory, handleFilterCategory } = useTempFilter(
   getComparator(order, orderBy),
   machines,

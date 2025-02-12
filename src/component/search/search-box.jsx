@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { t } from 'i18next'
 import { Icon, ICON_NAME } from 'hook'
 import { TextField, InputAdornment, Button, Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
@@ -7,7 +8,7 @@ import { IconTooltip } from 'component'
 import { GStyledSpanBox } from 'theme/style'
 import { BUTTON, COLOR, FLEX, KEY, LABEL, SIZE, VARIANT } from 'constant'
 
-const SearchBox = ({ term, handleSearch, mode, onReload, mt = 5 }) => {
+const SearchBox = ({ term, handleSearch, mode, onReload, mt = 5, handleCreateTicket }) => {
  const [isSearchEmpty, setIsSearchEmpty] = useState(true)
  const theme = useTheme()
 
@@ -70,28 +71,41 @@ const SearchBox = ({ term, handleSearch, mode, onReload, mt = 5 }) => {
      }
     }}
    />
-   {onReload && (
-    <IconTooltip
-     icon={ICON_NAME.REFRESH}
-     title={LABEL.RELOAD}
-     placement={KEY.TOP}
-     variant={VARIANT.CONTAINED}
-     tooltipColor={mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze}
-     color={theme.palette.common.white}
-     dimension={25}
-     onClick={onReload}
-    />
-   )}
+   <div>
+    {handleCreateTicket && (
+        <IconTooltip
+        icon={ICON_NAME.ADD}
+        title={t('create_ticket.label')}
+        placement={KEY.TOP}
+        tooltipColor={mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze}
+        color={theme.palette.howick.midBlue}
+        dimension={25}
+        onClick={handleCreateTicket}
+        />
+    )}
+    {onReload && (
+        <IconTooltip
+        icon={ICON_NAME.REFRESH}
+        title={LABEL.RELOAD}
+        placement={KEY.TOP}
+        tooltipColor={mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze}
+        color={theme.palette.howick.midBlue}
+        dimension={25}
+        onClick={onReload}
+        />
+    )}
+   </div>
   </Box>
  )
 }
 
 SearchBox.propTypes = {
- term: PropTypes.string,
- handleSearch: PropTypes.func,
- mode: PropTypes.string,
- mt: PropTypes.number,
- onReload: PropTypes.func
+ term              : PropTypes.string,
+ handleSearch      : PropTypes.func,
+ mode              : PropTypes.string,
+ mt                : PropTypes.number,
+ onReload          : PropTypes.func,
+ handleCreateTicket: PropTypes.func
 }
 
 export default SearchBox

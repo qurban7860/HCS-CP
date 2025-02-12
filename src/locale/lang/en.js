@@ -32,6 +32,9 @@ const en = {
  add_as_contact: {
   label: `Add as Contact`
  },
+ add_upload_file: {
+   label: `Add / Upload File`
+ },
  address: {
   label: `Address`,
   addresses: {
@@ -78,8 +81,29 @@ const en = {
  chat: `chat`,
  cards: `cards`,
  posts: `posts`,
+ allowed_format: {
+   label: `Allowed Format`,
+   allowed_formats: {
+    label: `Allowed Formats`
+   }
+ },
+ already_exists: {
+   label: `Already exists`
+ },
  assignee: {
   label: `Assignee`
+ },
+ attachment: {
+    label: `Attachment`,
+    attachments: {
+     label: `Attachments`
+    }
+ },
+ attach_file: {
+   label: `Attach File`
+ },
+ backout_plan: {
+  label: `Backout Plan`
  },
  billing_contact: {
   label: `Billing Contact`
@@ -95,6 +119,12 @@ const en = {
  },
  change_password: {
   label: `Change Password`
+ },
+ change_type: {
+  label: `Change Type`
+ },
+ change_reason: {
+  label: `Change Reason`
  },
  clear: {
   label: `Clear`
@@ -113,6 +143,9 @@ const en = {
   contrast_tooltip: `Adjust the CONTRAST of the theme`
  },
  create: `create`,
+ created_at: {
+  label: `Created At`
+ },
  connected_machine: {
   label: `Connected Machine`,
   connected_machines: {
@@ -154,6 +187,12 @@ const en = {
    label: `Columns`
   }
  },
+ create_ticket:{
+    label: `Create Ticket`
+ },
+ create_support_ticket:{
+    label: `Create Support Ticket`
+ },
  created: {
   label: `Created`
  },
@@ -176,7 +215,8 @@ const en = {
   label: `Default Profile`
  },
  delete: {
-  label: `Delete`
+  label: `Delete`,
+  description: `You are about to delete this, this is irreversible , are you sure?`
  },
  delete_user: {
   label: `Delete User`,
@@ -194,7 +234,6 @@ const en = {
  group: {
   label: `Group`
  },
-
  date: {
   label: `Date`
  },
@@ -220,11 +259,17 @@ const en = {
   local: `document`,
   label: `Document`
  },
+ drop_select:{
+   label: `Drop or <select>select</select> files`
+ },
  email: {
   label: `Email`
  },
  enable_portal_access: {
   label: `Enable Portal Access`
+ },
+ file:{
+   label: `File`
  },
  filter_status: {
   label: `Filter Status`
@@ -273,6 +318,15 @@ const en = {
  howick_website: {
   label: `Howick Website`
  },
+ impact: {
+  label: `Impact`
+ },
+ implementation_plan: {
+  label: `Implementation Plan`
+ },
+ investigation_reason: {
+  label: `Investigation Reason`
+ },
  invitation_portal_access: {
   label: `Invitation for Portal Access`
  },
@@ -299,6 +353,9 @@ const en = {
  },
  issue: {
   label: `Issue`
+ },
+ issue_type:{
+  label: `Issue Type`
  },
  key_detail: {
   label: `Key Detail`,
@@ -485,6 +542,10 @@ const en = {
  no_found: {
   label: `No {{value}} Found`
  },
+ not_applicable: {
+  abbr: `N/A`,
+  label: `Not Applicable`
+ },
  not_provided: {
   label: `Not Provided`
  },
@@ -519,11 +580,29 @@ const en = {
    label: `Phone Numbers`
   }
  },
+ pdf_view: {
+   label: `PDF View`
+ },
  personal_information: {
   label: `Personal Information`
  },
+ planned_end_date: {
+  label: `Planned End Date`
+ },
+ planned_end_time: {
+  label: `Planned End Time`
+ },
+ planned_start_date: {
+  label: `Planned Start Date`
+ },
+ planned_start_time: {
+  label: `Planned Start Time`
+ },
  plc_version: {
   label: `PLC Version`
+ },
+ priority: {
+  label: `Priority`
  },
  product: `product`,
  production: {
@@ -546,6 +625,9 @@ const en = {
  register_agreement: 'By clicking "Register" you agree to our <1>Privacy Policy</1>.',
  remember_me: {
   label: `Remember me`
+ },
+ remove_all: {
+   label: `Remove All`
  },
  reporter: {
   label: `Reporter`
@@ -571,20 +653,24 @@ const en = {
   },
   success: {
    created_contact: `Contact created`,
+   delete_file: `File deleted`,
    logged_in: 'Logged in',
    logged_out: 'Logged out',
    register_request_submitted: 'Registration request submitted',
    user_invite_request_submitted: 'User invite request submitted',
    details_updated: 'User details updated',
    password_updated: 'Password updated',
-   reset_request_submitted: 'Password reset request submitted'
+   reset_request_submitted: 'Password reset request submitted',
+   ticket_created: 'Ticket created',
   },
   error: {
    default: 'An error occurred',
+   delete_file: 'Failed to delete file',
    email_already_exists: 'Email already exists',
    failed_submission: 'Failed to submit',
    form_check_errors: 'Please check the form for errors',
    invalid_credentials: 'Invalid credentials',
+   loading_file: `Error loading file`,
    machine_serial_invalid: 'Machine serial number provided is invalid',
    something_went_wrong: 'Something went wrong',
    unable_create_contact: 'Unable to create contact',
@@ -602,6 +688,9 @@ const en = {
   },
   placeholder: `Select Role/s`
  },
+ root_cause: {
+  label: `Root Cause`
+ },
  row: {
   label: `Row`
  },
@@ -610,6 +699,9 @@ const en = {
  },
  search: {
   label: `Search`
+ },
+ select: {
+   label: `Select`
  },
  select_filter: {
   label: `Select Filter`
@@ -636,6 +728,9 @@ const en = {
  },
  serial_number: {
   label: `Serial Number`
+ },
+ set_private: {
+  label: `Set Private`
  },
  shipping_date: {
   label: `Shipping Date`
@@ -672,6 +767,9 @@ const en = {
  submitted_details: {
   label: `Submitted Details`
  },
+ summary: {
+    label: `Summary`
+ },
  support_manager: {
   label: `Support Manager`,
   support_managers: {
@@ -685,12 +783,19 @@ const en = {
  support_expiration: {
   label: `Support Expiration`
  },
+ support_ticket_created: {
+  label: `Support Ticket Created`,
+  description: `A new support ticket has been created. You will receive an email with the ticket details.`
+ },
  support_tickets: {
   local: `support_tickets`,
   label: `Support Tickets`
  },
  technical_contact: {
   label: `Technical Contact`
+ },
+ test_plan: {
+  label: `Test Plan`
  },
  ticket_number: {
   label: `Ticket Number`
@@ -727,14 +832,23 @@ const en = {
  users_list: {
   label: `Users List`
  },
+ view_ticket: {
+  label: `View Ticket`
+ },
  view_jira: {
   label: `View in Jira`,
   view_jira_in_new_tab: {
    label: `View in Jira in a New Tab`
   }
  },
+ unlimited: {
+  label: `Unlimited`
+ },
  website: {
   label: `Website`
+ },
+ workaround: {
+  label: `Workaround`
  },
  work_order: {
   label: `Work Order`

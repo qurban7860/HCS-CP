@@ -35,6 +35,8 @@ import {
  CustomerSupportTicketsPage,
  // support:
  TicketsListPage,
+ TicketCreatePage,
+ TicketViewPage,
  // log:
  LogListPage,
  // fallback:
@@ -268,7 +270,12 @@ export default function Router() {
      ),
      children: [
       { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
-      { path: 'tickets', element: <TicketsListPage /> },
+      { path: 'tickets', children: [
+        { element: <TicketsListPage />, index: true },
+        { path: 'create', element: <TicketCreatePage /> },
+        { path: ':id/view', element: <TicketViewPage />}
+      ]
+      },
       {
        element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
        children: [

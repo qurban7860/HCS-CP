@@ -346,7 +346,7 @@ export function sendUserInvite(Id) {
  return async dispatch => {
   dispatch(userSlice.actions.startLoading())
   try {
-   const response = await axios.get(PATH_SERVER.SECURITY.SEND_USER_INVITE(Id))
+   const response = await axios.get(PATH_SERVER.SECURITY.INVITES.sendUserInvite(Id))
    dispatch(userSlice.actions.setResponseMessage(response.data))
    return response // eslint-disable-line
   } catch (error) {
@@ -390,7 +390,7 @@ export function verifiedUserInvite(Id, code) {
  return async dispatch => {
   dispatch(userSlice.actions.startLoading())
   try {
-   const response = await axios.get(PATH_SERVER.SECURITY.VERIFIED_INVITE(Id, code))
+   const response = await axios.get(PATH_SERVER.SECURITY.INVITES.verifiedInvite(Id, code))
    dispatch(userSlice.actions.getVerifiedInvite(response.data))
   } catch (error) {
    dispatch(userSlice.actions.hasError(error))
@@ -403,7 +403,7 @@ export function updateUserInvite(data, Id) {
  return async dispatch => {
   dispatch(userSlice.actions.startLoading())
   try {
-   const response = await axios.patch(PATH_SERVER.SECURITY.UPDATE_USER_INVITE_DETAILS(Id), data)
+   const response = await axios.patch(PATH_SERVER.SECURITY.INVITES.setInvitedUserPassword(Id), data)
    if (regEx.test(response.status)) {
     dispatch(userSlice.actions.setResponseMessage(response.data))
    }

@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState, memo, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
+import axios from 'axios'
 import { debounce } from 'lodash'
 import { Trans } from 'react-i18next'
 import { useAuthContext, useWebSocketContext } from 'auth'
@@ -41,9 +42,11 @@ const UsersListSection = ({ isArchived }) => {
  const { user, userId }                                                                                 = useAuthContext()
  const { themeMode }                                                                                    = useSettingContext()
 
- const isMobile    = useResponsive('down', 'sm')
- const navigate    = useNavigate()
- const denseHeight = TABLE.DENSE_HEIGHT
+ const isMobile          = useResponsive('down', 'sm')
+ const navigate          = useNavigate()
+ const denseHeight       = TABLE.DENSE_HEIGHT
+ const axiosToken        = () => axios.CancelToken.source();
+ const cancelTokenSource = axiosToken();
 
  const {
   order,
@@ -56,39 +59,51 @@ const UsersListSection = ({ isArchived }) => {
   defaultOrder: KEY.DESC
  })
 
- useEffect(() => {
-  const debounceFetch = debounce(() => {
-   dispatch(getOnlineUsers())
-  }, 300)
-  debounceFetch()
-  return () => debounceFetch.cancel()
- }, [dispatch])
+ useLayoutEffect(() => {
+    dispatch(resetSecurityUser())
+    dispatch(resetSecurityUsers())
+    dispatch(resetSelectedContactCard())
+    // dispatch(setUserDialog(false))
+  }, [userId])
 
- useEffect(() => {
-  if (userId !== securityUser?._id) {
-   dispatch(getSecurityUser(userId))
-  }
- }, [userId, dispatch])
+//  useEffect(() => {
+//   const debounceFetch = debounce(() => {
+//    dispatch(getOnlineUsers())
+//   }, 300)
+//   debounceFetch()
+//   return () => debounceFetch.cancel()
+//  }, [dispatch])
 
- useEffect(() => {
-  const debounceFetch = debounce(() => {
-   if (!contacts.length) {
-    dispatch(getContacts(user.customer))
-   }
-  }, 300)
-  debounceFetch()
-  return () => debounceFetch.cancel()
- }, [contacts, dispatch])
+//  useEffect(() => {
+//   if (userId !== securityUser?._id) {
+//    dispatch(getSecurityUser(userId))
+//   }
+//  }, [userId, dispatch])
 
- useEffect(() => {
-  const debounceFetch = debounce(() => {
-   if (user.customer) {
-    dispatch(getSecurityUsers(user.customer))
-   }
-  }, 300)
-  debounceFetch()
-  return () => debounceFetch.cancel()
- }, [dispatch, userPage, userRowsPerPage])
+//  useEffect(() => {
+//   const debounceFetch = debounce(() => {
+//    if (!contacts.length) {
+//     dispatch(getContacts(user.customer))
+//    }
+//   }, 300)
+//   debounceFetch()
+//   return () => debounceFetch.cancel()
+//  }, [contacts, dispatch])
+
+ useEffect(()=>{
+    dispatch(getSecurityUsers(user.customer, cancelTokenSource ));
+    return ()=>{ cancelTokenSource.cancel() };
+  },[dispatch, userPage, userRowsPerPage, isArchived])
+
+//  useEffect(() => {
+//   const debounceFetch = debounce(() => {
+//    if (user.customer) {
+//     dispatch(getSecurityUsers(user.customer))
+//    }
+//   }, 300)
+//   debounceFetch()
+//   return () => debounceFetch.cancel()
+//  }, [dispatch, userPage, userRowsPerPage])
 
  useEffect(() => {
   if (initial) {
@@ -98,12 +113,7 @@ const UsersListSection = ({ isArchived }) => {
   }
  }, [securityUsers, initial])
 
- useLayoutEffect(() => {
-  dispatch(resetSecurityUser())
-  dispatch(resetSecurityUsers())
-  dispatch(resetSelectedContactCard())
-  dispatch(setUserDialog(false))
- }, [userId])
+
 
  const { filterName, handleFilterName, filteredData, filterStatus, filterRole, handleFilterStatus, handleFilterRole } = useFilter(
   getComparator(order, orderBy),
@@ -138,11 +148,8 @@ const UsersListSection = ({ isArchived }) => {
  }
 
  const handleUserDialog = (event, userId) => {
-  event.preventDefault()
   dispatch(getSecurityUser(userId))
-  delay(200).then(() => {
-   dispatch(setUserDialog(true))
-  })
+  dispatch(setUserDialog(true))
  }
 
  const handleMachineInNewTabCard = (event, id) => {

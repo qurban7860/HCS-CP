@@ -4,6 +4,7 @@ export { ICON_LOC, ICON_WEB, ICON_LOC_NAME, ICON_WEB_NAME } from './icon-directo
 export { default as NavConfiguration } from './nav-config'
 export { default as TIME } from './time'
 export * from './asset-directory'
-export * from './role-types'
 export * from './log-types'
+export * from './role-types'
 export * from './types'
+export * from './upload'

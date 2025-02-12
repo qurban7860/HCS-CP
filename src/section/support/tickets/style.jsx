@@ -42,34 +42,34 @@ export const StyledTablePagination = styled(TablePagination)(({ theme, mode, pag
 
 export const StyledHeaderTableCell = styled(({ theme, mode, item, ...other }) => <TableCell {...other} />)(({ theme, mode, item }) => ({
  backgroundColor: mode === KEY.LIGHT ? theme.palette.background.default : theme.palette.grey[800],
- borderBottom: `2px solid ${mode === KEY.LIGHT ? theme.palette.howick.bronze : theme.palette.howick.blue} !important`,
- color: mode === KEY.DARK ? 'common.white' : 'common.black',
- fontWeight: 'bold',
- fontSize: '1.1rem',
- padding: '0.5rem 1rem',
- paddingBottom: '1rem',
- overflow: 'hidden',
- textOverflow: 'ellipsis',
- whiteSpace: 'nowrap',
- position: 'sticky',
- top: 0,
- zIndex: 1
+ borderBottom   : `2px solid ${mode === KEY.LIGHT ? theme.palette.howick.bronze : theme.palette.howick.blue} !important`,
+ color          : mode === KEY.DARK ? theme.palette.common.white : theme.palette.common.black,
+ fontWeight     : 'bold',
+ fontSize       : '1.1rem',
+ padding        : '0.5rem 1rem',
+ paddingBottom  : '1rem',
+ overflow       : 'hidden',
+ textOverflow   : 'ellipsis',
+ whiteSpace     : 'nowrap',
+ position       : 'sticky',
+ top            : 0,
+ zIndex         : 1
  //  width: item?.key === KEY.FIELDS_SUMMARY ? '30%' : item.key === KEY.FIELDS_CREATED ? '10%' : item.key === 'fields.status.statusCategory.name' ? '25%' : `calc(100% / ${HEADER.length})`
 }))
 
 export const StyledIconListItemText = styled(({ theme, inActive, ...other }) => <ListItemText {...other} />)(({ theme, inActive }) => ({
  justifyContent: 'center',
- alignItems: 'center',
- display: 'flex',
- color: !inActive ? theme.palette.error.main : theme.palette.burnIn.main
+ alignItems    : 'center',
+ display       : 'flex',
+ color         : !inActive ? theme.palette.error.main: theme.palette.burnIn.main
 }))
 
 export const StyledPopTableCell = styled(TableCell)(({ theme, mode }) => ({
  fontWeight: 'bold',
- fontSize: '1rem'
+ fontSize  : '1rem'
 }))
 
-export const StyledTableRow = styled(({ theme, mode, index, fields, key, ...other }) => <TableRow {...other} />)(({ theme, mode, index, fields, key }) => ({
+export const StyledTableRow = styled(({ theme, mode, index, ...other }) => <TableRow {...other} />)(({ theme, mode, index }) => ({
  backgroundColor:
   index % 2
    ? mode === KEY.DARK

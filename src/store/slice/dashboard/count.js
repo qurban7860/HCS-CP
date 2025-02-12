@@ -158,7 +158,7 @@ export function getCountActiveTickets(ref, period) {
     params.startDate = fDate(startDate, 'yyyy-MM-dd')
    }
 
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
    console.log('response', response)
    dispatch(countSlice.actions.getCountActiveTicketsSuccess())
   } catch (error) {
@@ -194,7 +194,7 @@ export function getQuickActiveCustomerTicket(ref, page, pageSize, id) {
     page,
     pageSize
    }
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKET(id), { params })
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.detail(id), { params })
    const tickets = response.data.issues.map(ticket => ({
     key: ticket.key,
     status: ticket.fields?.status?.name,

@@ -1,42 +1,42 @@
-import { createSlice, current } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
 
 const initialState = {
- initial: false,
- machineTab: 'info',
- machineTransferDialog: false,
- responseMessage: null,
- success: false,
- isLoading: false,
- error: null,
- isParent: false,
- isConnected: false,
- isDecoiler: false,
- machine: {},
- parentMachine: {},
- connectedMachine: {},
- connectedMachineDialog: null,
- machineDialog: false,
- machineSiteDialog: false,
- machineSiteDialogData: null,
- machineType: null,
- machines: [],
- machineTotalCount: 0,
- activeMachines: [],
- customerMachines: [],
- machineCategories: [],
- activeCustomerMachines: [],
- machineLatLongCoordinates: [],
- machineGallery: [],
- selectedMachineCard: null,
- selectedMachine: null,
+ initial                    : false,
+ machineTab                 : 'info',
+ machineTransferDialog      : false,
+ responseMessage            : null,
+ success                    : false,
+ isLoading                  : false,
+ error                      : null,
+ isParent                   : false,
+ isConnected                : false,
+ isDecoiler                 : false,
+ machine                    : {},
+ parentMachine              : {},
+ connectedMachine           : {},
+ connectedMachineDialog     : null,
+ machineDialog              : false,
+ machineSiteDialog          : false,
+ machineSiteDialogData      : null,
+ machineType                : null,
+ machines                   : [],
+ machineTotalCount          : 0,
+ activeMachines             : [],
+ customerMachines           : [],
+ machineCategories          : [],
+ activeCustomerMachines     : [],
+ machineLatLongCoordinates  : [],
+ machineGallery             : [],
+ selectedMachineCard        : null,
+ selectedMachine            : null,
  transferDialogBoxVisibility: false,
- accountManager: null,
- supportManager: null,
- machineFilterBy: '',
- machinePage: 0,
- machineRowsPerPage: 10
+ accountManager             : null,
+ supportManager             : null,
+ machineFilterBy            : '',
+ machinePage                : 0,
+ machineRowsPerPage         : 10
 }
 
 const machineSlice = createSlice({
@@ -308,12 +308,13 @@ export function getMachine(id) {
  }
 }
 
-export function getMachines(page, pageSize, isArchived, cancelToken) {
+export function getMachines(page, pageSize, isArchived, cancelToken, customerId) {
  return async dispatch => {
   dispatch(machineSlice.actions.startLoading())
   try {
    const params = {
-    isActive: true,
+    customer  : customerId,
+    isActive  : true,
     isArchived: false,
     pagination: {
      page,

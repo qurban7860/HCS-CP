@@ -4,21 +4,21 @@ import { KEY } from 'constant'
 
 export const fieldsKeyConfig = [
  {
-  key: 'serialNo',
-  heading: 'machine_serial_number.label',
-  value: defaultValues => defaultValues?.serialNo,
+  key     : 'serialNo',
+  heading : 'machine_serial_number.label',
+  value   : defaultValues => defaultValues?.serialNo,
   gridSize: 4
  },
  {
-  key: 'machineModel',
-  heading: 'machine_model.label',
-  value: defaultValues => defaultValues?.machineModel,
+  key     : 'machineModel',
+  heading : 'machine_model.label',
+  value   : defaultValues => defaultValues?.machineModel,
   gridSize: 4
  },
  {
-  key: 'profiles',
+  key    : 'profiles',
   heading: 'machine_model.label',
-  value: defaultValues =>
+  value  : defaultValues =>
    Array.isArray(defaultValues?.profiles) && defaultValues?.profiles.length > 0 ? defaultValues?.profiles[0]?.flange + 'X' + defaultValues?.profiles[0]?.web : t('not_provided.label'),
   gridSize: 4
  }
@@ -55,54 +55,64 @@ export const fieldsMachineInformationConfig = [
   truncate: 21
  },
  {
-  key: 'status',
+  key    : 'status',
   heading: 'status.label',
-  value: defaultValues => defaultValues?.status
+  value  : defaultValues => defaultValues?.status
  },
  {
-  key: 'workOrderRef',
+    key    : 'hlc',
+    heading: 'hmi_version.label',
+    value  : defaultValues => defaultValues?.hlc
+},
+{
+    key    : 'plc',
+    heading: 'plc_version.label',
+    value  : defaultValues => defaultValues?.plc
+},
+ {
+  key    : 'workOrderRef',
   heading: 'work_order.label',
-  value: defaultValues => defaultValues?.workOrderRef
+  value  : defaultValues => defaultValues?.workOrderRef
  },
  {
-  key: 'financialCompany',
+  key    : 'financialCompany',
   heading: 'financing_company.label',
-  value: defaultValues => defaultValues?.financialCompany
+  value  : defaultValues => defaultValues?.financialCompany
  },
  {
-  key: 'purchaseDate',
+  key    : 'purchaseDate',
   heading: 'purchase_date.label',
-  value: defaultValues => defaultValues?.purchaseDate
+  value  : defaultValues => defaultValues?.purchaseDate
  },
  {
-  key: 'manufactureDate',
+  key    : 'manufactureDate',
   heading: 'manufacture_date.label',
-  value: defaultValues => defaultValues?.manufactureDate
+  value  : defaultValues => defaultValues?.manufactureDate
  },
  {
-  key: 'shippingDate',
+  key    : 'shippingDate',
   heading: 'shipping_date.label',
-  value: defaultValues => defaultValues?.shippingDate
+  value  : defaultValues => defaultValues?.shippingDate
  },
  {
-  key: 'installationDate',
+  key    : 'installationDate',
   heading: 'installation_date.label',
-  value: defaultValues => defaultValues?.installationDate
+  value  : defaultValues => defaultValues?.installationDate
  },
  {
-  key: 'installationSiteName',
+  key    : 'installationSiteName',
   heading: 'installation_site.label',
-  value: defaultValues => defaultValues?.installationSiteName
+  value  : defaultValues => defaultValues?.installationSiteName
  },
  {
-  key: 'billingSiteName',
+  key    : 'billingSiteName',
   heading: 'billing_site.label',
-  value: defaultValues => defaultValues?.billingSiteName
+  value  : defaultValues => defaultValues?.billingSiteName
  },
  {
-  key: 'description',
-  heading: 'description.label',
-  value: defaultValues => defaultValues?.description,
+  key     : 'description',
+  heading : 'description.label',
+  value   : defaultValues => defaultValues?.description,
   gridSize: 12
  }
 ]

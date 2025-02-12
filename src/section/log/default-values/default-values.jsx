@@ -1,9 +1,10 @@
 import { useMemo } from 'react'
 import { getLogTypeConfigForGenerationAndType, logGraphTypes } from 'config/log-types'
+import { fDate } from 'util'
 
 export function useLogDefaultValues() {
  return useMemo(() => {
-  const today = new Date()
+  const today         = new Date()
   const thirtyDaysAgo = new Date(today)
   thirtyDaysAgo.setDate(today.getDate() - 30)
 
@@ -11,9 +12,9 @@ export function useLogDefaultValues() {
    customer: null,
    machine: null,
    logType: getLogTypeConfigForGenerationAndType(5, 'ERP') || null,
-   dateFrom: null,
-   dateTo: null,
-   logPeriod: 'Daily',
+   dateFrom    : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+   dateTo      : today,
+   logPeriod   : 'Monthly',
    logGraphType: logGraphTypes[0]
   }
  }, [])

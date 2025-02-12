@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
-import { useSettingContext } from 'hook'
+import { Icon, ICON_NAME, useSettingContext } from 'hook'
 import { Box, Card, Grid, Link, Typography } from '@mui/material'
 import { GridViewField, GridViewTitle } from 'component'
 import { useTheme } from '@mui/material/styles'
@@ -10,8 +10,13 @@ import { KEY, TYPOGRAPHY } from 'constant'
 import { truncate } from 'util'
 
 const MachineFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, handleDialog, isChildren, children, mountSupportExpiryChip }) => {
- const { themeMode } = useSettingContext()
- const theme = useTheme()
+ const { themeMode }  = useSettingContext()
+ const theme          = useTheme()
+
+ const today             = new Date();
+ const supportExpireDate = new Date(defaultValues.supportExpireDate)
+
+ const expiredSupport = supportExpireDate < today
 
  const renderFields = config => {
   return (
@@ -52,19 +57,24 @@ const MachineFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, ha
      <Grid key={field.key} item lg={12} sm={12}>
       <Grid container display={'flex'} justifyContent={'flex-end'}>
        <GStyledSpanBox>
-        <Typography variant={TYPOGRAPHY.OVERLINE0} p={0}>
+        <Typography variant={TYPOGRAPHY.OVERLINE0} color={themeMode === KEY.LIGHT ? theme.palette.grey[700] : theme.palette.common.white} p={0}>
          {t('support_expiration.label') + ':'}&nbsp;
         </Typography>
         <GStyledChip
          size={'small'}
          variant={'outlined'}
-         bgColor={themeMode === KEY.LIGHT ? theme.palette.error.main : theme.palette.error.dark}
+         bgColor={themeMode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[700]}
          label={
-          <Typography variant={TYPOGRAPHY.OVERLINE0} p={0}>
-           {content}
-          </Typography>
+          <Box sx={{ display: 'flex'}}>
+            <Icon icon={expiredSupport ? ICON_NAME.CLOSE_CIRCLE_OUTLINE : ICON_NAME.CHECK_CICLE_OUTLINE} color={expiredSupport ? theme.palette.error.main : theme.palette.burnIn.altDark} width={15} />
+            <GStyledSpanBox sx={{ alignItems: 'center', ml: 1 }}>
+                <Typography variant={TYPOGRAPHY.OVERLINE0} p={0}>
+                    {content}
+                </Typography>
+            </GStyledSpanBox>
+          </Box>
          }
-         sx={{ color: theme.palette.common.white }}
+         sx={{ color: themeMode === KEY.LIGHT ? (expiredSupport ? theme.palette.error.main : theme.palette.common.black) : (expiredSupport ? theme.palette.error.light : theme.palette.common.white) }}
         />
        </GStyledSpanBox>
       </Grid>
@@ -79,9 +89,9 @@ const MachineFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, ha
     <GStyledTopBorderDivider mode={themeMode} />
     <Grid container spacing={2} px={1.5}>
      <GridViewTitle title={t(i18nKey)} />
-     {mountSupportExpiryChip && renderSupportExpiryChip(fieldsConfig)}
      <Grid item lg={12} sm={12}>
       <Grid container spacing={2} p={2} pb={5}>
+        {mountSupportExpiryChip && renderSupportExpiryChip(fieldsConfig)}
        {isChildren ? children : renderFields(fieldsConfig)}
       </Grid>
      </Grid>

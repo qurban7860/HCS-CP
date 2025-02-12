@@ -39,14 +39,14 @@ import { normalizer } from 'util'
  */
 
 export default function useTempFilter(comparator, params, initial, ChangePage, setFilterBy, setCategoryDefault = 'machine') {
- const [tableData, setTableData] = useState([])
- const [filterName, setFilterName] = useState('')
- const [filterStatus, setFilterStatus] = useState([])
- const [filterRole, setFilterRole] = useState('all')
+ const [tableData, setTableData]           = useState([])
+ const [filterName, setFilterName]         = useState('')
+ const [filterStatus, setFilterStatus]     = useState([])
+ const [filterRole, setFilterRole]         = useState('all')
  const [filterCategory, setFilterCategory] = useState(setCategoryDefault)
- const { setPage } = useTable({ defaultOrderBy: 'name' })
- const isFiltered = filterName !== '' || !!filterStatus.length
- const inputData = tableData
+ const { setPage }                         = useTable({ defaultOrderBy: 'name' })
+ const isFiltered                          = filterName !== '' || !!filterStatus.length
+ const inputData                           = tableData
 
  const debouncedSearch = useRef(
   debounce(value => {

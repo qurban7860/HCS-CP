@@ -13,26 +13,30 @@ export const StyledDefaultTypography = styled(Typography)(({ theme }) => ({
 export const StyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, isMobile, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView, isNoBg, isMobile }) => ({
  backgroundColor:
   mode === KEY.LIGHT && !isMachineView && !isNoBg
-   ? theme.palette.grey[100]
+   ? theme.palette.grey[200]
    : (isMachineView || isNoBg) && mode === KEY.LIGHT
    ? 'transparent'
    : (isMachineView || isNoBg) && mode === KEY.DARK
    ? theme.palette.grey[900]
    : theme.palette.grey[800],
  padding: '0.5rem 0.5rem',
- height: isMobile ? '4rem' : '5rem',
+ height: isMobile ? '2rem' : '3rem',
  border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
- borderRadius: isMachineView && theme.spacing(RADIUS.FORM.borderRadius)
+ borderRadius: isMachineView && theme.spacing(RADIUS.FORM.borderRadius),
+ overflow  : 'hidden',
+ display   : 'flex',
+ alignItems: 'center',
+ flexWrap  : 'nowrap',
 }))
 
 export const StyledChipGrid = styled(({ theme, isNoBg, mode,...other}) => <Grid {...other}/>)(({ theme, isNoBg, mode }) => ({
- marginTop: theme.spacing(-2),
- marginBottom: 0,
- display: 'flex',
- alignItems: 'center',
- whiteSpace: 'pre-line',
- wordBreak: 'break-word',
- backgroundColor: isNoBg ? 'transparent' : mode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[800]
+ marginBottom   : 0,
+ padding        : '0.5rem 0.5rem',
+ display        : 'flex',
+ alignItems     : 'center',
+ whiteSpace     : 'pre-line',
+ wordBreak      : 'break-word',
+ backgroundColor: isNoBg ? 'transparent': mode === KEY.LIGHT ? theme.palette.grey[200]: theme.palette.grey[800]
 }))
 
 export const StyledFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({

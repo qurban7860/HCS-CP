@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState, memo } from 'react'
 import _ from 'lodash'
 import { t } from 'i18next'
 import { Trans } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { useSelector, dispatch } from 'store'
 import { useAuthContext } from 'auth'
 import { useTable, useTempFilter, getComparator, useSettingContext, useResponsive } from 'hook'
@@ -15,27 +16,30 @@ import {
  setCustomerTicketDialog,
  ChangeCustomerTicketPage,
  ChangeCustomerTicketRowsPerPage,
- resetCustomerTickets
 } from 'store/slice'
-import { TicketsTable, TicketsTableHeader, TicketsListPagination, TicketCard, useTicketsDefaultValues, HEADER_ITEMS } from 'section/support'
-import { Table, Grid, TableContainer, Typography } from '@mui/material'
+import { TicketsTable, TicketsTableHeader, TicketsListPagination, TicketCard, HEADER_ITEMS } from 'section/support'
+import { Table, Grid, Typography } from '@mui/material'
 import { TableNoData, SkeletonTable, SearchBox, TableTitleBox, HowickLoader, SupportTicketDialog } from 'component'
 import { GStyledTableHeaderBox } from 'theme/style'
 import { GLOBAL } from 'config/global'
 import { MARGIN, TABLE } from 'config'
 import { KEY, FLEX_DIR, TYPOGRAPHY } from 'constant'
+import { StyledScrollTableContainer } from './style'
+import { PATH_SUPPORT } from 'route/path'
 
 const TicketsListSection = () => {
- const [tableData, setTableData] = useState([])
- const [filterPeriodOption, setFilterPeriodOption] = useState(3)
- const { userId } = useAuthContext()
- const { customer } = useSelector(state => state.customer)
+ const [tableData, setTableData]                                                                                          = useState([])
+ const [filterPeriodOption, setFilterPeriodOption]                                                                        = useState(3)
+ const { userId }                                                                                                         = useAuthContext()
+ const { customer }                                                                                                       = useSelector(state => state.customer)
  const { customerTickets, initial, isLoading, customerTicketRowsPerPage, customerTicketPage, selectedCustomerTicketCard } = useSelector(state => state.customerTicket)
- const { securityUser } = useSelector(state => state.user)
+ const { tickets } = useSelector(state => state.ticket)
+ const { securityUser }                                                                                                   = useSelector(state => state.user)
 
- const isMobile = useResponsive('down', 'sm')
+ const navigate      = useNavigate()
+ const isMobile      = useResponsive('down', 'sm')
  const { themeMode } = useSettingContext()
- const denseHeight = TABLE.DENSE_HEIGHT
+ const denseHeight   = TABLE.DENSE_HEIGHT
 
  const {
   order,
@@ -43,11 +47,11 @@ const TicketsListSection = () => {
   setPage: setTablePage,
   onSort
  } = useTable({
-  defaultOrderBy: 'created',
-  defaultOrder: KEY.DESC
+  defaultOrderBy: 'createdAt',
+  defaultOrder  : KEY.DESC
  })
 
- // populate with only tix for certain org by ref, or machine by serialNo
+
  useEffect(() => {
   if (userId !== securityUser?._id) {
    dispatch(getSecurityUser(userId))
@@ -58,29 +62,37 @@ const TicketsListSection = () => {
   const debouncedDispatch = _.debounce(() => {
    if (securityUser?.customers) {
     dispatch(getCustomer(securityUser?.customer?._id))
-    if (securityUser?.customers[0]?.ref) {
-     dispatch(getCustomerTickets(securityUser?.customers[0]?.ref, filterPeriodOption))
-    }
    }
   }, 300)
   debouncedDispatch()
   return () => {
    debouncedDispatch.cancel()
-   dispatch(resetCustomerTickets())
   }
  }, [dispatch, securityUser?.customers, filterPeriodOption])
 
+useEffect(() => {
+  const debouncedDispatch = _.debounce(() => {
+    if (!customerTickets.length) {
+      dispatch(getCustomerTickets(customer?._id, customerTicketPage, customerTicketRowsPerPage))
+    }
+  }, 300)
+  debouncedDispatch()
+  return () => {
+    debouncedDispatch.cancel()
+  }
+}, [dispatch, customerTicketPage, customerTicketRowsPerPage])
+
  const onRefresh = () => {
-  dispatch(getCustomerTickets(customer?.ref, filterPeriodOption))
+  dispatch(getCustomerTickets(customer?._id, customerTicketPage, customerTicketRowsPerPage))
  }
 
  useEffect(() => {
   if (initial) {
-   setTableData(customerTickets?.issues || [])
+   setTableData(customerTickets || [])
   }
  }, [customerTickets, initial])
 
- const defaultValues = useTicketsDefaultValues(tableData && tableData)
+//  const defaultValues = useTicketsDefaultValues(tableData && tableData)
  const { filterName, handleFilterName, filteredData } = useTempFilter(getComparator(order, orderBy), tableData, initial, ChangeCustomerTicketPage, setCustomerTicketFilterBy)
 
  const handleChangePage = (event, newPage) => {
@@ -111,12 +123,17 @@ const TicketsListSection = () => {
   window.open(url, KEY.BLANK)
  }
 
+ const handleCreateTicket = () => {
+  // navigate to create ticket
+  navigate(PATH_SUPPORT.tickets.create)
+ }
+
  const isNotFound = !isLoading && !filteredData?.length
 
  return (
   <Fragment>
    <TableTitleBox title={t('support_tickets.label')} user={securityUser} />
-   <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} onReload={onRefresh} />
+   <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} onReload={onRefresh} handleCreateTicket={handleCreateTicket} />
    {isMobile ? (
     <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
      <Grid item xs={12} sm={12}>
@@ -125,7 +142,7 @@ const TicketsListSection = () => {
         <Grid container p={1}>
          {!isLoading ? (
           filteredData?.length > 0 ? (
-           defaultValues.map((cticket, index) => (
+            filteredData.map((cticket, index) => (
             <TicketCard
              key={index}
              selectedCardId={selectedCustomerTicketCard || index}
@@ -161,7 +178,6 @@ const TicketsListSection = () => {
        <Grid item xs={12} sm={12} mb={2} bgcolor='background.paper'>
         <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
         <TicketsListPagination
-         count={filteredData?.length || 0}
          mode={themeMode}
          data={filteredData}
          page={customerTicketPage}
@@ -170,21 +186,21 @@ const TicketsListSection = () => {
          handleChangeRowsPerPage={handleChangeRowsPerPage}
          columnFilterButtonData={HEADER_ITEMS}
         />
-        <TableContainer>
+        <StyledScrollTableContainer>
          <Table>
           <TicketsTableHeader columns={HEADER_ITEMS} dataFiltered={filteredData} orderBy={orderBy} order={order} onSort={onSort} />
           {(isLoading ? [...Array(customerTicketRowsPerPage)] : filteredData)
            .slice(customerTicketPage * customerTicketRowsPerPage, customerTicketPage * customerTicketRowsPerPage + customerTicketRowsPerPage)
            .map((row, index) =>
             row ? (
-             <TicketsTable key={row.key} columns={HEADER_ITEMS} handleCustomerTicket={handleCustomerTicketCard} ticket={row} mode={themeMode} index={index} />
+             <TicketsTable key={index} columns={HEADER_ITEMS} handleCustomerTicket={handleCustomerTicketCard} ticket={row} mode={themeMode} index={index} />
             ) : (
              !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />
             )
            )}
           <TableNoData isNotFound={isNotFound} />
          </Table>
-        </TableContainer>
+        </StyledScrollTableContainer>
        </Grid>
       </Grid>
      </Grid>

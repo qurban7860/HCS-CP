@@ -80,7 +80,7 @@ const ERROR = {
 
 const HOWICKBLUE = {
  lighter: '#8BC9FF',
- light: '#0161d1',
+ light: '#0084C9',
  main: '#0940B2',
  dark: '#10079F',
  darker: '#062B74',

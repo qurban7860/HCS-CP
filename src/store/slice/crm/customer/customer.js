@@ -1,31 +1,30 @@
-import { createSlice, current } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
-import { GLOBAL } from 'config/global'
 
 const initialState = {
- initial: false,
- customerTab: 'info',
- customerEditFormFlag: false,
- responseMessage: null,
- success: false,
- isLoading: false,
- error: null,
- customers: [],
- activeCustomers: [],
- financialCompanies: [],
- allActiveCustomers: [],
- spCustomers: [],
- customer: {},
- customerDialog: false,
+ initial                 : false,
+ customerTab             : 'info',
+ customerEditFormFlag    : false,
+ responseMessage         : null,
+ success                 : false,
+ isLoading               : false,
+ error                   : null,
+ customers               : [],
+ activeCustomers         : [],
+ financialCompanies      : [],
+ allActiveCustomers      : [],
+ spCustomers             : [],
+ customer                : {},
+ customerDialog          : false,
  customerUserInviteDialog: false,
- newMachineCustomer: null,
- customerFilterBy: '',
- verified: 'all',
- customerRenderTab: 0,
- excludeReporting: 'included',
- customerPage: 0,
- customerRowsPerPage: 5
+ newMachineCustomer      : null,
+ customerFilterBy        : '',
+ verified                : 'all',
+ customerRenderTab       : 0,
+ excludeReporting        : 'included',
+ customerPage            : 0,
+ customerRowsPerPage     : 5
 }
 
 const customerSlice = createSlice({

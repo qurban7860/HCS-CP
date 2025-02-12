@@ -1,12 +1,11 @@
-import { t } from 'i18next'
 import { fDate } from 'util'
 
 export const HEADER_ITEMS = [
- { id: 'serialNo', label: t('serial_number.label'), align: 'left', checked: true, value: mach => mach?.serialNo },
+ { id: 'serialNo', label: 'serial_number.label', align: 'left', checked: true, value: mach => mach?.serialNo },
  //  { id: 'name', label: t('name.label'), align: 'left', checked: false },
- { id: 'machineModel.name', label: t('model.label'), align: 'left', checked: true, value: mach => mach?.machineModel?.name },
- { id: 'installationDate', label: t('installation_date.label'), align: 'left', checked: true, value: mach => fDate(mach?.installationDate) },
- { id: 'shippingDate', label: t('shipping_date.label'), align: 'left', checked: true, value: mach => fDate(mach?.shippingDate) },
- { id: 'status.name', label: t('status.label'), align: 'left', checked: true, value: mach => mach?.status?.name },
- { id: 'isActive', label: t('active.label'), align: 'center', checked: true, width: '5%', value: mach => mach?.isActive }
+ { id: 'machineModel.name', label: 'model.label', align: 'left', checked: true, value: mach => mach?.machineModel?.name },
+ { id: 'installationDate', label: 'installation_date.label', align: 'left', checked: true, value: mach => fDate(mach?.installationDate) },
+ { id: 'shippingDate', label: 'shipping_date.label', align: 'left', checked: true, value: mach => fDate(mach?.shippingDate) },
+ { id: 'status.name', label: 'status.label', align: 'left', checked: true, value: mach => mach?.status?.name },
+ { id: 'isActive', label: 'active.label', align: 'center', checked: true, width: '5%', value: mach => mach?.isActive }
 ]

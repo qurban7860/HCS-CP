@@ -5,8 +5,7 @@ import { useSelector } from 'react-redux'
 import { useSettingContext } from 'hook'
 import { setSelectedSearchFilter } from 'store/slice'
 import { Box, Stack } from '@mui/material'
-import { RHFAutocomplete, RHFDatePicker, RHFFilteredSearchBar } from 'component/hook-form'
-import { useTheme } from '@mui/material/styles'
+import { RHFAutocomplete, RHFDatePickr, RHFFilteredSearchBar } from 'component/hook-form'
 import { GStyledLoadingButton, GStyledControllerCardContainer } from 'theme/style'
 import { LOG_TYPE_CONFIG, logGraphTypes } from 'config'
 import { NAV } from 'config/layout'
@@ -31,21 +30,6 @@ const LogsTableController = ({ customers, handleCustomerChange, customerMachines
     {isLogsPage && (
      <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)' }}>
       <RHFAutocomplete
-       required
-       name='customer'
-       label={t('customer.label')}
-       options={customers || []}
-       isOptionEqualToValue={(option, value) => option._id === value._id}
-       getOptionLabel={option => `${option?.name || ''}`}
-       renderOption={(props, option) => (
-        <li {...props} key={option?._id}>
-         {option?.name || ''}{' '}
-        </li>
-       )}
-       onChange={(e, newValue) => handleCustomerChange(newValue)}
-       size='small'
-      />
-      <RHFAutocomplete
        name='machine'
        label={t('machine.label')}
        options={customerMachines || []}
@@ -55,13 +39,32 @@ const LogsTableController = ({ customers, handleCustomerChange, customerMachines
        onChange={(e, newValue) => handleMachineChange(newValue)}
        size='small'
       />
+      <RHFAutocomplete
+       name='logType'
+       size='small'
+       label='Log Type*'
+       options={LOG_TYPE_CONFIG.gen5}
+       getOptionLabel={option => option.type || ''}
+       isOptionEqualToValue={(option, value) => option?.type === value?.type}
+       onChange={(e, newValue) => handleLogTypeChange(newValue)}
+       renderOption={(props, option) => (
+        <li {...props} key={option?.type}>
+         {option.type || ''}
+        </li>
+       )}
+       disableClearable
+       autoSelect
+       openOnFocus
+       fullWidth
+       getOptionDisabled={option => option?.disabled}
+      />
      </Box>
     )}
 
     {!isGraphPage() && (
      <Fragment>
       <Box display='grid' gap={2} gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)' }} sx={{ flexGrow: 1 }}>
-       <RHFDatePicker
+       <RHFDatePickr
         label='Start Date'
         name='dateFrom'
         value={dateFrom}
@@ -70,7 +73,7 @@ const LogsTableController = ({ customers, handleCustomerChange, customerMachines
          trigger(['dateFrom', 'dateTo'])
         }}
        />
-       <RHFDatePicker
+       <RHFDatePickr
         label='End Date'
         name='dateTo'
         value={dateTo}
@@ -80,26 +83,7 @@ const LogsTableController = ({ customers, handleCustomerChange, customerMachines
         }}
        />
       </Box>
-      <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: '1fr', sm: '1fr 2.5fr .5fr' }}>
-       <RHFAutocomplete
-        name='logType'
-        size='small'
-        label='Log Type*'
-        options={LOG_TYPE_CONFIG.gen5}
-        getOptionLabel={option => option.type || ''}
-        isOptionEqualToValue={(option, value) => option?.type === value?.type}
-        onChange={(e, newValue) => handleLogTypeChange(newValue)}
-        renderOption={(props, option) => (
-         <li {...props} key={option?.type}>
-          {option.type || ''}
-         </li>
-        )}
-        disableClearable
-        autoSelect
-        openOnFocus
-        fullWidth
-        getOptionDisabled={option => option?.disabled}
-       />
+      <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: '1fr', sm: '2.5fr .5fr' }}>
        <Box sx={{ flexGrow: 1, width: { xs: '100%', sm: 'auto' } }}>
         <RHFFilteredSearchBar
          name='filteredSearchKey'

@@ -3,6 +3,9 @@ import 'locale/i18n'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import 'react-lazy-load-image-component/src/effects/blur.css'
 import 'react-quill/dist/quill.snow.css'
+import 'yet-another-react-lightbox/styles.css';
+import 'yet-another-react-lightbox/plugins/captions.css';
+import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
@@ -22,7 +25,6 @@ import { IdleManager, ChartStyleOverlay } from 'component'
 import { ScrollToTop } from 'component/scroll-to-top'
 import { MotionLazyContainer } from 'component/animate'
 import ErrorBoundary from 'util/error-boundary'
-import { GLOBAL } from 'config'
 import { FALLBACK } from 'constant'
 
 function App() {

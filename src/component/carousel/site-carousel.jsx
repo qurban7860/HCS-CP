@@ -31,6 +31,7 @@ const CustomRight = ({ onClick, mode, theme, hasNext }) =>  {
     return (
         <button
         className="arrow right"
+        disabled={!hasNext}
         onClick={onClick}
         style={{
                 background: 'transparent',
@@ -68,6 +69,7 @@ const CustomLeft = ({ onClick, mode, theme, hasNext }) => {
     return (
     <button
         className="arrow left"
+        disabled={!hasNext}
         onClick={onClick}
         style={{
                 background: 'transparent',
@@ -133,10 +135,9 @@ return (
       customDot={<CustomDot mode={themeMode} />}
       customRightArrow={<CustomRight mode={themeMode} theme={theme} hasNext />}
       customLeftArrow={<CustomLeft mode={themeMode} theme={theme} hasNext />}
-      partialVisbile
+      partialVisible
       pauseOnHover
       arrows
-      infinite
       showDots
       swipeable
       draggable
@@ -213,13 +214,13 @@ return (
 }
 
 SiteCarousel.propTypes = {
- sites: PropTypes.array,
- theme: PropTypes.object,
- themeMode: PropTypes.string,
- isMain: PropTypes.func,
- IconTooltip: PropTypes.func,
+ sites        : PropTypes.array,
+ theme        : PropTypes.object,
+ themeMode    : PropTypes.string,
+ isMain       : PropTypes.func,
+ IconTooltip  : PropTypes.func,
  GridViewField: PropTypes.func,
- GCardOption: PropTypes.func
+ GCardOption  : PropTypes.func
 }
 
 export default SiteCarousel

@@ -2,24 +2,22 @@ import { createSlice } from '@reduxjs/toolkit'
 import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
 
-const TAG = 'machine-ticket'
-
 const initialState = {
- initial: false,
+ initial                     : false,
  machineTicketResponseMessage: null,
- success: false,
- isLoading: false,
- error: null,
- selectedMachineTicketCard: null,
- machineTicket: {},
- machineTickets: [],
- machineTicketDialog: false,
- machineTicketTotalCount: 0,
- machineTicketFilterBy: '',
- machineTicketFilterStatus: 'Open',
- machineTicketPage: 0,
- machineTicketRowsPerPage: 100,
- machineTicketTotalRows: 0
+ success                     : false,
+ isLoading                   : false,
+ error                       : null,
+ selectedMachineTicketCard   : null,
+ machineTicket               : {},
+ machineTickets              : [],
+ machineTicketDialog         : false,
+ machineTicketTotalCount     : 0,
+ machineTicketFilterBy       : '',
+ machineTicketFilterStatus   : 'Open',
+ machineTicketPage           : 0,
+ machineTicketRowsPerPage    : 100,
+ machineTicketTotalRows      : 0
 }
 
 const machineTicketSlice = createSlice({
@@ -120,7 +118,7 @@ export function getMachineTicket(machineId, page, pageSize) {
     page,
     pageSize
    }
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKET(machineId), { params })
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.detail(machineId), { params })
    dispatch(machineTicketSlice.actions.getMachineTicketRecordSuccess(response.data))
   } catch (error) {
    console.log(error)
@@ -138,7 +136,7 @@ export function getMachineTickets(serialNo) {
     serialNo
    }
 
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
    response.data.issues.sort((a, b) => {
     if (a.fields.status.name === 'Completed') {
      return 1
@@ -178,7 +176,7 @@ export function getMachineTicketByKey(serialNo, key) {
     serialNo
    }
 
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS, { params })
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
    let machineTicket = response.data.issues.find(ticket => ticket.key === key)
 
    dispatch(machineTicketSlice.actions.getMachineTicketRecordSuccess(machineTicket))
