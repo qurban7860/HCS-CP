@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
-import { fDate } from 'util/format'
 
 const regEx = /^[^2]*/
 const initialState = {
@@ -76,6 +75,20 @@ const supportSlice = createSlice({
     state.softwareVersion = action.payload
     state.initial         = true
   },
+  getTicketFileSuccess(state, action) {
+    const { id, data } = action.payload
+    const fArray       = state.ticket.files
+    if (Array.isArray(fArray) && fArray.length > 0) {
+      const fIndex = fArray.findIndex(f => f?._id === id)
+      if ( fIndex !== -1) {
+        const uFile        = { ...fArray[fIndex], src: data }
+              state.ticket = { ...state.ticket,
+          files: [ ...fArray.slice(0, fIndex), uFile, ...fArray.slice(fIndex + 1) ]
+        }
+      }
+    }
+    state.isLoadingTicketFile = false
+  },
   createTicketSuccess(state, action) {
     state.isLoading = false
     state.success   = true
@@ -141,17 +154,14 @@ export function getTickets(period) {
  return async dispatch => {
   dispatch(supportSlice.actions.startLoading())
   try {
-   const params = {}
-   if (period) {
-    const startDate = new Date()
-    startDate.setMonth(startDate.getMonth() - period)
-    params.startDate = fDate(startDate, 'yyyy-MM-dd')
+   const params = {
+    orderBy   : { createdAt: -1 },
+    isArchived: false
    }
 
    const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
-   if (regEx.test(response.status)) {
     dispatch(supportSlice.actions.getTicketsSuccess(response.data))
-   }
+    console.log('response.data', response.data)
    return response
   } catch (error) {
    console.error(error)
@@ -160,7 +170,7 @@ export function getTickets(period) {
  }
 }
 
-export function getSupportTicket(id) {
+export function getTicket(id) {
  return async dispatch => {
   dispatch(supportSlice.actions.startLoading())
   try {
@@ -261,4 +271,19 @@ export function getSoftwareVersion(machineId) {
         throw error
       }
     }
-  }
+}
+
+export function getFile( id, fileId ) {
+  return async (dispatch) => {
+    dispatch(supportSlice.actions.setLoadingFile(true))
+    try {
+      const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.file(id, fileId))
+      dispatch(supportSlice.actions.getTicketFileSuccess({ id: fileId, data: response.data } ));
+      return response
+    } catch (error) {
+      console.error(error)
+      dispatch(supportSlice.actions.hasError(error.Message))
+      throw error
+    }
+  };
+}
