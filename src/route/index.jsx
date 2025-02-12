@@ -36,6 +36,7 @@ import {
  // support:
  TicketsListPage,
  TicketCreatePage,
+ TicketViewPage,
  // log:
  LogListPage,
  // fallback:
@@ -272,6 +273,7 @@ export default function Router() {
       { path: 'tickets', children: [
         { element: <TicketsListPage />, index: true },
         { path: 'create', element: <TicketCreatePage /> },
+        { path: ':id/view', element: <TicketViewPage />}
       ]
       },
       {
