@@ -4,9 +4,9 @@ import { ICON_NAME, useSettingContext } from 'hook'
 import { TableHead, TableRow, TableSortLabel, Typography } from '@mui/material'
 import { IconTooltip } from 'component'
 import { useTheme } from '@mui/material/styles'
-import { StyledHeaderTableCell } from './style'
 import { normalizer } from 'util'
 import { KEY, TYPOGRAPHY } from 'constant'
+import { StyledHeaderTableCell } from './style'
 
 const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
  const { themeMode } = useSettingContext()
@@ -28,23 +28,14 @@ const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
         {onSort ? (
          <TableSortLabel hideSortIcon active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : 'asc'} onClick={() => onSort(headCell.id)} sx={{ textTransform: 'capitalize' }}>
           {normalizer(headCell.label) === 'machine' ? (
-           <IconTooltip
-            title={t('machine.label')}
-            icon={ICON_NAME.FRAMA}
-            color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[300]}
-            tooltipColor={theme.palette.howick.midBlue}
-            iconOnly
-            cursor
-           />
-          ) : normalizer(headCell.label) === 'date' ? (
-           <IconTooltip
-            title={'date.label'}
-            icon={ICON_NAME.CALENDAR_CLOCK}
-            color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[300]}
-            tooltipColor={theme.palette.howick.midBlue}
-            iconOnly
-            cursor
-           />
+            <IconTooltip
+              title={t('machine.label')}
+              icon={ICON_NAME.FRAMA}
+              color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[300]}
+              tooltipColor={theme.palette.howick.midBlue}
+              iconOnly
+              cursor
+            />
           ) : (
            <Typography variant={TYPOGRAPHY.OVERLINE0} p={0}>
             {headCell.label}
