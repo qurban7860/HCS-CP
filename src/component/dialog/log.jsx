@@ -16,7 +16,7 @@ const ResponsiveGrid = styled(Grid)(({ theme }) => ({
  }
 }))
 
-const extraInfo = ['customer', 'machine', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'isActive', 'isArchived', 'createdIP', 'updatedIP', 'archivedByMachine', 'batchId']
+const extraInfo = ['customer', 'machine']
 
 function LogDetailsDialog({ logDetails, open, setOpenLogDetailsDialog, componentTitle }) {
  const [logsToShow, setLogsToShow] = useState({})
