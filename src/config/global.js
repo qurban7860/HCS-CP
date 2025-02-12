@@ -1,6 +1,8 @@
 import { PATH_DASHBOARD, PATH_HOME } from 'route/path'
 
-export const GLOBAL = {
+const  configurations = JSON.parse(localStorage.getItem('configurations'))
+const  prefix         = configurations?.find((config) => config?.name?.toLowerCase() === 'ticket_prefix')?.value || '';
+export const GLOBAL   = {
  APP_TITLE             : 'Howick Portal',
  APP_BRANCH            : 'HOWICK PORTAL',
  APP_BRANDING          : 'Portal',
@@ -12,6 +14,7 @@ export const GLOBAL = {
  SERVER_DEV_URL        : import.meta.env.VITE_SERVER_DEV_URL,
  SOCKET_URL            : import.meta.env.VITE_SOCKET_URL,
  ENV                   : import.meta.env.VITE_ENV,
+ PREFIX                : prefix,
  VERSION               : import.meta.env.VITE_APP_VERSION,
  SERVER_VERSION        : import.meta.env.VITE_APP_SERVER_VERSION,
  DEV_COLOR             : import.meta.env.VITE_DEV_COLOR,
