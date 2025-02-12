@@ -308,12 +308,13 @@ export function getMachine(id) {
  }
 }
 
-export function getMachines(page, pageSize, isArchived, cancelToken) {
+export function getMachines(page, pageSize, isArchived, cancelToken, customerId) {
  return async dispatch => {
   dispatch(machineSlice.actions.startLoading())
   try {
    const params = {
-    isActive: true,
+    customer  : customerId,
+    isActive  : true,
     isArchived: false,
     pagination: {
      page,

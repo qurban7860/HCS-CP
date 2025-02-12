@@ -18,11 +18,7 @@ import {
  setSelectedMachineCard,
  ChangeMachinePage,
  ChangeMachineRowsPerPage,
- resetMachine,
- resetMachines,
- resetMachineCategories,
- resetSecurityUser,
- resetSelectedContactCard
+ resetMachine
 } from 'store/slice'
 import { MachineTable, MachineHeader, MachineListPagination, MachinesCard, HEADER_ITEMS } from 'section/product'
 import { Table, Grid, Typography } from '@mui/material'
@@ -34,6 +30,7 @@ import { StyledScrollTableContainer } from './style'
 
 const MachineListSection = ({ isArchived }) => {
  const [tableData, setTableData] = useState([])
+ const { customer } = useSelector((state) => state.customer)
  const { machines, machineCategories, selectedMachineCard, initial, isLoading, machinePage, machineRowsPerPage } = useSelector(state => state.machine)
  const { securityUser } = useSelector(state => state.user)
  const { userId } = useAuthContext()
@@ -75,7 +72,7 @@ const MachineListSection = ({ isArchived }) => {
 
  useEffect(() => {
   const debouncedDispatch = _.debounce(() => {
-   dispatch(getMachines(null, null, false, cancelTokenSource))
+   dispatch(getMachines(null, null, false, cancelTokenSource, customer?._id))
   }, 300)
   debouncedDispatch()
   return () => debouncedDispatch.cancel()
