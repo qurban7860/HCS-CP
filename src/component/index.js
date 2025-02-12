@@ -60,6 +60,8 @@ export { default as DrawerMenu } from './drawer/menu'
 export { default as DropdownDefault } from './dropdown/default'
 // @form
 export { default as FormHeader } from './header/form'
+// @gallery
+export { default as GalleryItem } from './gallery/gallery-item'
 // @google-map
 export { default as GoogleMaps } from './google-maps/google-maps'
 // @iconify
@@ -98,6 +100,7 @@ export { default as SearchBox } from './search/search-box'
 export { default as SkeletonLoading } from './skeleton/loading'
 export { default as SkeletonViewFormField } from './skeleton/view-form-field'
 export { default as SkeletonTable } from './skeleton/table'
+export { default as SkeletonGallery } from './skeleton/skeleton-gallery'
 export { default as SkeletonGraphLoader } from './skeleton/graph'
 export { default as SkeletonPDF } from './skeleton/skeleton-pdf'
 // @tab
