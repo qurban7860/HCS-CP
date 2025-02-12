@@ -1,6 +1,7 @@
 import { memo } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
+import { useSettingContext } from 'hook'
 import { Box } from '@mui/material'
 import { TablePaginationCustom } from 'component'
 import { KEY, LABEL } from 'constant'
@@ -24,6 +25,7 @@ const UsersListPagination = ({
  noPaginationToolbar,
  ...other
 }) => {
+ const { themeMode } = useSettingContext()
  return (
   <Box sx={{ position: KEY.RELATIVE }}>
    <TablePaginationCustom
@@ -31,7 +33,7 @@ const UsersListPagination = ({
     component={m.div}
     colSpan={2}
     data={data}
-    mode={mode}
+    mode={themeMode}
     page={page}
     labelRowsPerPage={LABEL.ROWS}
     rowsPerPageOptions={rowsPerPageOptions}
