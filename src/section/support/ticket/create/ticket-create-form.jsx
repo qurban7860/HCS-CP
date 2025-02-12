@@ -353,7 +353,7 @@ useEffect(() => {
        <Box m={2} mb={5} mt={0}>
         <Card {...GCardOption(themeMode)}>
          <GStyledTopBorderDivider mode={themeMode} />
-         <Grid Grid container spacing={2} p={1.5}>
+         <Grid container spacing={2} p={1.5}>
           <Grid item xs={12} sm={12} md={12}>
            <RHFRequiredTextFieldWrapper condition={!summary}>
             <RHFTextField name={'summary'} label={t('summary.label')} aria-label={t('summary.label')} error={!!errors.summary} helperText={errors.summary ? errors.summary.message : ''} required />
