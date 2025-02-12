@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState, memo } from 'react'
 import _ from 'lodash'
 import { t } from 'i18next'
 import { Trans } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { useSelector, dispatch } from 'store'
 import { useAuthContext } from 'auth'
 import { useTable, useTempFilter, getComparator, useSettingContext, useResponsive } from 'hook'
@@ -15,25 +16,27 @@ import {
  setCustomerTicketDialog,
  ChangeCustomerTicketPage,
  ChangeCustomerTicketRowsPerPage,
- resetCustomerTickets
 } from 'store/slice'
-import { TicketsTable, TicketsTableHeader, TicketsListPagination, TicketCard, useTicketsDefaultValues, HEADER_ITEMS } from 'section/support'
-import { Table, Grid, TableContainer, Typography } from '@mui/material'
+import { TicketsTable, TicketsTableHeader, TicketsListPagination, TicketCard, HEADER_ITEMS } from 'section/support'
+import { Table, Grid, Typography } from '@mui/material'
 import { TableNoData, SkeletonTable, SearchBox, TableTitleBox, HowickLoader, SupportTicketDialog } from 'component'
 import { GStyledTableHeaderBox } from 'theme/style'
 import { GLOBAL } from 'config/global'
 import { MARGIN, TABLE } from 'config'
 import { KEY, FLEX_DIR, TYPOGRAPHY } from 'constant'
 import { StyledScrollTableContainer } from './style'
+import { PATH_SUPPORT } from 'route/path'
 
 const TicketsListSection = () => {
  const [tableData, setTableData]                                                                                          = useState([])
  const [filterPeriodOption, setFilterPeriodOption]                                                                        = useState(3)
- const { userId, user }                                                                                                         = useAuthContext()
+ const { userId }                                                                                                         = useAuthContext()
  const { customer }                                                                                                       = useSelector(state => state.customer)
  const { customerTickets, initial, isLoading, customerTicketRowsPerPage, customerTicketPage, selectedCustomerTicketCard } = useSelector(state => state.customerTicket)
+ const { tickets } = useSelector(state => state.ticket)
  const { securityUser }                                                                                                   = useSelector(state => state.user)
 
+ const navigate      = useNavigate()
  const isMobile      = useResponsive('down', 'sm')
  const { themeMode } = useSettingContext()
  const denseHeight   = TABLE.DENSE_HEIGHT
@@ -79,7 +82,6 @@ useEffect(() => {
   }
 }, [dispatch, customerTicketPage, customerTicketRowsPerPage])
 
-
  const onRefresh = () => {
   dispatch(getCustomerTickets(customer?._id, customerTicketPage, customerTicketRowsPerPage))
  }
@@ -121,12 +123,17 @@ useEffect(() => {
   window.open(url, KEY.BLANK)
  }
 
+ const handleCreateTicket = () => {
+  // navigate to create ticket
+  navigate(PATH_SUPPORT.tickets.create)
+ }
+
  const isNotFound = !isLoading && !filteredData?.length
 
  return (
   <Fragment>
    <TableTitleBox title={t('support_tickets.label')} user={securityUser} />
-   <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} onReload={onRefresh} />
+   <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} onReload={onRefresh} handleCreateTicket={handleCreateTicket} />
    {isMobile ? (
     <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
      <Grid item xs={12} sm={12}>
