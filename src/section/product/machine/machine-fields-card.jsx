@@ -10,8 +10,13 @@ import { KEY, TYPOGRAPHY } from 'constant'
 import { truncate } from 'util'
 
 const MachineFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, handleDialog, isChildren, children, mountSupportExpiryChip }) => {
- const { themeMode } = useSettingContext()
- const theme = useTheme()
+ const { themeMode }  = useSettingContext()
+ const theme          = useTheme()
+
+ const today             = new Date();
+ const supportExpireDate = new Date(defaultValues.supportExpireDate)
+
+ const expiredSupport = supportExpireDate < today
 
  const renderFields = config => {
   return (
