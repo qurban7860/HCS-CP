@@ -159,3 +159,50 @@ export function useTicketCreateDefaultValues(customer, softwareVersion) {
     }, [customer])
    }
 
+  const configurations = JSON.parse(localStorage.getItem('configurations'))
+  const prefix = configurations?.find((config) => config?.name?.toLowerCase() === 'ticket_prefix')?.value || '';
+   export function useTicketViewDefaultValues(ticket, customer, softwareVersion) {
+      return useMemo(() => {
+       return {
+          customer           : customer && customer?.name || '',
+          ticketNo           : ticket && `${prefix || ''} - ${ticket?.ticketNo || ''}` || '',
+          machine            : ticket && `${ticket?.machine?.serialNo || ''} - ${ticket?.machine?.machineModel?.name || ''}` || '',
+          machineId          : ticket && ticket.machine._id,
+          reporter           : ticket && ticket?.reporter && { _id: ticket?.reporter?._id, name: `${ticket.reporter.firstName || ''} ${ticket.reporter.lastName || ''}` } || '',
+          assignee           : ticket && ticket?.assignee && { _id: ticket?.assignee?._id, name: `${ticket.assignee.firstName || ''} ${ticket.assignee.lastName || ''}` } || '',
+          summary            : ticket && ticket?.summary || '',
+          description        : ticket && ticket?.description || '',
+          priority           : ticket && ticket?.priority?.name || '',
+          priorityIcon       : ticket && ticket?.priority?.icon || '',
+          priorityColor      : ticket && ticket?.priority?.color || '',
+          status             : ticket && ticket?.status?.name || '',
+          statusIcon         : ticket && ticket?.status?.icon || '',
+          statusColor        : ticket && ticket?.status?.color || '',
+          impact             : ticket && ticket?.impact?.name || '',
+          files              : ticket && ticket?.files || [],
+          changeType         : ticket && ticket?.changeType || '',
+          changeReason       : ticket && ticket?.changeReason || '',
+          implementationPlan : '',
+          backoutPlan        : '',
+          testPlan           : '',
+          investigationReason: null,
+          rootCause          : '',
+          workaround         : '',
+          shareWith          : false,
+          isActive           : true,
+          plannedStartDate   : new Date(),
+          plannedEndDate     : new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+          startTime          : null,
+          endTime            : null,
+          hlc                : softwareVersion?.hlc || '',
+          plc                : softwareVersion?.plc || '',
+          createdAt          : ticket && fDate(ticket.createdAt) || '',
+          updatedAt          : ticket && fDate(ticket?.updatedAt) || '',
+          createdBy          : ticket && ticket?.createdBy?.name || '',
+          updatedBy          : ticket && ticket?.updatedBy?.name || '',
+          createdIP          : ticket && ticket?.createdIP || '',
+          updatedIP          : ticket && ticket?.updatedIP || ''
+       }
+      }, [customer])
+     }
+
