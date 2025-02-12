@@ -107,24 +107,22 @@ export default function Upload({
       sx={{
        ...(isDragActive && {
         opacity: 0.42,
-        height: '232px'
+        height : '232px'
        }),
        ...(isError && {
-        color: 'error.main',
-        bgcolor: 'error.lighter',
+        color      : 'error.main',
+        bgcolor    : 'error.lighter',
         borderColor: 'error.light'
        }),
        ...(disabled && {
-        opacity: 0.48,
-        height: '165px',
+        opacity      : 0.48,
+        height       : '165px',
         pointerEvents: 'none'
        }),
        ...(hasFile && {
-        padding: '8% 0',
-        width: '250px',
-        height: '165px',
-        // maxWidth:"100%",
-        // height: "100%",
+        padding  : '8% 0',
+        width    : '250px',
+        height   : '165px',
         objectFit: 'cover'
        })
       }}>
@@ -185,10 +183,10 @@ export default function Upload({
     <IconButton
      size='small'
      sx={{
-      top: 80,
-      left: 2,
-      zIndex: 9,
-      position: 'absolute',
+      top      : 80,
+      left     : 2,
+      zIndex   : 9,
+      position : 'absolute',
       '&:hover': { bgcolor: 'transparent' }
      }}>
      <Icon icon={fileExtension} color={document.color[fileExtension]} width={60} sx={{ p: 1, color: document.color[fileExtension] }} />

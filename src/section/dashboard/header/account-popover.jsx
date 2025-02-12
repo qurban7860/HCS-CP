@@ -19,10 +19,10 @@ import LanguagePopover from './language-popover'
 
 export default function AccountPopover() {
  const { user, logout } = useAuthContext()
- const { customer } = useSelector(state => state.customer)
- const navigate = useNavigate()
- const customerId = user?.customer
- const isMobile = useResponsive('down', 'sm')
+ const { customer }     = useSelector(state => state.customer)
+ const navigate         = useNavigate()
+ const customerId       = user?.customer
+ const isMobile         = useResponsive('down', 'sm')
 
  const [openPopover, setOpenPopover] = useState(null)
  const [open, setOpen] = useState(false)
@@ -156,7 +156,8 @@ export default function AccountPopover() {
        {t('display_settings.label')}
       </Typography>
      </MenuItem>
-     <LanguagePopover />
+     {/* disable for the meantime */}
+     {/* <LanguagePopover /> */}
     </Stack>
     <Divider />
 

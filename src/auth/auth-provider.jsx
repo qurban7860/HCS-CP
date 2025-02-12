@@ -28,13 +28,12 @@ export function AuthProvider({ children }) {
    if (accessToken && isValidToken(accessToken)) {
     setSession(accessToken)
 
-    const user = {}
-    user.customer = localStorage.getItem(LOCAL_STORAGE_KEY.CUSTOMER)
-    user.email = localStorage.getItem(LOCAL_STORAGE_KEY.EMAIL)
-    user.displayName = localStorage.getItem(LOCAL_STORAGE_KEY.NAME)
-    user.roles = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.ROLES))
-
-    const userId = localStorage.getItem(LOCAL_STORAGE_KEY.USER_ID)
+    const user             = {}
+          user.customer    = localStorage.getItem(LOCAL_STORAGE_KEY.CUSTOMER)
+          user.email       = localStorage.getItem(LOCAL_STORAGE_KEY.EMAIL)
+          user.displayName = localStorage.getItem(LOCAL_STORAGE_KEY.NAME)
+          user.roles       = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.ROLES))
+    const userId           = localStorage.getItem(LOCAL_STORAGE_KEY.USER_ID)
 
     const {
      isAllAccessAllowed,
