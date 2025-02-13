@@ -6,7 +6,7 @@ import { useTheme, Box, Card } from '@mui/material'
 import { GridViewField, IconTooltip } from 'component'
 import { GCardOption } from 'theme/style'
 import { KEY, TYPOGRAPHY, ADDRESS } from 'constant'
-import { parseAddress } from 'util'
+import { parseAddress, truncate } from 'util'
 import "react-multi-carousel/lib/styles.css";
 
 const CustomDot = ({ onClick, active, mode }) => {
@@ -200,8 +200,8 @@ return (
           {site.name}
          </GridViewField>
 
-         <GridViewField heading={ADDRESS.ADDRESS} isLoading={false} gridSize={6} isNoBg>
-          {parseAddress(site.address)}
+         <GridViewField heading={ADDRESS.ADDRESS} isLoading={false} gridSize={12} isNoBg>
+          {truncate(parseAddress(site.address), 70)}
          </GridViewField>
         </Box>
        </Box>
