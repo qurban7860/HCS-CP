@@ -62,7 +62,7 @@ const openInNewPage = (id) => {
         {column.checked &&
          (column.id === 'serialNo' ? (
           <GStyledSpanBox>
-           <LinkWrap param={machine?.serialNo} onClick={e => handleOnClick(e, machine?._id)} openInNewTab={() => openInNewPage(machine?._id)} />
+           <LinkWrap param={machine?.serialNo} onClick={e => handleOnClick(e, machine?._id)}  />
           </GStyledSpanBox>
          ) : column.id === 'isActive' ? (
           <StyledIconListItemText inActive={machine?.isActive}>
