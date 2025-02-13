@@ -94,7 +94,7 @@ const MachineTab = () => {
 
  useEffect(() => {
   const debounce = _.debounce(() => {
-    dispatch(getMachines(null, null, false, cancelTokenSource, customer?._id))
+    dispatch(getMachines(null, null, false, null, customer?._id))
   }, 300)
   debounce()
   return () => debounce.cancel()
@@ -185,7 +185,7 @@ const MachineTab = () => {
       )}
       <GStyledScrollableHeightLockGrid isMobile={isMobile} mode={themeMode} totalCount={machines?.length}>
         <Grid container gap={2} p={1} py={2} pb={4} height={'auto'} sx={{ maxHeight: NAV.H_MAX_SIDE_PANEL, overflow: 'auto' }}>
-         {machines.map((mach, index) => (
+         {filteredData.map((mach, index) => (
           <MachineCard
            key={mach?._id}
            selectedCardId={machine?._id}
