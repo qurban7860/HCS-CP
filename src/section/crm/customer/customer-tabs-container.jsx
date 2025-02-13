@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { useSettingContext } from 'hook'
 import { Typography, tabsClasses } from '@mui/material'
 import { GStyledSpanBox } from 'theme/style'
-import { BackButton, TabContainer } from 'component'
+import { TabContainer } from 'component'
 import { TABS, a11yProps } from 'section/crm/customer'
 import { TYPOGRAPHY } from 'constant'
 import { StyledTabBox, StyledTab } from './style'
@@ -15,7 +15,6 @@ const CustomerTabsContainer = ({ value, renderedTab, disableTab, navigatePage })
   <GStyledSpanBox gap={2}>
    <StyledTabBox>
     <TabContainer tabsClasses={tabsClasses} currentTab={renderedTab} setCurrentTab={tab => navigatePage(tab)}>
-     <BackButton alongTab />
      {TABS(value).map(tab => (
       <StyledTab
        className='tab'

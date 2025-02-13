@@ -49,6 +49,7 @@ const MachineListPagination = ({
     categoryTypes={categoryTypes}
     showLastButton
     showFirstButton
+    disabled
     {...other}
    />
   </Box>
