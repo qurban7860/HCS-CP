@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import {
  getCustomer,
  getMachine,
+ getMachines,
  setCustomerDialog,
  getConnectedMachineDialog,
  getMachineCategories,
@@ -19,7 +20,7 @@ import {
  resetSelectedMachine,
  resetMachineCategories,
  resetMachine,
- getMachines,
+ resetMachines,
  resetSoftwareVersion,
  getSoftwareVersion
 } from 'store/slice'
@@ -57,7 +58,7 @@ const MachineTab = () => {
   dispatch(setCustomerDialog(false))
   dispatch(setMachineDialog(false))
   dispatch(setMachineSiteDialog(false))
-  // dispatch(resetMachine())
+  dispatch(resetMachines())
   // dispatch(resetSelectedMachine())
   // dispatch(resetCustomer())
   // dispatch(resetSoftwareVersion())
