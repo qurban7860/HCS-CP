@@ -69,7 +69,7 @@ function TicketViewForm() {
 
  useEffect(() => {
   const debouncedFetch = _.debounce(() => {
-    dispatch(getSoftwareVersion(machine?._id))
+    dispatch(getSoftwareVersion(machine?._id, customer?._id))
   }, 300)
   debouncedFetch()
   return () => debouncedFetch.cancel()

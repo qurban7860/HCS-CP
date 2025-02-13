@@ -175,7 +175,7 @@ export const PATH_SERVER = {
         * @param {string} customerId
         * @param {boolean} isArchived
         */
-      viaCustomer: (customerId, isArchived) => _url(_PRODUCT, 'machines', `?customer=${customerId}&isArchived=${isArchived}`),
+      viaCustomer: (customerId, isArchived) => _url(_PRODUCT, 'machines' ),
       /**
        * /products/machines/:machineId/techparamvalues/softwareVersion
        * @param {string} machineId

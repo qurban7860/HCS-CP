@@ -59,8 +59,8 @@ const MachineTab = () => {
   dispatch(setMachineSiteDialog(false))
   dispatch(resetMachine())
   dispatch(resetSelectedMachine())
-  dispatch(resetCustomer())
-  dispatch(resetSoftwareVersion())
+  // dispatch(resetCustomer())
+  // dispatch(resetSoftwareVersion())
   dispatch(resetMachineCategories())
   dispatch(resetConnectedMachineDialog())
   dispatch(resetMachineSiteDialogData())
@@ -68,7 +68,7 @@ const MachineTab = () => {
 
  useEffect(() => {
   const debounce = _.debounce(() => {
-   dispatch(getMachine(id))
+   dispatch(getMachine(id, customer?._id))
   }, 300)
   debounce()
   return () => debounce.cancel()
@@ -76,7 +76,7 @@ const MachineTab = () => {
 
  useEffect(() => {
   const debounce = _.debounce(() => {
-   dispatch(getSoftwareVersion(id))
+   dispatch(getSoftwareVersion(id, customer?._id))
   }, 300)
   debounce()
   return () => debounce.cancel()
@@ -102,7 +102,9 @@ const MachineTab = () => {
 
  useEffect(() => {
   if (machine?.customer) {
-   dispatch(getCustomer(machine?.customer._id))
+    if (!customer) {
+      dispatch(getCustomer(machine?.customer._id))
+    }
   }
  }, [machine?.customer, dispatch])
 
@@ -111,8 +113,6 @@ const MachineTab = () => {
    selectedMachineRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
  }, [machine?._id])
-
- console.log('softwareversion', softwareVersion)
 
  const defaultValues = useMachineDefaultValues(machine, customer, null, softwareVersion)
  const { filterName, handleFilterName, filteredData, filterCategory, handleFilterCategory } = useTempFilter(
@@ -146,7 +146,7 @@ const MachineTab = () => {
 
  const handleSelectedMachine = (event, machineId) => {
   event.preventDefault()
-  dispatch(getMachine(machineId))
+  dispatch(getMachine(machineId, customer?._id))
  }
 
  const handleMachineInNewTabCard = (event, machineId) => {

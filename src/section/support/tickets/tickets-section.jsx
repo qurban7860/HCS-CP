@@ -8,7 +8,7 @@ import { useAuthContext } from 'auth'
 import { useTable, useTempFilter, getComparator, useSettingContext, useResponsive } from 'hook'
 import {
  getCustomer,
- getSecurityUser,
+ getTickets,
  getCustomerTickets,
  getCustomerTicketBySerialNoAndKey,
  setCustomerTicketFilterBy,
@@ -28,13 +28,11 @@ import { StyledScrollTableContainer } from './style'
 import { PATH_SUPPORT } from 'route/path'
 
 const TicketsListSection = () => {
- const [tableData, setTableData]                                                                                          = useState([])
- const [filterPeriodOption, setFilterPeriodOption]                                                                        = useState(3)
- const { userId }                                                                                                         = useAuthContext()
- const { customer }                                                                                                       = useSelector(state => state.customer)
- const { customerTickets, initial, isLoading, customerTicketRowsPerPage, customerTicketPage, selectedCustomerTicketCard } = useSelector(state => state.customerTicket)
- const { tickets } = useSelector(state => state.ticket)
- const { securityUser }                                                                                                   = useSelector(state => state.user)
+ const [tableData, setTableData]                                      = useState([])
+ const [filterPeriodOption, setFilterPeriodOption]                    = useState(3)
+ const { user }                                                       = useAuthContext()
+ const { customer }                                                   = useSelector(state => state.customer)
+ const { tickets, initial, isLoading, ticketPage, ticketRowsPerPage } = useSelector(state => state.ticket)
 
  const navigate      = useNavigate()
  const isMobile      = useResponsive('down', 'sm')
@@ -51,52 +49,45 @@ const TicketsListSection = () => {
   defaultOrder  : KEY.DESC
  })
 
-
- useEffect(() => {
-  if (userId !== securityUser?._id) {
-   dispatch(getSecurityUser(userId))
-  }
- }, [dispatch, userId])
-
  useEffect(() => {
   const debouncedDispatch = _.debounce(() => {
-   if (securityUser?.customers) {
-    dispatch(getCustomer(securityUser?.customer?._id))
+   if (!customer) {
+    dispatch(getCustomer(user?.customer))
    }
   }, 300)
   debouncedDispatch()
   return () => {
    debouncedDispatch.cancel()
   }
- }, [dispatch, securityUser?.customers, filterPeriodOption])
+ }, [dispatch, customer])
 
 useEffect(() => {
   const debouncedDispatch = _.debounce(() => {
-    if (!customerTickets.length) {
-      dispatch(getCustomerTickets(customer?._id, customerTicketPage, customerTicketRowsPerPage))
+    if (!tickets.length) {
+      dispatch(getTickets(customer?._id))
     }
   }, 300)
   debouncedDispatch()
   return () => {
     debouncedDispatch.cancel()
   }
-}, [dispatch, customerTicketPage, customerTicketRowsPerPage])
+}, [dispatch, ticketPage, ticketRowsPerPage])
 
  const onRefresh = () => {
-  dispatch(getCustomerTickets(customer?._id, customerTicketPage, customerTicketRowsPerPage))
+  dispatch(getTickets(customer?._id))
  }
 
  useEffect(() => {
   if (initial) {
-   setTableData(customerTickets || [])
+   setTableData(tickets || [])
   }
- }, [customerTickets, initial])
+ }, [tickets, initial])
 
 //  const defaultValues = useTicketsDefaultValues(tableData && tableData)
  const { filterName, handleFilterName, filteredData } = useTempFilter(getComparator(order, orderBy), tableData, initial, ChangeCustomerTicketPage, setCustomerTicketFilterBy)
 
  const handleChangePage = (event, newPage) => {
-  if (newPage < Math.ceil(filteredData.length / customerTicketRowsPerPage)) {
+  if (newPage < Math.ceil(filteredData.length / ticketRowsPerPage)) {
    dispatch(ChangeCustomerTicketPage(newPage))
   }
  }
@@ -132,7 +123,7 @@ useEffect(() => {
 
  return (
   <Fragment>
-   <TableTitleBox title={t('support_tickets.label')} user={securityUser} />
+   <TableTitleBox title={t('support_tickets.label')} />
    <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} onReload={onRefresh} handleCreateTicket={handleCreateTicket} />
    {isMobile ? (
     <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
@@ -145,7 +136,7 @@ useEffect(() => {
             filteredData.map((cticket, index) => (
             <TicketCard
              key={index}
-             selectedCardId={selectedCustomerTicketCard || index}
+             selectedCardId={index}
              ticket={cticket}
              handleSelected={handleSelectedCard}
              handleTicketCard={handleCustomerTicketCard}
@@ -180,8 +171,8 @@ useEffect(() => {
         <TicketsListPagination
          mode={themeMode}
          data={filteredData}
-         page={customerTicketPage}
-         rowsPerPage={customerTicketRowsPerPage}
+         page={ticketPage}
+         rowsPerPage={ticketRowsPerPage}
          handleChangePage={handleChangePage}
          handleChangeRowsPerPage={handleChangeRowsPerPage}
          columnFilterButtonData={HEADER_ITEMS}
@@ -189,11 +180,11 @@ useEffect(() => {
         <StyledScrollTableContainer>
          <Table>
           <TicketsTableHeader columns={HEADER_ITEMS} dataFiltered={filteredData} orderBy={orderBy} order={order} onSort={onSort} />
-          {(isLoading ? [...Array(customerTicketRowsPerPage)] : filteredData)
-           .slice(customerTicketPage * customerTicketRowsPerPage, customerTicketPage * customerTicketRowsPerPage + customerTicketRowsPerPage)
+          {(isLoading ? [...Array(ticketRowsPerPage)] : filteredData)
+           .slice(ticketPage * ticketRowsPerPage, ticketPage * ticketRowsPerPage + ticketRowsPerPage)
            .map((row, index) =>
             row ? (
-             <TicketsTable key={index} columns={HEADER_ITEMS} handleCustomerTicket={handleCustomerTicketCard} ticket={row} mode={themeMode} index={index} />
+             <TicketsTable key={index} columns={HEADER_ITEMS} ticket={row} mode={themeMode} index={index} />
             ) : (
              !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />
             )
@@ -206,7 +197,7 @@ useEffect(() => {
      </Grid>
     </Grid>
    )}
-   {customerTickets && <SupportTicketDialog />}
+   {tickets && <SupportTicketDialog />}
   </Fragment>
  )
 }

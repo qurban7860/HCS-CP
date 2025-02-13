@@ -17,21 +17,20 @@ import { NAV, SPACING } from 'config/layout'
 const MachineLogsTab = () => {
  const [selectedSearchFilter, setSelectedSearchFilter] = useState('')
  const { logPage, logRowsPerPage } = useSelector(state => state.log)
- const { customers } = useSelector(state => state.customer)
- const { customerMachines } = useSelector(state => state.machine)
+ const { machine, machines }       = useSelector(state => state.machine)
 
  const [searchParams] = useSearchParams()
- const { id } = useParams()
- const isGraphPage = () => searchParams.get('type') === 'erpGraph'
+ const { id }         = useParams()
+ const isGraphPage    = () => searchParams.get('type') === 'erpGraph'
 
- const defaultValues = useLogDefaultValues(customers[0], customerMachines[0])
+ const defaultValues = useLogDefaultValues()
  const methods = useForm({
   resolver: yupResolver(addLogSchema),
   defaultValues
  })
 
  const { watch, setValue, handleSubmit, trigger } = methods
- const { customer, machine, dateFrom, dateTo, logType, filteredSearchKey } = watch()
+ const { customer, dateFrom, dateTo, logType, filteredSearchKey } = watch()
 
  useEffect(() => {
   if (id) {
@@ -39,8 +38,8 @@ const MachineLogsTab = () => {
     getLogs({
      ...payload,
      machineId: id,
-     page: logPage,
-     pageSize: logRowsPerPage
+     page     : logPage,
+     pageSize : logRowsPerPage
     })
    )
   }
@@ -66,25 +65,6 @@ const MachineLogsTab = () => {
    })
   )
  }
-
- const handleCustomerChange = useCallback(
-  newCustomer => {
-   setValue('customer', newCustomer)
-   setValue('machine', null)
-   trigger(['customer', 'machine'])
-   dispatch(resetLogs())
-  },
-  [dispatch, setValue, trigger]
- )
-
- const handleMachineChange = useCallback(
-  newMachine => {
-   setValue('machine', newMachine)
-   trigger('machine')
-   dispatch(resetLogs())
-  },
-  [dispatch, setValue, trigger]
- )
 
  const handleLogTypeChange = useCallback(
   newLogType => {
@@ -115,10 +95,7 @@ const MachineLogsTab = () => {
      <Grid container spacing={SPACING.TAB}>
       <Grid item xs={12} md={12}>
        <LogsTableController
-        customers={customers}
-        handleCustomerChange={handleCustomerChange}
-        customerMachines={customerMachines}
-        handleMachineChange={handleMachineChange}
+        customerMachines={machines}
         handleLogTypeChange={handleLogTypeChange}
         isGraphPage={isGraphPage}
         methods={methods}
