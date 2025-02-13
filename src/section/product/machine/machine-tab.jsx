@@ -35,6 +35,7 @@ import { AuditBox, SearchBox } from 'component'
 import { GStyledScrollableHeightLockGrid, GStyledChip, GStyledStickyGrid } from 'theme/style'
 import { MARGIN, NAV, SPACING } from 'config/layout'
 import { FLEX_DIR, KEY } from 'constant'
+import user from 'component/dialog/user'
 
 const MachineTab = () => {
  const { machine, machines, machineCategories, isLoading, initial } = useSelector(state => state.machine)
@@ -65,7 +66,15 @@ const MachineTab = () => {
   dispatch(resetMachineCategories())
   dispatch(resetConnectedMachineDialog())
   dispatch(resetMachineSiteDialogData())
- }, [dispatch])
+ }, [])
+
+ useEffect(() => {
+  if (machine?.customer) {
+    if (!customer) {
+      dispatch(getCustomer(user?.customer))
+    }
+  }
+ }, [machine?.customer, dispatch])
 
  useEffect(() => {
   const debounce = _.debounce(() => {
@@ -85,9 +94,7 @@ const MachineTab = () => {
 
  useEffect(() => {
   const debounce = _.debounce(() => {
-    if (!machines?.length) {
-      dispatch(getMachines(null, null, false, cancelTokenSource, customer?._id))
-    }
+    dispatch(getMachines(null, null, false, cancelTokenSource, customer?._id))
   }, 300)
   debounce()
   return () => debounce.cancel()
@@ -100,14 +107,6 @@ const MachineTab = () => {
   debounce()
   return () => debounce.cancel()
  }, [dispatch])
-
- useEffect(() => {
-  if (machine?.customer) {
-    if (!customer) {
-      dispatch(getCustomer(machine?.customer._id))
-    }
-  }
- }, [machine?.customer, dispatch])
 
  useEffect(() => {
   if (selectedMachineRef.current) {
@@ -186,7 +185,7 @@ const MachineTab = () => {
       )}
       <GStyledScrollableHeightLockGrid isMobile={isMobile} mode={themeMode} totalCount={machines?.length}>
         <Grid container gap={2} p={1} py={2} pb={4} height={'auto'} sx={{ maxHeight: NAV.H_MAX_SIDE_PANEL, overflow: 'auto' }}>
-         {filteredData.map((mach, index) => (
+         {machines.map((mach, index) => (
           <MachineCard
            key={mach?._id}
            selectedCardId={machine?._id}
