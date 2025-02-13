@@ -65,19 +65,25 @@ const MachineListSection = ({ isArchived }) => {
 
  useEffect(() => {
     const debouncedDispatch = _.debounce(() => {
-     dispatch(getCustomer(user?.customer))
+     if (!customer) {
+      dispatch(getCustomer(user?.customer))
+     }
     }, 300)
     debouncedDispatch()
     return () => debouncedDispatch.cancel()
    }, [dispatch, user?.customer])
 
+// console.log('customer?._id', customer?._id)
+
  useEffect(() => {
   const debouncedDispatch = _.debounce(() => {
-   dispatch(getMachines(null, null, false, cancelTokenSource, customer?._id))
+   if (!machines?.length) {
+     dispatch(getMachines(null, null, false, cancelTokenSource, customer?._id))
+   }
   }, 300)
   debouncedDispatch()
   return () => debouncedDispatch.cancel()
- }, [dispatch, machinePage, machineRowsPerPage])
+ }, [dispatch, machines, machinePage, machineRowsPerPage])
 
  useEffect(() => {
   const debouncedDispatch = _.debounce(() => {
