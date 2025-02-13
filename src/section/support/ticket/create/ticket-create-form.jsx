@@ -116,7 +116,7 @@ function TicketCreateForm() {
 
  useEffect(() => {
   if (machine?._id) {
-    dispatch(getSoftwareVersion(machine._id));
+    dispatch(getSoftwareVersion(machine._id, customer?._id));
   }
   return () => {
     dispatch(resetSoftwareVersion());

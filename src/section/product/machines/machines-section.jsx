@@ -12,7 +12,7 @@ import { PATH_MACHINE } from 'route/path'
 import {
  getMachine,
  getMachines,
- getSecurityUser,
+ getCustomer,
  getMachineCategories,
  setMachineFilterBy,
  setSelectedMachineCard,
@@ -29,18 +29,17 @@ import { KEY, FLEX_DIR, TYPOGRAPHY, DECOILER_TYPE_ARR } from 'constant'
 import { StyledScrollTableContainer } from './style'
 
 const MachineListSection = ({ isArchived }) => {
- const [tableData, setTableData] = useState([])
- const { customer } = useSelector((state) => state.customer)
+ const [tableData, setTableData]                                                                                 = useState([])
+ const { customer }                                                                                              = useSelector((state) => state.customer)
  const { machines, machineCategories, selectedMachineCard, initial, isLoading, machinePage, machineRowsPerPage } = useSelector(state => state.machine)
- const { securityUser } = useSelector(state => state.user)
- const { userId } = useAuthContext()
- const { themeMode } = useSettingContext()
+ const { userId, user }                                                                                          = useAuthContext()
+ const { themeMode }                                                                                             = useSettingContext()
 
- const isMobile = useResponsive('down', 'sm')
- const navigate = useNavigate()
+ const isMobile    = useResponsive('down', 'sm')
+ const navigate    = useNavigate()
  const denseHeight = TABLE.DENSE_HEIGHT
 
- const axiosToken = () => axios.CancelToken.source()
+ const axiosToken        = () => axios.CancelToken.source()
  const cancelTokenSource = axiosToken()
 
  const {
@@ -65,10 +64,12 @@ const MachineListSection = ({ isArchived }) => {
 //  }, [userId])
 
  useEffect(() => {
-  if (userId !== securityUser?._id) {
-   dispatch(getSecurityUser(userId))
-  }
- }, [userId])
+    const debouncedDispatch = _.debounce(() => {
+     dispatch(getCustomer(user?.customer))
+    }, 300)
+    debouncedDispatch()
+    return () => debouncedDispatch.cancel()
+   }, [dispatch, user?.customer])
 
  useEffect(() => {
   const debouncedDispatch = _.debounce(() => {

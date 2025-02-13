@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { useSettingContext } from 'hook'
 import { Typography, tabsClasses } from '@mui/material'
 import { GStyledSpanBox, GStyledTabBox, GStyledTab } from 'theme/style'
-import { BackButton, TabContainer } from 'component'
+import { TabContainer } from 'component'
 import { TABS } from 'section/product/machine'
 import { TYPOGRAPHY } from 'constant'
 import { a11yProps } from 'util/a11y.js'
@@ -15,7 +15,6 @@ const MachineTabsContainer = ({ value, renderedTab, disableTab, navigatePage, is
   <GStyledSpanBox gap={2}>
    <GStyledTabBox>
     <TabContainer tabsClasses={tabsClasses} currentTab={renderedTab} setCurrentTab={tab => navigatePage(tab)}>
-     <BackButton alongTab />
      {TABS(value).map(tab => (
       <GStyledTab
        className='tab'

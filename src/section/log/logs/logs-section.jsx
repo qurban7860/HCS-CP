@@ -9,7 +9,7 @@ import { useSelector, dispatch } from 'store'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { addLogSchema } from 'schema'
-import { getCustomers, getLogGraphData, getLogs, ChangeLogPage, resetLogsGraphData, resetLogs, getCustomerMachines } from 'store/slice'
+import { getMachines, getLogGraphData, getLogs, ChangeLogPage, resetLogsGraphData, resetLogs, getCustomerMachines } from 'store/slice'
 import { LogsTableController, ERPProductionTotal, ERPProductionRate, useLogDefaultValues } from 'section/log'
 import { MachineLogsTable } from 'section/product'
 import { useMediaQuery, useTheme, Grid, Button, Typography } from '@mui/material'
@@ -20,21 +20,21 @@ import { NAV } from 'config/layout'
 import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 
 const LogsSection = ({ isArchived }) => {
- const [pageType, setPageType] = useState('')
- const [expandedButton, setExpandedButton] = useState(null)
- const [searchParams, setSearchParams] = useSearchParams()
- const { customerMachines } = useSelector(state => state.machine)
+ const [pageType, setPageType]                                                     = useState('')
+ const [expandedButton, setExpandedButton]                                         = useState(null)
+ const [searchParams, setSearchParams]                                             = useSearchParams()
+ const { customer }                                                                = useSelector((state) => state.customer)
+ const { machines }                                                                = useSelector(state => state.machine)
  const { logPage, isLoading, logRowsPerPage, logsGraphData, selectedSearchFilter } = useSelector(state => state.log)
- const { customers } = useSelector(state => state.customer)
 
  const { themeMode } = useSettingContext()
- const theme = useTheme()
- const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
- const isMobile = useResponsive('down', 'sm')
+ const theme         = useTheme()
+ const isDesktop     = useMediaQuery(theme.breakpoints.up('md'))
+ const isMobile      = useResponsive('down', 'sm')
 
- const axiosToken = () => axios.CancelToken.source()
+ const axiosToken        = () => axios.CancelToken.source()
  const cancelTokenSource = axiosToken()
- const isGraphPage = () => searchParams.get('type') === 'graph'
+ const isGraphPage       = () => searchParams.get('type') === 'graph'
 
  const defaultValues = useLogDefaultValues()
  const methods = useForm({
@@ -43,7 +43,7 @@ const LogsSection = ({ isArchived }) => {
  })
 
  const { watch, setValue, handleSubmit, trigger, reset } = methods
- const { customer, machine, dateFrom, dateTo, logType, filteredSearchKey, logPeriod, logGraphType } = watch()
+ const { machine, dateFrom, dateTo, logType, filteredSearchKey, logPeriod, logGraphType } = watch()
  const [graphLabels, setGraphLabels] = useState({ yaxis: 'Cumulative Total Value', xaxis: logPeriod })
 
  useLayoutEffect(() => {
@@ -51,30 +51,20 @@ const LogsSection = ({ isArchived }) => {
  }, [])
 
  useEffect(() => {
-  const debouncedDispatch = _.debounce(() => {
-   if (!customers.length) {
-    dispatch(getCustomers(null, null, isArchived, cancelTokenSource))
-   }
-  }, 300)
-  debouncedDispatch()
-  return () => debouncedDispatch.cancel()
- }, [customers, dispatch])
-
- useEffect(() => {
-  if (customers?.length > 0) {
-   setValue('customer', customers[0])
+  if (customer) {
+   setValue('customer', customer)
   }
- }, [customers, setValue])
+ }, [customer, setValue])
 
  useEffect(() => {
-  const debouncedDispatch = _.debounce(() => {
-   if (customer && !customerMachines.length) {
-    dispatch(getCustomerMachines(customer._id))
-   }
+  const debounce = _.debounce(() => {
+    if (!machines?.length) {
+      dispatch(getMachines(null, null, false, cancelTokenSource, customer?._id))
+    }
   }, 300)
-  debouncedDispatch()
-  return () => debouncedDispatch.cancel()
- }, [customer?._id, customerMachines, dispatch])
+  debounce()
+  return () => debounce.cancel()
+ }, [dispatch])
 
  useEffect(() => {
   setPageType(searchParams.get('type'))
@@ -110,16 +100,6 @@ const LogsSection = ({ isArchived }) => {
    })
   )
  }
-
- const handleCustomerChange = useCallback(
-  newCustomer => {
-   setValue('customer', newCustomer)
-   setValue('machine', null)
-   trigger(['customer', 'machine'])
-   dispatch(resetLogs())
-  },
-  [dispatch, setValue, trigger]
- )
 
  const handleMachineChange = useCallback(
   newMachine => {
@@ -216,9 +196,7 @@ const LogsSection = ({ isArchived }) => {
      <Grid container spacing={2} mt={3}>
       <Grid item xs={12} sm={12}>
        <LogsTableController
-        customers={customers}
-        handleCustomerChange={handleCustomerChange}
-        customerMachines={customerMachines}
+        customerMachines={machines}
         handleMachineChange={handleMachineChange}
         handleLogTypeChange={handleLogTypeChange}
         handlePeriodChange={handlePeriodChange}

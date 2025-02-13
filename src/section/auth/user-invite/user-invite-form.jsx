@@ -88,7 +88,7 @@ function UserInviteForm() {
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
-   if (user.customer && securityUserTotalCount) dispatch(getSecurityUsers(user.customer))
+   if (user.customer) dispatch(getSecurityUsers(user.customer))
   }, 300)
   debounceFetch()
   return () => debounceFetch.cancel()

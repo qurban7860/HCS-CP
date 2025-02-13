@@ -66,7 +66,8 @@ const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, han
       <Grid item xs={12} sm={12} mt={1.5}>
        <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={2}>
 
-       {isContactsPage && isUserAdmin && (
+       {/* disable for now */}
+       {/* {isContactsPage && isUserAdmin && (
           contactHasActiveUser ? (
             <IconTooltip
               title={t('has_active_user_account.label')}
@@ -85,7 +86,7 @@ const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, han
               <Icon icon={ICON_NAME.MAIL_USER} sx={{ p: 0, ...ICON.SIZE_XS }}/> &nbsp; {t('send_invite.label').toUpperCase()}
             </GStyledIconLoadingButton>
           )
-        )}
+        )} */}
         {defaultValues?.isActive ? (
          <IconTooltip
           title={t('active.label')}

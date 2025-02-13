@@ -44,7 +44,7 @@ const UserDialog = () => {
  }
 
  const handleSendUserInvite = async () => {
-  await dispatch(sendUserInvite(securityUser._id))
+  await dispatch(sendUserInvite(securityUser._id, customer?._id))
   snack(t('invite_sent.label'), 'success')
   delay(2000).then(() => {
     setOpenSendInvitePopper(false)

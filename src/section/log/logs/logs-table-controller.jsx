@@ -10,9 +10,9 @@ import { GStyledLoadingButton, GStyledControllerCardContainer } from 'theme/styl
 import { LOG_TYPE_CONFIG, logGraphTypes } from 'config'
 import { NAV } from 'config/layout'
 
-const LogsTableController = ({ customers, handleCustomerChange, customerMachines, handleMachineChange, handleLogTypeChange, handlePeriodChange, isLogsPage, isGraphPage, methods, onGetLogs }) => {
+const LogsTableController = ({  customerMachines, handleMachineChange, handleLogTypeChange, handlePeriodChange, isLogsPage, isGraphPage, methods, onGetLogs }) => {
  const { selectedSearchFilter } = useSelector(state => state.log)
- const { themeMode } = useSettingContext()
+ const { themeMode }            = useSettingContext()
 
  const { watch, setValue, handleSubmit, trigger } = methods
  const { dateFrom, dateTo, logType } = watch()
@@ -139,16 +139,14 @@ const LogsTableController = ({ customers, handleCustomerChange, customerMachines
 }
 
 LogsTableController.propTypes = {
- customers: PropTypes.array,
- handleCustomerChange: PropTypes.func,
- customerMachines: PropTypes.array,
- handleMachineChange: PropTypes.func,
- handleLogTypeChange: PropTypes.func,
- handlePeriodChange: PropTypes.func,
- isLogsPage: PropTypes.bool,
- isGraphPage: PropTypes.func,
- methods: PropTypes.object,
- onGetLogs: PropTypes.func
+ customerMachines    : PropTypes.array,
+ handleMachineChange : PropTypes.func,
+ handleLogTypeChange : PropTypes.func,
+ handlePeriodChange  : PropTypes.func,
+ isLogsPage          : PropTypes.bool,
+ isGraphPage         : PropTypes.func,
+ methods             : PropTypes.object,
+ onGetLogs           : PropTypes.func
 }
 
 export default LogsTableController

@@ -1,6 +1,7 @@
 import { Fragment, useEffect } from 'react'
 import _ from 'lodash'
 import { useParams } from 'react-router-dom'
+import { useAuthContext } from 'auth'
 import { dispatch, useSelector } from 'store'
 import { getTicket } from 'store/slice'
 import { IconFlexi } from 'hook'
@@ -12,12 +13,13 @@ import { GLOBAL } from 'config/global'
 import { FLEX, TYPOGRAPHY } from 'constant'
 
 export default function TicketViewLayout() {
+ const { user }   = useAuthContext()
  const { ticket } = useSelector(state => state.ticket)
  const { id }     = useParams()
 
  useEffect(() => {
   const debouncedFetch = _.debounce(() => {
-   dispatch(getTicket(id))
+   dispatch(getTicket(id, user?.customer))
   }, 300)
   debouncedFetch()
   return () => debouncedFetch.cancel()

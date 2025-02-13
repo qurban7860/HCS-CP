@@ -240,14 +240,14 @@ export function registerCustomer(params) {
   dispatch(customerSlice.actions.startLoading())
   try {
    const data = {
-    customerName: params?.customerName,
+    customerName     : params?.customerName,
     contactPersonName: params?.contactPersonName,
-    address: params?.address,
-    email: params?.email,
-    machineSerialNos: params?.machineSerialNos,
-    country: typeof params?.country === 'string' ? params?.country : params?.country.label,
-    phoneNumber: params?.phoneNumber,
-    customerNote: params?.customerNote
+    address          : params?.address,
+    email            : params?.email,
+    machineSerialNos : params?.machineSerialNos,
+    country          : typeof params?.country === 'string' ? params?.country: params?.country.label,
+    phoneNumber      : params?.phoneNumber,
+    customerNote     : params?.customerNote
    }
    const response = await axios.post(PATH_SERVER.CRM.CUSTOMER.register, data)
    return response

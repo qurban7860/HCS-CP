@@ -150,18 +150,18 @@ export const { resetTicket, resetTickets, resetTicketSettings, resetSoftwareVers
 
 // :thunks
 
-export function getTickets(period) {
+export function getTickets(customerId, period) {
  return async dispatch => {
   dispatch(supportSlice.actions.startLoading())
   try {
    const params = {
+    customer  : customerId,
     orderBy   : { createdAt: -1 },
     isArchived: false
    }
-
    const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
-    dispatch(supportSlice.actions.getTicketsSuccess(response.data))
-    console.log('response.data', response.data)
+  //  const customerTickets  = response.data &&  response.data.data.filter(ticket => ticket.customer._id === customerId)
+    dispatch(supportSlice.actions.getTicketsSuccess(response.data.data))
    return response
   } catch (error) {
    console.error(error)
@@ -170,11 +170,12 @@ export function getTickets(period) {
  }
 }
 
-export function getTicket(id) {
+export function getTicket(id, customerId) {
  return async dispatch => {
   dispatch(supportSlice.actions.startLoading())
   try {
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.detail(id))
+   const params   = { customer: customerId }
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.detail(id), { params })
    if (regEx.test(response.status)) {
     dispatch(supportSlice.actions.getTicketSuccess(response.data))
    }
@@ -258,11 +259,12 @@ export function createTicket(params) {
     }
 }
 
-export function getSoftwareVersion(machineId) {
+export function getSoftwareVersion(machineId, customerId) {
     return async (dispatch) => {
       dispatch(supportSlice.actions.startLoading())
       try {
-        const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.softwareVersion(machineId))
+        const params = { customer:  customerId }
+        const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.softwareVersion(machineId), { params })
         dispatch(supportSlice.actions.getSoftwareVersionSuccess(response.data))
         return response
       } catch (error) {

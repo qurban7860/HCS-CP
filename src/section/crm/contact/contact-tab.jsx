@@ -35,13 +35,13 @@ import { KEY, TYPOGRAPHY, FLEX_DIR, INVITATION_STATUS } from 'constant'
 import ContactAddForm from './contact-add-form'
 
 const ContactTab = () => {
- const [isConfirming, setIsConfirming] = useState(false)
- const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false)
+ const [isConfirming, setIsConfirming]                                                                   = useState(false)
+ const [isSubmitSuccessful, setIsSubmitSuccessful]                                                       = useState(false)
  const { contact, contacts, initial, isLoading, selectedContactCard, fromDialog, contactFormVisibility } = useSelector(state => state.contact)
- const { customer, customerDialog } = useSelector(state => state.customer)
- const { securityUsers, userInviteDialog, userInviteContactDetails, userInvite } = useSelector(state => state.user)
- const { customerRoles } = useSelector(state => state.role)
- const isUserInvitePending = userInvite ? userInvite?.some(invite => invite.invitationStatus === INVITATION_STATUS.PENDING) : false
+ const { customer, customerDialog }                                                                      = useSelector(state => state.customer)
+ const { securityUsers, userInviteDialog, userInviteContactDetails, userInvite }                         = useSelector(state => state.user)
+ const { customerRoles }                                                                                 = useSelector(state => state.role)
+ const isUserInvitePending                                                                               = userInvite ? userInvite?.some(invite => invite.invitationStatus === INVITATION_STATUS.PENDING) : false
 
  const { isDesktop, isMobile } = useUIMorph()
  const { id } = useParams()

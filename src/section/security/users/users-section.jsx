@@ -148,7 +148,7 @@ const UsersListSection = ({ isArchived }) => {
  }
 
  const handleUserDialog = (event, userId) => {
-  dispatch(getSecurityUser(userId))
+  dispatch(getSecurityUser(userId, user?.customer))
   dispatch(setUserDialog(true))
  }
 
@@ -156,7 +156,7 @@ const UsersListSection = ({ isArchived }) => {
   event.preventDefault()
   dispatch(setSelectedUserCard(id))
   dispatch(resetSecurityUser())
-  dispatch(getSecurityUser(id))
+  dispatch(getSecurityUser(id, user?.customer))
   const url = PATH_MACHINE.machines.view(id)
   window.open(url, KEY.BLANK)
  }

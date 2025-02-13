@@ -21,18 +21,25 @@ import { truncate } from 'util/truncate'
 const UserProfileLayout = () => {
  const { customer, customerDialog } = useSelector(state => state.customer)
  const { securityUser, isLoading }  = useSelector(state => state.user)
- const { userId }                   = useAuthContext()
+ const { user, userId }             = useAuthContext()
  const { themeMode }                = useSettingContext()
  const { isDesktop }                = useUIMorph()
  const theme                        = useTheme()
 
+//  security user api is giving 500 for some reason
+ useEffect(() => {
+    if (!customer) {
+     dispatch(getCustomer(user?.customer))
+    }
+   }, [dispatch, customer])
+
  useEffect(() => {
   if (userId !== securityUser?._id) {
-   dispatch(getSecurityUser(userId))
+   dispatch(getSecurityUser(userId, customer?._id))
   }
  }, [dispatch, userId])
 
- const fileInput = useRef(null)
+ const fileInput     = useRef(null)
  const defaultValues = useUserDefaultValues(securityUser, customer)
 
  const methods = useForm({
