@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, Fragment } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { t } from 'i18next'
 import { m } from 'framer-motion'
 import PropTypes from 'prop-types'
@@ -13,16 +13,16 @@ import { StyledBackIconButton } from '../style'
 
 const { OVERLINE1 } = TYPOGRAPHY
 
-const BackButton = ({ alongTab, width = 50 }) => {
- const [open, setOpen] = useState(false)
+const BackButton = ({ alongTab, width = 30 }) => {
+ const [open, setOpen]         = useState(false)
  const [anchorEl, setAnchorEl] = useState(null)
 
  const { themeMode } = useSettingContext()
- const { pathname } = useLocation()
- const navigate = useNavigate()
- const theme = useTheme()
+ const { pathname }  = useLocation()
+ const navigate      = useNavigate()
+ const theme         = useTheme()
 
- const { Icon, iconSrc: backIconSrc } = useIcon(ICON_NAME.BACK)
+ const { Icon, iconSrc: backIconSrc } = useIcon(ICON_NAME.ARROW_LEFT)
 
  const handleClick = event => {
   setAnchorEl(event.currentTarget)
@@ -67,9 +67,9 @@ const BackButton = ({ alongTab, width = 50 }) => {
   <Fragment>
    {alongTab ? (
     window.history.length > 1 ? (
-     <IconTooltip title={t('go_back.label')} icon={ICON_NAME.A_BACK} color={theme.palette.grey[600]} onClick={handleClick} cursor iconOnly />
+     <IconTooltip title={t('go_back.label')} icon={ICON_NAME.ARROW_LEFT} color={theme.palette.grey[600]} onClick={handleClick} cursor iconOnly />
     ) : (
-     <IconTooltip title={'no history'} icon={ICON_NAME.A_BACK} iconOnly disabled />
+     <IconTooltip title={'no history'} icon={ICON_NAME.ARROW_LEFT} iconOnly disabled />
     )
    ) : (
     <Fragment>
@@ -81,9 +81,7 @@ const BackButton = ({ alongTab, width = 50 }) => {
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: KEY.CENTER, horizontal: KEY.RIGHT }}
       transformOrigin={{ vertical: KEY.CENTER, horizontal: KEY.LEFT }}
-      sx={{
-       marginLeft: 3
-      }}>
+      sx={{ marginLeft: 3 }}>
       <m.div>
        <Typography variant={OVERLINE1} color={themeMode === KEY.LIGHT ? theme.palette.grey[700] : theme.palette.grey[400]}>
         {t('go_back.label')}
