@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { dispatch } from 'store'
 import { ICON_NAME, Icon, useSettingContext } from 'hook'
 import { PATH_MACHINE } from 'route/path'
-import { getMachine } from 'store/slice'
+import { getMachine, getMachines } from 'store/slice'
 import { TableBody, TableCell } from '@mui/material'
 import { LinkWrap } from 'component'
 import { useTheme } from '@mui/material/styles'
@@ -34,6 +34,7 @@ const MachineTable = ({ columns, onViewRow, machine, index, selected }) => {
  const openInNewPage = id => {
   const url = PATH_MACHINE.machines.view(id)
   dispatch(getMachine(id, machine?.customer?._id))
+  dispatch(getMachines(null, null, false, null, machine?.customer?._id))
   window.open(url, KEY.BLANK)
  }
 
