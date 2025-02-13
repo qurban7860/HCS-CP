@@ -31,12 +31,25 @@ const MachineTable = ({ columns, onViewRow, machine, index, selected }) => {
   if (typeof key === 'string') lowercaseRow[key.toLocaleLowerCase()] = value
  })
 
- const openInNewPage = id => {
-  const url = PATH_MACHINE.machines.view(id)
-  dispatch(getMachine(id, machine?.customer?._id))
-  dispatch(getMachines(null, null, false, null, machine?.customer?._id))
-  window.open(url, KEY.BLANK)
- }
+//  const openInNewPage = id => {
+//   const url = PATH_MACHINE.machines.view(id)
+//   dispatch(getMachine(id, machine?.customer?._id))
+//   dispatch(getMachines(null, null, false, null, machine?.customer?._id))
+//   window.open(url, KEY.BLANK)
+//  }
+
+
+const openInNewPage = (id) => {
+  const url = PATH_MACHINE.machines.view(id);
+
+  dispatch(getMachine(id, machine?.customer?._id));
+  dispatch(getMachines(null, null, false, null, machine?.customer?._id));
+  const newTab = window.open("", "_blank")
+  if (newTab) {
+    newTab.opener = null
+    newTab.location.href = url
+  }
+}
 
  return (
   <Fragment>
