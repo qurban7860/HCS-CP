@@ -59,7 +59,7 @@ const MachineTab = () => {
   dispatch(setCustomerDialog(false))
   dispatch(setMachineDialog(false))
   dispatch(setMachineSiteDialog(false))
-  dispatch(resetMachines())
+  // dispatch(resetMachines())
   // dispatch(resetSelectedMachine())
   // dispatch(resetCustomer())
   // dispatch(resetSoftwareVersion())
