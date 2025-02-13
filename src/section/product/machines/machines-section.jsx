@@ -18,6 +18,7 @@ import {
  setSelectedMachineCard,
  ChangeMachinePage,
  ChangeMachineRowsPerPage,
+ resetMachines,
  resetMachine
 } from 'store/slice'
 import { MachineTable, MachineHeader, MachineListPagination, MachinesCard, HEADER_ITEMS } from 'section/product'
@@ -53,15 +54,10 @@ const MachineListSection = ({ isArchived }) => {
   defaultOrder: KEY.DESC
  })
 
-//  useLayoutEffect(() => {
-//   dispatch(resetMachine())
-//   dispatch(resetMachines())
-//   dispatch(resetMachineCategories())
-//   dispatch(resetSelectedContactCard())
-//   if (userId !== securityUser?._id) {
-//    dispatch(resetSecurityUser())
-//   }
-//  }, [userId])
+ useLayoutEffect(() => {
+  dispatch(resetMachine())
+  dispatch(resetMachines())
+ }, [])
 
  useEffect(() => {
     const debouncedDispatch = _.debounce(() => {
@@ -78,7 +74,7 @@ const MachineListSection = ({ isArchived }) => {
  useEffect(() => {
   const debouncedDispatch = _.debounce(() => {
    if (!machines?.length) {
-     dispatch(getMachines(null, null, false, cancelTokenSource, customer?._id))
+     dispatch(getMachines(null, null, false, cancelTokenSource, user?.customer))
    }
   }, 300)
   debouncedDispatch()
