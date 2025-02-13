@@ -2,8 +2,10 @@ import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { m } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import { dispatch } from 'store'
 import { ICON_NAME, Icon, useSettingContext } from 'hook'
 import { PATH_MACHINE } from 'route/path'
+import { getMachine } from 'store/slice'
 import { TableBody, TableCell } from '@mui/material'
 import { LinkWrap } from 'component'
 import { useTheme } from '@mui/material/styles'
@@ -13,9 +15,9 @@ import { StyledIconListItemText, StyledTableRow } from './style'
 
 const MachineTable = ({ columns, onViewRow, machine, index, selected }) => {
  const { themeMode } = useSettingContext()
- const theme = useTheme()
- const navigate = useNavigate()
- const lowercaseRow = {}
+ const theme         = useTheme()
+ const navigate      = useNavigate()
+ const lowercaseRow  = {}
 
  const activeColor = themeMode === KEY.DARK ? theme.palette.howick.burnIn : theme.palette.burnIn.altDark
  const inactiveColor = theme.palette.howick.error
@@ -31,6 +33,7 @@ const MachineTable = ({ columns, onViewRow, machine, index, selected }) => {
 
  const openInNewPage = id => {
   const url = PATH_MACHINE.machines.view(id)
+  dispatch(getMachine(id, machine?.customer?._id))
   window.open(url, KEY.BLANK)
  }
 
