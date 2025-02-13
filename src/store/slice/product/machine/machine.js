@@ -294,11 +294,12 @@ export const {
 
 // :thunks
 
-export function getMachine(id) {
+export function getMachine(id, customerId) {
  return async dispatch => {
   dispatch(machineSlice.actions.startLoading())
   try {
-   const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.detail(id))
+   const params   = { customer  : customerId }
+   const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.detail(id), { params })
    dispatch(machineSlice.actions.getMachineSuccess(response.data))
   } catch (error) {
    console.error(error)
@@ -344,13 +345,11 @@ export function getCustomerMachines(id) {
   dispatch(machineSlice.actions.startLoading())
   try {
    const params = {
-    customer: id,
-    isActive: true,
+    customer  : id,
+    isActive  : true,
     isArchived: false
    }
-   const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.viaCustomer(id, false), {
-    params
-   })
+   const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.viaCustomer(id, false), { params })
    dispatch(machineSlice.actions.getCustomerMachinesSuccess(response.data))
   } catch (error) {
    console.error(error)

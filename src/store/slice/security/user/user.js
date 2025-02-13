@@ -236,19 +236,18 @@ export const {
 
 // :thunks
 
-export function getSecurityUsers(id) {
+export function getSecurityUsers(customerId) {
  return async dispatch => {
   dispatch(userSlice.actions.startLoading())
   try {
    const response = await axios.get(PATH_SERVER.SECURITY.USER.list, {
     params: {
-     isArchived      : false,
-     customer        : id
+     customer  : customerId,
+     isArchived: false,
     }
    })
    if (regEx.test(response.status)) {
-    const Data = response.data?.filter(user => user.customer?._id === id)
-    dispatch(userSlice.actions.getSecurityUsersSuccess(Data))
+    dispatch(userSlice.actions.getSecurityUsersSuccess(response.data))
    }
    return response
   } catch (error) {
@@ -258,14 +257,13 @@ export function getSecurityUsers(id) {
  }
 }
 
-export function getSecurityUser(id) {
+export function getSecurityUser(id, customerId) {
  return async dispatch => {
   dispatch(userSlice.actions.startLoading())
   try {
-   const response = await axios.get(PATH_SERVER.SECURITY.USER.detail(id))
-   if (regEx.test(response.status)) {
-    dispatch(userSlice.actions.getSecurityUserSuccess(response.data))
-   }
+   const params   = { customer: customerId }
+   const response = await axios.get(PATH_SERVER.SECURITY.USER.detail(id), { params })
+   dispatch(userSlice.actions.getSecurityUserSuccess(response.data))
    return response
   } catch (error) {
    console.error(DEBUG.GET_SECURITY_USERS_ERROR, error)
@@ -342,13 +340,14 @@ export function getSignInLogs(id) {
  }
 }
 
-export function sendUserInvite(Id) {
+export function sendUserInvite(Id, customerId) {
  return async dispatch => {
   dispatch(userSlice.actions.startLoading())
   try {
-   const response = await axios.get(PATH_SERVER.SECURITY.INVITES.sendUserInvite(Id))
+    const params   = { customer: customerId }
+   const response = await axios.get(PATH_SERVER.SECURITY.INVITES.sendUserInvite(Id), { params })
    dispatch(userSlice.actions.setResponseMessage(response.data))
-   return response // eslint-disable-line
+   return response
   } catch (error) {
    dispatch(userSlice.actions.hasError(error.Message))
    console.error(DEBUG.SEND_USER_INVITE, error)
