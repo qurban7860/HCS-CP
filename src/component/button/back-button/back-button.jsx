@@ -13,7 +13,7 @@ import { StyledBackIconButton } from '../style'
 
 const { OVERLINE1 } = TYPOGRAPHY
 
-const BackButton = ({ alongTab, width = 30 }) => {
+const BackButton = ({ alongTab, width = 30, handleBackAction }) => {
  const [open, setOpen]         = useState(false)
  const [anchorEl, setAnchorEl] = useState(null)
 
@@ -96,8 +96,9 @@ const BackButton = ({ alongTab, width = 30 }) => {
 }
 
 BackButton.propTypes = {
- alongTab: PropTypes.bool,
- width: PropTypes.number
+ alongTab        : PropTypes.bool,
+ width           : PropTypes.number,
+ handleBackAction: PropTypes.func
 }
 
 export default BackButton
