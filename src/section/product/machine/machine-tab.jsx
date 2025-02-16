@@ -59,7 +59,7 @@ const MachineTab = () => {
   dispatch(setCustomerDialog(false))
   dispatch(setMachineDialog(false))
   dispatch(setMachineSiteDialog(false))
-  // dispatch(resetMachines())
+  dispatch(resetMachines())
   // dispatch(resetSelectedMachine())
   // dispatch(resetCustomer())
   dispatch(resetSoftwareVersion())
@@ -115,8 +115,6 @@ const MachineTab = () => {
    selectedMachineRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
  }, [machine?._id])
-
- console.log("SOFTWARE VERSION:", softwareVersion)
 
  const defaultValues = useMachineDefaultValues(machine, customer, null, softwareVersion)
  const { filterName, handleFilterName, filteredData, filterCategory, handleFilterCategory } = useTempFilter(
@@ -178,7 +176,7 @@ const MachineTab = () => {
  return (
   <Fragment>
    <Grid container columnSpacing={SPACING.COLUMN_SPACING} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
-    {isDesktop && (
+    {(isDesktop && filteredData?.length > 0) && (
      <GStyledStickyGrid item xs={12} md={12} lg={3}>
       {machines.length >= 5 ? (
        <Box>
@@ -205,7 +203,7 @@ const MachineTab = () => {
       </GStyledScrollableHeightLockGrid>
      </GStyledStickyGrid>
     )}
-    <Grid item xs={12} sm={12} lg={9}>
+    <Grid item xs={12} sm={12} lg={filteredData?.length >= 0 ? 9 : 12}>
      <MachineFieldsCard i18nKey={'key_detail.key_details.label'} defaultValues={defaultValues} fieldsConfig={fieldsKeyConfig} isLoading={isLoading} handleDialog={handleCustomerDialog} />
      <MachineFieldsCard
       i18nKey={'machine_information.label'}
