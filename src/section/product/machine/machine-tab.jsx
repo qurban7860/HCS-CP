@@ -62,7 +62,7 @@ const MachineTab = () => {
   // dispatch(resetMachines())
   // dispatch(resetSelectedMachine())
   // dispatch(resetCustomer())
-  // dispatch(resetSoftwareVersion())
+  dispatch(resetSoftwareVersion())
   dispatch(resetMachineCategories())
   dispatch(resetConnectedMachineDialog())
   dispatch(resetMachineSiteDialogData())
@@ -90,15 +90,17 @@ const MachineTab = () => {
   }, 300)
   debounce()
   return () => debounce.cancel()
- }, [id, dispatch])
+ }, [id, dispatch, customer])
 
  useEffect(() => {
   const debounce = _.debounce(() => {
-    dispatch(getMachines(null, null, false, null, customer?._id))
+    if (!machines?.length) {
+      dispatch(getMachines(null, null, false, null, customer?._id))
+    }
   }, 300)
   debounce()
   return () => debounce.cancel()
- }, [dispatch])
+ }, [dispatch, machines])
 
  useEffect(() => {
   const debounce = _.debounce(() => {
@@ -113,6 +115,8 @@ const MachineTab = () => {
    selectedMachineRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
  }, [machine?._id])
+
+ console.log("SOFTWARE VERSION:", softwareVersion)
 
  const defaultValues = useMachineDefaultValues(machine, customer, null, softwareVersion)
  const { filterName, handleFilterName, filteredData, filterCategory, handleFilterCategory } = useTempFilter(
@@ -153,7 +157,6 @@ const MachineTab = () => {
   event.preventDefault()
   const url = PATH_MACHINE.machines.view(machineId)
   window.open(url, KEY.BLANK)
-  await dispatch(getMachines(null, null, false, null, customer?._id))
  }
 
  const renderCategoryChipContainer = () => {

@@ -10,7 +10,7 @@ import { useAuthContext } from 'auth/use-auth-context'
 import { IconFlexi, snack, useResponsive, useSettingContext } from 'hook'
 import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
-import { getFile, getTicketSettings, getSoftwareVersion, deleteFile, resetTicketSettings } from 'store/slice'
+import { getFile, getTicketSettings, getSoftwareVersion, getMachine, deleteFile, resetTicketSettings } from 'store/slice'
 import { PATH_MACHINE } from 'route/path'
 import { TicketSchema } from 'schema'
 import { useTicketViewDefaultValues } from 'section/support'
@@ -52,12 +52,13 @@ function TicketViewForm() {
  const fetchCustomerRef = useRef(false)
 
  const defaultValues = useTicketViewDefaultValues(ticket, customer, softwareVersion)
- const methods = useForm({
+ const methods       = useForm({
   resolver: yupResolver(TicketSchema('new')),
   defaultValues,
   mode          : 'onChange',
   reValidateMode: 'onChange'
  })
+
 
  useEffect(() => {
     if (!customer) return
@@ -69,11 +70,11 @@ function TicketViewForm() {
 
  useEffect(() => {
   const debouncedFetch = _.debounce(() => {
-    dispatch(getSoftwareVersion(machine?._id, customer?._id))
+    dispatch(getSoftwareVersion(ticket?.machine?._id, customer?._id))
   }, 300)
   debouncedFetch()
   return () => debouncedFetch.cancel()
- },[dispatch, softwareVersion])
+ },[dispatch, ticket])
 
 const handleOpenLightbox = async index => {
   setSelectedImage(index)
@@ -150,9 +151,9 @@ const handleOpenFile = async ( fileId, fileName, fileExtension ) => {
 
  return (
   <Fragment>
-   <Grid container my={4} direction={{ xs: 'column', md: 'row' }} flex={1} rowSpacing={4} gridAutoFlow={isMobile ? FLEX_DIR.COLUMN : FLEX_DIR.ROW} columnSpacing={2}>
+   <Grid container direction={{ xs: 'column', md: 'row' }} mt={2} flex={1} rowSpacing={4} gridAutoFlow={isMobile ? FLEX_DIR.COLUMN : FLEX_DIR.ROW} columnSpacing={2}>
     <GStyledStickyFormGrid item xs={12} md={3}>
-     <Box Box mt={0} mb={2}>
+     <Box mt={0} mb={2}>
       <Card {...GCardOption(themeMode)}>
        <GStyledTopBorderDivider mode={themeMode} />
        <Grid container spacing={2} p={1.5}>
@@ -188,10 +189,10 @@ const handleOpenFile = async ( fileId, fileName, fileExtension ) => {
         <Grid item xs={12} sm={12} md={4}>
          <Grid container spacing={2} p={1.5} display={FLEX.FLEX} justifyContent={FLEX.FLEX_END}>
           <GridViewField heading={t('hmi_version.label')} isLoading={isLoading}>
-           {defaultValues?.hlc}
+           {softwareVersion?.hlc}
           </GridViewField>
           <GridViewField heading={t('plc_version.label')} isLoading={isLoading}>
-           {defaultValues?.plc}
+           {softwareVersion?.plc}
           </GridViewField>
          </Grid>
         </Grid>
