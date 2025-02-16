@@ -1,3 +1,4 @@
+import { GLOBAL } from 'config/global'
 import { useMemo } from 'react'
 import { fDate, parseAddress } from 'util'
 
@@ -159,15 +160,14 @@ export function useTicketCreateDefaultValues(customer, softwareVersion) {
     }, [customer])
    }
 
-  const configurations = JSON.parse(localStorage.getItem('configurations'))
-  const prefix = configurations?.find((config) => config?.name?.toLowerCase() === 'ticket_prefix')?.value || '';
+  const prefix = GLOBAL.PREFIX
    export function useTicketViewDefaultValues(ticket, customer, softwareVersion) {
       return useMemo(() => {
        return {
           customer           : customer && customer?.name || '',
           ticketNo           : ticket && `${prefix || ''} - ${ticket?.ticketNo || ''}` || '',
           machine            : ticket && `${ticket?.machine?.serialNo || ''} - ${ticket?.machine?.machineModel?.name || ''}` || '',
-         //  machineId          : ticket && ticket.machine._id,
+          machineId          : ticket && ticket?.machine?._id,
           reporter           : ticket && ticket?.reporter && { _id: ticket?.reporter?._id, name: `${ticket.reporter.firstName || ''} ${ticket.reporter.lastName || ''}` } || '',
           assignee           : ticket && ticket?.assignee && { _id: ticket?.assignee?._id, name: `${ticket.assignee.firstName || ''} ${ticket.assignee.lastName || ''}` } || '',
           summary            : ticket && ticket?.summary || '',
