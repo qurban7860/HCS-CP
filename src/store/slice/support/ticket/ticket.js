@@ -11,7 +11,7 @@ const initialState = {
  error                    : null,
  ticket                   : {},
  tickets                  : [],
- softwareVersion          : null,
+ softwareVersion          : {},
  ticketFilterBy           : '',
  ticketPage               : 0,
  ticketTotalCount         : 0,
@@ -125,7 +125,7 @@ const supportSlice = createSlice({
     state.isLoading       = false
   },
   resetSoftwareVersion(state) {
-    state.softwareVersion = null
+    state.softwareVersion = {}
     state.responseMessage = null
     state.success         = false
     state.isLoading       = false
