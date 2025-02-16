@@ -31,7 +31,7 @@ const MachinesCard = ({ selectedCardId, handleSelected, handleMachineCard, handl
          &nbsp;
          <IconTooltip
           onClick={event => {
-           event.stopPropagation()
+        //    event.stopPropagation()
            handleMachineInNewTabCard(event, machine._id)
           }}
           title={<Trans i18nKey='open_in_new_tab.label' values={{ value: 'Machine' }} />}

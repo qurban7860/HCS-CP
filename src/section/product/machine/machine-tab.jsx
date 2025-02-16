@@ -152,8 +152,8 @@ const MachineTab = () => {
  const handleMachineInNewTabCard = async (event, machineId) => {
   event.preventDefault()
   const url = PATH_MACHINE.machines.view(machineId)
-  await dispatch(getMachines(null, null, false, null, customer?._id))
   window.open(url, KEY.BLANK)
+  await dispatch(getMachines(null, null, false, null, customer?._id))
  }
 
  const renderCategoryChipContainer = () => {
