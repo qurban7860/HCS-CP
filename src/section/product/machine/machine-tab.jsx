@@ -149,11 +149,13 @@ const MachineTab = () => {
   dispatch(getMachine(machineId, customer?._id))
  }
 
- const handleMachineInNewTabCard = (event, machineId) => {
+ const handleMachineInNewTabCard = async (event, machineId) => {
   event.preventDefault()
   const url = PATH_MACHINE.machines.view(machineId)
+  await dispatch(getMachines(null, null, false, null, customer?._id))
   window.open(url, KEY.BLANK)
  }
+
  const renderCategoryChipContainer = () => {
   return (
    <Grid container mb={1} sx={{ backgroundColor: 'transparent' }}>
