@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState, useRef } from 'react'
+import { Fragment, useEffect, useState, useRef, useLayoutEffect } from 'react'
 import { t } from 'i18next'
 import _ from 'lodash'
 import download from 'downloadjs'
@@ -10,7 +10,7 @@ import { useAuthContext } from 'auth/use-auth-context'
 import { IconFlexi, snack, useResponsive, useSettingContext } from 'hook'
 import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
-import { getFile, getTicketSettings, getSoftwareVersion, getMachine, deleteFile, resetTicketSettings } from 'store/slice'
+import { getFile, getTicket, getTicketSettings, getSoftwareVersion, deleteFile, resetTicketSettings, resetTicket, resetSoftwareVersion } from 'store/slice'
 import { PATH_MACHINE } from 'route/path'
 import { TicketSchema } from 'schema'
 import { useTicketViewDefaultValues } from 'section/support'
@@ -47,7 +47,7 @@ function TicketViewForm() {
  const { themeMode }    = useSettingContext()
  const theme            = useTheme()
  const navigate         = useNavigate()
- const regEx            = new RegExp(REGEX.ERROR_CODE)
+ const regEx            = new RegExp(REGEX.SUCCESS_CODE)
  const isMobile         = useResponsive('down', 'sm')
  const fetchCustomerRef = useRef(false)
 
@@ -59,29 +59,59 @@ function TicketViewForm() {
   reValidateMode: 'onChange'
  })
 
+ useLayoutEffect(()=> {
+  dispatch(resetTicket())
+  dispatch(resetTicketSettings())
+  dispatch(resetSoftwareVersion())
+ }, [dispatch])
+
+useEffect(() => {
+  if (id && customer && !ticket) {
+    dispatch(getTicket(id, customer?._id))
+  }
+ },[dispatch, ticket])
 
  useEffect(() => {
-    if (!customer) return
-    dispatch(getTicketSettings())
-    return ()=> {
-      dispatch(resetTicketSettings())
-    }
+  dispatch(getTicketSettings())
  }, [dispatch])
 
  useEffect(() => {
   const debouncedFetch = _.debounce(() => {
-    dispatch(getSoftwareVersion(ticket?.machine?._id, customer?._id))
+    if (ticket?.machine?._id && customer?._id) {
+      dispatch(getSoftwareVersion(ticket?.machine?._id, customer?._id))
+    }
   }, 300)
   debouncedFetch()
   return () => debouncedFetch.cancel()
- },[dispatch, ticket])
+ },[dispatch, ticket, customer])
+
+ useEffect(() => {
+  const newSlides = ticket?.files?.map((file) => {
+      if (file?.fileType && file.fileType.startsWith("image")) {
+        return{
+          thumbnail       : `data:image/png;base64, ${file.thumbnail}`,
+          src             : `data:image/png;base64, ${file.thumbnail}`,
+          downloadFilename: `${file?.name}.${file?.extension}`,
+          name            : file?.name,
+          extension       : file?.extension,
+          fileType        : file?.fileType,
+          isLoaded        : false,
+          _id             : file?._id,
+          width           : '100%',
+          height          : '100%',
+        }
+      }
+      return null;
+  })?.filter(Boolean)
+  setSlides(newSlides || [] )
+}, [ticket?.files?.length])
 
 const handleOpenLightbox = async index => {
   setSelectedImage(index)
   const image = slides[index]
   if (!image?.isLoaded && image?.fileType?.startsWith('image')) {
    try {
-    const response = await dispatch(getFile(id, image?._id))
+    const response = await dispatch(getFile(id, image?._id, customer?._id))
     if (regEx.test(response.status)) {
      const updatedSlides = [
       ...slides.slice(0, index),
@@ -103,7 +133,7 @@ const handleOpenLightbox = async index => {
 const handleCloseLightbox = () => setSelectedImage(-1)
 
 const handleDownloadFile = (fileId, fileName, fileExtension) => {
-  dispatch(getFile(id, fileId))
+  dispatch(getFile(id, fileId, customer?._id))
    .then(res => {
     if (regEx.test(res.status)) {
      download(atob(res.data), `${fileName}.${fileExtension}`, { type: fileExtension })
@@ -127,7 +157,7 @@ const handleDeleteFile = async ( fileId ) => {
   }
 }
 
-const handleOpenFile = async ( fileId, fileName, fileExtension ) => {
+const handleOpenFile = async (fileId, fileName, fileExtension) => {
   setPDFName(`${fileName}.${fileExtension}`)
   setPDFViewerDialog(true)
   setPDF(null)
@@ -147,7 +177,11 @@ const handleOpenFile = async ( fileId, fileName, fileExtension ) => {
       snack(t('responses.error.unexpected_error'), { variant: 'error' })
     }
   }
-};
+}
+
+const handleBackAction = event => {
+  navigate(-1)
+ }
 
  return (
   <Fragment>
@@ -166,7 +200,7 @@ const handleOpenFile = async ( fileId, fileName, fileExtension ) => {
        </Grid>
       </Card>
      </Box>
-     <BackButton />
+     <BackButton handleBackAction={handleBackAction}/>
     </GStyledStickyFormGrid>
     <Grid item xs={12} sm={12} lg={9}>
      <Box m={2} mb={5} mt={0}>
@@ -213,7 +247,7 @@ const handleOpenFile = async ( fileId, fileName, fileExtension ) => {
 
        <Grid container spacing={2} p={1.5}>
         <GridViewTitle title={t('attachment.attachments.label')} />
-        <Box gap={1} display={'grid'} gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)', md: 'repeat(5, 1fr)', lg: 'repeat(6, 1fr)', xl: 'repeat(8, 1fr)' }} sx={{ width: '100%' }}>
+        <Box gap={1} p={1.5} display={'grid'} gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)', md: 'repeat(5, 1fr)', lg: 'repeat(6, 1fr)', xl: 'repeat(8, 1fr)' }} sx={{ width: '100%' }}>
          {slides?.map((file, _index) => (
           <GalleryItem
            isLoading={isLoading}
@@ -227,7 +261,7 @@ const handleOpenFile = async ( fileId, fileName, fileExtension ) => {
           />
          ))}
 
-         {defaultValues?.files?.map((file, _index) => {
+         {ticket?.files?.map((file, _index) => {
           if (!file.fileType.startsWith('image')) {
            return (
             <GalleryItem
