@@ -327,10 +327,7 @@ export function getMachines(page, pageSize, isArchived, cancelToken, customerId)
    } else {
     params.orderBy = { createdAt: -1 }
    }
-   const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.list, {
-    params,
-    cancelToken: cancelToken?.token
-   })
+   const response = await axios.get(PATH_SERVER.PRODUCT.MACHINE.list, { params })
    dispatch(machineSlice.actions.getMachinesSuccess(response.data))
    // dispatch(machineSlice.actions.setMachineResponseMessage(RESPONSE.success.FETCH))
   } catch (error) {
