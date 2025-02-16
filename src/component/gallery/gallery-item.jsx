@@ -52,8 +52,7 @@ export default function GalleryItem({ image, isLoading, onOpenLightbox, onOpenFi
                         justifyContent         : 'center',
                         '&:hover .button-group': { opacity: 1 },
                         width                  : '100%',
-                        height                 : size,
-                        borderRadius           : '10px'
+                        height                 : size
                     }}
                 >
 
@@ -65,7 +64,7 @@ export default function GalleryItem({ image, isLoading, onOpenLightbox, onOpenFi
 
                 {toolbar &&
                     <ButtonGroup
-                        className="button-group"
+                        // className="button-group"
                         variant="contained"
                         aria-label="outlined primary button group"
                         sx={{
@@ -75,9 +74,9 @@ export default function GalleryItem({ image, isLoading, onOpenLightbox, onOpenFi
                             transition: 'opacity 0.3s ease-in-out',
                             width     : '100%'
                         }}>
-                        <Button sx={{width: onDeleteFile && !isArchived ? '33%' : '50%', borderRadius:0}} disabled={!(fileType?.startsWith('image') || fileType?.startsWith('application/pdf'))} onClick={fileType?.startsWith('image')?onOpenLightbox:onOpenFile}><Icon icon={ICON_NAME.PREVIEW}/></Button>
-                            { onDownloadFile && <Button sx={{width: onDeleteFile && !isArchived ? '33%' : '50%', borderRadius:0}}><Icon icon={ICON_NAME.DOWNLOAD} onClick={onDownloadFile} /></Button>}
-                            {onDeleteFile && !isArchived && <Button sx={{width:'34%', borderRadius:0}} color='error' onClick={()=> seDeleteConfirm(true)}><Icon icon={ICON_NAME.TRASH} />
+                        <Button sx={{width: onDeleteFile && !isArchived ? '33%' : '50%'}} disabled={!(fileType?.startsWith('image') || fileType?.startsWith('application/pdf'))} onClick={fileType?.startsWith('image')?onOpenLightbox:onOpenFile}><Icon icon={ICON_NAME.PREVIEW} sx={{ width: 20, height: 20 }} /></Button>
+                            { onDownloadFile && <Button sx={{width: onDeleteFile && !isArchived ? '33%' : '50%'}}><Icon icon={ICON_NAME.DOWNLOAD} onClick={onDownloadFile} sx={{ width: 20, height: 20 }} /></Button>}
+                            {onDeleteFile && !isArchived && <Button sx={{width:'34%'}} color='error' onClick={()=> seDeleteConfirm(true)}><Icon icon={ICON_NAME.TRASH} />
                         </Button>}
                     </ButtonGroup>
                 }
