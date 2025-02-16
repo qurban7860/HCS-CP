@@ -116,7 +116,7 @@ const supportSlice = createSlice({
    state.tickets         = []
    state.responseMessage = null
    state.success         = false
-   state.isLoading = false
+   state.isLoading       = false
   },
   resetTicketSettings(state) {
     state.ticketSettings  = []

@@ -17,12 +17,12 @@ const { H1, H4, OVERLINE } = TYPOGRAPHY
 gsap.registerPlugin(useGSAP, TextPlugin)
 const Landing = () => {
  const { isAuthenticated } = useAuthContext()
- const { themeMode } = useSettingContext()
- const theme = useTheme()
+ const { themeMode }       = useSettingContext()
+ const theme               = useTheme()
 
- const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
- const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'))
- const isMd = useMediaQuery(theme.breakpoints.between('md', 'lg'))
+ const isMobile      = useMediaQuery(theme.breakpoints.down('sm'))
+ const isTablet      = useMediaQuery(theme.breakpoints.between('sm', 'md'))
+ const isMd          = useMediaQuery(theme.breakpoints.between('md', 'lg'))
  const IconDimension = { height: 40, width: 40 }
 
  const matches = {
