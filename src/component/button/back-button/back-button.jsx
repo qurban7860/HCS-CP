@@ -73,12 +73,13 @@ const BackButton = ({ alongTab, width = 30 }) => {
     )
    ) : (
     <Fragment>
-     <StyledBackIconButton disabled={window.history.length === 1} onClick={handleClick} aria-label={LABEL.GO_BACK} onMouseEnter={handleOpen} onMouseLeave={handleClose}>
+     <StyledBackIconButton disabled={window.history.length === 1} onClick={handleClick} onMouseEnter={handleOpen} onMouseLeave={handleClose}>
       <Icon icon={backIconSrc} width={width} />
      </StyledBackIconButton>
      <GStyledPopover
       open={open}
       anchorEl={anchorEl}
+      aria-hidden={!open}
       anchorOrigin={{ vertical: KEY.CENTER, horizontal: KEY.RIGHT }}
       transformOrigin={{ vertical: KEY.CENTER, horizontal: KEY.LEFT }}
       sx={{ marginLeft: 3 }}>
