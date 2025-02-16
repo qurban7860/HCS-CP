@@ -8,6 +8,7 @@ const initialState = {
  ticketResponseMessage    : null,
  success                  : false,
  isLoading                : false,
+ isLoadingTicketFile      : false,
  error                    : null,
  ticket                   : {},
  tickets                  : [],
@@ -30,10 +31,14 @@ const supportSlice = createSlice({
   startLoading(state) {
    state.isLoading = true
   },
+  setLoadingFile( state, action ) {
+    state.isLoadingTicketFile = action.payload
+  },
   hasError(state, action) {
-   state.isLoading = false
-   state.error     = action.payload
-   state.initial   = true
+   state.isLoading           = false
+   state.isLoadingTicketFile = false
+   state.error               = action.payload
+   state.initial             = true
   },
   setFilterStatus(state, action) {
    state.filterStatus = action.payload
@@ -275,10 +280,11 @@ export function getSoftwareVersion(machineId, customerId) {
     }
 }
 
-export function getFile( id, fileId ) {
+export function getFile(id, fileId, customerId) {
   return async (dispatch) => {
     dispatch(supportSlice.actions.setLoadingFile(true))
     try {
+      // const params = { customer: customerId }
       const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.file(id, fileId))
       dispatch(supportSlice.actions.getTicketFileSuccess({ id: fileId, data: response.data } ));
       return response
