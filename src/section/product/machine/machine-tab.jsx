@@ -203,7 +203,7 @@ const MachineTab = () => {
       </GStyledScrollableHeightLockGrid>
      </GStyledStickyGrid>
     )}
-    <Grid item xs={12} sm={12} lg={filteredData?.length >= 0 ? 9 : 12}>
+    <Grid item xs={12} sm={12} lg={filteredData?.length > 0 ? 9 : 12}>
      <MachineFieldsCard i18nKey={'key_detail.key_details.label'} defaultValues={defaultValues} fieldsConfig={fieldsKeyConfig} isLoading={isLoading} handleDialog={handleCustomerDialog} />
      <MachineFieldsCard
       i18nKey={'machine_information.label'}
