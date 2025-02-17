@@ -122,7 +122,7 @@ export function getComments(id, customerId) {
       const params = { customer: customerId }
       const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.comments(id), { params })
       dispatch(commentSlice.actions.getCommentsSuccess(response.data))
-      dispatch(commentSlice.actions.setResponseMessage('Ticket comments loaded'))
+      dispatch(commentSlice.actions.setCommentResponseMessage('Ticket comments loaded'))
     } catch (error) {
       console.log(error)
       dispatch(commentSlice.actions.hasError(error.Message))
@@ -137,7 +137,7 @@ export function addComment(id, comment) {
       const data = { comment, isInternal:  false }
       const response = await axios.post(PATH_SERVER.SUPPORT.TICKETS.comments(id) + '/', data)
       dispatch(commentSlice.actions.addCommentsSuccess(response.data?.commentsList))
-      dispatch(commentSlice.actions.setResponseMessage('Ticket comment created'))
+      dispatch(commentSlice.actions.setCommentResponseMessage('Ticket comment created'))
     } catch (error) {
       console.log(error)
       dispatch(commentSlice.actions.hasError(error.Message))
@@ -156,7 +156,7 @@ export function updateComment(id, commentId, params) {
       }
       const response = await axios.patch(PATH_SERVER.SUPPORT.TICKETS.comment(id, commentId), data)
       dispatch(commentSlice.actions.updateCommentsSuccess(response.data?.commentsList))
-      dispatch(commentSlice.actions.setResponseMessage('Ticket comment updated'))
+      dispatch(commentSlice.actions.setCommentResponseMessage('Ticket comment updated'))
     } catch (error) {
       console.log(error)
       dispatch(commentSlice.actions.hasError(error.Message))
@@ -172,7 +172,7 @@ export function getComment(id, commentId, customerId) {
       const params = { customer: customerId }
       const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.comment(id, commentId), { params })
       dispatch(commentSlice.actions.getCommentSuccess(response.data))
-      dispatch(commentSlice.actions.setResponseMessage('Ticket comment fetched'))
+      dispatch(commentSlice.actions.setCommentResponseMessage('Ticket comment fetched'))
     } catch (error) {
       console.error(error)
       dispatch(commentSlice.actions.hasError(error.Message))
@@ -187,7 +187,7 @@ export function deleteComment(id, commentId) {
     try {
       const response = await axios.delete(PATH_SERVER.SUPPORT.TICKETS.comment(id, commentId))
       dispatch(commentSlice.actions.deleteCommentSuccess(response.data?.commentsList))
-      dispatch(commentSlice.actions.setResponseMessage('Ticket comment deleted'))
+      dispatch(commentSlice.actions.setCommentResponseMessage('Ticket comment deleted'))
     } catch (error) {
       console.error(error)
       dispatch(commentSlice.actions.hasError(error.Message))
