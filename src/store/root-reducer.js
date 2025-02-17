@@ -16,6 +16,7 @@ import {
  roleReducer,
  ticketReducer,
  commentReducer,
+ historyReducer,
  logReducer
 } from './slice'
 
@@ -121,11 +122,19 @@ export const ticketPersistConfig = {
 }
 
 export const commentPersistConfig = {
-    key: 'ticket',
+    key: 'comment',
     storage,
     keyPrefix: 'redux-',
     blacklist: ['error', 'initial', 'commentResponseMessage'],
     whitelist: ['comment']
+}
+
+export const historyPersistConfig = {
+    key: 'history',
+    storage,
+    keyPrefix: 'redux-',
+    blacklist: ['error', 'initial', 'historyResponseMessage'],
+    whitelist: ['history']
 }
 
 export const logPersistConfig = {
@@ -156,6 +165,7 @@ const rootReducer = combineReducers({
  // support
  ticket : persistReducer(ticketPersistConfig, ticketReducer),
  comment: persistReducer(commentPersistConfig, commentReducer),
+ history: persistReducer(historyPersistConfig, historyReducer),
  // log
  log: persistReducer(logPersistConfig, logReducer)
 })

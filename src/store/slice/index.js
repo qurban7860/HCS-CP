@@ -51,6 +51,10 @@ export { default as ticketReducer } from './support/ticket/ticket'
 export * from './support/comment'
 export { default as commentReducer } from './support/comment/comment'
 
+// support/history
+export * from './support/history'
+export { default as historyReducer } from './support/history/history'
+
 // log
 export * from './log'
 export { default as logReducer } from './log/log'
