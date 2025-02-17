@@ -5,18 +5,19 @@ import _ from 'lodash'
 import debounce from 'lodash/debounce'
 import { useAuthContext } from 'auth/use-auth-context'
 import {
- getCustomerMachines,
+ getMachines,
  getCustomer,
  getContact,
  getContacts,
  getSites,
- getConnectedMachineDialog,
+ getMachine,
  setContactDialog,
  setMachineDialog,
  setMachineSiteDialog,
  resetCustomerMachines,
  resetContact,
- resetMachine
+ resetMachine,
+ resetMachines
 } from 'store/slice'
 import { useSettingContext, Icon, ICON_NAME } from 'hook'
 import { ContactListCard, MachineListCard } from 'section/home'
@@ -30,9 +31,9 @@ import { FLEX_DIR } from 'constant'
 import { PATH_SUPPORT } from 'route/path'
 
 const HomeTab = () => {
- const { customerMachines, machineTotalCount, customer, isLoading, sites, contact, contacts } = useSelector(
+ const { machines, machineTotalCount, customer, isLoading, sites, contact, contacts } = useSelector(
   state => ({
-   customerMachines : state.machine.customerMachines,
+   machines         : state.machine.machines,
    machineTotalCount: state.machine.machineTotalCount,
    customer         : state.customer.customer,
    isLoading        : state.customer.isLoading,
@@ -43,10 +44,10 @@ const HomeTab = () => {
   _.isEqual
  )
 
- const { user } = useAuthContext()
+ const { user }      = useAuthContext()
  const { themeMode } = useSettingContext()
- const theme = useTheme()
- const customerId = user?.customer
+ const theme         = useTheme()
+ const customerId    = user?.customer
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
@@ -64,17 +65,17 @@ const HomeTab = () => {
   }, 300)
   debounceFetch()
   return () => debounceFetch.cancel()
- }, [customerId, sites, dispatch])
+ }, [customerId, sites?.length, dispatch])
 
  useEffect(() => {
-  const debounceFetch = debounce(() => {
-   if (customerId && !customerMachines.length) {
-    dispatch(getCustomerMachines(customerId))
+  const debouncedDispatch = _.debounce(() => {
+   if (!machines?.length && customer?._id) {
+     dispatch(getMachines(null, null, false, null, customer?._id))
    }
   }, 300)
-  debounceFetch()
-  return () => debounceFetch.cancel()
- }, [customerId, customerMachines, dispatch])
+  debouncedDispatch()
+  return () => debouncedDispatch.cancel()
+ }, [dispatch, machines?.length, customer?._id])
 
  useEffect(() => {
   const debounceFetch = debounce(() => {
@@ -84,18 +85,18 @@ const HomeTab = () => {
   return () => debounceFetch.cancel()
  }, [customerId, contacts, dispatch])
 
- const defaultValues = useCustomerDefaultValues(customer, customerMachines, contacts)
- const isMain = useCallback(s => defaultValues?.customerMainSiteId === s?._id, [defaultValues])
+ const defaultValues = useCustomerDefaultValues(customer, machines, contacts)
+ const isMain        = useCallback(s => defaultValues?.customerMainSiteId === s?._id, [defaultValues])
 
  const handleContactDialog = contactId => {
   dispatch(getContact(customerId, contactId))
   dispatch(setContactDialog(true))
  }
 
- const handleConnectedMachineDialog = (event, machineId) => {
+ const handleMachineDialog = (event, machineId) => {
   event.preventDefault()
   dispatch(resetMachine())
-  dispatch(getConnectedMachineDialog(machineId))
+  dispatch(getMachine(machineId, customer?._id))
   dispatch(setMachineDialog(true))
  }
 
@@ -103,7 +104,7 @@ const HomeTab = () => {
   dispatch(setMachineDialog(false))
   dispatch(setMachineSiteDialog(false))
   dispatch(setContactDialog(false))
-  dispatch(resetCustomerMachines())
+  dispatch(resetMachines())
   dispatch(resetContact())
  }, [dispatch])
 
@@ -138,7 +139,7 @@ const HomeTab = () => {
       </Grid>
       <Grid item xs={12} sm={6} mb={5}>
        <GStyledBottomScrollableHeightLockGrid mode={themeMode} totalCount={machineTotalCount}>
-        <MachineListCard className='machines-widget' handleMachineDialog={handleConnectedMachineDialog} machineTotalCount={machineTotalCount} />
+        <MachineListCard className='machines-widget' handleMachineDialog={handleMachineDialog} machineTotalCount={machineTotalCount} />
        </GStyledBottomScrollableHeightLockGrid>
       </Grid>
      </Grid>

@@ -14,9 +14,9 @@ import { RADIUS } from 'config/layout'
 import { TYPOGRAPHY, SIZE, LABEL, KEY, DECOILER_TYPE_ARR, FLEX } from 'constant'
 
 const MachineListCard = ({ handleMachineDialog, machineTotalCount }) => {
- const { customerMachines, isLoading } = useSelector(state => state.machine)
- const theme = useTheme()
- const { themeMode } = useSettingContext()
+ const { machines, isLoading } = useSelector(state => state.machine)
+ const theme                   = useTheme()
+ const { themeMode }           = useSettingContext()
 
  return (
   <Box>
@@ -33,8 +33,8 @@ const MachineListCard = ({ handleMachineDialog, machineTotalCount }) => {
         scrollBehavior: 'smooth'
        }}>
        <Grid container p={2}>
-        {customerMachines.length > 0 ? (
-         customerMachines.map((mach, index) => (
+        {machines?.length > 0 ? (
+            machines.map((mach, index) => (
           <Fragment key={index}>
            <Grid item xs={8}>
             <GStyledListItemText
@@ -102,7 +102,7 @@ const MachineListCard = ({ handleMachineDialog, machineTotalCount }) => {
              )}
             </GStyledSpanBox>
            </Grid>
-           {index !== customerMachines.length - 1 && <Divider variant='fullWidth' style={{ width: '100%', marginBottom: '10px' }} />}
+           {index !== machines.length - 1 && <Divider variant='fullWidth' style={{ width: '100%', marginBottom: '10px' }} />}
           </Fragment>
          ))
         ) : isLoading ? (
@@ -124,10 +124,10 @@ const MachineListCard = ({ handleMachineDialog, machineTotalCount }) => {
 }
 
 MachineListCard.propTypes = {
- value: PropTypes.object,
- handleMachineDialog: PropTypes.func,
+ value                  : PropTypes.object,
+ handleMachineDialog    : PropTypes.func,
  handleMachineSiteDialog: PropTypes.func,
- machineTotalCount: PropTypes.number
+ machineTotalCount      : PropTypes.number
 }
 
 export default MachineListCard

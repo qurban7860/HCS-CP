@@ -15,16 +15,16 @@ import { VIEW_FORM, TITLE, TYPOGRAPHY, FLEX, LABEL, KEY, DECOILER_TYPE_ARR, BUTT
 import { truncate } from 'util/truncate'
 
 const MachineDialog = () => {
- const navigate = useNavigate()
- const theme = useTheme()
- const { themeMode } = useSettingContext()
- const { connectedMachineDialog, isLoading, machineDialog } = useSelector(state => state.machine)
- const { customer } = useSelector(state => state.customer)
+ const { machine, isLoading, machineDialog } = useSelector(state => state.machine)
+ const { customer }                          = useSelector(state => state.customer)
+ const { themeMode }                         = useSettingContext()
+ const theme                                 = useTheme()
+ const navigate                              = useNavigate()
 
  const { MACHINE } = VIEW_FORM
 
- const defaultValues = useMachineDefaultValues(connectedMachineDialog, customer)
- const handleDialog = () => dispatch(setMachineDialog(false))
+ const defaultValues = useMachineDefaultValues(machine, customer)
+ const handleDialog  = () => dispatch(setMachineDialog(false))
 
  const handleMachineOverview = () => {
   dispatch(setMachineDialog(false))
