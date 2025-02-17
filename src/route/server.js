@@ -291,10 +291,30 @@ export const PATH_SERVER = {
        */
         file: (ticketId, fileId) => _url('tickets', ticketId, 'files', fileId),
         /**
+         * /tickets/:ticketId/comments
+         * @returns
+         */
+        comments:(ticketId) =>  _url('tickets', ticketId ,'comments'),
+        /**
+         * /tickets/:ticketId/comments/:commentId
+         * @returns
+         */
+        comment: (ticketId, commentId) =>  _url('tickets', ticketId ,'comments', commentId),
+        /**
+         * /tickets/:ticketId/history
+         * @returns
+         */
+        histories:(ticketId) =>  _url('tickets', ticketId ,'history'),
+        /**
+         * /tickets/:ticketId/history/:historyId
+         * @returns
+         */
+        history: (ticketId, historyId) =>  _url('tickets', ticketId ,'history', historyId),
+        /**
          * /tickets/settings
          * @returns
          */
-        settings: _url('tickets', 'settings'),
+        settings: _url('tickets', 'settings')
     },
  },
  /**
