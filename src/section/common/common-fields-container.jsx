@@ -10,11 +10,11 @@ import { truncate } from 'util'
 import { parseArrDesc } from 'util/parse-arr-desc'
 
 const CommonFieldsContainer = ({ defaultValues, fieldsConfig, i18nKey, isLoading, handleDialog, isChildren, children, withStatusIcon }) => {
- const { themeMode } = useSettingContext()
- const theme = useTheme()
- const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
- let content = null
- let additionalProps = null
+ const { themeMode }   = useSettingContext()
+ const theme           = useTheme()
+ const isDesktop       = useMediaQuery(theme.breakpoints.up('md'))
+ let   content         = null
+ let   additionalProps = null
 
  const renderFields = config => {
   return (

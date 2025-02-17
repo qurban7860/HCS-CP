@@ -18,8 +18,8 @@ const getColorByName = name => {
 }
 
 const CustomAvatar = forwardRef(({ color, name = '', justName, BadgeProps, children, typography = TYPOGRAPHY.H3, extension, inTableList = false, sx, ...other }, ref) => {
- const theme = useTheme()
- const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
+ const theme      = useTheme()
+ const isDesktop  = useMediaQuery(theme.breakpoints.up('md'))
  const charAtName = getCharAtSecondName(name) ? getCharAtName(name) + getCharAtSecondName(name) : getCharAtName(name)
 
  const colorByName = getColorByName(name)
@@ -30,9 +30,9 @@ const CustomAvatar = forwardRef(({ color, name = '', justName, BadgeProps, child
    <Avatar
     ref={ref}
     sx={{
-     color: theme.palette[colr]?.contrastText,
+     color          : theme.palette[colr]?.contrastText,
      backgroundColor: theme.palette.primary.light,
-     fontWeight: theme.typography.fontWeightBold,
+     fontWeight     : theme.typography.fontWeightBold,
      ...sx
     }}
     {...other}>
@@ -59,9 +59,9 @@ const CustomAvatar = forwardRef(({ color, name = '', justName, BadgeProps, child
    <Avatar
     ref={ref}
     sx={{
-     color: theme.palette[colr]?.contrastText,
+     color          : theme.palette[colr]?.contrastText,
      backgroundColor: theme.palette[colr]?.main,
-     fontWeight: theme.typography.fontWeightBold,
+     fontWeight     : theme.typography.fontWeightBold,
      ...sx
     }}
     {...other}>
@@ -80,18 +80,18 @@ const CustomAvatar = forwardRef(({ color, name = '', justName, BadgeProps, child
 })
 
 CustomAvatar.propTypes = {
- sx: PropTypes.object,
- name: PropTypes.string,
- justName: PropTypes.bool,
- extension: PropTypes.string,
- children: PropTypes.node,
- BadgeProps: PropTypes.object,
- typography: PropTypes.string,
+ sx         : PropTypes.object,
+ name       : PropTypes.string,
+ justName   : PropTypes.bool,
+ extension  : PropTypes.string,
+ children   : PropTypes.node,
+ BadgeProps : PropTypes.object,
+ typography : PropTypes.string,
  inTableList: PropTypes.bool,
- isOnline: PropTypes.bool,
+ isOnline   : PropTypes.bool,
  onlineUsers: PropTypes.any,
- userId: PropTypes.string,
- color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error'])
+ userId     : PropTypes.string,
+ color      : PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error'])
 }
 
 export default CustomAvatar

@@ -41,13 +41,7 @@ const TitleTextIcon = ({ truncatedName, tradingAliases, roles, icon }) => {
      {icon && icon}
     </GStyledSpanBox>
    </Box>
-   <Box
-    sx={{
-    height: 20,
-    flexWrap: 'wrap',
-    overflowY: 'hidden',
-    overflowX: 'auto'
-    }}>
+   <Box sx={{ height : 20, flexWrap : 'wrap', overflowY: 'hidden', overflowX: 'auto' }}>
     {tradingAliases ? renderArr('tradingAliases') : roles ? renderArr('roles') : null}
    </Box>
   </Stack>
