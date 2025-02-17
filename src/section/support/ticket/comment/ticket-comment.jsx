@@ -12,27 +12,37 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { TicketCommentSchema } from 'schema'
 import { LoadingButton } from '@mui/lab'
 import { addComment, deleteComment, getComments, resetComments, updateComment } from 'store/slice'
-import { Paper, Button, List, ListItem, ListItemAvatar, ListItemText, Divider, Box, Stack, Typography, TextField, Switch } from '@mui/material'
-import{ FormProvider, RHFTextField, RHFSwitch, GridViewTitle, CustomAvatar } from 'component'
-import { GStyledTopBorderDivider } from 'theme/style'
-import { KEY } from 'constant'
-import TicketHistory from './TicketHistory'
+import { useTheme, Paper, Button, List, ListItem, ListItemAvatar, ListItemText, Divider, Box, Stack, Typography, TextField } from '@mui/material'
+import { FormProvider, RHFTextField, GridViewTitle, CustomAvatar, ConfirmDialog } from 'component'
+import { GStyledDefLoadingButton } from 'theme/style'
+import { delay } from 'util'
+import { RADIUS } from 'config/layout'
+import { KEY, SIZE, TYPOGRAPHY } from 'constant'
+import TicketHistory from './ticket-history'
 
 dayjs.extend(relativeTime)
+
+const TAG = 'Comment'
+const TAB_TYPE = {
+       comment: TAG,
+       history: 'History'
+ }
 
 const TicketComment = ({ currentUser }) => {
  const [editingCommentId, setEditingCommentId]   = useState(null)
  const [editValue, setEditValue]                 = useState('')
- const [editIsInternal, setEditIsInternal]       = useState(false)
  const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
  const [commentToDelete, setCommentToDelete]     = useState(null)
- const [activeTab, setActiveTab]                 = useState('Comments')
+ const [activeTab, setActiveTab]                 = useState(TAB_TYPE.comment)
  const { user, userId }                          = useAuthContext()
  const { id }                                    = useParams()
+ const theme                                     = useTheme()
  const dispatch                                  = useDispatch()
  const { themeMode }                             = useSettingContext()
 
- const { error, comments, isLoading } = useSelector(state => state.ticketComments)
+ const { error, comments, isLoading } = useSelector(state => state.comment)
+
+
 
  const handleTabChange = tab => {
   setActiveTab(tab)
@@ -41,7 +51,7 @@ const TicketComment = ({ currentUser }) => {
  useEffect(() => {
   let controller
   if (id) {
-   dispatch(getComments({ id }))
+   dispatch(getComments(id))
   }
 
   return () => {
@@ -67,39 +77,49 @@ const TicketComment = ({ currentUser }) => {
  const commentValue = watch('comment')
 
  const onSubmit = async data => {
-  await dispatch(addComment(id, data.comment || '', data.isInternal))
+  dispatch(addComment(id, data.comment || '', data.isInternal))
   reset()
-  if (error) snack(error, { variant: 'error' })
-  else snack('Comment saved successfully', { variant: 'success' })
+  if (error) {
+    snack(error, { variant: 'error' })
+  } else {
+    snack(t('responses.messages.crud_default.added', { value: TAG }), { variant: 'success' })
+  }
  }
 
  const handleSaveEdit = async cID => {
-  await dispatch(updateComment(id, cID, { comment: editValue }))
+  dispatch(updateComment(id, cID, { comment: editValue }))
   setEditingCommentId(null)
   setEditValue('')
-  setEditIsInternal(false)
-  if (error) snack(error, { variant: 'error' })
-  else snack('Comment updated successfully', { variant: 'success' })
+  await delay(500)
+  if (error) {
+    snack(error, { variant: 'error' })
+  } else {
+    snack(t('responses.messages.crud_default.updated', { value: TAG }), { variant: 'success' })
+  }
  }
 
  const handleConfirmDelete = async () => {
-  await dispatch(deleteComment(id, commentToDelete?._id, { isArchived: true }))
-  setOpenConfirmDelete(false)
-  setCommentToDelete(null)
-  if (error) snack(error, { variant: 'error' })
-  else snack('Comment deleted successfully', { variant: 'success' })
+   dispatch(deleteComment(id, commentToDelete?._id, { isArchived: true }))
+   await delay(500)
+  if (error) {
+    snack(error, { variant: 'error' })
+    setOpenConfirmDelete(false)
+  } else {
+    setOpenConfirmDelete(false)
+    setCommentToDelete(null)
+    snack(t('responses.messages.crud_default.deleted', { value: TAG }), { variant: 'success' })
+  }
  }
 
  const handleEditClick = comment => {
-  setEditingCommentId(comment._id)
-  setEditValue(comment.comment)
-  setEditIsInternal(comment.isInternal)
+  setEditingCommentId(comment?._id)
+  setEditValue(comment?.comment)
  }
 
  const handleCancelEdit = () => {
   setEditingCommentId(null)
   setEditValue('')
-  setEditIsInternal(false)
+
  }
 
  const handleDeleteClick = comment => {
@@ -112,46 +132,42 @@ const TicketComment = ({ currentUser }) => {
    <Paper sx={{ width: '100%', p: 2 }}>
     <Box sx={{ ml: 1, mb: 1.5 }}>
      <LoadingButton
-      value='Comments'
-      onClick={() => handleTabChange('Comments')}
-      variant={activeTab === 'Comments' ? 'contained' : 'text'}
+      value={TAB_TYPE.comment}
+      onClick={() => handleTabChange(TAB_TYPE.comment)}
+      variant={activeTab === TAB_TYPE.comment ? 'contained' : 'text'}
       color='primary'
       size='small'
-      sx={{ width: 'fit-content', mr: 2 }}>
-      Comments
+      sx={{ width: 'fit-content', mr: 2, color: activeTab === TAB_TYPE.comment ? theme.palette.common.white : (themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.orange )}}>
+       {t('comment.comments.label')}
      </LoadingButton>
-     <LoadingButton value='History' onClick={() => handleTabChange('History')} color='primary' variant={activeTab === 'History' ? 'contained' : 'text'} size='small' sx={{ width: 'fit-content' }}>
-      History
+     <LoadingButton value={TAB_TYPE.history} onClick={() => handleTabChange(TAB_TYPE.history)} variant={activeTab === TAB_TYPE.history ? 'contained' : 'text'} size='small' sx={{  width: 'fit-content', color: activeTab === TAB_TYPE.history ? theme.palette.common.white : (themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.orange ) }}>
+      {t('history.label')}
      </LoadingButton>
     </Box>
-    {activeTab === 'Comments' && (
+    {activeTab === TAB_TYPE.comment  && (
      <Fragment>
       <Box sx={{ py: 2 }}>
-             <GStyledTopBorderDivider mode={themeMode} />
-              <GridViewTitle title={t('attachment.attachments.label')} />
+       <GridViewTitle title={t('notes_comments.label')} />
        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack direction='row' spacing={2}>
-         <CustomAvatar src={currentUser?.photoURL} alt={currentUser?.displayName} name={currentUser?.displayName} />
+         <CustomAvatar src={currentUser?.photoURL} alt={currentUser?.displayName} name={currentUser?.displayName} sx={{ borderRadius: RADIUS.BORDER.borderRadius }} />
          <Stack sx={{ width: '100%' }}>
           <RHFTextField
            name='comment'
-           placeholder='Add a comment...'
+           placeholder={t('add_a_comment.label')}
            multiline
            rows={2}
            inputProps={{ maxLength: 300 }}
            helperText={`${commentValue?.length || 0}/300 characters`}
            FormHelperTextProps={{ sx: { textAlign: 'right' } }}
           />
-          <Stack display='flex' alignItems='start' sx={{ position: 'absolute', transform: 'translateY(225%)' }}>
-           <RHFSwitch name='isInternal' label='Internal' />
-          </Stack>
           {!!commentValue?.trim() && (
            <Stack spacing={1} direction='row' sx={{ mt: 2 }}>
             <LoadingButton type='submit' disabled={isLoading} loading={isSubmitting} variant='contained' color='primary' size='small' sx={{ width: 'fit-content' }}>
              {t('save.label')}
             </LoadingButton>
             <Button type='button' variant='text' size='small' sx={{ width: 'fit-content' }} onClick={() => reset()}>
-             Cancel
+              {t('cancel.label')}
             </Button>
            </Stack>
           )}
@@ -165,12 +181,12 @@ const TicketComment = ({ currentUser }) => {
           {index > 0 && <Divider component='li' />}
           <ListItem alignItems='flex-start' sx={{ padding: '8px 0' }}>
            <ListItemAvatar>
-            <CustomAvatar alt={item?.createdBy?.name} name={item?.createdBy?.name} />
+            <CustomAvatar alt={item?.createdBy?.name} name={item?.createdBy?.name} sx={{ borderRadius: RADIUS.BORDER.borderRadius }} />
            </ListItemAvatar>
            <ListItemText
             primary={
              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant='subtitle2' sx={{ mr: 1 }}>
+              <Typography variant={TYPOGRAPHY.SUBTITLE2} sx={{ mr: 1 }}>
                {item?.createdBy?.name}
               </Typography>
               <Typography sx={{ color: 'text.secondary', fontSize: '0.875rem' }} title={dayjs(item.createdAt).format('MMMM D, YYYY [at] h:mm A')}>
@@ -190,12 +206,9 @@ const TicketComment = ({ currentUser }) => {
                   value={editValue}
                   onChange={e => setEditValue(e.target.value)}
                   inputProps={{ maxLength: 300 }}
-                  helperText={`${editValue.length}/300 characters`}
+                  helperText={`${editValue?.length}/300 characters`}
                   FormHelperTextProps={{ sx: { textAlign: 'right' } }}
                  />
-                 <Stack display='flex' alignItems='start' sx={{ position: 'absolute', transform: 'translateY(185%)' }}>
-                  <Switch label='Internal' checked={editIsInternal} onChange={() => setEditIsInternal(!editIsInternal)} />
-                 </Stack>
                  <Stack direction='row' spacing={1}>
                   <LoadingButton
                    type={KEY.SUBMIT}
@@ -204,39 +217,38 @@ const TicketComment = ({ currentUser }) => {
                    loading={isLoading}
                    variant='contained'
                    color='primary'
-                   size='small'
+                   size={SIZE.SMALL}
                    sx={{ width: 'fit-content' }}>
-                   Update
+                     {t('update.label')}
                   </LoadingButton>
                   <Button variant='text' size='small' sx={{ width: 'fit-content' }} onClick={handleCancelEdit}>
-                   Cancel
+                   {t('cancel.label')}
                   </Button>
                  </Stack>
                 </Stack>
                </FormProvider>
               ) : (
                <Fragment>
-                <Typography component='span' variant='body2' color='text.primary'>
+                <Typography component='span' variant={TYPOGRAPHY.BODY2} color='text.primary'>
                  {item.comment}
-                 {item.isInternal && (
-                  <Typography component='span' variant='caption' sx={{ color: 'text.secondary', ml: 1 }}>
-                   (Internal)
-                  </Typography>
-                 )}
                  {item.updatedAt !== item.createdAt && (
-                  <Typography component='span' variant='caption' sx={{ color: 'text.secondary', ml: 1 }}>
-                   (edited)
+                  <Typography component='span' variant={TYPOGRAPHY.CAPTION} sx={{ color: 'text.secondary', ml: 1 }}>
+                    {t('edited.audit')}
                   </Typography>
                  )}
                 </Typography>
                 {item?.createdBy?._id === currentUser?.userId && (
                  <Stack direction='row' spacing={1} sx={{ mt: 1 }}>
                   <Button size='small' color='primary' onClick={() => handleEditClick(item)} sx={{ minWidth: 'unset', px: 1 }}>
-                   Edit
+                   <Typography variant={TYPOGRAPHY.CAPTION}>
+                   {t('edit.label')}
+                   </Typography>
                   </Button>
-                  {/* <Button size='small' color='error' onClick={() => handleDeleteClick(item)} sx={{ minWidth: 'unset', px: 1 }}>
-                   Delete
-                  </Button> */}
+                  <Button size={SIZE.SMALL} color='error' onClick={() => handleDeleteClick(item)} sx={{ minWidth: 'unset', px: 1 }}>
+                  <Typography variant={TYPOGRAPHY.CAPTION}>
+                   {t('delete.label')}
+                   </Typography>
+                  </Button>
                  </Stack>
                 )}
                </Fragment>
@@ -252,20 +264,20 @@ const TicketComment = ({ currentUser }) => {
      </Fragment>
     )}
 
-    {activeTab === 'History' && <TicketHistory currentUser={{ ...user, userId }} />}
+    {activeTab === TAB_TYPE.history && <TicketHistory currentUser={{ ...user, userId }} />}
    </Paper>
 
-   {/* <ConfirmDialog
+   <ConfirmDialog
     open={openConfirmDelete}
     onClose={() => setOpenConfirmDelete(false)}
-    title='Delete Comment'
-    content='Are you sure you want to delete this comment?'
+    title={t('delete_comment.label')}
+    content={t('delete_comment.description')}
     action={
-     <Button variant='contained' color='error' onClick={handleConfirmDelete}>
-      Delete
-     </Button>
+     <GStyledDefLoadingButton bgColor={theme.palette.error.main} textColor={theme.palette.common.white} onClick={handleConfirmDelete}>
+      {t('delete.label').toUpperCase()}
+     </GStyledDefLoadingButton>
     }
-   /> */}
+   />
   </Fragment>
  )
 }
