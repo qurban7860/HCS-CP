@@ -15,6 +15,7 @@ import {
  machineTicketReducer,
  roleReducer,
  ticketReducer,
+ commentReducer,
  logReducer
 } from './slice'
 
@@ -115,8 +116,16 @@ export const ticketPersistConfig = {
  key: 'ticket',
  storage,
  keyPrefix: 'redux-',
- blacklist: ['error', 'initial', 'responseMessage'],
+ blacklist: ['error', 'initial', 'ticketResponseMessage'],
  whitelist: ['ticket']
+}
+
+export const commentPersistConfig = {
+    key: 'ticket',
+    storage,
+    keyPrefix: 'redux-',
+    blacklist: ['error', 'initial', 'commentResponseMessage'],
+    whitelist: ['comment']
 }
 
 export const logPersistConfig = {
@@ -136,16 +145,17 @@ const rootReducer = combineReducers({
  // auth
  auth: persistReducer(authPersistConfig, authReducer),
  // crm
- customer: persistReducer(customerPersistConfig, customerReducer),
- contact: persistReducer(contactPersistConfig, contactReducer),
- site: persistReducer(sitePersistConfig, siteReducer),
+ customer      : persistReducer(customerPersistConfig, customerReducer),
+ contact       : persistReducer(contactPersistConfig, contactReducer),
+ site          : persistReducer(sitePersistConfig, siteReducer),
  customerTicket: persistReducer(customerTicketPersistConfig, customerTicketReducer),
  // product
- machine: persistReducer(machinePersistConfig, machineReducer),
- machinemodel: persistReducer(machineModelPersistConfig, machineModelReducer),
+ machine      : persistReducer(machinePersistConfig, machineReducer),
+ machinemodel : persistReducer(machineModelPersistConfig, machineModelReducer),
  machineTicket: persistReducer(machineTicketPersistConfig, machineTicketReducer),
  // support
- ticket: persistReducer(ticketPersistConfig, ticketReducer),
+ ticket : persistReducer(ticketPersistConfig, ticketReducer),
+ comment: persistReducer(commentPersistConfig, commentReducer),
  // log
  log: persistReducer(logPersistConfig, logReducer)
 })
