@@ -1,7 +1,7 @@
-import * as yup from 'yup';
+import * as yup from 'yup'
 
-  export const TicketSchema = ( reqType ) => {
-    const isNewRequest = reqType === 'new';
+export const TicketSchema = ( reqType ) => {
+    const isNewRequest = reqType === 'new'
     return yup.object().shape({
         customer            : yup.object().label('Customer').nullable()
                                 .when([], {
@@ -53,5 +53,10 @@ import * as yup from 'yup';
         shareWith           : yup.boolean().label("Share With"),
         isActive            : yup.boolean().label("Active"),
         isArchived          : yup.boolean().label("Archived"),
-    });
-};
+    })
+}
+
+export const TicketCommentSchema = yup.object().shape({
+ comment   : yup.string().required('Comment is required').max(300, 'Comment must not exceed 300 characters'),
+ isInternal: yup.boolean()
+})
