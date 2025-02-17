@@ -18,5 +18,10 @@ export * from './tickets/tickets-header-items'
     // ├── tickets-create-form.jsx
 export { default as TicketCreate } from './ticket/create/ticket-create'
 export { default as TicketCreateForm } from './ticket/create/ticket-create-form'
+// ├── comment
+    // ├── ticket-comment.jsx
+    // ├── tickets-history.jsx
+    export { default as TicketComment } from './ticket/comment/ticket-comment'
+    export { default as TicketHistory } from './ticket/comment/ticket-history'
 // ├── default-values
 export * from './default-values/default-values'
