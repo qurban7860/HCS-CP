@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form'
 import { getFile, getTicket, getTicketSettings, getSoftwareVersion, deleteFile, resetTicketSettings, resetTicket, resetSoftwareVersion } from 'store/slice'
 import { PATH_MACHINE } from 'route/path'
 import { TicketSchema } from 'schema'
-import { useTicketViewDefaultValues } from 'section/support'
+import { TicketComment, useTicketViewDefaultValues } from 'section/support'
 import { useTheme, Grid, Box, Dialog, DialogTitle, Divider, Button, Card } from '@mui/material'
 import { AuditBox, GridViewField, GridViewTitle, GalleryItem, Lightbox, SkeletonPDF, BackButton } from 'component'
 import { GStyledStickyFormGrid, GCardOption, GStyledTopBorderDivider } from 'theme/style'
@@ -43,7 +43,7 @@ function TicketViewForm() {
 
  const { id } = useParams()
 
- const { user }         = useAuthContext()
+ const { user, userId }         = useAuthContext()
  const { themeMode }    = useSettingContext()
  const theme            = useTheme()
  const navigate         = useNavigate()
@@ -343,6 +343,12 @@ const handleBackAction = event => {
          </Grid>
         )}
        </Grid>
+      </Card>
+     </Box>
+     <Box m={2} mb={5} mt={0}>
+      <Card {...GCardOption(themeMode)}>
+        <GStyledTopBorderDivider mode = {themeMode} />
+          <TicketComment currentUser={{ ...user, userId }} />
       </Card>
      </Box>
     </Grid>
