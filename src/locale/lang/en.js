@@ -26,6 +26,9 @@ const en = {
   label: `Activate User`,
   toggle_to_acitvate: `Toggle to deactivate`
  },
+ add_a_comment: {
+  label: `Add a comment...`
+ },
  add_new_contact: {
   label: `Add New Contact`
  },
@@ -73,7 +76,6 @@ const en = {
  },
  app: `app`,
  list: `list`,
- edit: `edit`,
  shop: `shop`,
  blog: `blog`,
  post: `post`,
@@ -187,6 +189,12 @@ const en = {
    label: `Columns`
   }
  },
+ comment: {
+  label: `Comment`,
+  comments: {
+    label: `Comments`
+  }
+ },
  create_ticket:{
     label: `Create Ticket`
  },
@@ -217,6 +225,10 @@ const en = {
  delete: {
   label: `Delete`,
   description: `You are about to delete this, this is irreversible , are you sure?`
+ },
+ delete_comment: {
+  label: `Delete Comment`,
+  description: `You are about to delete this comment which is irreversible , are you sure?`
  },
  delete_user: {
   label: `Delete User`,
@@ -262,6 +274,13 @@ const en = {
  drop_select:{
    label: `Drop or <select>select</select> files`
  },
+ edit: {
+  label: `Edit`
+ },
+ edited: {
+  label: `Edited`,
+  audit: `(edited)`
+ },
  email: {
   label: `Email`
  },
@@ -304,6 +323,9 @@ const en = {
  },
  has_active_user_account: {
   label: `Has an Active User Account`
+ },
+ history: {
+  label: `History`
  },
  hmi_version: {
   label: `HMI Version`
@@ -552,6 +574,9 @@ const en = {
  note: {
   label: `Note`
  },
+ notes_comments: {
+  label: `Notes / Comments`
+ },
  notifications: {
   label: `Notifications`,
   no_notif: `You have no new notifications`
@@ -649,7 +674,12 @@ const en = {
   messages: {
    pre_reset: 'Enter your email address below and we will send you instructions on how to reset your password.',
    check_email: `Check your E-mail for the password reset link.`,
-   form_dirty: `The form has unsaved changes. Are you sure you want to leave?`
+   form_dirty: `The form has unsaved changes. Are you sure you want to leave?`,
+   crud_default: {
+    added: `{{value}} added`,
+    updated: `{{value}} updated`,
+    deleted: `{{value}} deleted`,
+   }
   },
   success: {
    created_contact: `Contact created`,
@@ -808,6 +838,9 @@ const en = {
  },
  trading_name: {
   label: `Trading Name / Alias`
+ },
+ update: {
+  label: `Update`
  },
  unsaved_changes: {
   label: `Unsaved Changes`

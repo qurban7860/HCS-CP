@@ -95,7 +95,7 @@ const UserProfileLayout = () => {
          </GStyledSpanBox>
         </Grid>
         <Grid item xs={12} md={4} display={FLEX.FLEX} justifyContent={FLEX.FLEX_END}>
-         {!isDesktop && <GridViewField heading={VIEW_FORM.ROLES} isLoading={isLoading} rolesChip={defaultValues?.roles} isNoBg />}
+         {!isDesktop && <GridViewField heading={t('role.roles.label')} isLoading={isLoading} rolesChip={defaultValues?.roles} isNoBg />}
          {renderStatusIcons()}
         </Grid>
        </Grid>
