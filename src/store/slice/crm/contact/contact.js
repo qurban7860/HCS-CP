@@ -278,7 +278,7 @@ export function addContact(customerId, params) {
    if (params?.country?.label && params?.country !== null) {
     data.address.country = params.country.label
    }
-   const response = await axios.post(PATH_SERVER.CRM.CUSTOMER.listContact(customerId), data)
+   const response = await axios.post(PATH_SERVER.CRM.CUSTOMER.listContact(customerId), data, { params: { customer: customerId }})
    dispatch(getContact(response?.data?.customerCategory?.customer, response?.data?.customerCategory?._id))
    dispatch(getContacts(response?.data?.customerCategory?.customer))
    dispatch(contactSlice.actions.resetContactFormVisiblity())
