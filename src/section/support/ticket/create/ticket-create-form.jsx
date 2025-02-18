@@ -39,11 +39,10 @@ import { delay, deepEqual } from 'util'
  * @returns {JSX.Element}
  */
 function TicketCreateForm() {
- const [isFormComplete, setIsFormComplete]       = useState(false)
- const [isSuccessState, setIsSuccessState]       = useState(false)
- const [isConfirming, setIsConfirming]           = useState(false)
- const [addAsContact, setAddAsContact]           = useState(false)
- const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
+ const [isFormComplete, setIsFormComplete]             = useState(false)
+ const [isSuccessState, setIsSuccessState]             = useState(false)
+ const [openConfirmDialog, setOpenConfirmDialog]       = useState(false)
+ const [filteredRequestTypes, setFilteredRequestTypes] = useState([]);
  const { customer, softwareVersion, activeContacts, securityUserTotalCount, customerMachines, ticketSettings, ticketCreateSuccessDialog } = useSelector(
   state => ({
    customer                 : state.customer.customer,
@@ -100,15 +99,15 @@ function TicketCreateForm() {
  }, [user.customer, activeContacts, dispatch])
 
  const defaultValues = useTicketCreateDefaultValues(customer, softwareVersion)
- const methods = useForm({
-  resolver: yupResolver(TicketSchema('new')),
-  defaultValues,
-  mode          : 'onChange',
-  reValidateMode: 'onChange'
- })
+ const methods       = useForm({
+                                  resolver: yupResolver(TicketSchema('new')),
+                                  defaultValues,
+                                  mode          : 'onChange',
+                                  reValidateMode: 'onChange'
+                                })
 
  const { reset, setValue, setError, watch, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful }} = methods
- const { machine, issueType, summary, description, files } = watch()
+ const { machine, issueType, summary, description, files, requestType } = watch()
 
  const checkFormCompletion = useCallback(() => {
   setIsFormComplete(!!machine && !!issueType && !!summary && !!description)
@@ -116,19 +115,29 @@ function TicketCreateForm() {
 
  useEffect(() => {
   if (machine?._id) {
-    dispatch(getSoftwareVersion(machine._id, customer?._id));
+    dispatch(getSoftwareVersion(machine._id, customer?._id))
   }
   return () => {
     dispatch(resetSoftwareVersion());
   }
-}, [dispatch, machine]);
+}, [dispatch, machine])
 
 useEffect(() => {
   if (softwareVersion) {
     setValue('hlc', softwareVersion.hlc || t('not_applicable.abbr'))
     setValue('plc', softwareVersion.plc || t('not_applicable.abbr'))
   }
-}, [softwareVersion, setValue]);
+}, [softwareVersion, setValue])
+
+useEffect(() => {
+  if (ticketSettings?.requestTypes && issueType) {
+    const filtered = ticketSettings.requestTypes.filter((requestType) => requestType.issueType._id === issueType._id)
+    setFilteredRequestTypes(filtered)
+  } else {
+    setFilteredRequestTypes([])
+    setValue('requestType', null)
+  }
+}, [ticketSettings?.requestTypes, issueType, setValue])
 
  useEffect(() => {
   if (!isSuccessState) {
@@ -294,6 +303,7 @@ useEffect(() => {
            />
           </RHFRequiredTextFieldWrapper>
          </Grid>
+
          {machine && (
           <Fragment>
            <Grid item xs={12} sm={12} md={12}>
@@ -323,6 +333,19 @@ useEffect(() => {
            />
           </RHFRequiredTextFieldWrapper>
          </Grid>
+         <Grid item xs={12} sm={12} md={12}>
+         <RHFRequiredTextFieldWrapper condition={!requestType}>
+          <RHFAutocomplete
+              name="requestType"
+              label={t('request_type.label')}
+              options={filteredRequestTypes || []}
+              isOptionEqualToValue={(option, value) => option._id === value._id}
+              getOptionLabel={(option) => `${option.name || ''}`}
+              renderOption={(props, option) => (<li {...props} key={option?._id}> {option.name || ''} </li> )}
+            />
+         </RHFRequiredTextFieldWrapper>
+
+         </Grid>
         </Grid>
        </Card>
       </Box>
@@ -348,7 +371,7 @@ useEffect(() => {
       </Grid>
      </GStyledStickyFormGrid>
 
-     {issueType && machine && (
+     {(issueType && machine && requestType) && (
       <Grid item xs={12} sm={9} md={9}>
        <Box m={2} mb={5} mt={0}>
         <Card {...GCardOption(themeMode)}>
