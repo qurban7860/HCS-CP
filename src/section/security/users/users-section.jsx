@@ -2,7 +2,6 @@ import { Fragment, useEffect, useState, memo, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import axios from 'axios'
-import { debounce } from 'lodash'
 import { Trans } from 'react-i18next'
 import { useAuthContext, useWebSocketContext } from 'auth'
 import { useSelector, dispatch } from 'store'
@@ -12,9 +11,7 @@ import { PATH_MACHINE, PATH_SECURITY, PATH_CUSTOMER } from 'route/path'
 import {
  getSecurityUser,
  getSecurityUsers,
- getOnlineUsers,
  getContact,
- getContacts,
  setFromDialog,
  setUserDialog,
  setUserFilterBy,
@@ -35,12 +32,11 @@ import { MARGIN, TABLE } from 'config'
 import { KEY, FLEX_DIR, TYPOGRAPHY } from 'constant'
 
 const UsersListSection = ({ isArchived }) => {
- const [tableData, setTableData]                                                                        = useState([])
- const { securityUser, securityUsers, selectedUserCard, initial, isLoading, userPage, userRowsPerPage } = useSelector(state => state.user)
- const { contacts }                                                                                     = useSelector(state => state.contact)
- const { onlineUsers }                                                                                  = useWebSocketContext()
- const { user, userId }                                                                                 = useAuthContext()
- const { themeMode }                                                                                    = useSettingContext()
+ const [tableData, setTableData]                                                          = useState([])
+ const { securityUsers, selectedUserCard, initial, isLoading, userPage, userRowsPerPage } = useSelector(state => state.user)
+ const { onlineUsers }                                                                    = useWebSocketContext()
+ const { user, userId }                                                                   = useAuthContext()
+ const { themeMode }                                                                      = useSettingContext()
 
  const isMobile          = useResponsive('down', 'sm')
  const navigate          = useNavigate()
