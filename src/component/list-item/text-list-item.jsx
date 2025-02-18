@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import { useSettingContext } from 'hook'
-import { useMediaQuery, useTheme, Box, ListItemText, Typography, Stack } from '@mui/material'
+import { useMediaQuery, useTheme, Box, ListItemText, Typography } from '@mui/material'
 import { GStyledSpanBox } from 'theme/style'
 import { TYPOGRAPHY, KEY } from 'constant'
 import { truncate } from 'util/truncate'
 import { roleCoverUp } from 'util'
 
-const TitleTextIcon = ({ truncatedName, tradingAliases, roles, icon }) => {
+const TextListItem = ({ truncatedName, tradingAliases, roles, icon }) => {
  const { themeMode } = useSettingContext()
  const theme = useTheme()
  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
@@ -32,27 +32,35 @@ const TitleTextIcon = ({ truncatedName, tradingAliases, roles, icon }) => {
  }
 
  return (
-  <Stack>
-   <Box>
+  <ListItemText
+   // this causes a warning that a div is a child of a p tag: fix this
+   primary={
     <GStyledSpanBox>
      <Typography color={themeMode === KEY.LIGHT ? 'common.black' : 'common.white'} variant={isMobile ? TYPOGRAPHY.H5 : TYPOGRAPHY.H4}>
       {truncate(truncatedName, 50)}
      </Typography>
      {icon && icon}
     </GStyledSpanBox>
-   </Box>
-   <Box sx={{ height : 20, flexWrap : 'wrap', overflowY: 'hidden', overflowX: 'auto' }}>
-    {tradingAliases ? renderArr('tradingAliases') : roles ? renderArr('roles') : null}
-   </Box>
-  </Stack>
+   }
+   secondary={
+    <Box
+     sx={{
+      height: 20,
+      flexWrap: 'wrap',
+      overflow: 'auto'
+     }}>
+     {tradingAliases ? renderArr('tradingAliases') : roles ? renderArr('roles') : null}
+    </Box>
+   }
+  />
  )
 }
 
-TitleTextIcon.propTypes = {
- truncatedName: PropTypes.string.isRequired,
+TextListItem.propTypes = {
+ truncatedName : PropTypes.string.isRequired,
  tradingAliases: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
- roles: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
- icon: PropTypes.any
+ roles         : PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
+ icon          : PropTypes.node
 }
 
-export default TitleTextIcon
+export default TextListItem

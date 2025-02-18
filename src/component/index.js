@@ -114,9 +114,10 @@ export { default as ColorizedStatusTextBox } from './table/colorized-status-text
 // @table-tool
 export { default as LinkTableCell } from './table-tool/link-table-cell'
 export { default as LinkWrap } from './table-tool/link-wrap'
-// @title-list-item
-export { default as TitleListItemText } from './title-list-item/text'
-export { default as TitleTextIcon } from './title-list-item/text-icon'
+// @list-item
+export { default as CommentListItem } from './list-item/comment-list-item'
+export { default as TextListItem } from './list-item/text-list-item'
+export { default as TextIconListItem } from './list-item/text-icon-list-item'
 // @scroll to top
 export { default as ScrollToTop } from './scroll-to-top/scroll-to-top'
 // @scrollbar
