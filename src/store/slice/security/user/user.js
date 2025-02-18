@@ -246,9 +246,7 @@ export function getSecurityUsers(customerId) {
      isArchived: false,
     }
    })
-   if (regEx.test(response.status)) {
-    dispatch(userSlice.actions.getSecurityUsersSuccess(response.data))
-   }
+   dispatch(userSlice.actions.getSecurityUsersSuccess(response.data))
    return response
   } catch (error) {
    console.error(DEBUG.GET_SECURITY_USERS_ERROR, error)
