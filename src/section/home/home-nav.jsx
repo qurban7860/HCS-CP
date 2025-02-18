@@ -5,7 +5,7 @@ import { useSettingContext, ICON_NAME } from 'hook'
 import { useMediaQuery, Grid } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledHeaderCardContainer, GStyledTopBorderDivider, GStyledSpanBox } from 'theme/style'
-import { SvgFlagIcon, IconTooltip, BadgeCardMedia, TitleTextIcon } from 'component'
+import { SvgFlagIcon, IconTooltip, BadgeCardMedia, TextIconListItem } from 'component'
 import { KEY, LABEL, FLEX, FLEX_DIR, TYPOGRAPHY } from 'constant'
 
 const HomeNav = ({ value, isLoading }) => {
@@ -49,7 +49,7 @@ const HomeNav = ({ value, isLoading }) => {
       <Grid item xs={8} md={8} display={FLEX.FLEX} alignItems={KEY.CENTER} mt={2}>
        <GStyledSpanBox gap={1} mb={1}>
         <BadgeCardMedia customer={value?.customer} typographyVariant={TYPOGRAPHY.H2} />
-        <TitleTextIcon truncatedName={value?.name} tradingAliases={value?.tradingName} />
+        <TextIconListItem truncatedName={value?.name} tradingAliases={value?.tradingName} />
        </GStyledSpanBox>
       </Grid>
       <Grid item xs={4} sm={4} display={FLEX.FLEX} justifyContent={FLEX.FLEX_END}>
