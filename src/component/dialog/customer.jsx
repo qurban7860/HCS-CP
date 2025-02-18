@@ -8,7 +8,7 @@ import { PATH_CUSTOMER } from 'route/path'
 import { useCustomerDefaultValues } from 'section/crm'
 import { HowickResources } from 'section/common'
 import { Dialog, DialogContent, DialogTitle, DialogActions, Divider, Grid } from '@mui/material'
-import { GridViewField, GridViewTitle, Button, BadgeCardMedia, TitleTextIcon, AuditBox } from 'component'
+import { GridViewField, GridViewTitle, Button, BadgeCardMedia, TextIconListItem, AuditBox } from 'component'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption } from 'theme/style'
 import { KEY, BUTTON, FLEX, SZ } from 'constant'
 
@@ -30,7 +30,7 @@ const CustomerDialog = () => {
    <GStyledTopBorderDivider mode={themeMode} />
    <DialogTitle>
     <GStyledSpanBox sx={{ justifyContent: FLEX.SPACE_BETWEEN }}>
-     <TitleTextIcon truncatedName={defaultValues?.name} tradingAliases={defaultValues?.tradingName} />
+     <TextIconListItem truncatedName={defaultValues?.name} tradingAliases={defaultValues?.tradingName} />
      <BadgeCardMedia customer={customer} dimension={40} />
     </GStyledSpanBox>
    </DialogTitle>

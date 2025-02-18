@@ -7,7 +7,7 @@ import { setUserDialog, archiveSecurityUser, updateStatusSecurityUser, sendUserI
 import { ICON_NAME } from 'hook'
 import { useUserDefaultValues } from 'section'
 import { useTheme, Dialog, DialogContent, DialogTitle, DialogActions, Divider, Grid, Typography, FormControlLabel, Box } from '@mui/material'
-import { GridViewField, DefaultPopper, AuditBox, CustomAvatar, ConfirmDialog, IconTooltip, TitleTextIcon } from 'component'
+import { GridViewField, DefaultPopper, AuditBox, CustomAvatar, ConfirmDialog, IconTooltip, TextIconListItem } from 'component'
 import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption, GStyledNoPaddingChip, GStyledIconLoadingButton, GStyledSwitch } from 'theme/style'
 import { ICON } from 'config/layout'
 import { KEY, FLEX, SZ, TYPOGRAPHY, SIZE } from 'constant'
@@ -66,7 +66,7 @@ const UserDialog = () => {
       padding: theme.spacing(2)
      }}>
      <GStyledSpanBox sx={{ justifyContent: FLEX.SPACE_BETWEEN }}>
-      <TitleTextIcon
+      <TextIconListItem
        truncatedName={defaultValues?.name}
        icon={
         <IconTooltip
