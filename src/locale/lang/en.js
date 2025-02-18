@@ -660,6 +660,9 @@ const en = {
  report_to: {
   label: `Report To`
  },
+ request_type: {
+  label: `Request Type`
+ },
  required: {
   label: `Required`
  },
