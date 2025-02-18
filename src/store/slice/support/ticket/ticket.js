@@ -234,6 +234,7 @@ export function createTicket(params) {
             formData.append('customer', params?.customer?._id)
             formData.append('machine', params?.machine?._id)
             formData.append('issueType', params?.issueType?._id)
+            formData.append('requestType', params?.requestType?._id)
             formData.append('summary', params?.summary || '')
             formData.append('description', params?.description || '')
             formData.append('changeType', params?.changeType?._id || null)
@@ -253,7 +254,7 @@ export function createTicket(params) {
             formData.append('plannedEndDate', params?.plannedEndDate || '');
             (params?.files || []).forEach((file, index) => { formData.append(`images`, file) })
 
-            const response = await axios.post(PATH_SERVER.SUPPORT.TICKETS.list, formData)
+            const response = await axios.post(PATH_SERVER.SUPPORT.TICKETS.list + '/', formData, { params: { customer: params?.customer?._id } })
             dispatch(supportSlice.actions.createTicketSuccess(response.data))
             return response
         } catch (error) {
