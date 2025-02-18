@@ -27,14 +27,8 @@ export default function TicketViewLayout() {
 
  return (
   <Fragment>
-   <Box display={FLEX.FLEX} sx={{ alignItems: 'center' }} gap={2}>
-   <IconFlexi icon={ticket?.issueType?.icon} color={ticket?.issueType?.color}/>
-    <GStyledSpanBox>
-     <TableStickyTitleBox title={`${GLOBAL.PREFIX}-${ticket?.ticketNo}`} />
-    </GStyledSpanBox>
-   </Box>
-   <Typography variant={TYPOGRAPHY.BODY1} color={'grey.500'}>{ticket?.issueType?.name}</Typography>
-   <TicketViewForm />
+    <TableStickyTitleBox title={`${GLOBAL.PREFIX}-${ticket?.ticketNo}`} subTitle={ticket?.issueType?.name} icon={<IconFlexi icon={ticket?.issueType?.icon} color={ticket?.issueType?.color}/>} />
+    <TicketViewForm />
   </Fragment>
  )
 }
