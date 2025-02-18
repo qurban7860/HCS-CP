@@ -4,16 +4,17 @@ import { t } from 'i18next'
 import { useParams } from 'react-router-dom'
 import { useAuthContext } from 'auth'
 import { useDispatch, useSelector } from 'react-redux'
-import { snack, useSettingContext } from 'hook'
+import { Icon, ICON_NAME, snack, useSettingContext } from 'hook'
 import { useForm } from 'react-hook-form'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { TicketCommentSchema } from 'schema'
 import { LoadingButton } from '@mui/lab'
+import { getSecurityUsers } from 'store/slice'
 import { addComment, deleteComment, getComments, resetComments, updateComment } from 'store/slice'
-import { useTheme, Paper, Button, List, ListItem, ListItemAvatar, ListItemText, Divider, Box, Stack, Typography, TextField } from '@mui/material'
-import { FormProvider, RHFTextField, GridViewTitle, CustomAvatar, ConfirmDialog } from 'component'
+import { useTheme, Paper, Button, List, ListItem, ListItemAvatar, Divider, Box, Stack, Typography, TextField } from '@mui/material'
+import { FormProvider, RHFTextField, GridViewTitle, CustomAvatar, ConfirmDialog, CommentListItem } from 'component'
 import { GStyledDefLoadingButton } from 'theme/style'
 import { delay } from 'util'
 import { RADIUS } from 'config/layout'
@@ -34,15 +35,18 @@ const TicketComment = ({ currentUser }) => {
  const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
  const [commentToDelete, setCommentToDelete]     = useState(null)
  const [activeTab, setActiveTab]                 = useState(TAB_TYPE.comment)
+ const { error, comments, isLoading }            = useSelector(state => state.comment)
+ const { securityUsers }                         = useSelector(state => state.user)
  const { user, userId }                          = useAuthContext()
  const { id }                                    = useParams()
  const theme                                     = useTheme()
  const dispatch                                  = useDispatch()
  const { themeMode }                             = useSettingContext()
 
- const { error, comments, isLoading } = useSelector(state => state.comment)
+ const _textColor = themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.orange
+ const _iconColor = themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.burnIn.main
 
-
+const isCommenterNotHowickAgent = (_commenterId) => securityUsers?.some((_user) => _user?._id === _commenterId)
 
  const handleTabChange = tab => {
   setActiveTab(tab)
@@ -53,7 +57,6 @@ const TicketComment = ({ currentUser }) => {
   if (id) {
    dispatch(getComments(id))
   }
-
   return () => {
    if (controller) {
     controller.abort()
@@ -67,13 +70,14 @@ const TicketComment = ({ currentUser }) => {
   defaultValues: { comment   : '', isInternal: false }
  })
 
- const {
-  reset,
-  handleSubmit,
-  watch,
-  formState: { isSubmitting }
- } = methods
+ useEffect(()=>{
+  if (!securityUsers?.length) {
+    dispatch(getSecurityUsers(user.customer, null))
+  }
+},[dispatch, securityUsers?.length])
 
+
+ const { reset, handleSubmit, watch, formState: { isSubmitting } } = methods
  const commentValue = watch('comment')
 
  const onSubmit = async data => {
@@ -183,19 +187,13 @@ const TicketComment = ({ currentUser }) => {
            <ListItemAvatar>
             <CustomAvatar alt={item?.createdBy?.name} name={item?.createdBy?.name} sx={{ borderRadius: RADIUS.BORDER.borderRadius }} />
            </ListItemAvatar>
-           <ListItemText
-            primary={
-             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant={TYPOGRAPHY.SUBTITLE2} sx={{ mr: 1 }}>
-               {item?.createdBy?.name}
-              </Typography>
-              <Typography sx={{ color: 'text.secondary', fontSize: '0.875rem' }} title={dayjs(item.createdAt).format('MMMM D, YYYY [at] h:mm A')}>
-               {dayjs().diff(dayjs(item.createdAt), 'day') < 1 ? dayjs(item.createdAt).fromNow() : dayjs(item.createdAt).format('MMMM D, YYYY [at] h:mm A')}
-              </Typography>
-             </Box>
-            }
+           <CommentListItem
+            truncatedName={item?.createdBy?.name}
+            icon={!isCommenterNotHowickAgent(item?.createdBy?._id) && <Icon icon={ICON_NAME.HOWICK_LOGO} color={_iconColor} sx={{ width: 10, height: 10 }} />}
+            format={dayjs(item.createdAt).format('MMMM D, YYYY [at] h:mm A')}
+            date= {dayjs().diff(dayjs(item.createdAt), 'day') < 1 ? dayjs(item.createdAt).fromNow() : dayjs(item.createdAt).format('MMMM D, YYYY [at] h:mm A')}
             secondary={
-             <Box>
+            <Box>
               {editingCommentId === item._id ? (
                <FormProvider methods={methods} key={item._id}>
                 <Stack spacing={2}>
@@ -239,22 +237,22 @@ const TicketComment = ({ currentUser }) => {
                 </Typography>
                 {item?.createdBy?._id === currentUser?.userId && (
                  <Stack direction='row' spacing={1} sx={{ mt: 1 }}>
-                  <Button size='small' color='primary' onClick={() => handleEditClick(item)} sx={{ minWidth: 'unset', px: 1 }}>
+                  <Button size='small' onClick={() => handleEditClick(item)} sx={{ minWidth: 'unset', px: 1, color: _textColor }}>
                    <Typography variant={TYPOGRAPHY.CAPTION}>
                    {t('edit.label')}
                    </Typography>
                   </Button>
                   <Button size={SIZE.SMALL} color='error' onClick={() => handleDeleteClick(item)} sx={{ minWidth: 'unset', px: 1 }}>
-                  <Typography variant={TYPOGRAPHY.CAPTION}>
-                   {t('delete.label')}
-                   </Typography>
+                    <Typography variant={TYPOGRAPHY.CAPTION}>
+                    {t('delete.label')}
+                    </Typography>
                   </Button>
                  </Stack>
                 )}
                </Fragment>
               )}
              </Box>
-            }
+             }
            />
           </ListItem>
          </Fragment>
