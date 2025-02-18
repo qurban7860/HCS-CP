@@ -18,6 +18,7 @@ export const TicketSchema = ( reqType ) => {
                                     is  : () => isNewRequest,
                                     then: (schema) => schema.required(),
                                 }),
+        requestType        : yup.object().label('Request Type').nullable(),
         reporter           : yup.object().nullable().label('Reporter'),
         assignee           : yup.object().nullable().label('Assignee'),
         changeType         : yup.object().nullable().label('Change Type'),
