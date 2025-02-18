@@ -4,22 +4,25 @@ import { Typography } from '@mui/material'
 import { GStyledSpanBox, GStyledStickyBox } from 'theme/style'
 import { KEY, TYPOGRAPHY } from 'constant'
 
-const TableStickyTitleBox = ({ user, title }) => {
+const TableStickyTitleBox = ({ subTitle, title, icon }) => {
  const { themeMode } = useSettingContext()
  return (
   <GStyledStickyBox>
     <GStyledSpanBox>
-    <Typography variant={TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? 'common.black' : 'howick.bronze'}>
-        {title?.toUpperCase()}
+    {icon && icon}
+    <Typography variant={TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? 'common.black' : 'howick.bronze'} sx={{ ml: icon ? 1 : 0}}>
+      {title?.toUpperCase()}
     </Typography>
     </GStyledSpanBox>
+    {subTitle && <Typography variant={TYPOGRAPHY.BODY1} color={'grey.500'}>{subTitle}</Typography>}
   </GStyledStickyBox>
  )
 }
 
 TableStickyTitleBox.propTypes = {
- user: PropTypes.object,
- title: PropTypes.string
+ subTitle: PropTypes.string,
+ title   : PropTypes.string,
+ icon    : PropTypes.node
 }
 
 export default TableStickyTitleBox
