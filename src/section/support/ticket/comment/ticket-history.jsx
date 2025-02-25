@@ -5,15 +5,25 @@ import { Trans } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import dayjs from 'dayjs'
 import { useParams } from 'react-router-dom'
-import { getHistories, resetHistories } from 'store/slice'
-import { Box, Typography, Divider, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material'
-import { GridViewTitle, CustomAvatar } from 'component'
-import { TYPOGRAPHY } from 'constant'
+import { Icon, ICON_NAME, useSettingContext } from 'hook'
+import { getHistories } from 'store/slice'
+import { useTheme, Box, Typography, Divider, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material'
+import { CustomAvatar, CommentListItem } from 'component'
+import { GLOBAL } from 'config/global'
+import { TYPOGRAPHY, KEY } from 'constant'
 
 const TicketHistory = ({ currentUser }) => {
- const { histories } = useSelector(state => state.history)
- const dispatch      = useDispatch()
- const { id }        = useParams()
+ const { histories }     = useSelector(state => state.history)
+ const { securityUsers } = useSelector(state => state.user)
+ const { themeMode }     = useSettingContext()
+ const theme             = useTheme()
+ const dispatch          = useDispatch()
+ const { id }            = useParams()
+
+const isCommenterNotHowickAgent = (_commenterId) => securityUsers?.some((_user) => _user?._id === _commenterId)
+const _textColor = themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.orange
+const _iconColor = themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.burnIn.main
+
 
  useEffect(() => {
   if (id) {
@@ -38,7 +48,6 @@ const TicketHistory = ({ currentUser }) => {
 
  return (
   <Fragment>
-   <GridViewTitle title={t('attachment.attachments.label')} />
    <Box>
     {histories.length > 0 ? (
      <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
@@ -47,30 +56,23 @@ const TicketHistory = ({ currentUser }) => {
         {index > 0 && <Divider component='li' />}
         <ListItem alignItems='flex-start' sx={{ padding: '8px 0' }}>
          <ListItemAvatar>
-          <CustomAvatar src={currentUser?.photoURL} alt={currentUser?.displayName} name={currentUser?.displayName || history?.createdBy?.name || 'Unknown User'} sx={{ mt: -1 }} />
+          <CustomAvatar src={currentUser?.photoURL} alt={history?.updatedBy?.name} name={history?.updatedBy?.name ||GLOBAL.USER_DEFAULT} sx={{ mt: -1 }} />
          </ListItemAvatar>
-         <ListItemText
-          primary={
-           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant='subtitle2' sx={{ mr: 1 }}>
-             {currentUser?.displayName || history?.createdBy?.name || 'Unknown User'}
-            </Typography>
-            <Typography sx={{ color: 'text.secondary', fontSize: '0.875rem' }} title={dayjs(history.createdAt).format('MMMM D, YYYY [at] h:mm A')}>
-             {dayjs().diff(dayjs(history.createdAt), 'day') < 1 ? dayjs(history.createdAt).fromNow() : dayjs(history.createdAt).format('MMMM D, YYYY [at] h:mm A')}
-            </Typography>
-           </Box>
-          }
-          secondary={
+         <CommentListItem
+            truncatedName={history?.updatedBy?.name || GLOBAL.USER_DEFAULT}
+            icon={!isCommenterNotHowickAgent(history?.createdBy?._id) && <Icon icon={ICON_NAME.HOWICK_LOGO} color={_iconColor} sx={{ width: 10, height: 10 }} />}
+            format={dayjs(history?.updatedAt).format('MMMM D, YYYY [at] h:mm A')}
+            date= {dayjs().diff(dayjs(history.createdAt), 'day') < 1 ? dayjs(history?.createdAt).fromNow() : dayjs(history.createdAt).format('MMMM D, YYYY [at] h:mm A')}
+            secondary={
            <Fragment>
             {(history?.previousStatus?._id || history?.newStatus?._id) && (
-             <Typography variant={TYPOGRAPHY.BODY1}>
-              Status:
+             <Typography variant={TYPOGRAPHY.SUBTITLE1}>
+                {t('status.label')}:
               <span
                style={{
                 backgroundColor: getLightBackgroundColor(history.previousStatus?.color),
                 color: history.previousStatus?.color || 'black',
                 padding: '2px 6px',
-                borderRadius: '4px',
                 marginLeft: '4px'
                }}>
                {history.previousStatus?.name || 'None'}
@@ -81,45 +83,42 @@ const TicketHistory = ({ currentUser }) => {
                 backgroundColor: getLightBackgroundColor(history.newStatus?.color),
                 color: history.newStatus?.color || 'black',
                 padding: '2px 6px',
-                borderRadius: '4px'
                }}>
                {history.newStatus?.name || 'None'}
               </span>
              </Typography>
             )}
             {(history?.previousPriority?._id || history?.newPriority?._id) && (
-             <Typography variant='body1'>
-              Priority:
+             <Typography variant={TYPOGRAPHY.SUBTITLE1}>
+             {t('priority.label')}:
               <span
                style={{
                 backgroundColor: getLightBackgroundColor(history.previousPriority?.color),
                 color: history.previousPriority?.color || 'black',
                 padding: '2px 6px',
-                borderRadius: '4px',
                 marginLeft: '4px'
                }}>
                {history.previousPriority?.name || 'None'}
               </span>
-              →
+              <Icon icon={ICON_NAME.ARROW_RIGHT} sx={{ width: 10, height: 10, marginX: 1 }} />
               <span
                style={{
                 backgroundColor: getLightBackgroundColor(history.newPriority?.color),
                 color: history.newPriority?.color || 'black',
                 padding: '2px 6px',
-                borderRadius: '4px'
                }}>
                {history.newPriority?.name || 'None'}
               </span>
              </Typography>
             )}
             {(history?.previousReporter?._id || history?.newReporter?._id) && (
-             <Typography variant='body1' color='textSecondary'>
-              Reporter: {history.previousReporter?.firstName} {history.previousReporter?.lastName || 'None'} → {history.newReporter?.firstName} {history.newReporter?.lastName || 'None'}
+             <Typography variant={TYPOGRAPHY.SUBTITLE1} color='textSecondary'>
+              {t('reporter.label')}: {history.previousReporter?.firstName} {history.previousReporter?.lastName || 'None'} → {history.newReporter?.firstName} {history.newReporter?.lastName || 'None'}
              </Typography>
             )}
             {(history?.previousAssignee?._id || history?.newAssignee?._id) && (
-             <Typography variant='body1' color='textSecondary'>
-              Assignee: {history.previousAssignee?.firstName} {history.previousAssignee?.lastName || 'None'} → {history.newAssignee?.firstName} {history.newAssignee?.lastName || 'None'}
+             <Typography variant={TYPOGRAPHY.SUBTITLE1} color='textSecondary'>
+             {t('assignee.label')}: {history.previousAssignee?.firstName} {history.previousAssignee?.lastName || 'None'} → {history.newAssignee?.firstName} {history.newAssignee?.lastName || 'None'}
              </Typography>
             )}
            </Fragment>
