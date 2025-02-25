@@ -167,7 +167,7 @@ export function useTicketCreateDefaultValues(customer, softwareVersion) {
        return {
           customer           : customer && customer?.name || '',
           ticketNo           : ticket && `${prefix || ''} - ${ticket?.ticketNo || ''}` || '',
-          requestType        : ticket && ticket?.requestType || null,
+          requestType        : ticket && ticket?.requestType?.name || null,
           machine            : ticket && `${ticket?.machine?.serialNo || ''} - ${ticket?.machine?.machineModel?.name || ''}` || '',
           machineId          : ticket && ticket?.machine?._id,
           reporter           : ticket && ticket?.reporter && { _id: ticket?.reporter?._id, name: `${ticket.reporter.firstName || ''} ${ticket.reporter.lastName || ''}` } || '',
