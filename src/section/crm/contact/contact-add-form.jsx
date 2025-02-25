@@ -49,8 +49,8 @@ function ContactAddForm() {
  }, [firstName, country, email])
 
  useEffect(() => {
-  checkFormCompletion()
- }, [checkFormCompletion])
+    setIsFormComplete(!!firstName && REGEX.EMAIL.test(email) && !!country)
+ }, [firstName, email, country])
 
  useEffect(() => {
   phoneNumbers?.forEach((ph, index) => {
@@ -138,6 +138,8 @@ function ContactAddForm() {
     reset()
    }
   } catch (error) {
+
+    setIsFormComplete(false)
    handleSubmissionError(error)
   }
  }
@@ -177,7 +179,7 @@ function ContactAddForm() {
           </RHFRequiredTextFieldWrapper>
          </Grid>
          <Grid item xs={12} sm={6} md={6}>
-          <RHFTextField name='lastName' label={t('last_name.label')} autoComplete={KEY.NAME} aria-label={KEY.NAME} helperText={errors.lastName ? errors.lastName.message : ''} required />
+          <RHFTextField name='lastName' label={t('last_name.label')} autoComplete={KEY.NAME} aria-label={KEY.NAME} helperText={errors.lastName ? errors.lastName.message : ''} />
          </Grid>
          <Grid item xs={12} sm={6} md={6}>
           <RHFRequiredTextFieldWrapper condition={REGEX.EMAIL.test(email) === false}>
