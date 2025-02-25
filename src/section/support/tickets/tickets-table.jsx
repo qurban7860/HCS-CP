@@ -2,6 +2,7 @@ import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import { useNavigate } from 'react-router-dom'
+import { getTicket } from 'store/slice'
 import { IconFlexi, ICON_NAME, useSettingContext } from 'hook'
 import { PATH_SUPPORT } from 'route/path'
 import { TableBody, TableCell, Typography } from '@mui/material'
@@ -12,10 +13,13 @@ import { TYPOGRAPHY, SIZE } from 'constant'
 import { normalizer } from 'util'
 
 import { StyledTableRow } from './style'
+import { dispatch } from 'store'
+import { useAuthContext } from 'auth'
 
 const TicketsTable = ({ columns, onViewRow, ticket, mode, index  }) => {
- const { themeMode }  = useSettingContext()
- const navigate       = useNavigate()
+ const { user }      = useAuthContext()
+ const { themeMode } = useSettingContext()
+ const navigate      = useNavigate()
 
  const renderStatus  = _status => {
   return (
@@ -37,6 +41,7 @@ const openInNewPage = id => {
 }
 
 const handleNavigateTicket = (id) => {
+  dispatch(getTicket(id, user?.customer))
   navigate(PATH_SUPPORT.tickets.view(id))
 }
 
