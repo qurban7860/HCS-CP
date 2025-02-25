@@ -24,7 +24,7 @@ const CommentListItem = ({ truncatedName, secondary, icon, date, format }) => {
      </Typography>
     </GStyledSpanBox>
    </Box>
-   <Box sx={{ flexWrap: 'wrap', overflowY: 'hidden', overflowX: 'auto' }}>
+   <Box sx={{ flexWrap: 'wrap', overflowY: 'hidden', overflowX: 'auto', paddingY: 1 }}>
     {secondary}
    </Box>
   </Stack>
