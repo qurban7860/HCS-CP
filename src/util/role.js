@@ -10,7 +10,7 @@ import { alpha } from '@mui/material'
  */
 export const roleCoverUp = role => {
  if (!role || !role.name) return ''
- return role.name === KEY.CUSTOMER_ADMIN ? 'Admin' : 'User'
+ return role.name === KEY.CUSTOMER_ADMIN ? 'Admin' : role.name === KEY.CUSTOMER_USER ? 'User' : role.name
 }
 
 export const isCustomerAdmin = user => user?.roles?.some(role => role?.name === KEY.CUSTOMER_ADMIN)
