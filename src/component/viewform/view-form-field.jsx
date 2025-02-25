@@ -33,7 +33,8 @@ const ViewFormField = ({
  link,
  isMachineView,
  customerLink,
- country
+ country,
+ multiline
 }) => {
  const [open, setOpen]         = useState(false)
  const [anchorEl, setAnchorEl] = useState(null)
@@ -68,7 +69,7 @@ const ViewFormField = ({
         <StyledFieldGrid item xs={!isWidget && 12} sm={gridSize} mode={themeMode} isMachineView={isMachineView} isNoBg={isNoBg} isMobile={isMobile}>
         {isLoading ? (
             <m.div>
-            <SkeletonViewFormField />
+             <SkeletonViewFormField />
             </m.div>
         ) : (
             <Fragment>
@@ -95,37 +96,43 @@ const ViewFormField = ({
             </GStyledSpanBox>
             ) : customerLink ? (
             <GStyledSpanBox style={{ display: FLEX.FLEX, alignItems: 'center', justifyContent: 'space-between' }}>
-            <GStyledSpanBox>
-                <StyledDefaultTypography variant={variant}>&nbsp;{children}</StyledDefaultTypography>
+                <GStyledSpanBox>
+                    <StyledDefaultTypography variant={variant}>&nbsp;{children}</StyledDefaultTypography>
 
-                <GStyledTooltip title={LABEL.VIEW_IN_NEW_TAB} placement={KEY.RIGHT} disableFocusListener tooltipcolor={theme.palette.grey[500]} color={theme.palette.grey[500]}>
-                <IconButton
-                onClick={() => window.open(customerLink, KEY.BLANK)}
-                size={SIZE.MEDIUM}
-                color={themeMode === KEY.LIGHT ? 'grey.800' : 'common.white'}
-                onMouseEnter={handleOpen}
-                onMouseLeave={handleClose}
-                aria-label='view'
-                target={KEY.BLANK}
-                sx={{
-                padding: 0.5,
-                m: 0,
-                ...RADIUS.BORDER
-                }}>
-                <WebIcon icon={openInSrc} width={15} />
-                </IconButton>
-                </GStyledTooltip>
+                    <GStyledTooltip title={LABEL.VIEW_IN_NEW_TAB} placement={KEY.RIGHT} disableFocusListener tooltipcolor={theme.palette.grey[500]} color={theme.palette.grey[500]}>
+                    <IconButton
+                    onClick={() => window.open(customerLink, KEY.BLANK)}
+                    size={SIZE.MEDIUM}
+                    color={themeMode === KEY.LIGHT ? 'grey.800' : 'common.white'}
+                    onMouseEnter={handleOpen}
+                    onMouseLeave={handleClose}
+                    aria-label='view'
+                    target={KEY.BLANK}
+                    sx={{
+                    padding: 0.5,
+                    m: 0,
+                    ...RADIUS.BORDER
+                    }}>
+                    <WebIcon icon={openInSrc} width={15} />
+                    </IconButton>
+                    </GStyledTooltip>
+                </GStyledSpanBox>
+                <StyledFlagBox>
+                    <SvgFlagIcon country={country} color={themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.bronze} dimension={16} />
+                </StyledFlagBox>
             </GStyledSpanBox>
-            <StyledFlagBox>
-                <SvgFlagIcon country={country} color={themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.bronze} dimension={16} />
-            </StyledFlagBox>
-            </GStyledSpanBox>
-            ) : (
+            ) : multiline ?  (
+            <m.div>
+                <StyledDefaultTypography variant={variant} sx={{ whiteSpace: 'pre-line' }}>
+                    {noBreakSpace ? '' : '\u00A0'} {children}
+                </StyledDefaultTypography>
+            </m.div>
+            )  : (
             // default
             <m.div>
-            <StyledDefaultTypography variant={variant}>
-                {noBreakSpace ? '' : '\u00A0'} {children}
-            </StyledDefaultTypography>
+                <StyledDefaultTypography variant={variant}>
+                    {noBreakSpace ? '' : '\u00A0'} {children}
+                </StyledDefaultTypography>
             </m.div>
             )}
 
@@ -135,7 +142,7 @@ const ViewFormField = ({
                 <StyledFieldChip
                 key={index}
                 mode={themeMode}
-                label={<Typography variant={isMobile ? TYPOGRAPHY.OVERLINE : TYPOGRAPHY.OVERLINE2}>{` ${chip?.firstName || ''} ${chip?.lastName || ''}`}</Typography>}
+                label={<Typography variant={TYPOGRAPHY.CAPTION}>{` ${chip?.firstName || ''} ${chip?.lastName || ''}`}</Typography>}
                 size={SIZE.SMALL}
                 />
             ))}
@@ -147,13 +154,13 @@ const ViewFormField = ({
             {chip && typeof chip === 'object' && userRolesChip?.length > 0 ? (
             <StyledChipGrid container mode={themeMode} isNoBg>
             {chip?.map((c, index) => (
-                <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE}>{c}</Typography>} size={SIZE.SMALL} />
+                <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={TYPOGRAPHY.CAPTION}>{c}</Typography>} size={SIZE.SMALL} />
             ))}
             </StyledChipGrid>
             ) : Array.isArray(chip) ? (
             <StyledChipGrid container mode={themeMode} isNoBg>
             {chip?.map((c, index) => (
-                <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE}>{c}</Typography>} size={SIZE.SMALL} />
+                <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={TYPOGRAPHY.CAPTION}>{c}</Typography>} size={SIZE.SMALL} />
             ))}
             </StyledChipGrid>
             ) : (
@@ -169,11 +176,11 @@ const ViewFormField = ({
                 label={
                 <GStyledSpanBox>
                 {p?.type && (
-                    <Typography variant={isDesktop ? TYPOGRAPHY.OVERLINE2 : TYPOGRAPHY.OVERLINE} fontWeight='bold'>
+                    <Typography variant={TYPOGRAPHY.CAPTION}>
                     {p?.type} &nbsp;
                     </Typography>
                 )}
-                <Typography variant={isDesktop ? TYPOGRAPHY.BODY2 : TYPOGRAPHY.CAPTION}>
+                <Typography variant={TYPOGRAPHY.CAPTION}>
                     {p?.countryCode && `+${p?.countryCode} `} {p?.contactNumber && p?.contactNumber}
                     {p?.extensions && `(${p?.extensions})`}
                 </Typography>
@@ -212,7 +219,7 @@ const ViewFormField = ({
             <StyledChipGrid container mode={themeMode} isNoBg>
             &nbsp;
             {rolesChip?.map((r, index) => (
-                <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={isMobile ? TYPOGRAPHY.OVERLINE : TYPOGRAPHY.OVERLINE2}>{roleCoverUp(r)}</Typography>} size={SIZE.SMALL} />
+                <StyledFieldChip key={index} mode={themeMode} label={<Typography variant={TYPOGRAPHY.CAPTION}>{roleCoverUp(r)}</Typography>} size={SIZE.SMALL} />
             ))}
             </StyledChipGrid>
             )}
@@ -242,7 +249,8 @@ ViewFormField.propTypes = {
  customerLink  : PropTypes.string,
  primaryContact: PropTypes.any,
  isMachineView : PropTypes.bool,
- country       : PropTypes.string
+ country       : PropTypes.string,
+ multiline     : PropTypes.boolean
 }
 
 export default memo(ViewFormField)
