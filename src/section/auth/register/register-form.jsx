@@ -34,8 +34,8 @@ function RegisterForm() {
  const isMobile      = useResponsive('down', 'sm')
 
  const getCountryByLocale = () => {
-  const locale = Intl.DateTimeFormat().resolvedOptions().locale || 'en-NZ'
-  const countryCode = locale.split('-')[1]?.toLowerCase()
+  const locale       = Intl.DateTimeFormat().resolvedOptions().locale || 'en-NZ'
+  const countryCode  = locale.split('-')[1]?.toLowerCase()
   const foundCountry = COUNTRY.find(country => country?.code?.toLocaleLowerCase() === countryCode)
   return foundCountry ? foundCountry : { code: '', label: '', phone: '64' }
  }

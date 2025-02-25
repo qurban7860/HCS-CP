@@ -8,13 +8,13 @@ import { useMemo } from 'react'
 export function useSetPasswordDefaultValues(verifiedInvite) {
  return useMemo(() => {
   return {
-   fullName: '',
-   customerName: verifiedInvite?.customerName || '',
-   contactName: verifiedInvite?.contactName || '',
-   login: verifiedInvite?.login || '',
-   email: verifiedInvite?.email || '',
-   phone: verifiedInvite?.phone || '',
-   password: '',
+   fullName       : '',
+   customerName   : verifiedInvite?.customerName || '',
+   contactName    : verifiedInvite?.contactName || '',
+   login          : verifiedInvite?.login || '',
+   email          : verifiedInvite?.email || '',
+   phone          : verifiedInvite?.phone || '',
+   password       : '',
    confirmPassword: ''
   }
  }, [verifiedInvite])

@@ -19,10 +19,10 @@ import { delay } from 'util'
 
 function SetPasswordForm() {
  const [isFormComplete, setIsFormComplete] = useState(false)
- const { verifiedInvite } = useSelector(state => state.user)
- const { id, code, expiry } = useParams()
- const { themeMode } = useSettingContext()
- const expired = new Date(expiry).getTime() > new Date().getTime()
+ const { verifiedInvite }                  = useSelector(state => state.user)
+ const { id, code, expiry }                = useParams()
+ const { themeMode }                       = useSettingContext()
+ const expired                             = new Date(expiry).getTime() > new Date().getTime()
 
  const navigate = useNavigate()
  const isMobile = useResponsive('down', 'sm')

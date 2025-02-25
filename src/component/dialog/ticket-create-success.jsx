@@ -1,10 +1,11 @@
 import { memo } from 'react'
 import { t } from 'i18next'
+import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
 import { setTicketCreateSuccessDialog } from 'store/slice'
 import { useSettingContext, snack, Icon, ICON_NAME } from 'hook'
-import { PATH_HOME, PATH_SECURITY } from 'route/path'
+import { PATH_HOME, PATH_SECURITY, PATH_SUPPORT } from 'route/path'
 import { useMediaQuery, Grid, Dialog, DialogContent, DialogTitle, DialogActions, Divider, Typography, Avatar } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { GStyledTopBorderDivider, GStyledCloseButton, GStyledLoadingButton, GBackdropPropsOption } from 'theme/style'
@@ -13,10 +14,11 @@ import { TYPOGRAPHY, FLEX, KEY, COLOR } from 'constant'
 
 const TicketCreateSuccessDialog = () => {
  const { ticketCreateSuccessDialog } = useSelector(state => state.ticket)
- const { themeMode } = useSettingContext()
- const theme         = useTheme()
- const navigate      = useNavigate()
- const isDesktop     = useMediaQuery(theme.breakpoints.up('md'))
+ const { themeMode }                 = useSettingContext()
+ const { id }                        = useParams()
+ const theme                         = useTheme()
+ const navigate                      = useNavigate()
+ const isDesktop                     = useMediaQuery(theme.breakpoints.up('md'))
 
  const handleDialog = () => {
   dispatch(setTicketCreateSuccessDialog(false))
@@ -25,17 +27,14 @@ const TicketCreateSuccessDialog = () => {
  const handleCloseAndNavigateToList = () => {
   dispatch(setTicketCreateSuccessDialog(false))
   snack(t('responses.success.ticket_created'), { variant: COLOR.SUCCESS })
-//   set to tickets list when completed
-  navigate(PATH_HOME.root)
+  navigate(PATH_SUPPORT.tickets.list)
  }
 
  const handleViewTicket = () => {
-    console.log('View Ticket')
   dispatch(setTicketCreateSuccessDialog(false))
   snack(t('responses.success.ticket_created'), { variant: COLOR.SUCCESS })
-//   dispatch(setUserInviteDialog(false))
-//   const url = PATH_AFTER_LOGIN
-//   navigate(url)
+  dispatch(setTicketCreateSuccessDialog(false))
+  navigate(PATH_SUPPORT.tickets.view(id))
  }
 
  return (

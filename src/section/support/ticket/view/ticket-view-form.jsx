@@ -14,8 +14,8 @@ import { getFile, getTicket, getTicketSettings, getSoftwareVersion, deleteFile, 
 import { PATH_MACHINE } from 'route/path'
 import { TicketSchema } from 'schema'
 import { TicketComment, useTicketViewDefaultValues } from 'section/support'
-import { useTheme, Grid, Box, Dialog, DialogTitle, Divider, Button, Card } from '@mui/material'
-import { AuditBox, GridViewField, GridViewTitle, GalleryItem, Lightbox, SkeletonPDF, BackButton } from 'component'
+import { useTheme, Grid, Box, Dialog, DialogTitle, Divider, Button, Card, TextField } from '@mui/material'
+import { AuditBox, GridViewField, GridViewTitle, GalleryItem, Lightbox, SkeletonPDF, BackButton, RHFDescription } from 'component'
 import { GStyledStickyFormGrid, GCardOption, GStyledTopBorderDivider } from 'theme/style'
 import { REGEX, FLEX_DIR, FLEX } from 'constant'
 import { handleError } from 'util'
@@ -43,7 +43,7 @@ function TicketViewForm() {
 
  const { id } = useParams()
 
- const { user, userId }         = useAuthContext()
+ const { user, userId } = useAuthContext()
  const { themeMode }    = useSettingContext()
  const theme            = useTheme()
  const navigate         = useNavigate()
@@ -60,16 +60,16 @@ function TicketViewForm() {
  })
 
  useLayoutEffect(()=> {
-  dispatch(resetTicket())
-  dispatch(resetTicketSettings())
-  dispatch(resetSoftwareVersion())
+  // dispatch(resetTicket())
+  // dispatch(resetTicketSettings())
+  // dispatch(resetSoftwareVersion())
  }, [dispatch])
 
 useEffect(() => {
-  if (id && customer && !ticket) {
+  if (id && customer) {
     dispatch(getTicket(id, customer?._id))
   }
- },[dispatch, ticket])
+ },[dispatch, id, customer])
 
  useEffect(() => {
   dispatch(getTicketSettings())
@@ -197,6 +197,9 @@ const handleBackAction = event => {
         <GridViewField heading={t('ticket_number.label')} isLoading={isLoading} gridSize={12}>
          {defaultValues?.ticketNo}
         </GridViewField>
+        <GridViewField heading={t('request_type.label')} isLoading={isLoading} gridSize={12}>
+         {defaultValues?.requestType}
+        </GridViewField>
        </Grid>
       </Card>
      </Box>
@@ -238,9 +241,12 @@ const handleBackAction = event => {
           <GridViewField heading={t('summary.label')} isLoading={isLoading} gridSize={12}>
            {defaultValues?.summary}
           </GridViewField>
-          <GridViewField heading={t('description.label')} isLoading={isLoading} gridSize={12}>
+          <Grid item xs={12} sm={12}>
+            <TextField multiline variant={'filled'} value={defaultValues?.description} fullWidth disabled sx={{'&:disabled': { backgroundColor: theme.palette.grey[100], color: theme.palette.common.black }}}/>
+          </Grid>
+          {/* <GridViewField heading={t('description.label')} isLoading={isLoading} gridSize={12} multiline>
            {defaultValues?.description}
-          </GridViewField>
+          </GridViewField> */}
          </Grid>
         </Grid>
        </Grid>

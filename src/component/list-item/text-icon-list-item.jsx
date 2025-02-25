@@ -16,13 +16,13 @@ const TextIconListItem = ({ truncatedName, tradingAliases, roles, icon }) => {
   switch (arr) {
    case 'roles':
     return roles?.slice(0, 3)?.map((item, index) => (
-     <Typography key={index} color={theme.palette.grey[500]} variant={isDesktop ? TYPOGRAPHY.OVERLINE1 : TYPOGRAPHY.OVERLINE_MINI} mx={0.5}>
+     <Typography key={index} color={theme.palette.grey[500]} variant={TYPOGRAPHY.CAPTION} mx={0.5}>
       {roleCoverUp(item)}
      </Typography>
     ))
    case 'tradingAliases':
     return tradingAliases?.slice(0, 3)?.map((item, index) => (
-     <Typography key={index} color={theme.palette.grey[500]} variant={isDesktop ? TYPOGRAPHY.OVERLINE1 : TYPOGRAPHY.OVERLINE_MINI} mx={0.5}>
+     <Typography key={index} color={theme.palette.grey[500]} variant={TYPOGRAPHY.CAPTION} mx={0.5}>
       {item}
      </Typography>
     ))
@@ -49,10 +49,10 @@ const TextIconListItem = ({ truncatedName, tradingAliases, roles, icon }) => {
 }
 
 TextIconListItem.propTypes = {
- truncatedName: PropTypes.string.isRequired,
+ truncatedName : PropTypes.string.isRequired,
  tradingAliases: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
- roles: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
- icon: PropTypes.any
+ roles         : PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
+ icon          : PropTypes.any
 }
 
 export default TextIconListItem

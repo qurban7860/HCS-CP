@@ -69,9 +69,9 @@ import { KEY } from 'constant'
 
 RHFTextField.displayName = 'RHFTextField'
 RHFTextField.propTypes = {
- name: PropTypes.string,
+ name      : PropTypes.string,
  helperText: PropTypes.node,
- Error: PropTypes.bool
+ Error     : PropTypes.bool
 }
 
 

@@ -43,7 +43,8 @@ const _GEN5_LOG_TYPES = {
     'mode',
     'measurementUnit',
     'componentWeight',
-    'lineSpeed'
+    'lineSpeed',
+    'componentGUID'
    ]
   },
   tableColumns: [
@@ -61,6 +62,7 @@ const _GEN5_LOG_TYPES = {
    { id: 'componentWeight', label: 'Component Weight', searchable: true, numerical: true },
    { id: 'coilBatchName', label: 'Coil Batch Name', searchable: true },
    { id: 'coilThickness', label: 'Coil Thickness', searchable: true, numerical: true },
+   { id: 'componentGUID', label: 'Component GUID', searchable: true, numerical: true },
    { id: 'coilWidth', label: 'Coil Width', searchable: true, numerical: true },
    { id: 'lineSpeed', label: 'Line Speed', searchable: true, numerical: true },
    { id: 'mode', label: 'Mode', searchable: true },

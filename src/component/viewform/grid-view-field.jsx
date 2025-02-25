@@ -11,9 +11,7 @@ const GridViewField = ({ heading, isLoading, isNoBg, noBreakSpace, children, gri
    item
    xs={12}
    sm={gridSize}
-   sx={{
-    overflow: 'auto'
-   }}>
+   sx={{ overflow: 'auto' }}>
    <ViewFormField
     heading={heading}
     isLoading={isLoading}
@@ -32,13 +30,13 @@ const GridViewField = ({ heading, isLoading, isNoBg, noBreakSpace, children, gri
 }
 
 GridViewField.propTypes = {
- heading: PropTypes.string,
- isLoading: PropTypes.bool,
- children: PropTypes.node,
- gridSize: PropTypes.number,
- isLink: PropTypes.bool,
- isNoBg: PropTypes.bool,
- noBreakSpace: PropTypes.bool,
+ heading      : PropTypes.string,
+ isLoading    : PropTypes.bool,
+ children     : PropTypes.node,
+ gridSize     : PropTypes.number,
+ isLink       : PropTypes.bool,
+ isNoBg       : PropTypes.bool,
+ noBreakSpace : PropTypes.bool,
  userRolesChip: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
  chip         : PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
  multiline    : PropTypes.bool
