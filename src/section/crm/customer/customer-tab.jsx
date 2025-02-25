@@ -23,7 +23,7 @@ const CustomerTab = () => {
   }, 300)
   debounce()
   return () => debounce.cancel()
- }, [id])
+ }, [id, customer?._id])
 
  useEffect(() => {
   const debounce = _.debounce(() => {

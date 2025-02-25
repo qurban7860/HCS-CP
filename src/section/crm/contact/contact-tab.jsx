@@ -69,13 +69,13 @@ const ContactTab = () => {
   return () => debounceFetch.cancel()
  }, [id, contacts, dispatch])
 
- useEffect(() => {
-  const debounceFetch = debounce(() => {
-   dispatch(getUserInviteByEmail(contact?.email))
-  }, 300)
-  debounceFetch()
-  return () => debounceFetch.cancel()
- }, [contact?.email, dispatch])
+//  useEffect(() => {
+//   const debounceFetch = debounce(() => {
+//    dispatch(getUserInviteByEmail(contact?.email))
+//   }, 300)
+//   debounceFetch()
+//   return () => debounceFetch.cancel()
+//  }, [contact?.email, dispatch])
 
  const defaultValues = useContactDefaultValues(contact, customer)
 
