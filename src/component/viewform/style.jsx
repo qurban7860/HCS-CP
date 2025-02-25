@@ -36,6 +36,8 @@ export const StyledChipGrid = styled(({ theme, isNoBg, mode,...other}) => <Grid 
  alignItems     : 'center',
  whiteSpace     : 'pre-line',
  wordBreak      : 'break-word',
+ overflowX      : 'auto',
+ overflowY      : 'hidden',
  backgroundColor: isNoBg ? 'transparent': mode === KEY.LIGHT ? theme.palette.grey[200]: theme.palette.grey[800]
 }))
 
@@ -43,7 +45,7 @@ export const StyledFieldChip = styled(({ theme, ...other }) => <Chip {...other} 
  margin: theme.spacing(0.2),
  borderRadius: RADIUS.FORM.borderRadius,
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
- backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
+ backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]
 }))
 
 export const StyledFlagBox = styled(Box)(({ theme }) => ({
