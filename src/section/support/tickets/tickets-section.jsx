@@ -63,7 +63,7 @@ const TicketsListSection = () => {
 
 useEffect(() => {
   const debouncedDispatch = _.debounce(() => {
-    if (!tickets.length) {
+    if (customer?._id) {
       dispatch(getTickets(customer?._id))
     }
   }, 300)
@@ -71,7 +71,7 @@ useEffect(() => {
   return () => {
     debouncedDispatch.cancel()
   }
-}, [dispatch, ticketPage, ticketRowsPerPage])
+}, [dispatch, customer?._id, ticketPage, ticketRowsPerPage])
 
  const onRefresh = () => {
   dispatch(getTickets(customer?._id))
