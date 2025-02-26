@@ -158,7 +158,7 @@ export function useTicketCreateDefaultValues(customer, softwareVersion) {
         hlc                : softwareVersion?.hlc || '',
         plc                : softwareVersion?.plc || '',
      }
-    }, [customer])
+    }, [customer, softwareVersion])
    }
 
   const prefix = GLOBAL.PREFIX
@@ -166,7 +166,7 @@ export function useTicketCreateDefaultValues(customer, softwareVersion) {
       return useMemo(() => {
        return {
           customer           : customer && customer?.name || '',
-          ticketNo           : ticket && `${prefix || ''} - ${ticket?.ticketNo || ''}` || '',
+          ticketNo           : ticket && `${prefix || 'HWK'} - ${ticket?.ticketNo || ''}` || '',
           requestType        : ticket && ticket?.requestType?.name || null,
           machine            : ticket && `${ticket?.machine?.serialNo || ''} - ${ticket?.machine?.machineModel?.name || ''}` || '',
           machineId          : ticket && ticket?.machine?._id,
@@ -205,6 +205,6 @@ export function useTicketCreateDefaultValues(customer, softwareVersion) {
           createdIP          : ticket && ticket?.createdIP || '',
           updatedIP          : ticket && ticket?.updatedIP || ''
        }
-      }, [customer])
+      }, [ticket, customer, softwareVersion])
      }
 
