@@ -1,7 +1,7 @@
 import { PATH_DASHBOARD, PATH_HOME } from 'route/path'
 
 const  configurations = JSON.parse(localStorage.getItem('configurations'))
-const  prefix         = configurations?.find((config) => config?.name?.toLowerCase() === 'ticket_prefix')?.value || '';
+const  prefix         = configurations?.find((config) => config?.name?.toLowerCase() === 'ticket_prefix')?.value || 'HWK';
 export const GLOBAL   = {
  APP_TITLE             : 'Howick Portal',
  APP_BRANCH            : 'HOWICK PORTAL',
