@@ -65,25 +65,19 @@ function TicketViewForm() {
   // dispatch(resetSoftwareVersion())
  }, [dispatch])
 
-useEffect(() => {
-  if (id && customer) {
-    dispatch(getTicket(id, customer?._id))
-  }
- },[dispatch, id, customer])
+// useEffect(() => {
+//   dispatch(getTicket(id, customer?._id))
+//  },[dispatch, id, customer?._id])
 
  useEffect(() => {
   dispatch(getTicketSettings())
  }, [dispatch])
 
  useEffect(() => {
-  const debouncedFetch = _.debounce(() => {
-    if (ticket?.machine?._id && customer?._id) {
-      dispatch(getSoftwareVersion(ticket?.machine?._id, customer?._id))
-    }
-  }, 300)
-  debouncedFetch()
-  return () => debouncedFetch.cancel()
- },[dispatch, ticket, customer])
+  if (ticket?.machine?._id) {
+    dispatch(getSoftwareVersion(ticket?.machine?._id, customer?._id))
+  }
+ },[dispatch, ticket?.machine?._id])
 
  useEffect(() => {
   const newSlides = ticket?.files?.map((file) => {
