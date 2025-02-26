@@ -1,9 +1,9 @@
 import { memo } from 'react'
 import { t } from 'i18next'
-import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import { useAuthContext } from 'auth'
 import { dispatch, useSelector } from 'store'
-import { setTicketCreateSuccessDialog } from 'store/slice'
+import { setTicketCreateSuccessDialog, getTicket } from 'store/slice'
 import { useSettingContext, snack, Icon, ICON_NAME } from 'hook'
 import { PATH_HOME, PATH_SECURITY, PATH_SUPPORT } from 'route/path'
 import { useMediaQuery, Grid, Dialog, DialogContent, DialogTitle, DialogActions, Divider, Typography, Avatar } from '@mui/material'
@@ -13,12 +13,12 @@ import { ICON } from 'config/layout'
 import { TYPOGRAPHY, FLEX, KEY, COLOR } from 'constant'
 
 const TicketCreateSuccessDialog = () => {
- const { ticketCreateSuccessDialog } = useSelector(state => state.ticket)
- const { themeMode }                 = useSettingContext()
- const { id }                        = useParams()
- const theme                         = useTheme()
- const navigate                      = useNavigate()
- const isDesktop                     = useMediaQuery(theme.breakpoints.up('md'))
+ const { ticket, ticketCreateSuccessDialog } = useSelector(state => state.ticket)
+ const { user }                              = useAuthContext()
+ const { themeMode }                         = useSettingContext()
+ const theme                                 = useTheme()
+ const navigate                              = useNavigate()
+ const isDesktop                             = useMediaQuery(theme.breakpoints.up('md'))
 
  const handleDialog = () => {
   dispatch(setTicketCreateSuccessDialog(false))
@@ -34,7 +34,8 @@ const TicketCreateSuccessDialog = () => {
   dispatch(setTicketCreateSuccessDialog(false))
   snack(t('responses.success.ticket_created'), { variant: COLOR.SUCCESS })
   dispatch(setTicketCreateSuccessDialog(false))
-  navigate(PATH_SUPPORT.tickets.view(id))
+  dispatch(getTicket(ticket?._id, user?.customer))
+  navigate(PATH_SUPPORT.tickets.view(ticket?._id))
  }
 
  return (
@@ -42,7 +43,6 @@ const TicketCreateSuccessDialog = () => {
    <GStyledTopBorderDivider mode={themeMode} />
     <DialogTitle sx={{ ...(isDesktop && { minWidth: 500 }), width: '100%', boxSizing: 'border-box', padding: theme.spacing(2) }}>
         <Grid container gap={2}>
-
             <Grid container display={FLEX.FLEX} justifyContent={FLEX.CENTER}>
                 <Avatar sx={{ bgcolor: theme.palette.howick.darkBlue, ...ICON.SIZE_SM }}>
                     <Icon icon={ICON_NAME.CHECK_CICLE_OUTLINE} sx={{ color: theme.palette.grey[200], ...ICON.SIZE_MD_2 }} />
