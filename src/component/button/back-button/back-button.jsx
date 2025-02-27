@@ -25,9 +25,13 @@ const BackButton = ({ alongTab, width = 30, handleBackAction }) => {
  const { Icon, iconSrc: backIconSrc } = useIcon(ICON_NAME.ARROW_LEFT)
 
  const handleClick = event => {
-  setAnchorEl(event.currentTarget)
-  navigate(-1)
- }
+   setAnchorEl(event.currentTarget);
+   if (handleBackAction) {
+     handleBackAction();
+   } else {
+     navigate(-1);
+   }
+ };
 
  useEffect(() => {
   if (open) {
