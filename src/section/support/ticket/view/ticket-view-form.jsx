@@ -11,7 +11,7 @@ import { IconFlexi, snack, useResponsive, useSettingContext } from 'hook'
 import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
 import { getFile, getTicket, getTicketSettings, getSoftwareVersion, deleteFile, resetTicketSettings, resetTicket, resetSoftwareVersion } from 'store/slice'
-import { PATH_MACHINE } from 'route/path'
+import { PATH_DASHBOARD, PATH_MACHINE, PATH_SUPPORT } from 'route/path'
 import { TicketSchema } from 'schema'
 import { TicketComment, useTicketViewDefaultValues } from 'section/support'
 import { useTheme, Grid, Box, Dialog, DialogTitle, Divider, Button, Card, TextField } from '@mui/material'
@@ -174,7 +174,7 @@ const handleOpenFile = async (fileId, fileName, fileExtension) => {
 }
 
 const handleBackAction = event => {
-  navigate(-1)
+  navigate(PATH_DASHBOARD.root)
  }
 
  return (
