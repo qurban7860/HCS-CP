@@ -7,7 +7,12 @@ import { KEY, TYPOGRAPHY } from 'constant'
 const TableStickyTitleBox = ({ subTitle, title, icon }) => {
  const { themeMode } = useSettingContext()
  return (
-  <GStyledStickyBox>
+  <GStyledStickyBox
+    sx={{
+      backgroundColor: 'background.default',
+      p: 2,
+    }}
+  >
     <GStyledSpanBox>
     {icon && icon}
     <Typography variant={TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? 'common.black' : 'howick.bronze'} sx={{ ml: icon ? 1 : 0}}>
