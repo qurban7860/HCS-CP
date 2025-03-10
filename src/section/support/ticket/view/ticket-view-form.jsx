@@ -25,22 +25,20 @@ import { handleError } from 'util'
  * @returns {JSX.Element}
  */
 function TicketViewForm() {
- const [slides, setSlides] = useState([])
- const [selectedImage, setSelectedImage] = useState(-1)
- const [pdf, setPDF] = useState(null)
- const [PDFName, setPDFName] = useState('')
- const [PDFViewerDialog, setPDFViewerDialog] = useState(false)
+  const [slides, setSlides]                   = useState([])
+  const [selectedImage, setSelectedImage]     = useState(-1)
+  const [pdf, setPDF]                         = useState(null)
+  const [PDFName, setPDFName]                 = useState('')
+  const [PDFViewerDialog, setPDFViewerDialog] = useState(false)
 
- const { customer, isLoading, machine, softwareVersion, ticket, ticketSettings } = useSelector(
-  state => ({
-   customer: state.customer.customer,
-   isLoading: state.ticket.isLoading,
-   softwareVersion: state.ticket.softwareVersion,
-   ticket: state.ticket.ticket,
-   ticketSettings: state.ticket.ticketSettings
-  }),
-  _.isEqual
- )
+  const { customer, isLoading, machine, softwareVersion, ticket, ticketSettings } = useSelector(
+    state => ({
+     customer                 : state.customer.customer,
+     isLoading                : state.ticket.isLoading,
+     softwareVersion          : state.ticket.softwareVersion,
+     ticket                   : state.ticket.ticket,
+     ticketSettings           : state.ticket.ticketSettings
+    }), _.isEqual)
 
  const { id } = useParams()
 
@@ -257,14 +255,17 @@ function TicketViewForm() {
            {defaultValues?.summary}
           </GridViewField>
           <Grid item xs={12} sm={12}>
-           <TextField
+          <GridViewField heading={t('description.label')} isLoading={isLoading} gridSize={12}>
+           {defaultValues?.description}
+          </GridViewField>
+           {/* <TextField
             multiline
             variant={'filled'}
             value={defaultValues?.description}
             fullWidth
             disabled
             sx={{ '&:disabled': { backgroundColor: theme.palette.grey[100], color: theme.palette.common.black } }}
-           />
+           /> */}
           </Grid>
           {/* <GridViewField heading={t('description.label')} isLoading={isLoading} gridSize={12} multiline>
            {defaultValues?.description}
