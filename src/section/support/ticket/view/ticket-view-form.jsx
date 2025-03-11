@@ -211,45 +211,10 @@ function TicketViewForm() {
       <GridViewField
         heading={t('machine.label')}
         isLoading={isLoading}
-        gridSize={4}
+        gridSize={6}
         customerLink={PATH_MACHINE.machines.view(defaultValues?.machineId)}
       >
         {defaultValues?.machine}
-      </GridViewField>
-
-      <GridViewField
-        heading={t('request_type.label')}
-        isLoading={isLoading}
-        gridSize={4}
-      >
-        {defaultValues?.requestType}
-      </GridViewField>
-
-      <GridViewField
-        heading={t('status.label')}
-        isLoading={isLoading}
-        gridSize={4}
-      >
-        {defaultValues?.status}
-      </GridViewField>
-      <GridViewField
-        heading={t('priority.label')}
-        isLoading={isLoading}
-        gridSize={3}
-      >
-        <IconFlexi
-          icon={defaultValues?.priorityIcon}
-          color={defaultValues?.priorityColor}
-        />{' '}
-        &nbsp;{defaultValues?.priority}
-      </GridViewField>
-
-      <GridViewField
-        heading={t('impact.label')}
-        isLoading={isLoading}
-        gridSize={3}
-      >
-        {defaultValues?.impact}
       </GridViewField>
 
       <GridViewField
@@ -267,6 +232,37 @@ function TicketViewForm() {
       >
         {softwareVersion?.plc}
       </GridViewField>
+
+      <GridViewField
+        heading={t('request_type.label')}
+        isLoading={isLoading}
+        gridSize={6}
+      >
+        {defaultValues?.requestType}
+      </GridViewField>
+
+      <GridViewField
+        heading={t('status.label')}
+        isLoading={isLoading}
+        gridSize={3}
+      >
+        {defaultValues?.status}
+      </GridViewField>
+      <GridViewField
+        heading={t('priority.label')}
+        isLoading={isLoading}
+        gridSize={3}
+      >
+        <IconFlexi
+          icon={defaultValues?.priorityIcon}
+          color={defaultValues?.priorityColor}
+        />{' '}
+        &nbsp;{defaultValues?.priority}
+      </GridViewField>
+
+
+
+
       <GridViewField
         heading={t('summary.label')}
         isLoading={isLoading}
@@ -423,6 +419,14 @@ function TicketViewForm() {
           </GridViewField>
          </Grid>
         )}
+
+<GridViewField
+        heading={t('impact.label')}
+        isLoading={isLoading}
+        gridSize={12}
+      >
+        {defaultValues?.impact}
+      </GridViewField>
        </Grid>
       </Card>
      </Box>
