@@ -17,8 +17,9 @@ import { TicketComment, useTicketViewDefaultValues } from 'section/support'
 import { useTheme, Grid, Box, Dialog, DialogTitle, Divider, Button, Card, TextField } from '@mui/material'
 import { AuditBox, GridViewField, GridViewTitle, GalleryItem, Lightbox, SkeletonPDF, BackButton, RHFDescription } from 'component'
 import { GStyledStickyFormGrid, GCardOption, GStyledTopBorderDivider } from 'theme/style'
-import { REGEX, FLEX_DIR, FLEX } from 'constant'
+import { REGEX, FLEX_DIR, FLEX, KEY, TYPOGRAPHY } from 'constant'
 import { handleError } from 'util'
+import ViewFormField from 'component/viewform/view-form-field'
 
 /**
  * View ticket form
@@ -202,47 +203,97 @@ function TicketViewForm() {
     </GStyledStickyFormGrid> */}
     <Grid item xs={12} sm={12} lg={12}>
     <BackButton handleBackAction={handleBackAction} />
-    <Box mt={2} mb={5}>
-      <Card {...GCardOption(themeMode)}>
-       <GStyledTopBorderDivider mode={themeMode} />
-       <Grid container spacing={2} p={1.5}>
-        <GridViewField heading={t('machine.label')} isLoading={isLoading} gridSize={6} customerLink={PATH_MACHINE.machines.view(defaultValues?.machineId)}>
-         {defaultValues?.machine}
-        </GridViewField>
-        {/* <GridViewField heading={t('ticket_number.label')} isLoading={isLoading} gridSize={6}>
-         {defaultValues?.ticketNo}
-        </GridViewField> */}
-        <GridViewField heading={t('request_type.label')} isLoading={isLoading} gridSize={6}>
-         {defaultValues?.requestType}
-        </GridViewField>
-       </Grid>
-      </Card>
-     </Box>
-    <Box mb={5} mt={0}>
-      <Card {...GCardOption(themeMode)}>
-       <GStyledTopBorderDivider mode={themeMode} />
+
+    <Box mb={5} mt={2}>
+    <Card {...GCardOption(themeMode)}>
+    <GStyledTopBorderDivider mode={themeMode} />
+    <Grid container spacing={2} p={1.5}>
+      <GridViewField
+        heading={t('machine.label')}
+        isLoading={isLoading}
+        gridSize={4}
+        customerLink={PATH_MACHINE.machines.view(defaultValues?.machineId)}
+      >
+        {defaultValues?.machine}
+      </GridViewField>
+
+      <GridViewField
+        heading={t('request_type.label')}
+        isLoading={isLoading}
+        gridSize={4}
+      >
+        {defaultValues?.requestType}
+      </GridViewField>
+
+      <GridViewField
+        heading={t('status.label')}
+        isLoading={isLoading}
+        gridSize={4}
+      >
+        {defaultValues?.status}
+      </GridViewField>
+      <GridViewField
+        heading={t('priority.label')}
+        isLoading={isLoading}
+        gridSize={3}
+      >
+        <IconFlexi
+          icon={defaultValues?.priorityIcon}
+          color={defaultValues?.priorityColor}
+        />{' '}
+        &nbsp;{defaultValues?.priority}
+      </GridViewField>
+
+      <GridViewField
+        heading={t('impact.label')}
+        isLoading={isLoading}
+        gridSize={3}
+      >
+        {defaultValues?.impact}
+      </GridViewField>
+
+      <GridViewField
+        heading={t('hmi_version.label')}
+        isLoading={isLoading}
+        gridSize={3}
+      >
+        {softwareVersion?.hlc}
+      </GridViewField>
+
+      <GridViewField
+        heading={t('plc_version.label')}
+        isLoading={isLoading}
+        gridSize={3}
+      >
+        {softwareVersion?.plc}
+      </GridViewField>
+      <GridViewField
+        heading={t('summary.label')}
+        isLoading={isLoading}
+        gridSize={12}
+      >
+        {defaultValues?.summary}
+      </GridViewField>
+      <GridViewField  
+        heading={t('description.label')}
+        isLoading={isLoading}
+        gridSize={12}
+        multiline
+      >
+        {defaultValues?.description}
+      </GridViewField>
+      
+    </Grid>
+
          <Grid container spacing={2} p={1.5}>
         <Grid item xs={12} sm={12} md={8}>
          <Grid container spacing={2} p={1.5}>
-          <GridViewField heading={t('status.label')} isLoading={isLoading}>
-           {defaultValues?.status}
-          </GridViewField>
-          <GridViewField heading={t('priority.label')} isLoading={isLoading}>
-           <IconFlexi icon={defaultValues?.priorityIcon} color={defaultValues?.priorityColor} /> &nbsp;{defaultValues?.priority}
-          </GridViewField>
-          <GridViewField heading={t('impact.label')} isLoading={isLoading}>
-           {defaultValues?.impact}
-          </GridViewField>
+          
          </Grid>
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
          <Grid container spacing={2} p={1.5} display={FLEX.FLEX} justifyContent={FLEX.FLEX_END}>
-          <GridViewField heading={t('hmi_version.label')} isLoading={isLoading}>
-           {softwareVersion?.hlc}
-          </GridViewField>
-          <GridViewField heading={t('plc_version.label')} isLoading={isLoading}>
-           {softwareVersion?.plc}
-          </GridViewField>
+         
          </Grid>
         </Grid>
 
@@ -251,13 +302,9 @@ function TicketViewForm() {
        <Grid container spacing={2} p={1.5}>
         <Grid item xs={12} sm={12} md={12}>
          <Grid container spacing={2} p={1.5}>
-          <GridViewField heading={t('summary.label')} isLoading={isLoading} gridSize={12}>
-           {defaultValues?.summary}
-          </GridViewField>
+         
           <Grid item xs={12} sm={12}>
-          <GridViewField heading={t('description.label')} isLoading={isLoading} gridSize={12}>
-           {defaultValues?.description}
-          </GridViewField>
+         
            {/* <TextField
             multiline
             variant={'filled'}
