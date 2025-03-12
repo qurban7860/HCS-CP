@@ -14,7 +14,8 @@ function NavConfiguration() {
     { title: 'home.label', path: PATH_HOME.root },
     { title: 'machine.label', path: PATH_MACHINE.machines.list },
     { title: 'log.label', path: PATH_LOGS.machines.list },
-    { title: 'support.label', path: PATH_SUPPORT.tickets.list }
+    { title: 'support.label', path: PATH_SUPPORT.tickets.list },
+    { title: 'create_support_ticket.label', path: PATH_SUPPORT.tickets.create}
    ]
   }
  ])
