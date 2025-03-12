@@ -10,7 +10,7 @@ export const StyledDefaultTypography = styled(Typography)(({ theme }) => ({
  flexGrow: 1
 }))
 
-export const StyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, isMobile, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView, isNoBg, isMobile }) => ({
+export const StyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, isMobile, height, minHeight, alignItems, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView, isNoBg, isMobile, height, minHeight, alignItems }) => ({
  backgroundColor:
   mode === KEY.LIGHT && !isMachineView && !isNoBg
    ? theme.palette.grey[200]
@@ -20,12 +20,13 @@ export const StyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, isM
    ? theme.palette.grey[900]
    : theme.palette.grey[800],
  padding: '0.5rem 0.5rem',
- height: isMobile ? '2rem' : '3rem',
+ height: height ? height : isMobile ? '2rem' : '3rem',
+ minHeight: minHeight ? minHeight : isMobile ? '2rem' : '3rem',
  border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
  borderRadius: isMachineView && theme.spacing(RADIUS.FORM.borderRadius),
  overflow  : 'hidden',
  display   : 'flex',
- alignItems: 'center',
+ alignItems: alignItems ? alignItems : 'center',
  flexWrap  : 'nowrap',
 }))
 

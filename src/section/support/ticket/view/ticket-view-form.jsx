@@ -275,6 +275,10 @@ function TicketViewForm() {
         isLoading={isLoading}
         gridSize={12}
         multiline
+        noBreakSpace
+        height={"unset"}
+        minHeight={"10rem"}
+        alignItems={"flex-start"}
       >
         {defaultValues?.description}
       </GridViewField>
@@ -420,7 +424,7 @@ function TicketViewForm() {
          </Grid>
         )}
 
-<GridViewField
+      <GridViewField
         heading={t('impact.label')}
         isLoading={isLoading}
         gridSize={12}

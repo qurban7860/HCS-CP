@@ -34,7 +34,10 @@ const ViewFormField = ({
  isMachineView,
  customerLink,
  country,
- multiline
+ multiline,
+ height,
+ minHeight,
+ alignItems
 }) => {
  const [open, setOpen]         = useState(false)
  const [anchorEl, setAnchorEl] = useState(null)
@@ -66,7 +69,7 @@ const ViewFormField = ({
         <Typography variant={isMobile ? TYPOGRAPHY.OVERLINE : TYPOGRAPHY.OVERLINE0} color={themeMode === KEY.LIGHT ? theme.palette.grey[700] : theme.palette.grey[300]}>
             {heading}
         </Typography>
-        <StyledFieldGrid item xs={!isWidget && 12} sm={gridSize} mode={themeMode} isMachineView={isMachineView} isNoBg={isNoBg} isMobile={isMobile}>
+        <StyledFieldGrid item xs={!isWidget && 12} sm={gridSize} mode={themeMode} isMachineView={isMachineView} isNoBg={isNoBg} isMobile={isMobile} height={height} minHeight={minHeight} alignItems={alignItems}>
         {isLoading ? (
             <m.div>
              <SkeletonViewFormField />
@@ -250,7 +253,10 @@ ViewFormField.propTypes = {
  primaryContact: PropTypes.any,
  isMachineView : PropTypes.bool,
  country       : PropTypes.string,
- multiline     : PropTypes.boolean
+ multiline     : PropTypes.boolean,
+ height        : PropTypes.string,
+ minHeight     : PropTypes.string,
+ alignItems    : PropTypes.string
 }
 
 export default memo(ViewFormField)
