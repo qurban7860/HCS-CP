@@ -112,7 +112,7 @@ const HomeTab = () => {
   <Fragment>
    <Grid container columnSpacing={SPACING.COLUMN_SPACING} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
    <Grid item sm={12} lg={12}>
-    <Grid container rowGap={2} columnSpacing={2} mb={2} display={'flex'} justifyContent={'flex-end'}>
+    {/* <Grid container rowGap={2} columnSpacing={2} mb={2} display={'flex'} justifyContent={'flex-end'}>
         <Grid item md={3} display={'flex'} justifyContent={'flex-end'} mx={2}>
              <GStyledIconLoadingButton
                 loading={isLoading}
@@ -125,7 +125,7 @@ const HomeTab = () => {
                 </Link>
             </GStyledIconLoadingButton>
         </Grid>
-    </Grid>
+    </Grid> */}
    </Grid>
     <Grid item sm={12} lg={12}>
      <ChowBox title={sites?.length > 1 ? t('site.sites.label') : t('site.label')}>
