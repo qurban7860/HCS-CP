@@ -135,7 +135,7 @@ const isCommenterNotHowickAgent = (_commenterId) => securityUsers?.some((_user) 
   <Fragment>
    <Paper sx={{ width: '100%', p: 2 }}>
     <Box sx={{ ml: 1, mb: 1.5 }}>
-     <LoadingButton
+     {/* <LoadingButton
       value={TAB_TYPE.comment}
       onClick={() => handleTabChange(TAB_TYPE.comment)}
       variant={activeTab === TAB_TYPE.comment ? 'contained' : 'text'}
@@ -143,10 +143,10 @@ const isCommenterNotHowickAgent = (_commenterId) => securityUsers?.some((_user) 
       size='small'
       sx={{ width: 'fit-content', mr: 2, color: activeTab === TAB_TYPE.comment ? theme.palette.common.white : (themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.orange )}}>
        {t('comment.comments.label')}
-     </LoadingButton>
-     <LoadingButton value={TAB_TYPE.history} onClick={() => handleTabChange(TAB_TYPE.history)} variant={activeTab === TAB_TYPE.history ? 'contained' : 'text'} size='small' sx={{  width: 'fit-content', color: activeTab === TAB_TYPE.history ? theme.palette.common.white : (themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.orange ) }}>
+     </LoadingButton> */}
+     {/* <LoadingButton value={TAB_TYPE.history} onClick={() => handleTabChange(TAB_TYPE.history)} variant={activeTab === TAB_TYPE.history ? 'contained' : 'text'} size='small' sx={{  width: 'fit-content', color: activeTab === TAB_TYPE.history ? theme.palette.common.white : (themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.orange ) }}>
       {t('history.label')}
-     </LoadingButton>
+     </LoadingButton> */}
     </Box>
     {activeTab === TAB_TYPE.comment  && (
      <Fragment>
