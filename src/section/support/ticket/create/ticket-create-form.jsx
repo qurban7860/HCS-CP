@@ -129,15 +129,29 @@ useEffect(() => {
   }
 }, [softwareVersion, setValue])
 
+// useEffect to watch issueType changes and filter requestTypes
 useEffect(() => {
-  if (ticketSettings?.requestTypes && issueType) {
-    const filtered = ticketSettings.requestTypes.filter((requestType) => requestType.issueType._id === issueType._id)
-    setFilteredRequestTypes(filtered)
-  } else {
-    setFilteredRequestTypes([])
-    setValue('requestType', null)
+  if (!issueType || !ticketSettings?.requestTypes) {
+    // If issueType is cleared, reset the dependent requestType and list
+    setFilteredRequestTypes([]);
+    setValue('requestType', null);
+    return;
   }
-}, [ticketSettings?.requestTypes, issueType, setValue])
+
+  const filtered = ticketSettings.requestTypes.filter(
+    (requestType) => requestType.issueType?._id === issueType._id
+  );
+
+  setFilteredRequestTypes(filtered);
+
+  // Optional: If the current selected requestType isn't in filtered, clear it
+  setValue('requestType', (current) => {
+    const stillValid = filtered.find(rt => rt._id === current?._id);
+    return stillValid ? current : null;
+  });
+
+}, [issueType, ticketSettings?.requestTypes, setValue]);
+
 
  useEffect(() => {
   if (!isSuccessState) {
@@ -318,34 +332,39 @@ useEffect(() => {
           </Fragment>
          )}
 
-         <Grid item xs={12} sm={12} md={12}>
-          <RHFRequiredTextFieldWrapper condition={!issueType}>
-           <RHFAutocomplete
-            name='issueType'
-            label={t('issue_type.label')}
-            options={ticketSettings?.issueTypes || []}
-            isOptionEqualToValue={(option, value) => option._id === value._id}
-            getOptionLabel={option => `${option.name || ''}`}
-            renderOption={(props, option) => (
-             <li {...props} key={option?._id}>{option.name || ''}</li>
-            )}
-            required
-           />
-          </RHFRequiredTextFieldWrapper>
-         </Grid>
-         <Grid item xs={12} sm={12} md={12}>
-         <RHFRequiredTextFieldWrapper condition={!requestType}>
-          <RHFAutocomplete
-              name="requestType"
-              label={t('request_type.label')}
-              options={filteredRequestTypes || []}
-              isOptionEqualToValue={(option, value) => option._id === value._id}
-              getOptionLabel={(option) => `${option.name || ''}`}
-              renderOption={(props, option) => (<li {...props} key={option?._id}> {option.name || ''} </li> )}
-            />
-         </RHFRequiredTextFieldWrapper>
+<Grid item xs={12}>
+  <RHFRequiredTextFieldWrapper condition={!issueType}>
+    <RHFAutocomplete
+      name="issueType"
+      label={t('issue_type.label')}
+      options={ticketSettings?.issueTypes || []}
+      isOptionEqualToValue={(option, value) => option?._id === value?._id}
+      getOptionLabel={(option) => option?.name || ''}
+      renderOption={(props, option) => (
+        <li {...props} key={option?._id}>{option?.name || ''}</li>
+      )}
+      required
+    />
+  </RHFRequiredTextFieldWrapper>
+</Grid>
 
-         </Grid>
+<Grid item xs={12}>
+  <RHFRequiredTextFieldWrapper condition={!requestType}>
+    <RHFAutocomplete
+      name="requestType"
+      label={t('request_type.label')}
+      options={filteredRequestTypes}
+      isOptionEqualToValue={(option, value) => option?._id === value?._id}
+      getOptionLabel={(option) => option?.name || ''}
+      renderOption={(props, option) => (
+        <li {...props} key={option?._id}>{option?.name || ''}</li>
+      )}
+      required
+      disabled={!issueType} // Disable if no issueType selected
+    />
+  </RHFRequiredTextFieldWrapper>
+</Grid>
+
         </Grid>
        </Card>
       </Box>
