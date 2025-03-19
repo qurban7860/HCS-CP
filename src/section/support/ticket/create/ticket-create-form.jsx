@@ -24,11 +24,11 @@ import {
  resetCustomerMachines,
  resetSoftwareVersion
 } from 'store/slice'
-import { PATH_DASHBOARD } from 'route/path'
+import { PATH_DASHBOARD, PATH_SUPPORT } from 'route/path'
 import { TicketSchema } from 'schema'
 import { useTicketCreateDefaultValues } from 'section/support'
 import { useTheme, Grid, Box, Card } from '@mui/material'
-import { RHFRequiredTextFieldWrapper, RHFUpload, ConfirmDialog, TicketCreateSuccessDialog, GridViewTitle } from 'component'
+import { RHFRequiredTextFieldWrapper, RHFUpload, ConfirmDialog, TicketCreateSuccessDialog, GridViewTitle, BackButton } from 'component'
 import FormProvider, { RHFTextField, RHFAutocomplete, RHFDatePickr,  RHFTimePicker, RHFSwitch } from 'component/hook-form'
 import { GStyledLoadingButton, GStyledDefLoadingButton, GStyledStickyFormGrid, GCardOption, GStyledTopBorderDivider } from 'theme/style'
 import { REGEX, LOCAL_STORAGE_KEY, KEY, COLOR, FLEX_DIR } from 'constant'
@@ -291,6 +291,10 @@ useEffect(() => {
   }
  }
 
+ const handleBackAction = event => {
+  navigate(PATH_SUPPORT.tickets.list)
+ }
+
  const isServiceRequest = issueType?.name?.trim()?.toLowerCase() === KEY.SERVICE_REQUEST
  const isChangeRequest  = issueType?.name?.trim()?.toLowerCase() === KEY.CHANGE_REQUEST
 
@@ -298,12 +302,15 @@ useEffect(() => {
   <Fragment>
    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
     <Grid container my={4} direction={{ xs: 'column', md: 'row' }} flex={1} rowSpacing={4} gridAutoFlow={isMobile ? FLEX_DIR.COLUMN : FLEX_DIR.ROW} columnSpacing={2}>
-     <GStyledStickyFormGrid item xs={12} md={3}>
+    <Grid item xs={12} sm={12} lg={12}>
+    <BackButton handleBackAction={handleBackAction} />
+    </Grid>
+     <Grid item xs={12} md={12}>
       <Box mt={0} mb={2}>
        <Card {...GCardOption(themeMode)}>
         <GStyledTopBorderDivider mode={themeMode} />
         <Grid container spacing={2} p={1.5}>
-         <Grid item xs={12} sm={12} md={12}>
+         <Grid item xs={12} sm={12} md={6}>
           <RHFRequiredTextFieldWrapper condition={!machine}>
            <RHFAutocomplete
             name={'machine'}
@@ -318,9 +325,9 @@ useEffect(() => {
           </RHFRequiredTextFieldWrapper>
          </Grid>
 
-         {machine && (
+         {/* {machine && (
           <Fragment>
-           <Grid item xs={12} sm={12} md={12}>
+           <Grid item xs={12} sm={12} md={6}>
             <RHFTextField name={'machineModel'} label={t('machine_model.label')} value={machine?.machineModel?.name || ''} InputProps={{ readOnly: true }} />
            </Grid>
            <Grid item xs={12} sm={6} md={6}>
@@ -330,9 +337,21 @@ useEffect(() => {
             <RHFTextField name={"plc"} label={t('plc_version.label')} disabled />
            </Grid>
           </Fragment>
-         )}
+         )} */}
 
-<Grid item xs={12}>
+          <Fragment>
+           <Grid item xs={12} sm={12} md={6}>
+            <RHFTextField name={'machineModel'} label={t('machine_model.label')} value={machine?.machineModel?.name || ''} InputProps={{ readOnly: true }} />
+           </Grid>
+           <Grid item xs={12} sm={6} md={6}>
+            <RHFTextField name={"hlc"} label={t('hmi_version.label')} disabled />
+           </Grid>
+           <Grid item xs={12} sm={6} md={6}>
+            <RHFTextField name={"plc"} label={t('plc_version.label')} disabled />
+           </Grid>
+          </Fragment>
+
+<Grid item xs={12} md={6}>
   <RHFRequiredTextFieldWrapper condition={!issueType}>
     <RHFAutocomplete
       name="issueType"
@@ -348,7 +367,7 @@ useEffect(() => {
   </RHFRequiredTextFieldWrapper>
 </Grid>
 
-<Grid item xs={12}>
+<Grid item xs={12} md={6}>
   <RHFRequiredTextFieldWrapper condition={!requestType}>
     <RHFAutocomplete
       name="requestType"
@@ -368,7 +387,7 @@ useEffect(() => {
         </Grid>
        </Card>
       </Box>
-      <Grid container direction={{ xs: FLEX_DIR.COLUMN, md: FLEX_DIR.ROW }} justifyContent={KEY.CENTER} gap={2}>
+      {/* <Grid container direction={{ xs: FLEX_DIR.COLUMN, md: FLEX_DIR.ROW }} justifyContent={KEY.CENTER} gap={2}>
        <Grid item xs={12} sm={12} md={12}>
         <GStyledLoadingButton fullWidth color={KEY.INHERIT} type={KEY.SUBMIT} mode={themeMode} loading={isSubmitting} disabled={!isFormComplete}>
          {t('create_support_ticket.label').toUpperCase()}
@@ -387,12 +406,12 @@ useEffect(() => {
          {t('go_back.label').toUpperCase()}
         </GStyledDefLoadingButton>
        </Grid>
-      </Grid>
-     </GStyledStickyFormGrid>
+      </Grid> */}
+     </Grid>
 
      {(issueType && machine && requestType) && (
-      <Grid item xs={12} sm={9} md={9}>
-       <Box m={2} mb={5} mt={0}>
+      <Grid item xs={12} sm={9} md={12}>
+       <Box mb={2} mt={0}>
         <Card {...GCardOption(themeMode)}>
          <GStyledTopBorderDivider mode={themeMode} />
          <Grid container spacing={2} p={1.5}>
@@ -544,8 +563,31 @@ useEffect(() => {
            <RHFSwitch name={'shareWith'} label={t('set_private.label')} helperText={errors.shareWith ? errors.shareWith.message : ''} />
           </Grid>
          </Grid>
+
+
         </Card>
+        
        </Box>
+       <Grid container direction={{ xs: FLEX_DIR.COLUMN, md: FLEX_DIR.ROW }} justifyContent={KEY.CENTER} gap={2}>
+       <Grid item xs={12} sm={12} md={12}>
+        <GStyledLoadingButton fullWidth color={KEY.INHERIT} type={KEY.SUBMIT} mode={themeMode} loading={isSubmitting} disabled={!isFormComplete}>
+         {t('create_support_ticket.label').toUpperCase()}
+        </GStyledLoadingButton>
+       </Grid>
+       <Grid item mb={2} xs={12} sm={12} md={12}>
+        <GStyledDefLoadingButton
+         fullWidth
+         type={'button'}
+         color={KEY.INHERIT}
+         variant={KEY.CONTAINED}
+         bgColor={themeMode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[800]}
+         textColor={themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white}
+         mode={themeMode}
+         onClick={handleConfirmCancel}>
+         {t('go_back.label').toUpperCase()}
+        </GStyledDefLoadingButton>
+       </Grid>
+      </Grid>
       </Grid>
      )}
     </Grid>
