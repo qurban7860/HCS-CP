@@ -27,7 +27,8 @@ import ViewFormField from 'component/viewform/view-form-field'
  */
 function TicketViewForm() {
   const [slides, setSlides]                   = useState([])
-  const [selectedImage, setSelectedImage]     = useState(-1)
+  const [selectedImage, setSe
+    lectedImage]     = useState(-1)
   const [pdf, setPDF]                         = useState(null)
   const [PDFName, setPDFName]                 = useState('')
   const [PDFViewerDialog, setPDFViewerDialog] = useState(false)
