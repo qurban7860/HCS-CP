@@ -301,7 +301,7 @@ useEffect(() => {
  return (
   <Fragment>
    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-    <Grid container my={4} direction={{ xs: 'column', md: 'row' }} flex={1} rowSpacing={4} gridAutoFlow={isMobile ? FLEX_DIR.COLUMN : FLEX_DIR.ROW} columnSpacing={2}>
+    <Grid container direction={{ xs: 'column', md: 'row' }} flex={1} rowSpacing={4} gridAutoFlow={isMobile ? FLEX_DIR.COLUMN : FLEX_DIR.ROW} columnSpacing={2}>
     <Grid item xs={12} sm={12} lg={12}>
     <BackButton handleBackAction={handleBackAction} />
     </Grid>
@@ -310,7 +310,7 @@ useEffect(() => {
        <Card {...GCardOption(themeMode)}>
         <GStyledTopBorderDivider mode={themeMode} />
         <Grid container spacing={2} p={1.5}>
-         <Grid item xs={12} sm={12} md={6}>
+         <Grid item xs={12} sm={12} md={4}>
           <RHFRequiredTextFieldWrapper condition={!machine}>
            <RHFAutocomplete
             name={'machine'}
@@ -340,13 +340,13 @@ useEffect(() => {
          )} */}
 
           <Fragment>
-           <Grid item xs={12} sm={12} md={6}>
+           <Grid item xs={12} sm={12} md={4}>
             <RHFTextField name={'machineModel'} label={t('machine_model.label')} value={machine?.machineModel?.name || ''} InputProps={{ readOnly: true }} />
            </Grid>
-           <Grid item xs={12} sm={6} md={6}>
+           <Grid item xs={12} sm={6} md={2}>
             <RHFTextField name={"hlc"} label={t('hmi_version.label')} disabled />
            </Grid>
-           <Grid item xs={12} sm={6} md={6}>
+           <Grid item xs={12} sm={6} md={2}>
             <RHFTextField name={"plc"} label={t('plc_version.label')} disabled />
            </Grid>
           </Fragment>

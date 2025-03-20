@@ -51,6 +51,7 @@ function NavList({ data, depth, hasChild, handleCloseNavItem }) {
  const handleClose = () => {
   setOpen(false)
  }
+ 
 
  return (
   <Fragment>
