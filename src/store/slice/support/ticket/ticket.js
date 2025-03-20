@@ -166,7 +166,7 @@ export function getTickets(customerId, period) {
    }
    const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
   //  const customerTickets  = response.data &&  response.data.data.filter(ticket => ticket.customer._id === customerId)
-    dispatch(supportSlice.actions.getTicketsSuccess(response.data.data))
+    dispatch(supportSlice.actions.getTicketsSuccess(response.data))
    return response
   } catch (error) {
    console.error(error)
