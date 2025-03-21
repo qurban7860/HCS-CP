@@ -10,7 +10,7 @@ const TableStickyTitleBox = ({ subTitle, title, icon }) => {
   <GStyledStickyBox
     sx={{
       backgroundColor: 'background.default',
-      p: 2,
+      mb: 2,
     }}
   >
     <GStyledSpanBox>
