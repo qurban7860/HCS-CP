@@ -1,31 +1,30 @@
 import PropTypes from 'prop-types'
+import { t } from 'i18next'
 import { Grid } from '@mui/material'
 import { ViewFormField } from 'component/viewform'
-import { VIEW_FORM } from 'constant'
 
 const HowickResources = ({ value, isLoading, gridSize = 6, spacing = 2, isDialog }) => {
-  const { HOWICK_RESOURCES } = VIEW_FORM
-  return (
-    <Grid container spacing={isDialog ? 1 : spacing} p={2} pb={5}>
-      <Grid item xs={12} sm={gridSize}>
-        <ViewFormField heading={HOWICK_RESOURCES.PROJECT_MANAGER} isLoading={isLoading} contact={value.projectManager} />
-      </Grid>
-      <Grid item xs={12} sm={gridSize}>
-        <ViewFormField heading={HOWICK_RESOURCES.SUPPORT_MANAGER} isLoading={isLoading} contact={value.supportManager} />
-      </Grid>
-      <Grid item xs={12} sm={gridSize}>
-        <ViewFormField heading={HOWICK_RESOURCES.ACCOUNT_MANAGER} isLoading={isLoading} contact={value.accountManager} />
-      </Grid>
-    </Grid>
-  )
+ return (
+  <Grid container spacing={isDialog ? 1 : spacing} p={1} pb={2}>
+   <Grid item xs={12} sm={gridSize}>
+    <ViewFormField heading={value.projectManager?.length > 1 ? t('project_manager.project_managers.label') : t('project_manager.label')} isLoading={isLoading} contact={value.projectManager} isNoBg />
+   </Grid>
+   <Grid item xs={12} sm={gridSize}>
+    <ViewFormField heading={value.supportManager?.length > 1 ? t('support_manager.support_managers.label') : t('support_manager.label')} isLoading={isLoading} contact={value.supportManager} isNoBg />
+   </Grid>
+   <Grid item xs={12} sm={gridSize}>
+    <ViewFormField heading={value.accountManager?.length > 1 ? t('account_manager.account_managers.label') : t('account_manager.label')} isLoading={isLoading} contact={value.accountManager} isNoBg />
+   </Grid>
+  </Grid>
+ )
 }
 
 HowickResources.propTypes = {
-  value: PropTypes.object,
-  isLoading: PropTypes.bool,
-  gridSize: PropTypes.number,
-  spacing: PropTypes.number,
-  isDialog: PropTypes.bool
+ value: PropTypes.object,
+ isLoading: PropTypes.bool,
+ gridSize: PropTypes.number,
+ spacing: PropTypes.number,
+ isDialog: PropTypes.bool
 }
 
 export default HowickResources

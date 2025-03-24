@@ -4,6 +4,7 @@ import { Image } from 'component/image'
 import { ASSET } from 'config/asset-directory'
 
 const EmptyContent = ({ title, description, img, sx, ...other }) => {
+ const isMobile = window.innerWidth < 600
  return (
   <Stack
    alignItems='center'
@@ -15,7 +16,17 @@ const EmptyContent = ({ title, description, img, sx, ...other }) => {
     ...sx
    }}
    {...other}>
-   <Image disabledEffect alt='empty content' src={img || ASSET.LOGO} sx={{ height: 240, mb: 3, filter: 'grayscale(100%) opacity(10%)' }} />
+   <Image
+    disabledEffect
+    alt='empty content'
+    src={img || (isMobile ? ASSET.ICON : ASSET.LOGO)}
+    sx={{
+     height: { xs: 120, sm: 240 },
+     width: { xs: 125, sm: 450, md: 900 },
+     mb: 3,
+     filter: 'grayscale(100%) opacity(10%)'
+    }}
+   />
 
    <Typography variant='h4' gutterBottom>
     {title}

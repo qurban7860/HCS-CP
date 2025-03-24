@@ -27,11 +27,11 @@ function RHFDescription({ name, schema, helperText, ...other }) {
           error={!!errors[name]}
           helperText={errors[name] ? errors[name]?.message : helperText}
           onChange={(e) => {
-            setValue(name, e.target.value) // Update the form value
-            field.onChange(e) // Trigger the field's onChange event
+            setValue(name, e.target.value)
+            field.onChange(e)
           }}
           onBlur={(e) => {
-            field.onBlur(e) // Trigger the field's onBlur event
+            field.onBlur(e)
           }}
           {...other}
         />

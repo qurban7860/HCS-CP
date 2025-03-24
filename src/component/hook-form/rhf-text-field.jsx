@@ -1,20 +1,17 @@
+import { forwardRef } from 'react'
 import PropTypes from 'prop-types'
 import { useFormContext, Controller } from 'react-hook-form'
+import { useMediaQuery, TextField } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { TextField } from '@mui/material'
 import { useSettingContext } from 'hook'
+import { RADIUS } from 'config/layout'
 import { KEY } from 'constant'
 
-RHFTextField.propTypes = {
- name: PropTypes.string,
- helperText: PropTypes.node,
- Error: PropTypes.bool
-}
-
-export default function RHFTextField({ name, helperText, Error, ...other }) {
+ const RHFTextField = forwardRef(({ name, helperText, Error, ...other }, ref) => {
  const { control } = useFormContext()
  const { themeMode } = useSettingContext()
  const theme = useTheme()
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
  return (
   <Controller
@@ -30,45 +27,52 @@ export default function RHFTextField({ name, helperText, Error, ...other }) {
      {...other}
      sx={{
       '& .MuiInputLabel-root': {
-       bgcolor: themeMode === KEY.LIGHT ? 'grey.400' : 'grey.800',
-       ...theme.typography.overline1
+       ...(isDesktop ? theme.typography.body1 : theme.typography.body2)
       },
       '& .MuiOutlinedInput-notchedOutline': {
-       borderRadius: 0.4,
+       borderRadius: RADIUS.FORM.borderRadius,
        color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0',
-       ...theme.typography.overline1
+       ...(isDesktop ? theme.typography.body1 : theme.typography.body2)
       },
       '& .MuiInputBase-root': {
        '&:hover': {
-        '& .MuiOutlinedInput-notchedOutline': {
-         borderColor: 'common.white'
-        },
         '& .MuiInputBase-input': {
-         color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
+         color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white
         }
        },
        '& .MuiInputBase-input': {
         color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
        },
-       '&.Mui-focused': {
-        '& .MuiOutlinedInput-notchedOutline': {
-         borderColor: 'common.white'
-        },
-        backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
-       },
        '&.Mui-disabled': {
-        color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.200',
+        backgroundColor: themeMode === KEY.LIGHT ? 'grey.100' : 'grey.800',
+        pointerEvents: 'none',
         '& .MuiOutlinedInput-notchedOutline': {
-         borderColor: themeMode === KEY.LIGHT ? 'transparent' : 'bronze.main'
+         color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.400'
         }
        },
        '& .MuiAutocomplete-inputRoot': {
         backgroundColor: themeMode === KEY.LIGHT ? 'grey.400' : 'grey.800'
        }
+      },
+      '& .MuiInputLabel-root.Mui-disabled': {
+       color: themeMode === KEY.LIGHT ? 'grey.500' : 'grey.300'
+      },
+      '& .MuiFormHelperText-root.Mui-disabled': {
+       color: themeMode === KEY.LIGHT ? 'grey.500' : 'grey.300'
       }
      }}
     />
    )}
   />
  )
+})
+
+RHFTextField.displayName = 'RHFTextField'
+RHFTextField.propTypes = {
+ name      : PropTypes.string,
+ helperText: PropTypes.node,
+ Error     : PropTypes.bool
 }
+
+
+export default RHFTextField

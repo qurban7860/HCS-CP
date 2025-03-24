@@ -1,53 +1,43 @@
-import { useMemo, useEffect, useState, useCallback } from 'react'
-import { useSelector } from 'react-redux'
-import * as yup from 'yup'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useEffect, useState, useCallback, Fragment } from 'react'
+import { t } from 'i18next'
 import { Trans } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import useResponsive from 'hook/use-responsive'
-import { snack } from 'hook'
-import { useForm } from 'react-hook-form'
-import { Typography, Alert, Grid, Link, Box } from '@mui/material'
-import { AutocompleteScrollChipContainer } from 'component'
-import FormProvider, { RHFTextField, RHFCountryAutocomplete, RHFCustomPhoneInput } from 'component/hook-form'
+import { snack, useSettingContext } from 'hook'
+import { dispatch } from 'store'
+import { useForm, Controller } from 'react-hook-form'
+import { registerCustomer } from 'store/slice'
+import { RegisterSchema } from 'schema'
+import { useRegisterDefaultValues, RegisterSuccessCard } from 'section/auth'
+import { Typography, Grid, Link, Box } from '@mui/material'
+import { AutocompleteScrollChipContainer, RHFRequiredTextFieldWrapper } from 'component'
+import FormProvider, { RHFTextField, RHFCountryAutocomplete, RHFPhoneTextField } from 'component/hook-form'
+import { GStyledLoadingButton, GStyledCenteredTextBox } from 'theme/style'
+import { delay, deepEqual } from 'util'
 import { GLOBAL } from 'config/global'
-import { RADIUS } from 'config'
-import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, VARIANT, SNACK, SIZE, COLOR, COUNTRY } from 'constant'
-import { GStyledLoadingButton } from 'theme/style'
-
-const { TYPOGRAPHY } = VARIANT
-// gsap.registerPlugin(useGSAP)
+import { REGEX, LOCAL_STORAGE_KEY, KEY, LABEL, SIZE, COLOR, COUNTRY, TYPOGRAPHY, FLEX_DIR } from 'constant'
 
 /**
  * [!Note]: This will be refined
  * @returns {JSX.Element}
  */
 function RegisterForm() {
- const [isFormComplete, setIsFormComplete] = useState(false)
- const [isTyping, setIsTyping] = useState(false)
- const { contacts } = useSelector(state => state.contact)
- const navigate = useNavigate()
+ const [isFormComplete, setIsFormComplete]       = useState(false)
+ const [isTyping, setIsTyping]                   = useState(false)
+ const [rows, setRows]                           = useState(1)
+ const [submittedData, setSubmittedData]         = useState(null)
+ const [isSuccessState, setIsSuccessState]       = useState(false)
 
- const regEx = new RegExp(REGEX.ERROR_CODE)
+ const regEx         = new RegExp(REGEX.ERROR_CODE)
  const serialNoRegEx = new RegExp(REGEX.SERIAL_NO)
-
- const isMobile = useResponsive('down', 'sm')
- const isMdScreen = useResponsive('between', 'md')
- const isLgScreen = useResponsive('up', 'lg')
+ const { themeMode } = useSettingContext()
+ const isMobile      = useResponsive('down', 'sm')
 
  const getCountryByLocale = () => {
-  const locale = Intl.DateTimeFormat().resolvedOptions().locale || 'en-NZ'
-  const countryCode = locale.split('-')[1]?.toLowerCase()
-  const foundCountry = COUNTRY.find(country => country?.code?.toLowerCase() === countryCode)
-  return foundCountry ? foundCountry : { code: 'NZ', label: 'New Zealand', phone: '64' }
- }
-
- const updatePhoneCountryCode = country => {
-  const countryCode = country?.phone?.replace(/[^0-9]/g, '')
-  setValue('phone.countryCode', countryCode)
+  const locale       = Intl.DateTimeFormat().resolvedOptions().locale || 'en-NZ'
+  const countryCode  = locale.split('-')[1]?.toLowerCase()
+  const foundCountry = COUNTRY.find(country => country?.code?.toLocaleLowerCase() === countryCode)
+  return foundCountry ? foundCountry : { code: '', label: '', phone: '64' }
  }
 
  const getUserLocation = () => {
@@ -56,46 +46,21 @@ function RegisterForm() {
     position => {
      const userCountry = getCountryByLocale()
      setValue('country', userCountry)
-     updatePhoneCountryCode(userCountry)
     },
     error => {
      console.error('Error getting user location:', error)
      const userCountry = getCountryByLocale()
      setValue('country', userCountry)
-     updatePhoneCountryCode(userCountry)
     }
    )
   } else {
    const userCountry = getCountryByLocale()
    setValue('country', userCountry)
-   updatePhoneCountryCode(userCountry)
   }
  }
 
  const userLocale = getCountryByLocale()
-
- const RegisterSchema = yup.object().shape({
-  customerName: yup.string().required('Organization name is required'),
-  machines: yup.array().of(yup.string().matches(serialNoRegEx, 'Invalid serial number').length(5, 'Serial number must be 5 characters long')).min(1, 'At least one machine is required'),
-  address: yup.string().required('Address is required'),
-  country: yup.object().label('Country').nullable(),
-  contactName: yup.string().required('Contact name is required'),
-  email: yup.string().email('Invalid email format').required('Email is required')
-  //   phone: yup.object().required('Phone number is required')
- })
-
- const defaultValues = useMemo(
-  () => ({
-   customerName: '',
-   contactName: '',
-   address: '',
-   country: userLocale,
-   email: '',
-   phone: { type: 'Work', countryCode: userLocale.phone, number: '' },
-   machines: []
-  }),
-  [userLocale]
- )
+ const defaultValues = useRegisterDefaultValues(userLocale)
 
  const methods = useForm({
   resolver: yupResolver(RegisterSchema),
@@ -112,62 +77,61 @@ function RegisterForm() {
   formState: { errors, isSubmitting, isSubmitSuccessful },
   clearErrors
  } = methods
- const { customerName, machines, address, country, contactName, email, phone } = watch()
+ const { customerName, machineSerialNos, country, contactPersonName, email } = watch()
 
  const checkFormCompletion = useCallback(() => {
-  setIsFormComplete(!!customerName && !!contactName && !!address && !!country && !!email && !!phone && machines.length > 0)
- }, [customerName, machines, address, country, contactName, email, phone])
+  setIsFormComplete(!!customerName && !!contactPersonName && !!country && !!email && machineSerialNos.length > 0)
+ }, [customerName, machineSerialNos, country, contactPersonName, email])
 
  useEffect(() => {
-  checkFormCompletion()
- }, [checkFormCompletion])
-
- useEffect(() => {
-  if (!phone || phone === undefined) {
-   setValue(`phone.countryCode`, country?.phone?.replace(/[^0-9]/g, ''))
+  if (!isSuccessState) {
+   checkFormCompletion()
   }
- }, [country])
+ }, [checkFormCompletion])
 
  useEffect(() => {
   getUserLocation()
  }, [])
-
- useEffect(() => {
-  if (country) {
-   updatePhoneCountryCode(country)
-  }
- }, [country])
-
- //  TODO: implement this when endpoint is ready from the server
- const onSubmit = async data => {
-  try {
-   console.log('data', data)
-   reset()
-   snack('Registration request sent. A Howick team member will contact you as soon as this is approved', { variant: COLOR.SUCCESS })
-  } catch (error) {
-   if (regEx.test(error.MessageCode)) {
-    snack('error in sending form', { variant: COLOR.ERROR })
-    setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, { ...error, message: error })
-   } else {
-    console.error('unable to read error message', error || '')
-    snack('unable to read error message', { variant: COLOR.ERROR })
-    setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, { ...error, message: error })
-   }
-  }
- }
 
  const validateSerialNumber = serialNumber => {
   return serialNumber.length === 5 && serialNoRegEx.test(serialNumber)
  }
 
  useEffect(() => {
-  if (machines.length > 0 && machines[machines.length - 1].length === 5) {
-   setValue(
-    'machines',
-    machines.filter(serialNumber => validateSerialNumber(serialNumber))
-   )
-  }
- }, [machines])
+     if (!isSuccessState && machineSerialNos.length > 0 && machineSerialNos[machineSerialNos.length - 1].length === 5) {
+         setValue(
+             'machineSerialNos',
+             machineSerialNos.filter(serialNumber => validateSerialNumber(serialNumber))
+            )
+        }
+    }, [machineSerialNos, setValue])
+
+ const isFormDirty = Object.keys(defaultValues).some(key => !deepEqual(watch(key), defaultValues[key]))
+ useEffect(() => {
+    const handleBeforeUnload = event => {
+     if (isFormDirty) {
+      event.preventDefault()
+      event.returnValue = t('responses.messages.form_dirty')
+     }
+    }
+    const handlePopState = event => {
+     if (isFormDirty) {
+      const confirmation = window.confirm(t('responses.messages.form_dirty'))
+      if (!confirmation) {
+       event.preventDefault()
+       history.pushState(null, document.title, window.location.href)
+      } else {
+       reset(defaultValues)
+      }
+     }
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    window.addEventListener('popstate', handlePopState)
+    return () => {
+     window.removeEventListener('beforeunload', handleBeforeUnload)
+     window.removeEventListener('popstate', handlePopState)
+    }
+   }, [isFormDirty])
 
  const handleValidateSerialNumbers = (event, newValue, reason, details) => {
   if (event.target.value?.length > 0) {
@@ -176,146 +140,202 @@ function RegisterForm() {
   if (reason === 'createOption') {
    const serialNumber = details.option
    if (validateSerialNumber(serialNumber)) {
-    const currentMachines = getValues('machines')
-    setValue('machines', [...currentMachines, serialNumber])
+    const currentMachines = getValues('machineSerialNos')
+    setValue('machineSerialNos', [...currentMachines, serialNumber])
    } else {
-    snack('Serial Number provided is invalid', { variant: COLOR.ERROR })
-    setError('machines', { message: 'Serial Number provided is invalid' })
-    return getValues('machines')
+    snack(t('responses.error.machine_serial_invalid'), { variant: COLOR.ERROR })
+    setError('machineSerialNos', { message: 'Serial Number provided is invalid' })
+    return getValues('machineSerialNos')
    }
   }
-  clearErrors('machines')
+  clearErrors('machineSerialNos')
   setIsTyping(false)
-  setValue('machines', newValue)
+  setValue('machineSerialNos', newValue)
  }
 
- return (
-  <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-   {isMobile && (
-    <Grid container spacing={2} mb={4} gap={2}>
-     {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
-     <Grid container gap={4}>
-      <RHFTextField
-       className={'portal-rhftextfield'}
-       name='customerName'
-       label='Organization Name'
-       type='text'
-       autoComplete={LABEL.NAME}
-       aria-label={LABEL.NAME}
-       helperText={errors.customerName ? errors.customerName.message : ''}
-      />
-      <RHFTextField
-       className={'portal-rhftextfield'}
-       name='contactName'
-       type='text'
-       label='Contact name'
-       autoComplete={LABEL.NAME}
-       aria-label={LABEL.NAME}
-       helperText={errors.contactName ? errors.contactName.message : ''}
-      />
-      <RHFTextField className={'portal-rhftextfield'} name='address' label='Organization Address' helperText={errors.address ? errors.address.message : ''} />
-      <RHFCountryAutocomplete className={'portal-rhftextfield'} name='country' label='Country' helperText={errors.country ? errors.country.message : ''} fullWidth />
-      <RHFTextField
-       className={'portal-rhftextfield'}
-       name={KEY.EMAIL}
-       type={KEY.EMAIL}
-       label='Email'
-       autoComplete={KEY.EMAIL}
-       aria-label={LABEL.LOGIN_EMAIL}
-       error={!!errors.email}
-       helperText={errors.email ? errors.email.message : ''}
-      />
-      <RHFCustomPhoneInput name='phone' value={phone} label={'Contact Number'} error={!!errors.phone} helperText={errors.phone ? errors.phone.message : ''} isRegister />
-      <AutocompleteScrollChipContainer
-       setValue={setValue}
-       handleInputChange={handleValidateSerialNumbers}
-       renderInput={params => (
-        <RHFTextField
-         {...params}
-         name='machines'
-         label='Machines'
-         type='text'
-         onChange={event => setIsTyping(event.target.value.length > 0)}
-         helperText={errors.machines ? errors.machines.message : 'Press enter at the end of each serial number'}
-         FormHelperTextProps={{ sx: { display: isTyping ? 'block' : 'none' } }}
-        />
-       )}
+ const handleSubmissionError = error => {
+  if (error?.errors) {
+   error.errors.forEach(({ field, message }) => {
+    setError(field, {
+     type: 'validation',
+     message
+    })
+   })
+   snack(t('responses.error.form_check_errors'), { variant: COLOR.ERROR })
+   return
+  }
+  if (error?.MessageCode && regEx.test(error.MessageCode)) {
+   snack(t('responses.error.default'), { variant: COLOR.ERROR })
+   setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
+    type: 'submission',
+    message: error.MessageCode
+   })
+   return
+  }
+  console.error(t('responses.error.unexpected_error'), error)
+  snack(`Error occured: ${error}`, { variant: COLOR.ERROR })
+  setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
+   type: 'unexpected',
+   message: error?.message || t('responses.error.unexpected_error')
+  })
+ }
+
+ const onSubmit = async data => {
+  try {
+   await delay(2000)
+   setIsSuccessState(true)
+   setSubmittedData(data)
+   const response = await dispatch(registerCustomer(data))
+   if (response?.success) {
+    snack(t('responses.success.register_request_submitted'), { variant: COLOR.SUCCESS })
+    await delay(2000)
+    reset()
+   }
+  } catch (error) {
+   handleSubmissionError(error)
+  }
+ }
+
+ return isSubmitSuccessful && submittedData ? (
+  <Fragment>
+   <RegisterSuccessCard submittedData={submittedData} />
+   <Box height={{ xs: 50, md: 100 }} />
+  </Fragment>
+ ) : (
+  <Fragment>
+   <GStyledCenteredTextBox>
+    <Typography sx={{ color: 'grey.400', mb: 5 }} variant='h3'>
+     {t('register.label').toUpperCase()}
+    </Typography>
+   </GStyledCenteredTextBox>
+   <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Grid container mb={4} direction={{ xs: 'column', md: 'row' }} flex={1} rowSpacing={4} gridAutoFlow={isMobile ? FLEX_DIR.COLUMN : FLEX_DIR.ROW} columnSpacing={2}>
+     <Grid item xs={12} sm={6} md={6}>
+      <RHFRequiredTextFieldWrapper condition={!customerName}>
+       <RHFTextField
+        name='customerName'
+        label={t('organization_name.label')}
+        autoComplete={LABEL.NAME}
+        aria-label={t('organization_name.label')}
+        helperText={errors.customerName ? errors.customerName.message : ''}
+        required
+       />
+      </RHFRequiredTextFieldWrapper>
+     </Grid>
+     <Grid item xs={12} sm={6} md={6}>
+      <RHFRequiredTextFieldWrapper condition={!contactPersonName}>
+       <RHFTextField
+        name='contactPersonName'
+        label={t('contact_person_name.label')}
+        autoComplete={KEY.NAME}
+        aria-label={KEY.NAME}
+        helperText={errors.contactPersonName ? errors.contactPersonName.message : ''}
+        required
+       />
+      </RHFRequiredTextFieldWrapper>
+     </Grid>
+     <Grid item xs={12} sm={6} md={6}>
+      <RHFTextField name='address' label={t('organization_address.label')} autoComplete='address' helperText={errors.address ? errors.address.message : ''} />
+     </Grid>
+     <Grid item xs={12} sm={6} md={6}>
+      <RHFCountryAutocomplete fullWidth name='country' label={t('country.label')} helperText={errors.country ? errors.country.message : ''} required />
+     </Grid>
+     <Grid item xs={12} sm={6} md={6}>
+      <RHFRequiredTextFieldWrapper condition={REGEX.EMAIL.test(email) === false}>
+       <RHFTextField
+        name={KEY.EMAIL}
+        type={KEY.EMAIL}
+        label={t('email.label')}
+        autoComplete={KEY.EMAIL}
+        aria-label={LABEL.LOGIN_EMAIL}
+        error={!!errors.email}
+        helperText={errors.email ? errors.email.message : ''}
+        required
+       />
+      </RHFRequiredTextFieldWrapper>
+     </Grid>
+     <Grid item xs={12} sm={6} md={6}>
+      <RHFPhoneTextField
+       name='phoneNumber'
+       label={t('contact_number.label')}
+       autoComplete={KEY.PHONE}
+       placeholder={t('contact_number.label')}
+       aria-label={t('contact_number.label')}
+       helperText={errors.phoneNumber ? errors.phoneNumber.message : ''}
       />
      </Grid>
-    </Grid>
-   )}
-
-   {isMdScreen ||
-    (isLgScreen && (
-     <Grid container spacing={2} mb={4}>
-      {!!errors.afterSubmit || (errors.afterSubmit && <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>)}
-      <Grid item sm={6}>
-       <Grid container gap={4}>
-        <RHFTextField name='customerName' label='Organization Name' type='text' autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText={errors.customerName ? errors.customerName.message : ''} />
-        <RHFTextField name='address' label='Organization Address' autoComplete='address' helperText={errors.address ? errors.address.message : ''} />
-        <RHFTextField
-         name={KEY.EMAIL}
-         label='Email'
-         type={KEY.EMAIL}
-         autoComplete={KEY.EMAIL}
-         aria-label={LABEL.LOGIN_EMAIL}
-         error={!!errors.email}
-         helperText={errors.email ? errors.email.message : ''}
-        />
-       </Grid>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-       <Grid container gap={4}>
-        <RHFTextField name='contactName' label='Contact name' type='text' autoComplete={LABEL.NAME} aria-label={LABEL.NAME} helperText={errors.contactName ? errors.contactName.message : ''} />
-        <RHFCountryAutocomplete fullWidth name='country' label='Country' helperText={errors.country ? errors.country.message : ''} />
-        <RHFCustomPhoneInput name='phone' value={phone} label={'Contact Number'} helperText={errors.phone ? errors.phone.message : ''} isRegister />
-       </Grid>
-      </Grid>
-      <Grid item sm={12} mt={2}>
-       <AutocompleteScrollChipContainer
-        fullWidth
-        handleInputChange={handleValidateSerialNumbers}
-        renderInput={params => (
-         <RHFTextField
-          {...params}
-          type='text'
-          name='machines'
-          label='Machines'
-          placeholder='Enter Machine serial number'
-          onChange={event => setIsTyping(event.target.value.length > 0)}
-          helperText={errors.machines ? errors.machines.message : 'Press enter at the end of each serial number'}
-          FormHelperTextProps={{ sx: { display: isTyping ? 'block' : 'none' } }}
+     <Grid item xs={12}>
+      <RHFRequiredTextFieldWrapper condition={machineSerialNos.length <= 0}>
+       <Controller
+        name='machineSerialNos'
+        control={methods.control}
+        defaultValue={[]}
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+         <AutocompleteScrollChipContainer
+          value={value}
+          onChange={(_, newValue) => {
+           onChange(newValue)
+           setIsTyping(newValue.length > 0)
+          }}
+          handleInputChange={handleValidateSerialNumbers}
+          renderInput={params => (
+           <RHFTextField
+            {...params}
+            type='text'
+            name='machineSerialNos'
+            label={t('machine.machines.label')}
+            onChange={event => setIsTyping(event.target.value.length > 0)}
+            placeholder='Enter machine serial numbers'
+            helperText={error ? error.message : 'Press enter at the end of each serial number'}
+            FormHelperTextProps={{ sx: { display: isTyping ? 'block' : 'none' } }}
+           />
+          )}
+          fullWidth
          />
         )}
        />
-      </Grid>
+      </RHFRequiredTextFieldWrapper>
      </Grid>
-    ))}
+     <Grid item xs={12}>
+      <RHFTextField
+       name='customerNote'
+       label={t('note.label')}
+       autoComplete='customerNote'
+       aria-label={t('note.label')}
+       placeholder='Any additional notes?'
+       helperText={errors.customerNote ? errors.customerNote.message : ''}
+       multiline
+       rows={rows}
+       mt={2}
+       onFocus={() => setRows(3)}
+       onBlur={() => setRows(1)}
+      />
+     </Grid>
+    </Grid>
 
-   <Grid container flex justifyContent='center'>
-    <Grid container flex justifyContent='center' gap={2} mb={2}>
-     <Typography variant={TYPOGRAPHY.BODY2}>
-      <Trans i18nKey='register_agreement' components={{ 1: <Link href={GLOBAL.PRIVACY_POLICY_URL} /> }} />
-     </Typography>
+    <Grid container direction={{ xs: 'column', md: 'row' }} justifyContent='center'>
+     <Grid container justifyContent='center' mt={2} mb={2}>
+      <Typography variant={TYPOGRAPHY.BODY2}>
+       <Trans i18nKey='register_agreement' components={{ 1: <Link href={GLOBAL.PRIVACY_POLICY_URL} /> }} />
+      </Typography>
+     </Grid>
+     <Grid item xs={12} sm={4} md={4}>
+      <GStyledLoadingButton
+       fullWidth
+       color={KEY.INHERIT}
+       size={SIZE.LARGE}
+       type={KEY.SUBMIT}
+       mode={themeMode}
+       loading={isSubmitting}
+       disabled={Object.keys(errors).length > 0 || !isFormComplete}>
+       {t('register.label').toUpperCase()}
+      </GStyledLoadingButton>
+     </Grid>
+     {/* Spacer */}
+     <Box height={{ xs: 50, md: 100 }} />
     </Grid>
-    <Grid item xs={12} sm={4}>
-     <GStyledLoadingButton
-      fullWidth
-      isLoading={isSubmitting}
-      color={KEY.INHERIT}
-      size={SIZE.LARGE}
-      type={KEY.SUBMIT}
-      variant={KEY.CONTAINED}
-      loading={isSubmitSuccessful || isSubmitting}
-      disabled={Object.keys(errors).length > 0 || !isFormComplete}
-      sx={RADIUS.BORDER}>
-      {'REGISTER'}
-     </GStyledLoadingButton>
-    </Grid>
-    {/* keep for now  */}
-    <Box height={100} />
-   </Grid>
-  </FormProvider>
+   </FormProvider>
+  </Fragment>
  )
 }
 

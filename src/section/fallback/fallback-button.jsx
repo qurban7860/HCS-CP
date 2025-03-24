@@ -1,23 +1,23 @@
+import { t } from 'i18next'
 import { useSettingContext } from 'hook'
-import { Button } from '@mui/material'
-import { BUTTON, COLOR, KEY } from 'constant'
-import { PATH_DASHBOARD } from 'route/path'
+import { PATH_HOME } from 'route/path'
+import { useTheme } from '@mui/material'
+import { GStyledDefLoadingButton } from 'theme/style'
+import { KEY, SIZE } from 'constant'
 
 const FallbackButton = () => {
-  const { themeMode } = useSettingContext()
-  return (
-    <Button
-      onClick={() => window.open(PATH_DASHBOARD.general.app, '_self')}
-      variant={themeMode === KEY.LIGHT ? 'contained' : 'contained'}
-      size="small"
-      sx={{
-        color: themeMode === KEY.LIGHT ? 'grey.300' : 'common.white',
-        backgroundColor: themeMode === KEY.LIGHT ? 'howick.bronze' : COLOR.PRIMARY,
-        borderColor: themeMode === KEY.LIGHT ? 'howick.darkBlue' : 'common.white'
-      }}>
-      {BUTTON.GO_BACK}
-    </Button>
-  )
+ const { themeMode } = useSettingContext()
+ const theme = useTheme()
+ return (
+  <GStyledDefLoadingButton
+   // HPS-1704: redir to home for now while machine logs is being restructured; then change it to dashboard/app
+   onClick={() => window.open(PATH_HOME.root, '_self')}
+   size={SIZE.MEDIUM}
+   bgColor={themeMode === KEY.LIGHT ? theme.palette.howick.bronze : theme.palette.howick.orange}
+   textColor={themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black}>
+   {t('go_back.label').toUpperCase()}
+  </GStyledDefLoadingButton>
+ )
 }
 
 export default FallbackButton

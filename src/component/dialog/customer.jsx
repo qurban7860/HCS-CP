@@ -1,81 +1,103 @@
+import { t } from 'i18next'
 import { useNavigate } from 'react-router-dom'
 import { dispatch, useSelector } from 'store'
 import { useSettingContext } from 'hook'
 import { setCustomerDialog } from 'store/slice'
-import { customerDefaultValues } from 'section/crm'
 import { ICON_NAME } from 'hook'
-import { Dialog, DialogContent, DialogTitle, Divider, Typography, Grid } from '@mui/material'
-import { GStyledTopBorderDivider, GStyledSpanBox } from 'theme/style'
-import { GridViewField, GridViewTitle, Button, BadgeCardMedia } from 'component'
-import { HowickResources } from 'section/common'
-import { VIEW_FORM, TITLE, TYPOGRAPHY, KEY, BUTTON, FLEX } from 'constant'
 import { PATH_CUSTOMER } from 'route/path'
+import { useCustomerDefaultValues } from 'section/crm'
+import { HowickResources } from 'section/common'
+import { Dialog, DialogContent, DialogTitle, DialogActions, Divider, Grid } from '@mui/material'
+import { GridViewField, GridViewTitle, Button, BadgeCardMedia, TextIconListItem, AuditBox } from 'component'
+import { GStyledTopBorderDivider, GStyledSpanBox, GStyledCloseButton, GBackdropPropsOption } from 'theme/style'
+import { KEY, BUTTON, FLEX, SZ } from 'constant'
 
 const CustomerDialog = () => {
-  const navigate = useNavigate()
-  const { themeMode } = useSettingContext()
-  const { customer, isLoading, customerDialog } = useSelector((state) => state.customer)
-  const { CUSTOMER, SITE, ADDRESS } = VIEW_FORM
+ const navigate = useNavigate()
+ const { themeMode } = useSettingContext()
+ const { customer, isLoading, customerDialog } = useSelector(state => state.customer)
+ const defaultValues = useCustomerDefaultValues(customer, null)
 
-  const defaultValues = customerDefaultValues(customer, null)
+ const handleCustomerDialog = () => dispatch(setCustomerDialog(false))
 
-  const handleCustomerDialog = () => dispatch(setCustomerDialog(false))
+ const handleCustomerOverview = () => {
+  dispatch(setCustomerDialog(false))
+  navigate(PATH_CUSTOMER.customers.view(defaultValues?.id))
+ }
 
-  const handleCustomerOverview = () => {
-    dispatch(setCustomerDialog(false))
-    navigate(PATH_CUSTOMER.customers.view(defaultValues?.id))
-  }
-
-  return (
-    <Dialog disableEnforceFocus maxWidth="lg" open={customerDialog} onClose={handleCustomerDialog} aria-describedby="alert-dialog-slide-description">
-      <GStyledTopBorderDivider mode={themeMode} />
-      <DialogTitle>
-        <GStyledSpanBox
-          sx={{
-            justifyContent: FLEX.SPACE_BETWEEN
-          }}>
-          <Typography variant={TYPOGRAPHY.H3}>{customer?.name?.toUpperCase()}</Typography> &nbsp;
-          <BadgeCardMedia dimension={40} />
-        </GStyledSpanBox>
-      </DialogTitle>
-      <Divider orientation={KEY.HORIZONTAL} flexItem />
-      <DialogContent dividers sx={{ px: 3, py: 2 }}>
-        <Grid item pb={2}>
-          <Grid container spacing={1} p={2} pb={1}>
-            <GridViewField heading={CUSTOMER.CUSTOMER_NAME} isLoading={isLoading} children={defaultValues?.name} />
-            <GridViewField heading={CUSTOMER.CUSTOMER_CODE} isLoading={isLoading} children={defaultValues?.code} />
-            <GridViewField heading={VIEW_FORM.STATUS} isLoading={isLoading} children={defaultValues?.status} />
-            <GridViewField heading={VIEW_FORM.WEBSITE} isLoading={isLoading} link={defaultValues?.website} />
-            <GridViewField heading={CUSTOMER.TRADING_NAME} isLoading={isLoading} chip={defaultValues?.tradingName} />
-          </Grid>
-          <Divider variant={KEY.FULL_WIDTH} style={{ width: '100%', marginX: '20px' }} />
-          <GridViewTitle title={TITLE.SITE_INFO} />
-          <Grid container spacing={1} p={2} pb={1}>
-            <GridViewField heading={SITE.SITE_NAME} isLoading={isLoading} children={defaultValues?.name} />
-            <GridViewField heading={ADDRESS.STREET} isLoading={isLoading} children={defaultValues?.street} />
-            <GridViewField heading={ADDRESS.SUBURB} isLoading={isLoading} children={defaultValues?.suburb} />
-            <GridViewField heading={ADDRESS.CITY} isLoading={isLoading} children={defaultValues?.city} />
-            <GridViewField heading={ADDRESS.POST_CODE} isLoading={isLoading} children={defaultValues?.postCode} />
-            <GridViewField heading={ADDRESS.REGION} isLoading={isLoading} children={defaultValues?.region} />
-            <GridViewField heading={ADDRESS.STATE} isLoading={isLoading} children={defaultValues?.state} />
-            <GridViewField heading={ADDRESS.COUNTRY} isLoading={isLoading} children={defaultValues?.country} />
-          </Grid>
-          <Divider variant={KEY.FULL_WIDTH} style={{ width: '100%', marginX: '20px' }} />
-          <GridViewTitle title={TITLE.HOWICK_RESOURCES} />
-          <Grid container spacing={1} pb={1}>
-            <Grid item sm={12}>
-              <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} isDialog />
-            </Grid>
-            <Grid item sm={12}>
-              <Grid container justifyContent={FLEX.FLEX_END}>
-                <Button label={BUTTON.CUSTOMER_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCustomerOverview} />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </DialogContent>
-    </Dialog>
-  )
+ return (
+  <Dialog maxWidth={SZ.LG} open={customerDialog} onClose={handleCustomerDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
+   <GStyledTopBorderDivider mode={themeMode} />
+   <DialogTitle>
+    <GStyledSpanBox sx={{ justifyContent: FLEX.SPACE_BETWEEN }}>
+     <TextIconListItem truncatedName={defaultValues?.name} tradingAliases={defaultValues?.tradingName} />
+     <BadgeCardMedia customer={customer} dimension={40} />
+    </GStyledSpanBox>
+   </DialogTitle>
+   <Divider orientation={KEY.HORIZONTAL} flexItem />
+   <DialogContent dividers sx={{ px: 3 }}>
+    <Grid item>
+     <Grid container spacing={1} p={2} pb={1}>
+      <GridViewField heading={t('organization.label')} isLoading={isLoading}>
+       {defaultValues?.name}
+      </GridViewField>
+      <GridViewField heading={t('status.label')} isLoading={isLoading}>
+       {defaultValues?.status}
+      </GridViewField>
+      <GridViewField heading={t('website.label')} isLoading={isLoading}>
+       {defaultValues?.website}
+      </GridViewField>
+     </Grid>
+     <Divider variant={KEY.FULL_WIDTH} style={{ width: '100%', marginX: '20px' }} />
+     <GridViewTitle title={t('site_information.label')} />
+     <Grid container spacing={1} p={2} pb={1}>
+      <GridViewField heading={t('site_name.label')} isLoading={isLoading}>
+       {defaultValues?.name}
+      </GridViewField>
+      <GridViewField heading={t('address.street.label')} isLoading={isLoading}>
+       {defaultValues?.street}
+      </GridViewField>
+      <GridViewField heading={t('address.suburb.label')} isLoading={isLoading}>
+       {defaultValues?.suburb}
+      </GridViewField>
+      <GridViewField heading={t('address.city.label')} isLoading={isLoading}>
+       {defaultValues?.city}
+      </GridViewField>
+      <GridViewField heading={t('address.post_code.label')} isLoading={isLoading}>
+       {defaultValues?.postCode}
+      </GridViewField>
+      <GridViewField heading={t('address.region.label')} isLoading={isLoading}>
+       {defaultValues?.region}
+      </GridViewField>
+      <GridViewField heading={t('address.state.label')} isLoading={isLoading}>
+       {defaultValues?.state}
+      </GridViewField>
+      <GridViewField heading={t('address.country.label')} isLoading={isLoading}>
+       {defaultValues?.country}
+      </GridViewField>
+     </Grid>
+     <Divider variant={KEY.FULL_WIDTH} style={{ width: '100%', marginX: '20px' }} />
+     <GridViewTitle title={t('howick_resources.label')} />
+     <Grid container spacing={1}>
+      <Grid item sm={12}>
+       <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} isDialog />
+      </Grid>
+     </Grid>
+    </Grid>
+    <AuditBox value={defaultValues} pb={0} />
+   </DialogContent>
+   <DialogActions>
+    <Grid item sm={12}>
+     <Grid container justifyContent={FLEX.FLEX_END} display={FLEX.FLEX} gap={2}>
+      <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCustomerDialog} gap={2}>
+       {t('close.label').toUpperCase()}
+      </GStyledCloseButton>
+      <Button label={BUTTON.CUSTOMER_OVERVIEW} icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCustomerOverview} />
+     </Grid>
+    </Grid>
+   </DialogActions>
+  </Dialog>
+ )
 }
 
 export default CustomerDialog

@@ -110,13 +110,24 @@ const typography = {
  },
  body2: {
   fontFamily: FONT_SECONDARY,
-  lineHeight: 14 / 14,
+  lineHeight: 1.5,
   fontSize: pxToRem(14)
  },
  caption: {
   fontFamily: FONT_SECONDARY,
   lineHeight: 1.5,
   fontSize: pxToRem(12)
+ },
+ caption1: {
+  fontFamily: FONT_SECONDARY,
+  lineHeight: 1.5,
+  fontSize: pxToRem(10)
+ },
+ overlineMini: {
+  fontWeight: 700,
+  lineHeight: 1.5,
+  fontSize: pxToRem(8),
+  textTransform: 'uppercase'
  },
  overline: {
   fontWeight: 700,

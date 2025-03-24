@@ -1,5 +1,6 @@
 import { m } from 'framer-motion'
 import PropTypes from 'prop-types'
+import { useResponsive } from 'hook'
 import { Typography, Grid } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { HTTP_CODE, KEY, LABEL, TYPOGRAPHY, FLEX } from 'constant'
@@ -7,9 +8,11 @@ import { HTTP_CODE, KEY, LABEL, TYPOGRAPHY, FLEX } from 'constant'
 const FallbackMessage = ({ value, code }) => {
  const theme = useTheme()
 
+ const isMobile = useResponsive('down', 'sm')
+
  return (
   <m.div>
-   <Typography variant={TYPOGRAPHY.BODY1} sx={{ color: theme.palette.grey[500], p: 19, pt: 0, pb: 1 }} paragraph>
+   <Typography variant={TYPOGRAPHY.BODY1} sx={{ color: theme.palette.grey[500], p: isMobile ? 5 : 19, pt: 0, pb: 1 }} paragraph>
     {value.message}
    </Typography>
    <Grid

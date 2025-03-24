@@ -1,189 +1,231 @@
-import { useEffect, memo } from 'react'
+import { Fragment, useEffect, memo, useLayoutEffect, useRef } from 'react'
+import _ from 'lodash'
+import axios from 'axios'
 import { useSelector, dispatch } from 'store'
 import { useParams } from 'react-router-dom'
-import { useSettingContext } from 'hook'
-import { PATH_CUSTOMER } from 'route/path'
-import { Box, Grid, Card, Divider, Link } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import { GStyledTopBorderDivider, GStyledFlexEndBox, GCardOption } from 'theme/style'
 import {
-  getCustomer,
-  getMachine,
-  setCustomerDialog,
-  getConnectedMachineDialog,
-  getMachineSiteDialogData,
-  setMachineDialog,
-  setMachineSiteDialog,
-  resetCustomer,
-  resetConnectedMachineDialog,
-  resetMachineSiteDialogData
+ getCustomer,
+ getMachine,
+ getMachines,
+ setCustomerDialog,
+ getConnectedMachineDialog,
+ getMachineCategories,
+ setMachineDialog,
+ setMachineSiteDialog,
+ setMachineFilterBy,
+ ChangeMachinePage,
+ resetCustomer,
+ resetConnectedMachineDialog,
+ resetMachineSiteDialogData,
+ resetSelectedMachine,
+ resetMachineCategories,
+ resetMachine,
+ resetMachines,
+ resetSoftwareVersion,
+ getSoftwareVersion
 } from 'store/slice'
-import { machineDefaultValues } from 'section/product'
+import { useTempFilter, useSettingContext, getComparator, useTable, useUIMorph, Icon, ICON_NAME } from 'hook'
+import { PATH_MACHINE } from 'route/path'
+import { CommonFieldsCard } from 'section/common'
+import { useMachineDefaultValues, fieldsKeyConfig, fieldsMachineInformationConfig } from 'section/product'
+import { MachineConnectionListCard, MachineCard, MachineFieldsCard } from 'section/product/machine'
 import { HowickResources } from 'section/common'
-import { AuditBox, GridViewField, GridViewTitle } from 'component'
-import { MachineConnectionWidget, MachineSiteWidget } from 'section/product/machine'
-import { MARGIN } from 'config'
-import { KEY, TITLE, VIEW_FORM, VARIANT, FLEX_DIR } from 'constant'
-import { truncate } from 'util/truncate'
+import { useTheme, Grid, Box } from '@mui/material'
+import { AuditBox, SearchBox } from 'component'
+import { GStyledScrollableHeightLockGrid, GStyledChip, GStyledStickyGrid } from 'theme/style'
+import { MARGIN, NAV, SPACING } from 'config/layout'
+import { FLEX_DIR, KEY } from 'constant'
+import user from 'component/dialog/user'
 
 const MachineTab = () => {
-  const { id } = useParams()
-  const { machine, isLoading } = useSelector((state) => state.machine)
-  const { customer } = useSelector((state) => state.customer)
+ const { machine, machines, machineCategories, isLoading, initial } = useSelector(state => state.machine)
+ const { customer }                                                 = useSelector(state => state.customer)
+ const { softwareVersion }                                          = useSelector(state => state.ticket)
+ const { id }                                                       = useParams()
+ const { themeMode }                                                = useSettingContext()
+ const selectedMachineRef                                           = useRef(null)
+ const { isDesktop, isMobile }                                      = useUIMorph()
+ const theme                                                        = useTheme()
 
-  const theme = useTheme()
-  const { themeMode } = useSettingContext()
+ const axiosToken = () => axios.CancelToken.source()
+ const cancelTokenSource = axiosToken()
 
-  const { MACHINE } = VIEW_FORM
+ const { order, orderBy } = useTable({
+  defaultOrderBy: KEY.CREATED_AT,
+  defaultOrder: 'asc'
+ })
 
-  useEffect(() => {
-    if (id !== machine?._id) {
-      dispatch(getMachine(id))
+ useLayoutEffect(() => {
+  dispatch(setCustomerDialog(false))
+  dispatch(setMachineDialog(false))
+  dispatch(setMachineSiteDialog(false))
+  dispatch(resetMachines())
+  // dispatch(resetSelectedMachine())
+  // dispatch(resetCustomer())
+  dispatch(resetSoftwareVersion())
+  dispatch(resetMachineCategories())
+  dispatch(resetConnectedMachineDialog())
+  dispatch(resetMachineSiteDialogData())
+ }, [])
+
+ useEffect(() => {
+  if (machine?.customer) {
+    if (!customer) {
+      dispatch(getCustomer(user?.customer))
     }
-  }, [id])
+  }
+ }, [machine?.customer, dispatch])
 
-  useEffect(() => {
-    if (machine?.customer && machine?.customer._id !== customer?._id) {
-      dispatch(getCustomer(machine?.customer._id))
+ useEffect(() => {
+  const debounce = _.debounce(() => {
+   dispatch(getMachine(id, customer?._id))
+  }, 300)
+  debounce()
+  return () => debounce.cancel()
+ }, [id, dispatch])
+
+ useEffect(() => {
+  const debounce = _.debounce(() => {
+   dispatch(getSoftwareVersion(id, customer?._id))
+  }, 300)
+  debounce()
+  return () => debounce.cancel()
+ }, [id, dispatch, customer])
+
+ useEffect(() => {
+  const debounce = _.debounce(() => {
+    if (!machines?.length) {
+      dispatch(getMachines(null, null, false, null, customer?._id))
     }
-  }, [machine?.customer, customer?._id])
+  }, 300)
+  debounce()
+  return () => debounce.cancel()
+ }, [dispatch, machines])
 
-  useEffect(() => {
-    dispatch(setCustomerDialog(false))
-    dispatch(setMachineDialog(false))
-    dispatch(setMachineSiteDialog(false))
-    dispatch(resetCustomer())
-    dispatch(resetConnectedMachineDialog())
-    dispatch(resetMachineSiteDialogData())
-  }, [dispatch])
+ useEffect(() => {
+  const debounce = _.debounce(() => {
+   dispatch(getMachineCategories())
+  }, 300)
+  debounce()
+  return () => debounce.cancel()
+ }, [dispatch])
 
-  const defaultValues = machineDefaultValues(machine, customer)
-
-  const handleCustomerDialog = (event, customerId) => {
-    event.preventDefault()
-    dispatch(resetCustomer())
-    dispatch(getCustomer(customerId))
-    dispatch(setCustomerDialog(true))
+ useEffect(() => {
+  if (selectedMachineRef.current) {
+   selectedMachineRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
+ }, [machine?._id])
 
-  const handleConnectedMachineDialog = (event, machineId) => {
-    event.preventDefault()
-    dispatch(resetConnectedMachineDialog())
-    dispatch(getConnectedMachineDialog(machineId))
-    dispatch(setMachineDialog(true))
-  }
+ const defaultValues = useMachineDefaultValues(machine, customer, null, softwareVersion)
+ const { filterName, handleFilterName, filteredData, filterCategory, handleFilterCategory } = useTempFilter(
+  getComparator(order, orderBy),
+  machines,
+  initial,
+  ChangeMachinePage,
+  setMachineFilterBy,
+  'all'
+ )
 
-  const handleMachineSiteDialog = (event, machineId) => {
-    event.preventDefault()
-    dispatch(resetMachineSiteDialogData())
-    dispatch(getMachineSiteDialogData(machineId))
-    dispatch(setMachineSiteDialog(true))
-  }
+ const CATEGORIES = [
+  { _id: 'all', name: 'All' },
+  { _id: 'decoiler', name: <Icon icon={ICON_NAME.DECOILER_DEF} color={'grey.500'} sx={{ height: 15, width: 15 }} /> },
+  { _id: 'machine', name: <Icon icon={ICON_NAME.FRAMA} color={'grey.500'} sx={{ height: 15, width: 15 }} /> }
+ ]
 
-  const handleSiteWidgetDialog = (e, machineId) => {
-    e.preventDefault()
-    dispatch(resetMachineSiteDialogData())
-    dispatch(getMachineSiteDialogData(machineId))
-    dispatch(setMachineSiteDialog(true))
-  }
+ const handleCustomerDialog = (event, customerId) => {
+  event.preventDefault()
+  dispatch(resetCustomer())
+  dispatch(getCustomer(customerId))
+  dispatch(setCustomerDialog(true))
+ }
+
+ const handleConnectedMachineDialog = (event, machineId) => {
+  event.preventDefault()
+  dispatch(resetConnectedMachineDialog())
+  dispatch(getConnectedMachineDialog(machineId))
+  dispatch(setMachineDialog(true))
+ }
+
+ const handleSelectedMachine = (event, machineId) => {
+  event.preventDefault()
+  dispatch(getMachine(machineId, customer?._id))
+ }
+
+ const handleMachineInNewTabCard = async (event, machineId) => {
+  event.preventDefault()
+  const url = PATH_MACHINE.machines.view(machineId)
+  window.open(url, KEY.BLANK)
+ }
+
+ const renderCategoryChipContainer = () => {
   return (
-    <Grid container spacing={2} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
-      <Grid item lg={3}>
-        <MachineConnectionWidget
-          value={defaultValues}
-          handleConnectedMachineDialog={handleConnectedMachineDialog}
-          handleMachineSiteDialog={handleMachineSiteDialog}
-        />
-        <MachineSiteWidget value={defaultValues} handleSiteWidgetDialog={handleSiteWidgetDialog} />
-      </Grid>
-      <Grid item sm={12} lg={9}>
-        <Box mb={2}>
-          <Card {...GCardOption(themeMode)}>
-            <GStyledTopBorderDivider mode={themeMode} />
-            <Grid container spacing={2} px={1.5} mb={5}>
-              <GridViewTitle title={TITLE.MACHINE_KEY_DETAILS} />
-              <Divider variant={VARIANT.MIDDLE} style={{ width: '100%', marginBottom: '20px' }} />
-              <Grid item lg={12} sm={12}>
-                <Grid container spacing={2} p={2} pb={5}>
-                  <GridViewField heading={MACHINE.SERIAL_NO} isLoading={isLoading} children={defaultValues?.serialNo} gridSize={4} />
-                  <GridViewField heading={MACHINE.MODEL} isLoading={isLoading} children={defaultValues?.machineModel} gridSize={4} />
-                  <GridViewField
-                    heading={VIEW_FORM.ORGANIZATION}
-                    isLoading={isLoading}
-                    children={
-                      defaultValues.customer && (
-                        <Link
-                          onClick={(event) => handleCustomerDialog(event, defaultValues?.customerId)}
-                          href="#"
-                          underline="none"
-                          color={themeMode === KEY.LIGHT ? theme.palette.howick.midBlue : theme.palette.howick.orange}>
-                          {truncate(defaultValues?.customer, 21)}
-                        </Link>
-                      )
-                    }
-                    gridSize={4}
-                    country={defaultValues?.customerCountry}
-                    customerLink={PATH_CUSTOMER.customers.view(defaultValues?.customerId)}
-                    onClick={handleCustomerDialog}
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-          </Card>
-        </Box>
-        <Box mb={2}>
-          <Card {...GCardOption(themeMode)}>
-            <GStyledTopBorderDivider mode={themeMode} />
-            <Grid container spacing={2} px={1.5} mb={5}>
-              <GridViewTitle title={TITLE.MACHINE_INFO} />
-              <Divider variant="middle" style={{ width: '100%', marginBottom: '20px' }} />
-              <Grid item lg={12} sm={12}>
-                <Grid container spacing={2} p={2} pb={5}>
-                  <GridViewField heading={VIEW_FORM.NAME} isLoading={isLoading} children={defaultValues?.name} gridSize={12} />
-                  <GridViewField
-                    heading={MACHINE.DEFAULT_PROFILE}
-                    isLoading={isLoading}
-                    children={
-                      Array.isArray(defaultValues?.profiles) && defaultValues?.profiles.length > 0
-                        ? defaultValues?.profiles[0]?.flange + 'X' + defaultValues?.profiles[0]?.web
-                        : TITLE.NOT_PROVIDED
-                    }
-                  />
-                  <GridViewField heading={VIEW_FORM.STATUS} isLoading={isLoading} children={defaultValues?.status} />
-                  <GridViewField heading={MACHINE.WORK_ORDER} isLoading={isLoading} children={defaultValues?.workOrderRef} />
-                  <GridViewField heading={MACHINE.FINANCING_COMPANY} isLoading={isLoading} children={defaultValues?.financialCompany} />
-                  <GridViewField heading={MACHINE.SUPPLIER} isLoading={isLoading} children={defaultValues?.supplier} />
-                  <GridViewField heading={MACHINE.SUPPORT_EXPIRATION} isLoading={isLoading} children={defaultValues?.supportExpireDate} />
-                  <GridViewField heading={MACHINE.PURCHASE_DATE} isLoading={isLoading} children={defaultValues?.purchaseDate} />
-                  <GridViewField heading={MACHINE.MANUFACTURE_DATE} isLoading={isLoading} children={defaultValues?.manufactureDate} />
-                  <GridViewField heading={MACHINE.SHIPPING_DATE} isLoading={isLoading} children={defaultValues?.shippingDate} />
-                  <GridViewField heading={MACHINE.INSTALLATION_DATE} isLoading={isLoading} children={defaultValues?.installationDate} />
-                  <GridViewField heading={VIEW_FORM.DESCRIPTION} isLoading={isLoading} children={defaultValues?.description} gridSize={12} />
-                </Grid>
-              </Grid>
-            </Grid>
-          </Card>
-        </Box>
-        <Box mb={4}>
-          <Card {...GCardOption(themeMode)}>
-            <GStyledTopBorderDivider mode={themeMode} />
-            <Grid container spacing={2} px={1.5} mb={5}>
-              <GridViewTitle title={TITLE.HOWICK_RESOURCES} />
-              <Divider variant="middle" style={{ width: '100%', marginBottom: '20px' }} />
-              <Grid item lg={12} sm={12}>
-                <HowickResources value={defaultValues} isLoading={isLoading} />
-              </Grid>
-              <Grid item sm={12}>
-                <GStyledFlexEndBox>
-                  <AuditBox value={defaultValues} />
-                </GStyledFlexEndBox>
-              </Grid>
-            </Grid>
-          </Card>
-        </Box>
-      </Grid>
-    </Grid>
+   <Grid container mb={1} sx={{ backgroundColor: 'transparent' }}>
+    {CATEGORIES.map(category => (
+     <GStyledChip
+      key={category._id}
+      label={category.name}
+      bgColor={filterCategory === category._id ? (themeMode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[900]) : undefined}
+      onClick={event => handleFilterCategory(event, category._id)}
+      sx={{ p: 0, m: 0.5 }}
+     />
+    ))}
+   </Grid>
   )
+ }
+
+ return (
+  <Fragment>
+   <Grid container columnSpacing={SPACING.COLUMN_SPACING} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+    {(isDesktop && filteredData?.length > 0) && (
+     <GStyledStickyGrid item xs={12} md={12} lg={3}>
+      {machines.length >= 5 ? (
+       <Box>
+        <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
+        {renderCategoryChipContainer()}
+       </Box>
+      ) : (
+       renderCategoryChipContainer()
+      )}
+      <GStyledScrollableHeightLockGrid isMobile={isMobile} mode={themeMode} totalCount={machines?.length}>
+        <Grid container gap={2} p={1} py={2} pb={4} height={'auto'} sx={{ maxHeight: NAV.H_MAX_SIDE_PANEL, overflow: 'auto' }}>
+         {filteredData.map((mach, index) => (
+          <MachineCard
+           key={mach?._id}
+           selectedCardId={machine?._id}
+           value={defaultValues}
+           handleSelected={handleSelectedMachine}
+           handleMachineCard={handleSelectedMachine}
+           handleMachineInNewTabCard={handleMachineInNewTabCard}
+           machine={mach}
+          />
+         ))}
+        </Grid>
+      </GStyledScrollableHeightLockGrid>
+     </GStyledStickyGrid>
+    )}
+    <Grid item xs={12} sm={12} lg={filteredData?.length > 0 ? 9 : 12}>
+     <MachineFieldsCard i18nKey={'key_detail.key_details.label'} defaultValues={defaultValues} fieldsConfig={fieldsKeyConfig} isLoading={isLoading} handleDialog={handleCustomerDialog} />
+     <MachineFieldsCard
+      i18nKey={'machine_information.label'}
+      defaultValues={defaultValues}
+      fieldsConfig={fieldsMachineInformationConfig}
+      isLoading={isLoading}
+      handleDialog={handleCustomerDialog}
+      mountSupportExpiryChip
+     />
+     {!isDesktop && machines.length >= 5 && (
+      <Grid item xs={12}>
+       <MachineConnectionListCard value={defaultValues} isLoading={isLoading} handleConnectionDialog={handleConnectedMachineDialog} />
+      </Grid>
+     )}
+     <CommonFieldsCard isChildren i18nKey={'howick_resources.label'} defaultValues={defaultValues} isLoading={isLoading}>
+      <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} />
+     </CommonFieldsCard>
+    </Grid>
+   </Grid>
+   <AuditBox value={defaultValues} />
+  </Fragment>
+ )
 }
 
 export default memo(MachineTab)

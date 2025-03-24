@@ -8,33 +8,26 @@ import cityMapping from 'config/city-map.json'
  * @returns {Array} - An array of timezone objects matching the given city.
  */
 export function huntTimezone(city, country, region) {
-  const normalizedCity = sanitizeCityName(city)
-  const normalizedRegion = sanitizeCityName(region)
-  const normalizedCountry = sanitizeCityName(country)
+ if (!city || (!country && !region)) return null
+ const normalizedCity = city ? city.trim().toLowerCase() : ''
+ const normalizedCountry = country ? country.trim().toLowerCase() : ''
+ const normalizedRegion = region ? region.trim().toLowerCase() : ''
 
-  const cityLookups = cityMapping.filter((o) => o.city.toLowerCase() === normalizedCity.toLowerCase())
-  if (cityLookups.length === 0 && normalizedCountry && normalizedRegion && normalizedCity) {
-    const countryLookup = cityLookups.find((o) => o.country.toLowerCase() === normalizedCountry.toLowerCase())
-    const regionLookup = cityMapping.find((o) => o.province?.toLowerCase() === normalizedRegion?.toLowerCase())
-    if (regionLookup && countryLookup) {
-      console.log(city, country, region, normalizedCity)
-      return regionLookup
-    }
+ const matchedTimezone =
+  cityMapping.find(
+   entry =>
+    normalizedCity &&
+    entry.city.toLowerCase() === normalizedCity &&
+    normalizedCountry &&
+    entry.country.toLowerCase() === normalizedCountry &&
+    normalizedRegion &&
+    entry.province?.toLowerCase() === normalizedRegion
+  ) ||
+  cityMapping.find(entry => normalizedCity && entry.city.toLowerCase() === normalizedCity) ||
+  cityMapping.find(entry => normalizedCity && (entry.city.toLowerCase().includes(normalizedCity) || entry.province?.toLowerCase().includes(normalizedCity))) ||
+  cityMapping.find(entry => normalizedCountry && entry.country.toLowerCase() === normalizedCountry && normalizedRegion && entry.province?.toLowerCase() === normalizedRegion)
 
-    return countryLookup ? countryLookup : {}
-  } else if (cityLookups.length >= 1) {
-    return cityLookups[0]
-  } else if (!cityLookups && country && region) {
-    const partialLookup = findPartialMatch(cityMapping, normalizedCity)
-    if (partialLookup) {
-      const cityLookup = _.filter(cityMapping, function (o) {
-        return findPartialMatch([o.city, o.state_ansi, o.province, o.country], normalizedCity)
-      })
-      return cityLookup.length > 0 ? cityLookup[0] : {}
-    }
-  } else {
-    return {}
-  }
+ return matchedTimezone || null
 }
 
 /**
@@ -45,32 +38,33 @@ export function huntTimezone(city, country, region) {
  * @returns {boolean} - Returns true if there is a partial match, otherwise false.
  */
 export function findPartialMatch(itemsToSearch, searchString) {
-  const searchItems = searchString.split(' ')
-  const isPartialMatch = searchItems.every(function (i) {
-    return itemsToSearch.join().toLowerCase().indexOf(i.toLowerCase()) >= 0
-  })
-  return isPartialMatch
+ const searchItems = searchString.split(' ')
+ const isPartialMatch = searchItems.every(function (i) {
+  return itemsToSearch.join().toLowerCase().indexOf(i.toLowerCase()) >= 0
+ })
+ return isPartialMatch
 }
 
 export function findFromCityStateProvince(searchString) {
-  if (searchString) {
-    const cityLookup = _.filter(cityMapping, function (o) {
-      return findPartialMatch([o.city, o.state_ansi, o.province, o.country], searchString)
-    })
-    if (cityLookup && cityLookup.length) {
-      return cityLookup
-    } else {
-      return []
-    }
+ if (searchString) {
+  const cityLookup = _.filter(cityMapping, function (o) {
+   return findPartialMatch([o.city, o.state_ansi, o.province, o.country], searchString)
+  })
+  if (cityLookup && cityLookup.length) {
+   return cityLookup
   } else {
-    return []
+   return []
   }
+ } else {
+  return []
+ }
 }
 
 function sanitizeCityName(c) {
-  const sanitizedCity = c
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-zA-Z]/g, '')
-  return sanitizedCity
+ if (!c) return ''
+ const sanitizedCity = c
+  .toLowerCase()
+  .replace(/[^a-zA-Z0-9]/g, '')
+  .replace(/\s/g, '')
+ return sanitizedCity
 }

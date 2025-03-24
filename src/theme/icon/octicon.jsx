@@ -1,6 +1,4 @@
-import { ASSET } from 'config'
 import { SvgColor } from 'component/svg-color'
-import { Iconify } from 'component/iconify'
 
 export const octicon = (icon) => (
   <SvgColor icon={`/asset/octicon/${icon}/`} alt={icon} sx={{ width: 1, height: 1 }} />

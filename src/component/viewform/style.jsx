@@ -1,45 +1,52 @@
 import { styled } from '@mui/material/styles'
 import { Typography, Grid, Chip, Box } from '@mui/material'
+import { RADIUS } from 'config/layout'
 import { KEY } from 'constant'
-import { ASSET } from 'config/asset-directory'
 
 export const StyledDefaultTypography = styled(Typography)(({ theme }) => ({
  display: 'flex',
  alignItems: 'center',
  whiteSpace: 'pre-line',
- wordBreak: 'break-word'
+ flexGrow: 1
 }))
 
-export const StyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView, isNoBg }) => ({
- overflowWrap: 'break-word',
+export const StyledFieldGrid = styled(({ theme, mode, isMachineView, isNoBg, isMobile, height, minHeight, alignItems, ...other }) => <Grid {...other} />)(({ theme, mode, isMachineView, isNoBg, isMobile, height, minHeight, alignItems }) => ({
  backgroundColor:
   mode === KEY.LIGHT && !isMachineView && !isNoBg
-   ? theme.palette.grey[300]
+   ? theme.palette.grey[200]
    : (isMachineView || isNoBg) && mode === KEY.LIGHT
    ? 'transparent'
    : (isMachineView || isNoBg) && mode === KEY.DARK
    ? theme.palette.grey[900]
    : theme.palette.grey[800],
- padding: '0.5rem 1rem',
- height: '5rem',
+ padding: '0.5rem 0.5rem',
+ height: height ? height : isMobile ? '2rem' : '3rem',
+ minHeight: minHeight ? minHeight : isMobile ? '2rem' : '3rem',
  border: !isMachineView ? 'none' : `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]}`,
- borderRadius: isMachineView && theme.spacing(1)
+ borderRadius: isMachineView && theme.spacing(RADIUS.FORM.borderRadius),
+ overflow  : 'hidden',
+ display   : 'flex',
+ alignItems: alignItems ? alignItems : 'center',
+ flexWrap  : 'nowrap',
 }))
 
-export const StyledChipGrid = styled(Grid)(({ theme }) => ({
- marginTop: theme.spacing(-2),
- marginBottom: 0,
- display: 'flex',
- alignItems: 'center',
- whiteSpace: 'pre-line',
- wordBreak: 'break-word'
+export const StyledChipGrid = styled(({ theme, isNoBg, mode,...other}) => <Grid {...other}/>)(({ theme, isNoBg, mode }) => ({
+ marginBottom   : 0,
+ padding        : '0.5rem 0.5rem',
+ display        : 'flex',
+ alignItems     : 'center',
+ whiteSpace     : 'pre-line',
+ wordBreak      : 'break-word',
+ overflowX      : 'auto',
+ overflowY      : 'hidden',
+ backgroundColor: isNoBg ? 'transparent': mode === KEY.LIGHT ? theme.palette.grey[200]: theme.palette.grey[800]
 }))
 
 export const StyledFieldChip = styled(({ theme, ...other }) => <Chip {...other} />)(({ theme, mode }) => ({
  margin: theme.spacing(0.2),
- borderRadius: theme.spacing(0.4),
+ borderRadius: RADIUS.FORM.borderRadius,
  // border: `1px solid ${mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]}`,
- backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[700]
+ backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[100] : theme.palette.grey[700]
 }))
 
 export const StyledFlagBox = styled(Box)(({ theme }) => ({

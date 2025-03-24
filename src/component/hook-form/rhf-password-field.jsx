@@ -2,21 +2,17 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Icon, ICON_NAME, useSettingContext } from 'hook'
 import { useFormContext, Controller } from 'react-hook-form'
-import { TextField, InputAdornment, IconButton } from '@mui/material'
+import { useMediaQuery, TextField, InputAdornment, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import { RADIUS } from 'config/layout'
 import { KEY } from 'constant'
-
-RHFPasswordField.propTypes = {
- name: PropTypes.string,
- helperText: PropTypes.node,
- Error: PropTypes.bool
-}
 
 export default function RHFPasswordField({ name, helperText, Error, ...other }) {
  const [showPassword, setShowPassword] = useState(false)
  const { control } = useFormContext()
  const { themeMode } = useSettingContext()
  const theme = useTheme()
+ const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
  return (
   <Controller
@@ -42,18 +38,18 @@ export default function RHFPasswordField({ name, helperText, Error, ...other }) 
      {...other}
      sx={{
       '& .MuiInputLabel-root': {
-       ...theme.typography.overline2
+       ...(isDesktop ? theme.typography.body1 : theme.typography.body2)
       },
       '& .MuiOutlinedInput-notchedOutline': {
-       borderRadius: 0.4,
+       borderRadius: RADIUS.FORM.borderRadius,
        color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0',
-       ...theme.typography.overline2
+       ...(isDesktop ? theme.typography.body1 : theme.typography.body2)
       },
 
       '& .MuiInputBase-root': {
        '&:hover': {
         '& .MuiOutlinedInput-notchedOutline': {
-         borderColor: 'common.white'
+         borderColor: 'howick.midBlue'
         },
         '& .MuiInputBase-input': {
          color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
@@ -62,12 +58,12 @@ export default function RHFPasswordField({ name, helperText, Error, ...other }) 
        '& .MuiInputBase-input': {
         color: themeMode === KEY.LIGHT ? 'grey.900' : 'grey.0'
        },
-       '&.Mui-focused': {
-        '& .MuiOutlinedInput-notchedOutline': {
-         borderColor: 'common.white'
-        },
-        backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
-       },
+       //    '&.Mui-focused': {
+       //     '& .MuiOutlinedInput-notchedOutline': {
+       //      borderColor: 'common.white'
+       //     },
+       //     backgroundColor: themeMode === KEY.LIGHT ? 'transparent' : 'grey.800'
+       //    },
        // disabled
        '&.Mui-disabled': {
         color: themeMode === KEY.LIGHT ? 'grey.800' : 'grey.200',
@@ -81,4 +77,10 @@ export default function RHFPasswordField({ name, helperText, Error, ...other }) 
    )}
   />
  )
+}
+
+RHFPasswordField.propTypes = {
+ name: PropTypes.string,
+ helperText: PropTypes.node,
+ Error: PropTypes.bool
 }

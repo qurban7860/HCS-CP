@@ -1,14 +1,14 @@
 import { styled, alpha } from '@mui/material/styles'
-import { Tabs, Tab, Box } from '@mui/material'
+import { Tabs, Tab, Box, ListItemText } from '@mui/material'
 import { KEY } from 'constant'
 import { bgGradient } from 'theme/style'
 
-export const StyledRoot = styled(({ theme, mode, ...other }) => <main {...other} />)(({ theme, mode }) => ({
+export const StyledRoot = styled(({ ...other }) => <main {...other} />)(({ theme, mode }) => ({
  height: '100%',
  display: 'flex',
  flexDirection: 'column',
  justifyContent: 'center',
- backgroundColor: mode === KEY.LIGHT ? theme.palette.grey[400] : theme.palette.grey[900]
+ backgroundColor: mode === KEY.LIGHT ? theme.palette.background.default : theme.palette.grey[900]
  // position: 'relative',
 }))
 
@@ -20,6 +20,13 @@ export const StyledSection = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   flexDirection: 'column'
+ }
+}))
+
+export const StyledCriteriaListItemText = styled(ListItemText)(({ theme }) => ({
+ '& .MuiListItemText-primary': {
+  fontSize: '0.875rem',
+  color: theme.palette.text.secondary
  }
 }))
 

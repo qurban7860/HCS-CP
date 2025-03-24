@@ -1,7 +1,7 @@
 import { CustomerLayout } from 'section/crm'
 
 const Customer = () => {
-  return <CustomerLayout />
+ return <CustomerLayout />
 }
 
 export default Customer

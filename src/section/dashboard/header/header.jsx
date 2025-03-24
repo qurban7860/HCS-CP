@@ -1,69 +1,105 @@
-import { Fragment, useEffect } from 'react'
-import { useOffSetTop, useResponsive, Clock, useSettingContext } from 'hook'
-import { Stack, AppBar, Toolbar, IconButton, Badge, Typography } from '@mui/material'
+import { Fragment, useState } from 'react'
+import { useOffSetTop, Clock, useSettingContext, useUIMorph, Icon, ICON_NAME } from 'hook'
+import { AppBar, Toolbar, Stack, IconButton, Box, Typography } from '@mui/material'
+import { NavSection, PopoverDefault, DrawerMenu } from 'component'
+import { LogoIcon } from 'component/logo'
 import { useTheme } from '@mui/material/styles'
 import { bgBlur } from 'theme/style'
-import { HEADER, GLOBAL, NavConfiguration } from 'config'
-import { LogoIcon } from 'component/logo'
-import { Iconify } from 'component/iconify'
-import { NavSection } from 'component/nav-section'
+import { GLOBAL } from 'config/global'
+import { HEADER, NavConfiguration } from 'config'
+import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 import ModeOption from './mode-option'
 import AccountPopover from './account-popover'
 import NotificationPopover from './notification-popover'
-import { useWebSocketContext } from 'auth/websocket-provider'
-import { FLEX, FLEX_DIR, KEY, TIMEZONE } from 'constant'
+
+const DEV = 'dev'
 
 function Header() {
  const theme = useTheme()
  const navConfig = NavConfiguration()
- const { themeLayout } = useSettingContext()
+ const { themeLayout, themeMode } = useSettingContext()
+ const { isDesktop, IsBreakpointUp } = useUIMorph()
  const isNavHorizontal = themeLayout === 'horizontal'
- const isDesktop = useResponsive('up', 'lg')
+
  const isOffset = useOffSetTop(HEADER.H_DASHBOARD_DESKTOP) && !isNavHorizontal
+ const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+ const [clockAnchor, setClockAnchor] = useState(null)
 
- const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
- const aucklandTimeZone = TIMEZONE.AUCKLAND.timeZone
- const { sendJsonMessage } = useWebSocketContext()
+ const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen)
+ const toggleClockMenu = event => {
+  setClockAnchor(clockAnchor ? null : event.currentTarget)
+ }
 
- useEffect(() => {
-  sendJsonMessage({ eventName: 'getNotifications' })
- }, [sendJsonMessage])
+ const clockOpen = Boolean(clockAnchor)
+ const clockId = clockOpen ? 'clock-menu' : undefined
 
  const renderContent = (
   <Fragment>
-   <Stack direction={FLEX_DIR.ROW} justifyContent={FLEX.FLEX_START}>
+   <Stack display={FLEX.FLEX} justifyContent={FLEX.FLEX_START} sx={{ position: KEY.RELATIVE }}>
     {isDesktop && (
-     <Badge
-      overlap="circular"
-      anchorOrigin={{ vertical: KEY.BOTTOM, horizontal: KEY.RIGHT }}
-      color="primary"
-      variant="dot"
-      badgeContent={GLOBAL.VERSION}
-      onMouseEnter={() => <Typography variant="caption">{GLOBAL.VERSION}</Typography>}
-      sx={{
-       '.MuiBadge-dot': {
-        backgroundColor: GLOBAL.ENV === KEY.DEV || GLOBAL.ENV === KEY.DEVELOPMENT ? GLOBAL.DEV_COLOR : 'transparent'
-       }
-      }}>
+     <Fragment>
       <LogoIcon />
-     </Badge>
+      <Box
+        bgcolor={GLOBAL.ENV === DEV  ? theme.palette.burnIn.main : theme.palette.background.default}
+        sx={{
+         position: KEY.ABSOLUTE,
+         bottom: -10,
+         width: '100%',
+         height: 5
+        }}>
+      {GLOBAL.ENV === DEV && (
+        IsBreakpointUp(1200) && (
+         <Stack mt={1}>
+          <Typography variant={TYPOGRAPHY.CAPTION}>{GLOBAL.ENV.toUpperCase()}</Typography>
+          <Typography variant={TYPOGRAPHY.CAPTION1}>{GLOBAL.VERSION}</Typography>
+         </Stack>
+        )
+      )}
+       </Box>
+     </Fragment>
     )}
    </Stack>
-   {!isDesktop && (
-    <IconButton sx={{ mr: 1, color: 'text.primary' }}>
-     <Iconify icon="eva:menu-2-fill" />
-    </IconButton>
+   {!isDesktop ? (
+    <Fragment>
+     <Box
+      justifyContent={FLEX.SPACE_BETWEEN}
+      sx={{
+       display: FLEX.FLEX,
+       justifyContent: FLEX.SPACE_BETWEEN,
+       alignItems: KEY.CENTER,
+       width: '100%'
+      }}>
+      <Box sx={{ display: FLEX.FLEX, alignItems: KEY.CENTER }}>
+       <IconButton sx={{ mr: 1, color: 'text.primary' }} onClick={toggleMobileMenu}>
+        <Icon icon={ICON_NAME.MENU} color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze} />
+       </IconButton>
+       <IconButton sx={{ mr: 1, color: 'text.primary' }} onClick={toggleClockMenu}>
+        <Icon icon={ICON_NAME.CLOCK} color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze} />
+       </IconButton>
+      </Box>
+      <Box justifyContent={FLEX.FLEX_END} sx={{ display: FLEX.FLEX, alignItems: KEY.CENTER }}>
+       <AccountPopover />
+      </Box>
+      <DrawerMenu navConfig={navConfig} open={mobileMenuOpen} onClose={toggleMobileMenu} />
+      <PopoverDefault id={clockId} localizedLabel={'time_zone.label'} open={clockOpen} anchorEl={clockAnchor} onClose={() => setClockAnchor(null)}>
+       <Clock main city={KEY.AUCKLAND} />
+      </PopoverDefault>
+     </Box>
+    </Fragment>
+   ) : (
+    <Fragment>
+     <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_START} spacing={{ xs: 0.5, sm: 4 }} ml={5}>
+      <NavSection data={navConfig} />
+     </Stack>
+     <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_END} spacing={{ xs: 0.5, sm: 2 }}>
+      {/* {localTimeZone !== aucklandTimeZone && <Clock local={localTimeZone} city={'cleveland'} />} */}
+      {/* <Clock main city={KEY.AUCKLAND} /> */}
+      <ModeOption />
+      <NotificationPopover />
+      <AccountPopover />
+     </Stack>
+    </Fragment>
    )}
-   <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_START} spacing={{ xs: 0.5, sm: 4 }} ml={5}>
-    <NavSection data={navConfig} />
-   </Stack>
-   <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_END} spacing={{ xs: 0.5, sm: 2 }}>
-    {localTimeZone !== aucklandTimeZone && <Clock local={localTimeZone} />}
-    <Clock main city={KEY.AUCKLAND} />
-    <ModeOption />
-    <NotificationPopover />
-    <AccountPopover />
-   </Stack>
   </Fragment>
  )
 
@@ -72,7 +108,7 @@ function Header() {
    sx={{
     boxShadow: KEY.NONE,
     height: HEADER.H_MOBILE,
-    position: 'fixed',
+    position: KEY.FIXED,
     top: 0,
     zIndex: theme.zIndex.appBar + 1,
     ...bgBlur({
@@ -82,14 +118,13 @@ function Header() {
      duration: theme.transitions.duration.shorter
     }),
     ...(isDesktop && {
-     // width: `calc(100% - ${NAV.W_DASHBOARD + 1}px)`,
      height: HEADER.H_DASHBOARD_DESKTOP,
      ...(isOffset && {
       height: HEADER.H_DASHBOARD_DESKTOP_OFFSET
      })
     })
    }}>
-   <Toolbar sx={{ height: 1, color: 'text.primary', position: 'sticky' }}>{renderContent}</Toolbar>
+   <Toolbar sx={{ height: 1, color: 'text.primary', position: KEY.STICKY }}>{renderContent}</Toolbar>
   </AppBar>
  )
 }

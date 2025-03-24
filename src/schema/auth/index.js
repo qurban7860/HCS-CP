@@ -1,1 +1,7 @@
 export * from './login'
+export * from './register'
+export * from './set-password'
+export * from './change-password'
+export * from './reset-password'
+export * from './new-password'
+export * from './user-invite'

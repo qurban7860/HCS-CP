@@ -1,2 +1,2 @@
-export { default as GeneralApp } from './general-app'
+export { default as Dashboard } from './dashboard'
 export { default as Blank } from './blank'

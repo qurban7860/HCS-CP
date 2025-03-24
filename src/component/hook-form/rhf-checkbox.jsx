@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import { useFormContext, Controller } from 'react-hook-form'
+import { useSettingContext } from 'hook'
 import { Checkbox, Typography, FormLabel, FormGroup, FormControl, FormHelperText, FormControlLabel } from '@mui/material'
-import { TYPOGRAPHY } from 'constant'
+import { KEY, TYPOGRAPHY } from 'constant'
 
 RHFCheckbox.propTypes = {
   name: PropTypes.string,
@@ -11,23 +12,23 @@ RHFCheckbox.propTypes = {
 
 export function RHFCheckbox({ name, label, helperText, ...other }) {
   const { control } = useFormContext()
+  const { themeMode } = useSettingContext()
 
   return (
-    <Controller
-      name={name}
-      control={control}
-      render={({ field, fieldState: { error } }) => (
-        <div>
-          <FormControlLabel
-            control={<Checkbox {...field} checked={field.value} />}
-            label={<Typography variant={TYPOGRAPHY.BODY2}>{label}</Typography>}
-            {...other}
-          />
-
-          {(!!error || helperText) && <FormHelperText error={!!error}>{error ? error?.message : helperText}</FormHelperText>}
-        </div>
-      )}
-    />
+   <Controller
+    name={name}
+    control={control}
+    render={({ field, fieldState: { error } }) => (
+     <div>
+      <FormControlLabel
+       control={<Checkbox {...field} checked={field.value} sx={{ borderRadius: 0.4 }} />}
+       label={<Typography variant={TYPOGRAPHY.BODY2}>{label}</Typography>}
+       {...other}
+      />
+      {(!!error || helperText) && <FormHelperText error={!!error}>{error ? error?.message : helperText}</FormHelperText>}
+     </div>
+    )}
+   />
   )
 }
 
@@ -57,7 +58,6 @@ export function RHFMultiCheckbox({ row, name, label, options, spacing, helperTex
               {label}
             </FormLabel>
           )}
-
           <FormGroup
             sx={{
               ...(row && {
@@ -79,7 +79,7 @@ export function RHFMultiCheckbox({ row, name, label, options, spacing, helperTex
               <FormControlLabel
                 key={option.value}
                 control={
-                  <Checkbox checked={field.value.includes(option.value)} onChange={() => field.onChange(getSelected(field.value, option.value))} />
+                  <Checkbox checked={field.value.includes(option.value)} onChange={() => field.onChange(getSelected(field.value, option.value))}  />
                 }
                 label={option.label}
                 {...other}

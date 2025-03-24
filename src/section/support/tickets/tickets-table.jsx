@@ -1,96 +1,98 @@
 import { Fragment } from 'react'
+import PropTypes from 'prop-types'
+import { t } from 'i18next'
 import { useNavigate } from 'react-router-dom'
-import { ICON_NAME, Icon } from 'hook'
-import { Box, TableBody, TableCell, Typography } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import { useSettingContext } from 'hook'
-import { GStyledTableChip } from 'theme/style'
-import { LinkTableCell } from 'component/table-tool'
-import { PATH_MACHINE } from 'route/path'
-import { fDate } from 'util'
-import { KEY, LABEL, TYPOGRAPHY } from 'constant'
-import { StyledTableRow } from './style'
+import { getTicket } from 'store/slice'
+import { IconFlexi, ICON_NAME, useSettingContext } from 'hook'
+import { PATH_SUPPORT } from 'route/path'
+import { TableBody, TableCell, Typography } from '@mui/material'
+import { GStyledSupportStatusFieldChip } from 'theme/style'
+import { LinkWrap } from 'component'
 import { GLOBAL } from 'config/global'
+import { TYPOGRAPHY, SIZE } from 'constant'
 import { normalizer } from 'util'
 
-const TicketsTable = ({ ticket, mode, index }) => {
-  const theme = useTheme()
-  const navigate = useNavigate()
-  const { themeMode } = useSettingContext()
+import { StyledTableRow } from './style'
+import { dispatch } from 'store'
+import { useAuthContext } from 'auth'
 
-  const renderStatus = (status) => {
-    const statusColorSwitch = (status) =>
-      normalizer(status) === 'done'
-        ? theme.palette.howick.burnIn
-        : normalizer(status) === 'in progress'
-        ? theme.palette.howick.orange
-        : theme.palette.grey[500]
+const TicketsTable = ({ columns, onViewRow, ticket, mode, index  }) => {
+ const { user }      = useAuthContext()
+ const { themeMode } = useSettingContext()
+ const navigate      = useNavigate()
 
-    return (
-      <GStyledTableChip
-        mode={themeMode}
-        sx={{
-          backgroundColor: statusColorSwitch(status)
-        }}
-        label={
-          <Typography variant={TYPOGRAPHY.BODY2} color={theme.palette.common.black}>
-            {status}
-          </Typography>
-        }
-      />
-    )
-  }
-
-  // implement when page view for tickets is ready
-  const handleOnClick = (id) => {
-    navigate(PATH_MACHINE.machines.view(id))
-  }
-
-  const openInNewPage = (jiraKey) => {
-    // dispatch(setMachineTab('info'))
-    const url = GLOBAL.JIRA_URL + jiraKey
-    window.open(url, '_blank')
-  }
-
-  const { fields, key, id, self } = ticket
-
+ const renderStatus  = _status => {
   return (
-    <Fragment>
-      <TableBody>
-        <StyledTableRow index={index} mode={mode} fields={fields} key={key}>
-          <TableCell>{fDate(fields?.created)}</TableCell>
-          <LinkTableCell
-            param={key}
-            onClick={() => {
-              openInNewPage(key)
-            }}
-            openInNewTab={() => openInNewPage(key)}
-            tooltipTitle={LABEL.VIEW_IN_JIRA}
-            icon={ICON_NAME.JIRA}
-          />
-          <TableCell>{fields?.summary}</TableCell>
-          <TableCell>
-            <Box>{fields?.customfield_10002[0]?.name}</Box>
-          </TableCell>
-          <TableCell>{fields?.customfield_10069}</TableCell>
-          <TableCell>{fields?.customfield_10070?.value}</TableCell>
-          <TableCell>
-            {renderStatus(fields?.status?.statusCategory?.name)}
-          </TableCell>
-        </StyledTableRow>
-      </TableBody>
-    </Fragment>
-    /**
-      * <TableCell>
-          <StyledIconListItemText inActive={ticket?.fields?.status?.statusCategory?.name}>
-            <m.div>
-              {machine?.isActive ? <Icon icon={ICON_NAME.ACTIVE} color={activeColor} /> : <Icon icon={ICON_NAME.INACTIVE} color={inactiveColor} />}
-            </m.div>
-          </StyledIconListItemText>
-        </TableCell>
-     *
-     */
+   <GStyledSupportStatusFieldChip status={normalizer(_status?.name)} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE2}>{_status?.name}</Typography>} size={SIZE.SMALL} />
   )
+ }
+
+ const renderPriority = _priority => {
+   return <IconFlexi icon={_priority?.icon} color={_priority?.color} />
+ }
+
+ const renderIssueType = _issueType => {
+   return <IconFlexi icon={_issueType?.icon}  color={_issueType.color} />
+ }
+
+const openInNewPage = id => {
+   const url = PATH_SUPPORT.tickets.view(id)
+   window.open(url, '_blank')
+}
+
+const handleNavigateTicket = (id) => {
+  dispatch(getTicket(id, user?.customer))
+  navigate(PATH_SUPPORT.tickets.view(id))
+}
+
+ const renderTicketNo = (_tix, id) => {
+  return (
+   <LinkWrap
+    param={_tix}
+    onClick={() => handleNavigateTicket(id)}
+    // disabled for now; enable once Jira auth is refactored to take customer based token #1629
+    openInNewTab={() => openInNewPage(id)}
+    tooltipTitle={t('open_in_new_tab.label', { value: `${GLOBAL.PREFIX}-${_tix}`})}
+    icon={ICON_NAME.OPEN_IN_NEW}
+   />
+  )
+ }
+
+
+
+ const { ticketNo,  status, priority, issueType } = ticket
+
+ return (
+  <Fragment>
+   <TableBody>
+    <StyledTableRow index={index} mode={mode} fields={ticket}>
+     {columns?.map((column, index) => {
+      return (
+       <TableCell
+        key={index}
+        onClick={onViewRow}
+        sx={{
+         cursor: 'pointer',
+         '&:hover': { transform: 'scale(0.97)', transition: 'ease-in-out 0.2s' }
+        }}
+        align={column?.align ? column.align : 'left'}>
+        {column.id === 'issueType.name' ? renderIssueType(issueType) :   column.id === 'ticketNo' ? renderTicketNo(ticketNo, ticket?._id) : column.id === 'status.name' ? renderStatus(status)  :  column.id === 'priority.name' ? renderPriority(priority) : column?.value(ticket)}
+       </TableCell>
+      )
+     })}
+    </StyledTableRow>
+   </TableBody>
+  </Fragment>
+ )
+}
+
+TicketsTable.propTypes = {
+ ticket              : PropTypes.object,
+ mode                : PropTypes.string,
+ index               : PropTypes.number,
+ handleCustomerTicket: PropTypes.func,
+ onViewRow           : PropTypes.func,
+ columns             : PropTypes.array
 }
 
 export default TicketsTable

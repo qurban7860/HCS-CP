@@ -8,28 +8,29 @@ import { ASSET, BRAND } from 'config'
 import { KEY } from 'constant'
 
 const LogoIcon = forwardRef(({ width = BRAND.NAV_ICON, disabledLink = false, sx, src = ASSET.ICON, ...other }, ref) => {
-  const theme = useTheme()
-  const { themeMode } = useSettingContext()
-  const { Icon: LogoIcon, iconSrc } = useIcon(ICON_NAME.HOWICK_LOGO)
+ const theme = useTheme()
+ const { themeMode } = useSettingContext()
+ const { Icon: LogoIcon, iconSrc } = useIcon(ICON_NAME.HOWICK_LOGO)
 
-  const logo = <Box component={KEY.IMG} src={src} sx={{ width, height: KEY.AUTO, cursor: 'pointer', ...sx }} />
-  const logoDark = <LogoIcon icon={iconSrc} alt="howick-logo" color={theme.palette.common.white} p={1} m={1} />
+ const logo = <Box component={KEY.IMG} src={src} sx={{ width, height: KEY.AUTO, cursor: 'pointer', ...sx }} />
+ const logoDark = <LogoIcon icon={iconSrc} alt='howick-logo' color={theme.palette.common.white} p={1} m={1} />
 
-  if (disabledLink) {
-    return logo
-  }
-  return (
-    <Link component={RouterLink} to="/" sx={{ display: 'contents' }} {...other}>
-      {themeMode === KEY.LIGHT ? logo : logoDark}
-    </Link>
-  )
+ if (disabledLink) {
+  return logo
+ }
+ return (
+  <Link component={RouterLink} to='/' sx={{ display: 'contents' }} {...other}>
+   {themeMode === KEY.LIGHT ? logo : logoDark}
+  </Link>
+ )
 })
 
+LogoIcon.displayName = 'LogoIcon'
 LogoIcon.propTypes = {
-  sx: PropTypes.object,
-  disabledLink: PropTypes.bool,
-  src: PropTypes.string,
-  width: PropTypes.number
+ sx: PropTypes.object,
+ disabledLink: PropTypes.bool,
+ src: PropTypes.string,
+ width: PropTypes.number
 }
 
 export default LogoIcon

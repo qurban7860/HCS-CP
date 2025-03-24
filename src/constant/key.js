@@ -2,23 +2,29 @@ import { FLEX, FLEX_DIR } from './flex'
 import { VIEW_FORM } from './view-form'
 import { VARIANT, FONT_WEIGHT } from './variant'
 import { SZ } from './size'
+import { MACHINE_CATEGORY } from './model'
 
 const ORIENTATION = {
  HORIZONTAL: 'horizontal',
- VERTICAL: 'vertical'
+ VERTICAL  : 'vertical'
+}
+
+const ROLES = {
+ CUSTOMER_ADMIN: 'CustomerAdmin',
+ CUSTOMER_USER : 'CustomerUser'
 }
 
 const MODULES = {
- CRM: 'crm',
- PRODUCT: 'product',
- PRODUCTS: 'products',
- CUSTOMER: 'customer',
+ CRM      : 'crm',
+ PRODUCT  : 'product',
+ PRODUCTS : 'products',
+ CUSTOMER : 'customer',
  CUSTOMERS: 'customers',
- MACHINE: 'machine',
- MACHINES: 'machines',
- SITES: 'sites',
- CONTACTS: 'contacts',
- SUPPORT: 'support'
+ MACHINE  : 'machine',
+ MACHINES : 'machines',
+ SITES    : 'sites',
+ CONTACTS : 'contacts',
+ SUPPORT  : 'support'
 }
 
 const SUPPORT_TICKET_DESC_TYPES = {
@@ -29,26 +35,35 @@ const SUPPORT_TICKET_DESC_TYPES = {
  HEADING: 'heading'
 }
 
+const SUPPORT_ISSUE_TYPES = {
+    SYSTEM_PROBLEM : 'system problem',
+    SERVICE_REQUEST: 'service request',
+    CHANGE_REQUEST : 'change request',
+    TASK           : 'task',
+}
+
+export const PHONE_TYPES = ['MOBILE', 'HOME', 'WORK', 'FAX', 'OTHERS']
+
 const CSS = {
- // @position
- START: 'start',
- END: 'end',
+   // @position
+ START   : 'start',
+ END     : 'end',
  POSITION: 'position',
  ABSOLUTE: 'absolute',
- FIXED: 'fixed',
- STICKY: 'sticky',
- // @display
- DISPLAY: 'display',
- BLOCK: 'block',
+ FIXED   : 'fixed',
+ STICKY  : 'sticky',
+   // @display
+ DISPLAY     : 'display',
+ BLOCK       : 'block',
  INLINE_BLOCK: 'inline-block',
- INLINE: 'inline',
- GRID: 'grid',
- // @overflow
- OVERFLOW: 'overflow',
+ INLINE      : 'inline',
+ GRID        : 'grid',
+   // @overflow
+ OVERFLOW  : 'overflow',
  OVERFLOW_X: 'overflow-x',
  OVERFLOW_Y: 'overflow-y',
- SCROLL: 'scroll',
- HIDDEN: 'hidden'
+ SCROLL    : 'scroll',
+ HIDDEN    : 'hidden'
 }
 
 /**
@@ -67,6 +82,7 @@ const KEY = {
  SUBMIT: 'submit',
  NUMBER: 'number',
  INHERIT: 'inherit',
+ CUSTOM: 'custom',
  NONE: 'none',
  TEXT: 'text',
  EMAIL: 'email',
@@ -74,9 +90,12 @@ const KEY = {
  USERNAME: 'username',
  PASSWORD: 'password',
  CURRENT_PASSWORD: 'current-password',
+ PARENT: 'parent',
+ ROLLFORMER: 'rollformer',
 
  // default
  AUTO: 'auto',
+ DEFAULT_COUNTRY_CODE: 'NZ',
  IMG: 'img',
  END: 'end',
  ACTIVE: 'active',
@@ -116,14 +135,17 @@ const KEY = {
  CENTER: 'center',
  RELATIVE: 'relative',
  ...CSS,
- ...MODULES,
- ...VIEW_FORM,
- ...ORIENTATION,
- ...VARIANT,
- ...SZ,
  ...FLEX,
  ...FLEX_DIR,
- ...FONT_WEIGHT
+ ...FONT_WEIGHT,
+ ...MACHINE_CATEGORY,
+ ...MODULES,
+ ...ORIENTATION,
+ ...SUPPORT_ISSUE_TYPES,
+ ...SZ,
+ ...ROLES,
+ ...VIEW_FORM,
+ ...VARIANT
 }
 
 export default KEY

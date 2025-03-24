@@ -12,30 +12,33 @@
  * @returns {Object} - An object containing the Icon component and the icon source.
  */
 import { useState, useEffect } from 'react'
-import { ICON_LOC, ICON_WEB, ICON_LOC_NAME, ICON_WEB_NAME } from 'config'
+import { ICON_LOC, ICON_WEB, ICON_DOC, ICON_LOC_NAME, ICON_WEB_NAME } from 'config/icon-directory'
 import { SvgColor } from 'component/svg-color'
 import Iconify from '../../component/iconify/iconify'
 
 export const ICON_NAME = {
-  ...ICON_LOC_NAME,
-  ...ICON_WEB_NAME
+ ...ICON_LOC_NAME,
+ ...ICON_WEB_NAME,
 }
 
-const useIcon = (iconName) => {
-  const [iconSrc, setIconSrc] = useState(null)
-  const [Icon, setIcon] = useState(() => SvgColor)
+const useIcon = iconName => {
+ const [iconSrc, setIconSrc] = useState(null)
+ const [Icon, setIcon] = useState(() => SvgColor)
 
-  useEffect(() => {
-    if (ICON_LOC[iconName]) {
-      setIconSrc(ICON_LOC[iconName])
-      setIcon(() => SvgColor)
-    } else {
-      setIconSrc(ICON_WEB[iconName])
-      setIcon(() => Iconify)
-    }
-  }, [iconName])
+ useEffect(() => {
+  if (ICON_LOC[iconName]) {
+   setIconSrc(ICON_LOC[iconName])
+   setIcon(() => SvgColor)
+  } else if (ICON_DOC[iconName]) {
+   setIconSrc(ICON_DOC[iconName])
+   setIcon(() => Iconify)
+  } else {
+   setIconSrc(ICON_WEB[iconName])
+   setIcon(() => Iconify)
+  }
+ }, [iconName])
 
-  return { Icon, iconSrc }
+ return { Icon, iconSrc }
 }
 
 export default useIcon

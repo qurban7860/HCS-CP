@@ -1,2 +1,6 @@
-export { default as TableNoData } from './no-data'
-export { default as TableTitleBox } from './title-box'
+export { default as TableNoData } from './table-no-data'
+export { default as TableTitleBox } from './table-title-box'
+export { default as TableStickyTitleBox } from './table-sticky-title-box'
+export { default as TablePaginationCustom } from './table-pagination-custom'
+export { default as TableHeader } from './header'
+export { default as ColorizedStatusTextBox } from './colorized-status-text-box'
