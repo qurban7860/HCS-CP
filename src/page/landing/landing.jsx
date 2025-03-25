@@ -103,7 +103,7 @@ const Landing = () => {
      }}>
      {renderProductSection(PRODUCT, LABEL.OUR_PRODUCT)}
      {renderProductSection(COMPANY, LABEL.OUR_COMPANY)}
-     {GLOBAL.ENV === KEY.LIVE ? (
+     {/* {GLOBAL.ENV === KEY.LIVE ? (
       <Grid container flexDirection={FLEX_DIR.ROW} justifyContent={FLEX.FLEX_END} mt={isMobile ? 5 : 0}>
        <Grid item sm={2} lg={4} mr={isMobile || isTablet || isMd ? 2 : 10} width={200}>
         <Button size='sm' {...ButtonProps} sx={{ color: theme.palette.grey[500], bgcolor: theme.palette.grey[100], pointerEvents: 'none', py: 1 }}>
@@ -113,7 +113,7 @@ const Landing = () => {
         </Button>
        </Grid>
       </Grid>
-     ) : (
+     ) : ( */}
       <Grid container flexDirection={FLEX_DIR.ROW} justifyContent={FLEX.FLEX_END} mt={isMobile ? 5 : 0}>
        <Grid item lg={2} mr={isMobile ? 2 : 10}>
         <Button ref={buttonRef} {...ButtonProps}>
@@ -122,7 +122,6 @@ const Landing = () => {
         </Button>
        </Grid>
       </Grid>
-     )}
     </Grid>
    </Grid>
    {/* <HowickLoader style={{ display: 'absolute', zIndex: -1 }} /> */}
