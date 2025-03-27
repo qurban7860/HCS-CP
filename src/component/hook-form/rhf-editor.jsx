@@ -1,15 +1,16 @@
 import PropTypes from 'prop-types'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useFormContext, Controller } from 'react-hook-form'
-import { FormHelperText } from '@mui/material'
-// import Editor from '../editor'
+import { FormHelperText, Typography } from '@mui/material'
+import Editor from '../editor'
 
 RHFEditor.propTypes = {
   name: PropTypes.string,
+  label: PropTypes.string,
   helperText: PropTypes.node,
 }
 
-function RHFEditor({ name, helperText, ...other }) {
+function RHFEditor({ name, label, helperText, ...other }) {
   const {
     control,
     watch,
@@ -28,26 +29,31 @@ function RHFEditor({ name, helperText, ...other }) {
   }, [isSubmitSuccessful, name, setValue, values])
 
   return (
-    <Controller
-      name={name}
-      control={control}
-      // render={({ field, fieldState: { error } }) =>
-      // <Editor
-      //   id={name}
-      //   value={field.value}
-      //   onChange={field.onChange}
-      //   error={!!error}
-      //   helperText={
-      //     (!!error || helperText) && (
-      //       <FormHelperText error={!!error} sx={{ px: 2 }}>
-      //         {error ? error?.message : helperText}
-      //       </FormHelperText>
-      //     )
-      //   }
-      //   {...other}
-      // />
-      // }
-    />
+    <React.Fragment>
+      <Typography variant='subtitle2'>
+        {label}
+      </Typography>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field, fieldState: { error } }) =>
+          <Editor
+            id={name}
+            value={field.value}
+            onChange={field.onChange}
+            error={!!error}
+            helperText={
+              (!!error || helperText) && (
+                <FormHelperText error={!!error} sx={{ px: 2 }}>
+                  {error ? error?.message : helperText}
+                </FormHelperText>
+              )
+            }
+            {...other}
+          />
+        }
+      />
+    </React.Fragment>
   )
 }
 
