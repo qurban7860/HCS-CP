@@ -21,6 +21,7 @@ import { REGEX, FLEX_DIR, FLEX, KEY, TYPOGRAPHY } from 'constant'
 import { handleError } from 'util'
 import ViewFormField from 'component/viewform/view-form-field'
 import DropDownField from 'component/viewform/drop-down-field'
+import FilledTextField from 'component/viewform/filled-text-field'
 
 /**
  * View ticket form
@@ -292,12 +293,16 @@ function TicketViewForm() {
         minHeight={"10rem"}
         alignItems={"flex-start"}
       >
+
         {defaultValues?.description}
+
       </GridViewField>
+
+
       
     </Grid>
 
-         <Grid container spacing={2} p={1.5}>
+         {/* <Grid container spacing={2} p={1.5}>
         <Grid item xs={12} sm={12} md={8}>
          <Grid container spacing={2} p={1.5}>
           
@@ -309,29 +314,29 @@ function TicketViewForm() {
          </Grid>
         </Grid>
 
-       </Grid>
+       </Grid> */}
 
-       <Grid container spacing={2} p={1.5}>
+       {/* <Grid container spacing={2} p={1.5}>
         <Grid item xs={12} sm={12} md={12}>
          <Grid container spacing={2} p={1.5}>
          
           <Grid item xs={12} sm={12}>
          
-           {/* <TextField
+           <TextField
             multiline
             variant={'filled'}
             value={defaultValues?.description}
             fullWidth
             disabled
             sx={{ '&:disabled': { backgroundColor: theme.palette.grey[100], color: theme.palette.common.black } }}
-           /> */}
+           />
           </Grid>
-          {/* <GridViewField heading={t('description.label')} isLoading={isLoading} gridSize={12} multiline>
+          <GridViewField heading={t('description.label')} isLoading={isLoading} gridSize={12} multiline>
            {defaultValues?.description}
-          </GridViewField> */}
+          </GridViewField>
          </Grid>
         </Grid>
-       </Grid>
+       </Grid> */}
 
        <Grid container spacing={2} p={1.5}>
         <GridViewTitle title={t('attachment.attachments.label')} />
