@@ -15,7 +15,7 @@ import { PATH_DASHBOARD, PATH_MACHINE, PATH_SUPPORT } from 'route/path'
 import { TicketSchema } from 'schema'
 import { TicketComment, useTicketViewDefaultValues } from 'section/support'
 import { useTheme, Grid, Box, Dialog, DialogTitle, Divider, Button, Card, TextField } from '@mui/material'
-import { AuditBox, GridViewField, GridViewTitle, GalleryItem, Lightbox, SkeletonPDF, BackButton, RHFDescription, RHFEditor } from 'component'
+import { AuditBox, GridViewField, GridViewTitle, GalleryItem, Lightbox, SkeletonPDF, BackButton, RHFDescription } from 'component'
 import { GStyledStickyFormGrid, GCardOption, GStyledTopBorderDivider } from 'theme/style'
 import { REGEX, FLEX_DIR, FLEX, KEY, TYPOGRAPHY } from 'constant'
 import { handleError } from 'util'
@@ -379,16 +379,16 @@ function TicketViewForm() {
                     <GridViewField heading={t('change_type.label')} isLoading={isLoading}>
                       {defaultValues?.changeType}
                     </GridViewField>
-                    <GridViewField heading={t('change_reason.label')} isLoading={isLoading}>
+                    <GridViewField heading={t('change_reason.label')} isLoading={isLoading} >
                       {defaultValues?.changeReason}
                     </GridViewField>
-                    <GridViewField heading={t('implementation_plan.label')} isLoading={isLoading}>
+                    <GridViewField heading={t('implementation_plan.label')} isLoading={isLoading} multiline isEditor >
                       {defaultValues?.implementationPlan}
                     </GridViewField>
-                    <GridViewField heading={t('backout_plan.label')} isLoading={isLoading}>
+                    <GridViewField heading={t('backout_plan.label')} isLoading={isLoading} multiline isEditor >
                       {defaultValues?.backoutPlan}
                     </GridViewField>
-                    <GridViewField heading={t('test_plan.label')} isLoading={isLoading}>
+                    <GridViewField heading={t('test_plan.label')} isLoading={isLoading} multiline isEditor>
                       {defaultValues?.testPlan}
                     </GridViewField>
                   </Fragment>
@@ -396,13 +396,13 @@ function TicketViewForm() {
 
                 {defaultValues?.issueType?.name?.trim()?.toLowerCase() === 'service request' && (
                   <Fragment>
-                    <GridViewField heading={t('investigation_reason.label')} isLoading={isLoading}>
+                    <GridViewField heading={t('investigation_reason.label')} isLoading={isLoading} >
                       {defaultValues?.investigationReason}
                     </GridViewField>
-                    <GridViewField heading={t('root_cause.label')} isLoading={isLoading}>
+                    <GridViewField heading={t('root_cause.label')} isLoading={isLoading} multiline isEditor >
                       {defaultValues?.rootCause}
                     </GridViewField>
-                    <GridViewField heading={t('workaround.label')} isLoading={isLoading}>
+                    <GridViewField heading={t('workaround.label')} isLoading={isLoading} multiline isEditor >
                       {defaultValues?.workaround}
                     </GridViewField>
                   </Fragment>
