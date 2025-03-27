@@ -48,7 +48,7 @@ const handleNavigateTicket = (id) => {
  const renderTicketNo = (_tix, id) => {
   return (
    <LinkWrap
-    param={_tix}
+    param={`${GLOBAL.PREFIX}-${_tix}`}
     onClick={() => handleNavigateTicket(id)}
     // disabled for now; enable once Jira auth is refactored to take customer based token #1629
     openInNewTab={() => openInNewPage(id)}
