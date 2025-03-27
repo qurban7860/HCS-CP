@@ -7,10 +7,10 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuthContext } from 'auth/use-auth-context'
-import { IconFlexi, snack, useResponsive, useSettingContext } from 'hook'
+import { enqueueSnackbar, IconFlexi, snack, useResponsive, useSettingContext } from 'hook'
 import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
-import { getFile, getTicket, getTicketSettings, getSoftwareVersion, deleteFile, resetTicketSettings, resetTicket, resetSoftwareVersion } from 'store/slice'
+import { getFile, getTicket, getTicketSettings, getSoftwareVersion, deleteFile, resetTicketSettings, resetTicket, resetSoftwareVersion, updateTicketField } from 'store/slice'
 import { PATH_DASHBOARD, PATH_MACHINE, PATH_SUPPORT } from 'route/path'
 import { TicketSchema } from 'schema'
 import { TicketComment, useTicketViewDefaultValues } from 'section/support'
@@ -20,6 +20,8 @@ import { GStyledStickyFormGrid, GCardOption, GStyledTopBorderDivider } from 'the
 import { REGEX, FLEX_DIR, FLEX, KEY, TYPOGRAPHY } from 'constant'
 import { handleError } from 'util'
 import ViewFormField from 'component/viewform/view-form-field'
+import DropDownField from 'component/viewform/drop-down-field'
+import FilledTextField from 'component/viewform/filled-text-field'
 
 /**
  * View ticket form
@@ -179,6 +181,16 @@ function TicketViewForm() {
   navigate(PATH_SUPPORT.tickets.list)
  }
 
+ const onSubmit = async (fieldName, value) => {
+  try {
+    await dispatch(updateTicketField(id, fieldName, value)); 
+    enqueueSnackbar(`Ticket updated successfully!`, { variant: 'success' });
+  } catch (error) {
+    enqueueSnackbar(`Ticket update failed!`, { variant: 'error' });
+    throw error
+  }
+};
+
  return (
   <Fragment>
    <Grid container direction={{ xs: 'column', md: 'row' }} mt={2} flex={1} rowSpacing={4} gridAutoFlow={isMobile ? FLEX_DIR.COLUMN : FLEX_DIR.ROW} columnSpacing={2}>
@@ -245,19 +257,20 @@ function TicketViewForm() {
         heading={t('status.label')}
         isLoading={isLoading}
         gridSize={3}
-      >
-        {defaultValues?.status}
+      > 
+        <DropDownField name="status" isNullable label='Status' value={ticket?.status} onSubmit={onSubmit} options={ticketSettings?.statuses} />
       </GridViewField>
       <GridViewField
         heading={t('priority.label')}
         isLoading={isLoading}
         gridSize={3}
       >
-        <IconFlexi
+        <DropDownField name="priority" isNullable label='Priority' value={ticket?.priority} onSubmit={onSubmit} options={ticketSettings?.priorities} />
+        {/* <IconFlexi
           icon={defaultValues?.priorityIcon}
           color={defaultValues?.priorityColor}
         />{' '}
-        &nbsp;{defaultValues?.priority}
+        &nbsp;{defaultValues?.priority} */}
       </GridViewField>
 
 
@@ -280,12 +293,16 @@ function TicketViewForm() {
         minHeight={"10rem"}
         alignItems={"flex-start"}
       >
+
         {defaultValues?.description}
+
       </GridViewField>
+
+
       
     </Grid>
 
-         <Grid container spacing={2} p={1.5}>
+         {/* <Grid container spacing={2} p={1.5}>
         <Grid item xs={12} sm={12} md={8}>
          <Grid container spacing={2} p={1.5}>
           
@@ -297,29 +314,29 @@ function TicketViewForm() {
          </Grid>
         </Grid>
 
-       </Grid>
+       </Grid> */}
 
-       <Grid container spacing={2} p={1.5}>
+       {/* <Grid container spacing={2} p={1.5}>
         <Grid item xs={12} sm={12} md={12}>
          <Grid container spacing={2} p={1.5}>
          
           <Grid item xs={12} sm={12}>
          
-           {/* <TextField
+           <TextField
             multiline
             variant={'filled'}
             value={defaultValues?.description}
             fullWidth
             disabled
             sx={{ '&:disabled': { backgroundColor: theme.palette.grey[100], color: theme.palette.common.black } }}
-           /> */}
+           />
           </Grid>
-          {/* <GridViewField heading={t('description.label')} isLoading={isLoading} gridSize={12} multiline>
+          <GridViewField heading={t('description.label')} isLoading={isLoading} gridSize={12} multiline>
            {defaultValues?.description}
-          </GridViewField> */}
+          </GridViewField>
          </Grid>
         </Grid>
-       </Grid>
+       </Grid> */}
 
        <Grid container spacing={2} p={1.5}>
         <GridViewTitle title={t('attachment.attachments.label')} />

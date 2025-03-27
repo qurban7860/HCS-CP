@@ -51,7 +51,7 @@ export const PATH_PAGE = {
 }
 
 export const PATH_HOME = {
- root: conNex(ROOTS_HOME)
+ root: conNex(ROOTS_PRODUCTS, SUB_MACHINES)
 }
 
 export const PATH_DASHBOARD = {

@@ -68,6 +68,12 @@ const supportSlice = createSlice({
    state.ticket    = action.payload
    state.initial   = true
   },
+  updateTicketFieldSuccess(state, action) {
+    state.ticket = {
+      ...state.ticket,
+      [action.payload.name]: action.payload.value
+    }
+  },
   getTicketSettingsSuccess(state, action) {
     state.isLoading      = false
     state.success        = true
@@ -154,6 +160,9 @@ export default supportSlice.reducer
 export const { resetTicket, resetTickets, resetTicketSettings, resetSoftwareVersion, setTicketResponseMessage, setTicketFilterBy, setFilterStatus, setFilterPeriod, setTicketCreateSuccessDialog, ChangeTicketRowsPerPage, ChangeTicketPage } = supportSlice.actions
 
 // :thunks
+
+
+
 
 export function getTickets(customerId, period) {
  return async dispatch => {
@@ -293,6 +302,28 @@ export function getFile(id, fileId, customerId) {
       console.error(error)
       dispatch(supportSlice.actions.hasError(error.Message))
       throw error
+    }
+  };
+}
+
+export function updateTicketField(id, name, value) {
+  return async (dispatch) => {
+    // dispatch(slice.actions.startLoading());
+    try {
+      const data = {}
+      if(Array.isArray(value)) {
+        data[name]= value?.map(item => item._id) || [];
+      } else {
+        data[name]= value?._id || value
+      }
+      const response = await axios.patch(PATH_SERVER.SUPPORT.TICKETS.detail(id), data);
+
+      dispatch(supportSlice.actions.updateTicketFieldSuccess({ name, value }));
+      return response;
+    } catch (error) {
+      dispatch(supportSlice.actions.hasError(error.message));
+      console.error(error);
+      throw error;
     }
   };
 }
