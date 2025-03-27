@@ -110,8 +110,8 @@ function TicketCreateForm() {
   const { machine, issueType, summary, description, files, requestType } = watch()
 
   const checkFormCompletion = useCallback(() => {
-    setIsFormComplete(!!machine && !!issueType && !!summary && !!description)
-  }, [machine, issueType, summary, description])
+    setIsFormComplete(!!machine && !!issueType && !!summary)
+  }, [machine, issueType, summary])
 
   useEffect(() => {
     if (machine?._id) {
@@ -561,18 +561,18 @@ function TicketCreateForm() {
                       <RHFSwitch name={'shareWith'} label={t('set_private.label')} helperText={errors.shareWith ? errors.shareWith.message : ''} />
                     </Grid>
                   </Grid>
-
-
                 </Card>
 
               </Box>
-              <Grid container direction={{ xs: FLEX_DIR.COLUMN, md: FLEX_DIR.ROW }} justifyContent={KEY.CENTER} gap={2}>
-                <Grid item xs={12} sm={12} md={12}>
+              <Grid container direction={{ xs: FLEX_DIR.COLUMN, md: FLEX_DIR.ROW }} justifyContent={KEY.END} gap={2}>
+                <Grid marginTop={4} item xs={12} sm={12} md={3}>
                   <GStyledLoadingButton fullWidth color={KEY.INHERIT} type={KEY.SUBMIT} mode={themeMode} loading={isSubmitting} disabled={!isFormComplete}>
                     {t('create_support_ticket.label').toUpperCase()}
                   </GStyledLoadingButton>
                 </Grid>
-                <Grid item mb={2} xs={12} sm={12} md={12}>
+              </Grid>
+              <Grid container direction={{ xs: FLEX_DIR.COLUMN, md: FLEX_DIR.ROW }} justifyContent={KEY.END} gap={2}>
+                <Grid item marginTop={1} mb={2} xs={12} sm={12} md={3}>
                   <GStyledDefLoadingButton
                     fullWidth
                     type={'button'}
