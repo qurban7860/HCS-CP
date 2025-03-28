@@ -114,17 +114,17 @@ useEffect(() => {
   window.open(url, KEY.BLANK)
  }
 
- const handleCreateTicket = () => {
-  // navigate to create ticket
-  navigate(PATH_SUPPORT.tickets.create)
- }
+//  const handleCreateTicket = () => {
+//   // navigate to create ticket
+//   navigate(PATH_SUPPORT.tickets.create)
+//  }
 
  const isNotFound = !isLoading && !filteredData?.length
 
  return (
   <Fragment>
    <TableTitleBox title={t('support_tickets.label')} />
-   <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} onReload={onRefresh} handleCreateTicket={handleCreateTicket} />
+   <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} onReload={onRefresh} />
    {isMobile ? (
     <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
      <Grid item xs={12} sm={12}>
