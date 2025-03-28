@@ -32,7 +32,7 @@ export default function RHFDatePickr({ name, label, size, helperText, Error, ...
       <TextField
        {...params}
        size={size}
-       inputProps={{ ...params.inputProps, readOnly: true }}
+       inputProps={{ ...params.inputProps, readOnly: false }}
        error={!!error || !!Error}
        helperText={error ? error?.message : helperText}
        {...other}
