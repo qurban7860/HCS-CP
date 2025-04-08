@@ -8,6 +8,8 @@ import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 // import FormProvider, { RHFTextField } from '../../../components/hook-form';
 import { useForm } from 'react-hook-form';
 import FormProvider, { RHFTextField } from 'component/hook-form';
+import { useSettingContext } from 'hook';
+import { KEY } from 'constant';
 
 FilledTextField.propTypes = {
   name: PropTypes.string,
@@ -53,6 +55,8 @@ function FilledTextField( { name, label, value, onSubmit, minRows } ) {
 
         }
       });
+
+        const { themeMode } = useSettingContext()
   return (
     <Box sx={{ position: "relative", width: "100%" }} >
       <FormProvider methods={methods} onSubmit={handleFormSubmit} sx={{ width: "100%" }} >
@@ -65,6 +69,7 @@ function FilledTextField( { name, label, value, onSubmit, minRows } ) {
             fullWidth
             sx={{ 
                 "& .MuiInputBase-root": {
+                  backgroundColor: themeMode === KEY.LIGHT ? 'grey.100' : 'grey.800',
                   padding: "8px",
                   boxSizing: "border-box",
                 },
@@ -78,7 +83,7 @@ function FilledTextField( { name, label, value, onSubmit, minRows } ) {
                   outline: "1px solid",
                 },
                 "& .MuiInputBase-input": {
-                  padding: "0",
+                  padding: "1rem",
                   margin: "0" 
                 }
             }}

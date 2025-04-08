@@ -15,13 +15,14 @@ import { PATH_DASHBOARD, PATH_MACHINE, PATH_SUPPORT } from 'route/path'
 import { TicketSchema } from 'schema'
 import { TicketComment, useTicketViewDefaultValues } from 'section/support'
 import { useTheme, Grid, Box, Dialog, DialogTitle, Divider, Button, Card, TextField } from '@mui/material'
-import { AuditBox, GridViewField, GridViewTitle, GalleryItem, Lightbox, SkeletonPDF, BackButton, RHFDescription } from 'component'
+import { AuditBox, GridViewField, GridViewTitle, GalleryItem, Lightbox, SkeletonPDF, BackButton, RHFDescription, RHFEditor } from 'component'
 import { GStyledStickyFormGrid, GCardOption, GStyledTopBorderDivider } from 'theme/style'
 import { REGEX, FLEX_DIR, FLEX, KEY, TYPOGRAPHY } from 'constant'
 import { handleError } from 'util'
 import ViewFormField from 'component/viewform/view-form-field'
 import DropDownField from 'component/viewform/drop-down-field'
 import FilledTextField from 'component/viewform/filled-text-field'
+import FilledEditorField from 'component/viewform/text-editor'
 
 /**
  * View ticket form
@@ -191,6 +192,8 @@ function TicketViewForm() {
     }
   };
 
+  
+
   return (
     <Fragment>
       <Grid container direction={{ xs: 'column', md: 'row' }} mt={2} flex={1} rowSpacing={4} gridAutoFlow={isMobile ? FLEX_DIR.COLUMN : FLEX_DIR.ROW} columnSpacing={2}>
@@ -272,21 +275,38 @@ function TicketViewForm() {
                   />{' '}
                   &nbsp;{defaultValues?.priority} */}
                 </GridViewField>
+                
 
+                <Grid item xs={12} md={12}>
+                <GridViewTitle title={t('summary.label')} />
 
+                <FilledTextField name="summary" value={defaultValues.summary} onSubmit={onSubmit} minRows={4}  />
 
+                </Grid>
 
-                <GridViewField
+                {/* <ViewFormField
                   heading={t('summary.label')}
                   isLoading={isLoading}
                   gridSize={12}
+                  multiline
+                  noBreakSpace
+                  height={"unset"}
+                  minHeight={"8rem"}
+                  alignItems={"flex-start"}
                 >
-                  {defaultValues?.summary}
-                </GridViewField>
-                <GridViewField
+                  <FilledTextField name="summary" value={defaultValues.summary} onSubmit={onSubmit} minRows={4}  />
+                </ViewFormField> */}
+
+                <Grid item xs={12} md={12}>
+                <GridViewTitle title={t('description.label')} />
+
+                <FilledEditorField name="description" value={defaultValues.description} onSubmit={onSubmit} minRows={4} />
+
+                </Grid>
+
+                {/* <GridViewField
                   heading={t('description.label')}
                   isLoading={isLoading}
-                  isEditor
                   gridSize={12}
                   multiline
                   noBreakSpace
@@ -294,8 +314,22 @@ function TicketViewForm() {
                   minHeight={"10rem"}
                   alignItems={"flex-start"}
                 >
-                  {defaultValues?.description}
-                </GridViewField>
+                   <FilledTextField name="description" value={defaultValues.description} onSubmit={onSubmit} minRows={4}  />
+                </GridViewField> */}
+
+                {/* <ViewFormField
+                  heading={t('description.label')}
+                  isLoading={isLoading}
+                  gridSize={12}
+                  multiline
+                  noBreakSpace
+                  height={"unset"}
+                  minHeight={"15rem"}
+                  alignItems={"flex-start"}
+                >
+                  <FilledTextField name="description" value={defaultValues.description} onSubmit={onSubmit} minRows={4}  />
+                </ViewFormField> */}
+
 
               </Grid>
 
