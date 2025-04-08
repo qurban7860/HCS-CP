@@ -262,7 +262,7 @@ ViewFormField.propTypes = {
     primaryContact: PropTypes.any,
     isMachineView: PropTypes.bool,
     country: PropTypes.string,
-    multiline: PropTypes.boolean,
+    multiline: PropTypes.bool,
     height: PropTypes.string,
     minHeight: PropTypes.string,
     alignItems: PropTypes.string
