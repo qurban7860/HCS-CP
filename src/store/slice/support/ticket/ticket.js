@@ -165,24 +165,25 @@ export const { resetTicket, resetTickets, resetTicketSettings, resetSoftwareVers
 
 
 
-export function getTickets(customerId, period) {
-  return async dispatch => {
-    dispatch(supportSlice.actions.startLoading())
-    try {
-      const params = {
-        customer: customerId,
-        orderBy: { createdAt: -1 },
-        isArchived: false
-      }
-      const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
-      //  const customerTickets  = response.data &&  response.data.data.filter(ticket => ticket.customer._id === customerId)
-      dispatch(supportSlice.actions.getTicketsSuccess(response.data))
-      return response
-    } catch (error) {
-      console.error(error)
-      throw error
-    }
+export function getTickets(customerId, isResolved = null, period) {
+ return async dispatch => {
+  dispatch(supportSlice.actions.startLoading())
+  try {
+   const params = {
+    customer  : customerId,
+    orderBy   : { createdAt: -1 },
+    isArchived: false,
+    ...(isResolved && isResolved !== 'all' && { isResolved: isResolved === 'resolved' }),
+   }
+   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
+  //  const customerTickets  = response.data &&  response.data.data.filter(ticket => ticket.customer._id === customerId)
+    dispatch(supportSlice.actions.getTicketsSuccess(response.data))
+   return response
+  } catch (error) {
+   console.error(error)
+   throw error
   }
+ }
 }
 
 export function getTicket(id, customerId) {

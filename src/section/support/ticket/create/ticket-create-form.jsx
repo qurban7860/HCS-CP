@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuthContext } from 'auth/use-auth-context'
-import { snack, useResponsive, useSettingContext } from 'hook'
+import { IconFlexi, snack, useResponsive, useSettingContext } from 'hook'
 import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
 import {
@@ -448,9 +448,13 @@ function TicketCreateForm() {
                           label={t('priority.label')}
                           options={ticketSettings?.priorities || []}
                           isOptionEqualToValue={(option, value) => option._id === value._id}
-                          getOptionLabel={option => `${option.name || ''}`}
+                          getOptionLabel={option => option?.name || ''}
                           renderOption={(props, option) => (
                             <li {...props} key={option?._id}>
+                              <IconFlexi
+                                icon={option?.icon}
+                                color={option?.color}
+                              />{' '}
                               {option.name && option.name}
                             </li>
                           )}
