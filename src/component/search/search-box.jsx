@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material/styles'
 import { IconTooltip } from 'component'
 import { BUTTON, KEY, LABEL } from 'constant'
 
-const SearchBox = ({ term, handleSearch, mode, onReload, mt = 5, handleCreateTicket, filterResolvedStatus, onFilterResolvedStatus }) => {
+const SearchBox = ({ term, handleSearch, mode, onReload, mt = 5, handleCreateTicket, filterResolvedStatus, onFilterResolvedStatus, increasedFilterSize }) => {
   const [isSearchEmpty, setIsSearchEmpty] = useState(true)
   const theme = useTheme()
 
@@ -24,7 +24,7 @@ const SearchBox = ({ term, handleSearch, mode, onReload, mt = 5, handleCreateTic
   return (
     <Box mt={mt} mb={2}>
       <Grid container spacing={2} alignItems="center">
-        <Grid item xs={12} sm={6} md={6} lg={4}>
+        <Grid item xs={12} sm={6} md={increasedFilterSize ? 12 : 6} lg={increasedFilterSize ? 12 : 4}>
           <TextField
             fullWidth
             value={term}
@@ -129,6 +129,7 @@ SearchBox.propTypes = {
   handleCreateTicket: PropTypes.func,
   filterResolvedStatus: PropTypes.string,
   onFilterResolvedStatus: PropTypes.func,
+  increasedFilterSize: PropTypes.bool,
 };
 
 export default SearchBox
