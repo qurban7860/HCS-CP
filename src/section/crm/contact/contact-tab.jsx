@@ -192,7 +192,7 @@ const ContactTab = () => {
      <GStyledStickyGrid item xs={12} md={3}>
       {contacts.length >= 5 && (
        <Grid item xs={12}>
-        <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
+        <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} increasedFilterSize mt={0} />
        </Grid>
       )}
       <GStyledScrollableHeightLockGrid isMobile={isMobile} mode={themeMode} totalCount={contacts?.length}>

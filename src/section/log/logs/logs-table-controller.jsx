@@ -83,7 +83,11 @@ const LogsTableController = ({  customerMachines, handleMachineChange, handleLog
         }}
        />
       </Box>
-      <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: '1fr', sm: '2.5fr .5fr' }}>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}
+        sx={{
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+        }}>
        <Box sx={{ flexGrow: 1, width: { xs: '100%', sm: 'auto' } }}>
         <RHFFilteredSearchBar
          name='filteredSearchKey'
@@ -95,10 +99,12 @@ const LogsTableController = ({  customerMachines, handleMachineChange, handleLog
          fullWidth
         />
        </Box>
-       <GStyledLoadingButton mode={themeMode} type={'button'} onClick={handleSubmit(onGetLogs)} variant='contained' size='small'>
+       <Box sx={{ justifyContent: 'flex-end', display: 'flex' }}>
+       <GStyledLoadingButton mode={themeMode} type={'button'} onClick={handleSubmit(onGetLogs)} variant='contained' size='large' sx={{mt: 0.7}}>
         {t('log.button.get_logs').toUpperCase()}
        </GStyledLoadingButton>
-      </Box>
+       </Box>
+      </Stack>
      </Fragment>
     )}
     {isGraphPage() && (

@@ -180,7 +180,7 @@ const MachineTab = () => {
      <GStyledStickyGrid item xs={12} md={12} lg={3}>
       {machines.length >= 5 ? (
        <Box>
-        <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
+        <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} increasedFilterSize mt={0} />
         {renderCategoryChipContainer()}
        </Box>
       ) : (
