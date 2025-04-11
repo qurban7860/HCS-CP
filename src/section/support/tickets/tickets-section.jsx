@@ -9,13 +9,12 @@ import { useTable, useTempFilter, getComparator, useSettingContext, useResponsiv
 import {
  getCustomer,
  getTickets,
- getCustomerTickets,
  getCustomerTicketBySerialNoAndKey,
  setCustomerTicketFilterBy,
  setSelectedCustomerTicketCard,
  setCustomerTicketDialog,
- ChangeCustomerTicketPage,
- ChangeCustomerTicketRowsPerPage,
+ ChangeTicketPage,
+ ChangeTicketRowsPerPage
 } from 'store/slice'
 import { TicketsTable, TicketsTableHeader, TicketsListPagination, TicketCard, HEADER_ITEMS } from 'section/support'
 import { Table, Grid, Typography } from '@mui/material'
@@ -25,11 +24,10 @@ import { GLOBAL } from 'config/global'
 import { MARGIN, TABLE } from 'config'
 import { KEY, FLEX_DIR, TYPOGRAPHY } from 'constant'
 import { StyledScrollTableContainer } from './style'
-import { PATH_SUPPORT } from 'route/path'
+// import { PATH_SUPPORT } from 'route/path'
 
 const TicketsListSection = () => {
  const [tableData, setTableData]                                      = useState([])
- const [filterPeriodOption, setFilterPeriodOption]                    = useState(3)
  const { user }                                                       = useAuthContext()
  const { customer }                                                   = useSelector(state => state.customer)
  const { tickets, initial, isLoading, ticketPage, ticketRowsPerPage } = useSelector(state => state.ticket)
@@ -85,17 +83,17 @@ useEffect(() => {
  }, [tickets, initial])
 
 //  const defaultValues = useTicketsDefaultValues(tableData && tableData)
- const { filterName, handleFilterName, filteredData } = useTempFilter(getComparator(order, orderBy), tableData, initial, ChangeCustomerTicketPage, setCustomerTicketFilterBy)
+ const { filterName, handleFilterName, filteredData } = useTempFilter(getComparator(order, orderBy), tableData, initial, ChangeTicketPage, setCustomerTicketFilterBy)
 
- const handleChangePage = (event, newPage) => {
+ const onChangePage = (event, newPage) => {
   if (newPage < Math.ceil(filteredData.length / ticketRowsPerPage)) {
-   dispatch(ChangeCustomerTicketPage(newPage))
+   dispatch(ChangeTicketPage(newPage))
   }
  }
 
- const handleChangeRowsPerPage = event => {
-  dispatch(ChangeCustomerTicketPage(0))
-  dispatch(ChangeCustomerTicketRowsPerPage(parseInt(event.target.value, 10)))
+ const onChangeRowsPerPage = event => {
+  dispatch(ChangeTicketPage(0))
+  dispatch(ChangeTicketRowsPerPage(parseInt(event.target.value, 10)))
  }
 
  const handleSelectedCard = (event, key) => {
@@ -179,8 +177,8 @@ useEffect(() => {
          data={filteredData}
          page={ticketPage}
          rowsPerPage={ticketRowsPerPage}
-         handleChangePage={handleChangePage}
-         handleChangeRowsPerPage={handleChangeRowsPerPage}
+         handleChangePage={onChangePage}
+         handleChangeRowsPerPage={onChangeRowsPerPage}
          columnFilterButtonData={HEADER_ITEMS}
         />
         <StyledScrollTableContainer>
