@@ -31,7 +31,7 @@ const TicketsListSection = () => {
  const { user }                                                       = useAuthContext()
  const { customer }                                                   = useSelector(state => state.customer)
  const { tickets, initial, isLoading, ticketPage, ticketRowsPerPage } = useSelector(state => state.ticket)
- const [selectedResolvedStatus, setSelectedResolvedStatus] = useState("unresolved");
+ const [selectedResolvedStatus, setSelectedResolvedStatus] = useState("all");
 
  const navigate      = useNavigate()
  const isMobile      = useResponsive('down', 'sm')
@@ -60,27 +60,27 @@ const TicketsListSection = () => {
   }
  }, [customer, user?.customer])
 
-useEffect(() => {
+ useEffect(() => {
   const debouncedDispatch = _.debounce(() => {
     if (customer?._id) {
-      dispatch(getTickets(customer?._id, selectedResolvedStatus))
+      setTableData([]); 
+      dispatch(getTickets(customer?._id, selectedResolvedStatus));
     }
-  }, 300)
-  debouncedDispatch()
-  return () => {
-    debouncedDispatch.cancel()
-  }
-}, [customer?._id, ticketPage, ticketRowsPerPage, selectedResolvedStatus])
+  }, 300);
+  debouncedDispatch();
+  return () => debouncedDispatch.cancel();
+}, [customer?._id, selectedResolvedStatus]);
 
- const onRefresh = () => {
-  dispatch(getTickets(customer?._id, selectedResolvedStatus))
- }
+const onRefresh = () => {
+  setTableData([]); 
+  dispatch(getTickets(customer?._id, selectedResolvedStatus));
+};
 
- useEffect(() => {
-  if (initial) {
-   setTableData(tickets || [])
+useEffect(() => {
+  if (!isLoading && tickets) {
+    setTableData(tickets || []);
   }
- }, [tickets, initial])
+}, [tickets, isLoading]);
 
 //  const defaultValues = useTicketsDefaultValues(tableData && tableData)
  const { filterName, handleFilterName, filteredData } = useTempFilter(getComparator(order, orderBy), tableData, initial, ChangeTicketPage, setCustomerTicketFilterBy)
