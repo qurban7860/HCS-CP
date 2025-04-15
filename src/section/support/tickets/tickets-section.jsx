@@ -25,7 +25,6 @@ import { GLOBAL } from 'config/global'
 import { MARGIN, TABLE } from 'config'
 import { KEY, FLEX_DIR, TYPOGRAPHY } from 'constant'
 import { StyledScrollTableContainer } from './style'
-// import { PATH_SUPPORT } from 'route/path'
 
 const TicketsListSection = () => {
  const [tableData, setTableData]                                      = useState([])
@@ -42,7 +41,7 @@ const TicketsListSection = () => {
  const {
   order,
   orderBy,
-  setPage: setTablePage,
+  setPage,
   onSort
  } = useTable({
   defaultOrderBy: 'createdAt',
@@ -72,7 +71,6 @@ const TicketsListSection = () => {
         customerId: customer?._id,
         isResolved: selectedResolvedStatus
     }));
-    dispatch(ChangeTicketPage(0));
     }
   }, 300);
   debouncedDispatch();
@@ -95,7 +93,6 @@ const onRefresh = () => {
   }));
 };
 
-//  const defaultValues = useTicketsDefaultValues(tableData && tableData)
  const { filterName, handleFilterName, filteredData } = useTempFilter(
   getComparator(order, orderBy),
   tickets?.data || [],
@@ -128,11 +125,6 @@ const onRefresh = () => {
   const url = GLOBAL.JIRA_URL + jiraKey
   window.open(url, KEY.BLANK)
  }
-
-//  const handleCreateTicket = () => {
-//   // navigate to create ticket
-//   navigate(PATH_SUPPORT.tickets.create)
-//  }
 
  const isNotFound = !isLoading && !filteredData?.length
 
@@ -202,7 +194,6 @@ const onRefresh = () => {
          <Table>
           <TicketsTableHeader columns={HEADER_ITEMS} dataFiltered={filteredData} orderBy={orderBy} order={order} onSort={onSort} />
           {(isLoading ? [...Array(ticketRowsPerPage)] : filteredData)
-          //  .slice(ticketPage * ticketRowsPerPage, ticketPage * ticketRowsPerPage + ticketRowsPerPage)
            .map((row, index) =>
             row ? (
              <TicketsTable key={index} columns={HEADER_ITEMS} ticket={row} mode={themeMode} index={index} />
