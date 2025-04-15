@@ -9,6 +9,7 @@ import { useTable, useTempFilter, getComparator, useSettingContext, useResponsiv
 import {
  getCustomer,
  getTickets,
+ resetTickets,
  getCustomerTicketBySerialNoAndKey,
  setCustomerTicketFilterBy,
  setSelectedCustomerTicketCard,
@@ -64,31 +65,46 @@ const TicketsListSection = () => {
   const debouncedDispatch = _.debounce(() => {
     if (customer?._id) {
       setTableData([]); 
-      dispatch(getTickets(customer?._id, selectedResolvedStatus));
+      dispatch(resetTickets());
+      dispatch(getTickets({
+        page: ticketPage,
+        pageSize: ticketRowsPerPage,
+        customerId: customer?._id,
+        isResolved: selectedResolvedStatus
+    }));
+    dispatch(ChangeTicketPage(0));
     }
   }, 300);
   debouncedDispatch();
   return () => debouncedDispatch.cancel();
-}, [customer?._id, selectedResolvedStatus]);
-
-const onRefresh = () => {
-  setTableData([]); 
-  dispatch(getTickets(customer?._id, selectedResolvedStatus));
-};
+}, [ticketPage, ticketRowsPerPage, customer?._id, selectedResolvedStatus]);
 
 useEffect(() => {
-  if (!isLoading && tickets) {
-    setTableData(tickets || []);
-  }
-}, [tickets, isLoading]);
+  return () => {
+    dispatch(resetTickets());
+  };
+}, [navigate]);
+
+const onRefresh = () => {
+  dispatch(ChangeTicketPage(0));
+  dispatch(getTickets({
+    page: 0,
+    pageSize: ticketRowsPerPage,
+    customerId: customer?._id,
+    isResolved: selectedResolvedStatus
+  }));
+};
 
 //  const defaultValues = useTicketsDefaultValues(tableData && tableData)
- const { filterName, handleFilterName, filteredData } = useTempFilter(getComparator(order, orderBy), tableData, initial, ChangeTicketPage, setCustomerTicketFilterBy)
+ const { filterName, handleFilterName, filteredData } = useTempFilter(
+  getComparator(order, orderBy),
+  tickets?.data || [],
+  initial,
+  setCustomerTicketFilterBy
+);
 
  const onChangePage = (event, newPage) => {
-  if (newPage < Math.ceil(filteredData.length / ticketRowsPerPage)) {
-   dispatch(ChangeTicketPage(newPage))
-  }
+  dispatch(ChangeTicketPage(newPage))
  }
 
  const onChangeRowsPerPage = event => {
@@ -174,18 +190,19 @@ useEffect(() => {
         <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
         <TicketsListPagination
          mode={themeMode}
-         data={filteredData}
+         data={tickets}
          page={ticketPage}
          rowsPerPage={ticketRowsPerPage}
          handleChangePage={onChangePage}
          handleChangeRowsPerPage={onChangeRowsPerPage}
          columnFilterButtonData={HEADER_ITEMS}
+         count={tickets?.totalCount || 0}
         />
         <StyledScrollTableContainer>
          <Table>
           <TicketsTableHeader columns={HEADER_ITEMS} dataFiltered={filteredData} orderBy={orderBy} order={order} onSort={onSort} />
           {(isLoading ? [...Array(ticketRowsPerPage)] : filteredData)
-           .slice(ticketPage * ticketRowsPerPage, ticketPage * ticketRowsPerPage + ticketRowsPerPage)
+          //  .slice(ticketPage * ticketRowsPerPage, ticketPage * ticketRowsPerPage + ticketRowsPerPage)
            .map((row, index) =>
             row ? (
              <TicketsTable key={index} columns={HEADER_ITEMS} ticket={row} mode={themeMode} index={index} />

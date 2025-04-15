@@ -6,7 +6,8 @@ import { TablePaginationCustom } from 'component'
 import { KEY, LABEL } from 'constant'
 
 const TicketsListPagination = ({
- rowsPerPageOptions = [5, 10, 15, 20, 30],
+ rowsPerPageOptions = [5, 10, 20, 50],
+ count,
  data,
  page,
  mode,
@@ -20,7 +21,7 @@ const TicketsListPagination = ({
  return (
   <Box sx={{ position: KEY.RELATIVE }}>
    <TablePaginationCustom
-    count={data?.length ?? 0}
+    count={count ?? 0}
     component={m.div}
     colSpan={2}
     data={data}
@@ -43,6 +44,7 @@ const TicketsListPagination = ({
 }
 
 TicketsListPagination.propTypes = {
+ count                  : PropTypes.number,
  data                   : PropTypes.array,
  mode                   : PropTypes.string,
  page                   : PropTypes.number,
