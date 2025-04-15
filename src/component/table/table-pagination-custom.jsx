@@ -258,7 +258,7 @@ function TablePaginationCustom({
      count={count}
      mode={themeMode}
      rowsPerPage={rowsPerPage}
-     rowsPerPageOptions={isPaginationDisabled ? [] : filteredRowsPerPageOptions}
+     rowsPerPageOptions={rowsPerPageOptions}
      component={component}
      showLastButton
      showFirstButton
