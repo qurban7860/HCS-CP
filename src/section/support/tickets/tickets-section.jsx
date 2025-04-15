@@ -72,7 +72,7 @@ const TicketsListSection = () => {
         customerId: customer?._id,
         isResolved: selectedResolvedStatus
     }));
-    dispatch(ChangeTicketPage(0));
+    // dispatch(ChangeTicketPage(0));
     }
   }, 300);
   debouncedDispatch();
