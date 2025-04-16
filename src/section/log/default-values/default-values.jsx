@@ -19,3 +19,18 @@ export function useLogDefaultValues(customer, machine) {
   }
  }, [])
 }
+
+export function useGraphDefaultValues(customer, machine) {
+ return useMemo(() => {
+  const today         = new Date()
+  const thirtyDaysAgo = new Date(today)
+  thirtyDaysAgo.setDate(today.getDate() - 30)
+
+  return {
+   customer    : customer?._id || null,
+   machine     : machine && machine._id || null,
+   logPeriod   : 'Monthly',
+   logGraphType: logGraphTypes[0]
+  }
+ }, [])
+}

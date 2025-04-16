@@ -44,7 +44,8 @@ function LogStackedChart({ chart, graphLabels, graphHeight = 500 }) {
    bar: {
     horizontal: false,
     dataLabels: {
-     position: 'top'
+     position: 'top',
+     hideOverflowingLabels: false,
     }
    },
    colors: {
@@ -90,7 +91,11 @@ function LogStackedChart({ chart, graphLabels, graphHeight = 500 }) {
   xaxis: {
    categories,
    position: 'bottom',
-   labels: { offsetY: 0 },
+   labels: { 
+    offsetY: 0,
+    rotate: -45,
+    rotateAlways: graphLabels?.xaxis === "Days" 
+  },
    axisBorder: { show: false, color: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[700] },
    axisTicks: { show: false, color: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[700] },
    title: {
@@ -98,7 +103,7 @@ function LogStackedChart({ chart, graphLabels, graphHeight = 500 }) {
     offsetX: 0,
     offsetY: 0,
     style: {
-     fontSize: '8px',
+     fontSize: '12px',
      fontWeight: 600,
      cssClass: 'apexcharts-xaxis-title'
     }
@@ -110,10 +115,10 @@ function LogStackedChart({ chart, graphLabels, graphHeight = 500 }) {
    labels: { formatter: value => fShortenNumber(value), style: { fontSize: '10px', color: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[400] } },
    title: {
     text: graphLabels?.yaxis,
-    offsetX: 0,
+    offsetX: 15,
     offsetY: 0,
     style: {
-     fontSize: '10px',
+     fontSize: '12px',
      fontWeight: 600,
      cssClass: 'apexcharts-yaxis-title',
      color: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[400]

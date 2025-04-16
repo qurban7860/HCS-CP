@@ -1,6 +1,5 @@
-import { Fragment, useEffect, useState, memo, useLayoutEffect, useCallback } from 'react'
+import { Fragment, useEffect, useState, memo, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import axios from 'axios'
 import _ from 'lodash'
 import { t } from 'i18next'
 import { useSearchParams } from 'react-router-dom'
@@ -9,224 +8,251 @@ import { useSelector, dispatch } from 'store'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { addLogSchema } from 'schema'
-import { getMachines, getLogGraphData, getLogs, ChangeLogPage, resetLogsGraphData, resetLogs, getCustomerMachines } from 'store/slice'
-import { LogsTableController, ERPProductionTotal, ERPProductionRate, useLogDefaultValues } from 'section/log'
+import { getMachines, getLogs, ChangeLogPage, setSelectedSearchFilter, resetLogs } from 'store/slice'
+import { useLogDefaultValues } from 'section/log'
 import { MachineLogsTable } from 'section/product'
-import { useMediaQuery, useTheme, Grid, Button, Typography } from '@mui/material'
+import { useMediaQuery, useTheme, Grid, Button, Typography, Stack, Box } from '@mui/material'
 import { HowickLoader, TableTitleBox } from 'component'
-import FormProvider from 'component/hook-form'
-import { GStyledStickyDiv } from 'theme/style'
+import FormProvider, { RHFAutocomplete, RHFDatePickr, RHFFilteredSearchBar } from 'component/hook-form'
+import { GStyledControllerCardContainer, GStyledLoadingButton, GStyledStickyDiv } from 'theme/style'
 import { NAV } from 'config/layout'
 import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
+import { LOG_TYPE_CONFIG } from 'config'
 
 const LogsSection = ({ isArchived }) => {
- const [pageType, setPageType]                                                     = useState('')
- const [expandedButton, setExpandedButton]                                         = useState(null)
- const [searchParams, setSearchParams]                                             = useSearchParams()
- const { customer }                                                                = useSelector((state) => state.customer)
- const { machines }                                                                = useSelector(state => state.machine)
- const { logPage, isLoading, logRowsPerPage, logsGraphData, selectedSearchFilter } = useSelector(state => state.log)
+  const [expandedButton, setExpandedButton] = useState(null)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { customer } = useSelector(state => state.customer)
+  const { machines } = useSelector(state => state.machine)
+  const { logPage, isLoading, logRowsPerPage, selectedSearchFilter } = useSelector(state => state.log)
 
- const { themeMode } = useSettingContext()
- const theme         = useTheme()
- const isDesktop     = useMediaQuery(theme.breakpoints.up('md'))
- const isMobile      = useResponsive('down', 'sm')
+  const { themeMode } = useSettingContext()
+  const theme = useTheme()
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
+  const isMobile = useResponsive('down', 'sm')
 
- const axiosToken        = () => axios.CancelToken.source()
- const cancelTokenSource = axiosToken()
- const isGraphPage       = () => searchParams.get('type') === 'graph'
+  const defaultValues = useLogDefaultValues()
+  const methods = useForm({
+    resolver: yupResolver(addLogSchema),
+    defaultValues
+  })
 
- const defaultValues = useLogDefaultValues()
- const methods = useForm({
-  resolver: yupResolver(addLogSchema),
-  defaultValues
- })
+  const { watch, setValue, handleSubmit, trigger } = methods
+  const { machine, dateFrom, dateTo, logType, filteredSearchKey } = watch()
 
- const { watch, setValue, handleSubmit, trigger, reset } = methods
- const { machine, dateFrom, dateTo, logType, filteredSearchKey, logPeriod, logGraphType } = watch()
- const [graphLabels, setGraphLabels] = useState({ yaxis: 'Cumulative Total Value', xaxis: logPeriod })
+  useEffect(() => {
+    dispatch(ChangeLogPage(0))
+    dispatch(resetLogs())
+   }, [])
 
- useLayoutEffect(() => {
-  resetLogs()
- }, [])
-
- useEffect(() => {
-  if (customer) {
-   setValue('customer', customer)
-  }
- }, [customer, setValue])
-
- useEffect(() => {
-  const debounce = _.debounce(() => {
-    if (!machines?.length) {
-      dispatch(getMachines(null, null, false, cancelTokenSource, customer?._id))
+  useEffect(() => {
+    if (customer) {
+      setValue('customer', customer)
     }
-  }, 300)
-  debounce()
-  return () => debounce.cancel()
- }, [dispatch])
+  }, [customer, setValue])
 
- useEffect(() => {
-  setPageType(searchParams.get('type'))
- }, [searchParams])
+  useEffect(() => {
+    dispatch(
+      getLogs({
+        customerId: customer._id || null,
+        machineId: machine?._id || undefined,
+        page: logPage,
+        pageSize: logRowsPerPage,
+        fromDate: dateFrom,
+        toDate: dateTo,
+        isArchived: false,
+        isMachineArchived: machine?.isArchived,
+        selectedLogType: logType.type,
+        searchKey: filteredSearchKey,
+        searchColumn: selectedSearchFilter
+      })
+    )
+  }, [logPage, logRowsPerPage])
 
- useEffect(() => {
-  if (isGraphPage() && customer && logPeriod && logGraphType) {
-   const customerId = customer._id
-   const machineId = machine?._id || undefined
-   const LogType = 'erp'
-   dispatch(getLogGraphData(customerId, machineId, LogType, logPeriod, logGraphType?.key))
+  const onGetLogs = data => {
+    const customerId = customer._id
+    const machineId = machine?._id || undefined
+    dispatch(ChangeLogPage(0))
+    dispatch(
+      getLogs({
+        customerId,
+        machineId,
+        page: 0,
+        pageSize: logRowsPerPage,
+        fromDate: dateFrom,
+        toDate: dateTo,
+        isArchived: false,
+        isMachineArchived: machine?.isArchived,
+        selectedLogType: logType.type,
+        searchKey: filteredSearchKey,
+        searchColumn: selectedSearchFilter
+      })
+    )
   }
-  if (!customer) dispatch(resetLogsGraphData())
- }, [customer, machine, logPeriod, searchParams, logGraphType])
 
- const onGetLogs = data => {
-  const customerId = customer._id
-  const machineId = machine?._id || undefined
-  dispatch(ChangeLogPage(0))
-  dispatch(
-   getLogs({
-    customerId,
-    machineId,
-    page: 0,
+  const handleMachineChange = useCallback(
+    newMachine => {
+      setValue('machine', newMachine)
+      trigger('machine')
+    },
+    [dispatch, setValue, trigger]
+  )
+
+  const handleLogTypeChange = useCallback(
+    newLogType => {
+      setValue('logType', newLogType)
+      trigger('logType')
+    },
+    [setValue, trigger]
+  )
+
+  const handleClick = buttonId => {
+    setExpandedButton(prev => (prev === buttonId ? null : buttonId))
+  }
+
+  const handleOnClick = async (buttonId, action) => {
+    if (isMobile) {
+      handleClick(buttonId)
+      await new Promise(resolve => setTimeout(resolve, 300))
+      action()
+    } else {
+      action()
+    }
+  }
+
+  const handleErpLogToggle = () => {
+    setSearchParams({ type: searchParams.get('type') === 'graph' ? 'logs' : 'graph' })
+  }
+
+  const payload = {
+    customerId: customer?._id,
+    machineId: machine?._id || undefined,
+    page: logPage,
     pageSize: logRowsPerPage,
     fromDate: dateFrom,
     toDate: dateTo,
     isArchived: false,
-    isMachineArchived: machine?.isArchived,
-    selectedLogType: logType.type,
+    isMachineArchived: false,
+    selectedLogType: logType?.type,
     searchKey: filteredSearchKey,
     searchColumn: selectedSearchFilter
-   })
-  )
- }
-
- const handleMachineChange = useCallback(
-  newMachine => {
-   setValue('machine', newMachine)
-   trigger('machine')
-   dispatch(resetLogs())
-  },
-  [dispatch, setValue, trigger]
- )
-
- const handlePeriodChange = useCallback(
-  newPeriod => {
-   setValue('logPeriod', newPeriod)
-   switch (newPeriod) {
-    case 'Monthly':
-     setGraphLabels(prev => ({ ...prev, xaxis: 'Months' }))
-     break
-    case 'Daily':
-     setGraphLabels(prev => ({ ...prev, xaxis: 'Days' }))
-     break
-    case 'Quarterly':
-     setGraphLabels(prev => ({ ...prev, xaxis: 'Quarters' }))
-     break
-    case 'Yearly':
-     setGraphLabels(prev => ({ ...prev, xaxis: 'Years' }))
-     break
-    default:
-     break
-   }
-  },
-  [setValue]
- )
-
- const handleLogTypeChange = useCallback(
-  newLogType => {
-   setValue('logType', newLogType)
-   trigger('logType')
-  },
-  [setValue, trigger]
- )
-
- const handleClick = buttonId => {
-  setExpandedButton(prev => (prev === buttonId ? null : buttonId))
- }
-
- const handleOnClick = async (buttonId, action) => {
-  if (isMobile) {
-   handleClick(buttonId)
-   await new Promise(resolve => setTimeout(resolve, 300))
-   action()
-  } else {
-   action()
   }
- }
 
- const handleErpLogToggle = () => {
-  setSearchParams({ type: pageType === 'graph' ? 'logs' : 'graph' })
- }
+  return (
+    <Grid container rowGap={2} flexDirection={FLEX_DIR.COLUMN}>
+      <GStyledStickyDiv top={0} zIndex={11} height={20}>
+        <Grid container sx={{ display: FLEX.FLEX, justifyContent: FLEX.SPACE_BETWEEN }}>
+          <TableTitleBox title={t('log.logs.label')} />
+          <Button
+            size='small'
+            startIcon={<Icon icon={ICON_NAME.GRAPH} sx={{ mr: 0.3 }} />}
+            variant='outlined'
+            sx={{
+              color: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
+              borderColor: theme.palette.grey[500]
+            }}
+            onClick={() => handleOnClick('erpLog', handleErpLogToggle)}>
+            {(!isMobile || expandedButton === 'erpLog') && <Typography variant={isDesktop ? TYPOGRAPHY.BODY0 : TYPOGRAPHY.BODY2}>{'See Graph'}</Typography>}
+          </Button>
+        </Grid>
+      </GStyledStickyDiv>
+      <GStyledStickyDiv top={NAV.T_STICKY_NAV_LOGS_CONTROLLER} zIndex={11}>
+        <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
+          <Grid container spacing={2} mt={3}>
+            <Grid item xs={12} sm={12}>
+              <GStyledControllerCardContainer height={'auto'}>
+                <Stack spacing={2}>
+                  <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)' }}>
+                    <RHFAutocomplete
+                      name='machine'
+                      label={t('machine.label')}
+                      options={machines || []}
+                      isOptionEqualToValue={(option, value) => option._id === value._id}
+                      getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
+                      renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
+                      onChange={(e, newValue) => handleMachineChange(newValue)}
+                      size='small'
+                    />
+                    <RHFAutocomplete
+                      name='logType'
+                      size='small'
+                      label='Log Type*'
+                      options={LOG_TYPE_CONFIG.gen5}
+                      getOptionLabel={option => option.type || ''}
+                      isOptionEqualToValue={(option, value) => option?.type === value?.type}
+                      onChange={(e, newValue) => handleLogTypeChange(newValue)}
+                      renderOption={(props, option) => (
+                        <li {...props} key={option?.type}>
+                          {option.type || ''}
+                        </li>
+                      )}
+                      disableClearable
+                      autoSelect
+                      openOnFocus
+                      fullWidth
+                      getOptionDisabled={option => option?.disabled}
+                    />
+                  </Box>
 
- const payload = {
-  customerId: customer?._id,
-  machineId: machine?._id || undefined,
-  page: logPage,
-  pageSize: logRowsPerPage,
-  fromDate: dateFrom,
-  toDate: dateTo,
-  isArchived: false,
-  isMachineArchived: false,
-  selectedLogType: logType?.type,
-  searchKey: filteredSearchKey,
-  searchColumn: selectedSearchFilter
- }
-
- return (
-  <Grid container rowGap={2} flexDirection={FLEX_DIR.COLUMN}>
-   <GStyledStickyDiv top={0} zIndex={11} height={20}>
-    <Grid container sx={{ display: FLEX.FLEX, justifyContent: FLEX.SPACE_BETWEEN }}>
-     <TableTitleBox title={t('log.logs.label')} />
-     <Button
-      size='small'
-      startIcon={<Icon icon={pageType === 'graph' ? ICON_NAME.LIST : ICON_NAME.GRAPH} sx={{ mr: 0.3 }} />}
-      variant='outlined'
-      sx={{
-       color: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
-       borderColor: theme.palette.grey[500]
-      }}
-      onClick={() => handleOnClick('erpLog', handleErpLogToggle)}>
-      {(!isMobile || expandedButton === 'erpLog') && <Typography variant={isDesktop ? TYPOGRAPHY.BODY0 : TYPOGRAPHY.BODY2}>{pageType === 'graph' ? 'Machine Logs' : 'See Graph'}</Typography>}
-     </Button>
+                  <Fragment>
+                    <Box display='grid' gap={2} gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)' }} sx={{ flexGrow: 1 }}>
+                      <RHFDatePickr
+                        label='Start Date'
+                        name='dateFrom'
+                        value={dateFrom}
+                        onChange={newValue => {
+                          setValue('dateFrom', newValue)
+                          trigger(['dateFrom', 'dateTo'])
+                        }}
+                      />
+                      <RHFDatePickr
+                        label='End Date'
+                        name='dateTo'
+                        value={dateTo}
+                        onChange={newValue => {
+                          setValue('dateTo', newValue)
+                          trigger(['dateFrom', 'dateTo'])
+                        }}
+                      />
+                    </Box>
+                    <Stack
+                      direction={{ xs: 'column', sm: 'row' }}
+                      spacing={2}
+                      sx={{
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start'
+                      }}>
+                      <Box sx={{ flexGrow: 1, width: { xs: '100%', sm: 'auto' } }}>
+                        <RHFFilteredSearchBar
+                          name='filteredSearchKey'
+                          filterOptions={logType?.tableColumns}
+                          setSelectedFilter={setSelectedSearchFilter}
+                          selectedFilter={selectedSearchFilter}
+                          placeholder='Looking for something?...'
+                          helperText={selectedSearchFilter === '_id' ? 'to search by ID, you must enter the complete Log ID' : ''}
+                          fullWidth
+                        />
+                      </Box>
+                      <Box sx={{ justifyContent: 'flex-end', display: 'flex' }}>
+                        <GStyledLoadingButton mode={themeMode} type={'button'} onClick={handleSubmit(onGetLogs)} variant='contained' size='large' sx={{ mt: 0.7 }}>
+                          {t('log.button.get_logs').toUpperCase()}
+                        </GStyledLoadingButton>
+                      </Box>
+                    </Stack>
+                  </Fragment>
+                </Stack>
+              </GStyledControllerCardContainer>
+            </Grid>
+          </Grid>
+        </FormProvider>
+      </GStyledStickyDiv>
+      {isLoading ? <HowickLoader height={300} width={303} mode={themeMode} /> : <MachineLogsTable isLogsPage logType={logType} payload={payload} />}
     </Grid>
-   </GStyledStickyDiv>
-   <GStyledStickyDiv top={NAV.T_STICKY_NAV_LOGS_CONTROLLER} zIndex={11}>
-    <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
-     <Grid container spacing={2} mt={3}>
-      <Grid item xs={12} sm={12}>
-       <LogsTableController
-        customerMachines={machines}
-        handleMachineChange={handleMachineChange}
-        handleLogTypeChange={handleLogTypeChange}
-        handlePeriodChange={handlePeriodChange}
-        isLogsPage={true}
-        isGraphPage={isGraphPage}
-        methods={methods}
-        onGetLogs={onGetLogs}
-       />
-      </Grid>
-     </Grid>
-    </FormProvider>
-   </GStyledStickyDiv>
-   {!isGraphPage() && <MachineLogsTable isLogsPage logType={logType} payload={payload} />}
-   {isGraphPage() && (
-    <Fragment>
-     {isLoading ? (
-      <HowickLoader height={300} width={303} mode={themeMode} />
-     ) : logGraphType.key === 'production_total' ? (
-      <ERPProductionTotal timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} />
-     ) : (
-      <ERPProductionRate timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} />
-     )}
-    </Fragment>
-   )}
-  </Grid>
- )
+  )
 }
 
 LogsSection.propTypes = {
- isArchived: PropTypes.bool
+  isArchived: PropTypes.bool
 }
 
 export default memo(LogsSection)

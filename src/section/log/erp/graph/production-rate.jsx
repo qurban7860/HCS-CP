@@ -20,9 +20,9 @@ const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData, i
  const theme = useTheme()
  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
- useEffect(() => {
-  if (!isDashboard) dispatch(resetLogsGraphData())
- }, [dispatch])
+//  useEffect(() => {
+//   if (!isDashboard) dispatch(resetLogsGraphData())
+//  }, [dispatch])
 
  useEffect(() => {
   if (logsGraphData) {
@@ -39,12 +39,12 @@ const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData, i
    return null
   }
   const sortedData = [...graphData]
-  let labels = []
+  let labels = sortedData.map(item => item._id);
 
   switch (timePeriod) {
    case 'Daily':
     sortedData.sort((a, b) => new Date(a._id) - new Date(b._id))
-    labels = Array.from({ length: 7 }, (_, i) => {
+    labels = Array.from({ length: 30 }, (_, i) => {
      const date = new Date()
      date.setDate(date.getDate() - i)
      const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -96,22 +96,22 @@ const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData, i
    return dataPoint ? dataPoint.productionRate : 0
   })
 
-  const filteredIndices = productionRate.reduce((acc, prod, index) => {
-   if (prod !== 0) {
-    acc.push(index)
-   }
-   return acc
-  }, [])
+  // const filteredIndices = productionRate.reduce((acc, prod, index) => {
+  //  if (prod !== 0) {
+  //   acc.push(index)
+  //  }
+  //  return acc
+  // }, [])
 
-  const filteredLabels = filteredIndices.map(i => labels[i])
-  const filteredProducedRate = filteredIndices.map(i => productionRate[i])
+  // const filteredLabels = filteredIndices.map(i => labels[i])
+  // const filteredProducedRate = filteredIndices.map(i => productionRate[i])
 
   return {
-   categories: filteredLabels,
+   categories: labels,
    series: [
     {
      label: 'Production Rate (m/hr)',
-     data: filteredProducedRate,
+     data: productionRate,
      tension: 0.1
     }
    ]
