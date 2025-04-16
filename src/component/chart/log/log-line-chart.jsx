@@ -60,7 +60,11 @@ function LogLineChart({ chart, graphLabels, graphHeight = 500 }) {
   xaxis: {
    categories,
    position: 'bottom',
-   labels: { offsetY: 0 },
+   labels: { 
+    offsetY: 0,
+    rotate: -45,
+    rotateAlways: graphLabels?.xaxis === "Days" 
+  },
    axisBorder: { show: false, color: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[700] },
    axisTicks: { show: false, color: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[700] },
    title: {

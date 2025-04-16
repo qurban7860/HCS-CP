@@ -20,9 +20,9 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
  const theme = useTheme()
  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
- useEffect(() => {
-  if (!isDashboard) dispatch(resetLogsGraphData())
- }, [dispatch])
+//  useEffect(() => {
+//   if (!isDashboard) dispatch(resetLogsGraphData())
+//  }, [])
 
  useEffect(() => {
   if (logsGraphData) {
@@ -40,12 +40,12 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
    return null
   }
   const sortedData = [...graphData].sort((a, b) => a._id.localeCompare(b._id))
-  let labels = []
+  let labels = sortedData.map(item => item._id);
 
   switch (timePeriod) {
    case 'Daily':
     sortedData.sort((a, b) => new Date(a._id) - new Date(b._id))
-    labels = Array.from({ length: 7 }, (_, i) => {
+    labels = Array.from({ length: 30 }, (_, i) => {
      const date = new Date()
      date.setDate(date.getDate() - i)
      const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -103,22 +103,22 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
    return dataPoint ? dataPoint.waste : 0
   })
 
-  const filteredIndices = producedLength.reduce((acc, prod, index) => {
-   if (prod !== 0 || wasteLength[index] !== 0) {
-    acc.push(index)
-   }
-   return acc
-  }, [])
+  // const filteredIndices = producedLength.reduce((acc, prod, index) => {
+  //  if (prod !== 0 || wasteLength[index] !== 0) {
+  //   acc.push(index)
+  //  }
+  //  return acc
+  // }, [])
 
-  const filteredLabels = filteredIndices.map(i => labels[i])
-  const filteredProduced = filteredIndices.map(i => producedLength[i])
-  const filteredWaste = filteredIndices.map(i => wasteLength[i])
+  // const filteredLabels = filteredIndices.map(i => labels[i])
+  // const filteredProduced = filteredIndices.map(i => producedLength[i])
+  // const filteredWaste = filteredIndices.map(i => wasteLength[i])
 
   return {
-   categories: filteredLabels,
+   categories: labels,
    series: [
-    { name: 'Produced Length (m)', data: filteredProduced },
-    { name: 'Waste Length (m)', data: filteredWaste }
+    { name: 'Produced Length (m)', data: producedLength },
+    { name: 'Waste Length (m)', data: wasteLength }
    ]
   }
  }

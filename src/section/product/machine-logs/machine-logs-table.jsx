@@ -22,23 +22,6 @@ const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
  const { logs, logPage, logsTotalCount, isLoading, logRowsPerPage } = useSelector(state => state.log)
  const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, getLogTypeConfigForGenerationAndType(5, 'ERP').tableColumns)
  const { themeMode } = useSettingContext()
- const { user } = useAuthContext()
-
- useEffect(() => {
-  dispatch(ChangeLogPage(0))
-  dispatch(resetLogs())
- }, [])
-
- useEffect(() => {
-  dispatch(
-   getLogs({
-    ...payload,
-    customerId: payload?.customerId || user?.customer,
-    page: logPage,
-    pageSize: logRowsPerPage
-   })
-  )
- }, [logPage, logRowsPerPage])
 
  useEffect(() => {
   setTableData(logs?.data || [])
