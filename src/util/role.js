@@ -9,13 +9,14 @@ import { alpha } from '@mui/material'
  * @returns {string} - Returns 'Admin' if the role name is 'CUSTOMER_ADMIN', otherwise returns 'User' or an empty string.
  */
 export const roleCoverUp = role => {
- if (!role || !role.name) return ''
- return role.name === KEY.CUSTOMER_ADMIN ? 'Admin' : role.name === KEY.CUSTOMER_USER ? 'User' : role.name
+    if (!role || !role.name) return ''
+    return role.name === KEY.CUSTOMER_ADMIN ? 'Admin' : role.name === KEY.CUSTOMER_USER ? 'User' : role.name
 }
 
 export const isCustomerAdmin = user => user?.roles?.some(role => role?.name === KEY.CUSTOMER_ADMIN)
+export const isSuperAdmin = user => user?.roles?.some(role => role?.name === KEY.SUPER_ADMIN)
 
 export const roleColr = (role, theme, mode) => {
- if (!role || !role.name) return ''
- return role.name === KEY.CUSTOMER_ADMIN ? (mode === KEY.LIGHT ? theme.palette.howick.orange : theme.palette.orange.darker) : mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]
+    if (!role || !role.name) return ''
+    return role.name === KEY.CUSTOMER_ADMIN ? (mode === KEY.LIGHT ? theme.palette.howick.orange : theme.palette.orange.darker) : mode === KEY.LIGHT ? theme.palette.grey[300] : theme.palette.grey[700]
 }
