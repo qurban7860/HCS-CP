@@ -4,7 +4,7 @@ import { Grid } from '@mui/material'
 import { ViewFormField } from 'component/viewform'
 import { TYPOGRAPHY } from 'constant'
 
-const GridViewField = ({ heading, isLoading, isNoBg, noBreakSpace, children, gridSize = 6, chip, isEditor, isLink, userRolesChip, multiline, height, minHeight, alignItems, ...other }) => {
+const GridViewField = ({ heading, isLoading, isNoBg, noBreakSpace, children, gridSize = 12, chip, isEditor, isLink, userRolesChip, multiline, height, minHeight, alignItems, ...other }) => {
     const isMobile = useResponsive('down', 'sm')
     return (
         <Grid

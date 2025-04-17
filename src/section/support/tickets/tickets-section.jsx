@@ -9,13 +9,13 @@ import { useTable, useTempFilter, getComparator, useSettingContext, useResponsiv
 import {
  getCustomer,
  getTickets,
- getCustomerTickets,
+ resetTickets,
  getCustomerTicketBySerialNoAndKey,
  setCustomerTicketFilterBy,
  setSelectedCustomerTicketCard,
  setCustomerTicketDialog,
- ChangeCustomerTicketPage,
- ChangeCustomerTicketRowsPerPage,
+ ChangeTicketPage,
+ ChangeTicketRowsPerPage
 } from 'store/slice'
 import { TicketsTable, TicketsTableHeader, TicketsListPagination, TicketCard, HEADER_ITEMS } from 'section/support'
 import { Table, Grid, Typography } from '@mui/material'
@@ -25,14 +25,13 @@ import { GLOBAL } from 'config/global'
 import { MARGIN, TABLE } from 'config'
 import { KEY, FLEX_DIR, TYPOGRAPHY } from 'constant'
 import { StyledScrollTableContainer } from './style'
-import { PATH_SUPPORT } from 'route/path'
 
 const TicketsListSection = () => {
  const [tableData, setTableData]                                      = useState([])
- const [filterPeriodOption, setFilterPeriodOption]                    = useState(3)
  const { user }                                                       = useAuthContext()
  const { customer }                                                   = useSelector(state => state.customer)
  const { tickets, initial, isLoading, ticketPage, ticketRowsPerPage } = useSelector(state => state.ticket)
+ const [selectedResolvedStatus, setSelectedResolvedStatus] = useState("unresolved");
 
  const navigate      = useNavigate()
  const isMobile      = useResponsive('down', 'sm')
@@ -42,7 +41,6 @@ const TicketsListSection = () => {
  const {
   order,
   orderBy,
-  setPage: setTablePage,
   onSort
  } = useTable({
   defaultOrderBy: 'createdAt',
@@ -59,42 +57,55 @@ const TicketsListSection = () => {
   return () => {
    debouncedDispatch.cancel()
   }
- }, [dispatch, customer])
-
-useEffect(() => {
-  const debouncedDispatch = _.debounce(() => {
-    if (customer?._id) {
-      dispatch(getTickets(customer?._id))
-    }
-  }, 300)
-  debouncedDispatch()
-  return () => {
-    debouncedDispatch.cancel()
-  }
-}, [dispatch, customer?._id, ticketPage, ticketRowsPerPage])
-
- const onRefresh = () => {
-  dispatch(getTickets(customer?._id))
- }
+ }, [customer, user?.customer])
 
  useEffect(() => {
-  if (initial) {
-   setTableData(tickets || [])
-  }
- }, [tickets, initial])
+  const debouncedDispatch = _.debounce(() => {
+    if (customer?._id) {
+      setTableData([]); 
+      dispatch(resetTickets());
+      dispatch(getTickets({
+        page: ticketPage,
+        pageSize: ticketRowsPerPage,
+        customerId: customer?._id,
+        isResolved: selectedResolvedStatus
+    }));
+    }
+  }, 300);
+  debouncedDispatch();
+  return () => debouncedDispatch.cancel();
+}, [ticketPage, ticketRowsPerPage, customer?._id, selectedResolvedStatus]);
 
-//  const defaultValues = useTicketsDefaultValues(tableData && tableData)
- const { filterName, handleFilterName, filteredData } = useTempFilter(getComparator(order, orderBy), tableData, initial, ChangeCustomerTicketPage, setCustomerTicketFilterBy)
+useEffect(() => {
+  return () => {
+    dispatch(resetTickets());
+  };
+}, [navigate]);
 
- const handleChangePage = (event, newPage) => {
-  if (newPage < Math.ceil(filteredData.length / ticketRowsPerPage)) {
-   dispatch(ChangeCustomerTicketPage(newPage))
-  }
+const onRefresh = () => {
+  dispatch(ChangeTicketPage(0));
+  dispatch(getTickets({
+    page: 0,
+    pageSize: ticketRowsPerPage,
+    customerId: customer?._id,
+    isResolved: selectedResolvedStatus
+  }));
+};
+
+ const { filterName, handleFilterName, filteredData } = useTempFilter(
+  getComparator(order, orderBy),
+  tickets?.data || [],
+  initial,
+  setCustomerTicketFilterBy
+);
+
+ const onChangePage = (event, newPage) => {
+  dispatch(ChangeTicketPage(newPage))
  }
 
- const handleChangeRowsPerPage = event => {
-  dispatch(ChangeCustomerTicketPage(0))
-  dispatch(ChangeCustomerTicketRowsPerPage(parseInt(event.target.value, 10)))
+ const onChangeRowsPerPage = event => {
+  dispatch(ChangeTicketPage(0))
+  dispatch(ChangeTicketRowsPerPage(parseInt(event.target.value, 10)))
  }
 
  const handleSelectedCard = (event, key) => {
@@ -114,17 +125,17 @@ useEffect(() => {
   window.open(url, KEY.BLANK)
  }
 
- const handleCreateTicket = () => {
-  // navigate to create ticket
-  navigate(PATH_SUPPORT.tickets.create)
- }
-
  const isNotFound = !isLoading && !filteredData?.length
 
  return (
   <Fragment>
    <TableTitleBox title={t('support_tickets.label')} />
-   <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} onReload={onRefresh} handleCreateTicket={handleCreateTicket} />
+   <SearchBox term={filterName} mode={themeMode} 
+    handleSearch={handleFilterName} 
+    filterResolvedStatus={selectedResolvedStatus} 
+    onFilterResolvedStatus={setSelectedResolvedStatus} 
+    onReload={onRefresh} 
+    />
    {isMobile ? (
     <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
      <Grid item xs={12} sm={12}>
@@ -170,18 +181,18 @@ useEffect(() => {
         <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
         <TicketsListPagination
          mode={themeMode}
-         data={filteredData}
+         data={tickets}
          page={ticketPage}
          rowsPerPage={ticketRowsPerPage}
-         handleChangePage={handleChangePage}
-         handleChangeRowsPerPage={handleChangeRowsPerPage}
+         handleChangePage={onChangePage}
+         handleChangeRowsPerPage={onChangeRowsPerPage}
          columnFilterButtonData={HEADER_ITEMS}
+         count={tickets?.totalCount || 0}
         />
         <StyledScrollTableContainer>
          <Table>
           <TicketsTableHeader columns={HEADER_ITEMS} dataFiltered={filteredData} orderBy={orderBy} order={order} onSort={onSort} />
           {(isLoading ? [...Array(ticketRowsPerPage)] : filteredData)
-           .slice(ticketPage * ticketRowsPerPage, ticketPage * ticketRowsPerPage + ticketRowsPerPage)
            .map((row, index) =>
             row ? (
              <TicketsTable key={index} columns={HEADER_ITEMS} ticket={row} mode={themeMode} index={index} />

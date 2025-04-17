@@ -67,8 +67,8 @@ function TablePaginationCustom({
   setFilterCategoryAnchorEl(null)
  }
 
- const filteredRowsPerPageOptions = rowsPerPageOptions.filter(option => option <= data.length)
- const isPaginationDisabled = data.length <= rowsPerPage
+ const filteredRowsPerPageOptions = rowsPerPageOptions.filter(option => option <= data?.length)
+ const isPaginationDisabled = data?.length <= rowsPerPage
 
  return (
   <Box
@@ -258,7 +258,7 @@ function TablePaginationCustom({
      count={count}
      mode={themeMode}
      rowsPerPage={rowsPerPage}
-     rowsPerPageOptions={isPaginationDisabled ? [] : filteredRowsPerPageOptions}
+     rowsPerPageOptions={rowsPerPageOptions}
      component={component}
      showLastButton
      showFirstButton

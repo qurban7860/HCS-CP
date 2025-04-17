@@ -22,7 +22,7 @@ const UserDialog = () => {
  const { securityUser, securityUsers,  isLoading, userDialog } = useSelector(state => state.user)
  const { customer }                                            = useSelector(state => state.customer)
  const { contact }                                             = useSelector(state => state.contact)
- const { userId }                                              = useAuthContext()
+ const { userId, user }                                              = useAuthContext()
  const { themeMode }                                           = useSettingContext()
  const { isDesktop }                                           = useUIMorph()
  const theme                                                   = useTheme()
@@ -39,7 +39,10 @@ const UserDialog = () => {
  }
 
  const handleUpdateStatusUser = async () => {
-  const securityUserData = { isActive: !securityUser.isActive }
+  const securityUserData = { 
+    isActive: !securityUser.isActive,
+    customer: user.customer
+  }
   await dispatch(updateStatusSecurityUser(securityUser._id, securityUserData))
  }
 
@@ -138,6 +141,7 @@ const UserDialog = () => {
           onChange={handleUpdateStatusUser}
           mode={themeMode}
           isActive={defaultValues?.isActive}
+          disabled
           color={defaultValues?.isActive ? (themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main) : theme.palette.error.dark}
          />
         }

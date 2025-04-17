@@ -184,51 +184,42 @@ const SiteTab = () => {
  }, [dispatch])
 
  return (
-  <Fragment>
-   <Grid container columnSpacing={SPACING.COLUMN_SPACING} flexDirection={FLEX_DIR.COLUMN} {...MARGIN.PAGE_PROP}>
-    <Grid item xs={12} sm={12} mb={isDesktop && 2}>
-     <Grid container gap={2}>
-      <Grid item xs={12} md={12}>
-       {sites.length >= 5 && (
-        <Grid item xs={12}>
-         <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
+    <Fragment>
+      <Grid container columnSpacing={SPACING.COLUMN_SPACING} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+        <Grid item xs={12} md={3}>
+          {sites.length >= 5 && (
+            <Grid item xs={12}>
+              <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
+            </Grid>
+          )}
+           <Grid container gap={2} p={1} height={isDesktop ? 100 : 'auto'}>
+             {renderList()}
+            </Grid>
         </Grid>
-       )}
-       <Grid container gap={2} p={1} height={isDesktop ? 100 : 'auto'}>
-        {renderList()}
-       </Grid>
+        <Grid item xs={12} md={9} sx={{ transition: 'ease-in-out width 0.3s' }}>
+          <Card {...GCardOption(themeMode)}>
+            <GStyledTopBorderDivider mode={themeMode} />
+            <Grid container px={1}>
+              <Grid item lg={12}>
+                <GridViewTitle title={t('site_information.label')} />
+              </Grid>
+              <Grid item lg={12} sm={12}>
+                <Grid container flexDirection={FLEX_DIR.ROW}>
+                  {renderIcons()}
+                  <CommonFieldsContainer defaultValues={defaultValues} fieldsConfig={fieldsSiteConfig} isLoading={isLoading} />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item sm={12} p={3}>
+            <GStyledSiteMapBox>{validCoordinates ? <GoogleMaps machineView latlongArr={latLong} mapHeight={500} /> : <NothingProvided content={t('no_coordinates_provided.label')} />}</GStyledSiteMapBox>
+            </Grid>
+          </Card>
+        </Grid>
       </Grid>
-     </Grid>
-    </Grid>
-    <Grid item xs={12} md={12}>
-     <Grid container>
-      <Grid item sm={12}>
-       <Card {...GCardOption(themeMode)}>
-        <GStyledTopBorderDivider mode={themeMode} />
-        <Grid container px={1}>
-         <Grid item lg={12}>
-          <GridViewTitle title={t('site_information.label')} />
-         </Grid>
-         <Grid item lg={12} sm={12}>
-          <Grid container flexDirection={FLEX_DIR.ROW}>
-           {renderIcons()}
-           <CommonFieldsContainer defaultValues={defaultValues} fieldsConfig={fieldsSiteConfig} isLoading={isLoading} />
-          </Grid>
-         </Grid>
-        </Grid>
-        <Grid item sm={12} p={3}>
-         <GStyledSiteMapBox>{validCoordinates ? <GoogleMaps machineView latlongArr={latLong} mapHeight={500} /> : <NothingProvided content={t('no_coordinates_provided.label')} />}</GStyledSiteMapBox>
-        </Grid>
-       </Card>
-      </Grid>
-     </Grid>
-    </Grid>
-   </Grid>
-
-   <AuditBox value={defaultValues} />
-   {customerDialog && <CustomerDialog />}
-  </Fragment>
- )
+      <AuditBox value={defaultValues} />
+      {customerDialog && <CustomerDialog />}
+    </Fragment>
+  )
 }
 
 export default memo(SiteTab)
