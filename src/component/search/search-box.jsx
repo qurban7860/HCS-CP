@@ -68,7 +68,7 @@ const SearchBox = ({ term, handleSearch, mode, onReload, mt = 5, handleCreateTic
           />
         </Grid>
 
-        {filterResolvedStatus && (
+        {filterResolvedStatus !== undefined && (
           <Grid item xs={12} sm={6} md={3} lg={2}>
             <Autocomplete
               value={resolvedOptions.find((option) => option.value === filterResolvedStatus) || null}
@@ -78,7 +78,7 @@ const SearchBox = ({ term, handleSearch, mode, onReload, mt = 5, handleCreateTic
               getOptionLabel={(option) => option.label}
               renderInput={(params) => <TextField {...params} size="small" label="Status" />}
               onChange={(event, newValue) => {
-                onFilterResolvedStatus(newValue ? newValue.value : 'Null');
+                onFilterResolvedStatus(newValue?.value || null);
               }}
               renderOption={(props, option) => (
                 <li {...props} key={option.value}>
