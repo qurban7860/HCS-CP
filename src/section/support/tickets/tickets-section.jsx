@@ -41,7 +41,6 @@ const TicketsListSection = () => {
  const {
   order,
   orderBy,
-  setPage,
   onSort
  } = useTable({
   defaultOrderBy: 'createdAt',
