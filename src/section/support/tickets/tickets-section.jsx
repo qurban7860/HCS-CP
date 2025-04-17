@@ -31,7 +31,7 @@ const TicketsListSection = () => {
  const { user }                                                       = useAuthContext()
  const { customer }                                                   = useSelector(state => state.customer)
  const { tickets, initial, isLoading, ticketPage, ticketRowsPerPage } = useSelector(state => state.ticket)
- const [selectedResolvedStatus, setSelectedResolvedStatus] = useState("all");
+ const [selectedResolvedStatus, setSelectedResolvedStatus] = useState("unresolved");
 
  const navigate      = useNavigate()
  const isMobile      = useResponsive('down', 'sm')
