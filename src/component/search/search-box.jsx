@@ -78,7 +78,7 @@ const SearchBox = ({ term, handleSearch, mode, onReload, mt = 5, handleCreateTic
               getOptionLabel={(option) => option.label}
               renderInput={(params) => <TextField {...params} size="small" label="Status" />}
               onChange={(event, newValue) => {
-                onFilterResolvedStatus(newValue ? newValue.value : 'all');
+                onFilterResolvedStatus(newValue ? newValue.value : 'Null');
               }}
               renderOption={(props, option) => (
                 <li {...props} key={option.value}>
