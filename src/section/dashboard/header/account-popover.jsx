@@ -134,11 +134,11 @@ export default function AccountPopover() {
                     {isCustomerAdmin(user) || isSuperAdmin(user) && (
                         <Fragment>
                             <Divider />
-                            <MenuItem onClick={() => handleClickItem(PATH_AUTH.userInvite)}>
+                            {/* <MenuItem onClick={() => handleClickItem(PATH_AUTH.userInvite)}>
                                 <Link underline='none' color='inherit' component={RouterLink}>
                                     {t('invite_user.label')}
                                 </Link>
-                            </MenuItem>
+                            </MenuItem> */}
                             <MenuItem onClick={() => handleClickItem(PATH_SECURITY.users.list)}>
                                 <Link underline='none' color='inherit' component={RouterLink}>
                                     {t('users_list.label')}
