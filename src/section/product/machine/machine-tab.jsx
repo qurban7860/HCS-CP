@@ -127,23 +127,23 @@ const MachineTab = () => {
   )
 
   const CATEGORIES = [
-    { _id: 'all', name: 'All' },
-    {
-      _id: 'decoiler',
-      name: (
-        <Tooltip title="Decoiler" arrow placement="top">
-          <Icon icon={ICON_NAME.DECOILER_DEF} color="grey.500" sx={{ height: 15, width: 15 }} />
-        </Tooltip>
-      ),
-    },
     {
       _id: 'machine',
       name: (
-        <Tooltip title="Frama" arrow placement="top">
+        <Tooltip title="Machines" arrow placement="top">
           <Icon icon={ICON_NAME.FRAMA} color="grey.500" sx={{ height: 15, width: 15 }} />
         </Tooltip>
       ),
     },
+    {
+      _id: 'decoiler',
+      name: (
+        <Tooltip title="Decoilers" arrow placement="top">
+          <Icon icon={ICON_NAME.DECOILER_DEF} color="grey.500" sx={{ height: 15, width: 15 }} />
+        </Tooltip>
+      ),
+    },
+    { _id: 'all', name: 'All' }
   ]
 
   const handleCustomerDialog = (event, customerId) => {
