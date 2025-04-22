@@ -30,7 +30,7 @@ import { CommonFieldsCard } from 'section/common'
 import { useMachineDefaultValues, fieldsKeyConfig, fieldsMachineInformationConfig } from 'section/product'
 import { MachineConnectionListCard, MachineCard, MachineFieldsCard } from 'section/product/machine'
 import { HowickResources } from 'section/common'
-import { useTheme, Grid, Box, Typography } from '@mui/material'
+import { useTheme, Grid, Box, Typography, Tooltip } from '@mui/material'
 import { AuditBox, SearchBox } from 'component'
 import { GStyledScrollableHeightLockGrid, GStyledChip, GStyledStickyGrid, GStyledTooltip } from 'theme/style'
 import { MARGIN, NAV, SPACING } from 'config/layout'
@@ -127,9 +127,23 @@ const MachineTab = () => {
   )
 
   const CATEGORIES = [
-    { _id: 'machine', label: 'Machines', name: <Icon icon={ICON_NAME.FRAMA} color={'grey.500'} sx={{ height: 15, width: 15 }} /> },
-    { _id: 'decoiler', label: 'Decoilers', name: <Icon icon={ICON_NAME.DECOILER_DEF} color={'grey.500'} sx={{ height: 15, width: 15 }} /> },
-    { _id: 'all', label: 'All', name: 'All' }
+    { _id: 'all', name: 'All' },
+    {
+      _id: 'decoiler',
+      name: (
+        <Tooltip title="Decoiler" arrow placement="top">
+          <Icon icon={ICON_NAME.DECOILER_DEF} color="grey.500" sx={{ height: 15, width: 15 }} />
+        </Tooltip>
+      ),
+    },
+    {
+      _id: 'machine',
+      name: (
+        <Tooltip title="Frama" arrow placement="top">
+          <Icon icon={ICON_NAME.FRAMA} color="grey.500" sx={{ height: 15, width: 15 }} />
+        </Tooltip>
+      ),
+    },
   ]
 
   const handleCustomerDialog = (event, customerId) => {

@@ -50,6 +50,7 @@ const LABEL = {
  VIEW_IN_JIRA: 'View in Jira',
  GO_TO: d => `Go to ${d} in a new tab`,
  DECOILER_DEF: 'Decoiler',
+ FRAMA: 'Frama',
  DECOILER: type => `Decoiler ${type}`,
  PARENT_MACHINE: 'Parent Machine',
 

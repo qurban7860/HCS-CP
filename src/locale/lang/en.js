@@ -358,9 +358,9 @@ const en = {
  invite_pending: {
   label: `Invitation Pending`
  },
- invite_user: {
-  label: `Invite a User`
- },
+//  invite_user: {
+//   label: `Invite a User`
+//  },
  invite_sent: {
   label: `Howick Portal invitation Sent`
  },

@@ -64,16 +64,19 @@ const SiteTab = () => {
 
  useEffect(() => {
   const debouceFetch = debounce(() => {
-   if (sites.length && !fromSiteDialog) {
-    dispatch(resetSelectedSiteCard())
-    dispatch(resetValidCoordinates())
-    dispatch(getSite(id, sites[0]?._id))
-    dispatch(setSelectedSiteCard(sites[0]?._id))
-   }
-  }, 300)
-  debouceFetch()
-  return () => debouceFetch.cancel()
- }, [dispatch, sites])
+    if (sites.length && !fromSiteDialog) {
+      const sortedSites = [...sites].sort((a, b) =>
+        (a?.name || '').toLowerCase().localeCompare((b?.name || '').toLowerCase())
+      );
+      dispatch(resetSelectedSiteCard());
+      dispatch(resetValidCoordinates());
+      dispatch(getSite(id, sortedSites[0]?._id));
+      dispatch(setSelectedSiteCard(sortedSites[0]?._id));
+    }
+  }, 300);
+  debouceFetch();
+  return () => debouceFetch.cancel();
+}, [dispatch, sites, id, fromSiteDialog]);
 
  useEffect(() => {
   const debouceFetch = debounce(() => {
@@ -114,16 +117,22 @@ const SiteTab = () => {
   dispatch(resetSite())
   dispatch(getSite(id, siteId))
  }
+ 
+ const getSortedFilteredData = () => {
+  return [...filteredData].sort((a, b) =>
+    (a?.name || '').toLowerCase().localeCompare((b?.name || '').toLowerCase())
+  );
+ };
 
  const renderDesktopView = () =>
-  filteredData.map((site, index) => <SiteCard key={index} selectedCardId={selectedSiteCard || index} value={defaultValues} handleSiteCard={handleSiteCard} isMain={isMain(site)} site={site} />)
+  getSortedFilteredData().map((site, index) => <SiteCard key={index} selectedCardId={selectedSiteCard || index} value={defaultValues} handleSiteCard={handleSiteCard} isMain={isMain(site)} site={site} />)
 
  const renderMobileView = () => (
   <DropdownDefault
    renderLabel={item => `${item?.name}`}
    valueKey={'_id'}
    keyExtractor={item => item._id}
-   filteredData={filteredData}
+   filteredData={getSortedFilteredData()}
    selectedCard={selectedSiteCard}
    i18nKey={'site.sites.label'}
    onChange={e => handleSiteCard(e, e.target.value)}
@@ -137,7 +146,7 @@ const SiteTab = () => {
  )
 
  const renderList = () => {
-  if (sites?.length > 0) {
+  if (filteredData?.length > 0) {
    return isDesktop ? renderDesktopView() : renderMobileView()
   } else {
    return renderNoSite()
@@ -189,7 +198,7 @@ const SiteTab = () => {
         <Grid item xs={12} md={3}>
           {sites.length >= 5 && (
             <Grid item xs={12}>
-              <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} mt={0} />
+              <SearchBox term={filterName} mode={themeMode} handleSearch={handleFilterName} increasedFilterSize mt={0} />
             </Grid>
           )}
            <Grid container gap={2} p={1} height={isDesktop ? 100 : 'auto'}>
