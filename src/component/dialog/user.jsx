@@ -19,7 +19,7 @@ const UserDialog = () => {
   const [openUpdateStatusModal, setOpenUpdateStatusModal] = useState(false)
   const [openSendInvitePopper, setOpenSendInvitePopper] = useState(false)
   const [openAnchorEl, setOpenAnchorEl] = useState(null)
-  const { securityUser, securityUsers, isLoading, userDialog } = useSelector(state => state.user)
+  const { securityUser, securityUsers, isLoadingUser, userDialog } = useSelector(state => state.user)
   const { customer } = useSelector(state => state.customer)
   const { contact } = useSelector(state => state.contact)
   const { userId, user } = useAuthContext()
@@ -27,7 +27,6 @@ const UserDialog = () => {
   const { isDesktop } = useUIMorph()
   const theme = useTheme()
   const defaultValues = useUserDefaultValues(securityUser, customer)
-
   const isAdmin = securityUser?.roles?.some(role => role.name === KEY.CUSTOMER_ADMIN)
   const isSelf = securityUser?._id === userId
 
@@ -107,13 +106,13 @@ const UserDialog = () => {
         <DialogContent dividers sx={{ px: 3 }}>
           <Grid item xs={12} sm={12} my={1}>
             <Grid container rowSpacing={1} columnSpacing={1}>
-              <GridViewField heading={t('full_name.label')} isLoading={isLoading}>
+              <GridViewField heading={t('full_name.label')} isLoading={isLoadingUser}>
                 {defaultValues?.name}
               </GridViewField>
-              <GridViewField heading={t('email.label')} isLoading={isLoading}>
+              <GridViewField heading={t('email.label')} isLoading={isLoadingUser}>
                 {defaultValues?.email}
               </GridViewField>
-              <GridViewField heading={t('phone.label')} isLoading={isLoading}>
+              <GridViewField heading={t('phone.label')} isLoading={isLoadingUser}>
                 {defaultValues?.phone}
               </GridViewField>
             </Grid>
@@ -121,10 +120,10 @@ const UserDialog = () => {
           <Divider orientation={KEY.HORIZONTAL} flexItem />
           <Grid item xs={12} sm={12} my={1}>
             <Grid container rowSpacing={1} columnSpacing={1}>
-              <GridViewField heading={t('organization.label')} isLoading={isLoading}>
+              <GridViewField heading={t('organization.label')} isLoading={isLoadingUser}>
                 {defaultValues?.customer?.name}
               </GridViewField>
-              <GridViewField heading={t('contact.label')} isLoading={isLoading}>
+              <GridViewField heading={t('contact.label')} isLoading={isLoadingUser}>
                 {defaultValues?.contact?.firstName} {defaultValues?.contact?.lastName}
               </GridViewField>
             </Grid>
@@ -170,7 +169,7 @@ const UserDialog = () => {
               <DefaultPopper
                 openPopper={openSendInvitePopper}
                 openAnchorEl={openAnchorEl}
-                isLoading={isLoading}
+                isLoading={isLoadingUser}
                 content={t('send_portal_invite.label', { user: toTitleCase(defaultValues?.name) })}
                 i18ConfirmButtonLabel={'yes.label'}
                 i18CancelButtonLabel={'no.label'}
