@@ -23,7 +23,10 @@ const LogsTable = ({ index, onViewRow, columns, row, selected, order, onSort }) 
      <LinkTableCell align='left' onClick={onViewRow} param={fDateTime(date)} />
      {columns?.map((column, index) => {
       if (['date', 'createdBy.name', 'createdAt'].includes(column.id) || !column?.checked) return null
-      const cellValue = lowercaseRow?.[column.id.toLocaleLowerCase()] || ''
+      const columnValue = lowercaseRow?.[column.id.toLocaleLowerCase()]
+      const isNumerical = column?.numerical
+      const cellValue = isNumerical && columnValue !== null && columnValue !== '' && !isNaN(columnValue)
+       ? (Number(columnValue) / 1000).toFixed(2) : columnValue || ''
       return (
        <TableCell key={index} onClick={onViewRow} sx={{ cursor: 'pointer' }} align={column?.numerical ? 'right' : 'left'}>
         {cellValue}
