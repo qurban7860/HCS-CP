@@ -26,7 +26,7 @@ const LogsTable = ({ index, onViewRow, columns, row, selected, order, onSort }) 
       const columnValue = lowercaseRow?.[column.id.toLocaleLowerCase()]
       const isNumerical = column?.numerical
       const cellValue = isNumerical && columnValue !== null && columnValue !== '' && !isNaN(columnValue)
-       ? (Number(columnValue) / 1000).toFixed(2) : columnValue || ''
+       ? (Number(columnValue) / 1000).toFixed(3) : columnValue || ''
       return (
        <TableCell key={index} onClick={onViewRow} sx={{ cursor: 'pointer' }} align={column?.numerical ? 'right' : 'left'}>
         {cellValue}
