@@ -35,19 +35,19 @@ import { KEY, TYPOGRAPHY, FLEX_DIR, INVITATION_STATUS } from 'constant'
 import ContactAddForm from './contact-add-form'
 
 const ContactTab = () => {
-    const [isConfirming, setIsConfirming]                                                                   = useState(false)
-    const [isSubmitSuccessful, setIsSubmitSuccessful]                                                       = useState(false)
-    const { contact, contacts, initial, isLoading, selectedContactCard, fromDialog, contactFormVisibility } = useSelector(state => state.contact)
-    const { customer, customerDialog }                                                                      = useSelector(state => state.customer)
-    const { securityUsers, userInviteDialog, userInviteContactDetails, userInvite }                         = useSelector(state => state.user)
-    const { customerRoles }                                                                                 = useSelector(state => state.role)
-    const isUserInvitePending                                                                               = userInvite ? userInvite?.some(invite => invite.invitationStatus === INVITATION_STATUS.PENDING) : false
-   
-    const { isDesktop, isMobile } = useUIMorph()
-    const { id } = useParams()
-    const { themeMode } = useSettingContext()
-    const { order, orderBy } = useTable({ defaultOrderBy: KEY.CREATED_AT, defaultOrder: 'asc' })
-    const theme = useTheme()
+  const [isConfirming, setIsConfirming] = useState(false)
+  const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false)
+  const { contact, contacts, initial, isLoading, selectedContactCard, fromDialog, contactFormVisibility } = useSelector(state => state.contact)
+  const { customer, customerDialog } = useSelector(state => state.customer)
+  const { securityUsers, userInviteDialog, userInviteContactDetails, userInvite } = useSelector(state => state.user)
+  const { customerRoles } = useSelector(state => state.role)
+  const isUserInvitePending = userInvite ? userInvite?.some(invite => invite.invitationStatus === INVITATION_STATUS.PENDING) : false
+
+  const { isDesktop, isMobile } = useUIMorph()
+  const { id } = useParams()
+  const { themeMode } = useSettingContext()
+  const { order, orderBy } = useTable({ defaultOrderBy: KEY.CREATED_AT, defaultOrder: 'asc' })
+  const theme = useTheme()
 
   useEffect(() => {
     const debounceFetch = debounce(() => {
@@ -69,29 +69,16 @@ const ContactTab = () => {
     return () => debounceFetch.cancel()
   }, [id, contacts, dispatch])
 
-  //  useEffect(() => {
-//   const debounceFetch = debounce(() => {
-//    dispatch(getUserInviteByEmail(contact?.email))
-//   }, 300)
-//   debounceFetch()
-//   return () => debounceFetch.cancel()
-//  }, [contact?.email, dispatch])
-
   const defaultValues = useContactDefaultValues(contact, customer)
 
   useEffect(() => {
     const debounceFetch = debounce(() => {
       if (contacts.length > 0 && !fromDialog) {
-        const sortedContacts = [...contacts].sort((a, b) => {
-          const nameA = `${a?.firstName || ''} ${a?.lastName || ''}`.toLowerCase();
-          const nameB = `${b?.firstName || ''} ${b?.lastName || ''}`.toLowerCase();
-          return nameA.localeCompare(nameB);
-        });
-        const firstSortedContact = sortedContacts[0];
-        if (firstSortedContact) {
+        const firstContact = contacts[0];
+        if (firstContact) {
           dispatch(resetSelectedContactCard());
-          dispatch(getContact(id, firstSortedContact?._id));
-          dispatch(setSelectedContactCard(firstSortedContact?._id));
+          dispatch(getContact(id, firstContact?._id));
+          dispatch(setSelectedContactCard(firstContact?._id));
         }
       }
     }, 300);
@@ -145,10 +132,10 @@ const ContactTab = () => {
 
   const userData = {
     customer: customer,
-    contact : contact,
-    name    : `${contact?.firstName} ${contact?.lastName}`,
-    email   : contact?.email,
-    phone   : contact?.phone,
+    contact: contact,
+    name: `${contact?.firstName} ${contact?.lastName}`,
+    email: contact?.email,
+    phone: contact?.phone,
     password: '',
     isInvite: true,
     isActive: true,
@@ -168,26 +155,18 @@ const ContactTab = () => {
     const updateUserData = !userInviteContactDetails?.roles?.length ? { ...userData, roles: [customerUserRole] } : userInviteContactDetails
     const response = await dispatch(addAndInviteSecurityUser(updateUserData))
     if (!response.status >= 200 && response.status < 300) {
-     snack('Error occured', { variant: 'error' })
-     setIsConfirming(false)
-     return
+      snack('Error occured', { variant: 'error' })
+      setIsConfirming(false)
+      return
     }
     setIsSubmitSuccessful(true)
     setUserInviteDialog(false)
     setIsConfirming(false)
     snack(t('invite_sent.label'), { variant: 'success' })
-   }
-
-  const getSortedFilteredData = () => {
-    return [...filteredData].sort((a, b) => {
-      const nameA = `${a?.firstName || ''} ${a?.lastName || ''}`.toLowerCase();
-      const nameB = `${b?.firstName || ''} ${b?.lastName || ''}`.toLowerCase();
-      return nameA.localeCompare(nameB);
-    });
-  };
+  }
 
   const renderDesktopView = () =>
-    getSortedFilteredData().map((contact) => (
+    filteredData.map((contact) => (
       <ContactCard
         key={contact?._id}
         selectedCardId={selectedContactCard}
@@ -199,7 +178,7 @@ const ContactTab = () => {
 
   const renderMobileView = () => (
     <DropdownDefault
-      filteredData={getSortedFilteredData()}
+      filteredData={contacts}
       selectedCard={selectedContactCard}
       i18nKey={'contact.contacts.label'}
       onChange={(e) => handleContactCard(e, e.target.value)}
@@ -230,7 +209,7 @@ const ContactTab = () => {
   return (
     <Fragment>
       <Fragment>
-      <Grid container columnSpacing={SPACING.COLUMN_SPACING} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+        <Grid container columnSpacing={SPACING.COLUMN_SPACING} flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
           <GStyledStickyGrid item xs={12} md={3}>
             {contacts.length >= 5 && (
               <Grid item xs={12}>
@@ -238,7 +217,7 @@ const ContactTab = () => {
               </Grid>
             )}
             <GStyledScrollableHeightLockGrid isMobile={isMobile} mode={themeMode} totalCount={contacts?.length}>
-            <Grid container gap={2} p={1} height={'auto'} sx={{ maxHeight: NAV.H_MAX_SIDE_PANEL, overflow: 'auto', mt: 1, mb: 2 }}>
+              <Grid container gap={2} p={1} height={'auto'} sx={{ maxHeight: NAV.H_MAX_SIDE_PANEL, overflow: 'auto', mt: 1, mb: 2 }}>
                 {renderList()}
               </Grid>
             </GStyledScrollableHeightLockGrid>
