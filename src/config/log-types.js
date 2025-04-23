@@ -7,7 +7,7 @@ const _GEN5_LOG_TYPES = {
   disabled: false,
   versions: ['v1.5.X', 'v1.4.X', 'v1.1.66'],
   formats: {
-   'v1.1.66': ['date', 'operator', 'coilBatchName', 'ccThickness', 'coilLength', 'frameSet', 'componentLabel', 'webWidth', 'flangeHeight', 'profileShape', 'componentLength', 'waste', 'time'],
+   'v1.1.66': ['date', 'operator', 'coilBatchName', 'ccThickness', 'coilLength', 'frameSet', 'componentLabel', 'webWidth', 'flangeHeight', 'profileShape', 'componentLength', 'waste', 'time', 'componentType'],
    'v1.4.X': [
     'date',
     'operator',
@@ -23,7 +23,8 @@ const _GEN5_LOG_TYPES = {
     'componentLength',
     'waste',
     'time',
-    'componentWeight'
+    'componentWeight',
+    'componentType',
    ],
    'v1.5.X': [
     'timestamp',
@@ -44,7 +45,8 @@ const _GEN5_LOG_TYPES = {
     'measurementUnit',
     'componentWeight',
     'lineSpeed',
-    'componentGUID'
+    'componentGUID',
+    'componentType',
    ]
   },
   tableColumns: [
@@ -55,14 +57,15 @@ const _GEN5_LOG_TYPES = {
    { id: 'frameSet', label: 'Frame Set', defaultShow: true, searchable: true },
    { id: 'componentLength', label: 'Length (m)', alwaysShow: true, defaultShow: true, searchable: true, numerical: true },
    { id: 'waste', label: 'Waste (m)', alwaysShow: true, defaultShow: true, searchable: true, numerical: true },
-   { id: 'coilLength', label: 'Coil Length (m)', defaultShow: true, searchable: true, numerical: true },
-   { id: 'flangeHeight', label: 'Flange Height (m)', defaultShow: true, searchable: true, numerical: true },
-   { id: 'webWidth', label: 'Web Width (m)', defaultShow: true, searchable: true, numerical: true },
-   { id: 'profileShape', label: 'Profile Shape (m)', defaultShow: true, searchable: true },
+   { id: 'coilLength', label: 'C (m)', fullLabel: 'Coil Length (m)', defaultShow: true, searchable: true, numerical: true, tooltip: true },
+   { id: 'flangeHeight', label: 'F (m)', fullLabel: 'Flange Height (m)', defaultShow: true, searchable: true, numerical: true, tooltip: true },
+   { id: 'webWidth', label: 'W (m)', fullLabel: 'Web Width (m)', defaultShow: true, searchable: true, numerical: true, tooltip: true },
+   { id: 'profileShape', label: 'P', fullLabel: 'Profile Shape', defaultShow: true, searchable: true, tooltip: true },
    { id: 'componentWeight', label: 'Component Weight', searchable: true, numerical: true },
    { id: 'coilBatchName', label: 'Coil Batch Name', searchable: true },
    { id: 'coilThickness', label: 'Coil Thickness', searchable: true, numerical: true },
    { id: 'componentGUID', label: 'Component GUID', searchable: true, numerical: true },
+   { id: 'componentType', label: 'Component Type', defaultShow: true, searchable: true },
    { id: 'coilWidth', label: 'Coil Width', searchable: true, numerical: true },
    { id: 'lineSpeed', label: 'Line Speed', searchable: true, numerical: true },
    { id: 'mode', label: 'Mode', searchable: true },
