@@ -3,24 +3,24 @@ import axios from 'util/axios'
 import { PATH_SERVER } from 'route/server'
 
 const initialState = {
-  initial         : false,
-  responseMessage : null,
-  isExpanded      : false,
-  success         : false,
-  isLoading       : false,
+  initial: false,
+  responseMessage: null,
+  isExpanded: false,
+  success: false,
+  isLoading: false,
   validCoordinates: false,
-  error           : null,
-  site            : null,
-  sites           : [],
-  siteDialog      : false,
-  fromSiteDialog  : false,
-  activeSites     : [],
-  lat             : '',
-  long            : '',
+  error: null,
+  site: null,
+  sites: [],
+  siteDialog: false,
+  fromSiteDialog: false,
+  activeSites: [],
+  lat: '',
+  long: '',
   selectedSiteCard: null,
-  siteFilterBy    : '',
-  sitePage        : 0,
-  siteRowsPerPage : 10
+  siteFilterBy: '',
+  sitePage: 0,
+  siteRowsPerPage: 10
 }
 
 const siteSlice = createSlice({
@@ -145,7 +145,7 @@ export function getSites(customerId, isCustomerArchived = false) {
     try {
       const params = {
         orderBy: {
-          createdAt: -1
+          firstName: 1
         }
       }
 
