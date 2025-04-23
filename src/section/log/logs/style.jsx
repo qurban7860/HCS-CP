@@ -78,7 +78,13 @@ export const StyledTableRow = styled(({ theme, mode, index, ...other }) => <Tabl
    : mode === KEY.DARK
    ? alpha(theme.palette.grey[800], 0.5)
    : alpha(theme.palette.table.cellEven, 0.9),
- cursor: 'pointer',
+    cursor: 'pointer',
+    height: 36, 
+    minHeight: 36, 
+    '& td, & th': {
+      paddingTop: 6,   
+      paddingBottom: 6 
+    },
  '&:hover': {
   backgroundColor: mode === KEY.DARK ? theme.palette.grey[700] : theme.palette.common.white
  }
