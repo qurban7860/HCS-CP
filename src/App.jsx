@@ -31,11 +31,11 @@ import { FALLBACK } from 'constant'
 function App() {
     return (
         <AuthProvider>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Provider store={store}>
-                    <PersistGate loading={null} persistor={persistor}>
-                        <SettingProvider>
-                            <WebSocketProvider>
+            <WebSocketProvider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Provider store={store}>
+                        <PersistGate loading={null} persistor={persistor}>
+                            <SettingProvider>
                                 <BrowserRouter>
                                     <HelmetProvider>
                                         <MotionLazyContainer>
@@ -56,11 +56,11 @@ function App() {
                                         </MotionLazyContainer>
                                     </HelmetProvider>
                                 </BrowserRouter>
-                            </WebSocketProvider>
-                        </SettingProvider>
-                    </PersistGate>
-                </Provider>
-            </LocalizationProvider>
+                            </SettingProvider>
+                        </PersistGate>
+                    </Provider>
+                </LocalizationProvider>
+            </WebSocketProvider>
         </AuthProvider>
     )
 }

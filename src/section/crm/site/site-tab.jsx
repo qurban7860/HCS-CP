@@ -170,7 +170,7 @@ const SiteTab = () => {
               iconOnly
             />
           )}
-          <GridViewField variant={isDesktop ? TYPOGRAPHY.H2 : TYPOGRAPHY.H5} heading={''} isLoading={isLoading} gridSize={12} noBreakSpace isNoBg>
+          <GridViewField variant={isDesktop ? TYPOGRAPHY.H3 : TYPOGRAPHY.H5} heading={''} multiline isLoading={isLoading} gridSize={12} noBreakSpace isNoBg >
             {truncate(defaultValues?.name, 40)}
           </GridViewField>
         </GStyledSpanBox>
