@@ -43,7 +43,7 @@ const LogsSection = ({ isArchived }) => {
   useEffect(() => {
     dispatch(ChangeLogPage(0))
     dispatch(resetLogs())
-   }, [])
+  }, [])
 
   useEffect(() => {
     if (customer) {
@@ -166,7 +166,10 @@ const LogsSection = ({ isArchived }) => {
                     <RHFAutocomplete
                       name='machine'
                       label={t('machine.label')}
-                      options={machines || []}
+                      options={
+                        Array.isArray(machines) && machines?.filter(ma => ma?.machineModel?.category?.name?.toLowerCase()?.includes('frama'))
+                        || []
+                      }
                       isOptionEqualToValue={(option, value) => option._id === value._id}
                       getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
                       renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
