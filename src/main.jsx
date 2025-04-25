@@ -2,7 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 
 import App from './App'
-import { AuthProvider, WebSocketProvider } from 'auth'
+import { AuthProvider } from 'auth/auth-provider'
+import { WebSocketProvider } from 'auth/websocket-provider'
 import * as serviceWorkerRegistration from './sw-registration'
 import reportWebVitals from './report-web-vital'
 

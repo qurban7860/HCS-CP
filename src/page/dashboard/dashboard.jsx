@@ -3,7 +3,7 @@ import { t } from 'i18next'
 import _ from 'lodash'
 import debounce from 'lodash/debounce'
 import { useAuthContext } from 'auth/use-auth-context'
-import { useWebSocketContext } from 'auth'
+import { useWebSocketContext } from 'auth/use-websocket-context'
 import { useResponsive } from 'hook'
 import { dispatch, useSelector } from 'store'
 import {

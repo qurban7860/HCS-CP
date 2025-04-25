@@ -1,11 +1,10 @@
-import { createContext, useMemo, useEffect, useState } from 'react'
+import { useMemo, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import useWebSocket from 'react-use-websocket'
-import { useAuthContext } from './use-auth-context'
+import { useAuthContext } from 'auth/use-auth-context'
 import { GLOBAL } from 'config/global'
 import { RESPONSE, KEY, WEBSOCKET_EVENT } from 'constant'
-
-export const WebSocketContext = createContext()
+import { WebSocketContext } from 'auth/use-websocket-context'
 
 export const WebSocketProvider = ({ children }) => {
     const [token, setToken] = useState(null)

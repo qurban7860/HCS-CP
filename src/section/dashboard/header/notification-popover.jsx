@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import { noCase } from 'change-case'
 import { useState, memo, Fragment } from 'react'
-import { useWebSocketContext } from 'auth'
+import { useWebSocketContext } from 'auth/use-websocket-context'
 import { Box, Badge, Avatar, Typography, ListItemText, ListItemAvatar, ListItemButton, Tooltip, IconButton, Grid } from '@mui/material'
 import { fDateTime, fToNow } from 'util'
 import { Iconify } from 'component/iconify'
@@ -13,7 +13,6 @@ function NotificationPopover() {
   const [openPopover, setOpenPopover] = useState(null)
   const [totalUnRead, setTotalUnRead] = useState(0)
   const { notifications, sendJsonMessage } = useWebSocketContext()
-
   const handleOpenPopover = event => {
     setOpenPopover(event.currentTarget)
   }
