@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import { t } from 'i18next'
 import { useNavigate } from 'react-router-dom'
-import { useAuthContext } from 'auth'
+import { useAuthContext } from 'auth/use-auth-context'
 import { dispatch, useSelector } from 'store'
 import { setTicketCreateSuccessDialog, getTicket } from 'store/slice'
 import { useSettingContext, snack, Icon, ICON_NAME } from 'hook'
@@ -13,72 +13,72 @@ import { ICON } from 'config/layout'
 import { TYPOGRAPHY, FLEX, KEY, COLOR } from 'constant'
 
 const TicketCreateSuccessDialog = () => {
- const { ticket, ticketCreateSuccessDialog } = useSelector(state => state.ticket)
- const { user }                              = useAuthContext()
- const { themeMode }                         = useSettingContext()
- const theme                                 = useTheme()
- const navigate                              = useNavigate()
- const isDesktop                             = useMediaQuery(theme.breakpoints.up('md'))
+  const { ticket, ticketCreateSuccessDialog } = useSelector(state => state.ticket)
+  const { user } = useAuthContext()
+  const { themeMode } = useSettingContext()
+  const theme = useTheme()
+  const navigate = useNavigate()
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
- const handleDialog = () => {
-  dispatch(setTicketCreateSuccessDialog(false))
- }
+  const handleDialog = () => {
+    dispatch(setTicketCreateSuccessDialog(false))
+  }
 
- const handleCloseAndNavigateToList = () => {
-  dispatch(setTicketCreateSuccessDialog(false))
-  snack(t('responses.success.ticket_created'), { variant: COLOR.SUCCESS })
-  navigate(PATH_SUPPORT.tickets.list)
- }
+  const handleCloseAndNavigateToList = () => {
+    dispatch(setTicketCreateSuccessDialog(false))
+    snack(t('responses.success.ticket_created'), { variant: COLOR.SUCCESS })
+    navigate(PATH_SUPPORT.tickets.list)
+  }
 
- const handleViewTicket = () => {
-  dispatch(setTicketCreateSuccessDialog(false))
-  snack(t('responses.success.ticket_created'), { variant: COLOR.SUCCESS })
-  dispatch(setTicketCreateSuccessDialog(false))
-  dispatch(getTicket(ticket?._id, user?.customer))
-  navigate(PATH_SUPPORT.tickets.view(ticket?._id))
- }
+  const handleViewTicket = () => {
+    dispatch(setTicketCreateSuccessDialog(false))
+    snack(t('responses.success.ticket_created'), { variant: COLOR.SUCCESS })
+    dispatch(setTicketCreateSuccessDialog(false))
+    dispatch(getTicket(ticket?._id, user?.customer))
+    navigate(PATH_SUPPORT.tickets.view(ticket?._id))
+  }
 
- return (
-  <Dialog disableEnforceFocus open={ticketCreateSuccessDialog} onClose={handleDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
-   <GStyledTopBorderDivider mode={themeMode} />
-    <DialogTitle sx={{ ...(isDesktop && { minWidth: 500 }), width: '100%', boxSizing: 'border-box', padding: theme.spacing(2) }}>
+  return (
+    <Dialog disableEnforceFocus open={ticketCreateSuccessDialog} onClose={handleDialog} BackdropProps={GBackdropPropsOption(themeMode)}>
+      <GStyledTopBorderDivider mode={themeMode} />
+      <DialogTitle sx={{ ...(isDesktop && { minWidth: 500 }), width: '100%', boxSizing: 'border-box', padding: theme.spacing(2) }}>
         <Grid container gap={2}>
-            <Grid container display={FLEX.FLEX} justifyContent={FLEX.CENTER}>
-                <Avatar sx={{ bgcolor: theme.palette.howick.darkBlue, ...ICON.SIZE_SM }}>
-                    <Icon icon={ICON_NAME.CHECK_CICLE_OUTLINE} sx={{ color: theme.palette.grey[200], ...ICON.SIZE_MD_2 }} />
-                </Avatar>
-            </Grid>
+          <Grid container display={FLEX.FLEX} justifyContent={FLEX.CENTER}>
+            <Avatar sx={{ bgcolor: theme.palette.howick.darkBlue, ...ICON.SIZE_SM }}>
+              <Icon icon={ICON_NAME.CHECK_CICLE_OUTLINE} sx={{ color: theme.palette.grey[200], ...ICON.SIZE_MD_2 }} />
+            </Avatar>
+          </Grid>
         </Grid>
-    </DialogTitle>
+      </DialogTitle>
 
-   <Divider orientation={KEY.HORIZONTAL} flexItem />
-   <DialogContent dividers sx={{ px: 3, py: 2 }}>
+      <Divider orientation={KEY.HORIZONTAL} flexItem />
+      <DialogContent dividers sx={{ px: 3, py: 2 }}>
 
-     <Grid container display={FLEX.FLEX} justifyContent={FLEX.CENTER}>
-      <Typography variant={isDesktop ? TYPOGRAPHY.H4 : TYPOGRAPHY.H5}>{t('support_ticket_created.label').toUpperCase()} &nbsp;</Typography>
-     </Grid>
+        <Grid container display={FLEX.FLEX} justifyContent={FLEX.CENTER}>
+          <Typography variant={isDesktop ? TYPOGRAPHY.H4 : TYPOGRAPHY.H5}>{t('support_ticket_created.label').toUpperCase()} &nbsp;</Typography>
+        </Grid>
 
-     <Grid container display={FLEX.FLEX} justifyContent={FLEX.CENTER}>
-      <Typography variant={isDesktop ? TYPOGRAPHY.BODY1 : TYPOGRAPHY.BODY2}>{t('support_ticket_created.description')} &nbsp;</Typography>
-     </Grid>
+        <Grid container display={FLEX.FLEX} justifyContent={FLEX.CENTER}>
+          <Typography variant={isDesktop ? TYPOGRAPHY.BODY1 : TYPOGRAPHY.BODY2}>{t('support_ticket_created.description')} &nbsp;</Typography>
+        </Grid>
 
-   </DialogContent>
-   <DialogActions>
-     <Grid item sm={12}>
-      <Grid container justifyContent={FLEX.FLEX_END}>
-       <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
-        <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCloseAndNavigateToList}>
-         {t('close.label').toUpperCase()}
-        </GStyledCloseButton>
-        <GStyledLoadingButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleViewTicket} mode={themeMode}>
-         {t('view_ticket.label').toUpperCase()}
-        </GStyledLoadingButton>
-       </Grid>
-      </Grid>
-     </Grid>
-   </DialogActions>
-  </Dialog>
- )
+      </DialogContent>
+      <DialogActions>
+        <Grid item sm={12}>
+          <Grid container justifyContent={FLEX.FLEX_END}>
+            <Grid container justifyContent={FLEX.FLEX_END} gap={2}>
+              <GStyledCloseButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleCloseAndNavigateToList}>
+                {t('close.label').toUpperCase()}
+              </GStyledCloseButton>
+              <GStyledLoadingButton icon={ICON_NAME.CHEVRON_RIGHT} onClick={handleViewTicket} mode={themeMode}>
+                {t('view_ticket.label').toUpperCase()}
+              </GStyledLoadingButton>
+            </Grid>
+          </Grid>
+        </Grid>
+      </DialogActions>
+    </Dialog>
+  )
 }
 
 export default memo(TicketCreateSuccessDialog)

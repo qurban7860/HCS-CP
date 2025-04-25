@@ -16,8 +16,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 
 import { store, persistor } from 'store'
 import Router from 'route'
-import { WebSocketProvider } from 'auth/websocket-provider'
-import { AuthProvider } from 'auth/auth-provider'
 import { ThemeProvider } from 'theme'
 import { ThemeLocalization } from 'locale'
 import { ThemeSettings, SettingProvider, SnackProvider } from 'hook'
@@ -30,38 +28,34 @@ import { FALLBACK } from 'constant'
 
 function App() {
     return (
-        <AuthProvider>
-            <WebSocketProvider>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <Provider store={store}>
-                        <PersistGate loading={null} persistor={persistor}>
-                            <SettingProvider>
-                                <BrowserRouter>
-                                    <HelmetProvider>
-                                        <MotionLazyContainer>
-                                            <ThemeProvider>
-                                                <ThemeSettings>
-                                                    <ErrorBoundary fallback={<Fallback {...FALLBACK.INTERNAL_SERVER_ERROR} />}>
-                                                        <ScrollToTop />
-                                                        <ThemeLocalization>
-                                                            <SnackProvider>
-                                                                <ChartStyleOverlay />
-                                                                <IdleManager />
-                                                                <Router />
-                                                            </SnackProvider>
-                                                        </ThemeLocalization>
-                                                    </ErrorBoundary>
-                                                </ThemeSettings>
-                                            </ThemeProvider>
-                                        </MotionLazyContainer>
-                                    </HelmetProvider>
-                                </BrowserRouter>
-                            </SettingProvider>
-                        </PersistGate>
-                    </Provider>
-                </LocalizationProvider>
-            </WebSocketProvider>
-        </AuthProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                    <SettingProvider>
+                        <BrowserRouter>
+                            <HelmetProvider>
+                                <MotionLazyContainer>
+                                    <ThemeProvider>
+                                        <ThemeSettings>
+                                            <ErrorBoundary fallback={<Fallback {...FALLBACK.INTERNAL_SERVER_ERROR} />}>
+                                                <ScrollToTop />
+                                                <ThemeLocalization>
+                                                    <SnackProvider>
+                                                        <ChartStyleOverlay />
+                                                        <IdleManager />
+                                                        <Router />
+                                                    </SnackProvider>
+                                                </ThemeLocalization>
+                                            </ErrorBoundary>
+                                        </ThemeSettings>
+                                    </ThemeProvider>
+                                </MotionLazyContainer>
+                            </HelmetProvider>
+                        </BrowserRouter>
+                    </SettingProvider>
+                </PersistGate>
+            </Provider>
+        </LocalizationProvider>
     )
 }
 
