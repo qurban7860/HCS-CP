@@ -25,7 +25,7 @@ const GraphsSection = () => {
   const { isLoading, logsGraphData } = useSelector(state => state.log)
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const defaultValues = useGraphDefaultValues(customer)|| {
+  const defaultValues = useGraphDefaultValues(customer) || {
     machine: null,
     logPeriod: 'Monthly',
     logGraphType: logGraphTypes[0]
@@ -126,14 +126,17 @@ const GraphsSection = () => {
         </Grid>
       </GStyledStickyDiv>
       <GStyledStickyDiv top={NAV.T_STICKY_NAV_LOGS_CONTROLLER} zIndex={11}>
-        <FormProvider {...methods} onSubmit={handleSubmit(()=>{})}>
+        <FormProvider {...methods} onSubmit={handleSubmit(() => { })}>
           <Grid container spacing={2} mt={3}>
             <Grid item xs={12} sm={12}>
               <GStyledControllerCardContainer height={'auto'} sx={{ display: FLEX.FLEX, flexDirection: FLEX_DIR.COLUMN, gap: 2 }}>
                 <RHFAutocomplete
                   name='machine'
                   label={t('machine.label')}
-                  options={machines || []}
+                  options={
+                    Array.isArray(machines) && machines?.filter(ma => ma?.machineModel?.category?.name?.toLowerCase()?.includes('frama'))
+                    || []
+                  }
                   isOptionEqualToValue={(option, value) => option._id === value._id}
                   getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
                   renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
