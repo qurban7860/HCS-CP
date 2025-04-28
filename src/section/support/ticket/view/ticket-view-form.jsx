@@ -23,6 +23,7 @@ import ViewFormField from 'component/viewform/view-form-field'
 import DropDownField from 'component/viewform/drop-down-field'
 import FilledTextField from 'component/viewform/filled-text-field'
 import FilledEditorField from 'component/viewform/text-editor'
+import { isCustomerAdmin, isSuperAdmin } from 'util'
 
 /**
  * View ticket form
@@ -260,8 +261,11 @@ function TicketViewForm() {
                   heading={t('status.label')}
                   isLoading={isLoading}
                   gridSize={3}
-                >
-                  <DropDownField name="status" isNullable label='Status' value={ticket?.status} onSubmit={onSubmit} options={ticketSettings?.statuses} />
+                >{
+                    (isCustomerAdmin || isSuperAdmin) ?
+                      <DropDownField name="status" isNullable label='Status' value={ticket?.status} onSubmit={onSubmit} options={ticketSettings?.statuses} />
+                      : defaultValues?.status
+                  }
                 </GridViewField>
                 <GridViewField
                   heading={t('priority.label')}

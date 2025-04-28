@@ -130,51 +130,45 @@ const GraphsSection = () => {
           <Grid container spacing={2} mt={3}>
             <Grid item xs={12} sm={12}>
               <GStyledControllerCardContainer height={'auto'} sx={{ display: FLEX.FLEX, flexDirection: FLEX_DIR.COLUMN, gap: 2 }}>
-                <RHFAutocomplete
-                  name='machine'
-                  label={t('machine.label')}
-                  options={
-                    Array.isArray(machines) && machines?.filter(ma => ma?.machineModel?.category?.name?.toLowerCase()?.includes('frama'))
-                    || []
-                  }
-                  isOptionEqualToValue={(option, value) => option._id === value._id}
-                  getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
-                  renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
-                  onChange={(e, newValue) => handleMachineChange(newValue)}
-                  size='small'
-                />
-                <Stack spacing={2}>
-                  <Stack direction='row' spacing={2} sx={{ width: '100%' }}>
-                    <Box sx={{ width: '50%' }}>
-                      <RHFAutocomplete
-                        name='logPeriod'
-                        label={t('log.period.label')}
-                        options={['Daily', 'Monthly', 'Quarterly', 'Yearly']}
-                        onChange={(e, newValue) => handlePeriodChange(newValue)}
-                        size='small'
-                        disableClearable
-                        required
-                      />
-                    </Box>
-                    <Box sx={{ width: '50%' }}>
-                      <RHFAutocomplete
-                        name='logGraphType'
-                        label={t('graph_type.label')}
-                        options={logGraphTypes}
-                        onChange={(e, newValue) => handleGraphTypeChange(newValue)}
-                        getOptionLabel={option => option.name || ''}
-                        isOptionEqualToValue={(option, value) => option?.key === value?.key}
-                        renderOption={(props, option) => (
-                          <li {...props} key={option?.key}>
-                            {option.name || ''}
-                          </li>
-                        )}
-                        disableClearable
-                        size='small'
-                      />
-                    </Box>
-                  </Stack>
-                </Stack>
+                <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)' }}>
+                  <RHFAutocomplete
+                    name='machine'
+                    label={t('machine.label')}
+                    options={
+                      Array.isArray(machines) && machines?.filter(ma => ma?.machineModel?.category?.name?.toLowerCase()?.includes('frama'))
+                      || []
+                    }
+                    isOptionEqualToValue={(option, value) => option._id === value._id}
+                    getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
+                    renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
+                    onChange={(e, newValue) => handleMachineChange(newValue)}
+                    size='small'
+                  />
+                  <RHFAutocomplete
+                    name='logPeriod'
+                    label={t('log.period.label')}
+                    options={['Daily', 'Monthly', 'Quarterly', 'Yearly']}
+                    onChange={(e, newValue) => handlePeriodChange(newValue)}
+                    size='small'
+                    disableClearable
+                    required
+                  />
+                  <RHFAutocomplete
+                    name='logGraphType'
+                    label={t('graph_type.label')}
+                    options={logGraphTypes}
+                    onChange={(e, newValue) => handleGraphTypeChange(newValue)}
+                    getOptionLabel={option => option.name || ''}
+                    isOptionEqualToValue={(option, value) => option?.key === value?.key}
+                    renderOption={(props, option) => (
+                      <li {...props} key={option?.key}>
+                        {option.name || ''}
+                      </li>
+                    )}
+                    disableClearable
+                    size='small'
+                  />
+                </Box>
               </GStyledControllerCardContainer>
             </Grid>
           </Grid>
