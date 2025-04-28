@@ -192,7 +192,7 @@ function TicketViewForm() {
     }
   };
 
-  
+
 
   return (
     <Fragment>
@@ -275,12 +275,12 @@ function TicketViewForm() {
                   />{' '}
                   &nbsp;{defaultValues?.priority} */}
                 </GridViewField>
-                
+
 
                 <Grid item xs={12} md={12}>
-                <GridViewTitle title={t('summary.label')} />
+                  <GridViewTitle title={t('summary.label')} />
 
-                <FilledTextField name="summary" value={defaultValues.summary} onSubmit={onSubmit} minRows={4}  />
+                  <FilledTextField name="summary" value={defaultValues.summary} onSubmit={onSubmit} minRows={4} />
 
                 </Grid>
 
@@ -298,9 +298,9 @@ function TicketViewForm() {
                 </ViewFormField> */}
 
                 <Grid item xs={12} md={12}>
-                <GridViewTitle title={t('description.label')} />
+                  <GridViewTitle title={t('description.label')} />
 
-                <FilledEditorField name="description" value={defaultValues.description} onSubmit={onSubmit} minRows={4} />
+                  <FilledEditorField name="description" value={defaultValues.description} onSubmit={onSubmit} minRows={4} />
 
                 </Grid>
 
@@ -454,7 +454,7 @@ function TicketViewForm() {
           </Box>
         </Grid>
       </Grid>
-      <AuditBox value={defaultValues} />
+      <AuditBox value={{ ...defaultValues, createdBy: "Support Service", updatedBy: "Support Service" }} />
 
       {PDFViewerDialog && (
         <Dialog fullScreen open={PDFViewerDialog} onClose={() => setPDFViewerDialog(false)}>
