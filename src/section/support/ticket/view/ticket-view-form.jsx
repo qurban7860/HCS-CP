@@ -10,7 +10,7 @@ import { useAuthContext } from 'auth/use-auth-context'
 import { enqueueSnackbar, IconFlexi, snack, useResponsive, useSettingContext } from 'hook'
 import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
-import { getFile, getTicket, getTicketSettings, getSoftwareVersion, deleteFile, resetTicketSettings, resetTicket, resetSoftwareVersion, updateTicketField } from 'store/slice'
+import { getFile, getTicket, getTicketSettings, deleteFile, resetTicketSettings, resetTicket, updateTicketField } from 'store/slice'
 import { PATH_DASHBOARD, PATH_MACHINE, PATH_SUPPORT } from 'route/path'
 import { TicketSchema } from 'schema'
 import { TicketComment, useTicketViewDefaultValues } from 'section/support'
@@ -36,11 +36,10 @@ function TicketViewForm() {
   const [PDFName, setPDFName] = useState('')
   const [PDFViewerDialog, setPDFViewerDialog] = useState(false)
 
-  const { customer, isLoading, machine, softwareVersion, ticket, ticketSettings } = useSelector(
+  const { customer, isLoading, machine, ticket, ticketSettings } = useSelector(
     state => ({
       customer: state.customer.customer,
       isLoading: state.ticket.isLoading,
-      softwareVersion: state.ticket.softwareVersion,
       ticket: state.ticket.ticket,
       ticketSettings: state.ticket.ticketSettings
     }), _.isEqual)
@@ -55,7 +54,7 @@ function TicketViewForm() {
   const isMobile = useResponsive('down', 'sm')
   const fetchCustomerRef = useRef(false)
 
-  const defaultValues = useTicketViewDefaultValues(ticket, customer, softwareVersion)
+  const defaultValues = useTicketViewDefaultValues(ticket, customer, ticket)
   const methods = useForm({
     resolver: yupResolver(TicketSchema('new')),
     defaultValues,
@@ -63,25 +62,9 @@ function TicketViewForm() {
     reValidateMode: 'onChange'
   })
 
-  useLayoutEffect(() => {
-    // dispatch(resetTicket())
-    // dispatch(resetTicketSettings())
-    // dispatch(resetSoftwareVersion())
-  }, [dispatch])
-
-  // useEffect(() => {
-  //   dispatch(getTicket(id, customer?._id))
-  //  },[dispatch, id, customer?._id])
-
   useEffect(() => {
     dispatch(getTicketSettings())
   }, [dispatch])
-
-  useEffect(() => {
-    if (ticket?.machine?._id) {
-      dispatch(getSoftwareVersion(ticket?.machine?._id, customer?._id))
-    }
-  }, [dispatch, ticket?.machine?._id])
 
   useEffect(() => {
     const newSlides = ticket?.files
@@ -238,7 +221,7 @@ function TicketViewForm() {
                   isLoading={isLoading}
                   gridSize={3}
                 >
-                  {softwareVersion?.hlc}
+                  {defaultValues?.hlc}
                 </GridViewField>
 
                 <GridViewField
@@ -246,7 +229,7 @@ function TicketViewForm() {
                   isLoading={isLoading}
                   gridSize={3}
                 >
-                  {softwareVersion?.plc}
+                  {defaultValues?.plc}
                 </GridViewField>
 
                 <GridViewField
