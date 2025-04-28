@@ -166,25 +166,25 @@ export const { resetTicket, resetTickets, resetTicketSettings, resetSoftwareVers
 
 
 export function getTickets({ customerId, isResolved = null, page, pageSize }) {
- return async dispatch => {
-  dispatch(supportSlice.actions.startLoading())
-  try {
-   const params = {
-    customer  : customerId,
-    orderBy   : { createdAt: -1 },
-    isArchived: false,
-    ...(isResolved && isResolved !== 'all' && { isResolved: isResolved === 'resolved' }),
-    pagination: { page, pageSize },
-   }
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
-  //  const customerTickets  = response.data &&  response.data.data.filter(ticket => ticket.customer._id === customerId)
-    dispatch(supportSlice.actions.getTicketsSuccess(response.data))
-   return response
-  } catch (error) {
-   console.error(error)
-   throw error
+  return async dispatch => {
+    dispatch(supportSlice.actions.startLoading())
+    try {
+      const params = {
+        customer: customerId,
+        orderBy: { createdAt: -1 },
+        isArchived: false,
+        ...(isResolved && isResolved !== 'all' && { isResolved: isResolved === 'resolved' }),
+        pagination: { page, pageSize },
+      }
+      const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
+      //  const customerTickets  = response.data &&  response.data.data.filter(ticket => ticket.customer._id === customerId)
+      dispatch(supportSlice.actions.getTicketsSuccess(response.data))
+      return response
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
   }
- }
 }
 
 export function getTicket(id, customerId) {
@@ -245,6 +245,8 @@ export function createTicket(params) {
       const formData = new FormData()
       formData.append('customer', params?.customer?._id)
       formData.append('machine', params?.machine?._id)
+      formData.append('hlc', params?.hlc)
+      formData.append('plc', params?.plc)
       formData.append('issueType', params?.issueType?._id)
       formData.append('requestType', params?.requestType?._id)
       formData.append('summary', params?.summary || '')
