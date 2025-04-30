@@ -3,8 +3,7 @@ import { t } from 'i18next'
 import { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
-import { useSearchParams } from 'react-router-dom'
-
+import { useNavigate } from 'react-router-dom'
 import { HowickLoader, RHFAutocomplete, TableTitleBox } from 'component'
 import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 import { Icon, ICON_NAME, useResponsive, useSettingContext } from 'hook'
@@ -12,18 +11,17 @@ import { dispatch } from 'store'
 import { getLogGraphData, resetLogsGraphData } from 'store/slice'
 import { GStyledControllerCardContainer, GStyledStickyDiv } from 'theme/style'
 import { NAV } from 'config'
+import { PATH_LOGS } from 'route/path'
 import { logGraphTypes } from 'config'
 import ERPProductionTotal from './production-total'
 import ERPProductionRate from './production-rate'
 import { useGraphDefaultValues } from 'section/log/logs'
 
 const GraphsSection = () => {
-  const [expandedButton, setExpandedButton] = useState(null)
-
+  const navigate = useNavigate()
   const { customer } = useSelector(state => state.customer)
   const { machines } = useSelector(state => state.machine)
   const { isLoading, logsGraphData } = useSelector(state => state.log)
-  const [searchParams, setSearchParams] = useSearchParams()
 
   const defaultValues = useGraphDefaultValues(customer) || {
     machine: null,
@@ -46,13 +44,12 @@ const GraphsSection = () => {
 
   useEffect(() => {
     if (customer && logPeriod && logGraphType) {
-      const customerId = customer._id
-      const machineId = machine?._id || undefined
-      const LogType = 'erp'
-      dispatch(getLogGraphData(customerId, machineId, LogType, logPeriod, logGraphType?.key))
+      dispatch(getLogGraphData(customer?._id, machine?._id, 'erp', logPeriod, logGraphType));
     }
-    if (!customer) dispatch(resetLogsGraphData())
-  }, [customer, machine, logPeriod, searchParams, logGraphType])
+    return () => {
+      dispatch(resetLogsGraphData());
+    };
+  }, [dispatch, customer?._id, machine?._id, logPeriod, logGraphType]);
 
   const handleMachineChange = useCallback(
     newMachine => {
@@ -89,24 +86,6 @@ const GraphsSection = () => {
     [setValue]
   )
 
-  const handleErpLogToggle = () => {
-    setSearchParams({ type: searchParams.get('type') === 'graph' ? 'logs' : 'graph' })
-  }
-
-  const handleClick = buttonId => {
-    setExpandedButton(prev => (prev === buttonId ? null : buttonId))
-  }
-
-  const handleOnClick = async (buttonId, action) => {
-    if (isMobile) {
-      handleClick(buttonId)
-      await new Promise(resolve => setTimeout(resolve, 300))
-      action()
-    } else {
-      action()
-    }
-  }
-
   return (
     <Grid container rowGap={2} flexDirection={FLEX_DIR.COLUMN}>
       <GStyledStickyDiv top={0} zIndex={11} height={20}>
@@ -120,8 +99,8 @@ const GraphsSection = () => {
               color: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
               borderColor: theme.palette.grey[500]
             }}
-            onClick={() => handleOnClick('erpLog', handleErpLogToggle)}>
-            {(!isMobile || expandedButton === 'erpLog') && <Typography variant={isDesktop ? TYPOGRAPHY.BODY0 : TYPOGRAPHY.BODY2}>{'Machine Logs'}</Typography>}
+            onClick={() => navigate(PATH_LOGS.root)}>
+            {!isMobile && <Typography variant={isDesktop ? TYPOGRAPHY.BODY0 : TYPOGRAPHY.BODY2}>{'Machine Logs'}</Typography>}
           </Button>
         </Grid>
       </GStyledStickyDiv>
