@@ -40,7 +40,8 @@ import {
   TicketCreatePage,
   TicketViewPage,
   // log:
-  LogListPage,
+  LogList,
+  LogGraph,
   // fallback:
   BlankPage,
   FallbackPage
@@ -296,14 +297,9 @@ export default function Router() {
             </AuthGuard>
           ),
           children: [
-            { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
-            { path: 'machine', element: <LogListPage /> },
-            {
-              element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
-              children: [
-                // { path: 'password', element: <ChangePasswordPage /> },
-              ]
-            }
+            { element: <LogList />, index: true },
+            { path: 'graph', element: <LogGraph /> },
+            { element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} /> }
           ]
         },
         {

@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState, memo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import { t } from 'i18next'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Icon, ICON_NAME, useResponsive, useSettingContext } from 'hook'
 import { useSelector, dispatch } from 'store'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -18,14 +18,13 @@ import { GStyledControllerCardContainer, GStyledLoadingButton, GStyledStickyDiv 
 import { NAV } from 'config/layout'
 import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 import { LOG_TYPE_CONFIG } from 'config'
+import { PATH_LOGS } from 'route/path'
 
 const LogsSection = ({ isArchived }) => {
-  const [expandedButton, setExpandedButton] = useState(null)
-  const [searchParams, setSearchParams] = useSearchParams()
   const { customer } = useSelector(state => state.customer)
   const { machines } = useSelector(state => state.machine)
   const { logPage, isLoading, logRowsPerPage, selectedSearchFilter } = useSelector(state => state.log)
-
+  const navigate = useNavigate();
   const { themeMode } = useSettingContext()
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
@@ -43,7 +42,8 @@ const LogsSection = ({ isArchived }) => {
   useEffect(() => {
     dispatch(ChangeLogPage(0))
     dispatch(resetLogs())
-  }, [])
+    dispatch(getMachines(null, null, false, null, customer?._id))
+  }, [dispatch])
 
   useEffect(() => {
     if (customer) {
@@ -106,24 +106,6 @@ const LogsSection = ({ isArchived }) => {
     [setValue, trigger]
   )
 
-  const handleClick = buttonId => {
-    setExpandedButton(prev => (prev === buttonId ? null : buttonId))
-  }
-
-  const handleOnClick = async (buttonId, action) => {
-    if (isMobile) {
-      handleClick(buttonId)
-      await new Promise(resolve => setTimeout(resolve, 300))
-      action()
-    } else {
-      action()
-    }
-  }
-
-  const handleErpLogToggle = () => {
-    setSearchParams({ type: searchParams.get('type') === 'graph' ? 'logs' : 'graph' })
-  }
-
   const payload = {
     customerId: customer?._id,
     machineId: machine?._id || undefined,
@@ -151,8 +133,8 @@ const LogsSection = ({ isArchived }) => {
               color: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
               borderColor: theme.palette.grey[500]
             }}
-            onClick={() => handleOnClick('erpLog', handleErpLogToggle)}>
-            {(!isMobile || expandedButton === 'erpLog') && <Typography variant={isDesktop ? TYPOGRAPHY.BODY0 : TYPOGRAPHY.BODY2}>{'See Graph'}</Typography>}
+            onClick={() => { navigate(PATH_LOGS.graph) }}>
+            {!isMobile && <Typography variant={isDesktop ? TYPOGRAPHY.BODY0 : TYPOGRAPHY.BODY2}>{'See Graph'}</Typography>}
           </Button>
         </Grid>
       </GStyledStickyDiv>

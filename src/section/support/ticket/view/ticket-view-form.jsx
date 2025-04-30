@@ -245,7 +245,7 @@ function TicketViewForm() {
                   isLoading={isLoading}
                   gridSize={3}
                 >{
-                    (isCustomerAdmin || isSuperAdmin) ?
+                    isSuperAdmin(user) ?
                       <DropDownField name="status" isNullable label='Status' value={ticket?.status} onSubmit={onSubmit} options={ticketSettings?.statuses} />
                       : defaultValues?.status
                   }
@@ -441,7 +441,7 @@ function TicketViewForm() {
           </Box>
         </Grid>
       </Grid>
-      <AuditBox value={{ ...defaultValues, createdBy: "Support Service", updatedBy: "Support Service" }} />
+      <AuditBox value={{ ...defaultValues, createdBy: "Support Services", updatedBy: "Support Services" }} />
 
       {PDFViewerDialog && (
         <Dialog fullScreen open={PDFViewerDialog} onClose={() => setPDFViewerDialog(false)}>

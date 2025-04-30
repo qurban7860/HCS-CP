@@ -154,7 +154,7 @@ const TicketComment = ({ currentUser }) => {
               <GridViewTitle title={t('notes_comments.label')} />
               <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
                 <Stack direction='row' spacing={2}>
-                  <CustomAvatar src={currentUser?.photoURL} alt="Support Service" name="Support Service" sx={{ borderRadius: RADIUS.BORDER.borderRadius }} />
+                  <CustomAvatar src={currentUser?.photoURL} alt="Support Services" name="Support Services" sx={{ borderRadius: RADIUS.BORDER.borderRadius }} />
                   <Stack sx={{ width: '100%' }}>
                     <RHFTextField
                       name='comment'
@@ -185,10 +185,10 @@ const TicketComment = ({ currentUser }) => {
                     {index > 0 && <Divider component='li' />}
                     <ListItem alignItems='flex-start' sx={{ padding: '8px 0' }}>
                       <ListItemAvatar>
-                        <CustomAvatar alt="Support Service" name="Support Service" sx={{ borderRadius: RADIUS.BORDER.borderRadius }} />
+                        <CustomAvatar alt="Support Services" name="Support Services" sx={{ borderRadius: RADIUS.BORDER.borderRadius }} />
                       </ListItemAvatar>
                       <CommentListItem
-                        truncatedName="Support Service"
+                        truncatedName="Support Services"
                         icon={!isCommenterNotHowickAgent(item?.createdBy?._id) && <Icon icon={ICON_NAME.HOWICK_LOGO} color={_iconColor} sx={{ width: 10, height: 10 }} />}
                         format={dayjs(item.createdAt).format('MMMM D, YYYY [at] h:mm A')}
                         date={dayjs().diff(dayjs(item.createdAt), 'day') < 1 ? dayjs(item.createdAt).fromNow() : dayjs(item.createdAt).format('MMMM D, YYYY [at] h:mm A')}
