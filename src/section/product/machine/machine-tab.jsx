@@ -100,14 +100,6 @@ const MachineTab = () => {
   }, [dispatch, machines])
 
   useEffect(() => {
-    const debounce = _.debounce(() => {
-      dispatch(getMachineCategories())
-    }, 300)
-    debounce()
-    return () => debounce.cancel()
-  }, [dispatch])
-
-  useEffect(() => {
     if (selectedMachineRef.current) {
       selectedMachineRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
@@ -261,12 +253,12 @@ const MachineTab = () => {
               <MachineConnectionListCard value={defaultValues} isLoading={isLoading} handleConnectionDialog={handleConnectedMachineDialog} />
             </Grid>
           )}
-          <CommonFieldsCard isChildren i18nKey={'howick_resources.label'} defaultValues={defaultValues} isLoading={isLoading}>
+          {/* <CommonFieldsCard isChildren i18nKey={'howick_resources.label'} defaultValues={defaultValues} isLoading={isLoading}>
             <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} />
-          </CommonFieldsCard>
+          </CommonFieldsCard> */}
         </Grid>
       </Grid>
-      <AuditBox value={defaultValues} />
+      {/* <AuditBox value={defaultValues} /> */}
     </Fragment>
   )
 }
