@@ -100,14 +100,6 @@ const MachineTab = () => {
   }, [dispatch, machines])
 
   useEffect(() => {
-    const debounce = _.debounce(() => {
-      dispatch(getMachineCategories())
-    }, 300)
-    debounce()
-    return () => debounce.cancel()
-  }, [dispatch])
-
-  useEffect(() => {
     if (selectedMachineRef.current) {
       selectedMachineRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
