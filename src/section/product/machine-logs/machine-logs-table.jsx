@@ -4,6 +4,12 @@ import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
 import { useTable, getComparator, useSettingContext } from 'hook'
 import { ChangeLogPage, ChangeLogRowsPerPage, getLogs, resetLogs } from 'store/slice/log/machineLog'
+import {
+    ChangeLogPage as ChangeMachineLogPage,
+    ChangeLogRowsPerPage as ChangeMachineLogRowsPerPage,
+    getLogs as getMachineLogs,
+    resetLogs as resetMachineLogs
+} from 'store/slice/log/log'
 import { Grid, Table, TableContainer } from '@mui/material'
 import { TableNoData, SkeletonTable, LogDetailsDialog } from 'component'
 import { LogsHeader, LogsTable, LogsPagination, tableColumnsReducer } from 'section/log/logs'
@@ -19,11 +25,26 @@ const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
     const [logComponentTitle, setLogComponentTitle] = useState({ date: '', componentLabel: '' })
     const [tableData, setTableData] = useState([])
     const { logs, logPage, logsTotalCount, isLoading, logRowsPerPage } = useSelector(state => state.log)
+    const {
+        logs: machineLogs,
+        logPage: machineLogPage,
+        logsTotalCount: machineLogsTotalCount,
+        isLoading: isLoadingMachineLogs,
+        logRowsPerPage: machineLogRowsPerPage
+    } = useSelector(state => state.machineLog)
     const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, getLogTypeConfigForGenerationAndType(5, 'ERP').tableColumns)
     const { themeMode } = useSettingContext()
 
     useEffect(() => {
-        setTableData(logs?.data || [])
+        if (isLogsPage) {
+            setTableData(machineLogs?.data || [])
+        } else {
+            setTableData(logs?.data || [])
+        }
+        return () => {
+            dispatch(resetLogs());
+            dispatch(resetMachineLogs());
+        }
     }, [logs])
 
     useEffect(() => {
@@ -48,12 +69,21 @@ const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
     })
 
     const handleChangePage = (event, newPage) => {
-        dispatch(ChangeLogPage(newPage))
+        if (isLogsPage) {
+            dispatch(ChangeMachineLogPage(newPage))
+        } else {
+            dispatch(ChangeLogPage(newPage))
+        }
     }
 
     const handleChangeRowsPerPage = event => {
-        dispatch(ChangeLogPage(0))
-        dispatch(ChangeLogRowsPerPage(parseInt(event.target.value, 10)))
+        if (isLogsPage) {
+            dispatch(ChangeMachineLogPage(0))
+            dispatch(ChangeMachineLogRowsPerPage(parseInt(event.target.value, 10)))
+        } else {
+            dispatch(ChangeLogPage(0))
+            dispatch(ChangeLogRowsPerPage(parseInt(event.target.value, 10)))
+        }
     }
 
     const handleColumnButtonClick = (columnId, newCheckState) => {
@@ -74,16 +104,26 @@ const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
     }
 
     const refreshLogsList = () => {
-        dispatch(
-            getLogs({
-                ...payload,
-                page: logPage,
-                pageSize: logRowsPerPage
-            })
-        )
+        if (isLogsPage) {
+            dispatch(
+                getMachineLogs({
+                    ...payload,
+                    page: isLogsPage ? machineLogPage : logPage,
+                    pageSize: isLogsPage ? machineLogRowsPerPage : logRowsPerPage
+                })
+            )
+        } else {
+            dispatch(
+                getLogs({
+                    ...payload,
+                    page: isLogsPage ? machineLogPage : logPage,
+                    pageSize: isLogsPage ? machineLogRowsPerPage : logRowsPerPage
+                })
+            )
+        }
     }
 
-    const isNotFound = !isLoading && !dataFiltered.length
+    const isNotFound = (!isLoading || !isLoadingMachineLogs) && !dataFiltered.length
 
     return (
         <Fragment>
@@ -94,10 +134,10 @@ const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
                             <GStyledStickyDiv top={isLogsPage ? NAV.T_STICKY_LOG_TABLE_HEADER : NAV.T_STICKY_LOG_MACH_TABLE_HEADER} zIndex={9}>
                                 <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
                                 <LogsPagination
-                                    count={logsTotalCount || 0}
-                                    data={logsTotalCount}
-                                    page={logPage}
-                                    rowsPerPage={logRowsPerPage}
+                                    count={(isLogsPage ? machineLogsTotalCount : logsTotalCount) || 0}
+                                    data={isLogsPage ? machineLogsTotalCount : logsTotalCount}
+                                    page={isLogsPage ? machineLogPage : logPage}
+                                    rowsPerPage={isLogsPage ? machineLogRowsPerPage : logRowsPerPage}
                                     handleChangePage={handleChangePage}
                                     handleChangeRowsPerPage={handleChangeRowsPerPage}
                                     columnFilterButtonData={tableColumns}
@@ -107,7 +147,7 @@ const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
                             <TableContainer sx={{ height: NAV.H_LOG_TABLE, overflow: 'auto' }}>
                                 <Table>
                                     <LogsHeader columns={tableColumns} dataFiltered={dataFiltered} orderBy={orderBy} order={order} onSort={onSort} />
-                                    {(isLoading ? [...Array(logRowsPerPage)] : dataFiltered).map((row, index) =>
+                                    {((isLoading || isLoadingMachineLogs) ? [...Array(logRowsPerPage)] : dataFiltered).map((row, index) =>
                                         row ? (
                                             <LogsTable
                                                 key={row._id}
