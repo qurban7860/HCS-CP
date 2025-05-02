@@ -267,7 +267,7 @@ function TicketViewForm() {
                 <Grid item xs={12} md={12}>
                   <GridViewTitle title={t('summary.label')} />
 
-                  <FilledTextField name="summary" value={defaultValues.summary} onSubmit={onSubmit} minRows={4} />
+                  <FilledTextField name="summary" value={defaultValues.summary} placeholder='Brief description of the ticket' onSubmit={onSubmit} minRows={4} />
 
                 </Grid>
 
@@ -287,7 +287,13 @@ function TicketViewForm() {
                 <Grid item xs={12} md={12}>
                   <GridViewTitle title={t('description.label')} />
 
-                  <FilledEditorField name="description" value={defaultValues.description} onSubmit={onSubmit} minRows={4} />
+                  <FilledEditorField 
+                    name="description" 
+                    value={defaultValues.description} 
+                    onSubmit={onSubmit} 
+                    minRows={4} 
+                    placeholder={`Please provide a detailed description of the issue you are experiencing with the machine, including: \n  - Any relevant error messages \n  - Steps to reproduce the problem, screenshot, picture or videos and \n  - Any recent changes that may have affected the system.\n\nIf you have any specific requirements or preferences for the ticket, please let us know.`}
+                  />
 
                 </Grid>
 
