@@ -2,14 +2,13 @@ import { Fragment, useEffect, memo, useLayoutEffect, useRef } from 'react'
 import _ from 'lodash'
 import axios from 'axios'
 import { useSelector, dispatch } from 'store'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import {
   getCustomer,
   getMachine,
   getMachines,
   setCustomerDialog,
   getConnectedMachineDialog,
-  getMachineCategories,
   setMachineDialog,
   setMachineSiteDialog,
   setMachineFilterBy,
@@ -18,7 +17,6 @@ import {
   resetConnectedMachineDialog,
   resetMachineSiteDialogData,
   resetSelectedMachine,
-  resetMachineCategories,
   resetMachine,
   resetMachines,
   resetSoftwareVersion,
@@ -38,7 +36,7 @@ import { FLEX_DIR, KEY, FALLBACK } from 'constant'
 import user from 'component/dialog/user'
 
 const MachineTab = () => {
-  const { machine, machines, machineCategories, isLoading, initial } = useSelector(state => state.machine)
+  const { machine, machines, isLoading, initial } = useSelector(state => state.machine)
   const { customer } = useSelector(state => state.customer)
   const { softwareVersion } = useSelector(state => state.ticket)
   const { id } = useParams()
@@ -46,7 +44,7 @@ const MachineTab = () => {
   const selectedMachineRef = useRef(null)
   const { isDesktop, isMobile } = useUIMorph()
   const theme = useTheme()
-
+  const navigate = useNavigate()
   const axiosToken = () => axios.CancelToken.source()
   const cancelTokenSource = axiosToken()
 
@@ -63,7 +61,6 @@ const MachineTab = () => {
     // dispatch(resetSelectedMachine())
     // dispatch(resetCustomer())
     dispatch(resetSoftwareVersion())
-    dispatch(resetMachineCategories())
     dispatch(resetConnectedMachineDialog())
     dispatch(resetMachineSiteDialogData())
   }, [])
@@ -101,14 +98,6 @@ const MachineTab = () => {
     debounce()
     return () => debounce.cancel()
   }, [dispatch, machines])
-
-  useEffect(() => {
-    const debounce = _.debounce(() => {
-      dispatch(getMachineCategories())
-    }, 300)
-    debounce()
-    return () => debounce.cancel()
-  }, [dispatch])
 
   useEffect(() => {
     if (selectedMachineRef.current) {
@@ -162,7 +151,7 @@ const MachineTab = () => {
 
   const handleSelectedMachine = (event, machineId) => {
     event.preventDefault()
-    dispatch(getMachine(machineId, customer?._id))
+    navigate(PATH_MACHINE.machines.view(machineId))
   }
 
   const handleMachineInNewTabCard = async (event, machineId) => {
@@ -264,12 +253,12 @@ const MachineTab = () => {
               <MachineConnectionListCard value={defaultValues} isLoading={isLoading} handleConnectionDialog={handleConnectedMachineDialog} />
             </Grid>
           )}
-          <CommonFieldsCard isChildren i18nKey={'howick_resources.label'} defaultValues={defaultValues} isLoading={isLoading}>
+          {/* <CommonFieldsCard isChildren i18nKey={'howick_resources.label'} defaultValues={defaultValues} isLoading={isLoading}>
             <HowickResources value={defaultValues} isLoading={isLoading} gridSize={4} />
-          </CommonFieldsCard>
+          </CommonFieldsCard> */}
         </Grid>
       </Grid>
-      <AuditBox value={defaultValues} />
+      {/* <AuditBox value={defaultValues} /> */}
     </Fragment>
   )
 }

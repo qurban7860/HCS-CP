@@ -5,7 +5,7 @@ import { dispatch } from 'store'
 import { useSearchParams, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { getLogs, ChangeLogPage, resetLogs } from 'store/slice'
+import { getLogs, ChangeLogPage, resetLogs } from 'store/slice/log/machineLog'
 import { addLogSchema } from 'schema'
 import { LogsTableController, useLogDefaultValues } from 'section/log/logs'
 import { MachineLogsTable } from 'section/product'
@@ -16,7 +16,7 @@ import { NAV, SPACING } from 'config/layout'
 
 const MachineLogsTab = () => {
   const [selectedSearchFilter] = useState('')
-  const { logPage, logRowsPerPage } = useSelector(state => state.log)
+  const { logPage, logRowsPerPage } = useSelector(state => state.machineLog)
   const { machine, machines } = useSelector(state => state.machine)
 
   const [searchParams] = useSearchParams()

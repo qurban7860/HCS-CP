@@ -109,10 +109,10 @@ export const fieldsMachineInformationConfig = [
         heading: 'billing_site.label',
         value: defaultValues => defaultValues?.billingSiteName
     },
-    {
-        key: 'description',
-        heading: 'description.label',
-        value: defaultValues => defaultValues?.description,
-        gridSize: 12
-    }
+    // {
+    //     key: 'description',
+    //     heading: 'description.label',
+    //     value: defaultValues => defaultValues?.description,
+    //     gridSize: 12
+    // }
 ]

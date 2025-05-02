@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { KEY } from 'constant'
 
 export function emptyRows(page, rowsPerPage, arrayLength) {
@@ -14,6 +15,12 @@ function descendingComparator(a, b, orderBy) {
   return 0
 }
 
+export function handleComparator(order, orderBy) {
+  return order === KEY.DESC
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy)
+}
+
 export function getComparator(order, orderBy) {
-  return order === KEY.DESC ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy)
+  return useMemo(() => handleComparator(order, orderBy), [order, orderBy])
 }
