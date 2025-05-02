@@ -121,7 +121,6 @@ const MachineListSection = ({ isArchived }) => {
 
   const isNotFound = !isLoading && !filteredData.length
 
-  console.log("rendered ! ")
 
   return (
     <Fragment>
