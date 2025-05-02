@@ -17,9 +17,10 @@ FilledTextField.propTypes = {
   value: PropTypes.any,
   onSubmit: PropTypes.func,
   minRows: PropTypes.number,
+  placeholder: PropTypes.string,
 };
 
-function FilledTextField({ name, label, value, onSubmit, minRows }) {
+function FilledTextField({ name, label, value, onSubmit, minRows, placeholder="" }) {
 
   const defaultValues = useMemo(
     () => ({
@@ -67,6 +68,7 @@ function FilledTextField({ name, label, value, onSubmit, minRows }) {
           minRows={minRows || 1}
           variant="filled"
           fullWidth
+          placeholder={placeholder}
           sx={{
             "& .MuiInputBase-root": {
               backgroundColor: themeMode === KEY.LIGHT ? 'grey.400' : 'grey.700',
