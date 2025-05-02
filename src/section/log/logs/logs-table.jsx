@@ -7,49 +7,52 @@ import { fDateTime } from 'util'
 import { StyledTableRow } from './style'
 
 const LogsTable = ({ index, onViewRow, columns, row, selected, order, onSort }) => {
- const { themeMode } = useSettingContext()
+    const { themeMode } = useSettingContext()
 
- row = { ...row, machineSerialNo: row?.machine?.serialNo }
- const { date } = row
- const lowercaseRow = {}
- Object.entries(row).forEach(([key, value]) => {
-  if (typeof key === 'string') lowercaseRow[key.toLocaleLowerCase()] = value
- })
+    row = { ...row, machineSerialNo: row?.machine?.serialNo }
+    const { date } = row
+    const lowercaseRow = {}
+    Object.entries(row).forEach(([key, value]) => {
+        if (typeof key === 'string') lowercaseRow[key.toLocaleLowerCase()] = value
+    })
 
- return (
-  <Fragment>
-   <TableBody>
-    <StyledTableRow index={index} mode={themeMode} selected={selected}>
-     <LinkTableCell align='left' onClick={onViewRow} param={fDateTime(date)} />
-     {columns?.map((column, index) => {
-      if (['date', 'createdBy.name', 'createdAt'].includes(column.id) || !column?.checked) return null
-      const columnValue = lowercaseRow?.[column.id.toLocaleLowerCase()]
-      const isNumerical = column?.numerical
-      const cellValue = isNumerical && columnValue !== null && columnValue !== '' && !isNaN(columnValue)
-       ? (Number(columnValue) / 1000).toFixed(3) : columnValue || ''
-      return (
-       <TableCell key={index} onClick={onViewRow} sx={{ cursor: 'pointer' }} align={column?.numerical ? 'right' : 'left'}>
-        {cellValue}
-       </TableCell>
-      )
-     })}
-    </StyledTableRow>
-   </TableBody>
-  </Fragment>
- )
+    return (
+        <Fragment>
+            <TableBody>
+                <StyledTableRow index={index} mode={themeMode} selected={selected}>
+                    {/* <LinkTableCell align='left' onClick={onViewRow} param={fDateTime(date)} /> */}
+                    <TableCell align='left' >{fDateTime(date)}</TableCell>
+                    {columns?.map((column, index) => {
+                        if (['date', 'createdBy.name', 'createdAt'].includes(column.id) || !column?.checked) return null
+                        const columnValue = lowercaseRow?.[column.id.toLocaleLowerCase()]
+                        const isNumerical = column?.numerical
+                        const cellValue = isNumerical && columnValue !== null && columnValue !== '' && !isNaN(columnValue)
+                            ? (Number(columnValue) / 1000).toFixed(3) : columnValue || ''
+                        return (
+                            <TableCell key={index}
+                                //    onClick={onViewRow} sx={{ cursor: 'pointer' }} 
+                                align={column?.numerical ? 'right' : 'left'}>
+                                {cellValue}
+                            </TableCell>
+                        )
+                    })}
+                </StyledTableRow>
+            </TableBody>
+        </Fragment>
+    )
 }
 
 LogsTable.propTypes = {
- mode: PropTypes.string,
- index: PropTypes.number,
- orderBy: PropTypes.string,
- onViewRow: PropTypes.func,
- dataFiltered: PropTypes.array,
- columns: PropTypes.array,
- order: PropTypes.string,
- onSort: PropTypes.func,
- row: PropTypes.object,
- selected: PropTypes.bool
+    mode: PropTypes.string,
+    index: PropTypes.number,
+    orderBy: PropTypes.string,
+    onViewRow: PropTypes.func,
+    dataFiltered: PropTypes.array,
+    columns: PropTypes.array,
+    order: PropTypes.string,
+    onSort: PropTypes.func,
+    row: PropTypes.object,
+    selected: PropTypes.bool
 }
 
 export default LogsTable

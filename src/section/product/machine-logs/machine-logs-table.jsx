@@ -153,7 +153,7 @@ const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
                                                 key={row._id}
                                                 row={row}
                                                 columns={tableColumns}
-                                                onViewRow={() => handleViewRow(row._id, row)}
+                                                // onViewRow={() => handleViewRow(row._id, row)}
                                                 mode={themeMode}
                                                 index={index}
                                                 dataFiltered={dataFiltered}
