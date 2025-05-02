@@ -417,11 +417,11 @@ function TicketCreateForm() {
                   <Grid container spacing={2} p={1.5}>
                     <Grid item xs={12} sm={12} md={12}>
                       <RHFRequiredTextFieldWrapper condition={!summary}>
-                        <RHFTextField name={'summary'} label={t('summary.label')} aria-label={t('summary.label')} error={!!errors.summary} helperText={errors.summary ? errors.summary.message : ''} required />
+                        <RHFTextField name={'summary'} label={t('summary.label')} placeholder="Brief description of the issue" aria-label={t('summary.label')} error={!!errors.summary} helperText={errors.summary ? errors.summary.message : ''} required />
                       </RHFRequiredTextFieldWrapper>
                     </Grid>
                     <Grid item xs={12} sm={12} md={12}>
-                      <RHFEditor name={'description'} label={t('description.label')} minRows={3} multiline />
+                      <RHFEditor name={'description'} label={t('description.label')} placeholder="Please provide detailed information about the problem you're experiencing with the machine." minRows={3} multiline />
                     </Grid>
                   </Grid>
 
