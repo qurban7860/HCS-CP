@@ -3,48 +3,24 @@ import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
 import { useTable, getComparator, useSettingContext } from 'hook'
-import { ChangeLogPage, ChangeLogRowsPerPage, getLogs, resetLogs } from 'store/slice/log/machineLog'
-import {
-    ChangeLogPage as ChangeMachineLogPage,
-    ChangeLogRowsPerPage as ChangeMachineLogRowsPerPage,
-    getLogs as getMachineLogs,
-    resetLogs as resetMachineLogs
-} from 'store/slice/log/log'
+import { ChangeLogPage, ChangeLogRowsPerPage } from 'store/slice/log/log'
 import { Grid, Table, TableContainer } from '@mui/material'
-import { TableNoData, SkeletonTable, LogDetailsDialog } from 'component'
+import { TableNoData, SkeletonTable } from 'component'
 import { LogsHeader, LogsTable, LogsPagination, tableColumnsReducer } from 'section/log/logs'
 import { GStyledTableHeaderBox, GStyledStickyDiv } from 'theme/style'
 import { getLogTypeConfigForGenerationAndType } from 'config/log-types'
 import { MARGIN, NAV } from 'config/layout'
 import { FLEX_DIR, KEY } from 'constant'
-import { applySort, fDateTime } from 'util'
+import { applySort } from 'util'
 
-const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
-    const [openLogDetailsDialog, setOpenLogDetailsDialog] = useState(false)
-    const [selectedLog, setSelectedLog] = useState(null)
-    const [logComponentTitle, setLogComponentTitle] = useState({ date: '', componentLabel: '' })
+const MachineLogsTable = ({ logType, isLogsPage }) => {
     const [tableData, setTableData] = useState([])
     const { logs, logPage, logsTotalCount, isLoading, logRowsPerPage } = useSelector(state => state.log)
-    const {
-        logs: machineLogs,
-        logPage: machineLogPage,
-        logsTotalCount: machineLogsTotalCount,
-        isLoading: isLoadingMachineLogs,
-        logRowsPerPage: machineLogRowsPerPage
-    } = useSelector(state => state.machineLog)
     const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, getLogTypeConfigForGenerationAndType(5, 'ERP').tableColumns)
     const { themeMode } = useSettingContext()
 
     useEffect(() => {
-        if (isLogsPage) {
-            setTableData(machineLogs?.data || [])
-        } else {
-            setTableData(logs?.data || [])
-        }
-        return () => {
-            dispatch(resetLogs());
-            dispatch(resetMachineLogs());
-        }
+        setTableData(logs?.data || [])
     }, [logs])
 
     useEffect(() => {
@@ -69,61 +45,19 @@ const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
     })
 
     const handleChangePage = (event, newPage) => {
-        if (isLogsPage) {
-            dispatch(ChangeMachineLogPage(newPage))
-        } else {
-            dispatch(ChangeLogPage(newPage))
-        }
+        dispatch(ChangeLogPage(newPage))
     }
 
     const handleChangeRowsPerPage = event => {
-        if (isLogsPage) {
-            dispatch(ChangeMachineLogPage(0))
-            dispatch(ChangeMachineLogRowsPerPage(parseInt(event.target.value, 10)))
-        } else {
-            dispatch(ChangeLogPage(0))
-            dispatch(ChangeLogRowsPerPage(parseInt(event.target.value, 10)))
-        }
+        dispatch(ChangeLogPage(0))
+        dispatch(ChangeLogRowsPerPage(parseInt(event.target.value, 10)))
     }
 
     const handleColumnButtonClick = (columnId, newCheckState) => {
         dispatchTableColumns({ type: 'updateColumnCheck', columnId, newCheckState })
     }
 
-    const handleViewRow = (id, row) => {
-        const log = dataFiltered.find(item => item._id === id)
-        setLogComponentTitle({ date: `${fDateTime(row?.date)}`, componentLabel: row?.componentLabel })
-        setSelectedLog({
-            ...log,
-            customer: log.customer?.name || '',
-            machine: log.machine?.serialNo || '',
-            createdBy: log.createdBy?.name || '',
-            updatedBy: log.updatedBy?.name || ''
-        })
-        setOpenLogDetailsDialog(true)
-    }
-
-    const refreshLogsList = () => {
-        if (isLogsPage) {
-            dispatch(
-                getMachineLogs({
-                    ...payload,
-                    page: isLogsPage ? machineLogPage : logPage,
-                    pageSize: isLogsPage ? machineLogRowsPerPage : logRowsPerPage
-                })
-            )
-        } else {
-            dispatch(
-                getLogs({
-                    ...payload,
-                    page: isLogsPage ? machineLogPage : logPage,
-                    pageSize: isLogsPage ? machineLogRowsPerPage : logRowsPerPage
-                })
-            )
-        }
-    }
-
-    const isNotFound = (!isLoading || !isLoadingMachineLogs) && !dataFiltered.length
+    const isNotFound = !isLoading && !dataFiltered.length
 
     return (
         <Fragment>
@@ -134,10 +68,10 @@ const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
                             <GStyledStickyDiv top={isLogsPage ? NAV.T_STICKY_LOG_TABLE_HEADER : NAV.T_STICKY_LOG_MACH_TABLE_HEADER} zIndex={9}>
                                 <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
                                 <LogsPagination
-                                    count={(isLogsPage ? machineLogsTotalCount : logsTotalCount) || 0}
-                                    data={isLogsPage ? machineLogsTotalCount : logsTotalCount}
-                                    page={isLogsPage ? machineLogPage : logPage}
-                                    rowsPerPage={isLogsPage ? machineLogRowsPerPage : logRowsPerPage}
+                                    count={logsTotalCount || 0}
+                                    data={logsTotalCount}
+                                    page={logPage}
+                                    rowsPerPage={logRowsPerPage}
                                     handleChangePage={handleChangePage}
                                     handleChangeRowsPerPage={handleChangeRowsPerPage}
                                     columnFilterButtonData={tableColumns}
@@ -147,13 +81,13 @@ const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
                             <TableContainer sx={{ height: NAV.H_LOG_TABLE, overflow: 'auto' }}>
                                 <Table>
                                     <LogsHeader columns={tableColumns} dataFiltered={dataFiltered} orderBy={orderBy} order={order} onSort={onSort} />
-                                    {((isLoading || isLoadingMachineLogs) ? [...Array(logRowsPerPage)] : dataFiltered).map((row, index) =>
+                                    {(isLoading ? [...Array(logRowsPerPage)] : dataFiltered).map((row, index) =>
                                         row ? (
                                             <LogsTable
                                                 key={row._id}
                                                 row={row}
                                                 columns={tableColumns}
-                                                onViewRow={() => handleViewRow(row._id, row)}
+                                                // onViewRow={() => handleViewRow(row._id, row)}
                                                 mode={themeMode}
                                                 index={index}
                                                 dataFiltered={dataFiltered}
@@ -173,18 +107,6 @@ const MachineLogsTable = ({ logType, isLogsPage, payload }) => {
                     </Grid>
                 </Grid>
             </Grid>
-            {openLogDetailsDialog && (
-                <LogDetailsDialog
-                    open={openLogDetailsDialog}
-                    componentTitle={logComponentTitle}
-                    logDetails={selectedLog}
-                    isLogsPage={isLogsPage}
-                    openLogDetailsDialog={openLogDetailsDialog}
-                    setOpenLogDetailsDialog={setOpenLogDetailsDialog}
-                    logType={logType?.type}
-                    refreshLogsList={refreshLogsList}
-                />
-            )}
         </Fragment>
     )
 }

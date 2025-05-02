@@ -20,8 +20,9 @@ const MachineTable = ({ columns, onViewRow, machine, index, selected }) => {
   const theme = useTheme()
   const navigate = useNavigate()
   const lowercaseRow = {}
-  const [manufactureProfilesAnchorEl, setManufactureProfilesAnchorEl] = useState(null);
-  const [manufactureProfiles, setManufactureProfiles] = useState([]);
+  const [manufactureProfilesAnchorEl, setManufactureProfilesAnchorEl] = useState(null)
+  const [manufactureProfiles, setManufactureProfiles] = useState([])
+
   const activeColor = themeMode === KEY.DARK ? theme.palette.howick.burnIn : theme.palette.burnIn.altDark
   const inactiveColor = theme.palette.howick.error
 
@@ -31,24 +32,24 @@ const MachineTable = ({ columns, onViewRow, machine, index, selected }) => {
   }
 
   Object.entries(machine).forEach(([key, value]) => {
-    if (typeof key === 'string') lowercaseRow[key.toLocaleLowerCase()] = value
+    if (typeof key === 'string') lowercaseRow[key.toLowerCase()] = value
   })
 
   const handleManufacturePopoverOpen = (event) => {
-    setManufactureProfilesAnchorEl(event.currentTarget);
+    setManufactureProfilesAnchorEl(event.currentTarget)
     setManufactureProfiles(machine?.profiles || [])
-  };
+  }
 
   const handleManufacturePopoverClose = () => {
-    setManufactureProfilesAnchorEl(null);
+    setManufactureProfilesAnchorEl(null)
     setManufactureProfiles([])
-  };
+  }
 
   const openInNewPage = (id) => {
-    const url = PATH_MACHINE.machines.view(id);
-    dispatch(getMachine(id, machine?.customer?._id));
-    dispatch(getMachines(null, null, false, null, machine?.customer?._id));
-    const newTab = window.open("", "_blank")
+    const url = PATH_MACHINE.machines.view(id)
+    dispatch(getMachine(id, machine?.customer?._id))
+    dispatch(getMachines(null, null, false, null, machine?.customer?._id))
+    const newTab = window.open('', '_blank')
     if (newTab) {
       newTab.opener = null
       newTab.location.href = url
@@ -59,43 +60,78 @@ const MachineTable = ({ columns, onViewRow, machine, index, selected }) => {
     <Fragment>
       <TableBody>
         <StyledTableRow index={index} mode={themeMode} machine={machine} selected={selected}>
-          {columns?.map((column, index) => {
-            const cellValue = lowercaseRow?.[column.id.toLocaleLowerCase()] || ''
-            return (
-              <TableCell key={index} onClick={onViewRow} sx={{ cursor: 'pointer', '&:hover': { transform: 'scale(0.97)', transition: 'ease-in-out 0.2s' } }} align={column?.numerical ? 'right' : 'left'}>
-                {column.checked && (column.id === 'serialNo' && (
+          {columns?.map((column, colIndex) => {
+            const cellValue = lowercaseRow?.[column.id.toLowerCase()] || ''
+            let content = null
+
+            if (column.checked) {
+              if (column.id === 'serialNo') {
+                content = (
                   <GStyledSpanBox>
                     <LinkWrap param={machine?.serialNo} onClick={e => handleOnClick(e, machine?._id)} />
                   </GStyledSpanBox>
-                ))
-                }
-                {column.checked && (column.id === 'isActive' && (
+                )
+              } else if (column.id === 'isActive') {
+                content = (
                   <StyledIconListItemText inActive={machine?.isActive}>
-                    <m.div>{machine?.isActive ? <Icon icon={ICON_NAME.ACTIVE} color={activeColor} /> : <Icon icon={ICON_NAME.INACTIVE} color={inactiveColor} />}</m.div>
+                    <m.div>
+                      {machine?.isActive ? (
+                        <Icon icon={ICON_NAME.ACTIVE} color={activeColor} />
+                      ) : (
+                        <Icon icon={ICON_NAME.INACTIVE} color={inactiveColor} />
+                      )}
+                    </m.div>
                   </StyledIconListItemText>
-                ))
-                }
-                {column.checked &&
-                  (column.id === 'profiles' && (
-                    Array.isArray(machine?.profiles) && machine?.profiles?.length > 0 && machine?.profiles?.length === 1 ? machine?.profiles[0]?.defaultName :
-                      (machine?.profiles?.length > 1 && <Grid sx={{ display: "flex", alignItems: "center", alignContent: "center" }} >
-                        {`${machine?.profiles[0]?.defaultName || ""}, `}
-                        <GStyledTooltip title="Profiles" placement="top" disableFocusListener tooltipcolor={theme.palette.primary.main} color={theme.palette.primary.main} >
-                          <Iconify icon="mingcute:profile-line" onClick={handleManufacturePopoverOpen} sx={{ mr: 0.5 }} />
+                )
+              } else if (column.id === 'profiles') {
+                if (Array.isArray(machine?.profiles) && machine.profiles.length > 0) {
+                  if (machine.profiles.length === 1) {
+                    content = machine.profiles[0]?.defaultName
+                  } else {
+                    content = (
+                      <Grid sx={{ display: 'flex', alignItems: 'center' }}>
+                        {`${machine?.profiles[0]?.defaultName || ''}, `}
+                        <GStyledTooltip
+                          title="Profiles"
+                          placement="top"
+                          disableFocusListener
+                          tooltipcolor={theme.palette.primary.main}
+                          color={theme.palette.primary.main}
+                        >
+                          <Iconify
+                            icon="mingcute:profile-line"
+                            onClick={handleManufacturePopoverOpen}
+                            sx={{ mr: 0.5 }}
+                          />
                         </GStyledTooltip>
-                      </Grid>) || ''
-                  ))
+                      </Grid>
+                    )
+                  }
                 }
-                {column.checked &&
-                  (column?.value && typeof column?.value(machine) == 'string' && column?.value(machine)) ||
-                  (typeof cellValue == 'string' && cellValue)
+              } else if (typeof column?.value === 'function') {
+                const result = column.value(machine)
+                if (typeof result === 'string') {
+                  content = result
                 }
+              } else if (typeof cellValue === 'string') {
+                content = cellValue
+              }
+            }
+
+            return (
+              <TableCell
+                key={colIndex}
+                onClick={onViewRow}
+                sx={{ cursor: 'pointer', '&:hover': { transform: 'scale(0.97)', transition: 'ease-in-out 0.2s' } }}
+                align={column?.numerical ? 'right' : 'left'}
+              >
+                {content}
               </TableCell>
             )
           })}
         </StyledTableRow>
         <ProfileDialog
-          open={manufactureProfilesAnchorEl}
+          open={Boolean(manufactureProfilesAnchorEl)}
           onClose={handleManufacturePopoverClose}
           ListArr={manufactureProfiles || []}
           ListTitle="Manufacture Profiles"
