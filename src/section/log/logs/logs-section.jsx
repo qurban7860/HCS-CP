@@ -1,15 +1,15 @@
-import { Fragment, useEffect, useState, memo, useCallback } from 'react'
+import { Fragment, useEffect, useMemo, memo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import { t } from 'i18next'
 import { useNavigate } from 'react-router-dom'
 import { Icon, ICON_NAME, useResponsive, useSettingContext } from 'hook'
+import { useAuthContext } from 'auth/use-auth-context'
 import { useSelector, dispatch } from 'store'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { addLogSchema } from 'schema'
-import { getMachines, getLogs, ChangeLogPage, setSelectedSearchFilter, resetLogs } from 'store/slice'
-import { useLogDefaultValues } from 'section/log'
+import { getMachines, getLogs, setSelectedSearchFilter, resetMachines } from 'store/slice'
 import { MachineLogsTable } from 'section/product'
 import { useMediaQuery, useTheme, Grid, Button, Typography, Stack, Box } from '@mui/material'
 import { HowickLoader, TableTitleBox } from 'component'
@@ -19,9 +19,10 @@ import { NAV } from 'config/layout'
 import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 import { LOG_TYPE_CONFIG } from 'config'
 import { PATH_LOGS } from 'route/path'
+import { getLogTypeConfigForGenerationAndType, logGraphTypes } from 'config/log-types'
 
 const LogsSection = ({ isArchived }) => {
-  const { customer } = useSelector(state => state.customer)
+  const { user } = useAuthContext()
   const { machines } = useSelector(state => state.machine)
   const { logPage, isLoading, logRowsPerPage, selectedSearchFilter } = useSelector(state => state.log)
   const navigate = useNavigate();
@@ -30,94 +31,61 @@ const LogsSection = ({ isArchived }) => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
   const isMobile = useResponsive('down', 'sm')
 
-  const defaultValues = useLogDefaultValues()
+  const defaultValues = useMemo(
+    () => ({
+      customer: user?.customer || null,
+      machine: null,
+      logType: getLogTypeConfigForGenerationAndType(5, 'ERP') || null,
+      dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+      dateTo: new Date(),
+      logPeriod: 'Monthly',
+      logGraphType: logGraphTypes[0]
+    }
+    ), []
+  );
+
   const methods = useForm({
     resolver: yupResolver(addLogSchema),
-    defaultValues
+    defaultValues,
+    mode: 'onChange',
+    reValidateMode: 'onChange'
   })
 
-  const { watch, setValue, handleSubmit, trigger } = methods
+  const { watch, setValue, handleSubmit, errors } = methods
   const { machine, dateFrom, dateTo, logType, filteredSearchKey } = watch()
 
-  useEffect(() => {
-    dispatch(ChangeLogPage(0))
-    dispatch(resetLogs())
-    dispatch(getMachines(null, null, false, null, customer?._id))
-  }, [dispatch])
+  const fetchLogs = data => {
+    console.log({ data, errors })
 
-  useEffect(() => {
-    if (customer) {
-      setValue('customer', customer)
-    }
-  }, [customer, setValue])
-
-  useEffect(() => {
-    dispatch(
-      getLogs({
-        customerId: customer._id || null,
-        machineId: machine?._id || undefined,
-        page: logPage,
-        pageSize: logRowsPerPage,
-        fromDate: dateFrom,
-        toDate: dateTo,
-        isArchived: false,
-        isMachineArchived: machine?.isArchived,
-        selectedLogType: logType.type,
-        searchKey: filteredSearchKey,
-        searchColumn: selectedSearchFilter
-      })
-    )
-  }, [logPage, logRowsPerPage])
-
-  const onGetLogs = data => {
-    const customerId = customer._id
-    const machineId = machine?._id || undefined
-    dispatch(ChangeLogPage(0))
-    dispatch(
-      getLogs({
-        customerId,
-        machineId,
-        page: 0,
-        pageSize: logRowsPerPage,
-        fromDate: dateFrom,
-        toDate: dateTo,
-        isArchived: false,
-        isMachineArchived: machine?.isArchived,
-        selectedLogType: logType.type,
-        searchKey: filteredSearchKey,
-        searchColumn: selectedSearchFilter
-      })
-    )
+    dispatch(ChangeLogPage(0));
+    dispatch(getLogs({
+      customerId: user?.customer,
+      machineId: machine?._id || undefined,
+      page: logPage,
+      pageSize: logRowsPerPage,
+      fromDate: dateFrom,
+      toDate: dateTo,
+      isArchived: false,
+      isMachineArchived: machine?.isArchived,
+      selectedLogType: logType.type,
+      searchKey: filteredSearchKey,
+      searchColumn: selectedSearchFilter
+    }))
   }
 
-  const handleMachineChange = useCallback(
-    newMachine => {
-      setValue('machine', newMachine)
-      trigger('machine')
-    },
-    [dispatch, setValue, trigger]
-  )
+  useEffect(() => {
+    dispatch(getMachines(null, null, false, null, user?.customer))
+    return () => {
+      dispatch(resetMachines())
+    }
+  }, [])
 
-  const handleLogTypeChange = useCallback(
-    newLogType => {
-      setValue('logType', newLogType)
-      trigger('logType')
-    },
-    [setValue, trigger]
-  )
+  const handleMachineChange = newMachine => {
+    setValue('machine', newMachine)
+  }
 
-  const payload = {
-    customerId: customer?._id,
-    machineId: machine?._id || undefined,
-    page: logPage,
-    pageSize: logRowsPerPage,
-    fromDate: dateFrom,
-    toDate: dateTo,
-    isArchived: false,
-    isMachineArchived: false,
-    selectedLogType: logType?.type,
-    searchKey: filteredSearchKey,
-    searchColumn: selectedSearchFilter
+  const handleLogTypeChange = newLogType => {
+    setValue('logType', newLogType)
   }
 
   return (
@@ -139,7 +107,7 @@ const LogsSection = ({ isArchived }) => {
         </Grid>
       </GStyledStickyDiv>
       <GStyledStickyDiv top={NAV.T_STICKY_NAV_LOGS_CONTROLLER} zIndex={11}>
-        <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
+        <FormProvider methods={methods} onSubmit={handleSubmit(fetchLogs)}>
           <Grid container spacing={2} mt={3}>
             <Grid item xs={12} sm={12}>
               <GStyledControllerCardContainer height={'auto'}>
@@ -187,7 +155,6 @@ const LogsSection = ({ isArchived }) => {
                         value={dateFrom}
                         onChange={newValue => {
                           setValue('dateFrom', newValue)
-                          trigger(['dateFrom', 'dateTo'])
                         }}
                       />
                       <RHFDatePickr
@@ -196,7 +163,6 @@ const LogsSection = ({ isArchived }) => {
                         value={dateTo}
                         onChange={newValue => {
                           setValue('dateTo', newValue)
-                          trigger(['dateFrom', 'dateTo'])
                         }}
                       />
                     </Box>
@@ -219,7 +185,7 @@ const LogsSection = ({ isArchived }) => {
                         />
                       </Box>
                       <Box sx={{ justifyContent: 'flex-end', display: 'flex' }}>
-                        <GStyledLoadingButton mode={themeMode} type={'button'} onClick={handleSubmit(onGetLogs)} variant='contained' size='large' sx={{ mt: 0.7 }}>
+                        <GStyledLoadingButton mode={themeMode} type={'button'} onClick={() => handleSubmit(fetchLogs)} variant='contained' size='large' sx={{ mt: 0.7 }}>
                           {t('log.button.get_logs').toUpperCase()}
                         </GStyledLoadingButton>
                       </Box>
@@ -231,7 +197,7 @@ const LogsSection = ({ isArchived }) => {
           </Grid>
         </FormProvider>
       </GStyledStickyDiv>
-      {isLoading ? <HowickLoader height={300} width={303} mode={themeMode} /> : <MachineLogsTable isLogsPage logType={logType} payload={payload} />}
+      {isLoading ? <HowickLoader height={300} width={303} mode={themeMode} /> : <MachineLogsTable isLogsPage={false} logType={logType} />}
     </Grid>
   )
 }
