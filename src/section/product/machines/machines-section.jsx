@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState, memo, useLayoutEffect } from 'react'
+import { Fragment, useEffect, useState, memo } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import axios from 'axios'
@@ -12,7 +12,6 @@ import { PATH_MACHINE } from 'route/path'
 import {
   getMachine,
   getMachines,
-  getCustomer,
   getMachineCategories,
   setMachineFilterBy,
   setSelectedMachineCard,
@@ -31,17 +30,16 @@ import { StyledScrollTableContainer } from './style'
 
 const MachineListSection = ({ isArchived }) => {
   const [tableData, setTableData] = useState([])
-  const { customer } = useSelector((state) => state.customer)
   const { machines, machineCategories, selectedMachineCard, initial, isLoading, machinePage, machineRowsPerPage } = useSelector(state => state.machine)
-  const { userId, user } = useAuthContext()
+  const { user } = useAuthContext()
   const { themeMode } = useSettingContext()
 
   const isMobile = useResponsive('down', 'sm')
   const navigate = useNavigate()
   const denseHeight = TABLE.DENSE_HEIGHT
 
-  const axiosToken = () => axios.CancelToken.source()
-  const cancelTokenSource = axiosToken()
+  // const axiosToken = () => axios.CancelToken.source()
+  // const cancelTokenSource = axiosToken()
 
   const {
     order,
@@ -54,46 +52,23 @@ const MachineListSection = ({ isArchived }) => {
     defaultOrder: KEY.DESC
   })
 
-  useLayoutEffect(() => {
-    dispatch(resetMachine())
-    dispatch(resetMachines())
-  }, [])
-
   useEffect(() => {
-    const debouncedDispatch = _.debounce(() => {
-      if (!customer) {
-        dispatch(getCustomer(user?.customer))
-      }
-    }, 300)
-    debouncedDispatch()
-    return () => debouncedDispatch.cancel()
-  }, [dispatch, user?.customer])
-
-  // console.log('customer?._id', customer?._id)
-
-  useEffect(() => {
-    const debouncedDispatch = _.debounce(() => {
-      if (!machines?.length) {
-        dispatch(getMachines(null, null, false, cancelTokenSource, user?.customer))
-      }
-    }, 300)
-    debouncedDispatch()
-    return () => debouncedDispatch.cancel()
-  }, [dispatch, machines, machinePage, machineRowsPerPage])
-
-  useEffect(() => {
-    const debouncedDispatch = _.debounce(() => {
-      dispatch(getMachineCategories())
-    }, 300)
-    debouncedDispatch()
-    return () => debouncedDispatch.cancel()
+    dispatch(getMachines(null, null, false, null, user?.customer))
+    return () => {
+      dispatch(resetMachine())
+      dispatch(resetMachines())
+    }
   }, [dispatch])
 
   useEffect(() => {
-    if (initial) {
+    dispatch(getMachineCategories())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (initial && !_.isEqual(machines, tableData)) {
       setTableData(machines || [])
     }
-  }, [machines, initial])
+  }, [machines, tableData])
 
   const { filterName, handleFilterName, filteredData, filterStatus, handleFilterStatus, filterCategory, handleFilterCategory } = useFilter(
     getComparator(order, orderBy),
@@ -145,6 +120,8 @@ const MachineListSection = ({ isArchived }) => {
   }
 
   const isNotFound = !isLoading && !filteredData.length
+
+  console.log("rendered ! ")
 
   return (
     <Fragment>
