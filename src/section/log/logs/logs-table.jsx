@@ -3,19 +3,19 @@ import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
 import { useTable, getComparator, useSettingContext } from 'hook'
-import { ChangeLogPage, ChangeLogRowsPerPage } from 'store/slice/log/machineLog'
+import { ChangeLogPage, ChangeLogRowsPerPage } from 'store/slice/log/log'
 import { Grid, Table, TableContainer } from '@mui/material'
 import { TableNoData, SkeletonTable } from 'component'
-import { LogsHeader, LogsRow, LogsPagination, tableColumnsReducer } from 'section/log/logs'
+import { LogsHeader, LogsRow, LogsPagination, tableColumnsReducer } from '.'
 import { GStyledTableHeaderBox, GStyledStickyDiv } from 'theme/style'
 import { getLogTypeConfigForGenerationAndType } from 'config/log-types'
 import { MARGIN, NAV } from 'config/layout'
 import { FLEX_DIR, KEY } from 'constant'
 import { applySort } from 'util'
 
-const MachineLogsTable = ({ logType, isLogsPage }) => {
+const LogsTable = ({ logType, isLogsPage }) => {
     const [tableData, setTableData] = useState([])
-    const { logs, logPage, logsTotalCount, isLoading, logRowsPerPage } = useSelector(state => state.machineLog)
+    const { logs, logPage, logsTotalCount, isLoading, logRowsPerPage } = useSelector(state => state.log)
     const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, getLogTypeConfigForGenerationAndType(5, 'ERP').tableColumns)
     const { themeMode } = useSettingContext()
 
@@ -111,9 +111,10 @@ const MachineLogsTable = ({ logType, isLogsPage }) => {
     )
 }
 
-MachineLogsTable.propTypes = {
+LogsTable.propTypes = {
     logType: PropTypes.object,
-    isLogsPage: PropTypes.bool
+    isLogsPage: PropTypes.bool,
+    payload: PropTypes.object
 }
 
-export default MachineLogsTable
+export default LogsTable

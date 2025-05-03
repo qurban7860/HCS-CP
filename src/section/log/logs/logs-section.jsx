@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { addLogSchema } from 'schema'
 import { getMachines, getLogs, ChangeLogPage, setSelectedSearchFilter, resetMachines } from 'store/slice'
-import { MachineLogsTable } from 'section/product'
+import { LogsTable } from './'
 import { useMediaQuery, useTheme, Grid, Button, Typography, Stack, Box } from '@mui/material'
 import { HowickLoader, TableTitleBox } from 'component'
 import FormProvider, { RHFAutocomplete, RHFDatePickr, RHFFilteredSearchBar } from 'component/hook-form'
@@ -196,7 +196,7 @@ const LogsSection = ({ isArchived }) => {
           </Grid>
         </FormProvider>
       </GStyledStickyDiv>
-      {isLoading ? <HowickLoader height={300} width={303} mode={themeMode} /> : <MachineLogsTable isLogsPage={false} logType={logType} />}
+      {isLoading ? <HowickLoader height={300} width={303} mode={themeMode} /> : <LogsTable logType={logType} />}
     </Grid>
   )
 }
