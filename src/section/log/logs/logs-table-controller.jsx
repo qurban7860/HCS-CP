@@ -64,7 +64,7 @@ const LogsTableController = ({ customerMachines, handleMachineChange, handleLogT
           </Box>
         )}
 
-        {!isGraphPage() && (
+        {!isGraphPage && (
           <Fragment>
             <Box display='grid' gap={2} gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)' }} sx={{ flexGrow: 1 }}>
               <RHFDatePickr
@@ -103,14 +103,14 @@ const LogsTableController = ({ customerMachines, handleMachineChange, handleLogT
                 />
               </Box>
               <Box sx={{ justifyContent: 'flex-end', display: 'flex' }}>
-                <GStyledLoadingButton mode={themeMode} type={'button'} onClick={handleSubmit(onGetLogs)} variant='contained' size='large' sx={{ mt: 0.7 }}>
+                <GStyledLoadingButton mode={themeMode} type={'submit'} variant='contained' size='large' sx={{ mt: 0.7 }}>
                   {t('log.button.get_logs').toUpperCase()}
                 </GStyledLoadingButton>
               </Box>
             </Stack>
           </Fragment>
         )}
-        {isGraphPage() && (
+        {isGraphPage && (
           <Stack direction='row' spacing={2} sx={{ width: '100%' }}>
             <Box sx={{ width: '50%' }}>
               <RHFAutocomplete
@@ -153,7 +153,7 @@ LogsTableController.propTypes = {
   handleLogTypeChange: PropTypes.func,
   handlePeriodChange: PropTypes.func,
   isLogsPage: PropTypes.bool,
-  isGraphPage: PropTypes.func,
+  isGraphPage: PropTypes.bool,
   methods: PropTypes.object,
   onGetLogs: PropTypes.func
 }
