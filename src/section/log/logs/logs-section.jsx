@@ -9,7 +9,7 @@ import { useSelector, dispatch } from 'store'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { addLogSchema } from 'schema'
-import { getMachines, getLogs, setSelectedSearchFilter, resetMachines } from 'store/slice'
+import { getMachines, getLogs, ChangeLogPage, setSelectedSearchFilter, resetMachines } from 'store/slice'
 import { MachineLogsTable } from 'section/product'
 import { useMediaQuery, useTheme, Grid, Button, Typography, Stack, Box } from '@mui/material'
 import { HowickLoader, TableTitleBox } from 'component'
@@ -51,12 +51,10 @@ const LogsSection = ({ isArchived }) => {
     reValidateMode: 'onChange'
   })
 
-  const { watch, setValue, handleSubmit, errors } = methods
+  const { watch, setValue, handleSubmit } = methods
   const { machine, dateFrom, dateTo, logType, filteredSearchKey } = watch()
 
-  const fetchLogs = data => {
-    console.log({ data, errors })
-
+  const fetchLogs = useCallback(data => {
     dispatch(ChangeLogPage(0));
     dispatch(getLogs({
       customerId: user?.customer,
@@ -71,10 +69,11 @@ const LogsSection = ({ isArchived }) => {
       searchKey: filteredSearchKey,
       searchColumn: selectedSearchFilter
     }))
-  }
+  }, [machine, dateFrom, dateTo, logType, filteredSearchKey])
 
   useEffect(() => {
     dispatch(getMachines(null, null, false, null, user?.customer))
+    fetchLogs()
     return () => {
       dispatch(resetMachines())
     }
@@ -185,7 +184,7 @@ const LogsSection = ({ isArchived }) => {
                         />
                       </Box>
                       <Box sx={{ justifyContent: 'flex-end', display: 'flex' }}>
-                        <GStyledLoadingButton mode={themeMode} type={'button'} onClick={() => handleSubmit(fetchLogs)} variant='contained' size='large' sx={{ mt: 0.7 }}>
+                        <GStyledLoadingButton mode={themeMode} type={'submit'} onClick={() => handleSubmit(fetchLogs)} variant='contained' size='large' sx={{ mt: 0.7 }}>
                           {t('log.button.get_logs').toUpperCase()}
                         </GStyledLoadingButton>
                       </Box>
