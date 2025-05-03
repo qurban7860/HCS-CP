@@ -1,14 +1,15 @@
 import { Box, Button, Grid, Stack, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { t } from 'i18next'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { useAuthContext } from 'auth/use-auth-context'
 import { HowickLoader, RHFAutocomplete, TableTitleBox } from 'component'
 import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 import { Icon, ICON_NAME, useResponsive, useSettingContext } from 'hook'
 import { dispatch } from 'store'
-import { getLogGraphData, resetLogsGraphData } from 'store/slice'
+import { getLogGraphData, resetLogsGraphData, getMachines, resetMachines } from 'store/slice'
 import { GStyledControllerCardContainer, GStyledStickyDiv } from 'theme/style'
 import { NAV } from 'config'
 import { PATH_LOGS } from 'route/path'
@@ -19,18 +20,23 @@ import { useGraphDefaultValues } from 'section/log/logs'
 
 const GraphsSection = () => {
   const navigate = useNavigate()
-  const { customer } = useSelector(state => state.customer)
   const { machines } = useSelector(state => state.machine)
   const { isLoading, logsGraphData } = useSelector(state => state.log)
+  const { user } = useAuthContext()
 
-  const defaultValues = useGraphDefaultValues(customer) || {
-    machine: null,
-    logPeriod: 'Monthly',
-    logGraphType: logGraphTypes[0]
-  }
+  const defaultValues = useMemo(
+    () => ({
+      customer: user?.customer || null,
+      machine: null,
+      logPeriod: 'Monthly',
+      logGraphType: logGraphTypes[0]
+    }
+    ), []
+  );
+
   const methods = useForm({
     defaultValues,
-    mode: 'onChange'
+    mode: 'onChange',
   })
 
   const { watch, setValue, trigger, handleSubmit } = methods
@@ -43,21 +49,22 @@ const GraphsSection = () => {
   const isMobile = useResponsive('down', 'sm')
 
   useEffect(() => {
-    if (customer && logPeriod && logGraphType) {
-      dispatch(getLogGraphData(customer?._id, machine?._id, 'erp', logPeriod, logGraphType));
+    dispatch(getMachines(null, null, false, null, user?.customer))
+    return () => {
+      dispatch(resetMachines())
     }
+  }, [dispatch]);
+
+  const getLogsGraph = useCallback(() => {
+    dispatch(getLogGraphData(user?.customer, machine?._id, 'erp', logPeriod, logGraphType));
     return () => {
       dispatch(resetLogsGraphData());
     };
-  }, [dispatch, customer?._id, machine?._id, logPeriod, logGraphType]);
+  }, [dispatch, machine?._id, logPeriod, logGraphType]);
 
-  const handleMachineChange = useCallback(
-    newMachine => {
-      setValue('machine', newMachine)
-      trigger('machine')
-    },
-    [setValue, trigger]
-  )
+  useEffect(() => {
+    getLogsGraph();
+  }, [getLogsGraph]);
 
   const handlePeriodChange = newPeriod => {
     setValue('logPeriod', newPeriod)
@@ -78,13 +85,6 @@ const GraphsSection = () => {
         break
     }
   }
-
-  const handleGraphTypeChange = useCallback(
-    newGraphType => {
-      setValue('logGraphType', newGraphType)
-    },
-    [setValue]
-  )
 
   return (
     <Grid container rowGap={2} flexDirection={FLEX_DIR.COLUMN}>
@@ -120,7 +120,6 @@ const GraphsSection = () => {
                     isOptionEqualToValue={(option, value) => option._id === value._id}
                     getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
                     renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
-                    onChange={(e, newValue) => handleMachineChange(newValue)}
                     size='small'
                   />
                   <RHFAutocomplete
@@ -136,7 +135,6 @@ const GraphsSection = () => {
                     name='logGraphType'
                     label={t('graph_type.label')}
                     options={logGraphTypes}
-                    onChange={(e, newValue) => handleGraphTypeChange(newValue)}
                     getOptionLabel={option => option.name || ''}
                     isOptionEqualToValue={(option, value) => option?.key === value?.key}
                     renderOption={(props, option) => (
@@ -156,9 +154,9 @@ const GraphsSection = () => {
       {isLoading ? (
         <HowickLoader height={300} width={303} mode={themeMode} />
       ) : logGraphType.key === 'production_total' ? (
-        <ERPProductionTotal timePeriod={logPeriod} customer={customer} graphLabels={graphLabels} logsGraphData={logsGraphData} />
+        <ERPProductionTotal timePeriod={logPeriod} customer={{ _id: user.customer }} graphLabels={graphLabels} logsGraphData={logsGraphData} />
       ) : (
-        <ERPProductionRate timePeriod={logPeriod} customer={customer} graphLabels={graphLabels} logsGraphData={logsGraphData} />
+        <ERPProductionRate timePeriod={logPeriod} customer={{ _id: user.customer }} graphLabels={graphLabels} logsGraphData={logsGraphData} />
       )}
     </Grid>
   )

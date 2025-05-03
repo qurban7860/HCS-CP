@@ -6,7 +6,7 @@ import { LinkTableCell } from 'component'
 import { fDateTime } from 'util'
 import { StyledTableRow } from './style'
 
-const LogsTable = ({ index, onViewRow, columns, row, selected, order, onSort }) => {
+const LogsRow = ({ index, onViewRow, columns, row, selected, order, onSort }) => {
     const { themeMode } = useSettingContext()
 
     row = { ...row, machineSerialNo: row?.machine?.serialNo }
@@ -42,7 +42,7 @@ const LogsTable = ({ index, onViewRow, columns, row, selected, order, onSort }) 
     )
 }
 
-LogsTable.propTypes = {
+LogsRow.propTypes = {
     mode: PropTypes.string,
     index: PropTypes.number,
     orderBy: PropTypes.string,
@@ -55,4 +55,4 @@ LogsTable.propTypes = {
     selected: PropTypes.bool
 }
 
-export default LogsTable
+export default LogsRow

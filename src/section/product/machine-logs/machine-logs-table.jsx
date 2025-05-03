@@ -6,7 +6,7 @@ import { useTable, getComparator, useSettingContext } from 'hook'
 import { ChangeLogPage, ChangeLogRowsPerPage } from 'store/slice/log/log'
 import { Grid, Table, TableContainer } from '@mui/material'
 import { TableNoData, SkeletonTable } from 'component'
-import { LogsHeader, LogsTable, LogsPagination, tableColumnsReducer } from 'section/log/logs'
+import { LogsHeader, LogsRow, LogsPagination, tableColumnsReducer } from 'section/log/logs'
 import { GStyledTableHeaderBox, GStyledStickyDiv } from 'theme/style'
 import { getLogTypeConfigForGenerationAndType } from 'config/log-types'
 import { MARGIN, NAV } from 'config/layout'
@@ -83,7 +83,7 @@ const MachineLogsTable = ({ logType, isLogsPage }) => {
                                     <LogsHeader columns={tableColumns} dataFiltered={dataFiltered} orderBy={orderBy} order={order} onSort={onSort} />
                                     {(isLoading ? [...Array(logRowsPerPage)] : dataFiltered).map((row, index) =>
                                         row ? (
-                                            <LogsTable
+                                            <LogsRow
                                                 key={row._id}
                                                 row={row}
                                                 columns={tableColumns}

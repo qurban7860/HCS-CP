@@ -1,6 +1,6 @@
 export { default as LogsSection } from './logs-section'
 export { default as LogsPagination } from './logs-pagination'
-export { default as LogsTable } from './logs-table'
+export { default as LogsRow } from './logs-row'
 export { default as LogsHeader } from './logs-header'
 export { default as LogsTableController } from './logs-table-controller'
 export * from '../default-values/default-values'

@@ -1,7 +1,7 @@
 // export { default as LogLayout } from './log/log-layout'
 export { default as LogsSection } from './logs/logs-section'
 export { default as GraphsSection } from './erp/graph/graphs-section'
-export { default as LogsTable } from './logs/logs-table'
+export { default as LogsRow } from './logs/logs-row'
 export { default as LogsHeader } from './logs/logs-header'
 export { default as LogsPagination } from './logs/logs-pagination'
 export { default as LogsTableController } from './logs/logs-table-controller'
