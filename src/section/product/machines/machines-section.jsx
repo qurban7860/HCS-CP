@@ -105,7 +105,7 @@ const MachineListSection = ({ isArchived }) => {
     event.preventDefault()
     dispatch(setSelectedMachineCard(id))
     dispatch(resetMachine())
-    dispatch(getMachine(id))
+    dispatch(getMachine(id, user?.customer))
     const url = PATH_MACHINE.machines.view(id)
     navigate(url)
   }
@@ -114,7 +114,7 @@ const MachineListSection = ({ isArchived }) => {
     event.preventDefault()
     dispatch(setSelectedMachineCard(id))
     dispatch(resetMachine())
-    dispatch(getMachine(id))
+    dispatch(getMachine(id, user?.customer))
     const url = PATH_MACHINE.machines.view(id)
     window.open(url, KEY.BLANK)
   }

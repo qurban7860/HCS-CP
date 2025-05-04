@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, memo, useCallback } from 'react'
+import { Fragment, useEffect, useLayoutEffect, useMemo, memo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import { t } from 'i18next'
@@ -9,7 +9,7 @@ import { useSelector, dispatch } from 'store'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { addLogSchema } from 'schema'
-import { getMachines, getLogs, ChangeLogPage, setSelectedSearchFilter, resetMachines } from 'store/slice'
+import { getMachines, getLogs, resetLogs, ChangeLogPage, setSelectedSearchFilter, resetMachines } from 'store/slice'
 import { LogsTable } from './'
 import { useMediaQuery, useTheme, Grid, Button, Typography, Stack, Box } from '@mui/material'
 import { HowickLoader, TableTitleBox } from 'component'
@@ -54,30 +54,40 @@ const LogsSection = ({ isArchived }) => {
   const { watch, setValue, handleSubmit } = methods
   const { machine, dateFrom, dateTo, logType, filteredSearchKey } = watch()
 
-  const fetchLogs = useCallback(data => {
-    dispatch(ChangeLogPage(0));
-    dispatch(getLogs({
-      customerId: user?.customer,
-      machineId: machine?._id || undefined,
-      page: logPage,
-      pageSize: logRowsPerPage,
-      fromDate: dateFrom,
-      toDate: dateTo,
-      isArchived: false,
-      isMachineArchived: machine?.isArchived,
-      selectedLogType: logType.type,
-      searchKey: filteredSearchKey,
-      searchColumn: selectedSearchFilter
-    }))
-  }, [machine, dateFrom, dateTo, logType, filteredSearchKey])
+  const logsPayload = useMemo(() => ({
+    customerId: user?.customer,
+    machineId: machine?._id || undefined,
+    page: logPage,
+    pageSize: logRowsPerPage,
+    fromDate: dateFrom,
+    toDate: dateTo,
+    isArchived: false,
+    isMachineArchived: machine?.isArchived,
+    selectedLogType: logType?.type,
+    searchKey: filteredSearchKey,
+    searchColumn: selectedSearchFilter
+  }), [user, machine, logPage, logRowsPerPage, dateFrom, dateTo, logType, filteredSearchKey, selectedSearchFilter])
 
-  useEffect(() => {
+  const fetchLogs = useCallback(() => {
+    dispatch(getLogs(logsPayload))
+  }, [dispatch, logsPayload])
+
+  useLayoutEffect(() => {
     dispatch(getMachines(null, null, false, null, user?.customer))
-    fetchLogs()
     return () => {
       dispatch(resetMachines())
+      dispatch(resetLogs())
     }
   }, [])
+
+  useEffect(() => {
+    fetchLogs()
+  }, [logPage, logRowsPerPage])
+
+  const handleFormSubmit = useCallback((data) => {
+    dispatch(ChangeLogPage(0))
+    dispatch(getLogs(logsPayload))
+  }, [dispatch])
 
   const handleMachineChange = newMachine => {
     setValue('machine', newMachine)
@@ -106,7 +116,7 @@ const LogsSection = ({ isArchived }) => {
         </Grid>
       </GStyledStickyDiv>
       <GStyledStickyDiv top={NAV.T_STICKY_NAV_LOGS_CONTROLLER} zIndex={11}>
-        <FormProvider methods={methods} onSubmit={handleSubmit(fetchLogs)}>
+        <FormProvider methods={methods} onSubmit={handleSubmit(handleFormSubmit)}>
           <Grid container spacing={2} mt={3}>
             <Grid item xs={12} sm={12}>
               <GStyledControllerCardContainer height={'auto'}>
@@ -184,7 +194,7 @@ const LogsSection = ({ isArchived }) => {
                         />
                       </Box>
                       <Box sx={{ justifyContent: 'flex-end', display: 'flex' }}>
-                        <GStyledLoadingButton mode={themeMode} type={'submit'} onClick={() => handleSubmit(fetchLogs)} variant='contained' size='large' sx={{ mt: 0.7 }}>
+                        <GStyledLoadingButton mode={themeMode} type={'submit'} variant='contained' size='large' sx={{ mt: 0.7 }}>
                           {t('log.button.get_logs').toUpperCase()}
                         </GStyledLoadingButton>
                       </Box>

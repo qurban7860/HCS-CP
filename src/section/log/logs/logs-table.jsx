@@ -114,7 +114,6 @@ const LogsTable = ({ logType, isLogsPage }) => {
 LogsTable.propTypes = {
     logType: PropTypes.object,
     isLogsPage: PropTypes.bool,
-    payload: PropTypes.object
 }
 
 export default LogsTable
