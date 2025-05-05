@@ -116,7 +116,7 @@ const LogsTableController = ({ customerMachines, handleMachineChange, handleLogT
               <RHFAutocomplete
                 name='logPeriod'
                 label={t('log.period.label')}
-                options={['Daily', 'Monthly', 'Quarterly', 'Yearly']}
+                options={['Hourly', 'Daily', 'Monthly', 'Quarterly', 'Yearly']}
                 onChange={(e, newValue) => handlePeriodChange(newValue)}
                 size='small'
                 disableClearable

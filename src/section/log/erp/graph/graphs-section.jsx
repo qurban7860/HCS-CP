@@ -72,6 +72,9 @@ const GraphsSection = () => {
       case 'Monthly':
         setGraphLabels(prev => ({ ...prev, xaxis: 'Months' }))
         break
+      case 'Hourly':
+        setGraphLabels(prev => ({ ...prev, xaxis: 'Hours' }))
+        break
       case 'Daily':
         setGraphLabels(prev => ({ ...prev, xaxis: 'Days' }))
         break
@@ -125,7 +128,7 @@ const GraphsSection = () => {
                   <RHFAutocomplete
                     name='logPeriod'
                     label={t('log.period.label')}
-                    options={['Daily', 'Monthly', 'Quarterly', 'Yearly']}
+                    options={['Hourly', 'Daily', 'Monthly', 'Quarterly', 'Yearly']}
                     onChange={(e, newValue) => handlePeriodChange(newValue)}
                     size='small'
                     disableClearable
