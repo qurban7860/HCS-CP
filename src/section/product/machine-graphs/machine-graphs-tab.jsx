@@ -31,11 +31,19 @@ const MachineGraphsTab = () => {
 
   const { watch, setValue, handleSubmit, trigger } = methods
   const { dateFrom, dateTo, logType, logPeriod, filteredSearchKey, logGraphType } = watch()
-  const [graphLabels, setGraphLabels] = useState({ yaxis: 'Cumulative Total Value', xaxis: logPeriod })
+  const [graphLabels, setGraphLabels] = useState({ yaxis: 'Produced Length and Waste (m)', xaxis: logPeriod })
 
   useLayoutEffect(() => {
     dispatch(resetLogsGraphData())
   }, [dispatch])
+
+    useEffect(() => {
+      if (logGraphType?.key === 'productionRate') {
+        setGraphLabels(prev => ({ ...prev, yaxis: 'Production Rate (m/hr) ', xaxis: logPeriod }))
+      } else {
+        setGraphLabels(prev => ({ ...prev, yaxis: 'Produced Length and Waste (m)', xaxis: logPeriod }))
+      }
+    }, [logGraphType])
 
   useEffect(() => {
     dispatch(

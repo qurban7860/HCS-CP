@@ -119,7 +119,7 @@ function LogStackedChart({ chart, graphLabels, graphHeight = 500 }) {
       },
       title: {
         text: graphLabels?.yaxis,
-        offsetX: 15,
+        offsetX: 0,
         offsetY: 0,
         style: {
           fontSize: '12px',
