@@ -41,7 +41,7 @@ const GraphsSection = () => {
 
   const { watch, setValue, handleSubmit } = methods
   const { machine, logPeriod, logGraphType } = watch()
-  const [graphLabels, setGraphLabels] = useState({ yaxis: 'Cumulative Total Value', xaxis: logPeriod })
+  const [graphLabels, setGraphLabels] = useState({ yaxis: 'Produced Length and Waste (m)', xaxis: logPeriod })
 
   const { themeMode } = useSettingContext()
   const theme = useTheme()
@@ -55,6 +55,14 @@ const GraphsSection = () => {
       dispatch(resetLogsGraphData());
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (logGraphType?.key === 'productionRate') {
+      setGraphLabels(prev => ({ ...prev, yaxis: 'Production Rate (m/hr) ', xaxis: logPeriod }))
+    } else {
+      setGraphLabels(prev => ({ ...prev, yaxis: 'Produced Length and Waste (m)', xaxis: logPeriod }))
+    }
+  }, [logGraphType])
 
   const getLogsGraph = useCallback(() => {
     dispatch(getLogGraphData(user?.customer, machine?._id, 'erp', logPeriod, logGraphType?.key));
