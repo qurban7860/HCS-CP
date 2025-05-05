@@ -54,24 +54,6 @@ const LogsSection = ({ isArchived }) => {
   const { watch, setValue, handleSubmit } = methods
   const { machine, dateFrom, dateTo, logType, filteredSearchKey } = watch()
 
-  const logsPayload = useMemo(() => ({
-    customerId: user?.customer,
-    machineId: machine?._id || undefined,
-    page: logPage,
-    pageSize: logRowsPerPage,
-    fromDate: dateFrom,
-    toDate: dateTo,
-    isArchived: false,
-    isMachineArchived: machine?.isArchived,
-    selectedLogType: logType?.type,
-    searchKey: filteredSearchKey,
-    searchColumn: selectedSearchFilter
-  }), [user, machine, logPage, logRowsPerPage, dateFrom, dateTo, logType, filteredSearchKey, selectedSearchFilter])
-
-  const fetchLogs = useCallback(() => {
-    dispatch(getLogs(logsPayload))
-  }, [dispatch, logsPayload])
-
   useLayoutEffect(() => {
     dispatch(getMachines(null, null, false, null, user?.customer))
     return () => {
@@ -80,14 +62,41 @@ const LogsSection = ({ isArchived }) => {
     }
   }, [])
 
-  useEffect(() => {
-    fetchLogs()
+  useLayoutEffect(() => {
+    dispatch(getLogs({
+      customerId: user?.customer,
+      machineId: machine?._id || undefined,
+      page: logPage,
+      pageSize: logRowsPerPage,
+      fromDate: dateFrom,
+      toDate: dateTo,
+      isArchived: false,
+      isMachineArchived: machine?.isArchived,
+      selectedLogType: logType?.type,
+      searchKey: filteredSearchKey,
+      searchColumn: selectedSearchFilter
+    }))
   }, [logPage, logRowsPerPage])
 
-  const handleFormSubmit = useCallback((data) => {
-    dispatch(ChangeLogPage(0))
-    dispatch(getLogs(logsPayload))
-  }, [dispatch])
+  const handleFormSubmit = async () => {
+    if (logPage == 0) {
+      await dispatch(getLogs({
+        customerId: user?.customer,
+        machineId: machine?._id || undefined,
+        page: logPage,
+        pageSize: logRowsPerPage,
+        fromDate: dateFrom,
+        toDate: dateTo,
+        isArchived: false,
+        isMachineArchived: machine?.isArchived,
+        selectedLogType: logType?.type,
+        searchKey: filteredSearchKey,
+        searchColumn: selectedSearchFilter
+      }))
+    } else {
+      await dispatch(ChangeLogPage(0))
+    }
+  }
 
   const handleMachineChange = newMachine => {
     setValue('machine', newMachine)
@@ -161,18 +170,10 @@ const LogsSection = ({ isArchived }) => {
                       <RHFDatePickr
                         label='Start Date'
                         name='dateFrom'
-                        value={dateFrom}
-                        onChange={newValue => {
-                          setValue('dateFrom', newValue)
-                        }}
                       />
                       <RHFDatePickr
                         label='End Date'
                         name='dateTo'
-                        value={dateTo}
-                        onChange={newValue => {
-                          setValue('dateTo', newValue)
-                        }}
                       />
                     </Box>
                     <Stack

@@ -40,19 +40,26 @@ const MachineGraphsTab = () => {
   useEffect(() => {
     dispatch(
       getLogs({
-        ...payload,
-        page: logPage,
-        pageSize: logRowsPerPage
+        customerId: customer?._id,
+        machineId: id,
+        page: 0,
+        pageSize: logRowsPerPage,
+        fromDate: dateFrom,
+        toDate: dateTo,
+        isArchived: false,
+        isMachineArchived: machine?.isArchived,
+        selectedLogType: logType.type,
+        searchKey: filteredSearchKey,
+        searchColumn: selectedSearchFilter
       })
     )
   }, [logPage, logRowsPerPage])
 
   const onGetLogs = data => {
-    const customerId = customer?._id
     dispatch(ChangeLogPage(0))
     dispatch(
       getLogs({
-        customerId,
+        customerId: customer?._id,
         machineId: id,
         page: 0,
         pageSize: logRowsPerPage,
@@ -128,20 +135,6 @@ const MachineGraphsTab = () => {
     }
   }, [logPeriod, logGraphType])
 
-  const payload = {
-    customerId: customer?._id,
-    machineId: id || undefined,
-    page: logPage,
-    pageSize: logRowsPerPage,
-    fromDate: dateFrom,
-    toDate: dateTo,
-    isArchived: false,
-    isMachineArchived: false,
-    selectedLogType: logType?.type,
-    searchKey: filteredSearchKey,
-    searchColumn: selectedSearchFilter
-  }
-
   return (
     <Fragment>
       <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_CONTROLLER} zIndex={7}>
@@ -178,7 +171,6 @@ const MachineGraphsTab = () => {
 MachineGraphsTab.propTypes = {
   logType: PropTypes.object,
   isLogsPage: PropTypes.bool,
-  payload: PropTypes.object
 }
 
 export default MachineGraphsTab

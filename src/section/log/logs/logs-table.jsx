@@ -44,13 +44,13 @@ const LogsTable = ({ logType, isLogsPage }) => {
         comparator: getComparator(order, orderBy)
     })
 
-    const handleChangePage = (event, newPage) => {
-        dispatch(ChangeLogPage(newPage))
+    const handleChangePage = async (event, newPage) => {
+        await dispatch(ChangeLogPage(newPage))
     }
 
-    const handleChangeRowsPerPage = event => {
-        dispatch(ChangeLogPage(0))
-        dispatch(ChangeLogRowsPerPage(parseInt(event.target.value, 10)))
+    const handleChangeRowsPerPage = async event => {
+        await dispatch(ChangeLogPage(0))
+        await dispatch(ChangeLogRowsPerPage(parseInt(event.target.value, 10)))
     }
 
     const handleColumnButtonClick = (columnId, newCheckState) => {
