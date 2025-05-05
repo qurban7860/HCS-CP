@@ -46,32 +46,41 @@ const MachineLogsTab = () => {
   const { watch, setValue, handleSubmit } = methods
   const { dateFrom, dateTo, logType, filteredSearchKey } = watch()
 
-  const logsPayload = useMemo(() => ({
-    customerId: user?.customer,
-    machineId: id,
-    page: logPage,
-    pageSize: logRowsPerPage,
-    fromDate: dateFrom,
-    toDate: dateTo,
-    isArchived: false,
-    isMachineArchived: machine?.isArchived,
-    selectedLogType: logType?.type,
-    searchKey: filteredSearchKey,
-    searchColumn: selectedSearchFilter
-  }), [user, id, logPage, logRowsPerPage, dateFrom, dateTo, logType, filteredSearchKey, selectedSearchFilter])
-
-  const fetchLogs = useCallback(() => {
-    dispatch(getLogs(logsPayload))
-  }, [dispatch, logsPayload])
-
   useEffect(() => {
-    fetchLogs()
+    dispatch(getLogs({
+      customerId: user?.customer,
+      machineId: id,
+      page: logPage,
+      pageSize: logRowsPerPage,
+      fromDate: dateFrom,
+      toDate: dateTo,
+      isArchived: false,
+      isMachineArchived: machine?.isArchived,
+      selectedLogType: logType?.type,
+      searchKey: filteredSearchKey,
+      searchColumn: selectedSearchFilter
+    }))
   }, [logPage, logRowsPerPage])
 
-  const handleFormSubmit = useCallback((data) => {
-    dispatch(ChangeLogPage(0))
-    dispatch(getLogs(logsPayload))
-  }, [dispatch])
+  const handleFormSubmit = async (data) => {
+    if (logPage == 0) {
+      await dispatch(getLogs({
+        customerId: user?.customer,
+        machineId: id,
+        page: logPage,
+        pageSize: logRowsPerPage,
+        fromDate: dateFrom,
+        toDate: dateTo,
+        isArchived: false,
+        isMachineArchived: machine?.isArchived,
+        selectedLogType: logType?.type,
+        searchKey: filteredSearchKey,
+        searchColumn: selectedSearchFilter
+      }))
+    } else {
+      await dispatch(ChangeLogPage(0))
+    }
+  }
 
   const handleLogTypeChange = useCallback(newLogType => {
     setValue('logType', newLogType)

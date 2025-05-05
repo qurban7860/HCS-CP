@@ -39,7 +39,7 @@ const GraphsSection = () => {
     mode: 'onChange',
   })
 
-  const { watch, setValue, trigger, handleSubmit } = methods
+  const { watch, setValue, handleSubmit } = methods
   const { machine, logPeriod, logGraphType } = watch()
   const [graphLabels, setGraphLabels] = useState({ yaxis: 'Cumulative Total Value', xaxis: logPeriod })
 
@@ -51,15 +51,13 @@ const GraphsSection = () => {
   useEffect(() => {
     dispatch(getMachines(null, null, false, null, user?.customer))
     return () => {
-      dispatch(resetMachines())
+      dispatch(resetMachines());
+      dispatch(resetLogsGraphData());
     }
   }, [dispatch]);
 
   const getLogsGraph = useCallback(() => {
     dispatch(getLogGraphData(user?.customer, machine?._id, 'erp', logPeriod, logGraphType));
-    return () => {
-      dispatch(resetLogsGraphData());
-    };
   }, [dispatch, machine?._id, logPeriod, logGraphType]);
 
   useEffect(() => {
