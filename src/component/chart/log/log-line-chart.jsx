@@ -7,33 +7,33 @@ import { fShortenNumber } from 'util/format'
 import { KEY } from 'constant'
 
 const formatNumber = num => {
- if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`
- if (num >= 1000) return `${(num / 1000).toFixed(1)}k`
- return num.toFixed(1)
+  if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`
+  if (num >= 1000) return `${(num / 1000).toFixed(1)}k`
+  return num.toFixed(1)
 }
 
 function LogLineChart({ chart, graphLabels, graphHeight = 500 }) {
- const { themeMode } = useSettingContext()
- const theme = useTheme()
- const { categories, series } = chart
- const colors = [theme.palette.howick.darkBlue, theme.palette.howick.orange]
- const colorsDarkMode = [theme.palette.howick.orange, theme.palette.howick.lightGray]
+  const { themeMode } = useSettingContext()
+  const theme = useTheme()
+  const { categories, series } = chart
+  const colors = [theme.palette.howick.darkBlue, theme.palette.howick.orange]
+  const colorsDarkMode = [theme.palette.howick.orange, theme.palette.howick.lightGray]
 
- const menuBackgroundColor = themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.grey[800]
- const menuTextColor = themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
+  const menuBackgroundColor = themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.grey[800]
+  const menuTextColor = themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
 
- const [isVisible, setIsVisible] = useState(true)
+  //  const [isVisible, setIsVisible] = useState(true)
 
- useEffect(() => {
-  if (!chart.categories || chart.categories.length === 0) {
-   console.warn('No categories provided for xaxis.')
-   setIsVisible(false)
-  }
-  if (!chart.series || chart.series.length === 0) {
-   console.warn('No series data provided.')
-   setIsVisible(false)
-  }
- }, [chart])
+  //  useEffect(() => {
+  //   if (!chart.categories || chart.categories.length === 0) {
+  //    console.warn('No categories provided for xaxis.')
+  //    setIsVisible(false)
+  //   }
+  //   if (!chart.series || chart.series.length === 0) {
+  //    console.warn('No series data provided.')
+  //    setIsVisible(false)
+  //   }
+  //  }, [chart])
 
  const chartOptions = {
   chart: {
@@ -41,7 +41,7 @@ function LogLineChart({ chart, graphLabels, graphHeight = 500 }) {
    height: graphHeight,
    foreColor: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[400],
    toolbar: { show: true, tools: { download: true, selection: false, zoom: false, zoomin: false, zoomout: false, pan: false, reset: true } },
-   animations: { enabled: true }
+   animations: { enabled: false }
   },
   responsive: [
    {
@@ -63,7 +63,7 @@ function LogLineChart({ chart, graphLabels, graphHeight = 500 }) {
    labels: { 
     offsetY: 0,
     rotate: -45,
-    rotateAlways: graphLabels?.xaxis === "Days" 
+    rotateAlways: true 
   },
    axisBorder: { show: false, color: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[700] },
    axisTicks: { show: false, color: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[700] },

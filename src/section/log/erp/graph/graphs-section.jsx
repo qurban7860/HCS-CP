@@ -57,7 +57,7 @@ const GraphsSection = () => {
   }, [dispatch]);
 
   const getLogsGraph = useCallback(() => {
-    dispatch(getLogGraphData(user?.customer, machine?._id, 'erp', logPeriod, logGraphType));
+    dispatch(getLogGraphData(user?.customer, machine?._id, 'erp', logPeriod, logGraphType?.key));
   }, [dispatch, machine?._id, logPeriod, logGraphType]);
 
   useEffect(() => {
@@ -110,7 +110,7 @@ const GraphsSection = () => {
           <Grid container spacing={2} mt={3}>
             <Grid item xs={12} sm={12}>
               <GStyledControllerCardContainer height={'auto'} sx={{ display: FLEX.FLEX, flexDirection: FLEX_DIR.COLUMN, gap: 2 }}>
-                <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)' }}>
+                <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>
                   <RHFAutocomplete
                     name='machine'
                     label={t('machine.label')}
