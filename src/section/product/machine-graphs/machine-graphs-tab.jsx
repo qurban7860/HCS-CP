@@ -90,6 +90,9 @@ const MachineGraphsTab = () => {
     newPeriod => {
       setValue('logPeriod', newPeriod)
       switch (newPeriod) {
+        case 'Hourly':
+          setGraphLabels(prev => ({ ...prev, xaxis: 'Hours' }))
+          break
         case 'Monthly':
           setGraphLabels(prev => ({ ...prev, xaxis: 'Months' }))
           break
