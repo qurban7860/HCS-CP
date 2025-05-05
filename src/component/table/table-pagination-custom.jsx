@@ -124,14 +124,14 @@ function TablePaginationCustom({
            size={KEY.SMALL}
            label={
             <Typography variant={TYPOGRAPHY.OVERLINE0} p={0}>
-             {charAtText(column.label)}
+             {charAtText(column.fullLabel || column.label)}
             </Typography>
            }
            disabled
           />
          )}
          &nbsp;
-         {column.label}
+         {column.fullLabel || column.label}
         </MenuItem>
        ))}
       </Menu>

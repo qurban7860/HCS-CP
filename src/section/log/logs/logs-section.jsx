@@ -207,7 +207,7 @@ const LogsSection = ({ isArchived }) => {
           </Grid>
         </FormProvider>
       </GStyledStickyDiv>
-      {isLoading ? <HowickLoader height={300} width={303} mode={themeMode} /> : <LogsTable logType={logType} />}
+      {isLoading ? <HowickLoader height={300} width={303} mode={themeMode} /> : <LogsTable isLogsPage logType={logType} />}
     </Grid>
   )
 }

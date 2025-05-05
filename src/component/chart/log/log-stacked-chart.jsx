@@ -140,7 +140,7 @@ function LogStackedChart({ chart, graphLabels, graphHeight = 500 }) {
         tooltipSeries.forEach((s, index) => {
           const legend = w.globals.seriesNames[index]
           const color = w.globals.colors[index]
-          const value = s[dataPointIndex].toFixed(2)
+          const value = s[dataPointIndex].toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
           tooltipContent += `<div class="apexcharts-tooltip-series-group apexcharts-active" style="order: 1; display: flex;">`
           tooltipContent += `<span class="apexcharts-tooltip-marker" style="background-color: ${color};"></span>`
           tooltipContent += `<div class="apexcharts-tooltip-text"><div class="apexcharts-tooltip-y-group">`
