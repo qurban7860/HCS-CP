@@ -131,7 +131,7 @@ export default function AccountPopover() {
                         </MenuItem>
                     ))}
                     <MenuItem onClick={handleChangePassword}>{t('change_password.label')}</MenuItem>
-                    {isCustomerAdmin(user) || isSuperAdmin(user) && (
+                    {(isCustomerAdmin(user) || isSuperAdmin(user)) && (
                         <Fragment>
                             <Divider />
                             {/* <MenuItem onClick={() => handleClickItem(PATH_AUTH.userInvite)}>
