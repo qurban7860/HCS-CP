@@ -101,7 +101,7 @@ const MachineLogsTab = () => {
           </Grid>
         </FormProvider>
       </GStyledStickyDiv>
-      <MachineLogsTable isLogsPage logType={logType} />
+      <MachineLogsTable logType={logType} />
     </Fragment>
   )
 }
