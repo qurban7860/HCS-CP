@@ -177,7 +177,8 @@ export function getLogGraphData(customerId, machineId, type = 'erp', periodType,
                 machine: machineId,
                 type,
                 periodType,
-                logGraphType
+                logGraphType,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
             }
             const response = await axios.get(PATH_SERVER.LOG.graph, { params })
             dispatch(logSlice.actions.setLogsGraphData(response?.data || ''))

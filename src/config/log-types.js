@@ -55,7 +55,6 @@ const _GEN5_LOG_TYPES = {
         },
         tableColumns: [
             { id: 'date', label: 'Date - Time', alwaysShow: true, defaultShow: true },
-            { id: 'machineSerialNo', label: 'Machine', alwaysShow: true, defaultShow: true, page: 'logsPage', searchable: true },
             { id: '_id', label: 'ID', searchable: true },
             { id: 'componentLabel', label: 'Component Label', defaultShow: true, searchable: true },
             { id: 'frameSet', label: 'Frame Set', defaultShow: true, searchable: true },
@@ -70,6 +69,7 @@ const _GEN5_LOG_TYPES = {
             { id: 'coilThickness', label: 'Coil Thickness', searchable: true, numerical: true },
             { id: 'componentGUID', label: 'Component GUID', searchable: true, numerical: true },
             { id: 'componentType', label: 'Component Type', defaultShow: true, searchable: true },
+            { id: 'machineSerialNo', label: 'Machine', alwaysShow: true, defaultShow: true, page: 'logsPage', searchable: true },
             { id: 'coilWidth', label: 'Coil Width', searchable: true, numerical: true },
             { id: 'lineSpeed', label: 'Line Speed', searchable: true, numerical: true },
             { id: 'mode', label: 'Mode', searchable: true },
