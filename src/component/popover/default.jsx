@@ -6,6 +6,7 @@ import { StyledArrow } from './styles';
 
 const PopoverDefault = ({ id, open, anchorEl, arrow, onClose, localizedLabel, children }) => {
     const theme = useTheme()
+
     return (
         <Popover
             id={id}
@@ -23,28 +24,32 @@ const PopoverDefault = ({ id, open, anchorEl, arrow, onClose, localizedLabel, ch
             sx={{
                 display: FLEX.FLEX,
                 zIndex: theme.zIndex.modal + 1
-            }}>
+            }}
+        >
             {arrow && <StyledArrow arrow={arrow} />}
             <Box sx={{ p: 1 }}>
                 {localizedLabel && (
-                    <Box sx={{ px: 2, pb: 1 }}>
-                        <Typography variant={TYPOGRAPHY.SUBTITLE1}>{t(localizedLabel)}:</Typography>
-                    </Box>
-                )}
-                {children}
+                     <Box sx={{ px: 2, pb: 1 }}>
+                     <Typography variant={TYPOGRAPHY.SUBTITLE1}>
+                        
+                     </Typography>
+                   </Box>
+                 )}
+           
+                 {children}
             </Box>
         </Popover>
     )
 }
 
 PopoverDefault.propTypes = {
-    id: PropTypes.string,
-    localizedLabel: PropTypes.string,
-    arrow: PropTypes.string,
-    open: PropTypes.any,
-    anchorEl: PropTypes.any,
+    id: PropTypes.string.isRequired,
+    localizedLabel: PropTypes.string, 
+    arrow: PropTypes.string, 
+    open: PropTypes.bool.isRequired, 
+    anchorEl: PropTypes.object.isRequired, 
     children: PropTypes.node,
-    onClose: PropTypes.func
+    onClose: PropTypes.func.isRequired 
 }
 
 export default PopoverDefault
