@@ -64,7 +64,8 @@ function TicketViewForm() {
 
   useEffect(() => {
     dispatch(getTicketSettings())
-  }, [dispatch])
+    dispatch(getTicket(id, user?.customer))
+  }, [dispatch, id])
 
   useEffect(() => {
     const newSlides = ticket?.files
@@ -154,8 +155,10 @@ function TicketViewForm() {
         snack(response.statusText, { variant: 'error' })
       }
     } catch (error) {
-      if (error.message) {
-        snack(error.message, { variant: 'error' })
+      if (typeof error === 'string') {
+        snack(error, { variant: 'error' })
+      } else if (error?.message && typeof error?.message === 'string') {
+        snack(error?.message, { variant: 'error' })
       } else {
         snack(t('responses.error.unexpected_error'), { variant: 'error' })
       }
@@ -171,7 +174,10 @@ function TicketViewForm() {
       await dispatch(updateTicketField(id, fieldName, value, customer?._id));
       enqueueSnackbar(`Ticket updated successfully!`, { variant: 'success' });
     } catch (error) {
-      enqueueSnackbar(`Ticket update failed!`, { variant: 'error' });
+      enqueueSnackbar((typeof error === 'string' && error) ||
+        (typeof error?.message === 'string' && error?.message) ||
+        `Ticket update failed!`, { variant: 'error' }
+      );
       throw error
     }
   };
@@ -244,10 +250,9 @@ function TicketViewForm() {
                   heading={t('status.label')}
                   isLoading={isLoading}
                   gridSize={3}
-                >{
-                    isSuperAdmin(user) ?
-                      <DropDownField name="status" isNullable label='Status' value={ticket?.status} onSubmit={onSubmit} options={ticketSettings?.statuses} />
-                      : defaultValues?.status
+                >{((isCustomerAdmin(user) && !ticket?.status?.statusType?.isResolved) || isSuperAdmin(user)) ?
+                  <DropDownField name="status" isNullable label='Status' value={ticket?.status} onSubmit={onSubmit} options={ticketSettings?.statuses} />
+                  : defaultValues?.status
                   }
                 </GridViewField>
                 <GridViewField
@@ -287,11 +292,11 @@ function TicketViewForm() {
                 <Grid item xs={12} md={12}>
                   <GridViewTitle title={t('description.label')} />
 
-                  <FilledEditorField 
-                    name="description" 
-                    value={defaultValues.description} 
-                    onSubmit={onSubmit} 
-                    minRows={4} 
+                  <FilledEditorField
+                    name="description"
+                    value={defaultValues.description}
+                    onSubmit={onSubmit}
+                    minRows={4}
                     placeholder={`Please provide a detailed description of the issue you are experiencing with the machine, including: \n  - Any relevant error messages \n  - Steps to reproduce the problem, screenshot, picture or videos and \n  - Any recent changes that may have affected the system.\n\nIf you have any specific requirements or preferences for the ticket, please let us know.`}
                   />
 

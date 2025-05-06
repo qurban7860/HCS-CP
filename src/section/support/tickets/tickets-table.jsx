@@ -41,7 +41,6 @@ const TicketsTable = ({ columns, onViewRow, ticket, mode, index }) => {
   }
 
   const handleNavigateTicket = (id) => {
-    dispatch(getTicket(id, user?.customer))
     navigate(PATH_SUPPORT.tickets.view(id))
   }
 
