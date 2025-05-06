@@ -23,7 +23,7 @@ const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData, i
     if (logsGraphData) {
       const convertedData = logsGraphData.map(item => ({
         ...item,
-        productionRate: item.componentLength / 1000 / (item.time / 3600000)
+        productionRate: (item.componentLength / 1000 + item.waste / 1000) / (item.time / 3600000),
       }))
       setGraphData(convertedData)
     }
