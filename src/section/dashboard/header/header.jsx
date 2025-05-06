@@ -11,6 +11,7 @@ import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 import ModeOption from './mode-option'
 import AccountPopover from './account-popover'
 import NotificationPopover from './notification-popover'
+import TimeDisplay from 'component/timeZone/timeZone'
 
 const DEV = 'dev'
 
@@ -75,6 +76,7 @@ function Header() {
               <IconButton sx={{ mr: 1, color: 'text.primary' }} onClick={toggleClockMenu}>
                 <Icon icon={ICON_NAME.CLOCK} color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze} />
               </IconButton>
+              
             </Box>
             <Box justifyContent={FLEX.FLEX_END} sx={{ display: FLEX.FLEX, alignItems: KEY.CENTER }}>
               <AccountPopover />
@@ -85,11 +87,18 @@ function Header() {
             </PopoverDefault>
           </Box>
         </Fragment>
+        
       ) : (
+        <>
+       
+        
         <Fragment>
           <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_START} spacing={{ xs: 0.5, sm: 4 }} ml={5}>
             <NavSection data={navConfig} />
           </Stack>
+          <Box sx={{ ml: 70 }}>
+               <TimeDisplay />
+          </Box>
           <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_END} spacing={{ xs: 0.5, sm: 2 }}>
             {/* {localTimeZone !== aucklandTimeZone && <Clock local={localTimeZone} city={'cleveland'} />} */}
             {/* <Clock main city={KEY.AUCKLAND} /> */}
@@ -98,8 +107,10 @@ function Header() {
             <AccountPopover />
           </Stack>
         </Fragment>
-      )}
-    </Fragment>
+       
+      
+      </>)}    </Fragment>
+    
   )
 
   return (
