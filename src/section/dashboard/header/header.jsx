@@ -25,11 +25,13 @@ function Header() {
   const isOffset = useOffSetTop(HEADER.H_DASHBOARD_DESKTOP) && !isNavHorizontal
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [clockAnchor, setClockAnchor] = useState(null)
+  const [showTime, setShowTime] = useState(false);
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen)
   const toggleClockMenu = event => {
     setClockAnchor(clockAnchor ? null : event.currentTarget)
   }
+  
 
   const clockOpen = Boolean(clockAnchor)
   const clockId = clockOpen ? 'clock-menu' : undefined
@@ -82,23 +84,34 @@ function Header() {
               <AccountPopover />
             </Box>
             <DrawerMenu navConfig={navConfig} open={mobileMenuOpen} onClose={toggleMobileMenu} />
-            <PopoverDefault id={clockId} localizedLabel={'time_zone.label'} open={clockOpen} anchorEl={clockAnchor} onClose={() => setClockAnchor(null)}>
-              <Clock main city={KEY.AUCKLAND} />
+            <PopoverDefault
+             id={clockId}
+             localizedLabel={'time_zone.label'}
+             open={clockOpen}
+             anchorEl={clockAnchor}
+             onClose={() => setClockAnchor(null)}
+            >
+            <Clock main city={KEY.AUCKLAND} />
+            <Clock local={Intl.DateTimeFormat().resolvedOptions().timeZone} />
             </PopoverDefault>
-          </Box>
+             </Box>
         </Fragment>
         
       ) : (
-        <>
-       
-        
+        <>  
         <Fragment>
           <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_START} spacing={{ xs: 0.5, sm: 4 }} ml={5}>
             <NavSection data={navConfig} />
           </Stack>
-          <Box sx={{ ml: 70 }}>
-               <TimeDisplay />
+          <Box
+             display="flex"
+             justifyContent={{ xs: 'center', md: 'flex-end' }}
+             width="100%"
+             px={2}
+            >
+              <TimeDisplay />
           </Box>
+
           <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_END} spacing={{ xs: 0.5, sm: 2 }}>
             {/* {localTimeZone !== aucklandTimeZone && <Clock local={localTimeZone} city={'cleveland'} />} */}
             {/* <Clock main city={KEY.AUCKLAND} /> */}

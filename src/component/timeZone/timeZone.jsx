@@ -24,7 +24,7 @@ const TimeDisplay = () => {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        hour12: false,
+        hour12: true,
         timeZone: timeZone,
       };
 
@@ -64,7 +64,7 @@ const TimeDisplay = () => {
       <Box sx={boxStyle}>
         <Typography variant="caption" sx={{ color: textColor }}>
           <Box component="span" sx={{ fontWeight: 700 }}>
-            Auckland:
+           Pacific/Auckland
           </Box>{' '}
           {nzTime}
         </Typography>
