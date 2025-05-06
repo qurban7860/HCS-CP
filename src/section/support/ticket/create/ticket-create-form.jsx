@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState, useCallback, useRef } from 'react'
+import { Fragment, useEffect, useState, useCallback, useRef, useMemo } from 'react'
 import _ from 'lodash'
 import debounce from 'lodash.debounce'
 import { t } from 'i18next'
@@ -26,7 +26,6 @@ import {
 } from 'store/slice'
 import { PATH_DASHBOARD, PATH_SUPPORT } from 'route/path'
 import { TicketSchema } from 'schema'
-import { useTicketCreateDefaultValues } from 'section/support'
 import { useTheme, Grid, Box, Card } from '@mui/material'
 import { RHFRequiredTextFieldWrapper, RHFUpload, ConfirmDialog, TicketCreateSuccessDialog, GridViewTitle, BackButton } from 'component'
 import FormProvider, { RHFTextField, RHFAutocomplete, RHFDatePickr, RHFTimePicker, RHFSwitch, RHFEditor } from 'component/hook-form'
@@ -98,7 +97,37 @@ function TicketCreateForm() {
     return () => debounceFetch.cancel()
   }, [user.customer, activeContacts, dispatch])
 
-  const defaultValues = useTicketCreateDefaultValues(customer, softwareVersion)
+  const defaultValues = useMemo(() => {
+    return {
+      customer: customer && customer || null,
+      machine: null,
+      issueType: null,
+      requestType: null,
+      summary: '',
+      description: '',
+      priority: null,
+      status: null,
+      impact: null,
+      files: [],
+      changeType: null,
+      changeReason: null,
+      implementationPlan: '',
+      backoutPlan: '',
+      testPlan: '',
+      investigationReason: null,
+      rootCause: '',
+      workaround: '',
+      shareWith: false,
+      isActive: true,
+      plannedStartDate: new Date(),
+      plannedEndDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+      startTime: null,
+      endTime: null,
+      hlc: softwareVersion?.hlc || '',
+      plc: softwareVersion?.plc || '',
+    }
+  }, [customer, softwareVersion])
+
   const methods = useForm({
     resolver: yupResolver(TicketSchema('new')),
     defaultValues,
@@ -112,15 +141,6 @@ function TicketCreateForm() {
   const checkFormCompletion = useCallback(() => {
     setIsFormComplete(!!machine && !!issueType && !!summary)
   }, [machine, issueType, summary])
-
-  useEffect(() => {
-    if (machine?._id) {
-      dispatch(getSoftwareVersion(machine._id, customer?._id))
-    }
-    return () => {
-      dispatch(resetSoftwareVersion());
-    }
-  }, [dispatch, machine])
 
   useEffect(() => {
     if (softwareVersion) {
@@ -320,7 +340,22 @@ function TicketCreateForm() {
                         getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
                         renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
                         helperText={errors.machine ? errors.machine.message : ''}
-                        required
+                        onChange={(event, newValue) => {
+                          if (newValue) {
+                            if (newValue?._id !== machine?._id) {
+                              setValue('hlc', "")
+                              setValue('plc', "")
+                              dispatch(getSoftwareVersion(newValue._id, customer?._id))
+                            }
+                            setValue('machine', newValue)
+                          } else {
+                            setValue('machine', null)
+                            setValue('hlc', "")
+                            setValue('plc', "")
+                            dispatch(resetSoftwareVersion())
+                          }
+                        }
+                        }
                       />
                     </RHFRequiredTextFieldWrapper>
                   </Grid>
