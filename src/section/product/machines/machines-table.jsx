@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { dispatch } from 'store'
 import { ICON_NAME, Icon, useSettingContext } from 'hook'
 import { PATH_MACHINE } from 'route/path'
-import { getMachine, getMachines } from 'store/slice'
+import { getMachines } from 'store/slice'
 import { TableBody, TableCell, Grid } from '@mui/material'
 import { LinkWrap } from 'component'
 import { ProfileDialog } from 'component/dialog'
@@ -43,17 +43,6 @@ const MachineTable = ({ columns, onViewRow, machine, index, selected }) => {
   const handleManufacturePopoverClose = () => {
     setManufactureProfilesAnchorEl(null)
     setManufactureProfiles([])
-  }
-
-  const openInNewPage = (id) => {
-    const url = PATH_MACHINE.machines.view(id)
-    dispatch(getMachine(id, machine?.customer?._id))
-    dispatch(getMachines(null, null, false, null, machine?.customer?._id))
-    const newTab = window.open('', '_blank')
-    if (newTab) {
-      newTab.opener = null
-      newTab.location.href = url
-    }
   }
 
   return (

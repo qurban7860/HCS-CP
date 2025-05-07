@@ -1,5 +1,6 @@
 import { ICON_NAME } from 'hook'
 import { t } from 'i18next'
+import { PATH_MACHINE } from 'route/path'
 
 /**
  * Represents the tabs for the machine section.
@@ -21,47 +22,57 @@ import { t } from 'i18next'
  * An array of tabs for the customer section.
  * @type {Tab[]}
  */
-export const TABS = value => [
- {
-  id: 0,
-  label: 'Machine Overview',
-  icon: ICON_NAME.CUSTOMER,
-  disabled: false
- },
- // {
- //   id: 1,
- //   label: 'License',
- //   icon: ICON_NAME.SITES,
- //   disabled: true
- // },
- // {
- //   id: 2,
- //   label: 'Tools',
- //   icon: ICON_NAME.CONTACTS,
- //   disabled: true
- // },
- // {
- //   id: 3,
- //   label: 'Profiles',
- //   icon: ICON_NAME.SUPPORT,
- //   disabled: true
- // },
- {
-  id: 4,
-  label: t('log.logs.label'),
-  icon: ICON_NAME.SUPPORT,
-  disabled: false
- },
- {
-  id: 5,
-  label: t('graph.graphs.label'),
-  icon: ICON_NAME.SUPPORT,
-  disabled: false
- }
-//  {
-//   id: 6,
-//   label: 'Support Tickets',
-//   icon: ICON_NAME.SUPPORT,
-//   disabled: false
-//  }
+export const TABS = (machineId) => [
+    {
+        id: 0,
+        label: 'Machine Overview',
+        icon: ICON_NAME.FRAMA,
+        path: PATH_MACHINE.machines.view(machineId),
+        disabled: false
+    },
+    // {
+    //   id: 1,
+    //   label: 'Machine Drawings',
+    //   icon: ICON_NAME.SITES,
+    //   disabled: true
+    // },
+    // {
+    //   id: 2,
+    //   label: 'Documents',
+    //  icon: ICON_NAME.SITES,
+    //   disabled: true
+    // },
+    // {
+    //   id: 3,
+    //   label: 'License',
+    //   icon: ICON_NAME.SITES,
+    //   disabled: true
+    // },
+    // {
+    //   id: 4,
+    //   label: 'Tools',
+    //   icon: ICON_NAME.CONTACTS,
+    //   disabled: true
+    // },
+    // {
+    //   id: 5,
+    //   label: 'Profiles',
+    //   icon: ICON_NAME.SUPPORT,
+    //    path: PATH_MACHINE.machines.log.list(machineId),
+    //   disabled: true
+    // },
+    {
+        id: 6,
+        label: t('log.logs.label'),
+        icon: ICON_NAME.LOG,
+        path: PATH_MACHINE.machines.log.list(machineId),
+        disabled: false
+    },
+    {
+        id: 7,
+        label: t('graph.graphs.label'),
+        icon: ICON_NAME.GRAPH,
+        path: PATH_MACHINE.machines.graph.view(machineId),
+        disabled: false
+    }
 ]

@@ -20,7 +20,7 @@ function ChipInPopover({ open, onClose, ListArr, ListTitle }) {
 export default memo(ChipInPopover)
 
 ChipInPopover.propTypes = {
-    open: PropTypes.object,
+    open: PropTypes.any,
     onClose: PropTypes.func,
     ListArr: PropTypes.array,
     ListTitle: PropTypes.string,
