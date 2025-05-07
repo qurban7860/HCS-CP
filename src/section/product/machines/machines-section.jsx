@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom'
 import { useTable, useFilter, getComparator, useSettingContext, useResponsive } from 'hook'
 import { PATH_MACHINE } from 'route/path'
 import {
-  getMachine,
   getMachines,
   getMachineCategories,
   setMachineFilterBy,
@@ -104,8 +103,6 @@ const MachineListSection = ({ isArchived }) => {
   const handleMachineCard = (event, id) => {
     event.preventDefault()
     dispatch(setSelectedMachineCard(id))
-    dispatch(resetMachine())
-    dispatch(getMachine(id, user?.customer))
     const url = PATH_MACHINE.machines.view(id)
     navigate(url)
   }
@@ -113,8 +110,6 @@ const MachineListSection = ({ isArchived }) => {
   const handleMachineInNewTabCard = (event, id) => {
     event.preventDefault()
     dispatch(setSelectedMachineCard(id))
-    dispatch(resetMachine())
-    dispatch(getMachine(id, user?.customer))
     const url = PATH_MACHINE.machines.view(id)
     window.open(url, KEY.BLANK)
   }
