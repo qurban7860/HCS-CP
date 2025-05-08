@@ -19,17 +19,17 @@ const MachineNav = ({ machineData }) => {
     const [menuAnchor, setMenuAnchor] = useState(null)
     const { themeMode } = useSettingContext()
     const theme = useTheme()
-    const { id } = useParams()
+    const { machineId } = useParams()
     const { isMobile } = useUIMorph()
     const menuOpen = Boolean(menuAnchor)
     const menuId = menuOpen ? 'machine-menu' : undefined
 
     const tabs = useMemo(() => {
-        return TABS(id).map(tab => ({
+        return TABS(machineId).map(tab => ({
             ...tab,
             a11yProps: a11yProps(tab.id)
         }))
-    }, [id])
+    }, [machineId])
 
     const toggleMenu = event => { setMenuAnchor(menuAnchor ? null : event.currentTarget) }
 

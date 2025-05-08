@@ -24,6 +24,7 @@ import {
   UserListPage,
   UserProfilePage,
   // product:
+  MachineModuleLayout,
   MachinePage,
   MachinesListPage,
   MachinesLogsPage,
@@ -152,7 +153,6 @@ export default function Router() {
           ]
         },
         {
-          // product
           path: 'products',
           element: (
             <AuthGuard>
@@ -165,30 +165,25 @@ export default function Router() {
               path: 'machines',
               children: [
                 { element: <MachinesListPage />, index: true },
-                { path: ':id/view', element: <MachinePage /> },
                 {
-                  path: ':id/logs',
+                  path: ':machineId',
+                  element: <MachineModuleLayout />,
                   children: [
+                    { path: 'view', element: <MachinePage /> },
                     {
-                      element: <MachinesLogsPage />,
-                      index: true
+                      path: 'logs',
+                      children: [{ element: <MachinesLogsPage />, index: true }]
+                    },
+                    { path: 'graphs', element: <MachinesGraphsPage /> },
+                    {
+                      path: 'support',
+                      children: [
+                        { element: <MachineSupportTicketsPage />, index: true },
+                        { path: 'view', element: <MachineSupportTicketsPage /> }
+                      ]
                     }
                   ]
                 },
-                { path: ':id/graphs', element: <MachinesGraphsPage /> },
-                {
-                  path: ':id/support',
-                  children: [
-                    {
-                      element: <MachineSupportTicketsPage />,
-                      index: true
-                    },
-                    {
-                      path: ':supportId/view',
-                      element: <MachineSupportTicketsPage />
-                    }
-                  ]
-                }
               ]
             }
           ]

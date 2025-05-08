@@ -1,11 +1,7 @@
-import { MachineLayout, MachineGraphsTab } from 'section/product'
+import { MachineGraphsTab } from 'section/product'
 
 const MachineGraphs = () => {
- return (
-  <MachineLayout tab={5}>
-   <MachineGraphsTab />
-  </MachineLayout>
- )
+    return <MachineGraphsTab />
 }
 
 export default MachineGraphs

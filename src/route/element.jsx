@@ -24,6 +24,7 @@ export const HomePage = Loadable(lazy(() => import('page/home/home')))
 export const DashboardPage = Loadable(lazy(() => import('page/dashboard/dashboard')))
 export const LandingPage = Loadable(lazy(() => import('page/landing/landing')))
 // machine
+export const MachineModuleLayout = Loadable(lazy(() => import('section/product/machine/machine-layout')))
 export const MachinePage = Loadable(lazy(() => import('page/product/machine/machine')))
 export const MachinesListPage = Loadable(lazy(() => import('page/product/machines/machines')))
 export const MachinesLogsPage = Loadable(lazy(() => import('page/product/machine-logs/machine-logs')))

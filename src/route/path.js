@@ -89,15 +89,15 @@ export const PATH_MACHINE = {
     machines: {
         root: conNex(ROOTS_PRODUCTS, SUB_MACHINES),
         list: conNex(ROOTS_PRODUCTS, SUB_MACHINES),
-        view: id => conNex(ROOTS_PRODUCTS, SUB_MACHINES, id, 'view'),
+        view: machineId => conNex(ROOTS_PRODUCTS, SUB_MACHINES, machineId, 'view'),
         graph: {
-            view: id => conNex(ROOTS_PRODUCTS, SUB_MACHINES, id, 'graphs')
+            view: machineId => conNex(ROOTS_PRODUCTS, SUB_MACHINES, machineId, 'graphs')
         },
         log: {
-            list: id => conNex(ROOTS_PRODUCTS, SUB_MACHINES, id, 'logs')
+            list: machineId => conNex(ROOTS_PRODUCTS, SUB_MACHINES, machineId, 'logs')
         },
         support: {
-            list: id => conNex(ROOTS_PRODUCTS, SUB_MACHINES, id, 'support')
+            list: machineId => conNex(ROOTS_PRODUCTS, SUB_MACHINES, machineId, 'support')
         }
     }
 }

@@ -1,11 +1,7 @@
-import { MachineLayout, MachineTab } from 'section/product'
+import { MachineTab } from 'section/product'
 
 const Machine = () => {
-  return (
-    <MachineLayout tab={4}>
-      <MachineTab />
-    </MachineLayout>
-  )
+  return <MachineTab />
 }
 
 export default Machine

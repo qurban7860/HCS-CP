@@ -1,7 +1,7 @@
 import { memo, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, dispatch } from 'store'
-import { useParams, useNavigate } from 'react-router-dom'
+import { Outlet, useParams, useNavigate } from 'react-router-dom'
 import { Grid, Autocomplete, TextField } from '@mui/material'
 import { PATH_MACHINE } from 'route/path'
 import { useMachineDefaultValues } from 'section/product'
@@ -23,8 +23,8 @@ import {
     getSoftwareVersion
 } from 'store/slice'
 
-const MachineLayout = ({ children }) => {
-    const { id } = useParams()
+const MachineModuleLayout = () => {
+    const { machineId } = useParams()
     const navigate = useNavigate()
     const { user } = useAuthContext();
     const { machine, isLoading, machines, connectedMachineDialog, machineSiteDialogData } = useSelector(state => state.machine)
@@ -36,8 +36,8 @@ const MachineLayout = ({ children }) => {
         dispatch(setCustomerDialog(false))
         dispatch(setMachineDialog(false))
         dispatch(setMachineSiteDialog(false))
-        dispatch(getSoftwareVersion(id, user?.customer))
-        dispatch(getMachine(id, user?.customer))
+        dispatch(getSoftwareVersion(machineId, user?.customer))
+        dispatch(getMachine(machineId, user?.customer))
         dispatch(getMachines(null, null, false, null, user?.customer))
         return () => {
             dispatch(resetMachine())
@@ -46,7 +46,7 @@ const MachineLayout = ({ children }) => {
             dispatch(resetConnectedMachineDialog())
             dispatch(resetMachineSiteDialogData())
         }
-    }, [dispatch, id])
+    }, [dispatch, machineId])
 
     return (
         <MotionLazyContainer display={FLEX.FLEX}>
@@ -65,7 +65,7 @@ const MachineLayout = ({ children }) => {
                     />
                 </Grid>
                 <MachineNav isLoading={isLoading} machineData={defaultValues} />
-                {children}
+                <Outlet />
             </Grid>
             {customerDialog && <CustomerDialog />}
             {machineSiteDialogData && <SiteDialog />}
@@ -74,8 +74,8 @@ const MachineLayout = ({ children }) => {
     )
 }
 
-MachineLayout.propTypes = {
+MachineModuleLayout.propTypes = {
     children: PropTypes.node
 }
 
-export default memo(MachineLayout)
+export default memo(MachineModuleLayout)
