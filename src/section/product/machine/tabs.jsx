@@ -32,7 +32,7 @@ export const TABS = (machineId) => [
     },
     {
         id: 1,
-        label: 'Machine Drawings',
+        label: 'Drawings',
         icon: ICON_NAME.DRAWING,
         path: PATH_MACHINE.machines.drawings(machineId),
         disabled: false
