@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState, useCallback, useLayoutEffect } from 'react'
+import { Fragment, useState, useCallback, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -6,7 +6,7 @@ import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
 import { useSettingContext } from 'hook'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { getLogs, getLogGraphData, setSelectedSearchFilter, ChangeLogPage, resetLogs, resetLogsGraphData } from 'store/slice/log/machineLog'
+import { getLogGraphData, setSelectedSearchFilter, resetLogsGraphData } from 'store/slice/log/machineLog'
 import { addLogSchema } from 'schema'
 import { LogsTableController, useLogDefaultValues } from 'section/log/logs'
 import { ERPProductionTotal, ERPProductionRate } from 'section/log'
@@ -17,10 +17,8 @@ import { GStyledStickyDiv } from 'theme/style'
 import { NAV } from 'config/layout'
 
 const MachineGraphsTab = () => {
-  const { logPage, logRowsPerPage, isLoading, logsGraphData, selectedSearchFilter } = useSelector(state => state.machineLog)
-  const { customer, customers } = useSelector(state => state.customer)
-  const { machine, customerMachines } = useSelector(state => state.machine)
-
+  const { isLoading, logsGraphData } = useSelector(state => state.machineLog)
+  const { machine } = useSelector(state => state.machine)
   const { themeMode } = useSettingContext()
   const defaultValues = useLogDefaultValues()
   const { machineId } = useParams()
@@ -29,118 +27,64 @@ const MachineGraphsTab = () => {
     defaultValues
   })
 
-  const { watch, setValue, handleSubmit, trigger } = methods
-  const { dateFrom, dateTo, logType, logPeriod, filteredSearchKey, logGraphType } = watch()
+  const { watch, setValue } = methods
+  const { logPeriod, logGraphType } = watch()
   const [graphLabels, setGraphLabels] = useState({ yaxis: 'Produced Length and Waste (m)', xaxis: logPeriod })
 
-  useEffect(() => {
-    if (logGraphType?.key === 'productionRate') {
+  useLayoutEffect(() => {
+    if (logPeriod && logGraphType) {
+      const customerId = machine?.customer?._id
+      dispatch(getLogGraphData(customerId, machineId, 'erp', logPeriod, logGraphType?.key))
+    }
+    return () => {
+      dispatch(resetLogsGraphData())
+    }
+  }, [logPeriod, logGraphType])
+
+  const handlePeriodChange = useCallback(newPeriod => {
+    setValue('logPeriod', newPeriod)
+    switch (newPeriod) {
+      case 'Hourly':
+        setGraphLabels(prev => ({ ...prev, xaxis: 'Hours' }))
+        break
+      case 'Monthly':
+        setGraphLabels(prev => ({ ...prev, xaxis: 'Months' }))
+        break
+      case 'Daily':
+        setGraphLabels(prev => ({ ...prev, xaxis: 'Days' }))
+        break
+      case 'Quarterly':
+        setGraphLabels(prev => ({ ...prev, xaxis: 'Quarters' }))
+        break
+      case 'Yearly':
+        setGraphLabels(prev => ({ ...prev, xaxis: 'Years' }))
+        break
+      default:
+        break
+    }
+  }, [setValue])
+
+  const handleGraphTypeChange = useCallback(newGraphType => {
+    setValue('logGraphType', newGraphType)
+    if (newGraphType?.key === 'productionRate') {
       setGraphLabels(prev => ({ ...prev, yaxis: 'Production Rate (m/hr) ', xaxis: logPeriod }))
     } else {
       setGraphLabels(prev => ({ ...prev, yaxis: 'Produced Length and Waste (m)', xaxis: logPeriod }))
     }
-  }, [logGraphType])
-
-  useLayoutEffect(() => {
-    dispatch(
-      getLogs({
-        customerId: customer?._id,
-        machineId,
-        page: 0,
-        pageSize: logRowsPerPage,
-        fromDate: dateFrom,
-        toDate: dateTo,
-        isArchived: false,
-        isMachineArchived: machine?.isArchived,
-        selectedLogType: logType.type,
-        searchKey: filteredSearchKey,
-        searchColumn: selectedSearchFilter
-      })
-    )
-    return () => {
-      dispatch(resetLogsGraphData())
-    }
-  }, [logPage, logRowsPerPage])
-
-  const onGetLogs = data => {
-    dispatch(ChangeLogPage(0))
-    dispatch(
-      getLogs({
-        customerId: customer?._id,
-        machineId,
-        page: 0,
-        pageSize: logRowsPerPage,
-        fromDate: dateFrom,
-        toDate: dateTo,
-        isArchived: false,
-        isMachineArchived: machine?.isArchived,
-        selectedLogType: logType.type,
-        searchKey: filteredSearchKey,
-        searchColumn: selectedSearchFilter
-      })
-    )
-  }
-
-  const handleCustomerChange = useCallback(
-    newCustomer => {
-      setValue('customer', newCustomer)
-      setValue('machine', null)
-      trigger(['customer', 'machine'])
-      dispatch(resetLogs())
-    },
-    [dispatch, setValue, trigger]
-  )
-
-  const handlePeriodChange = useCallback(
-    newPeriod => {
-      setValue('logPeriod', newPeriod)
-      switch (newPeriod) {
-        case 'Hourly':
-          setGraphLabels(prev => ({ ...prev, xaxis: 'Hours' }))
-          break
-        case 'Monthly':
-          setGraphLabels(prev => ({ ...prev, xaxis: 'Months' }))
-          break
-        case 'Daily':
-          setGraphLabels(prev => ({ ...prev, xaxis: 'Days' }))
-          break
-        case 'Quarterly':
-          setGraphLabels(prev => ({ ...prev, xaxis: 'Quarters' }))
-          break
-        case 'Yearly':
-          setGraphLabels(prev => ({ ...prev, xaxis: 'Years' }))
-          break
-        default:
-          break
-      }
-    },
-    [setValue]
-  )
-
-  const handleLogTypeChange = useCallback(
-    newLogType => {
-      setValue('logType', newLogType)
-      trigger('logType')
-    },
-    [setValue, trigger]
-  )
+  }, [setValue])
 
   return (
     <Fragment>
       <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_CONTROLLER} zIndex={7}>
-        <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
+        <FormProvider methods={methods} >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12}>
               <LogsTableController
-                customers={customers}
-                handleCustomerChange={handleCustomerChange}
-                customerMachines={customerMachines}
-                handleLogTypeChange={handleLogTypeChange}
                 handlePeriodChange={handlePeriodChange}
+                handleGraphTypeChange={handleGraphTypeChange}
                 setSelectedFilter={setSelectedSearchFilter}
                 isGraphPage
                 methods={methods}
-                onGetLogs={onGetLogs}
               />
             </Grid>
           </Grid>

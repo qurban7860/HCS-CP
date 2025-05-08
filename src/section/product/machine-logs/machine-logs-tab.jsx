@@ -90,13 +90,25 @@ const MachineLogsTab = () => {
     setValue('logPeriod', newPeriod)
   }, [setValue])
 
+  const handleGraphTypeChange = useCallback(
+    newGraphType => {
+      setValue('logGraphType', newGraphType)
+    },
+    [setValue]
+  )
+
   return (
     <Fragment>
       <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_CONTROLLER} zIndex={12}>
         <FormProvider methods={methods} onSubmit={handleSubmit(handleFormSubmit)}>
           <Grid container spacing={SPACING.TAB}>
             <Grid item xs={12} md={12}>
-              <LogsTableController handlePeriodChange={handlePeriodChange} handleLogTypeChange={handleLogTypeChange} methods={methods} />
+              <LogsTableController
+                handlePeriodChange={handlePeriodChange}
+                handleLogTypeChange={handleLogTypeChange}
+                handleGraphTypeChange={handleGraphTypeChange}
+                methods={methods}
+              />
             </Grid>
           </Grid>
         </FormProvider>

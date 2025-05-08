@@ -10,26 +10,19 @@ import { GStyledLoadingButton, GStyledControllerCardContainer } from 'theme/styl
 import { LOG_TYPE_CONFIG, logGraphTypes } from 'config'
 import { NAV } from 'config/layout'
 
-const LogsTableController = ({ customerMachines, handleMachineChange, handleLogTypeChange, handlePeriodChange, isLogsPage, isGraphPage, methods, onGetLogs }) => {
+const LogsTableController = ({ customerMachines, handleMachineChange, handleLogTypeChange, handleGraphTypeChange, handlePeriodChange, isLogsPage, isGraphPage, methods, onGetLogs }) => {
   const { selectedSearchFilter } = useSelector(state => state.log)
   const { themeMode } = useSettingContext()
 
   const { watch, setValue, handleSubmit, trigger } = methods
   const { dateFrom, dateTo, logType } = watch()
 
-  const handleGraphTypeChange = useCallback(
-    newGraphType => {
-      setValue('logGraphType', newGraphType)
-    },
-    [setValue]
-  )
-
   return (
     <GStyledControllerCardContainer height={isGraphPage ? 'auto' : NAV.H_NAV_LOG_CONTROLLER}>
       <Stack spacing={2}>
         {isLogsPage && (
           <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)' }}>
-            <RHFAutocomplete
+            {handleMachineChange && <RHFAutocomplete
               name='machine'
               label={t('machine.label')}
               options={
@@ -41,8 +34,8 @@ const LogsTableController = ({ customerMachines, handleMachineChange, handleLogT
               renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
               onChange={(e, newValue) => handleMachineChange(newValue)}
               size='small'
-            />
-            <RHFAutocomplete
+            />}
+            {handleLogTypeChange && <RHFAutocomplete
               name='logType'
               size='small'
               label='Log Type*'
@@ -60,7 +53,7 @@ const LogsTableController = ({ customerMachines, handleMachineChange, handleLogT
               openOnFocus
               fullWidth
               getOptionDisabled={option => option?.disabled}
-            />
+            />}
           </Box>
         )}
 
@@ -113,7 +106,7 @@ const LogsTableController = ({ customerMachines, handleMachineChange, handleLogT
         {isGraphPage && (
           <Stack direction='row' spacing={2} sx={{ width: '100%' }}>
             <Box sx={{ width: '50%' }}>
-              <RHFAutocomplete
+              {handlePeriodChange && <RHFAutocomplete
                 name='logPeriod'
                 label={t('log.period.label')}
                 options={['Hourly', 'Daily', 'Monthly', 'Quarterly', 'Yearly']}
@@ -121,10 +114,10 @@ const LogsTableController = ({ customerMachines, handleMachineChange, handleLogT
                 size='small'
                 disableClearable
                 required
-              />
+              />}
             </Box>
             <Box sx={{ width: '50%' }}>
-              <RHFAutocomplete
+              {handleGraphTypeChange && <RHFAutocomplete
                 name='logGraphType'
                 label={t('graph_type.label')}
                 options={logGraphTypes}
@@ -138,7 +131,7 @@ const LogsTableController = ({ customerMachines, handleMachineChange, handleLogT
                 )}
                 disableClearable
                 size='small'
-              />
+              />}
             </Box>
           </Stack>
         )}
@@ -152,6 +145,7 @@ LogsTableController.propTypes = {
   handleMachineChange: PropTypes.func,
   handleLogTypeChange: PropTypes.func,
   handlePeriodChange: PropTypes.func,
+  handleGraphTypeChange: PropTypes.func,
   isLogsPage: PropTypes.bool,
   isGraphPage: PropTypes.bool,
   methods: PropTypes.object,
