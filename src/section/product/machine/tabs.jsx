@@ -30,18 +30,20 @@ export const TABS = (machineId) => [
         path: PATH_MACHINE.machines.view(machineId),
         disabled: false
     },
-    // {
-    //   id: 1,
-    //   label: 'Machine Drawings',
-    //   icon: ICON_NAME.SITES,
-    //   disabled: true
-    // },
-    // {
-    //   id: 2,
-    //   label: 'Documents',
-    //  icon: ICON_NAME.SITES,
-    //   disabled: true
-    // },
+    {
+        id: 1,
+        label: 'Machine Drawings',
+        icon: ICON_NAME.DRAWING,
+        path: PATH_MACHINE.machines.drawings(machineId),
+        disabled: false
+    },
+    {
+        id: 2,
+        label: 'Documents',
+        icon: ICON_NAME.DOCUMENT,
+        path: PATH_MACHINE.machines.documents(machineId),
+        disabled: false
+    },
     // {
     //   id: 3,
     //   label: 'License',

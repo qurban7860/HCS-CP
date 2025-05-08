@@ -170,6 +170,8 @@ export default function Router() {
                   element: <MachineModuleLayout />,
                   children: [
                     { path: 'view', element: <MachinePage /> },
+                    { path: 'drawings', element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} /> },
+                    { path: 'documents', element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} /> },
                     {
                       path: 'logs',
                       children: [{ element: <MachinesLogsPage />, index: true }]

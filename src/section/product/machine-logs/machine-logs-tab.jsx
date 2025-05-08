@@ -21,7 +21,7 @@ const MachineLogsTab = () => {
   const [selectedSearchFilter] = useState('');
   const { logPage, logRowsPerPage } = useSelector(state => state.machineLog)
   const { machine } = useSelector(state => state.machine)
-  const { id } = useParams()
+  const { machineId } = useParams()
 
   const defaultValues = useMemo(
     () => ({
@@ -49,7 +49,7 @@ const MachineLogsTab = () => {
   useEffect(() => {
     dispatch(getLogs({
       customerId: user?.customer,
-      machineId: id,
+      machineId,
       page: logPage,
       pageSize: logRowsPerPage,
       fromDate: dateFrom,
@@ -66,7 +66,7 @@ const MachineLogsTab = () => {
     if (logPage == 0) {
       await dispatch(getLogs({
         customerId: user?.customer,
-        machineId: id,
+        machineId,
         page: logPage,
         pageSize: logRowsPerPage,
         fromDate: dateFrom,
