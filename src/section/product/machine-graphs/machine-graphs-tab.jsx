@@ -23,7 +23,7 @@ const MachineGraphsTab = () => {
 
   const { themeMode } = useSettingContext()
   const defaultValues = useLogDefaultValues()
-  const { id } = useParams()
+  const { machineId } = useParams()
   const methods = useForm({
     resolver: yupResolver(addLogSchema),
     defaultValues
@@ -33,23 +33,19 @@ const MachineGraphsTab = () => {
   const { dateFrom, dateTo, logType, logPeriod, filteredSearchKey, logGraphType } = watch()
   const [graphLabels, setGraphLabels] = useState({ yaxis: 'Produced Length and Waste (m)', xaxis: logPeriod })
 
-  useLayoutEffect(() => {
-    dispatch(resetLogsGraphData())
-  }, [dispatch])
-
-    useEffect(() => {
-      if (logGraphType?.key === 'productionRate') {
-        setGraphLabels(prev => ({ ...prev, yaxis: 'Production Rate (m/hr) ', xaxis: logPeriod }))
-      } else {
-        setGraphLabels(prev => ({ ...prev, yaxis: 'Produced Length and Waste (m)', xaxis: logPeriod }))
-      }
-    }, [logGraphType])
-
   useEffect(() => {
+    if (logGraphType?.key === 'productionRate') {
+      setGraphLabels(prev => ({ ...prev, yaxis: 'Production Rate (m/hr) ', xaxis: logPeriod }))
+    } else {
+      setGraphLabels(prev => ({ ...prev, yaxis: 'Produced Length and Waste (m)', xaxis: logPeriod }))
+    }
+  }, [logGraphType])
+
+  useLayoutEffect(() => {
     dispatch(
       getLogs({
         customerId: customer?._id,
-        machineId: id,
+        machineId,
         page: 0,
         pageSize: logRowsPerPage,
         fromDate: dateFrom,
@@ -61,6 +57,9 @@ const MachineGraphsTab = () => {
         searchColumn: selectedSearchFilter
       })
     )
+    return () => {
+      dispatch(resetLogsGraphData())
+    }
   }, [logPage, logRowsPerPage])
 
   const onGetLogs = data => {
@@ -68,7 +67,7 @@ const MachineGraphsTab = () => {
     dispatch(
       getLogs({
         customerId: customer?._id,
-        machineId: id,
+        machineId,
         page: 0,
         pageSize: logRowsPerPage,
         fromDate: dateFrom,
@@ -87,15 +86,6 @@ const MachineGraphsTab = () => {
       setValue('customer', newCustomer)
       setValue('machine', null)
       trigger(['customer', 'machine'])
-      dispatch(resetLogs())
-    },
-    [dispatch, setValue, trigger]
-  )
-
-  const handleMachineChange = useCallback(
-    newMachine => {
-      setValue('machine', newMachine)
-      trigger('machine')
       dispatch(resetLogs())
     },
     [dispatch, setValue, trigger]
@@ -135,14 +125,6 @@ const MachineGraphsTab = () => {
     [setValue, trigger]
   )
 
-  useEffect(() => {
-    if (logPeriod && logGraphType) {
-      const customerId = machine?.customer?._id
-      const LogType = 'erp'
-      dispatch(getLogGraphData(customerId, id, LogType, logPeriod, logGraphType?.key))
-    }
-  }, [logPeriod, logGraphType])
-
   return (
     <Fragment>
       <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_CONTROLLER} zIndex={7}>
@@ -153,7 +135,6 @@ const MachineGraphsTab = () => {
                 customers={customers}
                 handleCustomerChange={handleCustomerChange}
                 customerMachines={customerMachines}
-                handleMachineChange={handleMachineChange}
                 handleLogTypeChange={handleLogTypeChange}
                 handlePeriodChange={handlePeriodChange}
                 setSelectedFilter={setSelectedSearchFilter}
