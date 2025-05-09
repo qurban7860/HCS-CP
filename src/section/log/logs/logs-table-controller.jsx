@@ -57,7 +57,6 @@ const LogsTableController = ({ customerMachines, handleMachineChange, handleLogT
           </Box>
         )}
 
-        {!isGraphPage && (
           <Fragment>
             <Box display='grid' gap={2} gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)' }} sx={{ flexGrow: 1 }}>
               <RHFDatePickr
@@ -79,6 +78,7 @@ const LogsTableController = ({ customerMachines, handleMachineChange, handleLogT
                 }}
               />
             </Box>
+            {!isGraphPage && (
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}
               sx={{
                 justifyContent: 'space-between',
@@ -101,8 +101,8 @@ const LogsTableController = ({ customerMachines, handleMachineChange, handleLogT
                 </GStyledLoadingButton>
               </Box>
             </Stack>
+            )}
           </Fragment>
-        )}
         {isGraphPage && (
           <Stack direction='row' spacing={2} sx={{ width: '100%' }}>
             <Box sx={{ width: '50%' }}>

@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
 import { useSettingContext } from 'hook'
+import debounce from 'lodash/debounce'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { getLogGraphData, setSelectedSearchFilter, resetLogsGraphData } from 'store/slice/log/machineLog'
 import { addLogSchema } from 'schema'
@@ -28,18 +29,31 @@ const MachineGraphsTab = () => {
   })
 
   const { watch, setValue } = methods
-  const { logPeriod, logGraphType } = watch()
+  const { logPeriod, logGraphType, dateFrom, dateTo } = watch()
   const [graphLabels, setGraphLabels] = useState({ yaxis: 'Produced Length and Waste (m)', xaxis: logPeriod })
 
   useLayoutEffect(() => {
-    if (logPeriod && logGraphType) {
-      const customerId = machine?.customer?._id
-      dispatch(getLogGraphData(customerId, machineId, 'erp', logPeriod, logGraphType?.key))
-    }
+    const customerId = machine?.customer?._id
+    const fetchGraphData = debounce(() => {
+      if (logPeriod && logGraphType) {
+        dispatch(getLogGraphData(
+          customerId,
+          machineId,
+          'erp',
+          logPeriod,
+          logGraphType?.key,
+          new Date(new Date(dateFrom).setHours(0, 0, 0, 0)),
+          new Date(new Date(dateTo).setHours(23, 59, 59, 999))
+        ))
+      }
+    }, 500) 
+    fetchGraphData()
     return () => {
+      fetchGraphData.cancel()
       dispatch(resetLogsGraphData())
     }
-  }, [logPeriod, logGraphType])
+  }, [logPeriod, logGraphType, machine?.customer?._id, machineId, dateFrom, dateTo])
+  
 
   const handlePeriodChange = useCallback(newPeriod => {
     setValue('logPeriod', newPeriod)
