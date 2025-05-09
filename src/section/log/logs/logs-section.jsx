@@ -38,7 +38,7 @@ const LogsSection = ({ isArchived }) => {
       logType: getLogTypeConfigForGenerationAndType(5, 'ERP') || null,
       dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
       dateTo: new Date(),
-      logPeriod: 'Monthly',
+      logPeriod: 'Daily',
       logGraphType: logGraphTypes[0]
     }
     ), []
