@@ -68,23 +68,29 @@ const GraphsSection = () => {
     }
   }, [logGraphType])
 
-  const debouncedGetLogsGraph = useMemo(() => debounce(() => {
+  const getLogsGraph = useCallback(() => {
     dispatch(getLogGraphData(
-      user?.customer, 
-      machine?._id, 'erp', 
-      logPeriod, 
+      user?.customer,
+      machine?._id,
+      'erp',
+      logPeriod,
       logGraphType?.key,
       new Date(new Date(dateFrom).setHours(0, 0, 0, 0)),
       new Date(new Date(dateTo).setHours(23, 59, 59, 999))
     ));
-  }, 500), [user?.customer, machine?._id, logPeriod, logGraphType?.key, dateFrom, dateTo]);  
-
+  }, [user?.customer, machine?._id, logPeriod, logGraphType?.key, dateFrom, dateTo]);
+  
   useEffect(() => {
-    debouncedGetLogsGraph();
+    const handler = debounce(() => {
+      if (machine && logGraphType) getLogsGraph();
+    }, 500);
+  
+    handler();
+  
     return () => {
-      debouncedGetLogsGraph.cancel();
+      handler.cancel();
     };
-  }, [debouncedGetLogsGraph]);
+  }, [getLogsGraph, machine, logGraphType]);  
   
   const handlePeriodChange = newPeriod => {
     setValue('logPeriod', newPeriod)
