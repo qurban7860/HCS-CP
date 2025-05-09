@@ -168,7 +168,7 @@ export const {
 
 // : thunks
 
-export function getLogGraphData(customerId, machineId, type = 'erp', periodType, logGraphType) {
+export function getLogGraphData(customerId, machineId, type = 'erp', periodType, logGraphType, startDate, endDate) {
     return async dispatch => {
         dispatch(logSlice.actions.startLoading())
         try {
@@ -177,7 +177,9 @@ export function getLogGraphData(customerId, machineId, type = 'erp', periodType,
                 machine: machineId,
                 type,
                 periodType,
-                logGraphType
+                logGraphType,
+                startDate,
+                endDate,
             }
             const response = await axios.get(PATH_SERVER.LOG.graph, { params })
             dispatch(logSlice.actions.setLogsGraphData(response?.data || ''))

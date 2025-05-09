@@ -1,14 +1,16 @@
 import { Box, Button, Grid, Stack, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { t } from 'i18next'
 import { useCallback, useEffect, useState, useMemo } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+import { useForm, FormProvider } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useAuthContext } from 'auth/use-auth-context'
-import { HowickLoader, RHFAutocomplete, TableTitleBox } from 'component'
+import { HowickLoader, TableTitleBox } from 'component'
+import { RHFAutocomplete, RHFDatePickr } from 'component/hook-form'
 import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 import { Icon, ICON_NAME, useResponsive, useSettingContext } from 'hook'
 import { dispatch } from 'store'
+import debounce from 'lodash/debounce'
 import { getLogGraphData, resetLogsGraphData, getMachines, resetMachines } from 'store/slice'
 import { GStyledControllerCardContainer, GStyledStickyDiv } from 'theme/style'
 import { NAV } from 'config'
@@ -29,7 +31,9 @@ const GraphsSection = () => {
       customer: user?.customer || null,
       machine: null,
       logPeriod: 'Monthly',
-      logGraphType: logGraphTypes[0]
+      logGraphType: logGraphTypes[0],
+      dateFrom: new Date(new Date().setHours(0, 0, 0, 0)),
+      dateTo: new Date(new Date().setHours(23, 59, 59, 999)),
     }
     ), []
   );
@@ -39,8 +43,8 @@ const GraphsSection = () => {
     mode: 'onChange',
   })
 
-  const { watch, setValue, handleSubmit } = methods
-  const { machine, logPeriod, logGraphType } = watch()
+  const { watch, setValue, trigger, handleSubmit } = methods
+  const { machine, logPeriod, logGraphType, dateFrom, dateTo } = watch()
   const [graphLabels, setGraphLabels] = useState({ yaxis: 'Produced Length and Waste (m)', xaxis: logPeriod })
 
   const { themeMode } = useSettingContext()
@@ -64,14 +68,24 @@ const GraphsSection = () => {
     }
   }, [logGraphType])
 
-  const getLogsGraph = useCallback(() => {
-    dispatch(getLogGraphData(user?.customer, machine?._id, 'erp', logPeriod, logGraphType?.key));
-  }, [dispatch, machine?._id, logPeriod, logGraphType]);
+  const debouncedGetLogsGraph = useMemo(() => debounce(() => {
+    dispatch(getLogGraphData(
+      user?.customer, 
+      machine?._id, 'erp', 
+      logPeriod, 
+      logGraphType?.key,
+      new Date(new Date(dateFrom).setHours(0, 0, 0, 0)),
+      new Date(new Date(dateTo).setHours(23, 59, 59, 999))
+    ));
+  }, 500), [user?.customer, machine?._id, logPeriod, logGraphType?.key, dateFrom, dateTo]);  
 
   useEffect(() => {
-    getLogsGraph();
-  }, [getLogsGraph]);
-
+    debouncedGetLogsGraph();
+    return () => {
+      debouncedGetLogsGraph.cancel();
+    };
+  }, [debouncedGetLogsGraph]);
+  
   const handlePeriodChange = newPeriod => {
     setValue('logPeriod', newPeriod)
     switch (newPeriod) {
@@ -154,6 +168,28 @@ const GraphsSection = () => {
                     disableClearable
                     size='small'
                   />
+                </Box>
+                <Box display='grid' gap={2} gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)' }} sx={{ flexGrow: 1 }}>
+                    <RHFDatePickr
+                      label="Start Date"
+                      name="dateFrom"
+                      size="small"
+                      value={dateFrom}
+                      onChange={(newValue) => {
+                        setValue('dateFrom', newValue);
+                        trigger(['dateFrom', 'dateTo']);
+                      }}
+                    />
+                    <RHFDatePickr
+                      label="End Date"
+                      name="dateTo"
+                      size="small"
+                      value={dateTo}
+                      onChange={(newValue) => {
+                        setValue('dateTo', newValue);
+                        trigger(['dateFrom', 'dateTo']);
+                      }}
+                    />
                 </Box>
               </GStyledControllerCardContainer>
             </Grid>
