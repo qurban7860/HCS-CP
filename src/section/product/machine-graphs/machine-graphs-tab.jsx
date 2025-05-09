@@ -1,4 +1,4 @@
-import { Fragment, useState, useCallback, useLayoutEffect } from 'react'
+import { Fragment, useState, useCallback, useLayoutEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -23,6 +23,8 @@ const MachineGraphsTab = () => {
   const { themeMode } = useSettingContext()
   const defaultValues = useLogDefaultValues()
   const { machineId } = useParams()
+  const isInitialRender = useRef(true);
+
   const methods = useForm({
     resolver: yupResolver(addLogSchema),
     defaultValues
@@ -33,9 +35,9 @@ const MachineGraphsTab = () => {
   const [graphLabels, setGraphLabels] = useState({ yaxis: 'Produced Length and Waste (m)', xaxis: logPeriod })
 
   useLayoutEffect(() => {
-    const customerId = machine?.customer?._id
+    const customerId = machine?.customer?._id;
     const fetchGraphData = debounce(() => {
-      if (logPeriod && logGraphType) {
+      if (!isInitialRender.current && logPeriod && logGraphType) {
         dispatch(getLogGraphData(
           customerId,
           machineId,
@@ -46,13 +48,16 @@ const MachineGraphsTab = () => {
           new Date(new Date(dateTo).setHours(23, 59, 59, 999))
         ))
       }
-    }, 500) 
-    fetchGraphData()
+      isInitialRender.current = false; 
+    }, 500);
+
+    fetchGraphData();
+
     return () => {
-      fetchGraphData.cancel()
-      dispatch(resetLogsGraphData())
-    }
-  }, [logPeriod, logGraphType, machine?.customer?._id, machineId, dateFrom, dateTo])
+      fetchGraphData.cancel();
+      dispatch(resetLogsGraphData());
+    };
+  }, [logPeriod, logGraphType, machine?.customer?._id, machineId, dateFrom, dateTo]);
   
 
   const handlePeriodChange = useCallback(newPeriod => {

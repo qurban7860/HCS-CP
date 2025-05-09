@@ -1,6 +1,6 @@
 import { Box, Button, Grid, Stack, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { t } from 'i18next'
-import { useCallback, useEffect, useState, useMemo } from 'react'
+import { useCallback, useEffect, useState, useMemo, useRef } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -25,12 +25,13 @@ const GraphsSection = () => {
   const { machines } = useSelector(state => state.machine)
   const { isLoading, logsGraphData } = useSelector(state => state.log)
   const { user } = useAuthContext()
+  const isInitialRender = useRef(true);
 
   const defaultValues = useMemo(
     () => ({
       customer: user?.customer || null,
       machine: null,
-      logPeriod: 'Monthly',
+      logPeriod: 'Daily',
       logGraphType: logGraphTypes[0],
       dateFrom: new Date(new Date().setHours(0, 0, 0, 0)),
       dateTo: new Date(new Date().setHours(23, 59, 59, 999)),
@@ -69,15 +70,19 @@ const GraphsSection = () => {
   }, [logGraphType])
 
   const debouncedGetLogsGraph = useMemo(() => debounce(() => {
-    dispatch(getLogGraphData(
-      user?.customer, 
-      machine?._id, 'erp', 
-      logPeriod, 
-      logGraphType?.key,
-      new Date(new Date(dateFrom).setHours(0, 0, 0, 0)),
-      new Date(new Date(dateTo).setHours(23, 59, 59, 999))
-    ));
-  }, 500), [user?.customer, machine?._id, logPeriod, logGraphType?.key, dateFrom, dateTo]);  
+    if (!isInitialRender.current) {
+      dispatch(getLogGraphData(
+        user?.customer,
+        machine?._id,
+        'erp',
+        logPeriod,
+        logGraphType?.key,
+        new Date(new Date(dateFrom).setHours(0, 0, 0, 0)),
+        new Date(new Date(dateTo).setHours(23, 59, 59, 999))
+      ));
+    }
+    isInitialRender.current = false;
+  }, 500), [user?.customer, machine?._id, logPeriod, logGraphType?.key, dateFrom, dateTo]);
 
   useEffect(() => {
     debouncedGetLogsGraph();

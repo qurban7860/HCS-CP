@@ -14,7 +14,7 @@ export function useLogDefaultValues(customer, machine) {
             logType: getLogTypeConfigForGenerationAndType(5, 'ERP') || null,
             dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
             dateTo: today,
-            logPeriod: 'Monthly',
+            logPeriod: 'Daily',
             logGraphType: logGraphTypes[0]
         }
     }, [customer, machine])
