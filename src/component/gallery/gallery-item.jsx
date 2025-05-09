@@ -101,6 +101,7 @@ export default function GalleryItem({ image, isLoading, onOpenLightbox, onOpenFi
             ):(<SkeletonGallery />)
             }
 
+
             <ConfirmDialog
                 open={deleteConfirm}
                 onClose={()=> seDeleteConfirm(false)}
@@ -113,7 +114,14 @@ export default function GalleryItem({ image, isLoading, onOpenLightbox, onOpenFi
                     }} color='error'>{t('delete.label')}</Button>
                 }
                 SubButton={t('cancel.label')} />
+                
 
         </Fragment>
     );
   }
+
+
+
+
+
+  

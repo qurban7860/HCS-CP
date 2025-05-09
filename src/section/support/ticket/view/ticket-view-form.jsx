@@ -10,6 +10,8 @@ import { useAuthContext } from 'auth/use-auth-context'
 import { enqueueSnackbar, IconFlexi, snack, useResponsive, useSettingContext } from 'hook'
 import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
+import ThumbnailDocButton from 'component/dialog/ThumbnailDocButton'
+import DialogTicketAddFile from 'component/dialog/DialogTicketAddFile'
 import { getFile, getTicket, getTicketSettings, deleteFile, resetTicketSettings, resetTicket, updateTicketField } from 'store/slice'
 import { PATH_DASHBOARD, PATH_MACHINE, PATH_SUPPORT } from 'route/path'
 import { TicketSchema } from 'schema'
@@ -34,6 +36,7 @@ function TicketViewForm() {
   const [selectedImage, setSelectedImage] = useState(-1)
   const [pdf, setPDF] = useState(null)
   const [PDFName, setPDFName] = useState('')
+  const [fileDialog, setFileDialog] = useState(false)
   const [PDFViewerDialog, setPDFViewerDialog] = useState(false)
 
   const { customer, isLoading, machine, ticket, ticketSettings } = useSelector(
@@ -131,16 +134,19 @@ function TicketViewForm() {
       })
   }
 
-  const handleDeleteFile = async fileId => {
+  const handleDeleteFile = async (fileId) => {
     try {
-      await dispatch(deleteFile(id, fileId))
-      snack(t('responses.success.delete_file'))
-    } catch (err) {
-      console.log(err)
-      snack(t('responses.error.delete_file'), { variant: `error` })
-    }
-  }
+      await dispatch(deleteFile(id, fileId));
+      snack(t('responses.success.delete_file'));
 
+      dispatch(resetTicket());
+      await dispatch(getTicket(id, customer?._id));
+    } catch (err) {
+      console.error(err);
+      snack(t('responses.error.delete_file'), { variant: 'error' });
+    }
+  };
+  
   const handleOpenFile = async (fileId, fileName, fileExtension) => {
     setPDFName(`${fileName}.${fileExtension}`)
     setPDFViewerDialog(true)
@@ -185,6 +191,7 @@ function TicketViewForm() {
 
 
   return (
+    <>
     <Fragment>
       <Grid container direction={{ xs: 'column', md: 'row' }} mt={2} flex={1} rowSpacing={4} gridAutoFlow={isMobile ? FLEX_DIR.COLUMN : FLEX_DIR.ROW} columnSpacing={2}>
         {/* <GStyledStickyFormGrid item xs={12} md={3}>
@@ -351,7 +358,7 @@ function TicketViewForm() {
                       size={150}
                     />
                   ))}
-
+                   
                   {ticket?.files?.map((file, _index) => {
                     if (!file.fileType.startsWith('image')) {
                       return (
@@ -379,6 +386,8 @@ function TicketViewForm() {
                     }
                     return null
                   })}
+                  <ThumbnailDocButton onClick={() => setFileDialog(true)} />
+
                 </Box>
 
                 <Lightbox index={selectedImage} slides={slides} open={selectedImage >= 0} close={handleCloseLightbox} onGetCurrentIndex={index => handleOpenLightbox(index)} disabledSlideshow />
@@ -467,6 +476,22 @@ function TicketViewForm() {
         </Dialog>
       )}
     </Fragment>
+     {fileDialog && <DialogTicketAddFile open={fileDialog} handleClose={() => setFileDialog(false)} />}
+     {PDFViewerDialog && (
+       <Dialog fullScreen open={PDFViewerDialog} onClose={() => setPDFViewerDialog(false)}>
+         <DialogTitle variant='h3' sx={{ pb: 1, pt: 2, display: 'flex', justifyContent: 'space-between' }}>
+           PDF View
+           <Button variant='outlined' onClick={() => setPDFViewerDialog(false)}>Close</Button>
+         </DialogTitle>
+         <Divider variant='fullWidth' />
+         {pdf ? (
+           <iframe title={PDFName} src={pdf} style={{ paddingBottom: 10 }} width='100%' height='842px' />
+         ) : (
+           <SkeletonPDF />
+         )}
+       </Dialog>
+     )}
+ </>
   )
 }
 

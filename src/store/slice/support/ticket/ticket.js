@@ -107,6 +107,13 @@ const supportSlice = createSlice({
       state.ticket = action.payload
       state.initial = true
     },
+    addTicketFilesSuccess(state, action) {
+      state.ticket = {
+        ...state.ticket,
+        files: [ ...( state.ticket?.files || [] ), ...( action.payload || [] ) ]
+      }
+      state.isLoadingTicketFile = false;
+    },
     deleteTicketFileSuccess(state, action) {
       const { id } = action.payload
       const array = state.ticket.files
@@ -223,7 +230,24 @@ export function getTicketSettings(cancelToken) {
     }
   }
 }
-
+export function addFiles( id, params ) {
+  return async (dispatch) => {
+    dispatch(supportSlice.actions.setLoadingFile(true));
+    try {
+      const formData = new FormData();
+      (params?.files || []).forEach((file, index) => {
+        formData.append(`images`, file);
+      });
+      const response = await axios.post(`${PATH_SERVER.SUPPORT.TICKETS.detail(id)}/files/`, formData);
+      dispatch(supportSlice.actions.addTicketFilesSuccess( response.data ));
+      return response;
+    } catch (error) {
+      console.log(error);
+      dispatch(supportSlice.actions.hasError(error.Message));
+      throw error;
+    }
+  };
+}
 export function deleteFile(ticketId, fileId) {
   return async dispatch => {
     dispatch(supportSlice.actions.startLoading())
