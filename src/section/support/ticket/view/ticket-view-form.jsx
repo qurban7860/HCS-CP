@@ -219,11 +219,11 @@ function TicketViewForm() {
           <Box mb={5} mt={2}>
             <Card {...GCardOption(themeMode)}>
               <GStyledTopBorderDivider mode={themeMode} />
-              <Grid container spacing={2} p={1.5}>
+              <Grid container spacing={1} p={1.5}>
                 <GridViewField
                   heading={t('machine.label')}
                   isLoading={isLoading}
-                  gridSize={6}
+                  gridSize={3}
                   customerLink={PATH_MACHINE.machines.view(defaultValues?.machineId)}
                 >
                   {defaultValues?.machine}
@@ -232,7 +232,7 @@ function TicketViewForm() {
                 <GridViewField
                   heading={t('hmi_version.label')}
                   isLoading={isLoading}
-                  gridSize={3}
+                  gridSize={1.5}
                 >
                   {defaultValues?.hlc}
                 </GridViewField>
@@ -240,7 +240,7 @@ function TicketViewForm() {
                 <GridViewField
                   heading={t('plc_version.label')}
                   isLoading={isLoading}
-                  gridSize={3}
+                  gridSize={1.5}
                 >
                   {defaultValues?.plc}
                 </GridViewField>
@@ -248,7 +248,7 @@ function TicketViewForm() {
                 <GridViewField
                   heading={t('request_type.label')}
                   isLoading={isLoading}
-                  gridSize={6}
+                  gridSize={3}
                 >
                   {defaultValues?.requestType}
                 </GridViewField>
@@ -256,7 +256,7 @@ function TicketViewForm() {
                 <GridViewField
                   heading={t('status.label')}
                   isLoading={isLoading}
-                  gridSize={3}
+                  gridSize={1.5}
                 >{((isCustomerAdmin(user) && !ticket?.status?.statusType?.isResolved) || isSuperAdmin(user)) ?
                   <DropDownField name="status" isNullable label='Status' value={ticket?.status} onSubmit={onSubmit} options={ticketSettings?.statuses} />
                   : defaultValues?.status
@@ -265,7 +265,7 @@ function TicketViewForm() {
                 <GridViewField
                   heading={t('priority.label')}
                   isLoading={isLoading}
-                  gridSize={3}
+                  gridSize={1.5}
                 >
                   <DropDownField name="priority" isNullable label='Priority' value={ticket?.priority} onSubmit={onSubmit} options={ticketSettings?.priorities} />
                   {/* <IconFlexi
