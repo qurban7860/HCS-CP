@@ -92,7 +92,6 @@ function Header() {
              onClose={() => setClockAnchor(null)}
             >
             <Clock main city={KEY.AUCKLAND} />
-            <Clock local={Intl.DateTimeFormat().resolvedOptions().timeZone} />
             </PopoverDefault>
              </Box>
         </Fragment>

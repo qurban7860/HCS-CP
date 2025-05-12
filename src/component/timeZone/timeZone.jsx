@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
-import { useSettingContext } from 'hook'; 
-import { KEY } from 'constant'; 
+import { useSettingContext } from 'hook';
+import { KEY } from 'constant';
 
 const TimeDisplay = () => {
   const [localTime, setLocalTime] = useState('');
@@ -14,25 +14,34 @@ const TimeDisplay = () => {
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     setLocalZone(timeZone);
 
-    const updateTime = () => {
-      const now = new Date();
-
-      const options = {
+    const getFormattedTime = (date, timeZone) => {
+      const optionsDate = {
         weekday: 'short',
         day: '2-digit',
         month: 'short',
+        timeZone,
+      };
+      const optionsTime = {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
         hour12: true,
-        timeZone: timeZone,
+        timeZone,
       };
 
-      const local = now.toLocaleString(undefined, options);
-      const nz = now.toLocaleString('en-NZ', {
-        ...options,
-        timeZone: 'Pacific/Auckland',
-      });
+      const datePart = date.toLocaleDateString('en-NZ', optionsDate); // e.g., Thu, 08 May
+      let timePart = date.toLocaleTimeString('en-NZ', optionsTime);   // e.g., 06:20:27 pm
+
+      // Ensure AM/PM is uppercase
+      timePart = timePart.replace(/\b(am|pm)\b/i, match => match.toUpperCase());
+
+      return `${datePart} - ${timePart}`;
+    };
+
+    const updateTime = () => {
+      const now = new Date();
+      const local = getFormattedTime(now, timeZone);
+      const nz = getFormattedTime(now, 'Pacific/Auckland');
 
       setLocalTime(local);
       setNzTime(nz);
@@ -59,25 +68,29 @@ const TimeDisplay = () => {
       ? theme.palette.grey[800]
       : theme.palette.grey[100];
 
+  const isSameTime = nzTime === localTime;
+
   return (
     <Box display="flex" alignItems="center" gap={3}>
       <Box sx={boxStyle}>
         <Typography variant="caption" sx={{ color: textColor }}>
           <Box component="span" sx={{ fontWeight: 700 }}>
-           Pacific/Auckland
+            Pacific/Auckland -
           </Box>{' '}
           {nzTime}
         </Typography>
       </Box>
 
-      <Box sx={boxStyle}>
-        <Typography variant="caption" sx={{ color: textColor }}>
-          <Box component="span" sx={{ fontWeight: 700 }}>
-            {localZone}:
-          </Box>{' '}
-          {localTime}
-        </Typography>
-      </Box>
+      {!isSameTime && (
+        <Box sx={boxStyle}>
+          <Typography variant="caption" sx={{ color: textColor }}>
+            <Box component="span" sx={{ fontWeight: 700 }}>
+              {localZone} -
+            </Box>{' '}
+            {localTime}
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
 };
