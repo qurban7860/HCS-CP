@@ -31,7 +31,7 @@ function Header() {
   const toggleClockMenu = event => {
     setClockAnchor(clockAnchor ? null : event.currentTarget)
   }
-  
+ 
 
   const clockOpen = Boolean(clockAnchor)
   const clockId = clockOpen ? 'clock-menu' : undefined
@@ -75,16 +75,16 @@ function Header() {
               <IconButton sx={{ mr: 1, color: 'text.primary' }} onClick={toggleMobileMenu}>
                 <Icon icon={ICON_NAME.MENU} color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze} />
               </IconButton>
-              <IconButton sx={{ mr: 1, color: 'text.primary' }} onClick={toggleClockMenu}>
+              {/* <IconButton sx={{ mr: 1, color: 'text.primary' }} onClick={toggleClockMenu}>
                 <Icon icon={ICON_NAME.CLOCK} color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze} />
-              </IconButton>
-              
+              </IconButton> */}
+                <TimeDisplay/>
             </Box>
             <Box justifyContent={FLEX.FLEX_END} sx={{ display: FLEX.FLEX, alignItems: KEY.CENTER }}>
               <AccountPopover />
             </Box>
             <DrawerMenu navConfig={navConfig} open={mobileMenuOpen} onClose={toggleMobileMenu} />
-            <PopoverDefault
+            {/* <PopoverDefault
              id={clockId}
              localizedLabel={'time_zone.label'}
              open={clockOpen}
@@ -92,7 +92,8 @@ function Header() {
              onClose={() => setClockAnchor(null)}
             >
             <Clock main city={KEY.AUCKLAND} />
-            </PopoverDefault>
+            </PopoverDefault> */}
+           
              </Box>
         </Fragment>
         

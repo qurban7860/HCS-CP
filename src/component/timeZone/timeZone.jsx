@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Typography,
+  IconButton,
+  Popover,
+  useMediaQuery,
+  useTheme
+} from '@mui/material';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useSettingContext } from 'hook';
 import { KEY } from 'constant';
 
@@ -7,8 +15,10 @@ const TimeDisplay = () => {
   const [localTime, setLocalTime] = useState('');
   const [nzTime, setNzTime] = useState('');
   const [localZone, setLocalZone] = useState('');
+  const [anchorEl, setAnchorEl] = useState(null);
   const { themeMode } = useSettingContext();
   const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -29,10 +39,8 @@ const TimeDisplay = () => {
         timeZone,
       };
 
-      const datePart = date.toLocaleDateString('en-NZ', optionsDate); // e.g., Thu, 08 May
-      let timePart = date.toLocaleTimeString('en-NZ', optionsTime);   // e.g., 06:20:27 pm
-
-      // Ensure AM/PM is uppercase
+      const datePart = date.toLocaleDateString('en-NZ', optionsDate);
+      let timePart = date.toLocaleTimeString('en-NZ', optionsTime);
       timePart = timePart.replace(/\b(am|pm)\b/i, match => match.toUpperCase());
 
       return `${datePart} - ${timePart}`;
@@ -40,11 +48,8 @@ const TimeDisplay = () => {
 
     const updateTime = () => {
       const now = new Date();
-      const local = getFormattedTime(now, timeZone);
-      const nz = getFormattedTime(now, 'Pacific/Auckland');
-
-      setLocalTime(local);
-      setNzTime(nz);
+      setNzTime(getFormattedTime(now, 'Pacific/Auckland'));
+      setLocalTime(getFormattedTime(now, timeZone));
     };
 
     updateTime();
@@ -70,9 +75,16 @@ const TimeDisplay = () => {
 
   const isSameTime = nzTime === localTime;
 
-  return (
-    <Box display="flex" alignItems="center" gap={3}>
-      <Box sx={boxStyle}>
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => setAnchorEl(null);
+  const open = Boolean(anchorEl);
+
+  const renderTimeInfo = () => (
+    <>
+      <Box sx={boxStyle} mb={isSmallScreen ? 1 : 0}>
         <Typography variant="caption" sx={{ color: textColor }}>
           <Box component="span" sx={{ fontWeight: 700 }}>
             Pacific/Auckland -
@@ -90,6 +102,32 @@ const TimeDisplay = () => {
             {localTime}
           </Typography>
         </Box>
+      )}
+    </>
+  );
+
+  return (
+    <Box display="flex" alignItems="center" gap={2}>
+      {isSmallScreen ? (
+        <>
+          <IconButton onClick={handleClick} aria-label="time">
+            <AccessTimeIcon />
+          </IconButton>
+
+          <Popover
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+          >
+            <Box p={2} display="flex" flexDirection="column">
+              {renderTimeInfo()}
+            </Box>
+          </Popover>
+        </>
+      ) : (
+        renderTimeInfo()
       )}
     </Box>
   );
