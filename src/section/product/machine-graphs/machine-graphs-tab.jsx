@@ -1,11 +1,10 @@
-import { Fragment, useState, useCallback, useLayoutEffect, useRef } from 'react'
+import { Fragment, useState, useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
 import { useSettingContext } from 'hook'
-import debounce from 'lodash/debounce'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { getLogGraphData, setSelectedSearchFilter, resetLogsGraphData } from 'store/slice/log/machineLog'
 import { addLogSchema } from 'schema'
@@ -23,42 +22,39 @@ const MachineGraphsTab = () => {
   const { themeMode } = useSettingContext()
   const defaultValues = useLogDefaultValues()
   const { machineId } = useParams()
-  const isInitialRender = useRef(true);
 
   const methods = useForm({
     resolver: yupResolver(addLogSchema),
     defaultValues
   })
 
-  const { watch, setValue } = methods
+  const { watch, setValue, handleSubmit } = methods
   const { logPeriod, logGraphType, dateFrom, dateTo } = watch()
   const [graphLabels, setGraphLabels] = useState({ yaxis: 'Produced Length and Waste (m)', xaxis: logPeriod })
-
-  useLayoutEffect(() => {
-    const customerId = machine?.customer?._id;
-    const fetchGraphData = debounce(() => {
-      if (!isInitialRender.current && logPeriod && logGraphType) {
-        dispatch(getLogGraphData(
-          customerId,
-          machineId,
-          'erp',
-          logPeriod,
-          logGraphType?.key,
-          new Date(new Date(dateFrom).setHours(0, 0, 0, 0)),
-          new Date(new Date(dateTo).setHours(23, 59, 59, 999))
-        ))
-      }
-      isInitialRender.current = false; 
-    }, 500);
-
-    fetchGraphData();
-
-    return () => {
-      fetchGraphData.cancel();
-      dispatch(resetLogsGraphData());
-    };
-  }, [logPeriod, logGraphType, machine?.customer?._id, machineId, dateFrom, dateTo]);
   
+  useEffect(() => {
+    if (logPeriod && logGraphType && dateFrom && dateTo && machine?.customer?._id) {
+      handleFormSubmit()
+    }
+    return () => {
+      dispatch(resetLogsGraphData())
+    }
+  }, [])
+
+  const handleFormSubmit = useCallback(() => {
+    const customerId = machine?.customer?._id
+    if (!customerId || !logGraphType?.key) return
+
+    dispatch(getLogGraphData(
+      customerId,
+      machineId,
+      'erp',
+      logPeriod,
+      logGraphType.key,
+      new Date(new Date(dateFrom).setHours(0, 0, 0, 0)),
+      new Date(new Date(dateTo).setHours(23, 59, 59, 999))
+    ))
+  }, [logPeriod, logGraphType, dateFrom, dateTo, machine?.customer?._id, machineId])
 
   const handlePeriodChange = useCallback(newPeriod => {
     setValue('logPeriod', newPeriod)
@@ -95,7 +91,7 @@ const MachineGraphsTab = () => {
   return (
     <Fragment>
       <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_CONTROLLER} zIndex={7}>
-        <FormProvider methods={methods} >
+        <FormProvider methods={methods} onSubmit={handleSubmit(handleFormSubmit)}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12}>
               <LogsTableController
@@ -104,6 +100,7 @@ const MachineGraphsTab = () => {
                 setSelectedFilter={setSelectedSearchFilter}
                 isGraphPage
                 methods={methods}
+                onGetGraph={handleFormSubmit}
               />
             </Grid>
           </Grid>

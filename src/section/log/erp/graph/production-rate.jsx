@@ -42,8 +42,10 @@ const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData, i
         labels = Array.from({ length: 24 }, (_, i) => {
           const date = new Date();
           date.setHours(date.getHours() - i);
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
           const hour = String(date.getHours()).padStart(2, '0');
-          return `${hour}:00`;
+           return `${month}/${day} ${hour}`;
         }).reverse();                    
         break;
       case 'Daily':
@@ -144,12 +146,12 @@ const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData, i
             {t('production.production_rate.label').toUpperCase()}
           </Typography>
         )}
-        &nbsp;
+        {/* &nbsp;
         <Box>
           <Typography variant={isDashboard ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.H4} p={0}>
             {getTimePeriodDesc(timePeriod).toUpperCase()}
           </Typography>
-        </Box>
+        </Box> */}
       </GStyledSpanBox>
       <Card sx={{ p: 3, background: themeMode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[800], color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white }}>
         {(isLoading || isLoadingMachineLog) && (

@@ -130,7 +130,18 @@ const LogsSection = ({ isArchived }) => {
             <Grid item xs={12} sm={12}>
               <GStyledControllerCardContainer height={'auto'}>
                 <Stack spacing={2}>
-                  <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)' }}>
+                  <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>
+                    <RHFDatePickr
+                      label='Start Date'
+                      name='dateFrom'
+                      size='small'
+                    />
+                    <RHFDatePickr
+                      label='End Date'
+                      name='dateTo'
+                      size='small'
+                    />
+                   
                     <RHFAutocomplete
                       name='machine'
                       label={t('machine.label')}
@@ -144,7 +155,7 @@ const LogsSection = ({ isArchived }) => {
                       onChange={(e, newValue) => handleMachineChange(newValue)}
                       size='small'
                     />
-                    <RHFAutocomplete
+                    {/* <RHFAutocomplete
                       name='logType'
                       size='small'
                       label='Log Type*'
@@ -162,20 +173,10 @@ const LogsSection = ({ isArchived }) => {
                       openOnFocus
                       fullWidth
                       getOptionDisabled={option => option?.disabled}
-                    />
+                    /> */}
                   </Box>
 
                   <Fragment>
-                    <Box display='grid' gap={2} gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)' }} sx={{ flexGrow: 1 }}>
-                      <RHFDatePickr
-                        label='Start Date'
-                        name='dateFrom'
-                      />
-                      <RHFDatePickr
-                        label='End Date'
-                        name='dateTo'
-                      />
-                    </Box>
                     <Stack
                       direction={{ xs: 'column', sm: 'row' }}
                       spacing={2}
