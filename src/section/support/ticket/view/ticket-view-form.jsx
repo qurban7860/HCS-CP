@@ -146,7 +146,7 @@ function TicketViewForm() {
       snack(t('responses.error.delete_file'), { variant: 'error' });
     }
   };
-  
+
   const handleOpenFile = async (fileId, fileName, fileExtension) => {
     setPDFName(`${fileName}.${fileExtension}`)
     setPDFViewerDialog(true)
@@ -192,9 +192,9 @@ function TicketViewForm() {
 
   return (
     <>
-    <Fragment>
-      <Grid container direction={{ xs: 'column', md: 'row' }} mt={2} flex={1} rowSpacing={4} gridAutoFlow={isMobile ? FLEX_DIR.COLUMN : FLEX_DIR.ROW} columnSpacing={2}>
-        {/* <GStyledStickyFormGrid item xs={12} md={3}>
+      <Fragment>
+        <Grid container direction={{ xs: 'column', md: 'row' }} mt={2} flex={1} rowSpacing={4} gridAutoFlow={isMobile ? FLEX_DIR.COLUMN : FLEX_DIR.ROW} columnSpacing={2}>
+          {/* <GStyledStickyFormGrid item xs={12} md={3}>
      <Box mt={0} mb={2}>
       <Card {...GCardOption(themeMode)}>
        <GStyledTopBorderDivider mode={themeMode} />
@@ -213,77 +213,75 @@ function TicketViewForm() {
      </Box>
      <BackButton handleBackAction={handleBackAction} />
     </GStyledStickyFormGrid> */}
-        <Grid item xs={12} sm={12} lg={12}>
-          <BackButton handleBackAction={handleBackAction} />
+          <Grid item xs={12} sm={12} lg={12}>
+            <BackButton handleBackAction={handleBackAction} />
 
-          <Box mb={5} mt={2}>
-            <Card {...GCardOption(themeMode)}>
-              <GStyledTopBorderDivider mode={themeMode} />
-              <Grid container spacing={1} p={1.5}>
-                <GridViewField
-                  heading={t('machine.label')}
-                  isLoading={isLoading}
-                  gridSize={3}
-                  customerLink={PATH_MACHINE.machines.view(defaultValues?.machineId)}
-                >
-                  {defaultValues?.machine}
-                </GridViewField>
+            <Box mb={5} mt={2}>
+              <Card {...GCardOption(themeMode)}>
+                <GStyledTopBorderDivider mode={themeMode} />
+                <Grid container spacing={1} p={1.5}>
+                  <GridViewField
+                    heading={t('machine.label')}
+                    isLoading={isLoading}
+                    gridSize={3}
+                    customerLink={PATH_MACHINE.machines.view(defaultValues?.machineId)}
+                  >
+                    {defaultValues?.machine}
+                  </GridViewField>
 
-                <GridViewField
-                  heading={t('hmi_version.label')}
-                  isLoading={isLoading}
-                  gridSize={1.5}
-                >
-                  {defaultValues?.hlc}
-                </GridViewField>
+                  <GridViewField
+                    heading={t('hmi_version.label')}
+                    isLoading={isLoading}
+                    gridSize={1.5}
+                  >
+                    {defaultValues?.hlc}
+                  </GridViewField>
 
-                <GridViewField
-                  heading={t('plc_version.label')}
-                  isLoading={isLoading}
-                  gridSize={1.5}
-                >
-                  {defaultValues?.plc}
-                </GridViewField>
+                  <GridViewField
+                    heading={t('plc_version.label')}
+                    isLoading={isLoading}
+                    gridSize={1.5}
+                  >
+                    {defaultValues?.plc}
+                  </GridViewField>
 
-                <GridViewField
-                  heading={t('request_type.label')}
-                  isLoading={isLoading}
-                  gridSize={3}
-                >
-                  {defaultValues?.requestType}
-                </GridViewField>
+                  <GridViewField
+                    heading={t('request_type.label')}
+                    isLoading={isLoading}
+                    gridSize={3}
+                  >
+                    {defaultValues?.requestType}
+                  </GridViewField>
 
-                <GridViewField
-                  heading={t('status.label')}
-                  isLoading={isLoading}
-                  gridSize={1.5}
-                >{((isCustomerAdmin(user) && !ticket?.status?.statusType?.isResolved) || isSuperAdmin(user)) ?
-                  <DropDownField name="status" isNullable label='Status' value={ticket?.status} onSubmit={onSubmit} options={ticketSettings?.statuses} />
-                  : defaultValues?.status
-                  }
-                </GridViewField>
-                <GridViewField
-                  heading={t('priority.label')}
-                  isLoading={isLoading}
-                  gridSize={1.5}
-                >
-                  <DropDownField name="priority" isNullable label='Priority' value={ticket?.priority} onSubmit={onSubmit} options={ticketSettings?.priorities} />
-                  {/* <IconFlexi
+                  <GridViewField
+                    heading={t('status.label')}
+                    isLoading={isLoading}
+                    gridSize={1.5}
+                  >
+                    {defaultValues?.status}
+                  </GridViewField>
+                  <GridViewField
+                    heading={t('priority.label')}
+                    isLoading={isLoading}
+                    gridSize={1.5}
+                  >
+                    <DropDownField name="priority" isNullable label='Priority' value={ticket?.priority} onSubmit={onSubmit} options={ticketSettings?.priorities} />
+                    {/* <IconFlexi
                     icon={defaultValues?.priorityIcon}
                     color={defaultValues?.priorityColor}
                   />{' '}
                   &nbsp;{defaultValues?.priority} */}
-                </GridViewField>
+                  </GridViewField>
 
 
-                <Grid item xs={12} md={12}>
-                  <GridViewTitle title={t('summary.label')} />
+                  <Grid item xs={12} md={12}>
+                    <GridViewTitle title={t('summary.label')} />
 
-                  <FilledTextField name="summary" value={defaultValues.summary} placeholder='Brief description of the ticket' onSubmit={onSubmit} minRows={4} />
+                    <FilledTextField name="summary" value={defaultValues.summary} placeholder='Brief description of the ticket' onSubmit={onSubmit} minRows={4} />
 
-                </Grid>
+                  </Grid>
 
-                {/* <ViewFormField
+                  {/* <ViewFormField
                   heading={t('summary.label')}
                   isLoading={isLoading}
                   gridSize={12}
@@ -296,20 +294,20 @@ function TicketViewForm() {
                   <FilledTextField name="summary" value={defaultValues.summary} onSubmit={onSubmit} minRows={4}  />
                 </ViewFormField> */}
 
-                <Grid item xs={12} md={12}>
-                  <GridViewTitle title={t('description.label')} />
+                  <Grid item xs={12} md={12}>
+                    <GridViewTitle title={t('description.label')} />
 
-                  <FilledEditorField
-                    name="description"
-                    value={defaultValues.description}
-                    onSubmit={onSubmit}
-                    minRows={4}
-                    placeholder={`Please provide a detailed description of the issue you are experiencing with the machine, including: \n  - Any relevant error messages \n  - Steps to reproduce the problem, screenshot, picture or videos and \n  - Any recent changes that may have affected the system.\n\nIf you have any specific requirements or preferences for the ticket, please let us know.`}
-                  />
+                    <FilledEditorField
+                      name="description"
+                      value={defaultValues.description}
+                      onSubmit={onSubmit}
+                      minRows={4}
+                      placeholder={`Please provide a detailed description of the issue you are experiencing with the machine, including: \n  - Any relevant error messages \n  - Steps to reproduce the problem, screenshot, picture or videos and \n  - Any recent changes that may have affected the system.\n\nIf you have any specific requirements or preferences for the ticket, please let us know.`}
+                    />
 
-                </Grid>
+                  </Grid>
 
-                {/* <GridViewField
+                  {/* <GridViewField
                   heading={t('description.label')}
                   isLoading={isLoading}
                   gridSize={12}
@@ -322,7 +320,7 @@ function TicketViewForm() {
                    <FilledTextField name="description" value={defaultValues.description} onSubmit={onSubmit} minRows={4}  />
                 </GridViewField> */}
 
-                {/* <ViewFormField
+                  {/* <ViewFormField
                   heading={t('description.label')}
                   isLoading={isLoading}
                   gridSize={12}
@@ -336,162 +334,162 @@ function TicketViewForm() {
                 </ViewFormField> */}
 
 
-              </Grid>
+                </Grid>
 
-              <Grid container spacing={2} p={1.5}>
-                <GridViewTitle title={t('attachment.attachments.label')} />
-                <Box
-                  gap={1}
-                  p={1.5}
-                  display={'grid'}
-                  gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)', md: 'repeat(5, 1fr)', lg: 'repeat(6, 1fr)', xl: 'repeat(8, 1fr)' }}
-                  sx={{ width: '100%' }}>
-                  {slides?.map((file, _index) => (
-                    <GalleryItem
-                      isLoading={isLoading}
-                      key={file?._id}
-                      image={file}
-                      onOpenLightbox={() => handleOpenLightbox(_index)}
-                      onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
-                      onDeleteFile={() => handleDeleteFile(file._id)}
-                      toolbar
-                      size={150}
-                    />
-                  ))}
-                   
-                  {ticket?.files?.map((file, _index) => {
-                    if (!file.fileType.startsWith('image')) {
-                      return (
-                        <GalleryItem
-                          key={file?._id}
-                          image={{
-                            thumbnail: `data:image/png;base64, ${file.thumbnail}`,
-                            src: `data:image/png;base64, ${file.thumbnail}`,
-                            downloadFilename: `${file?.name}.${file?.extension}`,
-                            name: file?.name,
-                            fileType: file?.fileType,
-                            extension: file?.extension,
-                            isLoaded: false,
-                            id: file?._id,
-                            width: '100%',
-                            height: '100%'
-                          }}
-                          isLoading={isLoading}
-                          onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
-                          onDeleteFile={() => handleDeleteFile(file._id)}
-                          onOpenFile={() => handleOpenFile(file._id, file?.name, file?.extension)}
-                          toolbar
-                        />
-                      )
-                    }
-                    return null
-                  })}
-                  <ThumbnailDocButton onClick={() => setFileDialog(true)} />
+                <Grid container spacing={2} p={1.5}>
+                  <GridViewTitle title={t('attachment.attachments.label')} />
+                  <Box
+                    gap={1}
+                    p={1.5}
+                    display={'grid'}
+                    gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)', md: 'repeat(5, 1fr)', lg: 'repeat(6, 1fr)', xl: 'repeat(8, 1fr)' }}
+                    sx={{ width: '100%' }}>
+                    {slides?.map((file, _index) => (
+                      <GalleryItem
+                        isLoading={isLoading}
+                        key={file?._id}
+                        image={file}
+                        onOpenLightbox={() => handleOpenLightbox(_index)}
+                        onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
+                        onDeleteFile={() => handleDeleteFile(file._id)}
+                        toolbar
+                        size={150}
+                      />
+                    ))}
 
-                </Box>
+                    {ticket?.files?.map((file, _index) => {
+                      if (!file.fileType.startsWith('image')) {
+                        return (
+                          <GalleryItem
+                            key={file?._id}
+                            image={{
+                              thumbnail: `data:image/png;base64, ${file.thumbnail}`,
+                              src: `data:image/png;base64, ${file.thumbnail}`,
+                              downloadFilename: `${file?.name}.${file?.extension}`,
+                              name: file?.name,
+                              fileType: file?.fileType,
+                              extension: file?.extension,
+                              isLoaded: false,
+                              id: file?._id,
+                              width: '100%',
+                              height: '100%'
+                            }}
+                            isLoading={isLoading}
+                            onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
+                            onDeleteFile={() => handleDeleteFile(file._id)}
+                            onOpenFile={() => handleOpenFile(file._id, file?.name, file?.extension)}
+                            toolbar
+                          />
+                        )
+                      }
+                      return null
+                    })}
+                    <ThumbnailDocButton onClick={() => setFileDialog(true)} />
 
-                <Lightbox index={selectedImage} slides={slides} open={selectedImage >= 0} close={handleCloseLightbox} onGetCurrentIndex={index => handleOpenLightbox(index)} disabledSlideshow />
+                  </Box>
 
-                {defaultValues?.issueType?.name === 'Change Request' && (
-                  <Fragment>
-                    <GridViewField heading={t('change_type.label')} isLoading={isLoading}>
-                      {defaultValues?.changeType}
-                    </GridViewField>
-                    <GridViewField heading={t('change_reason.label')} isLoading={isLoading} >
-                      {defaultValues?.changeReason}
-                    </GridViewField>
-                    <GridViewField heading={t('implementation_plan.label')} isLoading={isLoading} multiline isEditor >
-                      {defaultValues?.implementationPlan}
-                    </GridViewField>
-                    <GridViewField heading={t('backout_plan.label')} isLoading={isLoading} multiline isEditor >
-                      {defaultValues?.backoutPlan}
-                    </GridViewField>
-                    <GridViewField heading={t('test_plan.label')} isLoading={isLoading} multiline isEditor>
-                      {defaultValues?.testPlan}
-                    </GridViewField>
-                  </Fragment>
-                )}
+                  <Lightbox index={selectedImage} slides={slides} open={selectedImage >= 0} close={handleCloseLightbox} onGetCurrentIndex={index => handleOpenLightbox(index)} disabledSlideshow />
 
-                {defaultValues?.issueType?.name?.trim()?.toLowerCase() === 'service request' && (
-                  <Fragment>
-                    <GridViewField heading={t('investigation_reason.label')} isLoading={isLoading} >
-                      {defaultValues?.investigationReason}
-                    </GridViewField>
-                    <GridViewField heading={t('root_cause.label')} isLoading={isLoading} multiline isEditor >
-                      {defaultValues?.rootCause}
-                    </GridViewField>
-                    <GridViewField heading={t('workaround.label')} isLoading={isLoading} multiline isEditor >
-                      {defaultValues?.workaround}
-                    </GridViewField>
-                  </Fragment>
-                )}
+                  {defaultValues?.issueType?.name === 'Change Request' && (
+                    <Fragment>
+                      <GridViewField heading={t('change_type.label')} isLoading={isLoading}>
+                        {defaultValues?.changeType}
+                      </GridViewField>
+                      <GridViewField heading={t('change_reason.label')} isLoading={isLoading} >
+                        {defaultValues?.changeReason}
+                      </GridViewField>
+                      <GridViewField heading={t('implementation_plan.label')} isLoading={isLoading} multiline isEditor >
+                        {defaultValues?.implementationPlan}
+                      </GridViewField>
+                      <GridViewField heading={t('backout_plan.label')} isLoading={isLoading} multiline isEditor >
+                        {defaultValues?.backoutPlan}
+                      </GridViewField>
+                      <GridViewField heading={t('test_plan.label')} isLoading={isLoading} multiline isEditor>
+                        {defaultValues?.testPlan}
+                      </GridViewField>
+                    </Fragment>
+                  )}
 
-                {defaultValues?.issueType?.name?.trim()?.toLowerCase() === 'change request' && (
-                  <Grid container sx={{ pb: 3 }}>
-                    <GridViewField heading={t('planned_start_date.label')} isLoading={isLoading}>
-                      {defaultValues?.plannedStartDate}
-                    </GridViewField>
-                    <GridViewField heading={t('planned_start_time.label')} isLoading={isLoading}>
-                      {defaultValues?.startTime}
-                    </GridViewField>
-                    <GridViewField heading={t('planned_end_date.label')} isLoading={isLoading}>
-                      {defaultValues?.plannedEndDate}
-                    </GridViewField>
-                    <GridViewField heading={t('planned_end_time.label')} isLoading={isLoading}>
-                      {defaultValues?.endTime}
-                    </GridViewField>
-                  </Grid>
-                )}
+                  {defaultValues?.issueType?.name?.trim()?.toLowerCase() === 'service request' && (
+                    <Fragment>
+                      <GridViewField heading={t('investigation_reason.label')} isLoading={isLoading} >
+                        {defaultValues?.investigationReason}
+                      </GridViewField>
+                      <GridViewField heading={t('root_cause.label')} isLoading={isLoading} multiline isEditor >
+                        {defaultValues?.rootCause}
+                      </GridViewField>
+                      <GridViewField heading={t('workaround.label')} isLoading={isLoading} multiline isEditor >
+                        {defaultValues?.workaround}
+                      </GridViewField>
+                    </Fragment>
+                  )}
 
-                <GridViewField
-                  heading={t('impact.label')}
-                  isLoading={isLoading}
-                  gridSize={12}
-                >
-                  {defaultValues?.impact}
-                </GridViewField>
-              </Grid>
-            </Card>
-          </Box>
-          <Box mb={5} mt={0}>
-            <Card {...GCardOption(themeMode)}>
-              <GStyledTopBorderDivider mode={themeMode} />
-              <TicketComment currentUser={{ ...user, userId }} />
-            </Card>
-          </Box>
+                  {defaultValues?.issueType?.name?.trim()?.toLowerCase() === 'change request' && (
+                    <Grid container sx={{ pb: 3 }}>
+                      <GridViewField heading={t('planned_start_date.label')} isLoading={isLoading}>
+                        {defaultValues?.plannedStartDate}
+                      </GridViewField>
+                      <GridViewField heading={t('planned_start_time.label')} isLoading={isLoading}>
+                        {defaultValues?.startTime}
+                      </GridViewField>
+                      <GridViewField heading={t('planned_end_date.label')} isLoading={isLoading}>
+                        {defaultValues?.plannedEndDate}
+                      </GridViewField>
+                      <GridViewField heading={t('planned_end_time.label')} isLoading={isLoading}>
+                        {defaultValues?.endTime}
+                      </GridViewField>
+                    </Grid>
+                  )}
+
+                  <GridViewField
+                    heading={t('impact.label')}
+                    isLoading={isLoading}
+                    gridSize={12}
+                  >
+                    {defaultValues?.impact}
+                  </GridViewField>
+                </Grid>
+              </Card>
+            </Box>
+            <Box mb={5} mt={0}>
+              <Card {...GCardOption(themeMode)}>
+                <GStyledTopBorderDivider mode={themeMode} />
+                <TicketComment currentUser={{ ...user, userId }} />
+              </Card>
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
-      <AuditBox value={{ ...defaultValues, createdBy: "Support Services", updatedBy: "Support Services" }} />
+        <AuditBox value={{ ...defaultValues, createdBy: "Support Services", updatedBy: "Support Services" }} />
 
+        {PDFViewerDialog && (
+          <Dialog fullScreen open={PDFViewerDialog} onClose={() => setPDFViewerDialog(false)}>
+            <DialogTitle variant='h3' sx={{ pb: 1, pt: 2, display: 'flex', justifyContent: 'space-between' }}>
+              PDF View
+              <Button variant='outlined' onClick={() => setPDFViewerDialog(false)}>
+                Close
+              </Button>
+            </DialogTitle>
+            <Divider variant='fullWidth' />
+            {pdf ? <iframe title={PDFName} src={pdf} style={{ paddingBottom: 10 }} width='100%' height='842px' /> : <SkeletonPDF />}
+          </Dialog>
+        )}
+      </Fragment>
+      {fileDialog && <DialogTicketAddFile open={fileDialog} handleClose={() => setFileDialog(false)} />}
       {PDFViewerDialog && (
         <Dialog fullScreen open={PDFViewerDialog} onClose={() => setPDFViewerDialog(false)}>
           <DialogTitle variant='h3' sx={{ pb: 1, pt: 2, display: 'flex', justifyContent: 'space-between' }}>
             PDF View
-            <Button variant='outlined' onClick={() => setPDFViewerDialog(false)}>
-              Close
-            </Button>
+            <Button variant='outlined' onClick={() => setPDFViewerDialog(false)}>Close</Button>
           </DialogTitle>
           <Divider variant='fullWidth' />
-          {pdf ? <iframe title={PDFName} src={pdf} style={{ paddingBottom: 10 }} width='100%' height='842px' /> : <SkeletonPDF />}
+          {pdf ? (
+            <iframe title={PDFName} src={pdf} style={{ paddingBottom: 10 }} width='100%' height='842px' />
+          ) : (
+            <SkeletonPDF />
+          )}
         </Dialog>
       )}
-    </Fragment>
-     {fileDialog && <DialogTicketAddFile open={fileDialog} handleClose={() => setFileDialog(false)} />}
-     {PDFViewerDialog && (
-       <Dialog fullScreen open={PDFViewerDialog} onClose={() => setPDFViewerDialog(false)}>
-         <DialogTitle variant='h3' sx={{ pb: 1, pt: 2, display: 'flex', justifyContent: 'space-between' }}>
-           PDF View
-           <Button variant='outlined' onClick={() => setPDFViewerDialog(false)}>Close</Button>
-         </DialogTitle>
-         <Divider variant='fullWidth' />
-         {pdf ? (
-           <iframe title={PDFName} src={pdf} style={{ paddingBottom: 10 }} width='100%' height='842px' />
-         ) : (
-           <SkeletonPDF />
-         )}
-       </Dialog>
-     )}
- </>
+    </>
   )
 }
 
