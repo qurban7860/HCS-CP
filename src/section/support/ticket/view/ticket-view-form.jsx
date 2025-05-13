@@ -221,34 +221,9 @@ function TicketViewForm() {
                 <GStyledTopBorderDivider mode={themeMode} />
                 <Grid container spacing={1} p={1.5}>
                   <GridViewField
-                    heading={t('machine.label')}
-                    isLoading={isLoading}
-                    gridSize={3}
-                    customerLink={PATH_MACHINE.machines.view(defaultValues?.machineId)}
-                  >
-                    {defaultValues?.machine}
-                  </GridViewField>
-
-                  <GridViewField
-                    heading={t('hmi_version.label')}
-                    isLoading={isLoading}
-                    gridSize={1.5}
-                  >
-                    {defaultValues?.hlc}
-                  </GridViewField>
-
-                  <GridViewField
-                    heading={t('plc_version.label')}
-                    isLoading={isLoading}
-                    gridSize={1.5}
-                  >
-                    {defaultValues?.plc}
-                  </GridViewField>
-
-                  <GridViewField
                     heading={t('request_type.label')}
                     isLoading={isLoading}
-                    gridSize={3}
+                    gridSize={4}
                   >
                     {defaultValues?.requestType}
                   </GridViewField>
@@ -256,14 +231,14 @@ function TicketViewForm() {
                   <GridViewField
                     heading={t('status.label')}
                     isLoading={isLoading}
-                    gridSize={1.5}
+                    gridSize={4}
                   >
                     {defaultValues?.status}
                   </GridViewField>
                   <GridViewField
                     heading={t('priority.label')}
                     isLoading={isLoading}
-                    gridSize={1.5}
+                    gridSize={4}
                   >
                     <DropDownField name="priority" isNullable label='Priority' value={ticket?.priority} onSubmit={onSubmit} options={ticketSettings?.priorities} />
                     {/* <IconFlexi
@@ -272,6 +247,31 @@ function TicketViewForm() {
                   />{' '}
                   &nbsp;{defaultValues?.priority} */}
                   </GridViewField>
+                  <GridViewField
+                    heading={t('machine.label')}
+                    isLoading={isLoading}
+                    gridSize={4}
+                    customerLink={PATH_MACHINE.machines.view(defaultValues?.machineId)}
+                  >
+                    {defaultValues?.machine}
+                  </GridViewField>
+
+                  <GridViewField
+                    heading={t('hmi_version.label')}
+                    isLoading={isLoading}
+                    gridSize={4}
+                  >
+                    {defaultValues?.hlc}
+                  </GridViewField>
+
+                  <GridViewField
+                    heading={t('plc_version.label')}
+                    isLoading={isLoading}
+                    gridSize={4}
+                  >
+                    {defaultValues?.plc}
+                  </GridViewField>
+
 
 
                   <Grid item xs={12} md={12}>

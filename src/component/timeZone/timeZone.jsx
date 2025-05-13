@@ -5,7 +5,8 @@ import {
   IconButton,
   Popover,
   useMediaQuery,
-  useTheme
+  useTheme,
+  Tooltip, 
 } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useSettingContext } from 'hook';
@@ -84,24 +85,28 @@ const TimeDisplay = () => {
 
   const renderTimeInfo = () => (
     <>
-      <Box sx={boxStyle} mb={isSmallScreen ? 1 : 0}>
-        <Typography variant="caption" sx={{ color: textColor }}>
-          <Box component="span" sx={{ fontWeight: 700 }}>
-            Pacific/Auckland -
-          </Box>{' '}
-          {nzTime}
-        </Typography>
-      </Box>
-
-      {!isSameTime && (
-        <Box sx={boxStyle}>
+      <Tooltip title={"NZ Time"} arrow>
+        <Box sx={boxStyle} mb={isSmallScreen ? 1 : 0}>
           <Typography variant="caption" sx={{ color: textColor }}>
             <Box component="span" sx={{ fontWeight: 700 }}>
-              {localZone} -
+              Pacific/Auckland -
             </Box>{' '}
-            {localTime}
+            {nzTime}
           </Typography>
         </Box>
+      </Tooltip>
+
+      {!isSameTime && (
+        <Tooltip title={ "System User Time" } arrow>
+          <Box sx={boxStyle}>
+            <Typography variant="caption" sx={{ color: textColor }}>
+              <Box component="span" sx={{ fontWeight: 700 }}>
+                {localZone} -
+              </Box>{' '}
+              {localTime}
+            </Typography>
+          </Box>
+        </Tooltip>
       )}
     </>
   );

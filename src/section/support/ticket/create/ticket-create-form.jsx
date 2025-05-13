@@ -138,37 +138,14 @@ function TicketCreateForm() {
   const { reset, setValue, setError, watch, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful } } = methods
   const { machine, issueType, summary, description, files, requestType, hlc,plc } = watch()
   
-const hlcValue = watch("hlc");
-const plcValue = watch("plc");
-
-const [hlcEnabled, setHlcEnabled] = useState(false);
-const [plcEnabled, setPlcEnabled] = useState(false);
-
-// Check if value is "N/A" or localized version
-const isNA = (val) => val === "N/A" || val === t("not_applicable.abbr");
-
-// Enable the field only once if it's "N/A"
-useEffect(() => {
-  if (!hlcEnabled && isNA(hlcValue)) {
-    setHlcEnabled(true);
-  }
-}, [hlcValue, hlcEnabled]);
-
-useEffect(() => {
-  if (!plcEnabled && isNA(plcValue)) {
-    setPlcEnabled(true);
-  }
-}, [plcValue, plcEnabled]);
-
-
   const checkFormCompletion = useCallback(() => {
     setIsFormComplete(!!machine && !!issueType && !!summary)
   }, [machine, issueType, summary])
 
   useEffect(() => {
     if (softwareVersion) {
-      setValue('hlc', softwareVersion.hlc || t('not_applicable.abbr'))
-      setValue('plc', softwareVersion.plc || t('not_applicable.abbr'))
+      setValue('hlc', softwareVersion?.hlc || '' )
+      setValue('plc', softwareVersion?.plc || '' )
     }
   }, [softwareVersion, setValue])
 
@@ -438,7 +415,7 @@ useEffect(() => {
                     <RHFTextField
                     name="hlc"
                     label={t("hmi_version.label")}
-                    disabled={!hlcEnabled}
+                    disabled={softwareVersion?.hlc}
                        />
                     </Grid>
 
@@ -446,7 +423,7 @@ useEffect(() => {
                      <RHFTextField
                      name="plc"
                      label={t("plc_version.label")}
-                     disabled={!plcEnabled}
+                     disabled={softwareVersion?.plc}
                         />
                     </Grid>
 
