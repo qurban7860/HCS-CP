@@ -8,6 +8,7 @@ import { MARGIN } from 'config/layout'
 import { DynamicTable } from 'component/table-scaled'
 import { FLEX_DIR } from 'constant'
 import { tableColumns } from './table-columns'
+import { PATH_MACHINE } from 'route/path'
 
 
 const DrawingTable = () => {
@@ -39,14 +40,13 @@ const DrawingTable = () => {
                         <DynamicTable
                             columnsData={tableColumns}
                             data={drawings?.data || []}
-                            hover={false}
                             page={page}
                             rowsPerPage={rowsPerPage}
                             totalCount={drawings?.totalCount || 0}
                             isLoading={isLoading}
                             onChangePage={onChangePage}
                             onChangeRow={onChangeRows}
-                        // onViewRow={}
+                            onViewRow={(id) => navigate(PATH_MACHINE.machines.drawings.view(machineId, id))}
                         />
                     </Grid>
                 </Grid>

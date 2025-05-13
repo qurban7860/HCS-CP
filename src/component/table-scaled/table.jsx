@@ -96,7 +96,7 @@ const DynamicTable = ({
                                             row={row}
                                             hover={hover}
                                             columns={tableColumns}
-                                            onViewRow={onViewRow}
+                                            onViewRow={() => onViewRow(row._id)}
                                             mode={themeMode}
                                             index={index}
                                             dataFiltered={dataFiltered}

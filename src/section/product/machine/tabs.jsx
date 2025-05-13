@@ -34,14 +34,14 @@ export const TABS = (machineId) => [
         id: 1,
         label: 'Drawings',
         icon: ICON_NAME.DRAWING,
-        path: PATH_MACHINE.machines.drawings(machineId),
+        path: PATH_MACHINE.machines.drawings.list(machineId),
         disabled: false
     },
     {
         id: 2,
         label: 'Documents',
         icon: ICON_NAME.DOCUMENT,
-        path: PATH_MACHINE.machines.documents(machineId),
+        path: PATH_MACHINE.machines.documents.list(machineId),
         disabled: false
     },
     // {

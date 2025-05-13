@@ -31,7 +31,9 @@ import {
   MachinesGraphsPage,
   // documents
   MachineDocuments,
+  MachineDocument,
   MachineDrawings,
+  MachineDrawing,
   // support
   MachineSupportTicketsPage,
   //  crm:
@@ -174,8 +176,20 @@ export default function Router() {
                   element: <MachineModuleLayout />,
                   children: [
                     { path: 'view', element: <MachinePage /> },
-                    { path: 'drawings', element: <MachineDrawings /> },
-                    { path: 'documents', element: <MachineDocuments /> },
+                    {
+                      path: 'drawings',
+                      children: [
+                        { element: <MachineDrawings />, index: true },
+                        { path: ':id/view', element: <MachineDrawing /> }
+                      ]
+                    },
+                    {
+                      path: 'documents',
+                      children: [
+                        { element: <MachineDocuments />, index: true },
+                        { path: ':id/view', element: <MachineDocument /> }
+                      ]
+                    },
                     {
                       path: 'logs',
                       children: [{ element: <MachinesLogsPage />, index: true }]
