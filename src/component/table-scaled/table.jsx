@@ -63,29 +63,29 @@ const DynamicTable = ({
             <Grid item xs={12} sm={12}>
                 <Grid container mb={2}>
                     <Grid item xs={12} sm={12} mb={2} bgcolor='background.paper'>
-                        <GStyledStickyDiv top={NAV.T_STICKY_DOCUMENT_TABLE_HEADER} zIndex={9}>
-                            <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
-                            <TablePaginationCustom
-                                count={totalCount || 0}
-                                page={page}
-                                rowsPerPage={rowsPerPage}
-                                onChangePage={onChangePage}
-                                onChangeRow={onChangeRow}
-                                tableColumns={tableColumns}
-                                onChangeColumn={handleChangeColumn}
-                                dense={dense}
-                                onChangeDense={onChangeDense}
-                                disabledColumn={disabledColumn}
-                                rowsPerPageOptions={rowsPerPageOptions}
-                                onColumnClick={onColumnClick}
-                                component={component}
-                                noPaginationBar={noPaginationBar}
-                                nodeBeforeColum={nodeBeforeColum}
-                                nodeAfterColum={nodeAfterColum}
-                                nodeBeforePagination={nodeBeforePagination}
-                                nodeAfterPagination={nodeAfterPagination}
-                            />
-                        </GStyledStickyDiv>
+                        {/* <GStyledStickyDiv top={NAV.T_STICKY_DOCUMENT_TABLE_HEADER} zIndex={9}> */}
+                        <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={1} />
+                        <TablePaginationCustom
+                            count={totalCount || 0}
+                            page={page}
+                            rowsPerPage={rowsPerPage}
+                            onChangePage={onChangePage}
+                            onChangeRow={onChangeRow}
+                            tableColumns={tableColumns}
+                            onChangeColumn={handleChangeColumn}
+                            dense={dense}
+                            onChangeDense={onChangeDense}
+                            disabledColumn={disabledColumn}
+                            rowsPerPageOptions={rowsPerPageOptions}
+                            onColumnClick={onColumnClick}
+                            component={component}
+                            noPaginationBar={noPaginationBar}
+                            nodeBeforeColum={nodeBeforeColum}
+                            nodeAfterColum={nodeAfterColum}
+                            nodeBeforePagination={nodeBeforePagination}
+                            nodeAfterPagination={nodeAfterPagination}
+                        />
+                        {/* </GStyledStickyDiv> */}
                         <TableContainer sx={{ height: NAV.H_LOG_TABLE, overflow: 'auto' }}>
                             <Table>
                                 <TableHeader columns={tableColumns} dataFiltered={dataFiltered} orderBy={orderBy} order={order} onSort={onSort} />
