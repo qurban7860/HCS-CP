@@ -29,6 +29,10 @@ import {
   MachinesListPage,
   MachinesLogsPage,
   MachinesGraphsPage,
+  // documents
+  MachinesDocuments,
+  MachinesDrawings,
+  // support
   MachineSupportTicketsPage,
   //  crm:
   CustomerPage,
@@ -170,8 +174,8 @@ export default function Router() {
                   element: <MachineModuleLayout />,
                   children: [
                     { path: 'view', element: <MachinePage /> },
-                    { path: 'drawings', element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} /> },
-                    { path: 'documents', element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} /> },
+                    { path: 'drawings', element: <MachinesDrawings {...FALLBACK.UNDER_DEVELOPMENT} /> },
+                    { path: 'documents', element: <MachinesDocuments /> },
                     {
                       path: 'logs',
                       children: [{ element: <MachinesLogsPage />, index: true }]
