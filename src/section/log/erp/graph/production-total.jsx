@@ -38,7 +38,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
     if (!graphData || graphData.length === 0) return null;
 
     const dataMap = new Map();
-    graphData.forEach(item => dataMap.set(item._id, item)); // already in correct format
+    graphData.forEach(item => dataMap.set(item._id, item)); 
 
     const labels = [];
     const now = new Date();
@@ -47,8 +47,11 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
       case 'Hourly':
         for (let i = 23; i >= 0; i--) {
           const d = new Date();
-          d.setHours(d.getHours() - i, 0, 0, 0);
-          labels.push(`${String(d.getHours()).padStart(2, '0')}:00`);
+          d.setHours(d.getHours() - i);
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const day = String(d.getDate()).padStart(2, '0');
+          const hour = String(d.getHours()).padStart(2, '0');
+          labels.push(`${month}/${day} ${hour}`);
         }
         break;
 
@@ -116,12 +119,12 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
             {t('production.production_total.label').toUpperCase()}
           </Typography>
         )}
-        &nbsp;
-        <Box>
+        {/* &nbsp; */}
+        {/* <Box>
           <Typography variant={isDashboard ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.H4} p={0}>
             {getTimePeriodDesc(timePeriod).toUpperCase()}
           </Typography>
-        </Box>
+        </Box> */}
       </GStyledSpanBox>
       <Card sx={{ p: 3, background: themeMode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[800], color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white }}>
         {isLoading && (

@@ -1,5 +1,5 @@
 function _background(image) {
- return `/asset/background/${image}`
+//  return `/asset/background/${image}`
 }
 
 function _brand(image) {

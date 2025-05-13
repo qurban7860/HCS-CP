@@ -411,6 +411,9 @@ const en = {
   button: {
    get_logs: `Get Logs`
   },
+  button_graph: {
+   get_graph: `Get Graph`
+  },
   period: {
    label: `Period`
   }

@@ -11,6 +11,7 @@ import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 import ModeOption from './mode-option'
 import AccountPopover from './account-popover'
 import NotificationPopover from './notification-popover'
+import TimeDisplay from 'component/timeZone/timeZone'
 
 const DEV = 'dev'
 
@@ -24,11 +25,13 @@ function Header() {
   const isOffset = useOffSetTop(HEADER.H_DASHBOARD_DESKTOP) && !isNavHorizontal
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [clockAnchor, setClockAnchor] = useState(null)
+  const [showTime, setShowTime] = useState(false);
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen)
   const toggleClockMenu = event => {
     setClockAnchor(clockAnchor ? null : event.currentTarget)
   }
+ 
 
   const clockOpen = Boolean(clockAnchor)
   const clockId = clockOpen ? 'clock-menu' : undefined
@@ -72,24 +75,43 @@ function Header() {
               <IconButton sx={{ mr: 1, color: 'text.primary' }} onClick={toggleMobileMenu}>
                 <Icon icon={ICON_NAME.MENU} color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze} />
               </IconButton>
-              <IconButton sx={{ mr: 1, color: 'text.primary' }} onClick={toggleClockMenu}>
+              {/* <IconButton sx={{ mr: 1, color: 'text.primary' }} onClick={toggleClockMenu}>
                 <Icon icon={ICON_NAME.CLOCK} color={themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze} />
-              </IconButton>
+              </IconButton> */}
+                <TimeDisplay/>
             </Box>
             <Box justifyContent={FLEX.FLEX_END} sx={{ display: FLEX.FLEX, alignItems: KEY.CENTER }}>
               <AccountPopover />
             </Box>
             <DrawerMenu navConfig={navConfig} open={mobileMenuOpen} onClose={toggleMobileMenu} />
-            <PopoverDefault id={clockId} localizedLabel={'time_zone.label'} open={clockOpen} anchorEl={clockAnchor} onClose={() => setClockAnchor(null)}>
-              <Clock main city={KEY.AUCKLAND} />
-            </PopoverDefault>
-          </Box>
+            {/* <PopoverDefault
+             id={clockId}
+             localizedLabel={'time_zone.label'}
+             open={clockOpen}
+             anchorEl={clockAnchor}
+             onClose={() => setClockAnchor(null)}
+            >
+            <Clock main city={KEY.AUCKLAND} />
+            </PopoverDefault> */}
+           
+             </Box>
         </Fragment>
+        
       ) : (
+        <>  
         <Fragment>
           <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_START} spacing={{ xs: 0.5, sm: 4 }} ml={5}>
             <NavSection data={navConfig} />
           </Stack>
+          <Box
+             display="flex"
+             justifyContent={{ xs: 'center', md: 'flex-end' }}
+             width="100%"
+             px={2}
+            >
+              <TimeDisplay />
+          </Box>
+
           <Stack flexGrow={1} direction={FLEX_DIR.ROW} alignItems={KEY.CENTER} justifyContent={FLEX.FLEX_END} spacing={{ xs: 0.5, sm: 2 }}>
             {/* {localTimeZone !== aucklandTimeZone && <Clock local={localTimeZone} city={'cleveland'} />} */}
             {/* <Clock main city={KEY.AUCKLAND} /> */}
@@ -98,8 +120,10 @@ function Header() {
             <AccountPopover />
           </Stack>
         </Fragment>
-      )}
-    </Fragment>
+       
+      
+      </>)}    </Fragment>
+    
   )
 
   return (

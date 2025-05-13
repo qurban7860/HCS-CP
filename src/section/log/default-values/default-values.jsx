@@ -14,7 +14,7 @@ export function useLogDefaultValues(customer, machine) {
             logType: getLogTypeConfigForGenerationAndType(5, 'ERP') || null,
             dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
             dateTo: today,
-            logPeriod: 'Monthly',
+            logPeriod: 'Daily',
             logGraphType: logGraphTypes[0]
         }
     }, [customer, machine])
@@ -28,8 +28,10 @@ export function useGraphDefaultValues(customer, machine) {
         return {
             customer: customer._id,
             machine: machine?._id || null,
-            logPeriod: 'Monthly',
-            logGraphType: logGraphTypes[0]
+            logPeriod: 'Daily',
+            logGraphType: logGraphTypes[0],
+            dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+            dateTo: new Date(),
         };
     }, [customer?._id, machine?._id]);
 }

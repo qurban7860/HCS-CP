@@ -108,6 +108,7 @@ const MachineLogsTab = () => {
                 handleLogTypeChange={handleLogTypeChange}
                 handleGraphTypeChange={handleGraphTypeChange}
                 methods={methods}
+                onGetLogs={handleFormSubmit}
               />
             </Grid>
           </Grid>

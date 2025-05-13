@@ -136,7 +136,30 @@ function TicketCreateForm() {
   })
 
   const { reset, setValue, setError, watch, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful } } = methods
-  const { machine, issueType, summary, description, files, requestType } = watch()
+  const { machine, issueType, summary, description, files, requestType, hlc,plc } = watch()
+  
+const hlcValue = watch("hlc");
+const plcValue = watch("plc");
+
+const [hlcEnabled, setHlcEnabled] = useState(false);
+const [plcEnabled, setPlcEnabled] = useState(false);
+
+// Check if value is "N/A" or localized version
+const isNA = (val) => val === "N/A" || val === t("not_applicable.abbr");
+
+// Enable the field only once if it's "N/A"
+useEffect(() => {
+  if (!hlcEnabled && isNA(hlcValue)) {
+    setHlcEnabled(true);
+  }
+}, [hlcValue, hlcEnabled]);
+
+useEffect(() => {
+  if (!plcEnabled && isNA(plcValue)) {
+    setPlcEnabled(true);
+  }
+}, [plcValue, plcEnabled]);
+
 
   const checkFormCompletion = useCallback(() => {
     setIsFormComplete(!!machine && !!issueType && !!summary)
@@ -329,7 +352,40 @@ function TicketCreateForm() {
             <Box mt={0} mb={2}>
               <Card {...GCardOption(themeMode)}>
                 <GStyledTopBorderDivider mode={themeMode} />
+
                 <Grid container spacing={2} p={1.5}>
+                  <Grid item xs={12} md={6}>
+                    <RHFRequiredTextFieldWrapper condition={!issueType}>
+                      <RHFAutocomplete
+                        name="issueType"
+                        label={t('issue_type.label')}
+                        options={ticketSettings?.issueTypes || []}
+                        isOptionEqualToValue={(option, value) => option?._id === value?._id}
+                        getOptionLabel={(option) => option?.name || ''}
+                        renderOption={(props, option) => (
+                          <li {...props} key={option?._id}>{option?.name || ''}</li>
+                        )}
+                        required
+                      />
+                    </RHFRequiredTextFieldWrapper>
+                  </Grid>
+
+                  <Grid item xs={12} md={6}>
+                    <RHFRequiredTextFieldWrapper condition={!requestType}>
+                      <RHFAutocomplete
+                        name="requestType"
+                        label={t('request_type.label')}
+                        options={filteredRequestTypes}
+                        isOptionEqualToValue={(option, value) => option?._id === value?._id}
+                        getOptionLabel={(option) => option?.name || ''}
+                        renderOption={(props, option) => (
+                          <li {...props} key={option?._id}>{option?.name || ''}</li>
+                        )}
+                        required
+                        disabled={!issueType} // Disable if no issueType selected
+                      />
+                    </RHFRequiredTextFieldWrapper>
+                  </Grid>
                   <Grid item xs={12} sm={12} md={4}>
                     <RHFRequiredTextFieldWrapper condition={!machine}>
                       <RHFAutocomplete
@@ -378,46 +434,24 @@ function TicketCreateForm() {
                     <Grid item xs={12} sm={12} md={4}>
                       <RHFTextField name={'machineModel'} label={t('machine_model.label')} value={machine?.machineModel?.name || ''} InputProps={{ readOnly: true }} />
                     </Grid>
-                    <Grid item xs={12} sm={6} md={2}>
-                      <RHFTextField name={"hlc"} label={t('hmi_version.label')} disabled />
+                   <Grid item xs={12} sm={6} md={2}>
+                    <RHFTextField
+                    name="hlc"
+                    label={t("hmi_version.label")}
+                    disabled={!hlcEnabled}
+                       />
                     </Grid>
-                    <Grid item xs={12} sm={6} md={2}>
-                      <RHFTextField name={"plc"} label={t('plc_version.label')} disabled />
+
+                  <Grid item xs={12} sm={6} md={2}>
+                     <RHFTextField
+                     name="plc"
+                     label={t("plc_version.label")}
+                     disabled={!plcEnabled}
+                        />
                     </Grid>
+
                   </Fragment>
 
-                  <Grid item xs={12} md={6}>
-                    <RHFRequiredTextFieldWrapper condition={!issueType}>
-                      <RHFAutocomplete
-                        name="issueType"
-                        label={t('issue_type.label')}
-                        options={ticketSettings?.issueTypes || []}
-                        isOptionEqualToValue={(option, value) => option?._id === value?._id}
-                        getOptionLabel={(option) => option?.name || ''}
-                        renderOption={(props, option) => (
-                          <li {...props} key={option?._id}>{option?.name || ''}</li>
-                        )}
-                        required
-                      />
-                    </RHFRequiredTextFieldWrapper>
-                  </Grid>
-
-                  <Grid item xs={12} md={6}>
-                    <RHFRequiredTextFieldWrapper condition={!requestType}>
-                      <RHFAutocomplete
-                        name="requestType"
-                        label={t('request_type.label')}
-                        options={filteredRequestTypes}
-                        isOptionEqualToValue={(option, value) => option?._id === value?._id}
-                        getOptionLabel={(option) => option?.name || ''}
-                        renderOption={(props, option) => (
-                          <li {...props} key={option?._id}>{option?.name || ''}</li>
-                        )}
-                        required
-                        disabled={!issueType} // Disable if no issueType selected
-                      />
-                    </RHFRequiredTextFieldWrapper>
-                  </Grid>
 
                 </Grid>
               </Card>
