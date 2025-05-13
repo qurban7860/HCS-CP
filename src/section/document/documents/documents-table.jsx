@@ -38,6 +38,7 @@ const DocumentsTable = () => {
                         <DynamicTable
                             columnsData={tableColumns}
                             data={documents?.data || []}
+                            // hover={false}
                             page={page}
                             rowsPerPage={rowsPerPage}
                             totalCount={documents?.totalCount || 0}

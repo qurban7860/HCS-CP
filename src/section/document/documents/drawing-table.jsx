@@ -39,6 +39,7 @@ const DrawingTable = () => {
                         <DynamicTable
                             columnsData={tableColumns}
                             data={drawings?.data || []}
+                            hover={false}
                             page={page}
                             rowsPerPage={rowsPerPage}
                             totalCount={drawings?.totalCount || 0}

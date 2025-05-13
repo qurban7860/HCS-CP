@@ -24,7 +24,7 @@ const DynamicTable = ({
     onChangeDense,
     disabledColumn,
     rowsPerPageOptions,
-    hover,
+    hover = true,
     onColumnClick,
     noPaginationBar,
     nodeBeforeColum,

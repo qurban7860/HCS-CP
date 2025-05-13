@@ -46,7 +46,7 @@ const TableRow = ({ index, hover, onViewRow, onView, columns, row, selected }) =
     return (
         <Fragment>
             <TableBody>
-                <StyledTableRow index={index} hover={false} onClick={onViewRow} mode={themeMode} selected={selected}>
+                <StyledTableRow index={index} hover={hover} onClick={onViewRow} mode={themeMode} selected={selected}>
                     {/* <LinkTableCell align='left' onClick={onViewRow} param={displayName} /> */}
                     {columns?.map((column, index) => {
                         if (!column?.checked) return null;
