@@ -76,7 +76,7 @@ const MachineNav = ({ machineData }) => {
                         <Grid item xs={12} sm={8} display={FLEX.FLEX} alignItems={KEY.TOP}>
                             <GStyledSpanBox>
                                 <GStyledFieldGrid my={1} mode={themeMode} isNoBg isMachineView>
-                                    <Typography variant={isMobile ? TYPOGRAPHY.H2 : TYPOGRAPHY.H2}>{truncate(machineData?.serialNo, 5)}</Typography>
+                                    <Typography variant={isMobile ? TYPOGRAPHY.H3 : TYPOGRAPHY.H3}>{truncate(machineData?.serialNo, 5)}</Typography>
                                 </GStyledFieldGrid>
                                 &nbsp;
                                 <Typography variant={isMobile ? TYPOGRAPHY.H5 : TYPOGRAPHY.H3} color={themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.howick.bronze}>

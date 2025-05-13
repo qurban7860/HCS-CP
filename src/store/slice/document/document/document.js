@@ -89,6 +89,11 @@ const documentSlice = createSlice({
     },
     changeDrawingPage(state, action) {
       state.drawingPage = action.payload
+    },
+    getDocumentFileSuccess(state, action) {
+      state.isLoading = false
+      state.success = true
+      state.initial = true
     }
   }
 })
@@ -130,20 +135,11 @@ export function getDocuments({ isActive, basic, docCategory, docType, machine, p
   }
 }
 
-export function getDocument({ id, customer, machine, isActive }) {
+export function getDocument({ id, machine, isActive }) {
   return async (dispatch) => {
     dispatch(documentSlice.actions.startLoading())
     try {
-      const response = await axios.get(PATH_SERVER.DOCUMENT.detail(id), {
-        params: {
-          isActive,
-          isArchived: false,
-          customerAccess: true,
-          customer,
-          machine,
-          forDrawing: false
-        }
-      })
+      const response = await axios.get(PATH_SERVER.DOCUMENT.detail(id))
       if (regEx.test(response.status)) {
         dispatch(documentSlice.actions.getDocumentSuccess(response.data))
       }
@@ -179,4 +175,19 @@ export function getDrawings({ isActive, basic, docCategory, docType, machine, pa
   }
 }
 
+export function getDocumentFile({ id, fileId, customerId }) {
+  return async (dispatch) => {
+    dispatch(supportSlice.actions.setLoadingFile(true))
+    try {
+      // const params = { customer: customerId }
+      const response = await axios.get(PATH_SERVER.DOCUMENT.file(id, fileId))
+      dispatch(supportSlice.actions.getDocumentFileSuccess({ id: fileId, data: response.data }));
+      return response
+    } catch (error) {
+      console.error(error)
+      dispatch(supportSlice.actions.hasError(error.Message))
+      throw error
+    }
+  };
+}
 

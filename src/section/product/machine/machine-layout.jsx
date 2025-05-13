@@ -50,9 +50,10 @@ const MachineModuleLayout = () => {
 
     return (
         <MotionLazyContainer display={FLEX.FLEX}>
-            <Grid container rowGap={2} flexDirection={FLEX_DIR.COLUMN}>
+            <Grid container rowGap={1} flexDirection={FLEX_DIR.COLUMN}>
                 <Grid item xs={12} sm={12} lg={6}>
                     <Autocomplete
+                        size='small'
                         value={machine}
                         options={machines}
                         isOptionEqualToValue={(option, value) => option?._id === value?._id}
@@ -61,7 +62,7 @@ const MachineModuleLayout = () => {
                         onChange={(e, newValue) => {
                             navigate(PATH_MACHINE.machines.view(newValue?._id))
                         }}
-                        renderInput={(params) => <TextField label="Machine" {...params} />}
+                        renderInput={(params) => <TextField label="Machine" variant="filled" {...params} />}
                     />
                 </Grid>
                 <MachineNav isLoading={isLoading} machineData={defaultValues} />

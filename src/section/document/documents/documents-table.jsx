@@ -8,6 +8,7 @@ import { MARGIN } from 'config/layout'
 import { DynamicTable } from 'component/table-scaled'
 import { FLEX_DIR } from 'constant'
 import { tableColumns } from './table-columns'
+import { PATH_MACHINE } from 'route/path'
 
 const DocumentsTable = () => {
     const { machineId } = useParams()
@@ -29,6 +30,9 @@ const DocumentsTable = () => {
         await dispatch(changePage(0))
         await dispatch(changeRowsPerPage(parseInt(e.target.value, 10)))
     }
+    const onViewRow = (id) => {
+        navigate(PATH_MACHINE.machines.documents.view(machineId, id))
+    }
 
     return (
         <Fragment>
@@ -38,14 +42,13 @@ const DocumentsTable = () => {
                         <DynamicTable
                             columnsData={tableColumns}
                             data={documents?.data || []}
-                            // hover={false}
                             page={page}
                             rowsPerPage={rowsPerPage}
                             totalCount={documents?.totalCount || 0}
                             isLoading={isLoading}
                             onChangePage={onChangePage}
                             onChangeRow={onChangeRows}
-                        // onViewRow={}
+                            onViewRow={onViewRow}
                         />
                     </Grid>
                 </Grid>
