@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useReducer, useState, useCallback } from 'react'
-import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -52,10 +51,6 @@ const DocumentsTable = () => {
             </Grid>
         </Fragment>
     )
-}
-
-DocumentsTable.propTypes = {
-    isDrawingsPage: PropTypes.bool,
 }
 
 export default DocumentsTable

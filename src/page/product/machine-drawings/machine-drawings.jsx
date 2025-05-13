@@ -1,4 +1,4 @@
-import { DrawingTable } from 'section/document/documents/drawing-table'
+import DrawingTable from 'section/document/documents/drawing-table'
 
 const MachineDrawings = () => {
     return <DrawingTable />

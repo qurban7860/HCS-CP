@@ -55,7 +55,6 @@ const TableRow = ({ index, hover, onViewRow, onView, columns, row, selected }) =
                         if (['createdAt'].includes(column.id)) {
                             cellValue = fDateTime(cellValue);
                         }
-                        console.log({ cellValue })
                         return (
                             <TableCell key={index} align={column?.align || 'left'}>
                                 {typeof cellValue === 'boolean' ? <Switch checked={cellValue} /> : useLimitString(cellValue, 40)}

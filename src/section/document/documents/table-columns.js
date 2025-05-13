@@ -1,4 +1,3 @@
-import { boolean } from "yup";
 
 export const tableColumns = [
     { id: '_id', label: 'ID', searchable: true },

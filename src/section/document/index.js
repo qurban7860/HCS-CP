@@ -1,10 +1,4 @@
-// export { default as LogLayout } from './log/log-layout'
-export { default as LogsSection } from './documents/documents-section'
-export { default as GraphsSection } from './erp/graph/graphs-section'
-export { default as LogsRow } from './documents/table-row'
-export { default as LogsHeader } from './documents/documents-header'
-export { default as LogsPagination } from './documents/documents-pagination'
-export { default as LogsTableController } from './documents/documents-table-controller'
+
+export { default as DocumentsTableController } from './documents/documents-table-controller'
 
 export * from './default-values/default-values'
-export * from './documents/table-columns-reducer'

@@ -53,7 +53,6 @@ const DynamicTable = ({
     })
 
     const handleChangeColumn = (columnId, newCheckState) => {
-        console.log({ columnId, newCheckState })
         dispatchTableColumns({ type: 'updateColumnCheck', columnId, newCheckState })
     }
 
