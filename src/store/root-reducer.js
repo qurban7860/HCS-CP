@@ -7,6 +7,9 @@ import {
     countReducer,
     userReducer,
     machineReducer,
+    documentReducer,
+    documentCategoryReducer,
+    documentTypeReducer,
     customerReducer,
     customerTicketReducer,
     contactReducer,
@@ -64,6 +67,30 @@ export const machinePersistConfig = {
     keyPrefix: 'redux-',
     blacklist: ['error', 'initial', 'responseMessage'],
     whitelist: ['machine']
+}
+
+export const documentPersistConfig = {
+    key: 'document',
+    storage,
+    keyPrefix: 'redux-',
+    blacklist: ['error', 'initial', 'responseMessage'],
+    whitelist: ['document']
+}
+
+export const documentCategoryPersistConfig = {
+    key: 'documentCategory',
+    storage,
+    keyPrefix: 'redux-',
+    blacklist: ['error', 'initial', 'responseMessage'],
+    whitelist: ['documentCategory']
+}
+
+export const documentTypePersistConfig = {
+    key: 'documentType',
+    storage,
+    keyPrefix: 'redux-',
+    blacklist: ['error', 'initial', 'responseMessage'],
+    whitelist: ['documentType']
 }
 
 export const customerPersistConfig = {
@@ -172,6 +199,10 @@ const rootReducer = combineReducers({
     machine: persistReducer(machinePersistConfig, machineReducer),
     machinemodel: persistReducer(machineModelPersistConfig, machineModelReducer),
     machineTicket: persistReducer(machineTicketPersistConfig, machineTicketReducer),
+    // document
+    document: persistReducer(documentPersistConfig, documentReducer),
+    documentCategory: persistReducer(documentCategoryPersistConfig, documentCategoryReducer),
+    documentType: persistReducer(documentTypePersistConfig, documentTypeReducer),
     // support
     ticket: persistReducer(ticketPersistConfig, ticketReducer),
     comment: persistReducer(commentPersistConfig, commentReducer),

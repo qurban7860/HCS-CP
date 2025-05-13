@@ -4,36 +4,37 @@ import { conNex } from 'util'
 const _baseUrl = GLOBAL.SERVER_URL
 
 function _url(...param) {
- return _baseUrl + conNex(...param)
+  return _baseUrl + conNex(...param)
 }
 
 /**
  * @modules
  */
 export const MODULE = {
- CONFIG: 'configs',
- DASHBOARD: 'dashboard',
- SECURITY: 'security',
- PRODUCT: 'products',
- CRM: 'crm',
- SUPPORT: 'jira',
- LOG: 'productLogs'
+  CONFIG: 'configs',
+  DASHBOARD: 'dashboard',
+  SECURITY: 'security',
+  PRODUCT: 'products',
+  CRM: 'crm',
+  SUPPORT: 'jira',
+  DOCUMENT: 'documents',
+  LOG: 'productLogs'
 }
-const { CONFIG: _CONFIG, SECURITY: _SECURITY, LOG: _LOG, CRM: _CRM, PRODUCT: _PRODUCT, DASHBOARD: _DASHBOARD } = MODULE
+const { CONFIG: _CONFIG, SECURITY: _SECURITY, LOG: _LOG, CRM: _CRM, PRODUCT: _PRODUCT, DOCUMENT: _DOCUMENT, DASHBOARD: _DASHBOARD } = MODULE
 
 /**
  * @path {baseUrl}/api/{apiVersion}/{...PATH_SERVER}
  *
  */
 export const PATH_SERVER = {
- /**
-  * @module /configs
-  */
- CONFIG: _url(_CONFIG),
- /**
-  * @module /dashboard
-  */
- DASHBOARD: {
+  /**
+   * @module /configs
+   */
+  CONFIG: _url(_CONFIG),
+  /**
+   * @module /dashboard
+   */
+  DASHBOARD: {
     /**
      * /dashboard
      */
@@ -50,11 +51,11 @@ export const PATH_SERVER = {
      * /dashboard/machineYear
      */
     MACHINE_YEAR: _url(_DASHBOARD, 'machineYear')
- },
- /**
-  * @module /security
-  */
- SECURITY: {
+  },
+  /**
+   * @module /security
+   */
+  SECURITY: {
     /**
      * @submodule /security/roles
      */
@@ -69,43 +70,43 @@ export const PATH_SERVER = {
         */
       detail: roleId => _url(_SECURITY, 'roles', roleId)
     },
-  /**
-   * login endpoint for customers
-   */
-  CUSTOMER_LOGIN: _url(_SECURITY, 'getCustomerToken'),
-  /**
-   * /security/getToken
-   */
-  LOGIN: _url(_SECURITY, 'getCustomerToken'),
-  /**
-   * /security/multifactorverifyCode
-   */
-  MFA: _url(_SECURITY, 'multifactorverifyCode'),
-  /**
-   * /security/logout/:userId
-   * @param {string} userId
-   */
-  LOGOUT: userId => _url(_SECURITY, 'logout', userId),
-  /**
-   * /security/forgetPassword
-   */
-  RESET_PASSWORD: _url(_SECURITY, 'forgetPassword'),
-  /**
-   * /security/forgetPassword/verifyToken
-   */
-  NEW_PASSWORD: _url(_SECURITY, 'forgetPassword', 'verifyToken'),
-  /**
-   * @submodule /security/invites
-   */
-  INVITES: {
+    /**
+     * login endpoint for customers
+     */
+    CUSTOMER_LOGIN: _url(_SECURITY, 'getCustomerToken'),
+    /**
+     * /security/getToken
+     */
+    LOGIN: _url(_SECURITY, 'getCustomerToken'),
+    /**
+     * /security/multifactorverifyCode
+     */
+    MFA: _url(_SECURITY, 'multifactorverifyCode'),
+    /**
+     * /security/logout/:userId
+     * @param {string} userId
+     */
+    LOGOUT: userId => _url(_SECURITY, 'logout', userId),
+    /**
+     * /security/forgetPassword
+     */
+    RESET_PASSWORD: _url(_SECURITY, 'forgetPassword'),
+    /**
+     * /security/forgetPassword/verifyToken
+     */
+    NEW_PASSWORD: _url(_SECURITY, 'forgetPassword', 'verifyToken'),
+    /**
+     * @submodule /security/invites
+     */
+    INVITES: {
       /**
       * /security/invites
       */
       list: _url(_SECURITY, 'invites'),
-        /**
-      * /security/invites/:inviteId
-      * @param {*} inviteId - string
-      */
+      /**
+    * /security/invites/:inviteId
+    * @param {*} inviteId - string
+    */
       detail: inviteId => _url(_SECURITY, 'invites', inviteId),
       /**
        * @access PUBLIC
@@ -113,25 +114,25 @@ export const PATH_SERVER = {
        * @param {string} userId
        */
       sendUserInvite: userId => _url(_SECURITY, 'invites', 'sendUserInvite', userId),
-        /**
-         * @access PUBLIC
-         * /security/invites/verifyInviteCode/:userId/:code
-         * @param {string} userId
-         * @param {string} code
-         */
+      /**
+       * @access PUBLIC
+       * /security/invites/verifyInviteCode/:userId/:code
+       * @param {string} userId
+       * @param {string} code
+       */
       verifiedInvite: (id, code) => _url(_SECURITY, 'invites', 'verifyInviteCode', id, code),
-        /**
-         * @access PUBLIC
-         * Set invited user password details
-         * /security/invites/setInvitedUserPasswordDetails/:userId
-         * @param {string} userId - string
-         */
+      /**
+       * @access PUBLIC
+       * Set invited user password details
+       * /security/invites/setInvitedUserPasswordDetails/:userId
+       * @param {string} userId - string
+       */
       setInvitedUserPassword: userId => _url(_SECURITY, 'invites', 'setInvitedUserPasswordDetails', userId),
-  },
-  /**
-   * @submodule /security/users
-   */
-  USER: {
+    },
+    /**
+     * @submodule /security/users
+     */
+    USER: {
       /**
         *  /security/users
         */
@@ -151,12 +152,12 @@ export const PATH_SERVER = {
         * @param {string} userId
         */
       signInLogs: userId => _url(_SECURITY, 'users', userId, 'signinlogs')
-      }
- },
- /**
-  * @module /products
-  */
- PRODUCT: {
+    }
+  },
+  /**
+   * @module /products
+   */
+  PRODUCT: {
     /**
      * @submodule /products/machines
      */
@@ -175,7 +176,7 @@ export const PATH_SERVER = {
         * @param {string} customerId
         * @param {boolean} isArchived
         */
-      viaCustomer: (customerId, isArchived) => _url(_PRODUCT, 'machines' ),
+      viaCustomer: (customerId, isArchived) => _url(_PRODUCT, 'machines'),
       /**
        * /products/machines/:machineId/techparamvalues/softwareVersion
        * @param {string} machineId
@@ -206,11 +207,48 @@ export const PATH_SERVER = {
         */
       categories: _url(_PRODUCT, 'categories')
     }
- },
- /**
-  * @module /crm
+  },
+  /**
+  * @module /documents
   */
- CRM: {
+  DOCUMENT: {
+    /**
+      * @submodule /documents/document/
+      * /documents/document/:documentId?customer={:customerId}&machineId={:machineId}
+      * @param {string} documentId
+      * @param {string} customerId
+      * @param {string} machineId
+      */
+    detail: documentId => _url(_DOCUMENT, 'document', documentId),
+    /**
+      * /documents/document?customer={:customerId}&machineId={:machineId}
+      * @param {string} customerId
+      * @param {string} machineId
+      */
+    list: _url(_DOCUMENT, 'document'),
+    /**
+     * @submodule - /documents/documentType
+     */
+    TYPES: {
+      /**
+        * /documents/documentType
+        */
+      list: _url(_PRODUCT, 'documentType'),
+    },
+    /**
+     * @submodule /products/categories
+     */
+    CATEGORIES: {
+      /**
+        * /documents/categories
+        */
+      list: _url(_PRODUCT, 'categories')
+    }
+  },
+  /**
+   * @module /crm
+   */
+  CRM: {
     /**
      * @submodule /crm/customers
      */
@@ -257,19 +295,19 @@ export const PATH_SERVER = {
         */
       register: _url(_CRM, 'public', 'customers', 'register')
     }
- },
- /**
-  * NOTE: this is current under the name jira module
-  * @module /jira
-  */
- SUPPORT: {
+  },
+  /**
+   * NOTE: this is current under the name jira module
+   * @module /jira
+   */
+  SUPPORT: {
     /**
      * /tickets
      */
     TICKETS: {
-        /**
-          * /tickets
-        */
+      /**
+        * /tickets
+      */
       list: _url('tickets'),
       /**
         * /tickets/:ticketId
@@ -283,44 +321,44 @@ export const PATH_SERVER = {
        * @returns
        */
       files: ticketId => _url('tickets', ticketId, 'files'),
-        /**
-       * /tickets/:ticketId/files/:fileId
-       * @param {*} ticketId
-       * @param {*} fileId
+      /**
+     * /tickets/:ticketId/files/:fileId
+     * @param {*} ticketId
+     * @param {*} fileId
+     * @returns
+     */
+      file: (ticketId, fileId) => _url('tickets', ticketId, 'files', fileId),
+      /**
+       * /tickets/:ticketId/comments
        * @returns
        */
-        file: (ticketId, fileId) => _url('tickets', ticketId, 'files', fileId),
-        /**
-         * /tickets/:ticketId/comments
-         * @returns
-         */
-        comments:(ticketId) =>  _url('tickets', ticketId ,'comments'),
-        /**
-         * /tickets/:ticketId/comments/:commentId
-         * @returns
-         */
-        comment: (ticketId, commentId) =>  _url('tickets', ticketId ,'comments', commentId),
-        /**
-         * /tickets/:ticketId/history
-         * @returns
-         */
-        histories:(ticketId) =>  _url('tickets', ticketId ,'history'),
-        /**
-         * /tickets/:ticketId/history/:historyId
-         * @returns
-         */
-        history: (ticketId, historyId) =>  _url('tickets', ticketId ,'history', historyId),
-        /**
-         * /tickets/settings
-         * @returns
-         */
-        settings: _url('tickets', 'settings')
+      comments: (ticketId) => _url('tickets', ticketId, 'comments'),
+      /**
+       * /tickets/:ticketId/comments/:commentId
+       * @returns
+       */
+      comment: (ticketId, commentId) => _url('tickets', ticketId, 'comments', commentId),
+      /**
+       * /tickets/:ticketId/history
+       * @returns
+       */
+      histories: (ticketId) => _url('tickets', ticketId, 'history'),
+      /**
+       * /tickets/:ticketId/history/:historyId
+       * @returns
+       */
+      history: (ticketId, historyId) => _url('tickets', ticketId, 'history', historyId),
+      /**
+       * /tickets/settings
+       * @returns
+       */
+      settings: _url('tickets', 'settings')
     },
- },
- /**
-  * @module /productLogs
-  */
- LOG: {
+  },
+  /**
+   * @module /productLogs
+   */
+  LOG: {
     /**
      * /productLogs/?{params}
      * @param {string} customerId - [customer] bson.ObjectId
@@ -346,5 +384,5 @@ export const PATH_SERVER = {
      * @param {string} logGraphType - ['length_and_waste', 'productionRate']
      */
     graph: _url('productLogs', 'graph')
- }
+  }
 }
