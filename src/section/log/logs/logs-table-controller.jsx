@@ -79,7 +79,7 @@ const LogsTableController = ({
             sm: isGraphPage ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)',
             md: isGraphPage ? 'repeat(4, 1fr) auto' : '25% 25% 1fr' }} sx={{ flexGrow: 1 }}>
             <RHFDatePickr
-              label='Date From'
+              label='From Date'
               name='dateFrom'
               value={dateFrom}
               size='small'
@@ -89,7 +89,7 @@ const LogsTableController = ({
               }}
             />
             <RHFDatePickr
-              label='Date To'
+              label='To Date'
               name='dateTo'
               value={dateTo}
               size='small'
