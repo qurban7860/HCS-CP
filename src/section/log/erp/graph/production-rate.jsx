@@ -10,7 +10,7 @@ import { getTimePeriodDesc } from 'section/log'
 import { GStyledSpanBox, GStyledCenterBox } from 'theme/style'
 import { TYPOGRAPHY, KEY, FLEX } from 'constant'
 
-const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData, isDashboard, graphHeight = 500 }) => {
+const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData, isDashboard, graphHeight = 500, dateFrom, dateTo }) => {
   const [graphData, setGraphData] = useState([])
   const { isLoading } = useSelector(state => state.log)
   const { isLoading: isLoadingMachineLog } = useSelector(state => state.machineLog)
@@ -20,109 +20,90 @@ const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData, i
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
   useEffect(() => {
-    if (logsGraphData) {
-      const convertedData = logsGraphData.map(item => ({
-        ...item,
-        productionRate: (item.componentLength / 1000 + item.waste / 1000) / (item.time / 3600000),
-      }))
-      setGraphData(convertedData)
-    }
-  }, [logsGraphData])
+  if (logsGraphData) {
+    const convertedData = logsGraphData.map(item => ({
+      ...item,
+      productionRate: (item.componentLength / 1000 + item.waste / 1000) / (item.time / 3600000),
+    }))
+    setGraphData(convertedData)
+  }
+  }, [logsGraphData, dateFrom, dateTo, timePeriod])
 
   const processGraphData = () => {
     if (!graphData || graphData.length === 0) {
       return null
     }
-    const sortedData = [...graphData]
-    let labels = sortedData.map(item => item._id);
 
-    switch (timePeriod) {
-      case 'Hourly':
-        sortedData.sort((a, b) => new Date(a._id) - new Date(b._id));
-        labels = Array.from({ length: 24 }, (_, i) => {
-          const date = new Date();
-          date.setHours(date.getHours() - i);
-          const month = String(date.getMonth() + 1).padStart(2, '0');
-          const day = String(date.getDate()).padStart(2, '0');
-          const hour = String(date.getHours()).padStart(2, '0');
-           return `${month}/${day} ${hour}`;
-        }).reverse();                    
-        break;
-      case 'Daily':
-        sortedData.sort((a, b) => new Date(a._id) - new Date(b._id))
-        labels = Array.from({ length: 30 }, (_, i) => {
-          const date = new Date()
-          date.setDate(date.getDate() - i)
-          const day = String(date.getDate()).padStart(2, '0')
-          const month = String(date.getMonth() + 1).padStart(2, '0')
-          return `${day}/${month}`;
-        }).reverse()
-        break
-      case 'Monthly':
-        sortedData.sort((a, b) => new Date(a._id) - new Date(b._id));        
-          labels = Array.from({ length: 12 }, (_, i) => {
-            const date = new Date();
-            date.setMonth(date.getMonth() - i);
-            return date.toLocaleDateString('en-US', {
-              month: 'short',
-              year: '2-digit'
-            });
-          }).reverse();
-        // sortedData.sort((a, b) => {
-        //   const [yearA, monthA] = a._id.split('-')
-        //   const [yearB, monthB] = b._id.split('-')
-        //   return new Date(yearA, monthA - 1) - new Date(yearB, monthB - 1)
-        // })
-        // labels = Array.from({ length: 12 }, (_, i) => {
-        //   const date = new Date()
-        //   date.setMonth(date.getMonth() - i)
-        //   const year = date.getFullYear()
-        //   const month = String(date.getMonth() + 1).padStart(2, '0')
-        //   return `${year}-${month}`
-        // }).reverse()
-        break
-      case 'Quarterly':
-        sortedData.sort((a, b) => {
-          const [yearA, qtrA] = a._id.split('-')
-          const [yearB, qtrB] = b._id.split('-')
-          return yearA === yearB ? qtrA.localeCompare(qtrB) : yearA.localeCompare(yearB)
-        })
-        labels = Array.from({ length: 4 }, (_, i) => {
-          const date = new Date()
-          date.setMonth(date.getMonth() - i * 3)
-          const year = date.getFullYear()
-          const quarter = Math.floor(date.getMonth() / 3) + 1
-          return `${year}-Q${quarter}`
-        }).reverse()
-        break
-      case 'Yearly':
-        sortedData.sort((a, b) => a._id.localeCompare(b._id))
-        labels = Array.from({ length: 5 }, (_, i) => {
-          const date = new Date()
-          date.setFullYear(date.getFullYear() - i)
-          return date.getFullYear().toString()
-        }).reverse()
-        break
-      default:
-        labels = sortedData.map(item => item._id)
+    const dataMap = new Map();
+    graphData.forEach(item => dataMap.set(item._id, item));
+
+    const labels = [];
+    const startDate = new Date(dateFrom);
+    const endDate = new Date(dateTo);
+
+    if (timePeriod === 'Hourly') {
+      const currentDate = new Date(startDate);
+      let hourCount = 0;
+      while (currentDate <= endDate && hourCount < 24) {
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const hour = String(currentDate.getHours()).padStart(2, '0');
+        labels.push(`${month}/${day} ${hour}`);
+        currentDate.setHours(currentDate.getHours() + 1);
+        hourCount++;
+      }
+    } else if (timePeriod === 'Daily') {
+      const currentDate = new Date(startDate);
+      let dayCount = 0;
+      while (currentDate <= endDate && dayCount < 30) {
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        labels.push(`${day}/${month}`);
+        currentDate.setDate(currentDate.getDate() + 1);
+        dayCount++;
+      }
+    } else if (timePeriod === 'Monthly') {
+      let currentDate = new Date(startDate);
+      let monthCount = 0;
+      while (currentDate <= endDate && monthCount < 12) {
+        const shortMonth = currentDate.toLocaleString('default', { month: 'short' });
+        const yearShort = String(currentDate.getFullYear()).slice(-2);
+        labels.push(`${shortMonth} ${yearShort}`);
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        monthCount++;
+      }
+    } else if (timePeriod === 'Quarterly') {
+      let currentDate = new Date(startDate);
+      let quarterCount = 0;
+      while (currentDate <= endDate && quarterCount < 4) {
+        const year = currentDate.getFullYear();
+        const quarter = Math.floor(currentDate.getMonth() / 3) + 1;
+        labels.push(`${year}-Q${quarter}`);
+        currentDate.setMonth(currentDate.getMonth() + 3);
+        quarterCount++;
+      }
+    } else if (timePeriod === 'Yearly') {
+      let currentDate = new Date(startDate);
+      let yearCount = 0;
+      while (currentDate <= endDate && yearCount < 5) {
+        labels.push(String(currentDate.getFullYear()));
+        currentDate.setFullYear(currentDate.getFullYear() + 1);
+        yearCount++;
+      }
+    } else {
+      return null;
     }
-    // // eslint-disable-next-line no-debugger
-    // debugger    
+
     const productionRate = labels.map(label => {
-      const dataPoint = sortedData.find(item => item._id.includes(label))
-      return dataPoint ? dataPoint.productionRate : 0
-    })
-
-
-    // const filteredIndices = productionRate.reduce((acc, prod, index) => {
-    //  if (prod !== 0) {
-    //   acc.push(index)
-    //  }
-    //  return acc
-    // }, [])
-
-    // const filteredLabels = filteredIndices.map(i => labels[i])
-    // const filteredProducedRate = filteredIndices.map(i => productionRate[i])
+      let foundRate = 0;
+      for (const value of dataMap.values()) {
+        if (value._id.includes(label)) {
+          foundRate = value.productionRate;
+          break; 
+        }
+      }
+      return foundRate;
+    });
 
     return {
       categories: labels,
@@ -133,8 +114,8 @@ const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData, i
           tension: 0.1
         }
       ]
-    }
-  }
+    };
+  };
 
   const chartData = processGraphData()
 
@@ -146,7 +127,7 @@ const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData, i
             {t('production.production_rate.label').toUpperCase()}
           </Typography>
         )}
-        {/* &nbsp;
+         {/* &nbsp;
         <Box>
           <Typography variant={isDashboard ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.H4} p={0}>
             {getTimePeriodDesc(timePeriod).toUpperCase()}
@@ -163,10 +144,11 @@ const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData, i
         )}
         {!(isLoading || isLoadingMachineLog) && (
           <Fragment>
-            {graphData?.length > 0 && <Fragment>{chartData && <LogLineChart chart={chartData} graphLabels={graphLabels} graphHeight={graphHeight} />}</Fragment>}
-            {graphData?.length === 0 && (
+            {chartData && chartData.categories.length > 0 ? (
+              <LogLineChart chart={chartData} graphLabels={graphLabels} graphHeight={graphHeight} />
+            ) : (
               <Typography variant='body1' color='textSecondary'>
-                {customer?._id ? `No data available for the ${getTimePeriodDesc(timePeriod)}.` : 'Please Select a customer to view the graph.'}
+                {customer?._id ? 'No data available' : 'Please Select a customer to view the graph.'}
               </Typography>
             )}
           </Fragment>
@@ -182,7 +164,9 @@ ERPProductionRate.propTypes = {
   graphLabels: PropTypes.object,
   logsGraphData: PropTypes.array,
   isDashboard: PropTypes.bool,
-  graphHeight: PropTypes.number
+  graphHeight: PropTypes.number,
+  dateFrom: PropTypes.instanceOf(Date),
+  dateTo: PropTypes.instanceOf(Date),
 }
 
 export default ERPProductionRate

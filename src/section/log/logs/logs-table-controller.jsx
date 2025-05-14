@@ -74,7 +74,10 @@ const LogsTableController = ({
         )}
 
         <Fragment>
-          <Box display='grid' gap={2} gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: isGraphPage ? '23% 23% 23% 23% auto' : '25% 25% 1fr' }} sx={{ flexGrow: 1 }}>
+          <Box display='grid' gap={2}  gridTemplateColumns={{
+            xs: isGraphPage ? '1fr' : '1fr',
+            sm: isGraphPage ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)',
+            md: isGraphPage ? 'repeat(4, 1fr) auto' : '25% 25% 1fr' }} sx={{ flexGrow: 1 }}>
             <RHFDatePickr
               label='Start Date'
               name='dateFrom'
@@ -147,7 +150,7 @@ const LogsTableController = ({
                     fullWidth
                   />
                 </Box>
-                <Box sx={{ mt: -3.5, display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mt: -3.5 }}>
                 <IconTooltip
                   icon={ICON_NAME.REFRESH}
                   title={t('log.button.get_logs').toUpperCase()}

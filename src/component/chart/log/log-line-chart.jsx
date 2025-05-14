@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useState, useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useSettingContext } from 'hook'
 import { useTheme } from '@mui/material/styles'
@@ -15,13 +15,13 @@ const formatNumber = num => {
 function LogLineChart({ chart, graphLabels, graphHeight = 500 }) {
   const { themeMode } = useSettingContext()
   const theme = useTheme()
-  const { categories, series } = chart
-  const colors = [theme.palette.howick.darkBlue, theme.palette.howick.orange]
-  const colorsDarkMode = [theme.palette.howick.orange, theme.palette.howick.lightGray]
+  const { series } = chart 
+  const colors = useMemo(() => [theme.palette.howick.darkBlue, theme.palette.howick.orange], [theme.palette.howick.darkBlue, theme.palette.howick.orange]);
+  const colorsDarkMode = useMemo(() => [theme.palette.howick.orange, theme.palette.howick.lightGray], [theme.palette.howick.orange, theme.palette.howick.lightGray]);
 
   const menuBackgroundColor = themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.grey[800]
   const menuTextColor = themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
-
+  
   //  const [isVisible, setIsVisible] = useState(true)
 
   //  useEffect(() => {
@@ -34,8 +34,7 @@ function LogLineChart({ chart, graphLabels, graphHeight = 500 }) {
   //    setIsVisible(false)
   //   }
   //  }, [chart])
-
-  const chartOptions = {
+  const [chartOptions, setChartOptions] = useState({
     chart: {
       type: 'line',
       height: graphHeight,
@@ -57,7 +56,7 @@ function LogLineChart({ chart, graphLabels, graphHeight = 500 }) {
       curve: 'straight',
       width: 3
     },
-    // dataLabels: {
+     // dataLabels: {
     //   enabled: true,
     //   formatter(val, { seriesIndex, dataPointIndex, w }) {
     //     if (seriesIndex === 1) return ''
@@ -70,7 +69,7 @@ function LogLineChart({ chart, graphLabels, graphHeight = 500 }) {
     //   }
     // },
     xaxis: {
-      categories,
+      categories: chart.categories || [], 
       position: 'bottom',
       labels: {
         offsetY: 0,
@@ -120,7 +119,6 @@ function LogLineChart({ chart, graphLabels, graphHeight = 500 }) {
           tooltipContent += `<span class="apexcharts-tooltip-text-y-label">${legend}:</span>`
           tooltipContent += `<span class="apexcharts-tooltip-text-y-value">${value}</span></div></div></div>`
         })
-
         tooltipContent += `</div>`
         return tooltipContent
       }
@@ -140,19 +138,41 @@ function LogLineChart({ chart, graphLabels, graphHeight = 500 }) {
     fill: {
       type: 'gradient'
     }
-  }
+  })
+
+  useEffect(() => {
+    setChartOptions(prevOptions => ({
+      ...prevOptions,
+      xaxis: {
+        ...prevOptions.xaxis,
+        categories: chart.categories || [],
+        title: {
+          ...prevOptions.xaxis.title,
+          text: graphLabels?.xaxis,
+        }
+      },
+      yaxis: {
+        ...prevOptions.yaxis,
+        title: {
+          ...prevOptions.yaxis.title,
+          text: graphLabels?.yaxis,
+        }
+      },
+      colors: themeMode === KEY.LIGHT ? colors : colorsDarkMode, // Update colors based on themeMode
+    }));
+  }, [chart, graphLabels, themeMode, colors, colorsDarkMode]);
 
   return (
     <Fragment>
       <style>{`
-      .apexcharts-menu {
-        background-color: ${menuBackgroundColor} !important;
-        color: ${menuTextColor} !important;
-        border-radius: 2px;
-        border: 1px solid ${menuBackgroundColor};
-      }
-    `}</style>
-      <Chart type='line' series={series} options={chartOptions} height={chartOptions.chart.height} />
+        .apexcharts-menu {
+          background-color: ${menuBackgroundColor} !important;
+          color: ${menuTextColor} !important;
+          border-radius: 2px;
+          border: 1px solid ${menuBackgroundColor};
+        }
+      `}</style>
+      <Chart type='line' series={chart.series} options={chartOptions} height={chartOptions.chart.height} />
     </Fragment>
   )
 }

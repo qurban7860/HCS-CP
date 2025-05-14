@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import PropTypes from 'prop-types'
 import { useState, useEffect, Fragment } from 'react'
 import { useSelector } from 'react-redux'
@@ -12,7 +13,7 @@ import { getTimePeriodDesc } from 'section/log'
 import { GStyledSpanBox, GStyledCenterBox } from 'theme/style'
 import { TYPOGRAPHY, KEY, FLEX } from 'constant'
 
-const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, isDashboard, graphHeight = 500 }) => {
+const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, isDashboard, graphHeight = 500, dateFrom, dateTo }) => {
   const [graphData, setGraphData] = useState([])
   const { isLoading } = useSelector(state => state.log)
   const { themeMode } = useSettingContext()
@@ -38,61 +39,67 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
     if (!graphData || graphData.length === 0) return null;
 
     const dataMap = new Map();
-    graphData.forEach(item => dataMap.set(item._id, item)); 
+    graphData.forEach(item => dataMap.set(item._id, item));
 
     const labels = [];
-    const now = new Date();
+    const startDate = new Date(dateFrom);
+    const endDate = new Date(dateTo);
 
-    switch (timePeriod) {
-      case 'Hourly':
-        for (let i = 23; i >= 0; i--) {
-          const d = new Date();
-          d.setHours(d.getHours() - i);
-          const month = String(d.getMonth() + 1).padStart(2, '0');
-          const day = String(d.getDate()).padStart(2, '0');
-          const hour = String(d.getHours()).padStart(2, '0');
-          labels.push(`${month}/${day} ${hour}`);
-        }
-        break;
+    if (timePeriod === 'Hourly') {
+      const startHour = startDate.getHours();
+      const endHour = endDate.getHours();
+      const currentDate = new Date(startDate);
+      let hourCount = 0;
 
-      case 'Daily':
-        for (let i = 29; i >= 0; i--) {
-          const d = new Date();
-          d.setDate(d.getDate() - i);
-          const day = String(d.getDate()).padStart(2, '0');
-          const month = String(d.getMonth() + 1).padStart(2, '0');
-          labels.push(`${day}/${month}`);
-        }
-        break;
-
-      case 'Monthly':
-        for (let i = 11; i >= 0; i--) {
-          const d = new Date();
-          d.setMonth(d.getMonth() - i);
-          const shortMonth = d.toLocaleString('default', { month: 'short' });
-          const yearShort = String(d.getFullYear()).slice(-2);
-          labels.push(`${shortMonth} ${yearShort}`);
-        }
-        break;
-
-      case 'Quarterly':
-        for (let i = 3; i >= 0; i--) {
-          const d = new Date();
-          d.setMonth(d.getMonth() - i * 3);
-          const year = d.getFullYear();
-          const quarter = Math.floor(d.getMonth() / 3) + 1;
-          labels.push(`${year}-Q${quarter}`);
-        }
-        break;
-
-      case 'Yearly':
-        for (let i = 4; i >= 0; i--) {
-          labels.push(String(now.getFullYear() - i));
-        }
-        break;
-
-      default:
-        return null;
+      while (currentDate <= endDate && hourCount < 24) {
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const hour = String(currentDate.getHours()).padStart(2, '0');
+        labels.push(`${month}/${day} ${hour}`);
+        currentDate.setHours(currentDate.getHours() + 1);
+        hourCount++;
+      }
+    } else if (timePeriod === 'Daily') {
+      let currentDate = new Date(startDate);
+      let dayCount = 0;
+      while (currentDate <= endDate && dayCount < 30) {
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        labels.push(`${day}/${month}`);
+        currentDate.setDate(currentDate.getDate() + 1);
+        dayCount++;
+      }
+    }
+    else if (timePeriod === 'Monthly') {
+      let currentMonth = new Date(startDate);
+      let monthCount = 0;
+      while (currentMonth <= endDate && monthCount < 12) {
+        const shortMonth = currentMonth.toLocaleString('default', { month: 'short' });
+        const yearShort = String(currentMonth.getFullYear()).slice(-2);
+        labels.push(`${shortMonth} ${yearShort}`);
+        currentMonth.setMonth(currentMonth.getMonth() + 1);
+        monthCount++;
+      }
+    } else if (timePeriod === 'Quarterly') {
+      let currentQDate = new Date(startDate);
+      let quarterCount = 0;
+      while (currentQDate <= endDate && quarterCount < 4) {
+        const year = currentQDate.getFullYear();
+        const quarter = Math.floor(currentQDate.getMonth() / 3) + 1;
+        labels.push(`${year}-Q${quarter}`);
+        currentQDate.setMonth(currentQDate.getMonth() + 3);
+        quarterCount++;
+      }
+    } else if (timePeriod === 'Yearly') {
+      let currentYDate = new Date(startDate);
+      let yearCount = 0;
+      while (currentYDate <= endDate && yearCount < 5) {
+        labels.push(String(currentYDate.getFullYear()));
+        currentYDate.setFullYear(currentYDate.getFullYear() + 1);
+        yearCount++;
+      }
+    } else {
+      return null;
     }
 
     const producedLength = labels.map(label => dataMap.get(label)?.componentLength || 0);
@@ -107,8 +114,6 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
     };
   };
 
-
-
   const chartData = processGraphData()
 
   return (
@@ -116,7 +121,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
       <GStyledSpanBox alignItems={KEY.CENTER} my={2} sx={{ display: FLEX.FLEX, justifyContent: FLEX.SPACE_BETWEEN }}>
         {isDesktop && (
           <Typography variant={isDesktop ? TYPOGRAPHY.H4 : TYPOGRAPHY.OVERLINE} gutterBottom>
-            {t('production.production_total.label').toUpperCase()}
+            {t('production.label').toUpperCase()}
           </Typography>
         )}
         {/* &nbsp; */}
@@ -139,7 +144,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
             {graphData?.length > 0 && <Fragment>{chartData && <LogStackedChart chart={chartData} graphLabels={graphLabels} graphHeight={graphHeight} />}</Fragment>}
             {graphData?.length === 0 && (
               <Typography variant={TYPOGRAPHY.BODY1} color='textSecondary'>
-                {customer?._id ? `No data available for the ${getTimePeriodDesc(timePeriod)}.` : 'Please Select a customer to view the graph.'}
+                {customer?._id ? 'No data available' : 'Please Select a customer to view the graph.'}
               </Typography>
             )}
           </Fragment>
@@ -155,7 +160,9 @@ ERPProductionTotal.propTypes = {
   customer: PropTypes.object,
   graphLabels: PropTypes.object,
   isDashboard: PropTypes.bool,
-  graphHeight: PropTypes.number
+  graphHeight: PropTypes.number,
+  dateFrom: PropTypes.instanceOf(Date),
+  dateTo: PropTypes.instanceOf(Date),
 }
 
 export default ERPProductionTotal
