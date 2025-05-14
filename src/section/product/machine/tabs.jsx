@@ -31,22 +31,22 @@ export const TABS = (machineId) => [
         path: PATH_MACHINE.machines.view(machineId),
         disabled: false
     },
-    {
-        id: 1,
-        label: 'Drawings',
-        module: 'assemblyDrawings',
-        icon: ICON_NAME.DRAWING,
-        path: PATH_MACHINE.machines.drawings.list(machineId),
-        disabled: false
-    },
-    {
-        id: 2,
-        label: 'Documents',
-        module: 'machineDocuments',
-        icon: ICON_NAME.DOCUMENT,
-        path: PATH_MACHINE.machines.documents.list(machineId),
-        disabled: false
-    },
+    // {
+    //     id: 1,
+    //     label: 'Drawings',
+    //     module: 'assemblyDrawings',
+    //     icon: ICON_NAME.DRAWING,
+    //     path: PATH_MACHINE.machines.drawings.list(machineId),
+    //     disabled: false
+    // },
+    // {
+    //     id: 2,
+    //     label: 'Documents',
+    //     module: 'machineDocuments',
+    //     icon: ICON_NAME.DOCUMENT,
+    //     path: PATH_MACHINE.machines.documents.list(machineId),
+    //     disabled: false
+    // },
     // {
     //     id: 2,
     //     label: 'Notes',
