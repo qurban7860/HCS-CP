@@ -146,12 +146,12 @@ const LogsSection = ({ isArchived }) => {
                 <Stack spacing={2}>
                   <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>
                     <RHFDatePickr
-                      label='Date From'
+                      label='From Date'
                       name='dateFrom'
                       size='small'
                     />
                     <RHFDatePickr
-                      label='Date To'
+                      label='To Date'
                       name='dateTo'
                       size='small'
                     />
@@ -219,7 +219,6 @@ const LogsSection = ({ isArchived }) => {
                           color={theme.palette.common.white}
                           tooltipColor={theme.palette.primary.main}
                           buttonColor={theme.palette.howick.darkBlue}
-                          onClick={()=>{}}
                           variant="contained"
                           size="small"
                           type={'submit'}
