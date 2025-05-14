@@ -27,15 +27,22 @@ const MachineNav = ({ machineData }) => {
     const menuId = menuOpen ? 'machine-menu' : undefined
 
     const tabs = useMemo(() => {
-        const allowedModules = user?.modules || [];
+        const allowedModules = user?.modules || []
+        const userRoles = user?.roles || []
+        const noFilterRoles = ['developer', 'superadmin']
+
+        const shouldFilter = userRoles.some(r => !noFilterRoles.includes(r.name?.toLowerCase()))
 
         return TABS(machineId)
-            .filter(tab => !tab?.module || allowedModules.includes(tab?.module))
+            .filter(tab => {
+                if (!shouldFilter) return true
+                return !tab.module || allowedModules.includes(tab.module)
+            })
             .map(tab => ({
                 ...tab,
                 a11yProps: a11yProps(tab.id)
-            }));
-    }, [machineId, user]);
+            }))
+    }, [machineId, user])
 
     const toggleMenu = event => { setMenuAnchor(menuAnchor ? null : event.currentTarget) }
 

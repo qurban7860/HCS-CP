@@ -11,6 +11,7 @@ import {
   LandingPage,
   // auth:
   LoginPage,
+  VerifyCodePage,
   RegisterPage,
   SetPasswordPage,
   ResetPasswordPage,
@@ -71,7 +72,7 @@ export default function Router() {
             },
             {
               path: 'authenticate',
-              element: <GuestGuard>{/* <Authenticate /> */}</GuestGuard>
+              element: <GuestGuard>{<VerifyCodePage />}</GuestGuard>
             },
             {
               path: 'register',
