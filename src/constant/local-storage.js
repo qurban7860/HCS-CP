@@ -16,6 +16,7 @@ const LOCAL_STORAGE_KEY = {
   MFA: 'MFA',
   NAME: 'name',
   ROLES: 'userRoles',
+  MODULES: 'modules',
   REMEMBER: 'remember',
   USER: 'user',
   USER_EMAIL: 'UserEmail',
