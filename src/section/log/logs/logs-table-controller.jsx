@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { useSettingContext, ICON_NAME } from 'hook'
 import { setSelectedSearchFilter } from 'store/slice'
 import { Box, Stack } from '@mui/material'
+import { useFormContext } from 'react-hook-form'
 import { RHFAutocomplete, RHFDatePickr, RHFFilteredSearchBar } from 'component/hook-form'
 import { GStyledControllerCardContainer } from 'theme/style'
 import { LOG_TYPE_CONFIG, logGraphTypes } from 'config'
@@ -20,7 +21,7 @@ const LogsTableController = ({
   handlePeriodChange,
   isLogsPage,
   isGraphPage,
-  methods,
+  // methods,
   mode,
   onGetLogs,
   onGetGraph
@@ -29,7 +30,8 @@ const LogsTableController = ({
   const { themeMode } = useSettingContext()
   const theme = useTheme()
 
-  const { watch, setValue, handleSubmit, trigger } = methods
+  const methods = useFormContext()
+  const { watch, setValue, trigger } = methods
   const { dateFrom, dateTo, logType } = watch()
 
   return (

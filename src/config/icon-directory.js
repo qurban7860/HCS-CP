@@ -111,6 +111,8 @@ const ICON_WEB = {
   MENU_POPOVER_OPEN: _getWebIcon('menu-open'),
   MENU_POPOVER_CLOSE: _getWebIcon('menu-close'),
   MINIMIZE: _getWebIcon('minimize'),
+  CSV_FILE_DELIMITED: _getWebIcon('file-delimited'),
+  JSON_CODE: _getWebIcon('code-json'),
   MODE_LIGHT_A: _getMeteoIcon('clear-day-fill'),
   MODE_DARK_A: _getMeteoIcon('clear-night-fill'),
   ONLINE: _getWebIcon('checkbox-blank-circle'),
@@ -149,7 +151,10 @@ const ICON_WEB = {
   WARNING: _getWebIcon('warning'),
   WWW: _getWebIcon('world-wide-web'),
   ZOOM_IN: _getWebIcon('zoom-in'),
-  ZOOM_OUT: _getWebIcon('zoom-out')
+  ZOOM_OUT: _getWebIcon('zoom-out'),
+  DOWNLOAD_TABLE: _getWebIcon('table-download'),
+  TRAY_DOWNLOAD: _getWebIcon('tray-download'),
+  TEXT_SEARCH: _getWebIcon('text-search'),
 }
 
 const ICON_DOC = {
@@ -226,6 +231,9 @@ export const ICON_WEB_NAME = {
   DOCUMENTS: 'DOCUMENTS',
   DOWNLOAD: 'DOWNLOAD',
   DOWNLOADING: 'DOWNLOADING',
+  DOWNLOAD_TABLE: 'DOWNLOAD_TABLE',
+  TRAY_DOWNLOAD: 'TRAY_DOWNLOAD',
+  TEXT_SEARCH: 'TEXT_SEARCH',
   DRAWING: 'DRAWING',
   EDIT: 'EDIT',
   EMAIL: 'EMAIL',
@@ -253,6 +261,8 @@ export const ICON_WEB_NAME = {
   MENU_POPOVER_OPEN: 'MENU_POPOVER_OPEN',
   MENU_POPOVER_CLOSE: 'MENU_POPOVER_CLOSE',
   MINIMIZE: 'MINIMIZE',
+  CSV_FILE_DELIMITED: 'CSV_FILE_DELIMITED',
+  JSON_CODE: 'JSON_CODE',
   MODE_LIGHT_A: 'MODE_LIGHT_A',
   MODE_DARK_A: 'MODE_DARK_A',
   NOT_EMPLOYED: 'NOT_EMPLOYED',

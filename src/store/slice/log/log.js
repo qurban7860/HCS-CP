@@ -274,9 +274,9 @@ export function getLog(machineId, id, logType) {
     }
 }
 
-export function getLogs({ customerId = undefined, machineId, page, pageSize, fromDate, toDate, isCreatedAt, isMachineArchived, selectedLogType, isArchived, searchKey, searchColumn }) {
+export function getLogs({ customerId = undefined, machineId, page, pageSize, fromDate, toDate, isCreatedAt, isMachineArchived, selectedLogType, isArchived, searchKey, searchColumn, returnResponse = false }) {
     return async dispatch => {
-        dispatch(logSlice.actions.startLoading())
+        if (!returnResponse) dispatch(logSlice.actions.startLoading())
         try {
             const params = {
                 customer: customerId,
@@ -285,13 +285,17 @@ export function getLogs({ customerId = undefined, machineId, page, pageSize, fro
                 fromDate,
                 toDate,
                 isArchived,
-                pagination: { page, pageSize },
+                ...(!returnResponse && { pagination: { page, pageSize } }),
                 ...(isMachineArchived && { archivedByMachine: true }),
                 ...(!!isCreatedAt && { isCreatedAt }),
                 ...(searchKey?.length > 0 && { searchKey, searchColumn })
             }
             const response = await axios.get(PATH_SERVER.LOG.list, { params })
-            await dispatch(logSlice.actions.getLogsSuccess(response.data))
+            if (!returnResponse) {
+                await dispatch(logSlice.actions.getLogsSuccess(response.data))
+                return null;
+            }
+            return response.data;
         } catch (error) {
             console.error('Error fetching logs:', error)
             dispatch(logSlice.actions.hasError(error.message || 'An error occurred'))
