@@ -117,7 +117,7 @@ const GraphsSection = () => {
               <GStyledControllerCardContainer height={'auto'} sx={{ display: FLEX.FLEX, flexDirection: FLEX_DIR.COLUMN, gap: 2 }}>
                 <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>
                     <RHFDatePickr
-                      label='Start Date'
+                      label='Date From'
                       name='dateFrom'
                       size='small'
                       onChange={newValue => {
@@ -126,7 +126,7 @@ const GraphsSection = () => {
                       }}
                     />
                     <RHFDatePickr
-                      label='End Date'
+                      label='Date To'
                       name='dateTo'
                       size='small'
                       onChange={newValue => {
