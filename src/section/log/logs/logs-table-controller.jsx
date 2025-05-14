@@ -76,9 +76,12 @@ const LogsTableController = ({
         )}
 
         <Fragment>
-          <Box display='grid' gap={2} gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: isGraphPage ? '23% 23% 23% 23% auto' : '25% 25% 1fr' }} sx={{ flexGrow: 1 }}>
+          <Box display='grid' gap={2}  gridTemplateColumns={{
+            xs: isGraphPage ? '1fr' : '1fr',
+            sm: isGraphPage ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)',
+            md: isGraphPage ? 'repeat(4, 1fr) auto' : '25% 25% 1fr' }} sx={{ flexGrow: 1 }}>
             <RHFDatePickr
-              label='Start Date'
+              label='Date From'
               name='dateFrom'
               value={dateFrom}
               size='small'
@@ -88,7 +91,7 @@ const LogsTableController = ({
               }}
             />
             <RHFDatePickr
-              label='End Date'
+              label='Date To'
               name='dateTo'
               value={dateTo}
               size='small'
@@ -127,7 +130,7 @@ const LogsTableController = ({
             )}
             {isGraphPage && (
               <IconTooltip
-                icon={ICON_NAME.REFRESH}
+                icon={ICON_NAME.SEARCH}
                 title={t('log.button_graph.get_graph').toUpperCase()}
                 placement='top'
                 tooltipColor={mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze}
@@ -149,9 +152,9 @@ const LogsTableController = ({
                     fullWidth
                   />
                 </Box>
-                <Box sx={{ mt: -3.5, display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mt: -3.5 }}>
                 <IconTooltip
-                  icon={ICON_NAME.REFRESH}
+                  icon={ICON_NAME.SEARCH}
                   title={t('log.button.get_logs').toUpperCase()}
                   placement='top'
                   tooltipColor={mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze}

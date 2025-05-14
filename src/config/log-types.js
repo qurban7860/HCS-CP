@@ -130,7 +130,7 @@ export const getLogTypeConfigForGenerationAndType = (generation, type) => {
 
 export const logGraphTypes = [
     {
-        name: 'Production Total (m)',
+        name: 'Production (m)',
         key: 'production_total'
     },
     {

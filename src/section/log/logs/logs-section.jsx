@@ -146,12 +146,12 @@ const LogsSection = ({ isArchived }) => {
                 <Stack spacing={2}>
                   <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>
                     <RHFDatePickr
-                      label='Start Date'
+                      label='Date From'
                       name='dateFrom'
                       size='small'
                     />
                     <RHFDatePickr
-                      label='End Date'
+                      label='Date To'
                       name='dateTo'
                       size='small'
                     />

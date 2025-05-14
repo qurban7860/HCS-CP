@@ -32,6 +32,8 @@ export const MachinesGraphsPage = Loadable(lazy(() => import('page/product/machi
 // machine-documents 
 export const MachineDocuments = Loadable(lazy(() => import('page/product/machine-documents/machine-documents')))
 export const MachineDrawings = Loadable(lazy(() => import('page/product/machine-drawings/machine-drawings')))
+export const MachineDrawing = Loadable(lazy(() => import('page/product/machine-drawings/machine-drawing')))
+export const MachineDocument = Loadable(lazy(() => import('page/product/machine-documents/machine-document')))
 // machine-support
 export const MachineSupportTicketsPage = Loadable(lazy(() => import('page/product/support/tickets')))
 // customer
