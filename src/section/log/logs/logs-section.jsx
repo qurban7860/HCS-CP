@@ -145,17 +145,6 @@ const LogsSection = ({ isArchived }) => {
               <GStyledControllerCardContainer height={'auto'}>
                 <Stack spacing={2}>
                   <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>
-                    <RHFDatePickr
-                      label='From Date'
-                      name='dateFrom'
-                      size='small'
-                    />
-                    <RHFDatePickr
-                      label='To Date'
-                      name='dateTo'
-                      size='small'
-                    />
-                   
                     <RHFAutocomplete
                       name='machine'
                       label={t('machine.label')}
@@ -169,6 +158,18 @@ const LogsSection = ({ isArchived }) => {
                       onChange={(e, newValue) => handleMachineChange(newValue)}
                       size='small'
                     />
+                    
+                    <RHFDatePickr
+                      label='Date From'
+                      name='dateFrom'
+                      size='small'
+                    />
+                    <RHFDatePickr
+                      label='Date To'
+                      name='dateTo'
+                      size='small'
+                    />
+                   
                     {/* <RHFAutocomplete
                       name='logType'
                       size='small'
@@ -222,6 +223,7 @@ const LogsSection = ({ isArchived }) => {
                           variant="contained"
                           size="small"
                           type={'submit'}
+                          onClick={()=>{}}
                         />
                         <DownloadMachineLogsIconButton dataForApi={dataForApi} />
                       </Box>
@@ -233,7 +235,7 @@ const LogsSection = ({ isArchived }) => {
           </Grid>
         </FormProvider>
       </GStyledStickyDiv>
-      {isLoading ? <HowickLoader height={300} width={303} mode={themeMode} /> : <LogsTable isLogsPage logType={logType} dataForApi={dataForApi}  />}
+      {isLoading ? <HowickLoader height={300} width={303} mode={themeMode} /> : <LogsTable isLogsPage logType={logType} />}
     </Grid>
   )
 }
