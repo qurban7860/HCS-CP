@@ -14,8 +14,10 @@ import { NAV } from 'config/layout'
 import { truncate } from 'util'
 import { a11yProps } from 'util/a11y.js'
 import 'swiper/css'
+import { useAuthContext } from 'auth/use-auth-context'
 
 const MachineNav = ({ machineData }) => {
+    const { user } = useAuthContext()
     const [menuAnchor, setMenuAnchor] = useState(null)
     const { themeMode } = useSettingContext()
     const theme = useTheme()
@@ -25,11 +27,22 @@ const MachineNav = ({ machineData }) => {
     const menuId = menuOpen ? 'machine-menu' : undefined
 
     const tabs = useMemo(() => {
-        return TABS(machineId).map(tab => ({
-            ...tab,
-            a11yProps: a11yProps(tab.id)
-        }))
-    }, [machineId])
+        const allowedModules = user?.modules || []
+        const userRoles = user?.roles || []
+        const noFilterRoles = ['developer', 'superadmin']
+
+        const shouldFilter = userRoles.some(r => !noFilterRoles.includes(r.name?.toLowerCase()))
+
+        return TABS(machineId)
+            .filter(tab => {
+                if (!shouldFilter) return true
+                return !tab.module || allowedModules.includes(tab.module)
+            })
+            .map(tab => ({
+                ...tab,
+                a11yProps: a11yProps(tab.id)
+            }))
+    }, [machineId, user])
 
     const toggleMenu = event => { setMenuAnchor(menuAnchor ? null : event.currentTarget) }
 

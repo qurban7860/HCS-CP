@@ -12,7 +12,7 @@ import { addLogSchema } from 'schema'
 import { getMachines, getLogs, resetLogs, ChangeLogPage, setSelectedSearchFilter, resetMachines } from 'store/slice'
 import { LogsTable } from './'
 import { useMediaQuery, useTheme, Grid, Button, Typography, Stack, Box } from '@mui/material'
-import { HowickLoader, TableTitleBox } from 'component'
+import { HowickLoader, IconTooltip, TableTitleBox, DownloadMachineLogsIconButton } from 'component'
 import FormProvider, { RHFAutocomplete, RHFDatePickr, RHFFilteredSearchBar } from 'component/hook-form'
 import { GStyledControllerCardContainer, GStyledLoadingButton, GStyledStickyDiv } from 'theme/style'
 import { NAV } from 'config/layout'
@@ -106,6 +106,20 @@ const LogsSection = ({ isArchived }) => {
     setValue('logType', newLogType)
   }
 
+  const dataForApi = {
+    customerId: user?.customer,
+    machineId: machine?._id || undefined,
+    page: logPage,
+    pageSize: logRowsPerPage,
+    fromDate: dateFrom,
+    toDate: dateTo,
+    isArchived: false,
+    isMachineArchived: machine?.isArchived,
+    selectedLogType: logType?.type,
+    searchKey: filteredSearchKey,
+    searchColumn: selectedSearchFilter
+  }
+
   return (
     <Grid container rowGap={2} flexDirection={FLEX_DIR.COLUMN}>
       <GStyledStickyDiv top={0} zIndex={11} height={20}>
@@ -155,6 +169,18 @@ const LogsSection = ({ isArchived }) => {
                       onChange={(e, newValue) => handleMachineChange(newValue)}
                       size='small'
                     />
+                    
+                    <RHFDatePickr
+                      label='Date From'
+                      name='dateFrom'
+                      size='small'
+                    />
+                    <RHFDatePickr
+                      label='Date To'
+                      name='dateTo'
+                      size='small'
+                    />
+                   
                     {/* <RHFAutocomplete
                       name='logType'
                       size='small'
@@ -195,10 +221,22 @@ const LogsSection = ({ isArchived }) => {
                           fullWidth
                         />
                       </Box>
-                      <Box sx={{ justifyContent: 'flex-end', display: 'flex' }}>
-                        <GStyledLoadingButton mode={themeMode} type={'submit'} variant='contained' size='large' sx={{ mt: 0.7 }}>
+                      <Box sx={{ justifyContent: 'flex-end', display: 'flex', gap: 1, pt: 0.7 }}>
+                        {/* <GStyledLoadingButton mode={themeMode} type={'submit'} variant='contained' size='large' sx={{ mt: 0.7 }}>
                           {t('log.button.get_logs').toUpperCase()}
-                        </GStyledLoadingButton>
+                        </GStyledLoadingButton> */}
+                        <IconTooltip
+                          title="Fetch Logs"
+                          icon={ICON_NAME.TEXT_SEARCH}
+                          color={theme.palette.common.white}
+                          tooltipColor={theme.palette.primary.main}
+                          buttonColor={theme.palette.howick.darkBlue}
+                          variant="contained"
+                          size="small"
+                          type={'submit'}
+                          onClick={()=>{}}
+                        />
+                        <DownloadMachineLogsIconButton dataForApi={dataForApi} />
                       </Box>
                     </Stack>
                   </Fragment>

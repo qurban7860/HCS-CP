@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuthContext } from 'auth/use-auth-context'
-import { HowickLoader, TableTitleBox } from 'component'
+import { HowickLoader, IconTooltip, TableTitleBox } from 'component'
 import { RHFAutocomplete, RHFDatePickr } from 'component/hook-form'
 import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 import { erpGraphSchema } from 'schema/graph/erp-graph-schema'
@@ -114,8 +114,17 @@ const GraphsSection = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2} mt={3}>
               <Grid item xs={12} sm={12}>
-              <GStyledControllerCardContainer height={'auto'} sx={{ display: FLEX.FLEX, flexDirection: FLEX_DIR.COLUMN, gap: 2 }}>
-                <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>
+                <GStyledControllerCardContainer height={'auto'} sx={{ display: FLEX.FLEX, flexDirection: FLEX_DIR.COLUMN, gap: 2 }}>
+                  <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>
+                    <RHFAutocomplete
+                      name='machine'
+                      label={t('machine.label')}
+                      options={(Array.isArray(machines) && machines?.filter(ma => ma?.machineModel?.category?.name?.toLowerCase()?.includes('frama'))) || []}
+                      isOptionEqualToValue={(option, value) => option._id === value._id}
+                      getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
+                      renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
+                      size='small'
+                    />
                     <RHFDatePickr
                       label='From Date'
                       name='dateFrom'
@@ -134,15 +143,6 @@ const GraphsSection = () => {
                         trigger(['dateFrom', 'dateTo'])
                       }}
                     />
-                    <RHFAutocomplete
-                    name='machine'
-                    label={t('machine.label')}
-                    options={(Array.isArray(machines) && machines?.filter(ma => ma?.machineModel?.category?.name?.toLowerCase()?.includes('frama'))) || []}
-                    isOptionEqualToValue={(option, value) => option._id === value._id}
-                    getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
-                    renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
-                    size='small'
-                  />
                   </Box>
 
                   <Box display='flex' gap={2} alignItems='center'>
@@ -178,9 +178,20 @@ const GraphsSection = () => {
                     </Box>
 
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                      <GStyledLoadingButton mode={themeMode} type='submit' variant='contained' size='large'>
+                      <IconTooltip
+                        title={t('log.button_graph.get_graph').toUpperCase()}
+                        icon={ICON_NAME.SEARCH}
+                        color={theme.palette.common.white}
+                        tooltipColor={theme.palette.primary.main}
+                        buttonColor={theme.palette.howick.darkBlue}
+                        variant="contained"
+                        size="small"
+                        type="submit"
+                        onClick={()=>{}}
+                      />
+                      {/* <GStyledLoadingButton mode={themeMode} type='submit' variant='contained' size='large' startIcon={<Icon icon={ICON_NAME.SEARCH} />}>
                         {t('log.button_graph.get_graph').toUpperCase()}
-                      </GStyledLoadingButton>
+                      </GStyledLoadingButton> */}
                     </Box>
                   </Box>
                 </GStyledControllerCardContainer>
@@ -193,14 +204,26 @@ const GraphsSection = () => {
       {isLoading ? (
         <HowickLoader height={300} width={303} mode={themeMode} />
       ) : getValues('logGraphType')?.key === 'production_total' ? (
-        <ERPProductionTotal timePeriod={getValues('logPeriod')} customer={{ _id: user.customer }} graphLabels={graphLabels} logsGraphData={logsGraphData} dateFrom={getValues('dateFrom')} dateTo={getValues('dateTo')} />
+        <ERPProductionTotal
+          timePeriod={getValues('logPeriod')}
+          customer={{ _id: user.customer }}
+          graphLabels={graphLabels}
+          logsGraphData={logsGraphData}
+          dateFrom={getValues('dateFrom')}
+          dateTo={getValues('dateTo')}
+        />
       ) : (
-        <ERPProductionRate timePeriod={getValues('logPeriod')} customer={{ _id: user.customer }} graphLabels={graphLabels} logsGraphData={logsGraphData} dateFrom={getValues('dateFrom')} dateTo={getValues('dateTo')} />
+        <ERPProductionRate
+          timePeriod={getValues('logPeriod')}
+          customer={{ _id: user.customer }}
+          graphLabels={graphLabels}
+          logsGraphData={logsGraphData}
+          dateFrom={getValues('dateFrom')}
+          dateTo={getValues('dateTo')}
+        />
       )}
     </Grid>
   )
 }
 
 export default GraphsSection
-
-

@@ -32,6 +32,7 @@ export function AuthProvider({ children }) {
                         user.email = localStorage.getItem(LOCAL_STORAGE_KEY.EMAIL)
                         user.displayName = localStorage.getItem(LOCAL_STORAGE_KEY.NAME)
                         user.roles = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.ROLES))
+                        user.modules = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.MODULES))
                         const userId = localStorage.getItem(LOCAL_STORAGE_KEY.USER_ID)
 
                         const {
@@ -126,6 +127,7 @@ export function AuthProvider({ children }) {
                   localStorage.removeItem(LOCAL_STORAGE_KEY.EMAIL)
                   localStorage.removeItem(LOCAL_STORAGE_KEY.USER_ID)
                   localStorage.removeItem(LOCAL_STORAGE_KEY.ROLES)
+                  localStorage.removeItem(LOCAL_STORAGE_KEY.MODULES)
                   localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN)
                   localStorage.removeItem(LOCAL_STORAGE_KEY.CONFIGURATION)
                   const keys = Object.keys(localStorage)
@@ -178,11 +180,13 @@ export function AuthProvider({ children }) {
                   } = getUserAccess(user?.roles, user?.dataAccessibilityLevel)
 
                   const rolesArray = JSON.stringify(user.roles)
+                  const modulesArray = JSON.stringify(user.modules)
                   const userData = { email: user.email }
                   localStorage.setItem(LOCAL_STORAGE_KEY.EMAIL, user.email)
                   localStorage.setItem(LOCAL_STORAGE_KEY.NAME, user.displayName)
                   localStorage.setItem(LOCAL_STORAGE_KEY.USER_ID, userId)
                   localStorage.setItem(LOCAL_STORAGE_KEY.ROLES, rolesArray)
+                  localStorage.setItem(LOCAL_STORAGE_KEY.MODULES, modulesArray)
                   localStorage.setItem(LOCAL_STORAGE_KEY.DATA_ACCESS_LEVEL, user?.dataAccessibilityLevel)
 
                   setSession(accessToken)
@@ -231,11 +235,13 @@ export function AuthProvider({ children }) {
             } = getUserAccess(user?.roles, user?.dataAccessibilityLevel)
 
             const rolesArray = JSON.stringify(user.roles)
+            const modulesArray = JSON.stringify(user.modules)
 
             localStorage.setItem(LOCAL_STORAGE_KEY.EMAIL, user.email)
             localStorage.setItem(LOCAL_STORAGE_KEY.NAME, user.displayName)
             localStorage.setItem(LOCAL_STORAGE_KEY.USER_ID, userId)
             localStorage.setItem(LOCAL_STORAGE_KEY.ROLES, rolesArray)
+            localStorage.setItem(LOCAL_STORAGE_KEY.MODULES, modulesArray)
             localStorage.setItem(LOCAL_STORAGE_KEY.DATA_ACCESS_LEVEL, user?.dataAccessibilityLevel)
 
             setSession(accessToken)
@@ -266,8 +272,8 @@ export function AuthProvider({ children }) {
             const userId = localStorage.getItem(LOCAL_STORAGE_KEY.USER_ID)
             const id = initialState.userId
             try {
-                  await dispatch(clearStorageAndNaviagteToLogin())
                   await axios.post(PATH_SERVER.SECURITY.LOGOUT(userId))
+                  await dispatch(clearStorageAndNaviagteToLogin())
                   snack(RESPONSE.success.LOGOUT, { variant: COLOR.SUCCESS })
             } catch (error) {
                   console.error(error)
@@ -283,6 +289,7 @@ export function AuthProvider({ children }) {
                   user: state.user,
                   userId: state.userId,
                   userRoles: state.userRoles || [],
+                  userModules: state.userModules || [],
                   isAllAccessAllowed: state.isAllAccessAllowed,
                   isDisableDelete: state.isDisableDelete,
                   isDashboardAccessLimited: state.isDashboardAccessLimited,
@@ -319,6 +326,7 @@ export function AuthProvider({ children }) {
                   state.user,
                   state.userId,
                   state.userRoles || [],
+                  state.userModules || [],
                   login,
                   logout,
                   muliFactorAuthentication,

@@ -14,7 +14,7 @@ export function useDefaultValues({ document }) {
             versionPrefix: document?.versionPrefix || '',
             version: document?.documentVersions?.[0]?.versionNo ?? '',
             description: document?.description,
-            files: document?.files || [],
+            files: document?.documentVersions?.[0]?.files || [],
             createdAt: fDate(document?.createdAt) || '',
             createdByFullName: document?.createdBy?.name || '',
             createdIP: document?.createdIP || '',

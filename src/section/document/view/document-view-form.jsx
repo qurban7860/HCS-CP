@@ -46,7 +46,7 @@ function DocumentViewForm({ isDrawingPage }) {
   }, [dispatch, id])
 
   useEffect(() => {
-    const newSlides = document?.files
+    const newSlides = defaultValues?.files
       ?.map(file => {
         if (file?.fileType && file.fileType.startsWith('image')) {
           return {
@@ -66,7 +66,7 @@ function DocumentViewForm({ isDrawingPage }) {
       })
       ?.filter(Boolean)
     setSlides(newSlides || [])
-  }, [document?.files?.length])
+  }, [defaultValues?.files?.length])
 
   const handleOpenLightbox = async index => {
     setSelectedImage(index)
@@ -191,7 +191,7 @@ function DocumentViewForm({ isDrawingPage }) {
                       />
                     ))}
 
-                    {document?.files?.map((file, _index) => {
+                    {defaultValues?.files?.map((file, _index) => {
                       if (!file.fileType.startsWith('image')) {
                         return (
                           <GalleryItem
