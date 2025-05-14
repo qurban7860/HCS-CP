@@ -97,6 +97,20 @@ const MachineLogsTab = () => {
     [setValue]
   )
 
+  const dataForApi = {
+    customerId: user?.customer,
+    machineId: machine?._id || undefined,
+    page: logPage,
+    pageSize: logRowsPerPage,
+    fromDate: dateFrom,
+    toDate: dateTo,
+    isArchived: false,
+    isMachineArchived: machine?.isArchived,
+    selectedLogType: logType?.type,
+    searchKey: filteredSearchKey,
+    searchColumn: selectedSearchFilter
+  }
+
   return (
     <Fragment>
       <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_CONTROLLER} zIndex={12}>
@@ -109,6 +123,7 @@ const MachineLogsTab = () => {
                 handleGraphTypeChange={handleGraphTypeChange}
                 methods={methods}
                 onGetLogs={handleFormSubmit}
+                dataForApi={dataForApi}
               />
             </Grid>
           </Grid>
