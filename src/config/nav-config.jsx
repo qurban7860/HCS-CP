@@ -27,12 +27,20 @@ function NavConfiguration() {
     const [navConfig, setNavConfig] = useState([])
 
     useEffect(() => {
-        const filteredNav = baseNavConfig.map(section => ({
-            ...section,
-            items: section.items.filter(item =>
-                !item.module || allowedModules.includes(item.module)
-            )
-        })).filter(section => section.items.length > 0)
+        const userRoles = user?.roles || []
+        const noFilterRoles = ['developer', 'superadmin']
+        const shouldFilter = userRoles.some(r => !noFilterRoles.includes(r.name?.toLowerCase()))
+
+        const filteredNav = baseNavConfig.map(section => {
+            const items = shouldFilter
+                ? section.items.filter(item => !item.module || allowedModules.includes(item.module))
+                : section.items
+
+            return {
+                ...section,
+                items
+            }
+        }).filter(section => section.items.length > 0)
 
         setNavConfig(filteredNav)
     }, [user])
