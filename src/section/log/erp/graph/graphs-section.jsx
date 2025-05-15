@@ -63,21 +63,23 @@ const GraphsSection = () => {
   }, [])
 
   const onSubmit = data => {
-    if (data?.logGraphType?.key === 'productionRate') {
+    const { logPeriod, logGraphType, dateFrom, dateTo, machine } = data
+
+    if (logGraphType?.key === 'productionRate') {
       setGraphLabels(prev => ({
         ...prev,
         yaxis: 'Production Rate (m/hr)',
-        xaxis: data?.logPeriod
+        xaxis: logPeriod
       }))
     } else {
       setGraphLabels(prev => ({
         ...prev,
         yaxis: 'Produced Length and Waste (m)',
-        xaxis: data?.logPeriod
+        xaxis: logPeriod
       }))
     }
 
-    dispatch(getLogGraphData(user?.customer, data?.machine?._id, 'erp', data?.logPeriod, data?.logGraphType?.key, data?.dateFrom, data?.dateTo))
+    dispatch(getLogGraphData(user?.customer, machine?._id, 'erp', logPeriod, logGraphType?.key, new Date(dateFrom), new Date(dateTo)))
   }
 
   const handlePeriodChange = newPeriod => {
@@ -110,7 +112,7 @@ const GraphsSection = () => {
                       size='small'
                     />
                     <RHFDatePickr
-                      label='Date From'
+                      label='From Date'
                       name='dateFrom'
                       size='small'
                       onChange={newValue => {
@@ -119,7 +121,7 @@ const GraphsSection = () => {
                       }}
                     />
                     <RHFDatePickr
-                      label='Date To'
+                      label='To Date'
                       name='dateTo'
                       size='small'
                       onChange={newValue => {

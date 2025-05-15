@@ -46,64 +46,71 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
     const endDate = new Date(dateTo);
 
     if (timePeriod === 'Hourly') {
-      const startHour = startDate.getHours();
-      const endHour = endDate.getHours();
-      const currentDate = new Date(startDate);
-      let hourCount = 0;
+      const currentDate = new Date(startDate)
+      currentDate.setHours(0, 0, 0, 0)
 
-      while (currentDate <= endDate && hourCount < 24) {
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        const day = String(currentDate.getDate()).padStart(2, '0');
-        const hour = String(currentDate.getHours()).padStart(2, '0');
-        labels.push(`${month}/${day} ${hour}`);
-        currentDate.setHours(currentDate.getHours() + 1);
-        hourCount++;
+      const finalDate = new Date(endDate)
+      finalDate.setHours(23, 59, 59, 999)
+
+      const labelsSet = new Set()
+
+      while (currentDate <= finalDate) {
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0')
+        const day = String(currentDate.getDate()).padStart(2, '0')
+        const hour = String(currentDate.getHours()).padStart(2, '0')
+
+        const label = `${month}/${day} ${hour}`
+        if (!labelsSet.has(label)) {
+          labels.push(label)
+          labelsSet.add(label)
+        }
+
+        currentDate.setHours(currentDate.getHours() + 1)
       }
     } else if (timePeriod === 'Daily') {
-      let currentDate = new Date(startDate);
-      let dayCount = 0;
+      let currentDate = new Date(startDate)
+      let dayCount = 0
       while (currentDate <= endDate && dayCount < 30) {
-        const day = String(currentDate.getDate()).padStart(2, '0');
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        labels.push(`${day}/${month}`);
-        currentDate.setDate(currentDate.getDate() + 1);
-        dayCount++;
+        const day = String(currentDate.getDate()).padStart(2, '0')
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0')
+        labels.push(`${day}/${month}`)
+        currentDate.setDate(currentDate.getDate() + 1)
+        dayCount++
       }
-    }
-    else if (timePeriod === 'Monthly') {
-      let currentMonth = new Date(startDate);
-      let monthCount = 0;
+    } else if (timePeriod === 'Monthly') {
+      let currentMonth = new Date(startDate)
+      let monthCount = 0
       while (currentMonth <= endDate && monthCount < 12) {
-        const shortMonth = currentMonth.toLocaleString('default', { month: 'short' });
-        const yearShort = String(currentMonth.getFullYear()).slice(-2);
-        labels.push(`${shortMonth} ${yearShort}`);
-        currentMonth.setMonth(currentMonth.getMonth() + 1);
-        monthCount++;
+        const shortMonth = currentMonth.toLocaleString('default', { month: 'short' })
+        const yearShort = String(currentMonth.getFullYear()).slice(-2)
+        labels.push(`${shortMonth} ${yearShort}`)
+        currentMonth.setMonth(currentMonth.getMonth() + 1)
+        monthCount++
       }
     } else if (timePeriod === 'Quarterly') {
-      let currentQDate = new Date(startDate);
-      let quarterCount = 0;
+      let currentQDate = new Date(startDate)
+      let quarterCount = 0
       while (currentQDate <= endDate && quarterCount < 4) {
-        const year = currentQDate.getFullYear();
-        const quarter = Math.floor(currentQDate.getMonth() / 3) + 1;
-        labels.push(`${year}-Q${quarter}`);
-        currentQDate.setMonth(currentQDate.getMonth() + 3);
-        quarterCount++;
+        const year = currentQDate.getFullYear()
+        const quarter = Math.floor(currentQDate.getMonth() / 3) + 1
+        labels.push(`${year}-Q${quarter}`)
+        currentQDate.setMonth(currentQDate.getMonth() + 3)
+        quarterCount++
       }
     } else if (timePeriod === 'Yearly') {
-      let currentYDate = new Date(startDate);
-      let yearCount = 0;
+      let currentYDate = new Date(startDate)
+      let yearCount = 0
       while (currentYDate <= endDate && yearCount < 5) {
-        labels.push(String(currentYDate.getFullYear()));
-        currentYDate.setFullYear(currentYDate.getFullYear() + 1);
-        yearCount++;
+        labels.push(String(currentYDate.getFullYear()))
+        currentYDate.setFullYear(currentYDate.getFullYear() + 1)
+        yearCount++
       }
     } else {
-      return null;
+      return null
     }
 
-    const producedLength = labels.map(label => dataMap.get(label)?.componentLength || 0);
-    const wasteLength = labels.map(label => dataMap.get(label)?.waste || 0);
+    const producedLength = labels.map(label => dataMap.get(label)?.componentLength || 0)
+    const wasteLength = labels.map(label => dataMap.get(label)?.waste || 0)
 
     return {
       categories: labels,
@@ -111,8 +118,8 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
         { name: 'Produced Length (m)', data: producedLength },
         { name: 'Waste Length (m)', data: wasteLength }
       ]
-    };
-  };
+    }
+  }
 
   const chartData = processGraphData()
 
@@ -131,7 +138,8 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
           </Typography>
         </Box> */}
       </GStyledSpanBox>
-      <Card sx={{ p: 3, background: themeMode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[800], color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white }}>
+      <Card
+        sx={{ p: 3, background: themeMode === KEY.LIGHT ? theme.palette.grey[200] : theme.palette.grey[800], color: themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.common.white }}>
         {isLoading && (
           <Fragment>
             <GStyledCenterBox height={graphHeight}>
@@ -162,7 +170,7 @@ ERPProductionTotal.propTypes = {
   isDashboard: PropTypes.bool,
   graphHeight: PropTypes.number,
   dateFrom: PropTypes.instanceOf(Date),
-  dateTo: PropTypes.instanceOf(Date),
+  dateTo: PropTypes.instanceOf(Date)
 }
 
 export default ERPProductionTotal
