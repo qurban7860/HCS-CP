@@ -28,10 +28,7 @@ const MachineNav = ({ machineData }) => {
 
     const tabs = useMemo(() => {
         const allowedModules = user?.modules || []
-        const userRoles = user?.roles || []
-        const noFilterRoles = ['developer', 'superadmin']
-
-        const shouldFilter = userRoles.some(r => !noFilterRoles.includes(r.name?.toLowerCase()))
+        const shouldFilter = user?.type?.toLowerCase() !== 'sp'
 
         return TABS(machineId)
             .filter(tab => {
