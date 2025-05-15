@@ -33,6 +33,7 @@ export function AuthProvider({ children }) {
                         user.displayName = localStorage.getItem(LOCAL_STORAGE_KEY.NAME)
                         user.roles = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.ROLES))
                         user.modules = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.MODULES))
+                        user.type = localStorage.getItem(LOCAL_STORAGE_KEY.TYPE)
                         const userId = localStorage.getItem(LOCAL_STORAGE_KEY.USER_ID)
 
                         const {
@@ -130,6 +131,8 @@ export function AuthProvider({ children }) {
                   localStorage.removeItem(LOCAL_STORAGE_KEY.MODULES)
                   localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN)
                   localStorage.removeItem(LOCAL_STORAGE_KEY.CONFIGURATION)
+                  localStorage.removeItem(LOCAL_STORAGE_KEY.TYPE)
+
                   const keys = Object.keys(localStorage)
                   const reduxPersistKeys = keys.filter(key => !(key === LOCAL_STORAGE_KEY.HOWICK_USER_DATA))
                   await Promise.all(reduxPersistKeys.map(key => storage.removeItem(key)))
@@ -188,6 +191,7 @@ export function AuthProvider({ children }) {
                   localStorage.setItem(LOCAL_STORAGE_KEY.ROLES, rolesArray)
                   localStorage.setItem(LOCAL_STORAGE_KEY.MODULES, modulesArray)
                   localStorage.setItem(LOCAL_STORAGE_KEY.DATA_ACCESS_LEVEL, user?.dataAccessibilityLevel)
+                  localStorage.setItem(LOCAL_STORAGE_KEY.TYPE, user.type)
 
                   setSession(accessToken)
                   dispatch({
@@ -243,6 +247,7 @@ export function AuthProvider({ children }) {
             localStorage.setItem(LOCAL_STORAGE_KEY.ROLES, rolesArray)
             localStorage.setItem(LOCAL_STORAGE_KEY.MODULES, modulesArray)
             localStorage.setItem(LOCAL_STORAGE_KEY.DATA_ACCESS_LEVEL, user?.dataAccessibilityLevel)
+            localStorage.setItem(LOCAL_STORAGE_KEY.TYPE, user.type)
 
             setSession(accessToken)
             dispatch({
