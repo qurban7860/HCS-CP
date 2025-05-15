@@ -132,18 +132,7 @@ const LogsSection = ({ isArchived }) => {
             <Grid item xs={12} sm={12}>
               <GStyledControllerCardContainer height={'auto'}>
                 <Stack spacing={2}>
-                  <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>
-                    <RHFDatePickr
-                      label='From Date'
-                      name='dateFrom'
-                      size='small'
-                    />
-                    <RHFDatePickr
-                      label='To Date'
-                      name='dateTo'
-                      size='small'
-                    />
-                   
+                  <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>      
                     <RHFAutocomplete
                       name='machine'
                       label={t('machine.label')}
