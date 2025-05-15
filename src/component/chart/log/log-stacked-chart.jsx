@@ -10,7 +10,7 @@ import { KEY } from 'constant'
 function LogStackedChart({ chart, graphLabels, graphHeight = 500 }) {
   const { themeMode } = useSettingContext()
   const theme = useTheme()
-  const [skipZero, setSkipZero] = useState(true); 
+  const [skipZero, setSkipZero] = useState(true);
 
   const { categories, series } = chart
   const colors = [theme.palette.howick.darkBlue, theme.palette.howick.orange]
@@ -18,22 +18,30 @@ function LogStackedChart({ chart, graphLabels, graphHeight = 500 }) {
 
   const menuBackgroundColor = themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.grey[800]
   const menuTextColor = themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
-  
+
   const { filteredCategories, filteredSeries } = useMemo(() => {
     if (!skipZero) {
       return { filteredCategories: categories, filteredSeries: series };
     }
 
+    const hasNonZeroValues = series.some(s => s.data.some(val => val !== 0 && val !== null && val !== undefined));
+
+    if (!hasNonZeroValues) {
+      return { filteredCategories: categories, filteredSeries: series };
+    }
+
     const filteredIndexes = categories.reduce((acc, _, idx) => {
-      const val1 = series[0]?.data[idx] ?? 0;
-      const val2 = series[1]?.data[idx] ?? 0;
-      if (val1 !== 0 || val2 !== 0) acc.push(idx);
+      const hasNonZeroBar = series.some(s => (s.data[idx] ?? 0) !== 0 && (s.data[idx] !== null && s.data[idx] !== undefined));
+      if (hasNonZeroBar) {
+        acc.push(idx);
+      }
       return acc;
     }, []);
 
     return {
       filteredCategories: filteredIndexes.map((i) => categories[i]),
-      filteredSeries: series.map((s) => ({...s,
+      filteredSeries: series.map((s) => ({
+        ...s,
         data: filteredIndexes.map((i) => s.data[i]),
       })),
     };
@@ -158,34 +166,51 @@ function LogStackedChart({ chart, graphLabels, graphHeight = 500 }) {
       }
     },
     tooltip: {
+      followCursor: true,
       custom: ({ series: tooltipSeries, dataPointIndex, w }) => {
-        let tooltipContent = `<div class="apexcharts-theme-light">`
+        let tooltipContent = `<div class="apexcharts-theme-light">`;
+        let total = 0;
         tooltipSeries.forEach((s, index) => {
-          const legend = w.globals.seriesNames[index]
-          const color = w.globals.colors[index]
-          const value = s[dataPointIndex].toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-          tooltipContent += `<div class="apexcharts-tooltip-series-group apexcharts-active" style="order: 1; display: flex;">`
-          tooltipContent += `<span class="apexcharts-tooltip-marker" style="background-color: ${color};"></span>`
-          tooltipContent += `<div class="apexcharts-tooltip-text"><div class="apexcharts-tooltip-y-group">`
-          tooltipContent += `<span class="apexcharts-tooltip-text-y-label">${legend}:</span>`
-          tooltipContent += `<span class="apexcharts-tooltip-text-y-value">${value}</span></div></div></div>`
-        })
-
-        tooltipContent += `</div>`
-        return tooltipContent
-      }
-    }
+          const legend = w.globals.seriesNames[index];
+          const color = w.globals.colors[index];
+          const value = s[dataPointIndex];
+          total += value;
+          const valueText =
+            value === 0
+              ? ''
+              : value.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                });
+          tooltipContent += `<div class="apexcharts-tooltip-series-group apexcharts-active" style="order: 1; display: flex;">`;
+          tooltipContent += `<span class="apexcharts-tooltip-marker" style="background-color: ${color};"></span>`;
+          tooltipContent += `<div class="apexcharts-tooltip-text"><div class="apexcharts-tooltip-y-group">`;
+          tooltipContent += `<span class="apexcharts-tooltip-text-y-label">${legend}:</span>`;
+          tooltipContent += `<span class="apexcharts-tooltip-text-y-value">${valueText}</span></div></div></div>`;
+        });
+        const totalText = total.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+        tooltipContent += `<div class="apexcharts-tooltip-series-group apexcharts-active" style="order: 1; display: flex;">`;
+        tooltipContent += `<div class="apexcharts-tooltip-text"><div class="apexcharts-tooltip-y-group">`;
+        tooltipContent += `<span class="apexcharts-tooltip-text-y-label">Total:</span>`;
+        tooltipContent += `<span class="apexcharts-tooltip-text-y-value">${totalText}</span></div></div></div>`;
+        tooltipContent += `</div>`;
+        return tooltipContent;
+      },
+    },
   }
   return (
     <Fragment>
       <style>{`
-      .apexcharts-menu {
-        background-color: ${menuBackgroundColor} !important;
-        color: ${menuTextColor} !important;
-        border-radius: 2px;
-        border: 1px solid ${menuBackgroundColor};
-      }
-    `}</style>
+        .apexcharts-menu {
+          background-color: ${menuBackgroundColor} !important;
+          color: ${menuTextColor} !important;
+          border-radius: 2px;
+          border: 1px solid ${menuBackgroundColor};
+        }
+      `}</style>
       <Box sx={{ display: 'flex' }}>
         <FormControlLabel
           control={<Checkbox checked={skipZero} onChange={() => setSkipZero((prev) => !prev)} />}

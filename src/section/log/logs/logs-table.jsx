@@ -113,6 +113,7 @@ const LogsTable = ({ logType, isLogsPage }) => {
 
 LogsTable.propTypes = {
     logType: PropTypes.object,
+    dataForApi: PropTypes.object,
     isLogsPage: PropTypes.bool,
 }
 

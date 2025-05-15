@@ -71,7 +71,7 @@ const ProductionTotalGraphWidget = ({ selectedMachine, setSelectedMachine }) => 
   <Grid container mb={2}>
    <Grid item mb={2} bgcolor='background.paper' borderRadius={RADIUS.BORDER.borderRadius} xs={12}>
     <GStyledSpanBox>
-     <FormHeader label={`${LOG_PERIOD} Production Total`} />
+     <FormHeader label={`${LOG_PERIOD} Production`} />
     </GStyledSpanBox>
     <Grid
      container

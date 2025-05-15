@@ -23,7 +23,7 @@ import { TableNoData, SkeletonTable, SearchBox, TableTitleBox, HowickLoader, Sup
 import { GStyledTableHeaderBox } from 'theme/style'
 import { GLOBAL } from 'config/global'
 import { MARGIN, TABLE } from 'config'
-import { KEY, FLEX_DIR, TYPOGRAPHY } from 'constant'
+import { KEY, FLEX_DIR } from 'constant'
 import { StyledScrollTableContainer } from './style'
 
 const TicketsListSection = () => {
@@ -136,7 +136,7 @@ const TicketsListSection = () => {
         onFilterResolvedStatus={setSelectedResolvedStatus}
         onReload={onRefresh}
       />
-      {isMobile ? (
+      {/* {isMobile ? (
         <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
           <Grid item xs={12} sm={12}>
             <Grid container mb={2}>
@@ -207,7 +207,45 @@ const TicketsListSection = () => {
             </Grid>
           </Grid>
         </Grid>
-      )}
+      )} */}
+        <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
+          <Grid item xs={12} sm={12}>
+            <Grid container mb={2}>
+              <Grid item xs={12} sm={12} mb={2} bgcolor='background.paper'>
+                <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
+                <TicketsListPagination
+                  mode={themeMode}
+                  data={tickets}
+                  page={ticketPage}
+                  rowsPerPage={ticketRowsPerPage}
+                  handleChangePage={onChangePage}
+                  handleChangeRowsPerPage={onChangeRowsPerPage}
+                  columnFilterButtonData={HEADER_ITEMS}
+                  count={tickets?.totalCount || 0}
+                />
+                <StyledScrollTableContainer>
+                  <Table>
+                    <TicketsTableHeader columns={HEADER_ITEMS} dataFiltered={filteredData} orderBy={orderBy} order={order} onSort={onSort} />
+                    {isLoading ? (
+                      <Grid item xs={12} sm={12}>
+                        <HowickLoader mode={themeMode} />
+                      </Grid>
+                    ) : null}
+                    {(isLoading ? [...Array(ticketRowsPerPage)] : filteredData)
+                      .map((row, index) =>
+                        row ? (
+                          <TicketsTable key={index} columns={HEADER_ITEMS} ticket={row} mode={themeMode} index={index} />
+                        ) : (
+                          !isNotFound && <SkeletonTable key={index} sx={{ height: denseHeight }} />
+                        )
+                      )}
+                    {!isLoading && filteredData?.length > 0 ? (<TableNoData isNotFound={isNotFound} />) : null}
+                  </Table>
+                </StyledScrollTableContainer>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       {tickets && <SupportTicketDialog />}
     </Fragment>
   )

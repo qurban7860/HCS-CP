@@ -6,8 +6,8 @@ import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
 import { useSettingContext } from 'hook'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { getLogGraphData, setSelectedSearchFilter, resetLogsGraphData } from 'store/slice/log/machineLog'
-import { addLogSchema } from 'schema'
+import { getLogGraphData, setSelectedSearchFilter } from 'store/slice/log/machineLog'
+import { erpGraphSchema } from 'schema/graph/erp-graph-schema'
 import { LogsTableController, useLogDefaultValues } from 'section/log/logs'
 import { ERPProductionTotal, ERPProductionRate } from 'section/log'
 import { Grid } from '@mui/material'
@@ -24,76 +24,73 @@ const MachineGraphsTab = () => {
   const { machineId } = useParams()
 
   const methods = useForm({
-    resolver: yupResolver(addLogSchema),
+    resolver: yupResolver(erpGraphSchema),
     defaultValues
   })
 
-  const { watch, setValue, handleSubmit } = methods
-  const { logPeriod, logGraphType, dateFrom, dateTo } = watch()
-  const [graphLabels, setGraphLabels] = useState({ yaxis: 'Produced Length and Waste (m)', xaxis: logPeriod })
-  
-  useEffect(() => {
-    if (logPeriod && logGraphType && dateFrom && dateTo && machine?.customer?._id) {
-      handleFormSubmit()
-    }
-    return () => {
-      dispatch(resetLogsGraphData())
-    }
-  }, [])
+  const { setValue, handleSubmit, getValues } = methods
+  const [graphLabels, setGraphLabels] = useState({
+    yaxis: 'Produced Length and Waste (m)',
+    xaxis: defaultValues.logPeriod || 'Daily'
+  })
+
+  const [submittedValues, setSubmittedValues] = useState(null)
 
   const handleFormSubmit = useCallback(() => {
+    const { logPeriod, logGraphType, dateFrom, dateTo } = getValues()
     const customerId = machine?.customer?._id
     if (!customerId || !logGraphType?.key) return
 
-    dispatch(getLogGraphData(
-      customerId,
-      machineId,
-      'erp',
-      logPeriod,
-      logGraphType.key,
-      new Date(new Date(dateFrom).setHours(0, 0, 0, 0)),
-      new Date(new Date(dateTo).setHours(23, 59, 59, 999))
-    ))
-  }, [logPeriod, logGraphType, dateFrom, dateTo, machine?.customer?._id, machineId])
+    const payload = { logPeriod, logGraphType, dateFrom, dateTo }
+    setSubmittedValues(payload)
 
-  const handlePeriodChange = useCallback(newPeriod => {
+    dispatch(getLogGraphData( customerId, machineId, 'erp', logPeriod, logGraphType.key, dateFrom, dateTo ))
+
+    setGraphLabels({
+      yaxis: logGraphType.key === 'productionRate'
+        ? 'Production Rate (m/hr)'
+        : 'Produced Length and Waste (m)',
+      xaxis: logPeriod
+    })
+  }, [getValues, machine?.customer?._id, machineId])
+
+  useEffect(() => {
+    if ( defaultValues?.logGraphType && defaultValues?.logPeriod && defaultValues?.dateFrom && defaultValues?.dateTo && machine?.customer?._id)
+    {
+      const { logPeriod, logGraphType, dateFrom, dateTo } = defaultValues
+      const customerId = machine?.customer?._id
+
+      const payload = { logPeriod, logGraphType, dateFrom, dateTo}
+      setSubmittedValues(payload)
+
+      dispatch(getLogGraphData( customerId, machineId, 'erp', logPeriod, logGraphType.key, dateFrom, dateTo ))
+
+      setGraphLabels({
+        yaxis: logGraphType.key === 'productionRate'
+          ? 'Production Rate (m/hr)'
+          : 'Produced Length and Waste (m)',
+        xaxis: logPeriod
+      })
+    }
+
+  }, [defaultValues, machine?.customer?._id, machineId])
+
+  const handlePeriodChange = useCallback((newPeriod) => {
     setValue('logPeriod', newPeriod)
-    switch (newPeriod) {
-      case 'Hourly':
-        setGraphLabels(prev => ({ ...prev, xaxis: 'Hours' }))
-        break
-      case 'Monthly':
-        setGraphLabels(prev => ({ ...prev, xaxis: 'Months' }))
-        break
-      case 'Daily':
-        setGraphLabels(prev => ({ ...prev, xaxis: 'Days' }))
-        break
-      case 'Quarterly':
-        setGraphLabels(prev => ({ ...prev, xaxis: 'Quarters' }))
-        break
-      case 'Yearly':
-        setGraphLabels(prev => ({ ...prev, xaxis: 'Years' }))
-        break
-      default:
-        break
-    }
   }, [setValue])
 
-  const handleGraphTypeChange = useCallback(newGraphType => {
+  const handleGraphTypeChange = useCallback((newGraphType) => {
     setValue('logGraphType', newGraphType)
-    if (newGraphType?.key === 'productionRate') {
-      setGraphLabels(prev => ({ ...prev, yaxis: 'Production Rate (m/hr) ', xaxis: logPeriod }))
-    } else {
-      setGraphLabels(prev => ({ ...prev, yaxis: 'Produced Length and Waste (m)', xaxis: logPeriod }))
-    }
   }, [setValue])
+
+  const shouldShowLoader = isLoading || !submittedValues || !logsGraphData
 
   return (
     <Fragment>
       <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_CONTROLLER} zIndex={7}>
         <FormProvider methods={methods} onSubmit={handleSubmit(handleFormSubmit)}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={12}>
+            <Grid item xs={12}>
               <LogsTableController
                 handlePeriodChange={handlePeriodChange}
                 handleGraphTypeChange={handleGraphTypeChange}
@@ -106,12 +103,13 @@ const MachineGraphsTab = () => {
           </Grid>
         </FormProvider>
       </GStyledStickyDiv>
-      {isLoading ? (
+
+      {shouldShowLoader ? (
         <HowickLoader height={300} width={303} mode={themeMode} />
-      ) : logGraphType.key === 'production_total' ? (
-        <ERPProductionTotal timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard />
+      ) : submittedValues?.logGraphType?.key === 'production_total' ? (
+        <ERPProductionTotal timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} />
       ) : (
-        <ERPProductionRate timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard />
+        <ERPProductionRate timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} />
       )}
     </Fragment>
   )
@@ -119,7 +117,7 @@ const MachineGraphsTab = () => {
 
 MachineGraphsTab.propTypes = {
   logType: PropTypes.object,
-  isLogsPage: PropTypes.bool,
+  isLogsPage: PropTypes.bool
 }
 
 export default MachineGraphsTab

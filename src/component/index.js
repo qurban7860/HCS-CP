@@ -17,6 +17,7 @@ export { default as BadgeStatus } from './badge-status/badge-status'
 export { default as Button } from './button/button'
 export { default as DownloadButton } from './button/download-button'
 export { default as BackButton } from './button/back-button/back-button'
+export { default as DownloadMachineLogsIconButton} from './button/logs/download-machine-logs-icon-button'
 // @box
 export { default as ChowBox } from './box/chow-box'
 // @breadcrumb

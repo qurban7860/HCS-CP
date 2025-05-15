@@ -22,13 +22,15 @@ export default function IconTooltip({
  variant,
  title,
  placement = 'top',
+ size = "medium",
  icon,
  disabled,
  dimension = TOOLTIP,
  noHoverAction,
  cursor = false,
  noTitle,
- alongTab
+ alongTab,
+ ...others
 }) {
  const { Icon, iconSrc } = useIcon(icon)
  const { themeMode } = useSettingContext()
@@ -101,20 +103,23 @@ export default function IconTooltip({
      </IconButton>
     </GStyledTooltip>
    ) : (
-    <Button
-     onClick={onClick}
-     variant={variant}
-     sx={{
-      cursor: onClick ? 'pointer' : 'default',
-      color: textColor,
-      backgroundColor: buttonColor,
-      borderColor: color,
-      ':hover': { borderColor: convertToAlpha(color, 0.7), backgroundColor: buttonColor && convertToAlpha(buttonColor, 0.7) }
-     }}>
      <GStyledTooltip title={title} placement={placement} disableFocusListener tooltipcolor={tooltipColor} color={textColor}>
-      <Icon color={color} sx={{ height: dimension, width: dimension }} icon={iconSrc} />
+      <Button
+        onClick={onClick}
+        variant={variant}
+        size={size}
+        disabled={disabled}
+        sx={{
+          cursor: onClick ? 'pointer' : 'default',
+          color: textColor,
+          backgroundColor: buttonColor,
+          ':hover': { backgroundColor: theme.palette.howick.midBlue }
+        }}
+        {...others}
+      >
+        <Icon color={color} sx={{ height: dimension, width: dimension }} icon={iconSrc} />
+      </Button>
      </GStyledTooltip>
-    </Button>
    )}
   </Fragment>
  )
@@ -141,5 +146,6 @@ IconTooltip.propTypes = {
  noHoverAction   : PropTypes.bool,
  noTitle         : PropTypes.bool,
  iconFlexi       : PropTypes.bool,
- iconRaw         : PropTypes.string
+ iconRaw         : PropTypes.string,
+ size            : PropTypes.string
 }

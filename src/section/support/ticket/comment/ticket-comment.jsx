@@ -166,7 +166,7 @@ const TicketComment = ({ currentUser }) => {
                       FormHelperTextProps={{ sx: { textAlign: 'right' } }}
                     />
                     {!!commentValue?.trim() && (
-                      <Stack spacing={1} direction='row' sx={{ mt: 2 }}>
+                      <Stack spacing={1} direction='row'>
                         <LoadingButton type='submit' disabled={isLoading} loading={isSubmitting} variant='contained' color='primary' size='small' sx={{ width: 'fit-content' }}>
                           {t('save.label')}
                         </LoadingButton>
