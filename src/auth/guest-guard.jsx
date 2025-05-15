@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { Navigate } from 'react-router-dom'
 import { PATH_DASHBOARD, PATH_CUSTOMER } from 'route/path'
 import { FramingLoader } from 'component'
-import { useAuthContext } from 'auth'
+import { useAuthContext } from 'auth/use-auth-context'
 
 GuestGuard.propTypes = {
     children: PropTypes.node

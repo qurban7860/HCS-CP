@@ -14,9 +14,10 @@ FilledEditorField.propTypes = {
   value: PropTypes.any,
   onSubmit: PropTypes.func,
   minRows: PropTypes.number,
+  placeholder: PropTypes.string,
 };
 
-function FilledEditorField({ name, label, value, onSubmit, minRows }) {
+function FilledEditorField({ name, label, value, onSubmit, minRows, placeholder="" }) {
 
   const defaultValues = useMemo(
     () => ({
@@ -63,7 +64,7 @@ function FilledEditorField({ name, label, value, onSubmit, minRows }) {
           multiline={name !== "summary"}
           minRows={minRows || 1}
           fullWidth
-
+          placeholder={placeholder}
         />
         {isDirty && <Stack
           direction="row"

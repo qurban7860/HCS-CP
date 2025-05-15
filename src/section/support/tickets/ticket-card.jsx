@@ -21,9 +21,9 @@ const TicketCard = ({ selectedCardId, handleSelected, handleTicketCard, handleTi
         <GStyledSpanBox>
          <Link
           typography={TYPOGRAPHY.H5}
-          onClick={event => handleTicketCard(event, ticket?.machineSerialNo, ticket?.key)}
+          onClick={event => handleTicketCard(event, ticket?.machine?.serialNo, ticket?.key)}
           sx={{ color: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.howick.orange, cursor: 'pointer' }}>
-          {ticket?.key}
+          {ticket?.summary}
          </Link>
          &nbsp;
          {/*
@@ -41,21 +41,26 @@ const TicketCard = ({ selectedCardId, handleSelected, handleTicketCard, handleTi
       secondary={
        !isMachinePage && (
         <Typography variant={TYPOGRAPHY.BODY2} color='text.secondary'>
-         {ticket?.machineSerialNo}
+         {ticket?.machine?.serialNo}
         </Typography>
        )
       }
      />
      <Typography variant={TYPOGRAPHY.CAPTION} color='text.secondary'>
-      {truncate(ticket?.issue, 40)}
+      {truncate(ticket?.issueType?.name || '', 40)}
      </Typography>
     </Box>
    </Grid>
-   <Grid item xs={3} flex={1} justifyContent={FLEX.FLEX_END} alignContent={KEY.RIGHT}>
-    <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1}>
-     <GStyledSupportStatusFieldChip status={normalizer(ticket?.status)} mode={themeMode} label={<Typography variant={TYPOGRAPHY.OVERLINE_MINI}>{ticket?.status}</Typography>} size={SIZE.SMALL} />
-    </GStyledSpanBox>
-   </Grid>
+    <Grid item xs={3} flex={1} justifyContent={FLEX.FLEX_END} alignContent={KEY.RIGHT}>
+      <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1}>
+        <GStyledSupportStatusFieldChip
+          status={normalizer(ticket?.status?.name || '')}
+          mode={themeMode}
+          label={<Typography variant={TYPOGRAPHY.OVERLINE_MINI}>{ticket?.status?.name}</Typography>}
+          size={SIZE.SMALL}
+        />
+      </GStyledSpanBox>
+    </Grid>
   </GStyledSupportListCard>
  )
 }

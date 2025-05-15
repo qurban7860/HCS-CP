@@ -4,13 +4,15 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Stack, FormHelperText } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
+import { useAuthContext } from 'auth/use-auth-context'
 import { PATH_DASHBOARD } from 'route/path'
+import { LOCAL_STORAGE_KEY } from 'constant'
 import { useSnackbar } from 'hook'
 import FormProvider, { RHFCodes } from 'component/hook-form'
 
 function AuthVerifyCodeForm() {
+  const { muliFactorAuthentication } = useAuthContext()
   const navigate = useNavigate()
-
   const { enqueueSnackbar } = useSnackbar()
 
   const VerifyCodeSchema = Yup.object().shape({
@@ -44,8 +46,9 @@ function AuthVerifyCodeForm() {
 
   const onSubmit = async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500))
-      console.log('DATA', Object.values(data).join(''))
+      const userId = localStorage.getItem(LOCAL_STORAGE_KEY.USER_ID)
+      const { code1, code2, code3, code4, code5, code6 } = data
+      await muliFactorAuthentication(`${code1}${code2}${code3}${code4}${code5}${code6}`, userId)
       enqueueSnackbar('Verify success!')
       navigate(PATH_DASHBOARD.root)
     } catch (error) {

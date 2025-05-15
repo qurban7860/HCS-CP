@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState, useCallback, useLayoutEffect } from 'react'
+import { Fragment, useState, useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -6,8 +6,8 @@ import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
 import { useSettingContext } from 'hook'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { getLogs, getLogGraphData, setSelectedSearchFilter, ChangeLogPage, resetLogs, resetLogsGraphData } from 'store/slice'
-import { addLogSchema } from 'schema'
+import { getLogGraphData, setSelectedSearchFilter } from 'store/slice/log/machineLog'
+import { erpGraphSchema } from 'schema/graph/erp-graph-schema'
 import { LogsTableController, useLogDefaultValues } from 'section/log/logs'
 import { ERPProductionTotal, ERPProductionRate } from 'section/log'
 import { Grid } from '@mui/material'
@@ -17,165 +17,107 @@ import { GStyledStickyDiv } from 'theme/style'
 import { NAV } from 'config/layout'
 
 const MachineGraphsTab = () => {
- const { logPage, logRowsPerPage, isLoading, logsGraphData, selectedSearchFilter } = useSelector(state => state.log)
- const { customer, customers } = useSelector(state => state.customer)
- const { machine, customerMachines } = useSelector(state => state.machine)
+  const { isLoading, logsGraphData } = useSelector(state => state.machineLog)
+  const { machine } = useSelector(state => state.machine)
+  const { themeMode } = useSettingContext()
+  const defaultValues = useLogDefaultValues()
+  const { machineId } = useParams()
 
- const { themeMode } = useSettingContext()
- const defaultValues = useLogDefaultValues()
- const { id } = useParams()
- const methods = useForm({
-  resolver: yupResolver(addLogSchema),
-  defaultValues
- })
+  const methods = useForm({
+    resolver: yupResolver(erpGraphSchema),
+    defaultValues
+  })
 
- const { watch, setValue, handleSubmit, trigger } = methods
- const { dateFrom, dateTo, logType, logPeriod, filteredSearchKey, logGraphType } = watch()
- const [graphLabels, setGraphLabels] = useState({ yaxis: 'Cumulative Total Value', xaxis: logPeriod })
+  const { setValue, handleSubmit, getValues } = methods
+  const [graphLabels, setGraphLabels] = useState({
+    yaxis: 'Produced Length and Waste (m)',
+    xaxis: defaultValues.logPeriod || 'Daily'
+  })
 
- useLayoutEffect(() => {
-  dispatch(resetLogsGraphData())
- }, [dispatch])
+  const [submittedValues, setSubmittedValues] = useState(null)
 
- useEffect(() => {
-  dispatch(
-   getLogs({
-    ...payload,
-    page: logPage,
-    pageSize: logRowsPerPage
-   })
+  const handleFormSubmit = useCallback(() => {
+    const { logPeriod, logGraphType, dateFrom, dateTo } = getValues()
+    const customerId = machine?.customer?._id
+    if (!customerId || !logGraphType?.key) return
+
+    const payload = { logPeriod, logGraphType, dateFrom, dateTo }
+    setSubmittedValues(payload)
+
+    dispatch(getLogGraphData( customerId, machineId, 'erp', logPeriod, logGraphType.key, dateFrom, dateTo ))
+
+    setGraphLabels({
+      yaxis: logGraphType.key === 'productionRate'
+        ? 'Production Rate (m/hr)'
+        : 'Produced Length and Waste (m)',
+      xaxis: logPeriod
+    })
+  }, [getValues, machine?.customer?._id, machineId])
+
+  useEffect(() => {
+    if ( defaultValues?.logGraphType && defaultValues?.logPeriod && defaultValues?.dateFrom && defaultValues?.dateTo && machine?.customer?._id)
+    {
+      const { logPeriod, logGraphType, dateFrom, dateTo } = defaultValues
+      const customerId = machine?.customer?._id
+
+      const payload = { logPeriod, logGraphType, dateFrom, dateTo}
+      setSubmittedValues(payload)
+
+      dispatch(getLogGraphData( customerId, machineId, 'erp', logPeriod, logGraphType.key, dateFrom, dateTo ))
+
+      setGraphLabels({
+        yaxis: logGraphType.key === 'productionRate'
+          ? 'Production Rate (m/hr)'
+          : 'Produced Length and Waste (m)',
+        xaxis: logPeriod
+      })
+    }
+
+  }, [defaultValues, machine?.customer?._id, machineId])
+
+  const handlePeriodChange = useCallback((newPeriod) => {
+    setValue('logPeriod', newPeriod)
+  }, [setValue])
+
+  const handleGraphTypeChange = useCallback((newGraphType) => {
+    setValue('logGraphType', newGraphType)
+  }, [setValue])
+
+  const shouldShowLoader = isLoading || !submittedValues || !logsGraphData
+
+  return (
+    <Fragment>
+      <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_CONTROLLER} zIndex={7}>
+        <FormProvider methods={methods} onSubmit={handleSubmit(handleFormSubmit)}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <LogsTableController
+                handlePeriodChange={handlePeriodChange}
+                handleGraphTypeChange={handleGraphTypeChange}
+                setSelectedFilter={setSelectedSearchFilter}
+                isGraphPage
+                methods={methods}
+                onGetGraph={handleFormSubmit}
+              />
+            </Grid>
+          </Grid>
+        </FormProvider>
+      </GStyledStickyDiv>
+
+      {shouldShowLoader ? (
+        <HowickLoader height={300} width={303} mode={themeMode} />
+      ) : submittedValues?.logGraphType?.key === 'production_total' ? (
+        <ERPProductionTotal timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} />
+      ) : (
+        <ERPProductionRate timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} />
+      )}
+    </Fragment>
   )
- }, [logPage, logRowsPerPage])
-
- const onGetLogs = data => {
-  const customerId = customer?._id
-  dispatch(ChangeLogPage(0))
-  dispatch(
-   getLogs({
-    customerId,
-    machineId: id,
-    page: 0,
-    pageSize: logRowsPerPage,
-    fromDate: dateFrom,
-    toDate: dateTo,
-    isArchived: false,
-    isMachineArchived: machine?.isArchived,
-    selectedLogType: logType.type,
-    searchKey: filteredSearchKey,
-    searchColumn: selectedSearchFilter
-   })
-  )
- }
-
- const handleCustomerChange = useCallback(
-  newCustomer => {
-   setValue('customer', newCustomer)
-   setValue('machine', null)
-   trigger(['customer', 'machine'])
-   dispatch(resetLogs())
-  },
-  [dispatch, setValue, trigger]
- )
-
- const handleMachineChange = useCallback(
-  newMachine => {
-   setValue('machine', newMachine)
-   trigger('machine')
-   dispatch(resetLogs())
-  },
-  [dispatch, setValue, trigger]
- )
-
- const handlePeriodChange = useCallback(
-  newPeriod => {
-   setValue('logPeriod', newPeriod)
-   switch (newPeriod) {
-    case 'Monthly':
-     setGraphLabels(prev => ({ ...prev, xaxis: 'Months' }))
-     break
-    case 'Daily':
-     setGraphLabels(prev => ({ ...prev, xaxis: 'Days' }))
-     break
-    case 'Quarterly':
-     setGraphLabels(prev => ({ ...prev, xaxis: 'Quarters' }))
-     break
-    case 'Yearly':
-     setGraphLabels(prev => ({ ...prev, xaxis: 'Years' }))
-     break
-    default:
-     break
-   }
-  },
-  [setValue]
- )
-
- const handleLogTypeChange = useCallback(
-  newLogType => {
-   setValue('logType', newLogType)
-   trigger('logType')
-  },
-  [setValue, trigger]
- )
-
- useEffect(() => {
-  if (logPeriod && logGraphType) {
-   const customerId = machine?.customer?._id
-   const LogType = 'erp'
-   dispatch(getLogGraphData(customerId, id, LogType, logPeriod, logGraphType?.key))
-  }
- }, [logPeriod, logGraphType])
-
- const payload = {
-  customerId: customer?._id,
-  machineId: id || undefined,
-  page: logPage,
-  pageSize: logRowsPerPage,
-  fromDate: dateFrom,
-  toDate: dateTo,
-  isArchived: false,
-  isMachineArchived: false,
-  selectedLogType: logType?.type,
-  searchKey: filteredSearchKey,
-  searchColumn: selectedSearchFilter
- }
-
- return (
-  <Fragment>
-   <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_CONTROLLER} zIndex={7}>
-    <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
-     <Grid container spacing={2}>
-      <Grid item xs={12} sm={12}>
-       <LogsTableController
-        customers={customers}
-        handleCustomerChange={handleCustomerChange}
-        customerMachines={customerMachines}
-        handleMachineChange={handleMachineChange}
-        handleLogTypeChange={handleLogTypeChange}
-        handlePeriodChange={handlePeriodChange}
-        setSelectedFilter={setSelectedSearchFilter}
-        isGraphPage={() => true}
-        methods={methods}
-        onGetLogs={onGetLogs}
-       />
-      </Grid>
-     </Grid>
-    </FormProvider>
-   </GStyledStickyDiv>
-   {isLoading ? (
-    <HowickLoader height={300} width={303} mode={themeMode} />
-   ) : logGraphType.key === 'production_total' ? (
-    <ERPProductionTotal timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard />
-   ) : (
-    <ERPProductionRate timePeriod={logPeriod} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard />
-   )}
-  </Fragment>
- )
 }
 
 MachineGraphsTab.propTypes = {
- logType: PropTypes.object,
- isLogsPage: PropTypes.bool,
- payload: PropTypes.object
+  logType: PropTypes.object,
+  isLogsPage: PropTypes.bool
 }
 
 export default MachineGraphsTab

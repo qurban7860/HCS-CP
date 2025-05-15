@@ -19,7 +19,6 @@ function LinkTableCell({ align, onClick, param, stringLength, tooltipTitle, open
    sx={{
     cursor: 'pointer',
     fontSize: '1rem',
-    fontWeight: 'bold',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -30,7 +29,7 @@ function LinkTableCell({ align, onClick, param, stringLength, tooltipTitle, open
    }}>
    <GStyledSpanBox gap={1}>
     <Link onClick={onClick} sx={{ color: themeMode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.orange }}>
-     <Typography variant={isMobile ? TYPOGRAPHY.BODY2 : TYPOGRAPHY.H6}>{useLimitString(param, stringLength || 30)}</Typography>
+     <Typography variant="body2" sx={{ fontWeight: 'normal', fontSize: isMobile ? '0.75rem' : '0.85rem' }}>{useLimitString(param, stringLength || 30)}</Typography>
     </Link>
     {openInNewTab && (
      <IconTooltip

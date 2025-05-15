@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import { ICON_NAME, useSettingContext } from 'hook'
-import { TableHead, TableRow, TableSortLabel, Typography } from '@mui/material'
+import { TableHead, TableRow, TableSortLabel, Typography, Tooltip } from '@mui/material'
 import { IconTooltip } from 'component'
 import { useTheme } from '@mui/material/styles'
 import { normalizer } from 'util'
@@ -36,10 +36,21 @@ const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
               iconOnly
               cursor
             />
+          ) : headCell.tooltip ? (
+            <Tooltip
+            placement="top"
+            title={headCell.fullLabel || headCell.label}
+          >
+            <span>
+              <Typography variant={TYPOGRAPHY.OVERLINE0} p={0}>
+                {headCell.label}
+              </Typography>
+            </span>
+          </Tooltip>   
           ) : (
-           <Typography variant={TYPOGRAPHY.OVERLINE0} p={0}>
-            {headCell.label}
-           </Typography>
+            <Typography variant={TYPOGRAPHY.OVERLINE0} p={0}>
+              {headCell.label}
+            </Typography>
           )}
          </TableSortLabel>
         ) : (

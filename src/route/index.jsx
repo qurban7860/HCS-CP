@@ -1,6 +1,8 @@
 import { Fragment } from 'react'
 import { Navigate, useRoutes } from 'react-router-dom'
-import { AuthGuard, GuestGuard, RoleBasedGuard } from 'auth'
+import AuthGuard from 'auth/auth-guard'
+import GuestGuard from 'auth/guest-guard'
+import RoleBasedGuard from 'auth/role-based-guard'
 import DashboardLayout from 'section/dashboard'
 import { PATH_AFTER_LOGIN } from 'global'
 import { FALLBACK, KEY } from 'constant'
@@ -9,6 +11,7 @@ import {
   LandingPage,
   // auth:
   LoginPage,
+  VerifyCodePage,
   RegisterPage,
   SetPasswordPage,
   ResetPasswordPage,
@@ -22,10 +25,17 @@ import {
   UserListPage,
   UserProfilePage,
   // product:
+  MachineModuleLayout,
   MachinePage,
   MachinesListPage,
   MachinesLogsPage,
   MachinesGraphsPage,
+  // documents
+  MachineDocuments,
+  MachineDocument,
+  MachineDrawings,
+  MachineDrawing,
+  // support
   MachineSupportTicketsPage,
   //  crm:
   CustomerPage,
@@ -38,7 +48,8 @@ import {
   TicketCreatePage,
   TicketViewPage,
   // log:
-  LogListPage,
+  LogList,
+  LogGraph,
   // fallback:
   BlankPage,
   FallbackPage
@@ -61,7 +72,7 @@ export default function Router() {
             },
             {
               path: 'authenticate',
-              element: <GuestGuard>{/* <Authenticate /> */}</GuestGuard>
+              element: <GuestGuard>{<VerifyCodePage />}</GuestGuard>
             },
             {
               path: 'register',
@@ -149,7 +160,6 @@ export default function Router() {
           ]
         },
         {
-          // product
           path: 'products',
           element: (
             <AuthGuard>
@@ -162,30 +172,39 @@ export default function Router() {
               path: 'machines',
               children: [
                 { element: <MachinesListPage />, index: true },
-                { path: ':id/view', element: <MachinePage /> },
                 {
-                  path: ':id/logs',
+                  path: ':machineId',
+                  element: <MachineModuleLayout />,
                   children: [
+                    { path: 'view', element: <MachinePage /> },
                     {
-                      element: <MachinesLogsPage />,
-                      index: true
+                      path: 'drawings',
+                      children: [
+                        { element: <MachineDrawings />, index: true },
+                        { path: ':id/view', element: <MachineDrawing /> }
+                      ]
+                    },
+                    {
+                      path: 'documents',
+                      children: [
+                        { element: <MachineDocuments />, index: true },
+                        { path: ':id/view', element: <MachineDocument /> }
+                      ]
+                    },
+                    {
+                      path: 'logs',
+                      children: [{ element: <MachinesLogsPage />, index: true }]
+                    },
+                    { path: 'graphs', element: <MachinesGraphsPage /> },
+                    {
+                      path: 'support',
+                      children: [
+                        { element: <MachineSupportTicketsPage />, index: true },
+                        { path: 'view', element: <MachineSupportTicketsPage /> }
+                      ]
                     }
                   ]
                 },
-                { path: ':id/graphs', element: <MachinesGraphsPage /> },
-                {
-                  path: ':id/support',
-                  children: [
-                    {
-                      element: <MachineSupportTicketsPage />,
-                      index: true
-                    },
-                    {
-                      path: ':supportId/view',
-                      element: <MachineSupportTicketsPage />
-                    }
-                  ]
-                }
               ]
             }
           ]
@@ -294,14 +313,9 @@ export default function Router() {
             </AuthGuard>
           ),
           children: [
-            { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
-            { path: 'machine', element: <LogListPage /> },
-            {
-              element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} />,
-              children: [
-                // { path: 'password', element: <ChangePasswordPage /> },
-              ]
-            }
+            { element: <LogList />, index: true },
+            { path: 'graph', element: <LogGraph /> },
+            { element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} /> }
           ]
         },
         {

@@ -107,6 +107,13 @@ const supportSlice = createSlice({
       state.ticket = action.payload
       state.initial = true
     },
+    addTicketFilesSuccess(state, action) {
+      state.ticket = {
+        ...state.ticket,
+        files: [ ...( state.ticket?.files || [] ), ...( action.payload || [] ) ]
+      }
+      state.isLoadingTicketFile = false;
+    },
     deleteTicketFileSuccess(state, action) {
       const { id } = action.payload
       const array = state.ticket.files
@@ -166,25 +173,25 @@ export const { resetTicket, resetTickets, resetTicketSettings, resetSoftwareVers
 
 
 export function getTickets({ customerId, isResolved = null, page, pageSize }) {
- return async dispatch => {
-  dispatch(supportSlice.actions.startLoading())
-  try {
-   const params = {
-    customer  : customerId,
-    orderBy   : { createdAt: -1 },
-    isArchived: false,
-    ...(isResolved && isResolved !== 'all' && { isResolved: isResolved === 'resolved' }),
-    pagination: { page, pageSize },
-   }
-   const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
-  //  const customerTickets  = response.data &&  response.data.data.filter(ticket => ticket.customer._id === customerId)
-    dispatch(supportSlice.actions.getTicketsSuccess(response.data))
-   return response
-  } catch (error) {
-   console.error(error)
-   throw error
+  return async dispatch => {
+    dispatch(supportSlice.actions.startLoading())
+    try {
+      const params = {
+        customer: customerId,
+        orderBy: { createdAt: -1 },
+        isArchived: false,
+        ...(isResolved && isResolved !== 'all' && { isResolved: isResolved === 'resolved' }),
+        pagination: { page, pageSize },
+      }
+      const response = await axios.get(PATH_SERVER.SUPPORT.TICKETS.list, { params })
+      //  const customerTickets  = response.data &&  response.data.data.filter(ticket => ticket.customer._id === customerId)
+      dispatch(supportSlice.actions.getTicketsSuccess(response.data))
+      return response
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
   }
- }
 }
 
 export function getTicket(id, customerId) {
@@ -223,7 +230,24 @@ export function getTicketSettings(cancelToken) {
     }
   }
 }
-
+export function addFiles( id, params ) {
+  return async (dispatch) => {
+    dispatch(supportSlice.actions.setLoadingFile(true));
+    try {
+      const formData = new FormData();
+      (params?.files || []).forEach((file, index) => {
+        formData.append(`images`, file);
+      });
+      const response = await axios.post(`${PATH_SERVER.SUPPORT.TICKETS.detail(id)}/files/`, formData);
+      dispatch(supportSlice.actions.addTicketFilesSuccess( response.data ));
+      return response;
+    } catch (error) {
+      console.log(error);
+      dispatch(supportSlice.actions.hasError(error.Message));
+      throw error;
+    }
+  };
+}
 export function deleteFile(ticketId, fileId) {
   return async dispatch => {
     dispatch(supportSlice.actions.startLoading())
@@ -245,6 +269,8 @@ export function createTicket(params) {
       const formData = new FormData()
       formData.append('customer', params?.customer?._id)
       formData.append('machine', params?.machine?._id)
+      formData.append('hlc', params?.hlc)
+      formData.append('plc', params?.plc)
       formData.append('issueType', params?.issueType?._id)
       formData.append('requestType', params?.requestType?._id)
       formData.append('summary', params?.summary || '')

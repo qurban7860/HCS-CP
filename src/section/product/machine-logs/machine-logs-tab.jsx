@@ -1,119 +1,142 @@
-import { Fragment, useEffect, useState, useCallback } from 'react'
+import { Fragment, useEffect, useState, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { dispatch } from 'store'
-import { useSearchParams, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { getLogs, ChangeLogPage, resetLogs } from 'store/slice'
+import { getLogs, ChangeLogPage, resetLogs } from 'store/slice/log/machineLog'
+import { useAuthContext } from 'auth/use-auth-context'
 import { addLogSchema } from 'schema'
-import { LogsTableController, useLogDefaultValues } from 'section/log/logs'
+import { LogsTableController } from 'section/log/logs'
 import { MachineLogsTable } from 'section/product'
 import { Grid } from '@mui/material'
 import { GStyledStickyDiv } from 'theme/style'
 import FormProvider from 'component/hook-form'
 import { NAV, SPACING } from 'config/layout'
+import { getLogTypeConfigForGenerationAndType, logGraphTypes } from 'config/log-types'
 
 const MachineLogsTab = () => {
- const [selectedSearchFilter, setSelectedSearchFilter] = useState('')
- const { logPage, logRowsPerPage } = useSelector(state => state.log)
- const { machine, machines }       = useSelector(state => state.machine)
+  const { user } = useAuthContext()
+  const [selectedSearchFilter] = useState('');
+  const { logPage, logRowsPerPage } = useSelector(state => state.machineLog)
+  const { machine } = useSelector(state => state.machine)
+  const { machineId } = useParams()
 
- const [searchParams] = useSearchParams()
- const { id }         = useParams()
- const isGraphPage    = () => searchParams.get('type') === 'erpGraph'
+  const defaultValues = useMemo(
+    () => ({
+      customer: user?.customer || null,
+      machine: machine,
+      logType: getLogTypeConfigForGenerationAndType(5, 'ERP') || null,
+      dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+      dateTo: new Date(),
+      logPeriod: 'Monthly',
+      logGraphType: logGraphTypes[0]
+    }
+    ), []
+  );
 
- const defaultValues = useLogDefaultValues()
- const methods = useForm({
-  resolver: yupResolver(addLogSchema),
-  defaultValues
- })
+  const methods = useForm({
+    resolver: yupResolver(addLogSchema),
+    defaultValues,
+    mode: 'onChange',
+    reValidateMode: 'onChange'
+  })
 
- const { watch, setValue, handleSubmit, trigger } = methods
- const { customer, dateFrom, dateTo, logType, filteredSearchKey } = watch()
+  const { watch, setValue, handleSubmit } = methods
+  const { dateFrom, dateTo, logType, filteredSearchKey } = watch()
 
- useEffect(() => {
-  if (id) {
-   dispatch(
-    getLogs({
-     ...payload,
-     machineId: id,
-     page     : logPage,
-     pageSize : logRowsPerPage
-    })
-   )
+  useEffect(() => {
+    dispatch(getLogs({
+      customerId: user?.customer,
+      machineId,
+      page: logPage,
+      pageSize: logRowsPerPage,
+      fromDate: dateFrom,
+      toDate: dateTo,
+      isArchived: false,
+      isMachineArchived: machine?.isArchived,
+      selectedLogType: logType?.type,
+      searchKey: filteredSearchKey,
+      searchColumn: selectedSearchFilter
+    }))
+  }, [logPage, logRowsPerPage])
+
+  const handleFormSubmit = async (data) => {
+    if (logPage == 0) {
+      await dispatch(getLogs({
+        customerId: user?.customer,
+        machineId,
+        page: logPage,
+        pageSize: logRowsPerPage,
+        fromDate: dateFrom,
+        toDate: dateTo,
+        isArchived: false,
+        isMachineArchived: machine?.isArchived,
+        selectedLogType: logType?.type,
+        searchKey: filteredSearchKey,
+        searchColumn: selectedSearchFilter
+      }))
+    } else {
+      await dispatch(ChangeLogPage(0))
+    }
   }
- }, [logPage, logRowsPerPage])
 
- const onGetLogs = data => {
-  const customerId = customer._id
-  //   const machineId = id || undefined
-  dispatch(ChangeLogPage(0))
-  dispatch(
-   getLogs({
-    customerId,
-    id,
-    page: 0,
+  const handleLogTypeChange = useCallback(newLogType => {
+    setValue('logType', newLogType)
+  }, [setValue])
+
+  const handlePeriodChange = useCallback(newPeriod => {
+    setValue('logPeriod', newPeriod)
+  }, [setValue])
+
+  const handleGraphTypeChange = useCallback(
+    newGraphType => {
+      setValue('logGraphType', newGraphType)
+    },
+    [setValue]
+  )
+
+  const dataForApi = {
+    customerId: user?.customer,
+    machineId: machine?._id || undefined,
+    page: logPage,
     pageSize: logRowsPerPage,
     fromDate: dateFrom,
     toDate: dateTo,
     isArchived: false,
     isMachineArchived: machine?.isArchived,
-    selectedLogType: logType.type,
+    selectedLogType: logType?.type,
     searchKey: filteredSearchKey,
     searchColumn: selectedSearchFilter
-   })
+  }
+
+  return (
+    <Fragment>
+      <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_CONTROLLER} zIndex={12}>
+        <FormProvider methods={methods} onSubmit={handleSubmit(handleFormSubmit)}>
+          <Grid container spacing={SPACING.TAB}>
+            <Grid item xs={12} md={12}>
+              <LogsTableController
+                handlePeriodChange={handlePeriodChange}
+                handleLogTypeChange={handleLogTypeChange}
+                handleGraphTypeChange={handleGraphTypeChange}
+                methods={methods}
+                onGetLogs={handleFormSubmit}
+                dataForApi={dataForApi}
+              />
+            </Grid>
+          </Grid>
+        </FormProvider>
+      </GStyledStickyDiv>
+      <MachineLogsTable logType={logType} />
+    </Fragment>
   )
- }
-
- const handleLogTypeChange = useCallback(
-  newLogType => {
-   setValue('logType', newLogType)
-   trigger('logType')
-  },
-  [setValue, trigger]
- )
-
- const payload = {
-  customerId: machine?.customer?._id,
-  machineId: machine?._id || undefined,
-  page: logPage,
-  pageSize: logRowsPerPage,
-  fromDate: dateFrom,
-  toDate: dateTo,
-  isArchived: false,
-  isMachineArchived: false,
-  selectedLogType: logType?.type,
-  searchKey: filteredSearchKey,
-  searchColumn: selectedSearchFilter
- }
-
- return (
-  <Fragment>
-   <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_CONTROLLER} zIndex={12}>
-    <FormProvider methods={methods} onSubmit={handleSubmit(onGetLogs)}>
-     <Grid container spacing={SPACING.TAB}>
-      <Grid item xs={12} md={12}>
-       <LogsTableController
-        customerMachines={machines}
-        handleLogTypeChange={handleLogTypeChange}
-        isGraphPage={isGraphPage}
-        methods={methods}
-        onGetLogs={onGetLogs}
-       />
-      </Grid>
-     </Grid>
-    </FormProvider>
-   </GStyledStickyDiv>
-   <MachineLogsTable isLogsPage={false} logType={logType} payload={payload} />
-  </Fragment>
- )
 }
 
 MachineLogsTab.propTypes = {
- logType: PropTypes.object,
- isLogsPage: PropTypes.bool,
- payload: PropTypes.object
+  logType: PropTypes.object,
+  isLogsPage: PropTypes.bool
 }
 
 export default MachineLogsTab

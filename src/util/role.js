@@ -13,8 +13,8 @@ export const roleCoverUp = role => {
     return role.name === KEY.CUSTOMER_ADMIN ? 'Admin' : role.name === KEY.CUSTOMER_USER ? 'User' : role.name
 }
 
-export const isCustomerAdmin = user => user?.roles?.some(role => role?.name === KEY.CUSTOMER_ADMIN)
-export const isSuperAdmin = user => user?.roles?.some(role => role?.name === KEY.SUPER_ADMIN)
+export const isCustomerAdmin = user => user?.roles?.some(role => role?.name?.toLowerCase() === "customeradmin")
+export const isSuperAdmin = user => user?.roles?.some(role => role?.name?.toLowerCase() === "superadmin")
 
 export const roleColr = (role, theme, mode) => {
     if (!role || !role.name) return ''

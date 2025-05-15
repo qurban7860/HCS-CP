@@ -1,63 +1,64 @@
-import { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
-import { format } from 'date-fns'
-import { Typography, Box } from '@mui/material'
-import { RADIUS, TIME } from 'config'
-import { LOCALE, VARIANT, KEY, TIMEZONE } from 'constant'
-import useClock from './use-clock'
-import { huntTimezone } from './city-timezone'
-import { StyledClockBox, StyledBoxFlex } from './style'
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Typography } from '@mui/material';
+import { RADIUS, TIME } from 'config';
+import { VARIANT, KEY } from 'constant';
+import { StyledClockBox, StyledBoxFlex } from './style';
+import { huntTimezone } from './city-timezone';
 
 const Clock = ({ main, city, country = KEY.NEW_ZEALAND, region = KEY.AUCKLAND, local }) => {
- const [aucklandTime, setAucklandTime] = useState(new Date().toLocaleString(LOCALE.en, TIMEZONE.AUCKLAND))
- const timezoneObj = huntTimezone(city, country, region) || huntTimezone(local)
- const timezone = timezoneObj?.timezone
+  const [timeString, setTimeString] = useState('');
+  const timezoneObj = huntTimezone(city, country, region) || huntTimezone(local) || { timezone: local };
+  const timezone = timezoneObj?.timezone || 'UTC';
 
- const localTime = useClock(LOCALE.en, local)
+  const getTimeString = () => {
+    try {
+      const now = new Date();
+      return new Intl.DateTimeFormat('en-NZ', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+        timeZone: timezone,
+      }).format(now);
+    } catch (err) {
+      console.error('Error formatting time:', err);
+      return 'Invalid Time';
+    }
+  };
 
- const formatTime = date => {
-  return format(date, 'HH:mm:ss', {
-   timeZone: timezone
-  })
- }
+  useEffect(() => {
+    const updateTime = () => {
+      setTimeString(getTimeString());
+    };
 
- useEffect(() => {
-  const timerID = setInterval(() => {
-   setAucklandTime(new Date(new Date().toLocaleString(LOCALE.en, TIMEZONE.AUCKLAND)))
-  }, 1000)
-  return () => {
-   clearInterval(timerID)
-  }
- }, [timezone])
+    updateTime(); 
+    const interval = setInterval(updateTime, 1000); 
 
- const displayTime = main ? formatTime(new Date()) : formatTime(new Date(localTime))
- const displayLabel = main ? KEY.AUCKLAND : timezone
+    return () => clearInterval(interval);
+  }, [timezone]);
 
- return (
-  timezone && (
-   <StyledBoxFlex gap={2}>
-    {main ? (
-     <StyledClockBox sx={RADIUS.BORDER}>
-      <span>{KEY.AUCKLAND}: &nbsp;</span>
-      <Typography variant={VARIANT.TYPOGRAPHY.H6}>{TIME.DAY_CLOCK(new Date(aucklandTime))}</Typography>
-     </StyledClockBox>
-    ) : (
-     <StyledClockBox sx={RADIUS.BORDER}>
-      <span>{displayLabel}: &nbsp;</span>
-      <Typography variant={VARIANT.TYPOGRAPHY.H6}>{TIME.DAY_CLOCK(new Date(localTime))}</Typography>
-     </StyledClockBox>
-    )}
-   </StyledBoxFlex>
-  )
- )
-}
+  const displayLabel = main ? 'Auckland' : timezone;
+
+  return (
+    <StyledBoxFlex gap={2}>
+      <StyledClockBox sx={RADIUS.BORDER}>
+        <span>{displayLabel}: &nbsp;</span>
+        <Typography variant={VARIANT.TYPOGRAPHY.H6}>
+          {timeString}
+        </Typography>
+      </StyledClockBox>
+    </StyledBoxFlex>
+  ); 
+  
+};
 
 Clock.propTypes = {
- city: PropTypes.string,
- country: PropTypes.string,
- main: PropTypes.bool,
- region: PropTypes.string,
- local: PropTypes.string
-}
+  city: PropTypes.string,
+  country: PropTypes.string,
+  main: PropTypes.bool,
+  region: PropTypes.string,
+  local: PropTypes.string,
+};
 
-export default Clock
+export default Clock; 

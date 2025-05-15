@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState, useCallback, useRef } from 'react'
+import { Fragment, useEffect, useState, useCallback, useRef, useMemo } from 'react'
 import _ from 'lodash'
 import debounce from 'lodash.debounce'
 import { t } from 'i18next'
@@ -26,7 +26,6 @@ import {
 } from 'store/slice'
 import { PATH_DASHBOARD, PATH_SUPPORT } from 'route/path'
 import { TicketSchema } from 'schema'
-import { useTicketCreateDefaultValues } from 'section/support'
 import { useTheme, Grid, Box, Card } from '@mui/material'
 import { RHFRequiredTextFieldWrapper, RHFUpload, ConfirmDialog, TicketCreateSuccessDialog, GridViewTitle, BackButton } from 'component'
 import FormProvider, { RHFTextField, RHFAutocomplete, RHFDatePickr, RHFTimePicker, RHFSwitch, RHFEditor } from 'component/hook-form'
@@ -98,7 +97,37 @@ function TicketCreateForm() {
     return () => debounceFetch.cancel()
   }, [user.customer, activeContacts, dispatch])
 
-  const defaultValues = useTicketCreateDefaultValues(customer, softwareVersion)
+  const defaultValues = useMemo(() => {
+    return {
+      customer: customer && customer || null,
+      machine: null,
+      issueType: null,
+      requestType: null,
+      summary: '',
+      description: '',
+      priority: null,
+      status: null,
+      impact: null,
+      files: [],
+      changeType: null,
+      changeReason: null,
+      implementationPlan: '',
+      backoutPlan: '',
+      testPlan: '',
+      investigationReason: null,
+      rootCause: '',
+      workaround: '',
+      shareWith: false,
+      isActive: true,
+      plannedStartDate: new Date(),
+      plannedEndDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+      startTime: null,
+      endTime: null,
+      hlc: softwareVersion?.hlc || '',
+      plc: softwareVersion?.plc || '',
+    }
+  }, [customer, softwareVersion])
+
   const methods = useForm({
     resolver: yupResolver(TicketSchema('new')),
     defaultValues,
@@ -107,25 +136,16 @@ function TicketCreateForm() {
   })
 
   const { reset, setValue, setError, watch, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful } } = methods
-  const { machine, issueType, summary, description, files, requestType } = watch()
-
+  const { machine, issueType, summary, description, files, requestType, hlc,plc } = watch()
+  
   const checkFormCompletion = useCallback(() => {
     setIsFormComplete(!!machine && !!issueType && !!summary)
   }, [machine, issueType, summary])
 
   useEffect(() => {
-    if (machine?._id) {
-      dispatch(getSoftwareVersion(machine._id, customer?._id))
-    }
-    return () => {
-      dispatch(resetSoftwareVersion());
-    }
-  }, [dispatch, machine])
-
-  useEffect(() => {
     if (softwareVersion) {
-      setValue('hlc', softwareVersion.hlc || t('not_applicable.abbr'))
-      setValue('plc', softwareVersion.plc || t('not_applicable.abbr'))
+      setValue('hlc', softwareVersion?.hlc || '' )
+      setValue('plc', softwareVersion?.plc || '' )
     }
   }, [softwareVersion, setValue])
 
@@ -309,48 +329,8 @@ function TicketCreateForm() {
             <Box mt={0} mb={2}>
               <Card {...GCardOption(themeMode)}>
                 <GStyledTopBorderDivider mode={themeMode} />
+
                 <Grid container spacing={2} p={1.5}>
-                  <Grid item xs={12} sm={12} md={4}>
-                    <RHFRequiredTextFieldWrapper condition={!machine}>
-                      <RHFAutocomplete
-                        name={'machine'}
-                        label={t('machine.label')}
-                        options={customerMachines || []}
-                        isOptionEqualToValue={(option, value) => option._id === value._id}
-                        getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
-                        renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
-                        helperText={errors.machine ? errors.machine.message : ''}
-                        required
-                      />
-                    </RHFRequiredTextFieldWrapper>
-                  </Grid>
-
-                  {/* {machine && (
-          <Fragment>
-           <Grid item xs={12} sm={12} md={6}>
-            <RHFTextField name={'machineModel'} label={t('machine_model.label')} value={machine?.machineModel?.name || ''} InputProps={{ readOnly: true }} />
-           </Grid>
-           <Grid item xs={12} sm={6} md={6}>
-            <RHFTextField name={"hlc"} label={t('hmi_version.label')} disabled />
-           </Grid>
-           <Grid item xs={12} sm={6} md={6}>
-            <RHFTextField name={"plc"} label={t('plc_version.label')} disabled />
-           </Grid>
-          </Fragment>
-         )} */}
-
-                  <Fragment>
-                    <Grid item xs={12} sm={12} md={4}>
-                      <RHFTextField name={'machineModel'} label={t('machine_model.label')} value={machine?.machineModel?.name || ''} InputProps={{ readOnly: true }} />
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={2}>
-                      <RHFTextField name={"hlc"} label={t('hmi_version.label')} disabled />
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={2}>
-                      <RHFTextField name={"plc"} label={t('plc_version.label')} disabled />
-                    </Grid>
-                  </Fragment>
-
                   <Grid item xs={12} md={6}>
                     <RHFRequiredTextFieldWrapper condition={!issueType}>
                       <RHFAutocomplete
@@ -383,6 +363,72 @@ function TicketCreateForm() {
                       />
                     </RHFRequiredTextFieldWrapper>
                   </Grid>
+                  <Grid item xs={12} sm={12} md={4}>
+                    <RHFRequiredTextFieldWrapper condition={!machine}>
+                      <RHFAutocomplete
+                        name={'machine'}
+                        label={t('machine.label')}
+                        options={customerMachines || []}
+                        isOptionEqualToValue={(option, value) => option._id === value._id}
+                        getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
+                        renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
+                        helperText={errors.machine ? errors.machine.message : ''}
+                        onChange={(event, newValue) => {
+                          if (newValue) {
+                            if (newValue?._id !== machine?._id) {
+                              setValue('hlc', "")
+                              setValue('plc', "")
+                              dispatch(getSoftwareVersion(newValue._id, customer?._id))
+                            }
+                            setValue('machine', newValue)
+                          } else {
+                            setValue('machine', null)
+                            setValue('hlc', "")
+                            setValue('plc', "")
+                            dispatch(resetSoftwareVersion())
+                          }
+                        }
+                        }
+                      />
+                    </RHFRequiredTextFieldWrapper>
+                  </Grid>
+
+                  {/* {machine && (
+          <Fragment>
+           <Grid item xs={12} sm={12} md={6}>
+            <RHFTextField name={'machineModel'} label={t('machine_model.label')} value={machine?.machineModel?.name || ''} InputProps={{ readOnly: true }} />
+           </Grid>
+           <Grid item xs={12} sm={6} md={6}>
+            <RHFTextField name={"hlc"} label={t('hmi_version.label')} disabled />
+           </Grid>
+           <Grid item xs={12} sm={6} md={6}>
+            <RHFTextField name={"plc"} label={t('plc_version.label')} disabled />
+           </Grid>
+          </Fragment>
+         )} */}
+
+                  <Fragment>
+                    <Grid item xs={12} sm={12} md={4}>
+                      <RHFTextField name={'machineModel'} label={t('machine_model.label')} value={machine?.machineModel?.name || ''} InputProps={{ readOnly: true }} />
+                    </Grid>
+                   <Grid item xs={12} sm={6} md={2}>
+                    <RHFTextField
+                    name="hlc"
+                    label={t("hmi_version.label")}
+                    disabled={softwareVersion?.hlc}
+                       />
+                    </Grid>
+
+                  <Grid item xs={12} sm={6} md={2}>
+                     <RHFTextField
+                     name="plc"
+                     label={t("plc_version.label")}
+                     disabled={softwareVersion?.plc}
+                        />
+                    </Grid>
+
+                  </Fragment>
+
 
                 </Grid>
               </Card>
@@ -417,11 +463,27 @@ function TicketCreateForm() {
                   <Grid container spacing={2} p={1.5}>
                     <Grid item xs={12} sm={12} md={12}>
                       <RHFRequiredTextFieldWrapper condition={!summary}>
-                        <RHFTextField name={'summary'} label={t('summary.label')} aria-label={t('summary.label')} error={!!errors.summary} helperText={errors.summary ? errors.summary.message : ''} required />
+                        <RHFTextField
+                          name={'summary'}
+                          label={t('summary.label')}
+                          placeholder='Brief description of the ticket'
+                          aria-label={t('summary.label')}
+                          error={!!errors.summary}
+                          helperText={errors.summary ? errors.summary.message : ''}
+                          required
+                        />
                       </RHFRequiredTextFieldWrapper>
                     </Grid>
                     <Grid item xs={12} sm={12} md={12}>
-                      <RHFEditor name={'description'} label={t('description.label')} minRows={3} multiline />
+                      <RHFEditor
+                        name={'description'}
+                        label={t('description.label')}
+                        placeholder={`Please provide a detailed description of the issue you are experiencing with the machine, including: \n  - Any relevant error messages \n  - Steps to reproduce the problem, screenshot, picture or videos and \n  - Any recent changes that may have affected the system.\n\nIf you have any specific requirements or preferences for the ticket, please let us know.`}
+                        aria-label={t('description.label')}
+                        error={!!errors.description}
+                        minRows={3}
+                        multiline
+                      />
                     </Grid>
                   </Grid>
 

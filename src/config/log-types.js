@@ -1,101 +1,108 @@
-const _GEN5_LOG_TYPES_ARR = ['ERP', 'PRODUCTION', 'COIL']
+const _GEN5_LOG_TYPES_ARR = [
+    'ERP',
+    // 'PRODUCTION', 
+    // 'COIL'
+]
 
 const _GEN5_LOG_TYPES = {
- ERP: {
-  name: 'erp',
-  type: 'ERP',
-  disabled: false,
-  versions: ['v1.5.X', 'v1.4.X', 'v1.1.66'],
-  formats: {
-   'v1.1.66': ['date', 'operator', 'coilBatchName', 'ccThickness', 'coilLength', 'frameSet', 'componentLabel', 'webWidth', 'flangeHeight', 'profileShape', 'componentLength', 'waste', 'time'],
-   'v1.4.X': [
-    'date',
-    'operator',
-    'coilBatchName',
-    'ccWidth',
-    'coilThickness',
-    'coilLength',
-    'frameSet',
-    'componentLabel',
-    'webWidth',
-    'flangeHeight',
-    'profileShape',
-    'componentLength',
-    'waste',
-    'time',
-    'componentWeight'
-   ],
-   'v1.5.X': [
-    'timestamp',
-    'operator',
-    'coilBatchName',
-    'coilWidth',
-    'coilThickness',
-    'coilLength',
-    'frameSet',
-    'componentLabel',
-    'flangeHeight',
-    'webWidth',
-    'profileShape',
-    'componentLength',
-    'waste',
-    'time',
-    'mode',
-    'measurementUnit',
-    'componentWeight',
-    'lineSpeed',
-    'componentGUID'
-   ]
-  },
-  tableColumns: [
-   { id: 'date', label: 'Date - Time', alwaysShow: true, defaultShow: true },
-   { id: 'machineSerialNo', label: 'Machine', alwaysShow: true, defaultShow: true, page: 'logsPage', searchable: true },
-   { id: '_id', label: 'ID', searchable: true },
-   { id: 'componentLabel', label: 'Component Label', defaultShow: true, searchable: true },
-   { id: 'frameSet', label: 'Frame Set', defaultShow: true, searchable: true },
-   { id: 'componentLength', label: 'Component Length', alwaysShow: true, defaultShow: true, searchable: true, numerical: true },
-   { id: 'waste', label: 'Waste', alwaysShow: true, defaultShow: true, searchable: true, numerical: true },
-   { id: 'flangeHeight', label: 'Flange Height', defaultShow: true, searchable: true, numerical: true },
-   { id: 'webWidth', label: 'Web Width', defaultShow: true, searchable: true, numerical: true },
-   { id: 'profileShape', label: 'Profile Shape', defaultShow: true, searchable: true },
-   { id: 'coilLength', label: 'Coil Length', defaultShow: true, searchable: true, numerical: true },
-   { id: 'componentWeight', label: 'Component Weight', searchable: true, numerical: true },
-   { id: 'coilBatchName', label: 'Coil Batch Name', searchable: true },
-   { id: 'coilThickness', label: 'Coil Thickness', searchable: true, numerical: true },
-   { id: 'componentGUID', label: 'Component GUID', searchable: true, numerical: true },
-   { id: 'coilWidth', label: 'Coil Width', searchable: true, numerical: true },
-   { id: 'lineSpeed', label: 'Line Speed', searchable: true, numerical: true },
-   { id: 'mode', label: 'Mode', searchable: true },
-   { id: 'time', label: 'Time' },
-   { id: 'operator', label: 'Operator', searchable: true }
-  ],
-  numericalLengthValues: ['coilLength', 'coilWidth', 'coilThickness', 'flangeHeight', 'webWidth', 'componentLength', 'waste']
- },
- PRODUCTION: {
-  name: 'production',
-  type: 'PRODUCTION',
-  disabled: true,
-  versions: ['v1.4.5']
- },
- COIL: {
-  name: 'coil',
-  type: 'COIL',
-  disabled: true,
-  versions: ['v1.4.5']
- }
+    ERP: {
+        name: 'erp',
+        type: 'ERP',
+        disabled: false,
+        versions: ['v1.5.X', 'v1.4.X', 'v1.1.66'],
+        formats: {
+            'v1.1.66': ['date', 'operator', 'coilBatchName', 'ccThickness', 'coilLength', 'frameSet', 'componentLabel', 'webWidth', 'flangeHeight', 'profileShape', 'componentLength', 'waste', 'time', 'componentType'],
+            'v1.4.X': [
+                'date',
+                'operator',
+                'coilBatchName',
+                'ccWidth',
+                'coilThickness',
+                'coilLength',
+                'frameSet',
+                'componentLabel',
+                'webWidth',
+                'flangeHeight',
+                'profileShape',
+                'componentLength',
+                'waste',
+                'time',
+                'componentWeight',
+                'componentType',
+            ],
+            'v1.5.X': [
+                'timestamp',
+                'operator',
+                'coilBatchName',
+                'coilWidth',
+                'coilThickness',
+                'coilLength',
+                'frameSet',
+                'componentLabel',
+                'flangeHeight',
+                'webWidth',
+                'profileShape',
+                'componentLength',
+                'waste',
+                'time',
+                'mode',
+                'measurementUnit',
+                'componentWeight',
+                'lineSpeed',
+                'componentGUID',
+                'componentType',
+            ]
+        },
+        tableColumns: [
+            { id: 'date', label: 'Date - Time', alwaysShow: true, defaultShow: true },
+            { id: '_id', label: 'ID', searchable: true },
+            { id: 'componentLabel', label: 'Component Label', defaultShow: true, searchable: true },
+            { id: 'frameSet', label: 'Frame Set', defaultShow: true, searchable: true },
+            { id: 'componentLength', label: 'Length (m)', alwaysShow: true, defaultShow: true, searchable: true, numerical: true, convertToM: true },
+            { id: 'waste', label: 'Waste (m)', alwaysShow: true, defaultShow: true, searchable: true, numerical: true, convertToM: true },
+            { id: 'coilLength', label: 'C (m)', fullLabel: 'Coil Length (m)', defaultShow: true, searchable: true, numerical: true, tooltip: true, convertToM: true },
+            { id: 'flangeHeight', label: 'F (m)', fullLabel: 'Flange Height (m)', defaultShow: true, searchable: true, numerical: true, tooltip: true, convertToM: true },
+            { id: 'webWidth', label: 'W (m)', fullLabel: 'Web Width (m)', defaultShow: true, searchable: true, numerical: true, tooltip: true, convertToM: true },
+            { id: 'profileShape', label: 'P', fullLabel: 'Profile Shape', defaultShow: true, searchable: true, tooltip: true },
+            { id: 'componentWeight', label: 'Weight', fullLabel: 'Component Weight', searchable: true, numerical: true, tooltip: true },
+            { id: 'coilBatchName', label: 'Coil Batch Name', searchable: true },
+            { id: 'coilThickness', label: 'C.T (m)', fullLabel: 'Coil Thickness', searchable: true, numerical: true, tooltip: true, convertToM: true },
+            { id: 'componentGUID', label: 'Component GUID', searchable: true },
+            { id: 'componentType', label: 'Type', fullLabel: 'Component Type', defaultShow: true, searchable: true, tooltip: true },
+            { id: 'machineSerialNo', label: 'Machine', alwaysShow: true, defaultShow: true, page: 'logsPage' },
+            { id: 'coilWidth', label: 'C.W (m)', fullLabel: 'Coil Width', searchable: true, numerical: true, tooltip: true, convertToM: true },
+            { id: 'lineSpeed', label: 'L.S', fullLabel: 'Line Speed', searchable: true, tooltip: true },
+            { id: 'mode', label: 'Mode', searchable: true },
+            { id: 'time', label: 'Time (s)', numerical: true, convertToM: true },
+            { id: 'operator', label: 'Operator', searchable: true }
+        ],
+        numericalLengthValues: ['coilLength', 'coilWidth', 'coilThickness', 'flangeHeight', 'webWidth', 'componentLength', 'waste']
+    },
+    PRODUCTION: {
+        name: 'production',
+        type: 'PRODUCTION',
+        disabled: true,
+        versions: ['v1.4.5']
+    },
+    COIL: {
+        name: 'coil',
+        type: 'COIL',
+        disabled: true,
+        versions: ['v1.4.5']
+    }
 }
 
 export const LOG_TYPE_CONFIG = {
- gen5: _GEN5_LOG_TYPES_ARR.map(type => _GEN5_LOG_TYPES[type])
+    gen5: _GEN5_LOG_TYPES_ARR.map(type => _GEN5_LOG_TYPES[type])
 }
 
 export const GET_LOG_TYPE_CONFIG = generation => {
- if (generation === 5) {
-  return LOG_TYPE_CONFIG
- } else if (generation === 6) {
-  return []
- }
- return null
+    if (generation === 5) {
+        return LOG_TYPE_CONFIG
+    } else if (generation === 6) {
+        return []
+    }
+    return null
 }
 
 /**
@@ -105,29 +112,29 @@ export const GET_LOG_TYPE_CONFIG = generation => {
  * @returns {object} - log type config object
  */
 export const getLogTypeConfigForGenerationAndType = (generation, type) => {
- if (!generation) {
-  return null
- }
+    if (!generation) {
+        return null
+    }
 
- if (generation === 5) {
-  if (!type) {
-   return null
-  }
+    if (generation === 5) {
+        if (!type) {
+            return null
+        }
 
-  if (_GEN5_LOG_TYPES_ARR.includes(type)) {
-   return _GEN5_LOG_TYPES[type]
-  }
-  throw new Error(`Invalid log type: ${type}`)
- }
+        if (_GEN5_LOG_TYPES_ARR.includes(type)) {
+            return _GEN5_LOG_TYPES[type]
+        }
+        throw new Error(`Invalid log type: ${type}`)
+    }
 }
 
 export const logGraphTypes = [
- {
-  name: 'Production Total (m)',
-  key: 'production_total'
- },
- {
-  name: 'Production Rate (m/hr)',
-  key: 'productionRate'
- }
+    {
+        name: 'Production (m)',
+        key: 'production_total'
+    },
+    {
+        name: 'Production Rate (m/hr)',
+        key: 'productionRate'
+    }
 ]

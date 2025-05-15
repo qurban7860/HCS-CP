@@ -27,6 +27,18 @@ export * from './product/model'
 export { default as machineTicketReducer } from './product/machine-ticket/machine-ticket'
 export * from './product/machine-ticket'
 
+// product/machine-ticket
+export { default as documentReducer } from './document/document/document'
+export * from './document/document'
+
+// product/machine-ticket
+export { default as documentCategoryReducer } from './document/document-category/document-category'
+export * from './document/document-category'
+
+// product/machine-ticket
+export { default as documentTypeReducer } from './document/document-type/document-type'
+export * from './document/document-type'
+
 // crm/customer
 export * from './crm/customer'
 export { default as customerReducer } from './crm/customer/customer'
