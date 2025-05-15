@@ -48,13 +48,14 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
     if (timePeriod === 'Hourly') {
       const currentDate = new Date(startDate)
       currentDate.setHours(0, 0, 0, 0)
-
+      
       const finalDate = new Date(endDate)
       finalDate.setHours(23, 59, 59, 999)
 
       const labelsSet = new Set()
+      let hourCount = 0
 
-      while (currentDate <= finalDate) {
+      while (currentDate <= finalDate && hourCount < 24) {
         const month = String(currentDate.getMonth() + 1).padStart(2, '0')
         const day = String(currentDate.getDate()).padStart(2, '0')
         const hour = String(currentDate.getHours()).padStart(2, '0')
@@ -66,6 +67,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
         }
 
         currentDate.setHours(currentDate.getHours() + 1)
+        hourCount++
       }
     } else if (timePeriod === 'Daily') {
       let currentDate = new Date(startDate)
