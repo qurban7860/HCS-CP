@@ -112,11 +112,11 @@ const LogsTableController = ({
               <Box sx={{ flexGrow: 1 }}>
                 <RHFFilteredSearchBar
                   name='filteredSearchKey'
-                  filterOptions={logType?.tableColumns}
+                  filterOptions={logType?.tableColumns.filter(col => col.searchable)}
                   setSelectedFilter={setSelectedSearchFilter}
                   selectedFilter={selectedSearchFilter}
                   placeholder='Looking for something?...'
-                  helperText={selectedSearchFilter === '_id' ? 'to search by ID, you must enter the complete Log ID' : ''}
+                  helperText={selectedSearchFilter === '_id' ? 'To search by ID, you must enter the complete Log ID' : ''}
                   fullWidth
                 />
               </Box>
@@ -138,96 +138,6 @@ const LogsTableController = ({
           </Grid>
         )}
       </Grid>
-      {/* <Box display='grid' gap={2}  gridTemplateColumns={{
-        xs: isGraphPage ? '1fr' : '1fr',
-        sm: isGraphPage ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)',
-        md: isGraphPage ? 'repeat(4, 1fr) auto' : '25% 25% 1fr' }} sx={{ flexGrow: 1 }}>
-        <RHFDatePickr
-          label='Date From'
-          name='dateFrom'
-          value={dateFrom}
-          size='small'
-          onChange={newValue => {
-            setValue('dateFrom', newValue)
-            trigger(['dateFrom', 'dateTo'])
-          }}
-        />
-        <RHFDatePickr
-          label='Date To'
-          name='dateTo'
-          value={dateTo}
-          size='small'
-          onChange={newValue => {
-            setValue('dateTo', newValue)
-            trigger(['dateFrom', 'dateTo'])
-          }}
-        />
-        {handlePeriodChange && isGraphPage && (
-          <RHFAutocomplete
-            name='logPeriod'
-            label={t('log.period.label')}
-            options={['Hourly', 'Daily', 'Monthly', 'Quarterly', 'Yearly']}
-            onChange={(e, newValue) => handlePeriodChange(newValue)}
-            size='small'
-            disableClearable
-            required
-          />
-        )}
-        {handleGraphTypeChange && isGraphPage && (
-          <RHFAutocomplete
-            name='logGraphType'
-            label={t('graph_type.label')}
-            options={logGraphTypes}
-            onChange={(e, newValue) => handleGraphTypeChange(newValue)}
-            getOptionLabel={option => option.name || ''}
-            isOptionEqualToValue={(option, value) => option?.key === value?.key}
-            renderOption={(props, option) => (
-              <li {...props} key={option?.key}>
-                {option.name || ''}
-              </li>
-            )}
-            disableClearable
-            size='small'
-          />
-        )}
-        {isGraphPage && (
-          <IconTooltip
-            icon={ICON_NAME.SEARCH}
-            title={t('log.button_graph.get_graph').toUpperCase()}
-            placement='top'
-            tooltipColor={mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze}
-            color={theme.palette.howick.midBlue}
-            dimension={25}
-            onClick={onGetGraph}
-          />
-        )}
-        {!isGraphPage && (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Box sx={{ flexGrow: 1 }}>
-              <RHFFilteredSearchBar
-                name='filteredSearchKey'
-                filterOptions={logType?.tableColumns}
-                setSelectedFilter={setSelectedSearchFilter}
-                selectedFilter={selectedSearchFilter}
-                placeholder='Looking for something?...'
-                helperText={selectedSearchFilter === '_id' ? 'to search by ID, you must enter the complete Log ID' : ''}
-                fullWidth
-              />
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', mt: -3.5 }}>
-            <IconTooltip
-              icon={ICON_NAME.SEARCH}
-              title={t('log.button.get_logs').toUpperCase()}
-              placement='top'
-              tooltipColor={mode === KEY.LIGHT ? theme.palette.howick.darkBlue : theme.palette.howick.bronze}
-              color={theme.palette.howick.midBlue}
-              dimension={25}
-              onClick={onGetLogs}
-            />
-            </Box>
-          </Box>
-        )}
-      </Box> */}
     </GStyledControllerCardContainer>
   )
 }
