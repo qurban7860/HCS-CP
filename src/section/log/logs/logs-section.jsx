@@ -110,18 +110,7 @@ const LogsSection = ({ isArchived }) => {
     <Grid container rowGap={2} flexDirection={FLEX_DIR.COLUMN}>
       <GStyledStickyDiv top={0} zIndex={11} height={20}>
         <Grid container sx={{ display: FLEX.FLEX, justifyContent: FLEX.SPACE_BETWEEN }}>
-          <TableTitleBox title={t('log.logs.label')} />
-          <Button
-            size='small'
-            startIcon={<Icon icon={ICON_NAME.GRAPH} sx={{ mr: 0.3 }} />}
-            variant='outlined'
-            sx={{
-              color: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
-              borderColor: theme.palette.grey[500]
-            }}
-            onClick={() => { navigate(PATH_LOGS.graph) }}>
-            {!isMobile && <Typography variant={isDesktop ? TYPOGRAPHY.BODY0 : TYPOGRAPHY.BODY2}>{'See Graph'}</Typography>}
-          </Button>
+          <TableTitleBox title={t('log.erpLogs.label')} />
         </Grid>
       </GStyledStickyDiv>
       <GStyledStickyDiv top={NAV.T_STICKY_NAV_LOGS_CONTROLLER} zIndex={11}>
@@ -141,7 +130,7 @@ const LogsSection = ({ isArchived }) => {
                       name='dateTo'
                       size='small'
                     />
-                   
+
                     <RHFAutocomplete
                       name='machine'
                       label={t('machine.label')}
