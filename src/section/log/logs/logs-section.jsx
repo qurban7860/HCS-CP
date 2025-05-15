@@ -1,9 +1,8 @@
 import { Fragment, useEffect, useLayoutEffect, useMemo, memo, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import _ from 'lodash'
 import { t } from 'i18next'
 import { useNavigate } from 'react-router-dom'
-import { Icon, ICON_NAME, useResponsive, useSettingContext } from 'hook'
+import { ICON_NAME, useResponsive, useSettingContext } from 'hook'
 import { useAuthContext } from 'auth/use-auth-context'
 import { useSelector, dispatch } from 'store'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -11,24 +10,20 @@ import { useForm } from 'react-hook-form'
 import { addLogSchema } from 'schema'
 import { getMachines, getLogs, resetLogs, ChangeLogPage, setSelectedSearchFilter, resetMachines } from 'store/slice'
 import { LogsTable } from './'
-import { useMediaQuery, useTheme, Grid, Button, Typography, Stack, Box } from '@mui/material'
+import { useMediaQuery, useTheme, Grid, Stack, Box } from '@mui/material'
 import { HowickLoader, IconTooltip, TableTitleBox, DownloadMachineLogsIconButton } from 'component'
 import FormProvider, { RHFAutocomplete, RHFDatePickr, RHFFilteredSearchBar } from 'component/hook-form'
-import { GStyledControllerCardContainer, GStyledLoadingButton, GStyledStickyDiv } from 'theme/style'
+import { GStyledControllerCardContainer, GStyledStickyDiv } from 'theme/style'
 import { NAV } from 'config/layout'
-import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
-import { PATH_LOGS } from 'route/path'
+import { FLEX, FLEX_DIR } from 'constant'
 import { getLogTypeConfigForGenerationAndType, logGraphTypes } from 'config/log-types'
 
 const LogsSection = ({ isArchived }) => {
   const { user } = useAuthContext()
   const { machines } = useSelector(state => state.machine)
   const { logPage, isLoading, logRowsPerPage, selectedSearchFilter } = useSelector(state => state.log)
-  const navigate = useNavigate();
   const { themeMode } = useSettingContext()
   const theme = useTheme()
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
-  const isMobile = useResponsive('down', 'sm')
 
   const defaultValues = useMemo(
     () => ({
@@ -101,9 +96,9 @@ const LogsSection = ({ isArchived }) => {
     setValue('machine', newMachine)
   }
 
-  const handleLogTypeChange = newLogType => {
-    setValue('logType', newLogType)
-  }
+  // const handleLogTypeChange = newLogType => {
+  //   setValue('logType', newLogType)
+  // }
 
   const dataForApi = {
     customerId: user?.customer,
@@ -190,11 +185,11 @@ const LogsSection = ({ isArchived }) => {
                       <Box sx={{ flexGrow: 1, width: { xs: '100%', sm: 'auto' } }}>
                         <RHFFilteredSearchBar
                           name='filteredSearchKey'
-                          filterOptions={logType?.tableColumns}
+                          filterOptions={logType?.tableColumns.filter(col => col.searchable)}
                           setSelectedFilter={setSelectedSearchFilter}
                           selectedFilter={selectedSearchFilter}
                           placeholder='Looking for something?...'
-                          helperText={selectedSearchFilter === '_id' ? 'to search by ID, you must enter the complete Log ID' : ''}
+                          helperText={selectedSearchFilter === '_id' ? 'To search by ID, you must enter the complete Log ID' : ''}
                           fullWidth
                         />
                       </Box>

@@ -88,7 +88,7 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
        </MenuItem>
        {filterOptions.map(option => (
         <MenuItem key={option.id} value={option.id}>
-         {option.label}
+         {option?.fullLabel || option?.label}
         </MenuItem>
        ))}
       </Select>
@@ -175,7 +175,7 @@ export default function RHFFilteredSearchBar({ name, filterOptions, size = 'smal
            </MenuItem>
            {filterOptions?.map(option => (
             <MenuItem key={option?.id} value={option?.id}>
-             {option.label}
+              {option?.fullLabel || option?.label}
             </MenuItem>
            ))}
           </Select>

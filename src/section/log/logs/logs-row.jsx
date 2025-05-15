@@ -19,7 +19,7 @@ const LogsRow = ({ index, onViewRow, columns, row, selected, order, onSort }) =>
   return (
     <Fragment>
       <TableBody>
-        <StyledTableRow index={index} mode={themeMode} selected={selected}>
+        <StyledTableRow index={index} mode={themeMode} selected={selected} sx={{cursor: 'unset'}}>
           {/* <LinkTableCell align='left' onClick={onViewRow} param={fDateTime(date)} /> */}
           <TableCell align='left'>{fDateTime(date)}</TableCell>
           {columns?.map((column, index) => {

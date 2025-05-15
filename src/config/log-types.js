@@ -68,12 +68,12 @@ const _GEN5_LOG_TYPES = {
             { id: 'coilBatchName', label: 'Coil Batch Name', searchable: true },
             { id: 'coilThickness', label: 'C.T (m)', fullLabel: 'Coil Thickness', searchable: true, numerical: true, tooltip: true, convertToM: true },
             { id: 'componentGUID', label: 'Component GUID', searchable: true },
-            { id: 'componentType', label: 'Component Type', defaultShow: true, searchable: true },
-            { id: 'machineSerialNo', label: 'Machine', alwaysShow: true, defaultShow: true, page: 'logsPage', searchable: true },
+            { id: 'componentType', label: 'Type', fullLabel: 'Component Type', defaultShow: true, searchable: true, tooltip: true },
+            { id: 'machineSerialNo', label: 'Machine', alwaysShow: true, defaultShow: true, page: 'logsPage' },
             { id: 'coilWidth', label: 'C.W (m)', fullLabel: 'Coil Width', searchable: true, numerical: true, tooltip: true, convertToM: true },
-            { id: 'lineSpeed', label: 'L.S', fullLabel: 'Line Speed', searchable: true, tooltip: true, numerical: true },
+            { id: 'lineSpeed', label: 'L.S', fullLabel: 'Line Speed', searchable: true, tooltip: true },
             { id: 'mode', label: 'Mode', searchable: true },
-            { id: 'time', label: 'Time', numerical: true },
+            { id: 'time', label: 'Time (s)', numerical: true, convertToM: true },
             { id: 'operator', label: 'Operator', searchable: true }
         ],
         numericalLengthValues: ['coilLength', 'coilWidth', 'coilThickness', 'flangeHeight', 'webWidth', 'componentLength', 'waste']
