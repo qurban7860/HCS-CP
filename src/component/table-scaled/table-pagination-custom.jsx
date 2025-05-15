@@ -37,7 +37,6 @@ function TablePaginationCustom({
         if (!column.alwaysShow) {
             onChangeColumn(column.id, !column.checked)
         }
-        handleClose()
     }
 
     const handleClose = () => setAnchorEl(null)

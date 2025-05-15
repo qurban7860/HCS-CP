@@ -17,7 +17,6 @@ import FormProvider, { RHFAutocomplete, RHFDatePickr, RHFFilteredSearchBar } fro
 import { GStyledControllerCardContainer, GStyledLoadingButton, GStyledStickyDiv } from 'theme/style'
 import { NAV } from 'config/layout'
 import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
-import { LOG_TYPE_CONFIG } from 'config'
 import { PATH_LOGS } from 'route/path'
 import { getLogTypeConfigForGenerationAndType, logGraphTypes } from 'config/log-types'
 
@@ -124,18 +123,7 @@ const LogsSection = ({ isArchived }) => {
     <Grid container rowGap={2} flexDirection={FLEX_DIR.COLUMN}>
       <GStyledStickyDiv top={0} zIndex={11} height={20}>
         <Grid container sx={{ display: FLEX.FLEX, justifyContent: FLEX.SPACE_BETWEEN }}>
-          <TableTitleBox title={t('log.logs.label')} />
-          <Button
-            size='small'
-            startIcon={<Icon icon={ICON_NAME.GRAPH} sx={{ mr: 0.3 }} />}
-            variant='outlined'
-            sx={{
-              color: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
-              borderColor: theme.palette.grey[500]
-            }}
-            onClick={() => { navigate(PATH_LOGS.graph) }}>
-            {!isMobile && <Typography variant={isDesktop ? TYPOGRAPHY.BODY0 : TYPOGRAPHY.BODY2}>{'See Graph'}</Typography>}
-          </Button>
+          <TableTitleBox title={t('log.erpLogs.label')} />
         </Grid>
       </GStyledStickyDiv>
       <GStyledStickyDiv top={NAV.T_STICKY_NAV_LOGS_CONTROLLER} zIndex={11}>
@@ -158,7 +146,7 @@ const LogsSection = ({ isArchived }) => {
                       onChange={(e, newValue) => handleMachineChange(newValue)}
                       size='small'
                     />
-                    
+
                     <RHFDatePickr
                       label='Date From'
                       name='dateFrom'
@@ -169,7 +157,7 @@ const LogsSection = ({ isArchived }) => {
                       name='dateTo'
                       size='small'
                     />
-                   
+
                     {/* <RHFAutocomplete
                       name='logType'
                       size='small'
@@ -223,7 +211,7 @@ const LogsSection = ({ isArchived }) => {
                           variant="contained"
                           size="small"
                           type={'submit'}
-                          onClick={()=>{}}
+                          onClick={() => { }}
                         />
                         <DownloadMachineLogsIconButton dataForApi={dataForApi} />
                       </Box>
