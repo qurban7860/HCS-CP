@@ -68,21 +68,23 @@ const GraphsSection = () => {
   }, [])
 
   const onSubmit = data => {
-    if (data?.logGraphType?.key === 'productionRate') {
+    const { logPeriod, logGraphType, dateFrom, dateTo, machine } = data
+
+    if (logGraphType?.key === 'productionRate') {
       setGraphLabels(prev => ({
         ...prev,
         yaxis: 'Production Rate (m/hr)',
-        xaxis: data?.logPeriod
+        xaxis: logPeriod
       }))
     } else {
       setGraphLabels(prev => ({
         ...prev,
         yaxis: 'Produced Length and Waste (m)',
-        xaxis: data?.logPeriod
+        xaxis: logPeriod
       }))
     }
 
-    dispatch(getLogGraphData(user?.customer, data?.machine?._id, 'erp', data?.logPeriod, data?.logGraphType?.key, data?.dateFrom, data?.dateTo))
+    dispatch(getLogGraphData(user?.customer, machine?._id, 'erp', logPeriod, logGraphType?.key, new Date(dateFrom), new Date(dateTo)))
   }
 
   const handlePeriodChange = newPeriod => {
@@ -184,10 +186,10 @@ const GraphsSection = () => {
                         color={theme.palette.common.white}
                         tooltipColor={theme.palette.primary.main}
                         buttonColor={theme.palette.howick.darkBlue}
-                        variant="contained"
-                        size="small"
-                        type="submit"
-                        onClick={()=>{}}
+                        variant='contained'
+                        size='small'
+                        type='submit'
+                        onClick={() => {}}
                       />
                       {/* <GStyledLoadingButton mode={themeMode} type='submit' variant='contained' size='large' startIcon={<Icon icon={ICON_NAME.SEARCH} />}>
                         {t('log.button_graph.get_graph').toUpperCase()}

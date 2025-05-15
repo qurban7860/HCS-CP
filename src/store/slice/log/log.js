@@ -168,35 +168,47 @@ export const {
 
 // : thunks
 
-export function getLogGraphData(customerId, machineId, type = 'erp', periodType, logGraphType, startDate, endDate) {
-    return async dispatch => {
-        dispatch(logSlice.actions.startLoading())
-        try {
-            const params = {
-                customer: customerId,
-                machine: machineId,
-                type,
-                periodType,
-                logGraphType,
-                startDate,
-                endDate,
-                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-            }
-            const response = await axios.get(PATH_SERVER.LOG.graph, { params })
-            dispatch(logSlice.actions.setLogsGraphData(response?.data || ''))
-            return {
-                success: true,
-                message: 'Graph Data fetched'
-            }
-        } catch (error) {
-            console.error(error)
-            dispatch(logSlice.actions.hasError(error.message || 'Something went wrong'))
-            return {
-                success: false,
-                message: error.message || 'Something went wrong'
-            }
-        }
+export function getLogGraphData(customerId, machineId, type = 'erp', periodType, logGraphType, utcStartDate, utcEndDate) {
+  return async dispatch => {
+    dispatch(logSlice.actions.startLoading())
+    try {
+      let startDate = new Date(utcStartDate);
+      let endDate = new Date(utcEndDate);
+
+      const isSameDay = startDate.toDateString() === endDate.toDateString();
+
+      if (isSameDay) {
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(23, 59, 59, 999);
+      }
+      const params = {
+        customer: customerId,
+        machine: machineId,
+        type,
+        periodType,
+        logGraphType,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      }
+
+      const response = await axios.get(PATH_SERVER.LOG.graph, { params })
+
+      dispatch(logSlice.actions.setLogsGraphData(response?.data || ''))
+
+      return {
+        success: true,
+        message: 'Graph Data fetched'
+      }
+    } catch (error) {
+      console.error(error)
+      dispatch(logSlice.actions.hasError(error.message || 'Something went wrong'))
+      return {
+        success: false,
+        message: error.message || 'Something went wrong'
+      }
     }
+  }
 }
 
 export function getLogTotalGraphData(customerId, machineId, type = 'erp', periodType) {

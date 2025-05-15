@@ -169,17 +169,6 @@ const LogsSection = ({ isArchived }) => {
                       onChange={(e, newValue) => handleMachineChange(newValue)}
                       size='small'
                     />
-                    
-                    <RHFDatePickr
-                      label='Date From'
-                      name='dateFrom'
-                      size='small'
-                    />
-                    <RHFDatePickr
-                      label='Date To'
-                      name='dateTo'
-                      size='small'
-                    />
                    
                     {/* <RHFAutocomplete
                       name='logType'
