@@ -3,31 +3,26 @@ import { t } from 'i18next'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuthContext } from 'auth/use-auth-context'
 import { HowickLoader, IconTooltip, TableTitleBox } from 'component'
 import { RHFAutocomplete, RHFDatePickr } from 'component/hook-form'
 import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 import { erpGraphSchema } from 'schema/graph/erp-graph-schema'
-import { Icon, ICON_NAME, useResponsive, useSettingContext } from 'hook'
+import { ICON_NAME, useResponsive, useSettingContext } from 'hook'
 import { dispatch } from 'store'
 import { getLogGraphData, resetLogsGraphData, getMachines, resetMachines } from 'store/slice'
-import { GStyledControllerCardContainer, GStyledStickyDiv, GStyledLoadingButton } from 'theme/style'
+import { GStyledControllerCardContainer, GStyledStickyDiv } from 'theme/style'
 import { NAV } from 'config'
-import { PATH_LOGS } from 'route/path'
 import { logGraphTypes } from 'config'
 import ERPProductionTotal from './production-total'
 import ERPProductionRate from './production-rate'
 
 const GraphsSection = () => {
-  const navigate = useNavigate()
   const { machines } = useSelector(state => state.machine)
   const { isLoading, logsGraphData } = useSelector(state => state.log)
   const { user } = useAuthContext()
   const theme = useTheme()
-  const isMobile = useResponsive('down', 'sm')
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
   const { themeMode } = useSettingContext()
 
   const defaultValues = useMemo(
@@ -96,18 +91,7 @@ const GraphsSection = () => {
     <Grid container rowGap={2} flexDirection={FLEX_DIR.COLUMN}>
       <GStyledStickyDiv top={0} zIndex={11} height={20}>
         <Grid container sx={{ display: FLEX.FLEX, justifyContent: FLEX.SPACE_BETWEEN }}>
-          <TableTitleBox title={t('log.logs.label')} />
-          <Button
-            size='small'
-            startIcon={<Icon icon={ICON_NAME.LIST} sx={{ mr: 0.3 }} />}
-            variant='outlined'
-            sx={{
-              color: themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white,
-              borderColor: theme.palette.grey[500]
-            }}
-            onClick={() => navigate(PATH_LOGS.root)}>
-            {!isMobile && <Typography variant={isDesktop ? TYPOGRAPHY.BODY0 : TYPOGRAPHY.BODY2}>{'Machine Logs'}</Typography>}
-          </Button>
+          <TableTitleBox title={t('graph.label')} />
         </Grid>
       </GStyledStickyDiv>
 
@@ -186,10 +170,10 @@ const GraphsSection = () => {
                         color={theme.palette.common.white}
                         tooltipColor={theme.palette.primary.main}
                         buttonColor={theme.palette.howick.darkBlue}
-                        variant='contained'
-                        size='small'
-                        type='submit'
-                        onClick={() => {}}
+                        variant="contained"
+                        size="small"
+                        type="submit"
+                        onClick={() => { }}
                       />
                       {/* <GStyledLoadingButton mode={themeMode} type='submit' variant='contained' size='large' startIcon={<Icon icon={ICON_NAME.SEARCH} />}>
                         {t('log.button_graph.get_graph').toUpperCase()}

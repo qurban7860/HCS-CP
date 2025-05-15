@@ -17,9 +17,10 @@ function NavConfiguration() {
                 // { title: !isDesktop ? 'dashboard.label' : '|', path: PATH_DASHBOARD.general.app, icon: !isDesktop ? '' : ICON_NAME.DASHBOARD, caption: 'dashboard.label' },
                 // { title: 'home.label', path: PATH_HOME.root },
                 { title: 'machine.label', path: PATH_MACHINE.machines.list },
-                { title: 'log.label', path: PATH_LOGS.root, module: 'machineLogs' },
+                { title: 'log.label', path: PATH_LOGS.root, deep: false, module: 'machineLogs' },
+                { title: 'graph.label', path: PATH_LOGS.graph, module: 'machineGraphs' },
                 { title: 'support.label', path: PATH_SUPPORT.tickets.list, module: 'supportService' },
-                { title: 'create_support_ticket.label', path: PATH_SUPPORT.tickets.create }
+                { title: 'create_support_ticket.label', path: PATH_SUPPORT.tickets.create, module: 'supportService' }
             ]
         }
     ]
