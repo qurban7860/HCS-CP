@@ -28,7 +28,7 @@ const MachineNav = ({ machineData }) => {
 
     const tabs = useMemo(() => {
         const allowedModules = user?.modules || []
-        let shouldFilter = false
+        let shouldFilter = true
         // shouldFilter = user?.type?.toLowerCase() !== 'sp'
 
         return TABS(machineId)

@@ -28,7 +28,7 @@ function NavConfiguration() {
     const [navConfig, setNavConfig] = useState([])
 
     useEffect(() => {
-        let shouldFilter = false
+        let shouldFilter = true
         // shouldFilter = user?.type?.toLowerCase() !== 'sp'
         const filteredNav = baseNavConfig.map(section => {
             const items = shouldFilter
