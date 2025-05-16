@@ -64,6 +64,7 @@ function TicketViewForm() {
     mode: 'onChange',
     reValidateMode: 'onChange'
   })
+const isResolved = ticket?.status?.statusType?.isResolved === true;
 
   useEffect(() => {
     dispatch(getTicketSettings())
@@ -235,6 +236,12 @@ function TicketViewForm() {
                   >
                     {defaultValues?.status}
                   </GridViewField>
+
+                  {isResolved ? (
+                 <GridViewField heading={t('priority.label')} isLoading={isLoading} gridSize={4}>
+                 {defaultValues?.priority}
+                 </GridViewField>
+                  ) : (
                   <GridViewField
                     heading={t('priority.label')}
                     isLoading={isLoading}
@@ -246,7 +253,7 @@ function TicketViewForm() {
                     color={defaultValues?.priorityColor}
                   />{' '}
                   &nbsp;{defaultValues?.priority} */}
-                  </GridViewField>
+                  </GridViewField> )}
                   <GridViewField
                     heading={t('machine.label')}
                     isLoading={isLoading}
@@ -273,14 +280,23 @@ function TicketViewForm() {
                   </GridViewField>
 
 
-
-                  <Grid item xs={12} md={12}>
-                    <GridViewTitle title={t('summary.label')} />
-
-                    <FilledTextField name="summary" value={defaultValues.summary} placeholder='Brief description of the ticket' onSubmit={onSubmit} minRows={4} />
-
-                  </Grid>
-
+                  
+                  {isResolved ? (
+                  <GridViewField heading={t('summary.label')} isLoading={isLoading}>
+                  {defaultValues?.summary}
+                  </GridViewField>
+                  ) : (
+                 <Grid item xs={12} md={12}>
+                 <GridViewTitle title={t('summary.label')} />
+                <FilledTextField
+                 name="summary"
+                 value={defaultValues.summary}
+                 placeholder="Brief description of the ticket"
+                 onSubmit={onSubmit}
+                 minRows={4}
+                  />
+                 </Grid>
+                )}
                   {/* <ViewFormField
                   heading={t('summary.label')}
                   isLoading={isLoading}
@@ -293,7 +309,12 @@ function TicketViewForm() {
                 >
                   <FilledTextField name="summary" value={defaultValues.summary} onSubmit={onSubmit} minRows={4}  />
                 </ViewFormField> */}
-
+                                 
+                 {isResolved ? (
+                  <GridViewField heading={t('description.label')} isLoading={isLoading}>
+                   {defaultValues?.description}
+                   </GridViewField>
+                   ) : (
                   <Grid item xs={12} md={12}>
                     <GridViewTitle title={t('description.label')} />
 
@@ -306,6 +327,7 @@ function TicketViewForm() {
                     />
 
                   </Grid>
+                   )}
 
                   {/* <GridViewField
                   heading={t('description.label')}
@@ -372,7 +394,8 @@ function TicketViewForm() {
                               isLoaded: false,
                               id: file?._id,
                               width: '100%',
-                              height: '100%'
+                              height: '100%',
+                              
                             }}
                             isLoading={isLoading}
                             onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
@@ -384,7 +407,8 @@ function TicketViewForm() {
                       }
                       return null
                     })}
-                    <ThumbnailDocButton onClick={() => setFileDialog(true)} />
+                       {!isResolved && <ThumbnailDocButton onClick={() => setFileDialog(true)} />}
+
 
                   </Box>
 
