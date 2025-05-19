@@ -36,7 +36,6 @@ const DynamicTable = ({
     const memoizedColumnsData = useMemo(() => columnsData, [columnsData]);
     const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, memoizedColumnsData)
     const { themeMode } = useSettingContext()
-
     useEffect(() => {
         dispatchTableColumns({ type: 'setUpInitialColumns' });
         setTableData(data || [])
@@ -96,7 +95,7 @@ const DynamicTable = ({
                                             row={row}
                                             hover={hover}
                                             columns={tableColumns}
-                                            onViewRow={() => onViewRow(row._id)}
+                                            onViewRow={() => onViewRow(row)}
                                             mode={themeMode}
                                             index={index}
                                             dataFiltered={dataFiltered}

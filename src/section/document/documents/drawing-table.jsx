@@ -7,7 +7,7 @@ import { Grid } from '@mui/material'
 import { MARGIN } from 'config/layout'
 import { DynamicTable } from 'component/table-scaled'
 import { FLEX_DIR } from 'constant'
-import { tableColumns } from './table-columns'
+import { drawingTableColumns } from './table-columns'
 import { PATH_MACHINE } from 'route/path'
 
 
@@ -38,7 +38,7 @@ const DrawingTable = () => {
                 <Grid item xs={12} sm={12}>
                     <Grid container mb={2}>
                         <DynamicTable
-                            columnsData={tableColumns}
+                            columnsData={drawingTableColumns}
                             data={drawings?.data || []}
                             page={page}
                             rowsPerPage={rowsPerPage}
@@ -46,7 +46,7 @@ const DrawingTable = () => {
                             isLoading={isLoading}
                             onChangePage={onChangePage}
                             onChangeRow={onChangeRows}
-                            onViewRow={(id) => navigate(PATH_MACHINE.machines.drawings.view(machineId, id))}
+                            onViewRow={(row) => navigate(PATH_MACHINE.machines.drawings.view(machineId, row?.document?._id))}
                         />
                     </Grid>
                 </Grid>
