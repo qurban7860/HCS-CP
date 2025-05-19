@@ -6,7 +6,7 @@ export default function DocumentViewLayout({ isDrawingPage }) {
 
   return (
     <Fragment>
-      <DocumentViewForm />
+      <DocumentViewForm isDrawingPage={isDrawingPage} />
     </Fragment>
   )
 }
