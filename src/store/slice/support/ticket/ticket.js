@@ -110,7 +110,7 @@ const supportSlice = createSlice({
     addTicketFilesSuccess(state, action) {
       state.ticket = {
         ...state.ticket,
-        files: [ ...( state.ticket?.files || [] ), ...( action.payload || [] ) ]
+        files: [...(state.ticket?.files || []), ...(action.payload || [])]
       }
       state.isLoadingTicketFile = false;
     },
@@ -230,7 +230,8 @@ export function getTicketSettings(cancelToken) {
     }
   }
 }
-export function addFiles( id, params ) {
+
+export function addFiles(id, params) {
   return async (dispatch) => {
     dispatch(supportSlice.actions.setLoadingFile(true));
     try {
@@ -239,7 +240,7 @@ export function addFiles( id, params ) {
         formData.append(`images`, file);
       });
       const response = await axios.post(`${PATH_SERVER.SUPPORT.TICKETS.detail(id)}/files/`, formData);
-      dispatch(supportSlice.actions.addTicketFilesSuccess( response.data ));
+      dispatch(supportSlice.actions.addTicketFilesSuccess(response.data));
       return response;
     } catch (error) {
       console.log(error);

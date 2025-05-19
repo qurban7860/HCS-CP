@@ -216,10 +216,28 @@ export const PATH_SERVER = {
       * @submodule /documents/document/
       * /documents/document/:documentId?customer={:customerId}&machineId={:machineId}
       * @param {string} documentId
-      * @param {string} customerId
-      * @param {string} machineId
       */
     detail: documentId => _url(_DOCUMENT, 'document', documentId),
+
+    DRAWING: {
+      list: _url(_PRODUCT, 'drawings'),
+      /**
+        * @submodule /documents/document/
+        * /documents/document/:documentId?customer={:customerId}&machineId={:machineId}
+        * @param {string} id
+        */
+      detail: id => _url(_PRODUCT, 'drawings', id),
+      // products/drawings
+    },
+    /**
+* @submodule /documents/document/
+* /documents/document/:documentId?customer={:customerId}&machineId={:machineId}
+* @param {string} documentId
+* @param {string} customerId
+* @param {string} machineId
+* @param {string} fileId
+*/
+    file: id => _url(_DOCUMENT, 'document', 'files', id, 'download'),
     /**
       * /documents/document?customer={:customerId}&machineId={:machineId}
       * @param {string} customerId
