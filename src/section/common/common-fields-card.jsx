@@ -5,16 +5,31 @@ import { useAuthContext } from 'auth/use-auth-context'
 import { useSettingContext, Icon, ICON_NAME } from 'hook'
 import { useTheme, Box, Card, Grid, Link } from '@mui/material'
 import { GridViewField, GridViewTitle, IconTooltip } from 'component'
-import { GCardOption, GStyledTopBorderDivider, GStyledSpanBox, GStyledIconLoadingButton } from 'theme/style'
+import { GCardOption, GStyledTopBorderDivider, GStyledSpanBox, GStyledIconLoadingButton, GStyledTooltip } from 'theme/style'
 import { truncate } from 'util'
 import { ICON } from 'config/layout'
-import { KEY, FLEX } from 'constant'
+import { KEY, FLEX, LABEL } from 'constant'
+import { Iconify } from 'component/iconify'
 
-const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, handleDialog, isChildren, children, withStatusIcon, isContactsPage, contactHasActiveUser, handleUserInvite, isUserInvitePending }) => {
+const CommonFieldsCard = ({
+  defaultValues,
+  fieldsConfig,
+  i18nKey,
+  isLoading,
+  handleDialog,
+  isChildren,
+  children,
+  withStatusIcon,
+  isContactsPage,
+  contactHasActiveUser,
+  handleUserInvite,
+  isUserInvitePending
+}) => {
   const { themeMode } = useSettingContext()
   const theme = useTheme()
   const { user } = useAuthContext()
   const isUserAdmin = user?.roles.some(role => role.name === KEY.CUSTOMER_ADMIN)
+  const notEmployed = defaultValues?.formerEmployee === true
 
   const renderFields = config => {
     return (
@@ -63,9 +78,8 @@ const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, han
         <GStyledTopBorderDivider mode={themeMode} />
         <Grid container spacing={1} px={1.5}>
           {withStatusIcon && (
-            <Grid item xs={12} sm={12} mt={1.5}>
-              <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={2}>
-
+            <Grid item xs={12} sm={12} mt={1} mb={-3}>
+              <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1.5}>
                 {/* disable for now */}
                 {/* {isContactsPage && isUserAdmin && (
           contactHasActiveUser ? (
@@ -87,6 +101,17 @@ const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, han
             </GStyledIconLoadingButton>
           )
         )} */}
+                <GStyledTooltip 
+                  title={notEmployed ? LABEL.NOT_EMPLOYED : LABEL.CURRENTLY_EMPLOYED} 
+                  tooltipcolor={notEmployed ? '#878787' : '#008000'} 
+                  placement='top' 
+                  disableFocusListener>
+                  <Iconify 
+                    icon='ri:user-location-fill' 
+                    color={notEmployed ? '#878787' : '#008000'} 
+                    sx={{ minWidth: 26, minHeight: 26 }} 
+                  />
+                </GStyledTooltip>
                 {defaultValues?.isActive ? (
                   <IconTooltip
                     title={t('active.label')}
@@ -95,9 +120,10 @@ const CommonFieldsCard = ({ defaultValues, fieldsConfig, i18nKey, isLoading, han
                     tooltipColor={themeMode === KEY.LIGHT ? theme.palette.burnIn.altDark : theme.palette.burnIn.main}
                     tooltipTextColor={themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.common.black}
                     iconOnly
+                    dimension={26}
                   />
                 ) : (
-                  <IconTooltip title={t('inactive.label')} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} iconOnly />
+                  <IconTooltip title={t('inactive.label')} icon={ICON_NAME.INACTIVE} color={theme.palette.error.dark} iconOnly dimension={26} />
                 )}
               </GStyledSpanBox>
             </Grid>
