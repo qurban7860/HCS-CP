@@ -20,14 +20,14 @@ import { handleError } from 'util'
  * View document form
  * @returns {JSX.Element}
  */
-function DocumentViewForm({ isDrawingPage }) {
+function DocumentViewForm() {
   const [slides, setSlides] = useState([])
   const [selectedImage, setSelectedImage] = useState(-1)
   const [pdf, setPDF] = useState(null)
   const [PDFName, setPDFName] = useState('')
   const [PDFViewerDialog, setPDFViewerDialog] = useState(false)
 
-  const { document, isLoading } = useSelector(state => state.document)
+  const { document, isLoading, isLoadingFile } = useSelector(state => state.document)
   const { id, machineId } = useParams()
 
   const { themeMode } = useSettingContext()
@@ -134,14 +134,13 @@ function DocumentViewForm({ isDrawingPage }) {
   }
 
   const onBackDocuments = () => navigate(PATH_MACHINE.machines.documents.list(machineId));
-  const onBackDrawings = () => navigate(PATH_MACHINE.machines.drawings.list(machineId));
 
   return (
     <>
       <Fragment>
         <Grid container direction={{ xs: 'column', md: 'row' }} flex={1} rowSpacing={2} gridAutoFlow={isMobile ? FLEX_DIR.COLUMN : FLEX_DIR.ROW} columnSpacing={2}>
           <Grid item xs={12} sm={12} lg={12}>
-            <BackButton handleBackAction={isDrawingPage ? onBackDrawings : onBackDocuments} />
+            <BackButton handleBackAction={onBackDocuments} />
             <Box mb={5} >
               <Card {...GCardOption(themeMode)}>
                 <GStyledTopBorderDivider mode={themeMode} />
@@ -245,7 +244,4 @@ function DocumentViewForm({ isDrawingPage }) {
 }
 
 
-DocumentViewForm.prototype = {
-  isDrawingPage: PropTypes.bool
-}
 export default DocumentViewForm

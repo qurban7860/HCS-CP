@@ -30,8 +30,8 @@ const DocumentsTable = () => {
         await dispatch(changePage(0))
         await dispatch(changeRowsPerPage(parseInt(e.target.value, 10)))
     }
-    const onViewRow = (id) => {
-        navigate(PATH_MACHINE.machines.documents.view(machineId, id))
+    const onViewRow = (row) => {
+        navigate(PATH_MACHINE.machines.documents.view(machineId, row?._id))
     }
 
     return (
