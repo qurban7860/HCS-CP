@@ -21,10 +21,13 @@ export const GLOBAL   = {
  TEST_COLOR            : import.meta.env.VITE_TEST_COLOR,
  LIVE_COLOR            : import.meta.env.VITE_LIVE_COLOR,
  JIRA_URL              : 'https://howickltd.atlassian.net/servicedesk/customer/portal/1/',
+ SITE_KEY              : '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
  JIRA_PRIORITY_ICON_URL: import.meta.env.VITE_APP_PRIORITY_ICON_URL,
  MESSAGE_REGISTER_USER : import.meta.env.VITE_MESSAGE_REGISTER_USER,
  MESSAGE_LOGIN_USER    : import.meta.env.VITE_MESSAGE_LOGIN_USER,
  GOOGLE_MAPS_API_KEY   : import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+
+
  IDLE_TIME             : import.meta.env.VITE_APP_IDLE_TIME,
  PRIVACY_POLICY_URL    : import.meta.env.VITE_PRIVACY_POLICY_URL,
  WEBSITE               : import.meta.env.VITE_WEBSITE_URL,
