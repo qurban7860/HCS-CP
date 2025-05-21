@@ -95,7 +95,7 @@ const documentSlice = createSlice({
       state.initial = true
     },
     resetDrawing(state) {
-      state.drawing = []
+      state.drawing = {}
       state.responseMessage = null
       state.success = false
       state.isLoading = false
@@ -126,6 +126,7 @@ export const {
   changeRowsPerPage,
   changePage,
   resetDrawings,
+  resetDrawing,
   setDrawingFilterBy,
   changeDrawingPage,
   changeDrawingRowsPerPage
@@ -199,10 +200,10 @@ export function getDrawing({ id, machine }) {
   return async (dispatch) => {
     dispatch(documentSlice.actions.startLoading())
     try {
-      // const params = { isActive: true }
-      const response = await axios.get(PATH_SERVER.DOCUMENT.DRAWING.detail(id))
+      const params = { machine }
+      const response = await axios.get(PATH_SERVER.DOCUMENT.DRAWING.detail(id), { params })
       if (regEx.test(response.status)) {
-        dispatch(documentSlice.actions.getDrawingsSuccess(response.data))
+        dispatch(documentSlice.actions.getDrawingSuccess(response.data))
       }
     } catch (error) {
       console.error(error)
