@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useState, useEffect, Fragment } from 'react'
+import { useState, useEffect, Fragment, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { t } from 'i18next'
 import { useSettingContext } from 'hook'
@@ -9,6 +9,13 @@ import { useTheme } from '@mui/material/styles'
 import { getTimePeriodDesc } from 'section/log'
 import { GStyledSpanBox, GStyledCenterBox } from 'theme/style'
 import { TYPOGRAPHY, KEY, FLEX } from 'constant'
+import { TableNoData } from 'component'
+
+const formatNumber = (num) => {
+  if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
+  if (num >= 1000) return `${(num / 1000).toFixed(1)}k`;
+  return num.toFixed(1);
+};
 
 const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData, isDashboard, graphHeight = 500, dateFrom, dateTo }) => {
   const [graphData, setGraphData] = useState([])
@@ -30,108 +37,87 @@ const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData, i
   }
   }, [logsGraphData, dateFrom, dateTo, timePeriod])
 
-  const processGraphData = () => {
-    if (!graphData || graphData.length === 0) {
-      return null
-    }
-
-    const dataMap = new Map();
-    graphData.forEach(item => dataMap.set(item._id, item));
-
-    const labels = [];
-    const startDate = new Date(dateFrom);
-    const endDate = new Date(dateTo);
-
-    if (timePeriod === 'Hourly') {
-      const currentDate = new Date(startDate)
-      currentDate.setHours(0, 0, 0, 0)
-
-      const finalDate = new Date(endDate)
-      finalDate.setHours(23, 59, 59, 999)
-
-      const labelsSet = new Set()
-      let hourCount = 0
-
-      while (currentDate <= finalDate && hourCount <= 24) {
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0')
-        const day = String(currentDate.getDate()).padStart(2, '0')
-        const hour = String(currentDate.getHours()).padStart(2, '0')
-
-        const label = `${month}/${day} ${hour}`
-        if (!labelsSet.has(label)) {
-          labels.push(label)
-          labelsSet.add(label)
+   const processGraphData = useMemo(() => {
+      if (!graphData || graphData.length === 0) {
+        return null;
+      }
+  
+      const sortedGraphData = [...graphData].sort((a, b) => {
+        let dateA; let dateB;
+        if (timePeriod === 'Hourly') {
+          const [monthDayA, hourA] = a._id.split(' ');
+          const [monthA, dayA] = monthDayA.split('/');
+          const [monthDayB, hourB] = b._id.split(' ');
+          const [monthB, dayB] = monthDayB.split('/');
+          dateA = new Date(`${new Date().getFullYear()}-${monthA}-${dayA}T${hourA}:00:00`);
+          dateB = new Date(`${new Date().getFullYear()}-${monthB}-${dayB}T${hourB}:00:00`);
+        } else if (timePeriod === 'Daily') {
+          const [dayA, monthA] = a._id.split('/');
+          const [dayB, monthB] = b._id.split('/');
+          dateA = new Date(`${new Date().getFullYear()}-${monthA}-${dayA}`);
+          dateB = new Date(`${new Date().getFullYear()}-${monthB}-${dayB}`);
+        } else if (timePeriod === 'Monthly') {
+          dateA = new Date(a._id.replace(/(\w+)\s(\d+)/, (_, m, y) => `${m} 1, 20${y}`));
+          dateB = new Date(b._id.replace(/(\w+)\s(\d+)/, (_, m, y) => `${m} 1, 20${y}`));
+        } else if (timePeriod === 'Quarterly') {
+          const [yearA, quarterStrA] = a._id.split('-Q');
+          const monthA = (parseInt(quarterStrA, 10) - 1) * 3;
+          dateA = new Date(parseInt(yearA, 10), monthA);
+  
+          const [yearB, quarterStrB] = b._id.split('-Q');
+          const monthB = (parseInt(quarterStrB, 10) - 1) * 3;
+          dateB = new Date(parseInt(yearB, 10), monthB);
+        } else if (timePeriod === 'Yearly') {
+          dateA = new Date(parseInt(a._id, 10), 0);
+          dateB = new Date(parseInt(b._id, 10), 0);
         }
-
-        currentDate.setHours(currentDate.getHours() + 1)
-        hourCount++
+        return dateA - dateB;
+      });
+  
+  
+      let limitedData = sortedGraphData;
+      let limit = 0;
+  
+      switch (timePeriod) {
+        case 'Hourly':
+          limit = 24; 
+          break;
+        case 'Daily':
+          limit = 30; 
+          break;
+        case 'Monthly':
+          limit = 12; 
+          break;
+        case 'Quarterly':
+          limit = 4; 
+          break;
+        case 'Yearly':
+          limit = 5; 
+          break;
+        default:
+          limit = graphData.length; 
       }
-    } else if (timePeriod === 'Daily') {
-      const currentDate = new Date(startDate);
-      let dayCount = 0;
-      while (currentDate <= endDate && dayCount <= 30) {
-        const day = String(currentDate.getDate()).padStart(2, '0');
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        labels.push(`${day}/${month}`);
-        currentDate.setDate(currentDate.getDate() + 1);
-        dayCount++;
+  
+      if (limitedData.length > limit) {
+        limitedData = limitedData.slice(-limit);
       }
-    } else if (timePeriod === 'Monthly') {
-      let currentDate = new Date(startDate);
-      let monthCount = 0;
-      while (currentDate <= endDate && monthCount <= 12) {
-        const shortMonth = currentDate.toLocaleString('default', { month: 'short' });
-        const yearShort = String(currentDate.getFullYear()).slice(-2);
-        labels.push(`${shortMonth} ${yearShort}`);
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        monthCount++;
-      }
-    } else if (timePeriod === 'Quarterly') {
-      let currentDate = new Date(startDate);
-      let quarterCount = 0;
-      while (currentDate <= endDate && quarterCount <= 4) {
-        const year = currentDate.getFullYear();
-        const quarter = Math.floor(currentDate.getMonth() / 3) + 1;
-        labels.push(`${year}-Q${quarter}`);
-        currentDate.setMonth(currentDate.getMonth() + 3);
-        quarterCount++;
-      }
-    } else if (timePeriod === 'Yearly') {
-      let currentDate = new Date(startDate);
-      let yearCount = 0;
-      while (currentDate <= endDate && yearCount <= 5) {
-        labels.push(String(currentDate.getFullYear()));
-        currentDate.setFullYear(currentDate.getFullYear() + 1);
-        yearCount++;
-      }
-    } else {
-      return null;
-    }
-
-    const productionRate = labels.map(label => {
-      let foundRate = 0;
-      for (const value of dataMap.values()) {
-        if (value._id.includes(label)) {
-          foundRate = value.productionRate;
-          break; 
-        }
-      }
-      return foundRate;
-    });
-
-    return {
-      categories: labels,
-      series: [
-        {
-          label: 'Production Rate (m/hr)',
-          data: productionRate,
-          tension: 0.1
-        }
-      ]
-    };
-  };
-
-  const chartData = processGraphData()
+  
+      const labels = limitedData.map(item => item._id);
+      const productionRate = limitedData.map(item => item.productionRate);
+  
+      return {
+        categories: labels,
+        series: [
+          {
+            label: 'Production Rate (m/hr)',
+            data: productionRate.map(rate => parseFloat(formatNumber(rate))),
+            tension: 0.1
+          }
+        ]
+      };
+    }, [graphData, timePeriod]); 
+  
+    const isNotFound = !isLoading && !graphData.length;
 
   return (
     <Grid item xs={12} sm={12} md={12} xl={isDashboard ? 12 : 12}>
@@ -158,12 +144,12 @@ const ERPProductionRate = ({ timePeriod, customer, graphLabels, logsGraphData, i
         )}
         {!(isLoading || isLoadingMachineLog) && (
           <Fragment>
-            {chartData && chartData.categories.length > 0 ? (
-              <LogLineChart chart={chartData} graphLabels={graphLabels} graphHeight={graphHeight} />
+            {processGraphData && processGraphData.categories.length > 0 ? (
+              <LogLineChart chart={processGraphData} graphLabels={graphLabels} graphHeight={graphHeight} />
             ) : (
-              <Typography variant='body1' color='textSecondary'>
-                {customer?._id ? 'No data available' : 'Please Select a customer to view the graph.'}
-              </Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 200 }} >
+                <TableNoData graphNotFound={isNotFound} />
+              </Box>
             )}
           </Fragment>
         )}
