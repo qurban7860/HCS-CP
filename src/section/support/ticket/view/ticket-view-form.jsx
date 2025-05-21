@@ -478,7 +478,7 @@ const isResolved = ticket?.status?.statusType?.isResolved === true;
             <Box mb={5} mt={0}>
               <Card {...GCardOption(themeMode)}>
                 <GStyledTopBorderDivider mode={themeMode} />
-                <TicketComment currentUser={{ ...user, userId }} />
+                {!isResolved &&<TicketComment currentUser={{ ...user, userId }} />}
               </Card>
             </Box>
           </Grid>
