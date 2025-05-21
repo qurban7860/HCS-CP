@@ -56,11 +56,11 @@ const ReCaptcha = ({ onVerify }) => {
   elevation={0}
   sx={{
     mt: 2,
-    textAlign: 'center',
+    textAlign: 'left',
     bgcolor: 'transparent',
     boxShadow: 'none',
     width: { xs: '100%', sm: '95%', md: '90%', lg: '85%' },
-    mx: 'auto',
+
     p: 0,
   }}
 >
@@ -70,15 +70,13 @@ const ReCaptcha = ({ onVerify }) => {
       display: 'inline-block',
       transform: 'scale(1)', 
       transformOrigin: 'top left',
-      width: '100%',
-      mx: 'auto',
-      p: 0,
-      ml: { xs: 0, sm: 2, md: 3, lg: 3 },
+      width: '100%',             // Override any auto-centering
       bgcolor: 'transparent',
       border: 'none',
     }}
   />
 </Paper>
+
 
   );
 };
