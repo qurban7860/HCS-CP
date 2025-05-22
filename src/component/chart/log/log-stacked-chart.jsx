@@ -1,4 +1,4 @@
-import { Fragment, useState, useMemo } from 'react'
+import { Fragment, useState, useMemo, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSettingContext } from 'hook'
 import { Box, FormControlLabel, Checkbox } from '@mui/material'
@@ -7,10 +7,11 @@ import { Chart } from 'component'
 import { fShortenNumber } from 'util/format'
 import { KEY } from 'constant'
 
-function LogStackedChart({ chart, graphLabels, graphHeight = 500 }) {
+function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500 }) {
   const { themeMode } = useSettingContext()
   const theme = useTheme()
   const [skipZero, setSkipZero] = useState(true);
+  const [chart, setChart] = useState({ categories: [], series: [] });
 
   const { categories, series } = chart
   const colors = [theme.palette.howick.darkBlue, theme.palette.howick.orange]
@@ -18,34 +19,15 @@ function LogStackedChart({ chart, graphLabels, graphHeight = 500 }) {
 
   const menuBackgroundColor = themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.grey[800]
   const menuTextColor = themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
-
-  const { filteredCategories, filteredSeries } = useMemo(() => {
-    if (!skipZero) {
-      return { filteredCategories: categories, filteredSeries: series };
+  
+  useEffect(() => {
+    const processedChartData = processGraphData(skipZero);
+    if (processedChartData) {
+      setChart(processedChartData);
+    } else {
+      setChart({ categories: [], series: [] }); 
     }
-
-    const hasNonZeroValues = series.some(s => s.data.some(val => val !== 0 && val !== null && val !== undefined));
-
-    if (!hasNonZeroValues) {
-      return { filteredCategories: categories, filteredSeries: series };
-    }
-
-    const filteredIndexes = categories.reduce((acc, _, idx) => {
-      const hasNonZeroBar = series.some(s => (s.data[idx] ?? 0) !== 0 && (s.data[idx] !== null && s.data[idx] !== undefined));
-      if (hasNonZeroBar) {
-        acc.push(idx);
-      }
-      return acc;
-    }, []);
-
-    return {
-      filteredCategories: filteredIndexes.map((i) => categories[i]),
-      filteredSeries: series.map((s) => ({
-        ...s,
-        data: filteredIndexes.map((i) => s.data[i]),
-      })),
-    };
-  }, [skipZero, categories, series]);
+  }, [skipZero, processGraphData]);
 
   const chartOptions = {
     chart: {
@@ -121,7 +103,7 @@ function LogStackedChart({ chart, graphLabels, graphHeight = 500 }) {
       }
     },
     xaxis: {
-      categories: filteredCategories,
+      categories,
       position: 'bottom',
       labels: {
         offsetY: 0,
@@ -229,11 +211,11 @@ function LogStackedChart({ chart, graphLabels, graphHeight = 500 }) {
           label="Empty or zero values skipped"
         />
       </Box>
-      <Chart type='bar' series={filteredSeries} options={chartOptions} height={chartOptions.chart.height} />
+      <Chart type='bar' series={series} options={chartOptions} height={chartOptions.chart.height} />
     </Fragment>
   )
 }
 
-LogStackedChart.propTypes = { chart: PropTypes.object, graphLabels: PropTypes.object, graphHeight: PropTypes.number }
+LogStackedChart.propTypes = { processGraphData: PropTypes.object, graphLabels: PropTypes.object, graphHeight: PropTypes.number }
 
 export default LogStackedChart

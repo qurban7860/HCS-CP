@@ -12,6 +12,7 @@ import { useTheme } from '@mui/material/styles'
 import { getTimePeriodDesc } from 'section/log'
 import { GStyledSpanBox, GStyledCenterBox } from 'theme/style'
 import { TYPOGRAPHY, KEY, FLEX } from 'constant'
+import { TableNoData } from 'component'
 
 const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, isDashboard, graphHeight = 500, dateFrom, dateTo }) => {
   const [graphData, setGraphData] = useState([])
@@ -36,95 +37,148 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
     }
   }, [logsGraphData, timePeriod])
 
-  const processGraphData = () => {
+  const parseHourlyDate = (id, baseYear) => {
+    try {
+      const [monthDay, hourStr] = id.split(' ');
+      if (!monthDay || !hourStr) return null;
+
+      const [month, day] = monthDay.split('/');
+      if (!month || !day) return null;
+
+      const hour = parseInt(hourStr, 10);
+      if (Number.isNaN(hour)) return null;
+
+      return new Date(`${baseYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hour.toString().padStart(2, '0')}:00:00`);
+    } catch (error) {
+      console.warn('Invalid _id format for hourly data:', id);
+      return null;
+    }
+  };
+
+  const getEarliestDateFromGraphData = () => {
+    if (graphData.length === 0) return new Date(dateFrom); 
+
+    let minDate = new Date(dateTo); 
+
+    graphData.forEach((item) => {
+      let itemDate;
+      if (timePeriod === 'Hourly') {
+        itemDate = parseHourlyDate(item._id, dateFrom.getFullYear());
+      } else if (timePeriod === 'Daily') {
+        const [day, month] = item._id.split('/');
+        itemDate = new Date(`${dateFrom.getFullYear()}-${month}-${day}`);
+      } else if (timePeriod === 'Monthly') {
+        itemDate = new Date(item._id.replace(/(\w+)\s(\d+)/, (_, m, y) => `${m} 1, 20${y}`));
+      } else if (timePeriod === 'Quarterly') {
+        const [year, quarterStr] = item._id.split('-Q');
+        const month = (parseInt(quarterStr, 10) - 1) * 3;
+        itemDate = new Date(parseInt(year, 10), month);
+      } else if (timePeriod === 'Yearly') {
+        itemDate = new Date(parseInt(item._id, 10), 0);
+      } else {
+        itemDate = new Date(dateFrom);
+      }
+      if (itemDate && !Number.isNaN(itemDate) && itemDate < minDate) {
+        minDate = itemDate;
+      }
+    });
+
+    return minDate;
+  };
+
+  const processGraphData = (skipZeroValues) => {
     if (!graphData || graphData.length === 0) return null;
 
     const dataMap = new Map();
-    graphData.forEach(item => dataMap.set(item._id, item));
+    graphData.forEach((item) => dataMap.set(item._id, item));
 
     const labels = [];
-    const startDate = new Date(dateFrom);
-    const endDate = new Date(dateTo);
+    let startDate = new Date(dateFrom);
+    const effectiveEndDate = new Date(dateTo);
 
-    if (timePeriod === 'Hourly') {
-      const currentDate = new Date(startDate)
-      currentDate.setHours(0, 0, 0, 0)
-      
-      const finalDate = new Date(endDate)
-      finalDate.setHours(23, 59, 59, 999)
-
-      const labelsSet = new Set()
-      let hourCount = 0
-
-      while (currentDate <= finalDate && hourCount <= 24) {
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0')
-        const day = String(currentDate.getDate()).padStart(2, '0')
-        const hour = String(currentDate.getHours()).padStart(2, '0')
-
-        const label = `${month}/${day} ${hour}`
-        if (!labelsSet.has(label)) {
-          labels.push(label)
-          labelsSet.add(label)
-        }
-
-        currentDate.setHours(currentDate.getHours() + 1)
-        hourCount++
-      }
-    } else if (timePeriod === 'Daily') {
-      let currentDate = new Date(startDate)
-      let dayCount = 0
-      while (currentDate <= endDate && dayCount <= 30) {
-        const day = String(currentDate.getDate()).padStart(2, '0')
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0')
-        labels.push(`${day}/${month}`)
-        currentDate.setDate(currentDate.getDate() + 1)
-        dayCount++
-      }
-    } else if (timePeriod === 'Monthly') {
-      let currentMonth = new Date(startDate)
-      let monthCount = 0
-      while (currentMonth <= endDate && monthCount <= 12) {
-        const shortMonth = currentMonth.toLocaleString('default', { month: 'short' })
-        const yearShort = String(currentMonth.getFullYear()).slice(-2)
-        labels.push(`${shortMonth} ${yearShort}`)
-        currentMonth.setMonth(currentMonth.getMonth() + 1)
-        monthCount++
-      }
-    } else if (timePeriod === 'Quarterly') {
-      let currentQDate = new Date(startDate)
-      let quarterCount = 0
-      while (currentQDate <= endDate && quarterCount <= 4) {
-        const year = currentQDate.getFullYear()
-        const quarter = Math.floor(currentQDate.getMonth() / 3) + 1
-        labels.push(`${year}-Q${quarter}`)
-        currentQDate.setMonth(currentQDate.getMonth() + 3)
-        quarterCount++
-      }
-    } else if (timePeriod === 'Yearly') {
-      let currentYDate = new Date(startDate)
-      let yearCount = 0
-      while (currentYDate <= endDate && yearCount <= 5) {
-        labels.push(String(currentYDate.getFullYear()))
-        currentYDate.setFullYear(currentYDate.getFullYear() + 1)
-        yearCount++
-      }
-    } else {
-      return null
+    if (!skipZeroValues && graphData.length > 0) {
+      startDate = getEarliestDateFromGraphData();
     }
 
-    const producedLength = labels.map(label => dataMap.get(label)?.componentLength || 0)
-    const wasteLength = labels.map(label => dataMap.get(label)?.waste || 0)
+    const addLabel = (label) => {
+      if (!labels.includes(label)) labels.push(label);
+    };
+
+    if (timePeriod === 'Hourly') {
+      const current = new Date(startDate);
+      effectiveEndDate.setHours(23, 59, 59, 999);
+      let count = 0;
+      while (current <= effectiveEndDate && count < 24) {
+        const label = `${(current.getMonth() + 1).toString().padStart(2, '0')}/${current.getDate().toString().padStart(2, '0')} ${current.getHours().toString().padStart(2, '0')}`;
+        if (dataMap.has(label) || !skipZeroValues) {
+          addLabel(label);
+          count += 1;
+        }
+        current.setHours(current.getHours() + 1);
+      }
+    } else if (timePeriod === 'Daily') {
+      const current = new Date(startDate);
+      let count = 0;
+      while (current <= effectiveEndDate && count < 30) {
+        const label = `${current.getDate().toString().padStart(2, '0')}/${(current.getMonth() + 1).toString().padStart(2, '0')}`;
+        if (dataMap.has(label) || !skipZeroValues) {
+          addLabel(label);
+          count += 1;
+        }
+        current.setDate(current.getDate() + 1);
+      }
+    } else if (timePeriod === 'Monthly') {
+      const current = new Date(startDate);
+      let count = 0;
+      while (current <= effectiveEndDate && count < 12) {
+        const label = `${current.toLocaleString('default', { month: 'short' })} ${String(current.getFullYear()).slice(-2)}`;
+        if (dataMap.has(label) || !skipZeroValues) {
+          addLabel(label);
+          count += 1;
+        }
+        current.setMonth(current.getMonth() + 1);
+      }
+    } else if (timePeriod === 'Quarterly') {
+      const current = new Date(startDate);
+      let count = 0;
+      while (current <= effectiveEndDate && count < 4) {
+        const year = current.getFullYear();
+        const quarter = Math.floor(current.getMonth() / 3) + 1;
+        const label = `${year}-Q${quarter}`;
+        if (dataMap.has(label) || !skipZeroValues) {
+          addLabel(label);
+          count += 1;
+        }
+        current.setMonth(current.getMonth() + 3);
+      }
+    } else if (timePeriod === 'Yearly') {
+      const current = new Date(startDate);
+      let count = 0;
+      while (current <= effectiveEndDate && count < 5) {
+        const label = String(current.getFullYear());
+        if (dataMap.has(label) || !skipZeroValues) {
+          addLabel(label);
+          count += 1;
+        }
+        current.setFullYear(current.getFullYear() + 1);
+      }
+    } else {
+      return null;
+    }
+
+    const producedLength = labels.map((label) => dataMap.get(label)?.componentLength || 0);
+    const wasteLength = labels.map((label) => dataMap.get(label)?.waste || 0);
 
     return {
       categories: labels,
       series: [
         { name: 'Produced Length (m)', data: producedLength },
-        { name: 'Waste Length (m)', data: wasteLength }
-      ]
-    }
-  }
+        { name: 'Waste Length (m)', data: wasteLength },
+      ],
+    };
+  };
 
-  const chartData = processGraphData()
+  const isNotFound = !isLoading && !graphData.length;
 
   return (
     <Grid item xs={12} sm={12} md={12} xl={isDashboard ? 12 : 12}>
@@ -152,11 +206,11 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
         )}
         {!isLoading && (
           <Fragment>
-            {graphData?.length > 0 && <Fragment>{chartData && <LogStackedChart chart={chartData} graphLabels={graphLabels} graphHeight={graphHeight} />}</Fragment>}
+            {graphData?.length > 0 && <Fragment>{processGraphData && <LogStackedChart processGraphData={processGraphData} graphLabels={graphLabels} graphHeight={graphHeight} />}</Fragment>}
             {graphData?.length === 0 && (
-              <Typography variant={TYPOGRAPHY.BODY1} color='textSecondary'>
-                {customer?._id ? 'No data available' : 'Please Select a customer to view the graph.'}
-              </Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 200 }} >
+                <TableNoData graphNotFound={isNotFound} />
+              </Box>
             )}
           </Fragment>
         )}
