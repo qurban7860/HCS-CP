@@ -6,7 +6,7 @@ import { snack, useSettingContext } from 'hook'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoginSchema } from 'schema'
-import { Link, Stack, Alert } from '@mui/material'
+import { Link, Stack, Alert,Box } from '@mui/material'
 import { GStyledLoadingButton } from 'theme/style'
 import FormProvider, { RHFTextField, RHFPasswordField, RHFCheckbox } from 'component/hook-form'
 import { RADIUS } from 'config'
@@ -138,19 +138,23 @@ function LoginForm() {
           }}
         />
       )}
-
+     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
       <GStyledLoadingButton
-        fullWidth
+        // fullWidth
         className="portal-button"
         size={SIZE.SMALL}
         type={KEY.SUBMIT}
         mode={themeMode}
         loading={isSubmitSuccessful || isSubmitting}
-        sx={RADIUS.BORDER}
         disabled={!email.trim() || password.trim().length < 6 || !captchaToken}
+         sx={{
+      ...RADIUS.BORDER,
+         width: '90px', 
+    }}
       >
         {t('login.label').toUpperCase()}
       </GStyledLoadingButton>
+      </Box>
 
       <Stack alignItems={FLEX.FLEX_END} sx={{ my: 2 }}>
         <Link
