@@ -133,8 +133,8 @@ export const logGraphTypes = [
         name: 'Production (m)',
         key: 'production_total'
     },
-    {
-        name: 'Production Rate (m/hr)',
-        key: 'productionRate'
-    }
+    // {
+    //     name: 'Production Rate (m/hr)',
+    //     key: 'productionRate'
+    // }
 ]

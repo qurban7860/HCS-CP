@@ -132,19 +132,7 @@ const GraphsSection = () => {
                   </Box>
 
                   <Box display='flex' gap={2} alignItems='center'>
-                    <Box flexGrow={1}>
-                      <RHFAutocomplete
-                        name='logPeriod'
-                        label={t('log.period.label')}
-                        options={['Hourly', 'Daily', 'Monthly', 'Quarterly', 'Yearly']}
-                        onChange={(e, newVal) => handlePeriodChange(newVal)}
-                        size='small'
-                        disableClearable
-                        required
-                        fullWidth
-                      />
-                    </Box>
-
+                    
                     <Box flexGrow={1}>
                       <RHFAutocomplete
                         name='logGraphType'
@@ -162,7 +150,20 @@ const GraphsSection = () => {
                         fullWidth
                       />
                     </Box>
+                    <Box flexGrow={1}>
+                      <RHFAutocomplete
+                        name='logPeriod'
+                        label={t('log.period.label')}
+                        options={['Hourly', 'Daily', 'Monthly', 'Quarterly', 'Yearly']}
+                        onChange={(e, newVal) => handlePeriodChange(newVal)}
+                        size='small'
+                        disableClearable
+                        required
+                        fullWidth
+                      />
+                    </Box>
 
+                   
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                       <IconTooltip
                         title={t('log.button_graph.get_graph').toUpperCase()}

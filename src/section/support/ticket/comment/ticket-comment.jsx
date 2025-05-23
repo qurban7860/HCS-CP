@@ -14,7 +14,7 @@ import { LoadingButton } from '@mui/lab'
 import { getSecurityUsers } from 'store/slice'
 import { addComment, deleteComment, getComments, resetComments, updateComment } from 'store/slice'
 import { useTheme, Paper, Button, List, ListItem, ListItemAvatar, Divider, Box, Stack, Typography, TextField } from '@mui/material'
-import { FormProvider, RHFTextField, GridViewTitle, CustomAvatar, ConfirmDialog, CommentListItem } from 'component'
+import { FormProvider, RHFTextField, GridViewTitle, CustomAvatar, ConfirmDialog, CommentListItem, RHFEditor } from 'component'
 import { GStyledDefLoadingButton } from 'theme/style'
 import { delay } from 'util'
 import { RADIUS } from 'config/layout'
@@ -156,17 +156,12 @@ const TicketComment = ({ currentUser }) => {
                 <Stack direction='row' spacing={2}>
                   <CustomAvatar src={currentUser?.photoURL} alt="Support Services" name="Support Services" sx={{ borderRadius: RADIUS.BORDER.borderRadius }} />
                   <Stack sx={{ width: '100%' }}>
-                    <RHFTextField
+                    <RHFEditor
                       name='comment'
                       placeholder={t('add_a_comment.label')}
-                      multiline
-                      rows={2}
-                      inputProps={{ maxLength: 300 }}
-                      helperText={`${commentValue?.length || 0}/300 characters`}
-                      FormHelperTextProps={{ sx: { textAlign: 'right' } }}
                     />
                     {!!commentValue?.trim() && (
-                      <Stack spacing={1} direction='row'>
+                      <Stack spacing={1} direction='row' sx={{mt: 2}}>
                         <LoadingButton type='submit' disabled={isLoading} loading={isSubmitting} variant='contained' color='primary' size='small' sx={{ width: 'fit-content' }}>
                           {t('save.label')}
                         </LoadingButton>
@@ -197,15 +192,10 @@ const TicketComment = ({ currentUser }) => {
                             {editingCommentId === item._id ? (
                               <FormProvider methods={methods} key={item._id}>
                                 <Stack spacing={2}>
-                                  <TextField
-                                    fullWidth
-                                    multiline
-                                    rows={2}
+                                  < RHFEditor
+                                    name="editComment"
                                     value={editValue}
-                                    onChange={e => setEditValue(e.target.value)}
-                                    inputProps={{ maxLength: 300 }}
-                                    helperText={`${editValue?.length}/300 characters`}
-                                    FormHelperTextProps={{ sx: { textAlign: 'right' } }}
+                                    onChange={setEditValue}
                                   />
                                   <Stack direction='row' spacing={1}>
                                     <LoadingButton
@@ -228,7 +218,7 @@ const TicketComment = ({ currentUser }) => {
                             ) : (
                               <Fragment>
                                 <Typography component='span' variant={TYPOGRAPHY.BODY2} color='text.primary'>
-                                  {item.comment}
+                                 <div dangerouslySetInnerHTML={{ __html: item.comment }} />
                                   {item.updatedAt !== item.createdAt && (
                                     <Typography component='span' variant={TYPOGRAPHY.CAPTION} sx={{ color: 'text.secondary', ml: 1 }}>
                                       {t('edited.audit')}
