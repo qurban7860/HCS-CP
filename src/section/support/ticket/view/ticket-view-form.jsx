@@ -372,8 +372,8 @@ const isResolved = ticket?.status?.statusType?.isResolved === true;
                         key={file?._id}
                         image={file}
                         onOpenLightbox={() => handleOpenLightbox(_index)}
-                        onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
-                        onDeleteFile={() => handleDeleteFile(file._id)}
+                        // onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
+                        // onDeleteFile={() => handleDeleteFile(file._id)}
                         toolbar
                         size={150}
                       />
@@ -398,8 +398,8 @@ const isResolved = ticket?.status?.statusType?.isResolved === true;
                               
                             }}
                             isLoading={isLoading}
-                            onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
-                            onDeleteFile={() => handleDeleteFile(file._id)}
+                            // onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
+                            // onDeleteFile={() => handleDeleteFile(file._id)}
                             onOpenFile={() => handleOpenFile(file._id, file?.name, file?.extension)}
                             toolbar
                           />
@@ -412,7 +412,7 @@ const isResolved = ticket?.status?.statusType?.isResolved === true;
 
                   </Box>
 
-                  <Lightbox index={selectedImage} slides={slides} open={selectedImage >= 0} close={handleCloseLightbox} onGetCurrentIndex={index => handleOpenLightbox(index)} disabledSlideshow />
+                  <Lightbox index={selectedImage} slides={slides} disabledDownload open={selectedImage >= 0} close={handleCloseLightbox} onGetCurrentIndex={index => handleOpenLightbox(index)} disabledSlideshow />
 
                   {defaultValues?.issueType?.name === 'Change Request' && (
                     <Fragment>
