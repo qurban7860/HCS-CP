@@ -56,22 +56,8 @@ const LogsTableController = ({
             }}
           />
         </Grid>
-
-        {handlePeriodChange && isGraphPage && (
-          <Grid item xs={12} sm={4} md={3.5}>
-            <RHFAutocomplete
-              name='logPeriod'
-              label={t('log.period.label')}
-              options={['Hourly', 'Daily', 'Monthly', 'Quarterly', 'Yearly']}
-              onChange={(e, newValue) => handlePeriodChange(newValue)}
-              size='small'
-              disableClearable
-              required
-            />
-          </Grid>
-        )}
-
-        {handleGraphTypeChange && isGraphPage && (
+        
+         {handleGraphTypeChange && isGraphPage && (
           <Grid item xs={12} sm={6} md={3.5}>
             <RHFAutocomplete
               name='logGraphType'
@@ -90,6 +76,21 @@ const LogsTableController = ({
             />
           </Grid>
         )}
+        
+        {handlePeriodChange && isGraphPage && (
+          <Grid item xs={12} sm={4} md={3.5}>
+            <RHFAutocomplete
+              name='logPeriod'
+              label={t('log.period.label')}
+              options={['Hourly', 'Daily', 'Monthly', 'Quarterly', 'Yearly']}
+              onChange={(e, newValue) => handlePeriodChange(newValue)}
+              size='small'
+              disableClearable
+              required
+            />
+          </Grid>
+        )}
+
         {isGraphPage && (
           <Grid item xs={12} sm={2} md={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
             <IconTooltip
