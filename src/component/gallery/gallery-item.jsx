@@ -74,7 +74,7 @@ export default function GalleryItem({ image, isLoading, onOpenLightbox, onOpenFi
                                 transition: 'opacity 0.3s ease-in-out',
                                 width: '100%'
                             }}>
-                            {(onDownloadFile || onDeleteFile) && <Button sx={{ width: onDeleteFile && !isArchived ? '33%' : '50%' }} disabled={!(fileType?.startsWith('image') || fileType?.startsWith('video') || fileType?.startsWith('application/pdf'))} onClick={fileType?.startsWith('image') ? onOpenLightbox : onOpenFile}><Icon icon={ICON_NAME.PREVIEW} sx={{ width: 20, height: 20 }} /></Button>}
+                            {(onDownloadFile || onDeleteFile) && <Button sx={{ width: onDeleteFile && !isArchived ? '33%' : '50%' }} disabled={!(fileType?.startsWith('image') || fileType?.startsWith('video') || fileType?.startsWith('application/pdf'))} onClick={(fileType?.startsWith('image') || fileType?.startsWith('video')) ? onOpenLightbox : onOpenFile}><Icon icon={ICON_NAME.PREVIEW} sx={{ width: 20, height: 20 }} /></Button>}
                             {onDownloadFile && <Button sx={{ width: onDeleteFile && !isArchived ? '33%' : '50%' }}><Icon icon={ICON_NAME.DOWNLOAD} onClick={onDownloadFile} sx={{ width: 20, height: 20 }} /></Button>}
                             {onDeleteFile && !isArchived && <Button sx={{ width: '34%' }} color='error' onClick={() => seDeleteConfirm(true)}><Icon icon={ICON_NAME.TRASH} />
                             </Button>}
