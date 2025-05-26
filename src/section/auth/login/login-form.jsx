@@ -146,7 +146,7 @@ function LoginForm() {
                     disabled={!email.trim() || password.trim().length < 6 || !captchaToken}
                     sx={{
                         ...RADIUS.BORDER,
-                        width: '110px',
+                        width: '115px',
                     }}
                 >
                     {t('login.label').toUpperCase()}
