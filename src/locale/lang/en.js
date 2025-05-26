@@ -425,16 +425,16 @@ const en = {
     }
   },
   login: {
-    label: `Log in`,
+    label: `Login`,
     login_email: {
-      label: `Log in / Email address`
+      label: `Login Id / Email address`
     }
   },
   login_page: {
-    label: `Log in Page`
+    label: `Login Page`
   },
   login_email: {
-    label: `Log in Email`
+    label: `Login Email`
   },
   general: `general`,
   banking: `banking`,
