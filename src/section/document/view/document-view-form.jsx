@@ -87,6 +87,21 @@ function DocumentViewForm({ isDrawingPage, document }) {
 
   const handleCloseLightbox = () => setSelectedImage(-1)
 
+  const handleDownloadFile = (fileId, fileName, fileExtension) => {
+    dispatch(getDocumentFile({ id, fileId }))
+      .then(res => {
+        if (regEx.test(res.status)) {
+          download(atob(res.data), `${fileName}.${fileExtension}`, { type: fileExtension })
+          snack(res.statusText)
+        } else {
+          snack(res.statusText, { variant: `error` })
+        }
+      })
+      .catch(err => {
+        snack(handleError(err), { variant: `error` })
+      })
+  }
+
   const handleOpenFile = async (fileId, fileName, fileExtension) => {
     setPDFName(`${fileName}.${fileExtension}`)
     setPDFViewerDialog(true)
@@ -162,6 +177,7 @@ function DocumentViewForm({ isDrawingPage, document }) {
                         key={file?._id}
                         image={file}
                         onOpenLightbox={() => handleOpenLightbox(_index)}
+                        onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
                         toolbar
                         size={150}
                       />
@@ -186,6 +202,8 @@ function DocumentViewForm({ isDrawingPage, document }) {
                             }}
                             isLoading={isLoading}
                             onOpenFile={() => handleOpenFile(file._id, file?.name, file?.extension)}
+                            onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
+                            toolbar
                           />
                         )
                       }
@@ -194,7 +212,7 @@ function DocumentViewForm({ isDrawingPage, document }) {
 
                   </Box>
 
-                  <Lightbox index={selectedImage} slides={slides} disabledDownload open={selectedImage >= 0} close={handleCloseLightbox} onGetCurrentIndex={index => handleOpenLightbox(index)} disabledSlideshow />
+                  <Lightbox index={selectedImage} slides={slides} open={selectedImage >= 0} close={handleCloseLightbox} onGetCurrentIndex={index => handleOpenLightbox(index)} disabledSlideshow />
                 </Grid>
               </Card>
             </Box>
