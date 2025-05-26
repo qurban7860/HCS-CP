@@ -64,59 +64,111 @@ function TicketViewForm() {
     mode: 'onChange',
     reValidateMode: 'onChange'
   })
-const isResolved = ticket?.status?.statusType?.isResolved === true;
+  const isResolved = ticket?.status?.statusType?.isResolved === true;
 
   useEffect(() => {
     dispatch(getTicketSettings())
     dispatch(getTicket(id, user?.customer))
   }, [dispatch, id])
 
-  useEffect(() => {
-    const newSlides = ticket?.files
-      ?.map(file => {
-        if (file?.fileType && file.fileType.startsWith('image')) {
-          return {
-            thumbnail: `data:image/png;base64, ${file.thumbnail}`,
-            src: `data:image/png;base64, ${file.thumbnail}`,
-            downloadFilename: `${file?.name}.${file?.extension}`,
-            name: file?.name,
-            extension: file?.extension,
-            fileType: file?.fileType,
-            isLoaded: false,
-            _id: file?._id,
-            width: '100%',
-            height: '100%'
-          }
-        }
-        return null
-      })
-      ?.filter(Boolean)
-    setSlides(newSlides || [])
-  }, [ticket?.files?.length])
 
-  const handleOpenLightbox = async index => {
-    setSelectedImage(index)
-    const image = slides[index]
-    if (!image?.isLoaded && image?.fileType?.startsWith('image')) {
-      try {
-        const response = await dispatch(getFile(id, image?._id, customer?._id))
-        if (regEx.test(response.status)) {
-          const updatedSlides = [
-            ...slides.slice(0, index),
+  useEffect(() => {
+    const newSlides = ticket?.files?.map(file => {
+      const base64Thumbnail = `data:image/png;base64,${file.thumbnail}`;
+
+      if (file?.fileType?.startsWith('image')) {
+        return {
+          type: 'image',
+          thumbnail: base64Thumbnail,
+          src: base64Thumbnail,
+          downloadFilename: `${file?.name}.${file?.extension}`,
+          name: file?.name,
+          extension: file?.extension,
+          fileType: file?.fileType,
+          isLoaded: false,
+          _id: file?._id,
+          width: '100%',
+          height: '100%',
+        };
+      }
+
+      if (file?.fileType?.startsWith('video')) {
+        return {
+          type: 'video',
+          thumbnail: base64Thumbnail,
+          poster: base64Thumbnail,
+          sources: [
             {
-              ...slides[index],
-              src: `data:image/png;base64, ${response.data}`,
-              isLoaded: true
+              src: base64Thumbnail,
+              type: file.fileType,
+              isLoaded: false,
+              controls: true,
+              playsInline: true,
+              autoPlay: true,
+              loop: true,
+              muted: true,
+              preload: 'auto',
             },
-            ...slides.slice(index + 1)
-          ]
-          setSlides(updatedSlides)
+          ],
+          controls: true,
+          playsInline: true,
+          autoPlay: true,
+          loop: true,
+          muted: true,
+          preload: 'auto',
+          downloadFilename: `${file?.name}.${file?.extension}`,
+          name: file?.name,
+          extension: file?.extension,
+          fileType: file?.fileType,
+          isLoaded: false,
+          _id: file?._id,
+          width: '100%',
+          height: '100%',
+        };
+      }
+
+      return null;
+    }).filter(Boolean);
+
+    setSlides(newSlides || []);
+  }, [ticket?.files?.length]);
+
+  const handleOpenLightbox = async (index) => {
+    setSelectedImage(index);
+    const image = slides[index];
+
+    if (!image?.isLoaded && (image?.fileType?.startsWith('image') || image?.fileType?.startsWith('video'))) {
+      try {
+        const response = await dispatch(getFile(id, image?._id, customer?._id));
+        if (regEx.test(response.status)) {
+          const base64 = response.data;
+          const updatedSlides = [...slides];
+
+          if (image.fileType.startsWith('video')) {
+            updatedSlides[index] = {
+              ...image,
+              sources: [{
+                src: `data:${image.fileType};base64,${base64}`,
+                type: image.fileType
+              }],
+              isLoaded: true
+            };
+          } else {
+            updatedSlides[index] = {
+              ...image,
+              src: `data:${image.fileType};base64,${base64}`,
+              isLoaded: true
+            };
+          }
+
+          setSlides(updatedSlides);
         }
       } catch (error) {
-        console.error(t('responses.error.loading_file'), error)
+        console.error('Error loading full file:', error);
+        enqueueSnackbar('File loading failed!', { variant: 'error' });
       }
     }
-  }
+  };
 
   const handleCloseLightbox = () => setSelectedImage(-1)
 
@@ -238,22 +290,22 @@ const isResolved = ticket?.status?.statusType?.isResolved === true;
                   </GridViewField>
 
                   {isResolved ? (
-                 <GridViewField heading={t('priority.label')} isLoading={isLoading} gridSize={4}>
-                 {defaultValues?.priority}
-                 </GridViewField>
+                    <GridViewField heading={t('priority.label')} isLoading={isLoading} gridSize={4}>
+                      {defaultValues?.priority}
+                    </GridViewField>
                   ) : (
-                  <GridViewField
-                    heading={t('priority.label')}
-                    isLoading={isLoading}
-                    gridSize={4}
-                  >
-                    <DropDownField name="priority" isNullable label='Priority' value={ticket?.priority} onSubmit={onSubmit} options={ticketSettings?.priorities} />
-                    {/* <IconFlexi
+                    <GridViewField
+                      heading={t('priority.label')}
+                      isLoading={isLoading}
+                      gridSize={4}
+                    >
+                      <DropDownField name="priority" isNullable label='Priority' value={ticket?.priority} onSubmit={onSubmit} options={ticketSettings?.priorities} />
+                      {/* <IconFlexi
                     icon={defaultValues?.priorityIcon}
                     color={defaultValues?.priorityColor}
                   />{' '}
                   &nbsp;{defaultValues?.priority} */}
-                  </GridViewField> )}
+                    </GridViewField>)}
                   <GridViewField
                     heading={t('machine.label')}
                     isLoading={isLoading}
@@ -280,23 +332,23 @@ const isResolved = ticket?.status?.statusType?.isResolved === true;
                   </GridViewField>
 
 
-                  
+
                   {isResolved ? (
-                  <GridViewField heading={t('summary.label')} isLoading={isLoading}>
-                  {defaultValues?.summary}
-                  </GridViewField>
+                    <GridViewField heading={t('summary.label')} isLoading={isLoading}>
+                      {defaultValues?.summary}
+                    </GridViewField>
                   ) : (
-                 <Grid item xs={12} md={12}>
-                 <GridViewTitle title={t('summary.label')} />
-                <FilledTextField
-                 name="summary"
-                 value={defaultValues.summary}
-                 placeholder="Brief description of the ticket"
-                 onSubmit={onSubmit}
-                 minRows={4}
-                  />
-                 </Grid>
-                )}
+                    <Grid item xs={12} md={12}>
+                      <GridViewTitle title={t('summary.label')} />
+                      <FilledTextField
+                        name="summary"
+                        value={defaultValues.summary}
+                        placeholder="Brief description of the ticket"
+                        onSubmit={onSubmit}
+                        minRows={4}
+                      />
+                    </Grid>
+                  )}
                   {/* <ViewFormField
                   heading={t('summary.label')}
                   isLoading={isLoading}
@@ -309,25 +361,25 @@ const isResolved = ticket?.status?.statusType?.isResolved === true;
                 >
                   <FilledTextField name="summary" value={defaultValues.summary} onSubmit={onSubmit} minRows={4}  />
                 </ViewFormField> */}
-                                 
-                 {isResolved ? (
-                  <GridViewField heading={t('description.label')} isLoading={isLoading}>
-                   {defaultValues?.description}
-                   </GridViewField>
-                   ) : (
-                  <Grid item xs={12} md={12}>
-                    <GridViewTitle title={t('description.label')} />
 
-                    <FilledEditorField
-                      name="description"
-                      value={defaultValues.description}
-                      onSubmit={onSubmit}
-                      minRows={4}
-                      placeholder={`Please provide a detailed description of the issue you are experiencing with the machine, including: \n  - Any relevant error messages \n  - Steps to reproduce the problem, screenshot, picture or videos and \n  - Any recent changes that may have affected the system.\n\nIf you have any specific requirements or preferences for the ticket, please let us know.`}
-                    />
+                  {isResolved ? (
+                    <GridViewField heading={t('description.label')} isLoading={isLoading}>
+                      {defaultValues?.description}
+                    </GridViewField>
+                  ) : (
+                    <Grid item xs={12} md={12}>
+                      <GridViewTitle title={t('description.label')} />
 
-                  </Grid>
-                   )}
+                      <FilledEditorField
+                        name="description"
+                        value={defaultValues.description}
+                        onSubmit={onSubmit}
+                        minRows={4}
+                        placeholder={`Please provide a detailed description of the issue you are experiencing with the machine, including: \n  - Any relevant error messages \n  - Steps to reproduce the problem, screenshot, picture or videos and \n  - Any recent changes that may have affected the system.\n\nIf you have any specific requirements or preferences for the ticket, please let us know.`}
+                      />
+
+                    </Grid>
+                  )}
 
                   {/* <GridViewField
                   heading={t('description.label')}
@@ -372,14 +424,14 @@ const isResolved = ticket?.status?.statusType?.isResolved === true;
                         key={file?._id}
                         image={file}
                         onOpenLightbox={() => handleOpenLightbox(_index)}
-                        // onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
+                        onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
                         // onDeleteFile={() => handleDeleteFile(file._id)}
                         toolbar
                         size={150}
                       />
                     ))}
 
-                    {ticket?.files?.map((file, _index) => {
+                    {Array.isArray(ticket?.files) && ticket?.files?.filter(f => !f.fileType.startsWith('image'))?.filter(f => !f.fileType.startsWith('video'))?.map((file, _index) => {
                       if (!file.fileType.startsWith('image')) {
                         return (
                           <GalleryItem
@@ -395,10 +447,10 @@ const isResolved = ticket?.status?.statusType?.isResolved === true;
                               id: file?._id,
                               width: '100%',
                               height: '100%',
-                              
+
                             }}
                             isLoading={isLoading}
-                            // onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
+                            onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
                             // onDeleteFile={() => handleDeleteFile(file._id)}
                             onOpenFile={() => handleOpenFile(file._id, file?.name, file?.extension)}
                             toolbar
@@ -407,12 +459,12 @@ const isResolved = ticket?.status?.statusType?.isResolved === true;
                       }
                       return null
                     })}
-                       {!isResolved && <ThumbnailDocButton onClick={() => setFileDialog(true)} />}
+                    {!isResolved && <ThumbnailDocButton onClick={() => setFileDialog(true)} />}
 
 
                   </Box>
 
-                  <Lightbox index={selectedImage} slides={slides} disabledDownload open={selectedImage >= 0} close={handleCloseLightbox} onGetCurrentIndex={index => handleOpenLightbox(index)} disabledSlideshow />
+                  <Lightbox index={selectedImage} slides={slides} open={selectedImage >= 0} close={handleCloseLightbox} onGetCurrentIndex={index => handleOpenLightbox(index)} disabledSlideshow />
 
                   {defaultValues?.issueType?.name === 'Change Request' && (
                     <Fragment>
@@ -478,7 +530,7 @@ const isResolved = ticket?.status?.statusType?.isResolved === true;
             <Box mb={5} mt={0}>
               <Card {...GCardOption(themeMode)}>
                 <GStyledTopBorderDivider mode={themeMode} />
-                {!isResolved &&<TicketComment currentUser={{ ...user, userId }} />}
+                {!isResolved && <TicketComment currentUser={{ ...user, userId }} />}
               </Card>
             </Box>
           </Grid>
