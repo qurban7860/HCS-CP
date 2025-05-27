@@ -123,31 +123,17 @@ function TicketViewForm() {
   const handleOpenLightbox = async (index) => {
     setSelectedImage(index);
     const image = slides[index];
-
-    if (!image?.isLoaded && (image?.fileType?.startsWith('image') || image?.fileType?.startsWith('video'))) {
+    if (!image?.isLoaded && (image?.fileType?.startsWith('image'))) {
       try {
         const response = await dispatch(getFile(id, image?._id, customer?._id));
         if (regEx.test(response.status)) {
           const base64 = response.data;
           const updatedSlides = [...slides];
-
-          if (image.fileType.startsWith('video')) {
-            updatedSlides[index] = {
-              ...image,
-              sources: [{
-                src: `data:${image.fileType};base64,${base64}`,
-                type: image.fileType
-              }],
-              isLoaded: true
-            };
-          } else {
-            updatedSlides[index] = {
-              ...image,
-              src: `data:${image.fileType};base64,${base64}`,
-              isLoaded: true
-            };
-          }
-
+          updatedSlides[index] = {
+            ...image,
+            src: `data:${image.fileType};base64,${base64}`,
+            isLoaded: true
+          };
           setSlides(updatedSlides);
         }
       } catch (error) {
