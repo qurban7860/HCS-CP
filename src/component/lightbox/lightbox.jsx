@@ -226,16 +226,7 @@ LightboxSlide.propTypes = {
 }
 
 export function LightboxSlide({ slide, transitionTime, zoomLevel, rotateDeg }) {
-  const theme = useTheme()
-  console.log({ slide })
-  if (!slide?.isLoaded) {
-    return <Icon sx={{ width: 80 }} color={theme.palette.common.white} icon={ICON_NAME.DOWNLOADING} />
-  }
 
-  if (slide.type === 'video') {
-    return <video src={slide.src} controls />
-
-  }
 
   return (
     <ImageSlide
