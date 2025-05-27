@@ -95,27 +95,15 @@ function TicketViewForm() {
       if (file?.fileType?.startsWith('video')) {
         return {
           type: 'video',
-          thumbnail: base64Thumbnail,
-          poster: base64Thumbnail,
-          sources: [
-            {
-              src: base64Thumbnail,
-              type: file.fileType,
-              isLoaded: false,
-              controls: true,
-              playsInline: true,
-              autoPlay: true,
-              loop: true,
-              muted: true,
-              preload: 'auto',
-            },
-          ],
-          controls: true,
-          playsInline: true,
-          autoPlay: true,
-          loop: true,
-          muted: true,
-          preload: 'auto',
+          sources: [{
+            src: file?.src,
+            type: file.fileType,
+            playsInline: true,
+            autoPlay: true,
+            loop: true,
+            muted: true,
+            preload: 'auto',
+          }],
           downloadFilename: `${file?.name}.${file?.extension}`,
           name: file?.name,
           extension: file?.extension,
@@ -126,12 +114,11 @@ function TicketViewForm() {
           height: '100%',
         };
       }
-
       return null;
     }).filter(Boolean);
 
     setSlides(newSlides || []);
-  }, [ticket?.files?.length]);
+  }, [ticket?.files]);
 
   const handleOpenLightbox = async (index) => {
     setSelectedImage(index);
@@ -173,19 +160,34 @@ function TicketViewForm() {
   const handleCloseLightbox = () => setSelectedImage(-1)
 
   const handleDownloadFile = (fileId, fileName, fileExtension) => {
-    dispatch(getFile(id, fileId, customer?._id))
-      .then(res => {
-        if (regEx.test(res.status)) {
-          download(atob(res.data), `${fileName}.${fileExtension}`, { type: fileExtension })
-          snack(res.statusText)
-        } else {
-          snack(res.statusText, { variant: `error` })
-        }
-      })
-      .catch(err => {
-        snack(handleError(err), { variant: `error` })
-      })
-  }
+    const file = slides.find((item) => item._id === fileId);
+
+    if (!file) {
+      enqueueSnackbar("File not found.", { variant: "error" });
+      return;
+    }
+
+    const isVideo = file.fileType?.startsWith("video");
+    if (isVideo) {
+      try {
+        const signedUrl = file?.sources[0]?.src;
+        window.open(signedUrl, "_blank");
+        enqueueSnackbar("Video download started");
+      } catch (error) {
+        enqueueSnackbar("Video download failed!", { variant: "error" });
+      }
+    } else {
+      dispatch(getFile(id, fileId, customer?._id))
+        .then((res) => {
+          if (regEx.test(res.status)) {
+            download(atob(res.data), `${fileName}.${fileExtension}`, { type: fileExtension });
+            enqueueSnackbar("File download started");
+          }
+        }).catch((err) => {
+          enqueueSnackbar('File download failed!', { variant: `error` });
+        });
+    }
+  };
 
   const handleDeleteFile = async (fileId) => {
     try {
@@ -464,7 +466,7 @@ function TicketViewForm() {
 
                   </Box>
 
-                  <Lightbox index={selectedImage} slides={slides} open={selectedImage >= 0} close={handleCloseLightbox} onGetCurrentIndex={index => handleOpenLightbox(index)} disabledSlideshow />
+                  <Lightbox index={selectedImage} disabledDownload slides={slides} open={selectedImage >= 0} close={handleCloseLightbox} onGetCurrentIndex={index => handleOpenLightbox(index)} disabledSlideshow />
 
                   {defaultValues?.issueType?.name === 'Change Request' && (
                     <Fragment>
