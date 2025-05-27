@@ -223,12 +223,12 @@ LightboxSlide.propTypes = {
   transitionTime: PropTypes.number,
   zoomLevel: PropTypes.number,
   rotateDeg: PropTypes.number
-}
+};
 
 export function LightboxSlide({ slide, transitionTime, zoomLevel, rotateDeg }) {
 
+  return slide?.isLoaded ? (
 
-  return (
     <ImageSlide
       style={{
         maxHeight: '100%',
@@ -238,6 +238,8 @@ export function LightboxSlide({ slide, transitionTime, zoomLevel, rotateDeg }) {
       }}
       slide={slide}
     />
-  )
+  ) : (
+    <Iconify width={100} color='#fff' icon="line-md:downloading-loop" />
+  );
 }
 
