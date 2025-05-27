@@ -5,7 +5,7 @@ import { TableBody, TableCell, TableRow } from '@mui/material'
 import { EmptyContent } from 'component'
 import { FALLBACK } from 'constant'
 
-const TableNoData = ({ isNotFound, ticketNotFound, logNotFound }) => {
+const TableNoData = ({ isNotFound, ticketNotFound, logNotFound, graphNotFound }) => {
  const { themeMode } = useSettingContext()
  return (
   <Fragment>
@@ -28,6 +28,19 @@ const TableNoData = ({ isNotFound, ticketNotFound, logNotFound }) => {
       <TableCell colSpan={12}>
        <EmptyContent
         {...FALLBACK.NO_LOG}
+        sx={{
+         color: themeMode === 'dark' ? 'text.secondary' : 'grey.700'
+        }}
+       />
+      </TableCell>
+     </TableRow>
+    </TableBody>
+   ) : graphNotFound ? (
+    <TableBody>
+     <TableRow>
+      <TableCell colSpan={12}>
+       <EmptyContent
+        {...FALLBACK.NO_GRAPH}
         sx={{
          color: themeMode === 'dark' ? 'text.secondary' : 'grey.700'
         }}
@@ -58,7 +71,8 @@ const TableNoData = ({ isNotFound, ticketNotFound, logNotFound }) => {
 TableNoData.propTypes = {
  isNotFound: PropTypes.bool,
  ticketNotFound: PropTypes.bool,
- logNotFound: PropTypes.bool
+ logNotFound: PropTypes.bool,
+ graphNotFound: PropTypes.bool
 }
 
 export default TableNoData

@@ -64,75 +64,116 @@ function TicketViewForm() {
     mode: 'onChange',
     reValidateMode: 'onChange'
   })
+  const isResolved = ticket?.status?.statusType?.isResolved === true;
 
   useEffect(() => {
     dispatch(getTicketSettings())
     dispatch(getTicket(id, user?.customer))
   }, [dispatch, id])
 
-  useEffect(() => {
-    const newSlides = ticket?.files
-      ?.map(file => {
-        if (file?.fileType && file.fileType.startsWith('image')) {
-          return {
-            thumbnail: `data:image/png;base64, ${file.thumbnail}`,
-            src: `data:image/png;base64, ${file.thumbnail}`,
-            downloadFilename: `${file?.name}.${file?.extension}`,
-            name: file?.name,
-            extension: file?.extension,
-            fileType: file?.fileType,
-            isLoaded: false,
-            _id: file?._id,
-            width: '100%',
-            height: '100%'
-          }
-        }
-        return null
-      })
-      ?.filter(Boolean)
-    setSlides(newSlides || [])
-  }, [ticket?.files?.length])
 
-  const handleOpenLightbox = async index => {
-    setSelectedImage(index)
-    const image = slides[index]
-    if (!image?.isLoaded && image?.fileType?.startsWith('image')) {
+  useEffect(() => {
+    const newSlides = ticket?.files?.map(file => {
+      const base64Thumbnail = `data:image/png;base64,${file.thumbnail}`;
+
+      if (file?.fileType?.startsWith('image')) {
+        return {
+          type: 'image',
+          thumbnail: base64Thumbnail,
+          src: base64Thumbnail,
+          downloadFilename: `${file?.name}.${file?.extension}`,
+          name: file?.name,
+          extension: file?.extension,
+          fileType: file?.fileType,
+          isLoaded: false,
+          _id: file?._id,
+          width: '100%',
+          height: '100%',
+        };
+      }
+
+      if (file?.fileType?.startsWith('video')) {
+        return {
+          type: 'video',
+          sources: [{
+            src: file?.src,
+            type: file.fileType,
+            playsInline: true,
+            autoPlay: true,
+            loop: true,
+            muted: true,
+            preload: 'auto',
+          }],
+          downloadFilename: `${file?.name}.${file?.extension}`,
+          name: file?.name,
+          extension: file?.extension,
+          fileType: file?.fileType,
+          isLoaded: false,
+          _id: file?._id,
+          width: '100%',
+          height: '100%',
+        };
+      }
+      return null;
+    }).filter(Boolean);
+
+    setSlides(newSlides || []);
+  }, [ticket?.files]);
+
+  const handleOpenLightbox = async (index) => {
+    setSelectedImage(index);
+    const image = slides[index];
+    if (!image?.isLoaded && (image?.fileType?.startsWith('image'))) {
       try {
-        const response = await dispatch(getFile(id, image?._id, customer?._id))
+        const response = await dispatch(getFile(id, image?._id, customer?._id));
         if (regEx.test(response.status)) {
-          const updatedSlides = [
-            ...slides.slice(0, index),
-            {
-              ...slides[index],
-              src: `data:image/png;base64, ${response.data}`,
-              isLoaded: true
-            },
-            ...slides.slice(index + 1)
-          ]
-          setSlides(updatedSlides)
+          const base64 = response.data;
+          const updatedSlides = [...slides];
+          updatedSlides[index] = {
+            ...image,
+            src: `data:${image.fileType};base64,${base64}`,
+            isLoaded: true
+          };
+          setSlides(updatedSlides);
         }
       } catch (error) {
-        console.error(t('responses.error.loading_file'), error)
+        console.error('Error loading full file:', error);
+        enqueueSnackbar('File loading failed!', { variant: 'error' });
       }
     }
-  }
+  };
 
   const handleCloseLightbox = () => setSelectedImage(-1)
 
   const handleDownloadFile = (fileId, fileName, fileExtension) => {
-    dispatch(getFile(id, fileId, customer?._id))
-      .then(res => {
-        if (regEx.test(res.status)) {
-          download(atob(res.data), `${fileName}.${fileExtension}`, { type: fileExtension })
-          snack(res.statusText)
-        } else {
-          snack(res.statusText, { variant: `error` })
-        }
-      })
-      .catch(err => {
-        snack(handleError(err), { variant: `error` })
-      })
-  }
+    const file = slides.find((item) => item._id === fileId);
+
+    if (!file) {
+      enqueueSnackbar("File not found.", { variant: "error" });
+      return;
+    }
+
+    const isVideo = file.fileType?.startsWith("video");
+    if (isVideo) {
+      try {
+        const signedUrl = file?.sources[0]?.src;
+        window.open(signedUrl, "_blank");
+        enqueueSnackbar("Video download started");
+      } catch (error) {
+        enqueueSnackbar("Video download failed!", { variant: "error" });
+      }
+    } else {
+      dispatch(getFile(id, fileId, customer?._id))
+        .then((res) => {
+          if (regEx.test(res.status)) {
+            download(atob(res.data), `${fileName}.${fileExtension}`, { type: fileExtension });
+            enqueueSnackbar("File download started");
+          }
+        }).catch((err) => {
+          enqueueSnackbar('File download failed!', { variant: `error` });
+        });
+    }
+  };
 
   const handleDeleteFile = async (fileId) => {
     try {
@@ -235,18 +276,24 @@ function TicketViewForm() {
                   >
                     {defaultValues?.status}
                   </GridViewField>
-                  <GridViewField
-                    heading={t('priority.label')}
-                    isLoading={isLoading}
-                    gridSize={4}
-                  >
-                    <DropDownField name="priority" isNullable label='Priority' value={ticket?.priority} onSubmit={onSubmit} options={ticketSettings?.priorities} />
-                    {/* <IconFlexi
+
+                  {isResolved ? (
+                    <GridViewField heading={t('priority.label')} isLoading={isLoading} gridSize={4}>
+                      {defaultValues?.priority}
+                    </GridViewField>
+                  ) : (
+                    <GridViewField
+                      heading={t('priority.label')}
+                      isLoading={isLoading}
+                      gridSize={4}
+                    >
+                      <DropDownField name="priority" isNullable label='Priority' value={ticket?.priority} onSubmit={onSubmit} options={ticketSettings?.priorities} />
+                      {/* <IconFlexi
                     icon={defaultValues?.priorityIcon}
                     color={defaultValues?.priorityColor}
                   />{' '}
                   &nbsp;{defaultValues?.priority} */}
-                  </GridViewField>
+                    </GridViewField>)}
                   <GridViewField
                     heading={t('machine.label')}
                     isLoading={isLoading}
@@ -274,13 +321,22 @@ function TicketViewForm() {
 
 
 
-                  <Grid item xs={12} md={12}>
-                    <GridViewTitle title={t('summary.label')} />
-
-                    <FilledTextField name="summary" value={defaultValues.summary} placeholder='Brief description of the ticket' onSubmit={onSubmit} minRows={4} />
-
-                  </Grid>
-
+                  {isResolved ? (
+                    <GridViewField heading={t('summary.label')} isLoading={isLoading}>
+                      {defaultValues?.summary}
+                    </GridViewField>
+                  ) : (
+                    <Grid item xs={12} md={12}>
+                      <GridViewTitle title={t('summary.label')} />
+                      <FilledTextField
+                        name="summary"
+                        value={defaultValues.summary}
+                        placeholder="Brief description of the ticket"
+                        onSubmit={onSubmit}
+                        minRows={4}
+                      />
+                    </Grid>
+                  )}
                   {/* <ViewFormField
                   heading={t('summary.label')}
                   isLoading={isLoading}
@@ -294,18 +350,24 @@ function TicketViewForm() {
                   <FilledTextField name="summary" value={defaultValues.summary} onSubmit={onSubmit} minRows={4}  />
                 </ViewFormField> */}
 
-                  <Grid item xs={12} md={12}>
-                    <GridViewTitle title={t('description.label')} />
+                  {isResolved ? (
+                    <GridViewField heading={t('description.label')} isLoading={isLoading}>
+                      {defaultValues?.description}
+                    </GridViewField>
+                  ) : (
+                    <Grid item xs={12} md={12}>
+                      <GridViewTitle title={t('description.label')} />
 
-                    <FilledEditorField
-                      name="description"
-                      value={defaultValues.description}
-                      onSubmit={onSubmit}
-                      minRows={4}
-                      placeholder={`Please provide a detailed description of the issue you are experiencing with the machine, including: \n  - Any relevant error messages \n  - Steps to reproduce the problem, screenshot, picture or videos and \n  - Any recent changes that may have affected the system.\n\nIf you have any specific requirements or preferences for the ticket, please let us know.`}
-                    />
+                      <FilledEditorField
+                        name="description"
+                        value={defaultValues.description}
+                        onSubmit={onSubmit}
+                        minRows={4}
+                        placeholder={`Please provide a detailed description of the issue you are experiencing with the machine, including: \n  - Any relevant error messages \n  - Steps to reproduce the problem, screenshot, picture or videos and \n  - Any recent changes that may have affected the system.\n\nIf you have any specific requirements or preferences for the ticket, please let us know.`}
+                      />
 
-                  </Grid>
+                    </Grid>
+                  )}
 
                   {/* <GridViewField
                   heading={t('description.label')}
@@ -351,13 +413,13 @@ function TicketViewForm() {
                         image={file}
                         onOpenLightbox={() => handleOpenLightbox(_index)}
                         onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
-                        onDeleteFile={() => handleDeleteFile(file._id)}
+                        // onDeleteFile={() => handleDeleteFile(file._id)}
                         toolbar
                         size={150}
                       />
                     ))}
 
-                    {ticket?.files?.map((file, _index) => {
+                    {Array.isArray(ticket?.files) && ticket?.files?.filter(f => !f.fileType.startsWith('image'))?.filter(f => !f.fileType.startsWith('video'))?.map((file, _index) => {
                       if (!file.fileType.startsWith('image')) {
                         return (
                           <GalleryItem
@@ -372,11 +434,12 @@ function TicketViewForm() {
                               isLoaded: false,
                               id: file?._id,
                               width: '100%',
-                              height: '100%'
+                              height: '100%',
+
                             }}
                             isLoading={isLoading}
                             onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
-                            onDeleteFile={() => handleDeleteFile(file._id)}
+                            // onDeleteFile={() => handleDeleteFile(file._id)}
                             onOpenFile={() => handleOpenFile(file._id, file?.name, file?.extension)}
                             toolbar
                           />
@@ -384,11 +447,12 @@ function TicketViewForm() {
                       }
                       return null
                     })}
-                    <ThumbnailDocButton onClick={() => setFileDialog(true)} />
+                    {!isResolved && <ThumbnailDocButton onClick={() => setFileDialog(true)} />}
+
 
                   </Box>
 
-                  <Lightbox index={selectedImage} slides={slides} open={selectedImage >= 0} close={handleCloseLightbox} onGetCurrentIndex={index => handleOpenLightbox(index)} disabledSlideshow />
+                  <Lightbox index={selectedImage} disabledDownload slides={slides} open={selectedImage >= 0} close={handleCloseLightbox} onGetCurrentIndex={index => handleOpenLightbox(index)} disabledSlideshow />
 
                   {defaultValues?.issueType?.name === 'Change Request' && (
                     <Fragment>
@@ -454,7 +518,7 @@ function TicketViewForm() {
             <Box mb={5} mt={0}>
               <Card {...GCardOption(themeMode)}>
                 <GStyledTopBorderDivider mode={themeMode} />
-                <TicketComment currentUser={{ ...user, userId }} />
+                {!isResolved && <TicketComment currentUser={{ ...user, userId }} />}
               </Card>
             </Box>
           </Grid>

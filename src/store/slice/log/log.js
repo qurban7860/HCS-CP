@@ -169,28 +169,22 @@ export const {
 } = logSlice.actions
 
 // : thunks
-
-export function getLogGraphData(customerId, machineId, type = 'erp', periodType, logGraphType, utcStartDate, utcEndDate) {
+export function getLogGraphData(customerId, machineId, type = 'erp', periodType, logGraphType, dateFrom, dateTo) {
   return async dispatch => {
     dispatch(logSlice.actions.startLoading())
     try {
-      let startDate = new Date(utcStartDate);
-      let endDate = new Date(utcEndDate);
-
-      const isSameDay = startDate.toDateString() === endDate.toDateString();
-
-      if (isSameDay) {
-        startDate.setHours(0, 0, 0, 0);
-        endDate.setHours(23, 59, 59, 999);
-      }
+      const startDateUtc = new Date( dateFrom.getFullYear(), dateFrom.getMonth(), dateFrom.getDate(), 0, 0, 0, 0 );
+      const endDateUtc = new Date( dateTo.getFullYear(), dateTo.getMonth(), dateTo.getDate(), 23, 59, 59, 999 );
+     //   const startDateUtc = new Date(dateFrom).toISOString();
+     //   const endDateUtc = new Date(dateTo).toISOString();
       const params = {
         customer: customerId,
         machine: machineId,
         type,
         periodType,
         logGraphType,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
+        startDate : startDateUtc.toISOString(),   
+        endDate   : endDateUtc.toISOString(),
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       }
 

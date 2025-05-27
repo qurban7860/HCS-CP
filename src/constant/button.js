@@ -82,9 +82,9 @@ const BUTTON = {
   CUSTOMER_OVERVIEW: 'Customer Overview',
   CONTACT_OVERVIEW: 'Contact Overview',
   // auth
-  LOGIN: 'LOG IN',
+  LOGIN: 'LOGIN',
   REMEMBER_ME: 'Remember Me',
-  FORGOT_PASSWORD: 'Forgot Password',
+  FORGOT_PASSWORD: 'Forgot Password?',
   UPDATEPASSWORD: 'Update Password',
   UPDATED: (param) => `${param} Updated`,
   ZOOM_IN: 'Zoom In',

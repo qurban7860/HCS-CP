@@ -58,6 +58,6 @@ export const TicketSchema = ( reqType ) => {
 }
 
 export const TicketCommentSchema = yup.object().shape({
- comment   : yup.string().required('Comment is required').max(300, 'Comment must not exceed 300 characters'),
+ comment   : yup.string(),
  isInternal: yup.boolean()
 })

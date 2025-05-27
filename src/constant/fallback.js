@@ -43,6 +43,11 @@ const FALLBACK = {
   title: 'No Log(s) Found',
   description: 'No log data was found. Your machine(s) may not be integrated with the Howick Portal. Please contact a member of the Howick team for more information.'
  },
+  NO_GRAPH: {
+  code: HTTP_CODE.NO_DATA,
+  title: 'No Graph Found',
+  description: 'No graph data was found. Your machine(s) may not be integrated with the Howick Portal. Please contact a member of the Howick team for more information.'
+ },
  INVITATION_EXPIRED: {
   code: HTTP_CODE.INVITATION_EXPIRED,
   title: 'Invitation Expired',

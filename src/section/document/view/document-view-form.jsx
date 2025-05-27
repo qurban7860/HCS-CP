@@ -7,7 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { snack, useResponsive, useSettingContext } from 'hook'
 import { dispatch } from 'store'
-import { getDocument, resetDocument, getDocumentFile } from 'store/slice/document/document'
+import { getDocumentFile } from 'store/slice/document/document'
 import { PATH_MACHINE } from 'route/path'
 import { useDefaultValues } from '../default-values/default-values'
 import { useTheme, Grid, Box, Dialog, DialogTitle, Divider, Button, Card, } from '@mui/material'
@@ -20,14 +20,14 @@ import { handleError } from 'util'
  * View document form
  * @returns {JSX.Element}
  */
-function DocumentViewForm() {
+function DocumentViewForm({ isDrawingPage, document }) {
   const [slides, setSlides] = useState([])
   const [selectedImage, setSelectedImage] = useState(-1)
   const [pdf, setPDF] = useState(null)
   const [PDFName, setPDFName] = useState('')
   const [PDFViewerDialog, setPDFViewerDialog] = useState(false)
 
-  const { document, isLoading, isLoadingFile } = useSelector(state => state.document)
+  const { isLoading, isLoadingFile } = useSelector(state => state.document)
   const { id, machineId } = useParams()
 
   const { themeMode } = useSettingContext()
@@ -37,13 +37,6 @@ function DocumentViewForm() {
   const isMobile = useResponsive('down', 'sm')
 
   const defaultValues = useDefaultValues({ document })
-
-  useEffect(() => {
-    dispatch(getDocument({ id, machine: machineId }))
-    return () => {
-      dispatch(resetDocument())
-    }
-  }, [dispatch, id])
 
   useEffect(() => {
     const newSlides = defaultValues?.files
@@ -134,7 +127,7 @@ function DocumentViewForm() {
   }
 
   const onBackDocuments = () => navigate(PATH_MACHINE.machines.documents.list(machineId));
-
+  const onBackDrawings = () => navigate(PATH_MACHINE.machines.drawings.list(machineId));
   return (
     <>
       <Fragment>
@@ -208,8 +201,8 @@ function DocumentViewForm() {
                               height: '100%'
                             }}
                             isLoading={isLoading}
-                            onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
                             onOpenFile={() => handleOpenFile(file._id, file?.name, file?.extension)}
+                            onDownloadFile={() => handleDownloadFile(file._id, file?.name, file?.extension)}
                             toolbar
                           />
                         )
@@ -235,7 +228,10 @@ function DocumentViewForm() {
               </Button>
             </DialogTitle>
             <Divider variant='fullWidth' />
-            {pdf ? <iframe title={PDFName} src={pdf} style={{ paddingBottom: 10 }} width='100%' height='842px' /> : <SkeletonPDF />}
+            {pdf ? <iframe title={PDFName}
+              // src={pdf} 
+              src={`https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(pdf)}#toolbar=0`}
+              style={{ paddingBottom: 10 }} width='100%' height='842px' /> : <SkeletonPDF />}
           </Dialog>
         )}
       </Fragment>
@@ -243,5 +239,8 @@ function DocumentViewForm() {
   )
 }
 
-
+DocumentViewForm.prototype = {
+  isDrawingPage: PropTypes.bool,
+  document: PropTypes.object
+}
 export default DocumentViewForm

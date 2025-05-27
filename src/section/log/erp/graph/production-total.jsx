@@ -6,17 +6,23 @@ import { t } from 'i18next'
 import { dispatch } from 'store'
 import { useSettingContext } from 'hook'
 import { resetLogsGraphData } from 'store/slice'
+import { PATH_LOGS, PATH_MACHINE } from 'route/path';
+import { useNavigate, useParams } from 'react-router-dom'
 import { useMediaQuery, Typography, Card, Grid, Box } from '@mui/material'
 import { LogStackedChart, HowickLoader } from 'component'
 import { useTheme } from '@mui/material/styles'
 import { getTimePeriodDesc } from 'section/log'
 import { GStyledSpanBox, GStyledCenterBox } from 'theme/style'
 import { TYPOGRAPHY, KEY, FLEX } from 'constant'
+import { TableNoData } from 'component'
+import { processGraphData } from './utils/utils'
 
 const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, isDashboard, graphHeight = 500, dateFrom, dateTo }) => {
   const [graphData, setGraphData] = useState([])
   const { isLoading } = useSelector(state => state.log)
   const { themeMode } = useSettingContext()
+  const { machineId } = useParams()
+  const navigate = useNavigate();
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
@@ -29,101 +35,30 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
       const convertedDataToMeters = logsGraphData.map(item => ({
         ...item,
         componentLength: item.componentLength / 1000,
-        waste: item.waste / 1000
+        waste: item.waste / 1000,
+        _id: timePeriod === 'Monthly' ? item._id.replace(/^Sep /, 'Sept ') : item._id,
       }))
       setGraphData(convertedDataToMeters)
     }
-  }, [logsGraphData])
+  }, [logsGraphData, timePeriod])
 
-  const processGraphData = () => {
-    if (!graphData || graphData.length === 0) return null;
+  const isNotFound = !isLoading && !graphData.length;
 
-    const dataMap = new Map();
-    graphData.forEach(item => dataMap.set(item._id, item));
-
-    const labels = [];
-    const startDate = new Date(dateFrom);
-    const endDate = new Date(dateTo);
-
-    if (timePeriod === 'Hourly') {
-      const currentDate = new Date(startDate)
-      currentDate.setHours(0, 0, 0, 0)
-      
-      const finalDate = new Date(endDate)
-      finalDate.setHours(23, 59, 59, 999)
-
-      const labelsSet = new Set()
-      let hourCount = 0
-
-      while (currentDate <= finalDate && hourCount < 24) {
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0')
-        const day = String(currentDate.getDate()).padStart(2, '0')
-        const hour = String(currentDate.getHours()).padStart(2, '0')
-
-        const label = `${month}/${day} ${hour}`
-        if (!labelsSet.has(label)) {
-          labels.push(label)
-          labelsSet.add(label)
+  const handleExpandGraph = () => {
+    if (machineId) {
+      navigate(PATH_MACHINE.machines.fullScreen.view(machineId), {
+        state: {
+          logsGraphData: logsGraphData, graphLabels, graphHeight, timePeriod, dateFrom, dateTo
         }
-
-        currentDate.setHours(currentDate.getHours() + 1)
-        hourCount++
-      }
-    } else if (timePeriod === 'Daily') {
-      let currentDate = new Date(startDate)
-      let dayCount = 0
-      while (currentDate <= endDate && dayCount < 30) {
-        const day = String(currentDate.getDate()).padStart(2, '0')
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0')
-        labels.push(`${day}/${month}`)
-        currentDate.setDate(currentDate.getDate() + 1)
-        dayCount++
-      }
-    } else if (timePeriod === 'Monthly') {
-      let currentMonth = new Date(startDate)
-      let monthCount = 0
-      while (currentMonth <= endDate && monthCount < 12) {
-        const shortMonth = currentMonth.toLocaleString('default', { month: 'short' })
-        const yearShort = String(currentMonth.getFullYear()).slice(-2)
-        labels.push(`${shortMonth} ${yearShort}`)
-        currentMonth.setMonth(currentMonth.getMonth() + 1)
-        monthCount++
-      }
-    } else if (timePeriod === 'Quarterly') {
-      let currentQDate = new Date(startDate)
-      let quarterCount = 0
-      while (currentQDate <= endDate && quarterCount < 4) {
-        const year = currentQDate.getFullYear()
-        const quarter = Math.floor(currentQDate.getMonth() / 3) + 1
-        labels.push(`${year}-Q${quarter}`)
-        currentQDate.setMonth(currentQDate.getMonth() + 3)
-        quarterCount++
-      }
-    } else if (timePeriod === 'Yearly') {
-      let currentYDate = new Date(startDate)
-      let yearCount = 0
-      while (currentYDate <= endDate && yearCount < 5) {
-        labels.push(String(currentYDate.getFullYear()))
-        currentYDate.setFullYear(currentYDate.getFullYear() + 1)
-        yearCount++
-      }
+      });
     } else {
-      return null
+      navigate(PATH_LOGS.fullScreen, {
+        state: {
+          logsGraphData: logsGraphData, graphLabels, graphHeight, timePeriod, dateFrom, dateTo
+        }
+      });
     }
-
-    const producedLength = labels.map(label => dataMap.get(label)?.componentLength || 0)
-    const wasteLength = labels.map(label => dataMap.get(label)?.waste || 0)
-
-    return {
-      categories: labels,
-      series: [
-        { name: 'Produced Length (m)', data: producedLength },
-        { name: 'Waste Length (m)', data: wasteLength }
-      ]
-    }
-  }
-
-  const chartData = processGraphData()
+  };
 
   return (
     <Grid item xs={12} sm={12} md={12} xl={isDashboard ? 12 : 12}>
@@ -133,7 +68,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
             {t('production.label').toUpperCase()}
           </Typography>
         )}
-        {/* &nbsp; */}
+         {/* &nbsp; */}
         {/* <Box>
           <Typography variant={isDashboard ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.H4} p={0}>
             {getTimePeriodDesc(timePeriod).toUpperCase()}
@@ -151,11 +86,20 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
         )}
         {!isLoading && (
           <Fragment>
-            {graphData?.length > 0 && <Fragment>{chartData && <LogStackedChart chart={chartData} graphLabels={graphLabels} graphHeight={graphHeight} />}</Fragment>}
+            {graphData?.length > 0 && (
+              <Fragment>
+                <LogStackedChart
+                  processGraphData={(skipZeroValues) => processGraphData(logsGraphData, timePeriod, dateFrom, dateTo, skipZeroValues)}
+                  graphLabels={graphLabels}
+                  graphHeight={graphHeight}
+                  onExpand={handleExpandGraph}
+                />
+              </Fragment>
+            )}
             {graphData?.length === 0 && (
-              <Typography variant={TYPOGRAPHY.BODY1} color='textSecondary'>
-                {customer?._id ? 'No data available' : 'Please Select a customer to view the graph.'}
-              </Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 200 }} >
+                <TableNoData graphNotFound={isNotFound} />
+              </Box>
             )}
           </Fragment>
         )}
@@ -175,4 +119,4 @@ ERPProductionTotal.propTypes = {
   dateTo: PropTypes.instanceOf(Date)
 }
 
-export default ERPProductionTotal
+export default ERPProductionTotal;

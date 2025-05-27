@@ -1,7 +1,7 @@
-import DocumentViewLayout from 'section/document/view/document-view'
+import DrawingViewLayout from 'section/document/view/drawing-view'
 
 const MachineDrawing = () => {
-    return <DocumentViewLayout isDrawingPage />
+    return <DrawingViewLayout />
 }
 
 export default MachineDrawing

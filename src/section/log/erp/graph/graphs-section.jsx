@@ -6,7 +6,9 @@ import { useSelector } from 'react-redux'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuthContext } from 'auth/use-auth-context'
 import { HowickLoader, IconTooltip, TableTitleBox } from 'component'
-import { RHFAutocomplete, RHFDatePickr } from 'component/hook-form'
+import { RHFAutocomplete, RHFDatePickr} from 'component/hook-form'
+// import RHFDateTimePicker from 'component/hook-form/rhf-dateTime-picker'  
+
 import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 import { erpGraphSchema } from 'schema/graph/erp-graph-schema'
 import { ICON_NAME, useResponsive, useSettingContext } from 'hook'
@@ -33,6 +35,8 @@ const GraphsSection = () => {
       logGraphType: logGraphTypes[0],
       dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
       dateTo: new Date()
+      // dateFrom: new Date(new Date().setHours(0, 0, 0, 0)),
+     // dateTo: new Date(new Date().setHours(23, 59, 59, 0)),
     }),
     [user]
   )
@@ -111,6 +115,7 @@ const GraphsSection = () => {
                       renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
                       size='small'
                     />
+
                     <RHFDatePickr
                       label='From Date'
                       name='dateFrom'
@@ -132,19 +137,7 @@ const GraphsSection = () => {
                   </Box>
 
                   <Box display='flex' gap={2} alignItems='center'>
-                    <Box flexGrow={1}>
-                      <RHFAutocomplete
-                        name='logPeriod'
-                        label={t('log.period.label')}
-                        options={['Hourly', 'Daily', 'Monthly', 'Quarterly', 'Yearly']}
-                        onChange={(e, newVal) => handlePeriodChange(newVal)}
-                        size='small'
-                        disableClearable
-                        required
-                        fullWidth
-                      />
-                    </Box>
-
+                    
                     <Box flexGrow={1}>
                       <RHFAutocomplete
                         name='logGraphType'
@@ -162,7 +155,20 @@ const GraphsSection = () => {
                         fullWidth
                       />
                     </Box>
+                    <Box flexGrow={1}>
+                      <RHFAutocomplete
+                        name='logPeriod'
+                        label={t('log.period.label')}
+                        options={['Hourly', 'Daily', 'Monthly', 'Quarterly', 'Yearly']}
+                        onChange={(e, newVal) => handlePeriodChange(newVal)}
+                        size='small'
+                        disableClearable
+                        required
+                        fullWidth
+                      />
+                    </Box>
 
+                   
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                       <IconTooltip
                         title={t('log.button_graph.get_graph').toUpperCase()}

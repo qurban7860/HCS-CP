@@ -101,6 +101,9 @@ export const PATH_MACHINE = {
         graph: {
             view: machineId => conNex(ROOTS_PRODUCTS, SUB_MACHINES, machineId, 'graphs')
         },
+        fullScreen: {
+            view: machineId => conNex(ROOTS_PRODUCTS, SUB_MACHINES, machineId, 'graphs', 'fullScreen')
+        },
         log: {
             list: machineId => conNex(ROOTS_PRODUCTS, SUB_MACHINES, machineId, 'logs')
         },
@@ -124,6 +127,7 @@ export const PATH_SUPPORT = {
 export const PATH_LOGS = {
     root: conNex(ROOTS_LOGS),
     graph: conNex(ROOTS_LOGS, 'graph'),
+    fullScreen: conNex(ROOTS_LOGS, 'graph', 'fullScreen'),
 }
 
 export const PATH_SECURITY = {

@@ -46,7 +46,7 @@ const DrawingTable = () => {
                             isLoading={isLoading}
                             onChangePage={onChangePage}
                             onChangeRow={onChangeRows}
-                            onViewRow={(row) => navigate(PATH_MACHINE.machines.drawings.view(machineId, row?.document?._id))}
+                            onViewRow={(row) => navigate(PATH_MACHINE.machines.drawings.view(machineId, row?._id))}
                         />
                     </Grid>
                 </Grid>
