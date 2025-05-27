@@ -54,7 +54,6 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
 
       return new Date(`${baseYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hour.toString().padStart(2, '0')}:00:00`);
     } catch (error) {
-      console.warn('Invalid _id format for hourly data:', id);
       return null;
     }
   };
