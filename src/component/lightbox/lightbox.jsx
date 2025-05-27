@@ -239,7 +239,7 @@ export function LightboxSlide({ slide, transitionTime, zoomLevel, rotateDeg }) {
       slide={slide}
     />
   ) : (
-    <Iconify width={100} color='#fff' icon="line-md:downloading-loop" />
+    <Icon width={100} color='#fff' icon="line-md:downloading-loop" />
   );
 }
 
