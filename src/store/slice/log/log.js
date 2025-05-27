@@ -169,41 +169,42 @@ export const {
 } = logSlice.actions
 
 // : thunks
-
 export function getLogGraphData(customerId, machineId, type = 'erp', periodType, logGraphType, dateFrom, dateTo) {
   return async dispatch => {
-    dispatch(logSlice.actions.startLoading())
+    dispatch(logSlice.actions.startLoading());
     try {
-      const startDateUtc = new Date( dateFrom.getFullYear(), dateFrom.getMonth(), dateFrom.getDate(), 0, 0, 0, 0 );
-      const endDateUtc = new Date( dateTo.getFullYear(), dateTo.getMonth(), dateTo.getDate(), 23, 59, 59, 999 );
+      // Don't override time — preserve original dateFrom and dateTo with time
+      const startDateUtc = new Date(dateFrom).toISOString();
+      const endDateUtc = new Date(dateTo).toISOString();
+
       const params = {
         customer: customerId,
         machine: machineId,
         type,
         periodType,
         logGraphType,
-        startDate : startDateUtc.toISOString(),   
-        endDate   : endDateUtc.toISOString(),
+        startDate: startDateUtc,
+        endDate: endDateUtc,
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      }
+      };
 
-      const response = await axios.get(PATH_SERVER.LOG.graph, { params })
+      const response = await axios.get(PATH_SERVER.LOG.graph, { params });
 
-      dispatch(logSlice.actions.setLogsGraphData(response?.data || ''))
+      dispatch(logSlice.actions.setLogsGraphData(response?.data || ''));
 
       return {
         success: true,
-        message: 'Graph Data fetched'
-      }
+        message: 'Graph Data fetched',
+      };
     } catch (error) {
-      console.error(error)
-      dispatch(logSlice.actions.hasError(error.message || 'Something went wrong'))
+      console.error(error);
+      dispatch(logSlice.actions.hasError(error.message || 'Something went wrong'));
       return {
         success: false,
-        message: error.message || 'Something went wrong'
-      }
+        message: error.message || 'Something went wrong',
+      };
     }
-  }
+  };
 }
 
 export function getLogTotalGraphData(customerId, machineId, type = 'erp', periodType) {

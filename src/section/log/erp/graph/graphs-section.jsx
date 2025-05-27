@@ -6,7 +6,9 @@ import { useSelector } from 'react-redux'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuthContext } from 'auth/use-auth-context'
 import { HowickLoader, IconTooltip, TableTitleBox } from 'component'
-import { RHFAutocomplete, RHFDatePickr } from 'component/hook-form'
+import { RHFAutocomplete, RHFDatePickr} from 'component/hook-form'
+import RHFDateTimePicker from 'component/hook-form/rhf-dateTime-picker'  // adjust path accordingly
+
 import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
 import { erpGraphSchema } from 'schema/graph/erp-graph-schema'
 import { ICON_NAME, useResponsive, useSettingContext } from 'hook'
@@ -31,8 +33,10 @@ const GraphsSection = () => {
       machine: null,
       logPeriod: 'Daily',
       logGraphType: logGraphTypes[0],
-      dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-      dateTo: new Date()
+      // dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+      // dateTo: new Date()
+     dateFrom: new Date(new Date().setHours(0, 0, 0, 0)),
+    dateTo: new Date(new Date().setHours(23, 59, 59, 0)),
     }),
     [user]
   )
@@ -111,24 +115,27 @@ const GraphsSection = () => {
                       renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
                       size='small'
                     />
-                    <RHFDatePickr
-                      label='From Date'
-                      name='dateFrom'
-                      size='small'
-                      onChange={newValue => {
-                        setValue('dateFrom', newValue)
-                        trigger(['dateFrom', 'dateTo'])
-                      }}
-                    />
-                    <RHFDatePickr
-                      label='To Date'
-                      name='dateTo'
-                      size='small'
-                      onChange={newValue => {
-                        setValue('dateTo', newValue)
-                        trigger(['dateFrom', 'dateTo'])
-                      }}
-                    />
+ 
+ 
+
+  <RHFDateTimePicker
+    label="Date From"
+    name="dateFrom"
+    size="large"
+    inputFormat="dd/MM/yyyy hh:mm a"
+    onChange={(newValue) => setValue('dateFrom', newValue)}
+    fullWidth
+  />
+
+ 
+<RHFDateTimePicker
+  label="Date To"
+  name="dateTo"
+  size="large"
+  inputFormat="dd/MM/yyyy hh:mm a"
+  onChange={(newValue) => setValue('dateTo', newValue)}
+  fullWidth
+/>
                   </Box>
 
                   <Box display='flex' gap={2} alignItems='center'>
