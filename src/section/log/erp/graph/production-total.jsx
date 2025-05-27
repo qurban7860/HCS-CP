@@ -6,6 +6,8 @@ import { t } from 'i18next'
 import { dispatch } from 'store'
 import { useSettingContext } from 'hook'
 import { resetLogsGraphData } from 'store/slice'
+import { PATH_LOGS, PATH_MACHINE } from 'route/path';
+import { useNavigate, useParams } from 'react-router-dom'
 import { useMediaQuery, Typography, Card, Grid, Box } from '@mui/material'
 import { LogStackedChart, HowickLoader } from 'component'
 import { useTheme } from '@mui/material/styles'
@@ -18,6 +20,8 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
   const [graphData, setGraphData] = useState([])
   const { isLoading } = useSelector(state => state.log)
   const { themeMode } = useSettingContext()
+  const { machineId } = useParams()
+  const navigate = useNavigate();
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
@@ -179,6 +183,20 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
   };
 
   const isNotFound = !isLoading && !graphData.length;
+  
+  const handleExpandGraph = async () => {
+  const graphData = processGraphData(false);
+
+  if (machineId) {
+    navigate(PATH_MACHINE.machines.fullScreen.view(machineId), {
+      state: { graphData, graphLabels, graphHeight }
+    });
+  } else {
+    navigate(PATH_LOGS.fullScreen, {
+      state: { graphData, graphLabels, graphHeight }
+    });
+  }
+  };
 
   return (
     <Grid item xs={12} sm={12} md={12} xl={isDashboard ? 12 : 12}>
@@ -206,7 +224,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
         )}
         {!isLoading && (
           <Fragment>
-            {graphData?.length > 0 && <Fragment>{processGraphData && <LogStackedChart processGraphData={processGraphData} graphLabels={graphLabels} graphHeight={graphHeight} />}</Fragment>}
+            {graphData?.length > 0 && <Fragment>{processGraphData && <LogStackedChart processGraphData={processGraphData} graphLabels={graphLabels} graphHeight={graphHeight} onExpand={handleExpandGraph} />}</Fragment>}
             {graphData?.length === 0 && (
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 200 }} >
                 <TableNoData graphNotFound={isNotFound} />
