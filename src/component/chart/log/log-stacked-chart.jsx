@@ -1,8 +1,9 @@
-import { Fragment, useState, useMemo, useEffect } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSettingContext } from 'hook'
 import { Box, FormControlLabel, Checkbox, IconButton } from '@mui/material'
 import { Iconify } from 'component'
+import { GStyledTooltip } from 'theme/style'
 import { useTheme } from '@mui/material/styles'
 import { Chart } from 'component'
 import { fShortenNumber } from 'util/format'
@@ -207,17 +208,21 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
           border: 1px solid ${menuBackgroundColor};
         }
       `}</style>
-     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        {onExpand && (
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <FormControlLabel
           control={<Checkbox checked={skipZero} onChange={() => setSkipZero((prev) => !prev)} />}
           label="Empty or zero values skipped"
-        /> )}
-         {onExpand && (
-          <IconButton size="large" color="primary"  onClick={onExpand}>
-            <Iconify icon="fluent:expand-up-right-20-filled" />
-          </IconButton>
-        )}
+        /> 
+        {onExpand && (
+          <GStyledTooltip 
+            placement="top" 
+            title="Full Screen"
+            tooltipcolor={theme.palette.primary.main}>
+            <IconButton size="large" color="primary" onClick={onExpand} sx={{ mr: -0.5 }}>
+              <Iconify icon="fluent:expand-up-right-20-filled" />
+            </IconButton>
+          </GStyledTooltip>
+        )} 
       </Box>
       <Chart type='bar' series={series} options={chartOptions} height={chartOptions.chart.height} />
     </Fragment>
