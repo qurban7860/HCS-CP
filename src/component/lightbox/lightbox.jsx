@@ -223,21 +223,12 @@ LightboxSlide.propTypes = {
   transitionTime: PropTypes.number,
   zoomLevel: PropTypes.number,
   rotateDeg: PropTypes.number
-}
+};
 
 export function LightboxSlide({ slide, transitionTime, zoomLevel, rotateDeg }) {
-  const theme = useTheme()
-  console.log({ slide })
-  if (!slide?.isLoaded) {
-    return <Icon sx={{ width: 80 }} color={theme.palette.common.white} icon={ICON_NAME.DOWNLOADING} />
-  }
 
-  if (slide.type === 'video') {
-    return <video src={slide.src} controls />
+  return slide?.isLoaded ? (
 
-  }
-
-  return (
     <ImageSlide
       style={{
         maxHeight: '100%',
@@ -247,6 +238,8 @@ export function LightboxSlide({ slide, transitionTime, zoomLevel, rotateDeg }) {
       }}
       slide={slide}
     />
-  )
+  ) : (
+    <Iconify width={100} color='#fff' icon="line-md:downloading-loop" />
+  );
 }
 
