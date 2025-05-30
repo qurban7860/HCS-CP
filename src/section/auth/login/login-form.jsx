@@ -8,11 +8,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { LoginSchema } from 'schema'
 import { Link, Stack, Alert, Box } from '@mui/material'
 import { GStyledLoadingButton } from 'theme/style'
-import FormProvider, { RHFTextField, RHFPasswordField, RHFCheckbox } from 'component/hook-form'
+import FormProvider, { RHFTextField, RHFPasswordField, RHFCheckbox, RHFReCaptchaV2 } from 'component/hook-form'
 import { RADIUS } from 'config'
 import { PATH_AUTH } from 'route/path'
 import { BUTTON, REGEX, LOCAL_STORAGE_KEY, RESPONSE, KEY, LABEL, FLEX, VARIANT, SNACK, SIZE, COLOR, DEBUG } from 'constant'
-import ReCaptcha from 'component/captcha/reCaptcha'
 
 const { TYPOGRAPHY } = VARIANT
 
@@ -20,16 +19,13 @@ function LoginForm() {
     const navigate = useNavigate()
     const { login } = useAuthContext()
     const { themeMode } = useSettingContext()
-
-    const [captchaToken, setCaptchaToken] = useState(null)
-    const [captchaResetKey, setCaptchaResetKey] = useState(0)
-
     const regEx = new RegExp(REGEX.ERROR_CODE)
 
     const defaultValues = {
         email: '',
         password: '',
-        remember: false
+        remember: false,
+        recaptchaToken: ''
     }
 
     const methods = useForm({
@@ -46,7 +42,7 @@ function LoginForm() {
         formState: { errors, isSubmitting, isSubmitSuccessful }
     } = methods
 
-    const { remember, email, password } = watch()
+    const { remember, email, password, recaptchaToken } = watch()
 
     // Load saved email & remember
     useEffect(() => {
@@ -59,22 +55,12 @@ function LoginForm() {
         }
     }, [])
 
-
-    useEffect(() => {
-        if (email.trim() && password.trim().length >= 6) {
-            setCaptchaResetKey(prev => prev + 1)
-            setCaptchaToken(null)
-        } else {
-            setCaptchaToken(null)
-        }
-    }, [email, password])
     const onSubmit = async data => {
-        if (!captchaToken) {
-            snack('Please complete the reCAPTCHA', { variant: COLOR.ERROR })
-            return
-        }
-
         try {
+            if (!data.recaptchaToken) {
+                snack('Please complete the reCAPTCHA', { variant: COLOR.ERROR })
+                return
+            }
             if (remember) {
                 const HowickUserData = {
                     email,
@@ -85,7 +71,7 @@ function LoginForm() {
                 localStorage.removeItem(LOCAL_STORAGE_KEY.USER_DATA)
             }
 
-            await login(data.email, data.password)
+            await login(data)
 
             if (localStorage.getItem(LOCAL_STORAGE_KEY.MFA)) {
                 navigate(PATH_AUTH.authenticate)
@@ -106,7 +92,7 @@ function LoginForm() {
 
     return (
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <Stack spacing={3} sx={{ mt: 1 }}>
+            <Stack spacing={2} sx={{ mt: 1, mb: 1 }}>
                 {!!errors.afterSubmit && (
                     <Alert severity='error'>{errors?.afterSubmit?.message || SNACK.GENERIC_ERROR}</Alert>
                 )}
@@ -125,16 +111,15 @@ function LoginForm() {
                     autoComplete={KEY.CURRENT_PASSWORD}
                     aria-label={LABEL.LOGIN_PASSWORD}
                 />
+
+                <RHFCheckbox name={KEY.REMEMBER} label={t('remember_me.label')} />
+
+                {email.trim() && password.trim().length >= 6 && (
+                    <RHFReCaptchaV2
+                        name='recaptchaToken'
+                    />
+                )}
             </Stack>
-
-            <RHFCheckbox name={KEY.REMEMBER} label={t('remember_me.label')} />
-
-            {email.trim() && password.trim().length >= 6 && (
-                <ReCaptcha
-                    //   key={captchaResetKey}  
-                    onVerify={(token) => setCaptchaToken(token)}
-                />
-            )}
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <GStyledLoadingButton
                     // fullWidth
@@ -143,7 +128,7 @@ function LoginForm() {
                     type={KEY.SUBMIT}
                     mode={themeMode}
                     loading={isSubmitSuccessful || isSubmitting}
-                    disabled={!email.trim() || password.trim().length < 6 || !captchaToken}
+                    disabled={!email.trim() || password.trim().length < 6 || !recaptchaToken}
                     sx={{
                         ...RADIUS.BORDER,
                         width: '115px',
