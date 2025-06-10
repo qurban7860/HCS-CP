@@ -156,9 +156,9 @@ export function AuthProvider({ children }) {
       }
 
       // :login
-      const login = useCallback(async (email, password) => {
+      const login = useCallback(async ({ email, password, recaptchaToken }) => {
             await dispatch(clearAllPersistedStates())
-            const response = await axios.post(PATH_SERVER.SECURITY.CUSTOMER_LOGIN, { email, password })
+            const response = await axios.post(PATH_SERVER.SECURITY.CUSTOMER_LOGIN, { email, password, recaptchaToken })
 
             if (response?.data?.multiFactorAuthentication) {
                   localStorage.setItem(LOCAL_STORAGE_KEY.USER_ID, response.data.userId)

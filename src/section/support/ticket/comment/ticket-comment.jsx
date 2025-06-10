@@ -217,7 +217,21 @@ const TicketComment = ({ currentUser }) => {
                               </FormProvider>
                             ) : (
                               <Fragment>
-                                <Typography component='span' variant={TYPOGRAPHY.BODY2} color='text.primary'>
+                               <Typography component="div" variant={TYPOGRAPHY.BODY2} color="text.primary" sx={{
+                               '& ul': {
+                                    pl: 3,
+                                    listStyleType: 'disc',
+                                    mb: 1,
+                                    },
+                               '& ol': {
+                                    pl: 3,
+                                    listStyleType: 'decimal',
+                                    mb: 1,
+                                    },
+                               '& li': {
+                                   mb: 0.5,
+                                    }
+                                    }}>
                                  <div dangerouslySetInnerHTML={{ __html: item.comment }} />
                                   {item.updatedAt !== item.createdAt && (
                                     <Typography component='span' variant={TYPOGRAPHY.CAPTION} sx={{ color: 'text.secondary', ml: 1 }}>
