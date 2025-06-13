@@ -44,6 +44,16 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
 
   const isNotFound = !isLoading && !graphData.length;
 
+ const totalProduced =
+  Array.isArray(graphData) && graphData.length > 0
+    ? graphData.reduce((acc, item) => {
+        const componentLength = item?.componentLength || 0
+        const waste = item?.waste || 0
+        return acc + componentLength + waste
+      }, 0)
+    : 0
+
+
   const handleExpandGraph = () => {
     if (machineId) {
       navigate(PATH_MACHINE.machines.fullScreen.view(machineId), {
@@ -68,6 +78,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
             {t('production.label').toUpperCase()}
           </Typography>
         )}
+    
          {/* &nbsp; */}
         {/* <Box>
           <Typography variant={isDashboard ? TYPOGRAPHY.OVERLINE0 : TYPOGRAPHY.H4} p={0}>
@@ -86,6 +97,10 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
         )}
         {!isLoading && (
           <Fragment>
+             <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+            Total Production: {totalProduced.toLocaleString(undefined, { maximumFractionDigits: 2 })} m &nbsp; &nbsp; ({dateFrom.toLocaleDateString('en-GB')} - {dateTo.toLocaleDateString('en-GB')})
+           </Typography>
+
             {graphData?.length > 0 && (
               <Fragment>
                 <LogStackedChart
@@ -102,6 +117,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
               </Box>
             )}
           </Fragment>
+          
         )}
       </Card>
     </Grid>
