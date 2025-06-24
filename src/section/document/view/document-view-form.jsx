@@ -229,8 +229,7 @@ function DocumentViewForm({ isDrawingPage, document }) {
             </DialogTitle>
             <Divider variant='fullWidth' />
             {pdf ? <iframe title={PDFName}
-              // src={pdf} 
-              src={`https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(pdf)}#toolbar=0`}
+              src={pdf}
               style={{ paddingBottom: 10 }} width='100%' height='842px' /> : <SkeletonPDF />}
           </Dialog>
         )}
