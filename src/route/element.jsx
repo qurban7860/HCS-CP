@@ -48,6 +48,7 @@ export const CustomerSupportTicketsPage = Loadable(lazy(() => import('page/crm/s
 // log
 export const LogList = Loadable(lazy(() => import('section/log/logs/logs-section')))
 export const LogGraph = Loadable(lazy(() => import('section/log/erp/graph/graphs-section')))
+export const FullScreenGraph = Loadable(lazy(() => import('section/log/erp/graph/graph-page')))
 // support
 export const TicketsListPage = Loadable(lazy(() => import('page/support/tickets/tickets')))
 export const TicketCreatePage = Loadable(lazy(() => import('page/support/ticket/ticket-create')))

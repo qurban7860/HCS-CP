@@ -50,6 +50,7 @@ import {
   // log:
   LogList,
   LogGraph,
+  FullScreenGraph,
   // fallback:
   BlankPage,
   FallbackPage
@@ -196,6 +197,7 @@ export default function Router() {
                       children: [{ element: <MachinesLogsPage />, index: true }]
                     },
                     { path: 'graphs', element: <MachinesGraphsPage /> },
+                    { path: 'graphs/fullScreen', element: <FullScreenGraph /> },
                     {
                       path: 'support',
                       children: [
@@ -315,6 +317,7 @@ export default function Router() {
           children: [
             { element: <LogList />, index: true },
             { path: 'graph', element: <LogGraph /> },
+            { path: 'graph/fullScreen', element: <FullScreenGraph /> },
             { element: <FallbackPage {...FALLBACK.UNDER_DEVELOPMENT} /> }
           ]
         },
