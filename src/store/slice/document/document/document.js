@@ -136,7 +136,7 @@ export function getDocuments({ isActive, basic, docCategory, docType, machine, p
   return async (dispatch) => {
     dispatch(documentSlice.actions.startLoading())
     try {
-      const params = { isActive, basic, customerAccess: true, forMachine: true, docCategory, docType, machine }
+      const params = { isActive, basic, customerAccess: true, docCategory, docType, machine }
       if (typeof page === 'number' && pageSize) {
         params.pagination = {
           page,
