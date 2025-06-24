@@ -60,7 +60,9 @@ const MachineModuleLayout = () => {
                         getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
                         renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
                         onChange={(e, newValue) => {
-                            navigate(PATH_MACHINE.machines.view(newValue?._id))
+                            if (newValue?._id) {
+                                navigate(PATH_MACHINE.machines.view(newValue?._id))
+                            }
                         }}
                         renderInput={(params) => <TextField label="Machine" variant="filled" {...params} />}
                     />
