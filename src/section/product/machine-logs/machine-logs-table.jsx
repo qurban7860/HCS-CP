@@ -65,20 +65,23 @@ const MachineLogsTable = ({ logType, isLogsPage }) => {
                 <Grid item xs={12} sm={12}>
                     <Grid container mb={2}>
                         <Grid item xs={12} sm={12} mb={2} bgcolor='background.paper'>
-                            <GStyledStickyDiv top={isLogsPage ? NAV.T_STICKY_LOG_TABLE_HEADER : NAV.T_STICKY_LOG_MACH_TABLE_HEADER} zIndex={9}>
-                                <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
-                                <LogsPagination
-                                    count={logsTotalCount || 0}
-                                    data={logsTotalCount}
-                                    page={logPage}
-                                    rowsPerPage={logRowsPerPage}
-                                    handleChangePage={handleChangePage}
-                                    handleChangeRowsPerPage={handleChangeRowsPerPage}
-                                    columnFilterButtonData={tableColumns}
-                                    handleColumnButtonClick={handleColumnButtonClick}
-                                />
-                            </GStyledStickyDiv>
-                            <TableContainer sx={{ height: NAV.H_LOG_TABLE, overflow: 'auto' }}>
+                            {/* <GStyledStickyDiv top={isLogsPage ? NAV.T_STICKY_LOG_TABLE_HEADER : NAV.T_STICKY_LOG_MACH_TABLE_HEADER} zIndex={9}> */}
+                            <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={2} />
+                            <LogsPagination
+                                count={logsTotalCount || 0}
+                                data={logsTotalCount}
+                                page={logPage}
+                                rowsPerPage={logRowsPerPage}
+                                handleChangePage={handleChangePage}
+                                handleChangeRowsPerPage={handleChangeRowsPerPage}
+                                columnFilterButtonData={tableColumns}
+                                handleColumnButtonClick={handleColumnButtonClick}
+                            />
+                            {/* </GStyledStickyDiv> */}
+                            <TableContainer sx={{
+                                // height: NAV.H_LOG_TABLE,
+                                height: `calc(100vh - 470px)`, overflow: 'auto'
+                            }}>
                                 <Table>
                                     <LogsHeader columns={tableColumns} dataFiltered={dataFiltered} orderBy={orderBy} order={order} onSort={onSort} />
                                     {(isLoading ? [...Array(logRowsPerPage)] : dataFiltered).map((row, index) =>

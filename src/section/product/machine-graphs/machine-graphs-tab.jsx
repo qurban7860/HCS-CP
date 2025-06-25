@@ -44,7 +44,7 @@ const MachineGraphsTab = () => {
     const payload = { logPeriod, logGraphType, dateFrom, dateTo }
     setSubmittedValues(payload)
 
-    dispatch(getLogGraphData( customerId, machineId, 'erp', logPeriod, logGraphType.key, dateFrom, dateTo ))
+    dispatch(getLogGraphData(customerId, machineId, 'erp', logPeriod, logGraphType.key, dateFrom, dateTo))
 
     setGraphLabels({
       yaxis: logGraphType.key === 'productionRate'
@@ -55,15 +55,14 @@ const MachineGraphsTab = () => {
   }, [getValues, machine?.customer?._id, machineId])
 
   useEffect(() => {
-    if ( defaultValues?.logGraphType && defaultValues?.logPeriod && defaultValues?.dateFrom && defaultValues?.dateTo && machine?.customer?._id)
-    {
+    if (defaultValues?.logGraphType && defaultValues?.logPeriod && defaultValues?.dateFrom && defaultValues?.dateTo && machine?.customer?._id) {
       const { logPeriod, logGraphType, dateFrom, dateTo } = defaultValues
       const customerId = machine?.customer?._id
 
-      const payload = { logPeriod, logGraphType, dateFrom, dateTo}
+      const payload = { logPeriod, logGraphType, dateFrom, dateTo }
       setSubmittedValues(payload)
 
-      dispatch(getLogGraphData( customerId, machineId, 'erp', logPeriod, logGraphType.key, dateFrom, dateTo ))
+      dispatch(getLogGraphData(customerId, machineId, 'erp', logPeriod, logGraphType.key, dateFrom, dateTo))
 
       setGraphLabels({
         yaxis: logGraphType.key === 'productionRate'
@@ -87,7 +86,7 @@ const MachineGraphsTab = () => {
 
   return (
     <Fragment>
-      <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_CONTROLLER} zIndex={7}>
+      <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_GRAPG_CONTROLLER} zIndex={7}  >
         <FormProvider methods={methods} onSubmit={handleSubmit(handleFormSubmit)}>
           <Grid container spacing={2}>
             <Grid item xs={12}>

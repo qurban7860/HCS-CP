@@ -113,7 +113,7 @@ const MachineLogsTab = () => {
 
   return (
     <Fragment>
-      <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_CONTROLLER} zIndex={12}>
+      <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_CONTROLLER} zIndex={1}>
         <FormProvider methods={methods} onSubmit={handleSubmit(handleFormSubmit)}>
           <Grid container spacing={SPACING.TAB}>
             <Grid item xs={12} md={12}>
@@ -128,8 +128,8 @@ const MachineLogsTab = () => {
             </Grid>
           </Grid>
         </FormProvider>
+        <MachineLogsTable logType={logType} />
       </GStyledStickyDiv>
-      <MachineLogsTable logType={logType} />
     </Fragment>
   )
 }

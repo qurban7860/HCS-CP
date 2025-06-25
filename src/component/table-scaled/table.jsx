@@ -61,7 +61,7 @@ const DynamicTable = ({
         <Grid container flexDirection={FLEX_DIR.ROW} {...MARGIN.PAGE_PROP}>
             <Grid item xs={12} sm={12}>
                 <Grid container mb={2}>
-                    <Grid item xs={12} sm={12} mb={2} bgcolor='background.paper'>
+                    <Grid item xs={12} sm={12} bgcolor='background.paper'>
                         {/* <GStyledStickyDiv top={NAV.T_STICKY_DOCUMENT_TABLE_HEADER} zIndex={9}> */}
                         <GStyledTableHeaderBox bgcolor={themeMode === KEY.LIGHT ? 'success.main' : 'grey.800'} flex={1} px={2} pt={1} />
                         <TablePaginationCustom
@@ -85,7 +85,10 @@ const DynamicTable = ({
                             nodeAfterPagination={nodeAfterPagination}
                         />
                         {/* </GStyledStickyDiv> */}
-                        <TableContainer sx={{ height: NAV.H_LOG_TABLE, overflow: 'auto' }}>
+                        <TableContainer sx={{
+                            height: `calc(100vh - 420px)`, overflow: 'auto'
+                        }}
+                        >
                             <Table>
                                 <TableHeader columns={tableColumns} dataFiltered={dataFiltered} orderBy={orderBy} order={order} onSort={onSort} />
                                 {(isLoading ? [...Array(rowsPerPage)] : dataFiltered).map((row, index) =>
