@@ -44,27 +44,26 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
 
   const isNotFound = !isLoading && !graphData.length;
 
- const totalProduced =
-  Array.isArray(graphData) && graphData.length > 0
-    ? graphData.reduce((acc, item) => {
-        const componentLength = item?.componentLength || 0
-        const waste = item?.waste || 0
-        return acc + componentLength + waste
-      }, 0)
-    : 0
-
+  const getTotalProduction = () => {
+    if (!graphData || graphData.length === 0) return '0';
+    const totalProduced = graphData.reduce(
+      (sum, item) => sum + (item.componentLength || 0) + (item.waste || 0),
+      0
+    );
+    return totalProduced.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  };
 
   const handleExpandGraph = () => {
     if (machineId) {
       navigate(PATH_MACHINE.machines.fullScreen.view(machineId), {
         state: {
-          logsGraphData: logsGraphData, graphLabels, graphHeight, timePeriod, dateFrom, dateTo
+          logsGraphData: logsGraphData, graphLabels, timePeriod, dateFrom, dateTo
         }
       });
     } else {
       navigate(PATH_LOGS.fullScreen, {
         state: {
-          logsGraphData: logsGraphData, graphLabels, graphHeight, timePeriod, dateFrom, dateTo
+          logsGraphData: logsGraphData, graphLabels, timePeriod, dateFrom, dateTo
         }
       });
     }
@@ -73,11 +72,11 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
   return (
     <Grid item xs={12} sm={12} md={12} xl={isDashboard ? 12 : 12}>
       <GStyledSpanBox alignItems={KEY.CENTER} my={2} sx={{ display: FLEX.FLEX, justifyContent: FLEX.SPACE_BETWEEN }}>
-        {isDesktop && (
+        {/* {isDesktop && (
           <Typography variant={isDesktop ? TYPOGRAPHY.H4 : TYPOGRAPHY.OVERLINE} gutterBottom>
             {t('production.label').toUpperCase()}
           </Typography>
-        )}
+        )} */}
     
          {/* &nbsp; */}
         {/* <Box>
@@ -97,9 +96,19 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
         )}
         {!isLoading && (
           <Fragment>
-             <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-            Total Production: {totalProduced.toLocaleString(undefined, { maximumFractionDigits: 2 })} m &nbsp; &nbsp; ({dateFrom.toLocaleDateString('en-GB')} - {dateTo.toLocaleDateString('en-GB')})
-           </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
+          <Typography variant="h6" color="primary" gutterBottom>
+            Meterage Production Over Time
+          </Typography>
+
+          <Typography variant="subtitle1" > 
+            <strong>Meterage Production:</strong> {getTotalProduction()} m {' '}
+              <span style={{ color: '#666' }}>
+                ({dateFrom.toLocaleDateString('en-GB')} – {dateTo.toLocaleDateString('en-GB')})
+              </span>
+          </Typography>
+        </Box>
+            
 
             {graphData?.length > 0 && (
               <Fragment>
