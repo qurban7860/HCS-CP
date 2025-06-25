@@ -4,15 +4,15 @@ import { Box } from '@mui/material'
 const loadFeatures = () => import('./feature.js').then(res => res.default)
 
 MotionLazyContainer.propTypes = {
- children: PropTypes.node
+    children: PropTypes.node
 }
 
 export default function MotionLazyContainer({ children }) {
- return (
-  <LazyMotion strict features={loadFeatures}>
-   <Box component={m.div} sx={{ height: '100vh' }}>
-    {children}
-   </Box>
-  </LazyMotion>
- )
+    return (
+        <LazyMotion strict features={loadFeatures}>
+            <Box component={m.div} sx={{ height: '85vh' }}>
+                {children}
+            </Box>
+        </LazyMotion>
+    )
 }

@@ -50,7 +50,7 @@ const MachineModuleLayout = () => {
 
     return (
         <MotionLazyContainer display={FLEX.FLEX}>
-            <Grid container rowGap={1} flexDirection={FLEX_DIR.COLUMN}>
+            <Grid container rowGap={1} flexDirection={FLEX_DIR.COLUMN} sx={{ position: 'sticky', zIndex: '2' }}>
                 <Grid item xs={12} sm={12} lg={6}>
                     <Autocomplete
                         size='small'
