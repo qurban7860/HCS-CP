@@ -21,13 +21,13 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
 
   const menuBackgroundColor = themeMode === KEY.LIGHT ? theme.palette.common.white : theme.palette.grey[800]
   const menuTextColor = themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
-  
+
   useEffect(() => {
     const processedChartData = processGraphData(skipZero);
     if (processedChartData) {
       setChart(processedChartData);
     } else {
-      setChart({ categories: [], series: [] }); 
+      setChart({ categories: [], series: [] });
     }
   }, [skipZero, processGraphData]);
 
@@ -52,6 +52,9 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
       },
       events: {
         dataPointSelection: true
+      },
+      padding: {
+        bottom: -65 // ✅ fixes large gap below x-axis title
       }
     },
     colors: themeMode === KEY.LIGHT ? colors : colorsDarkMode,
@@ -110,6 +113,7 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
       labels: {
         offsetY: 0,
         rotate: -45,
+        maxHeight: 60,
         rotateAlways: true
       },
       axisBorder: { show: false, color: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[700] },
@@ -165,9 +169,9 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
             value === 0
               ? ''
               : value.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                });
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              });
 
           tooltipContent += `
         <div class="apexcharts-tooltip-series-group apexcharts-active" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
@@ -212,17 +216,17 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
         <FormControlLabel
           control={<Checkbox checked={skipZero} onChange={() => setSkipZero((prev) => !prev)} />}
           label="Empty or zero values skipped"
-        /> 
+        />
         {onExpand && (
-          <GStyledTooltip 
-            placement="top" 
+          <GStyledTooltip
+            placement="top"
             title="Full Screen"
             tooltipcolor={theme.palette.primary.main}>
             <IconButton size="large" color="primary" onClick={onExpand} sx={{ mr: -0.5 }}>
               <Iconify icon="fluent:expand-up-right-20-filled" />
             </IconButton>
           </GStyledTooltip>
-        )} 
+        )}
       </Box>
       <Chart type='bar' series={series} options={chartOptions} height={chartOptions.chart.height} />
     </Fragment>
