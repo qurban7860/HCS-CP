@@ -3,7 +3,7 @@ import { t } from 'i18next'
 import { useSelector } from 'react-redux'
 import { ICON_NAME } from 'hook'
 import { setSelectedSearchFilter } from 'store/slice'
-import { Box, Grid } from '@mui/material'
+import { Box, Card, Grid } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
 import { RHFAutocomplete, RHFDatePickr, RHFFilteredSearchBar } from 'component/hook-form'
 import { GStyledControllerCardContainer } from 'theme/style'
@@ -22,6 +22,7 @@ const LogsTableController = ({
   onGetGraph,
   dataForApi
 }) => {
+
   const { selectedSearchFilter } = useSelector(state => state.log)
   const theme = useTheme()
 
@@ -30,34 +31,9 @@ const LogsTableController = ({
   const { dateFrom, dateTo, logType } = watch()
 
   return (
-    <GStyledControllerCardContainer height='auto'>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={isGraphPage ? 4 : 6} md={2}>
-          <RHFDatePickr
-            label='Date From'
-            name='dateFrom'
-            value={dateFrom}
-            size='small'
-            onChange={newValue => {
-              setValue('dateFrom', newValue)
-              trigger(['dateFrom', 'dateTo'])
-            }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={isGraphPage ? 4 : 6} md={2}>
-          <RHFDatePickr
-            label='Date To'
-            name='dateTo'
-            value={dateTo}
-            size='small'
-            onChange={newValue => {
-              setValue('dateTo', newValue)
-              trigger(['dateFrom', 'dateTo'])
-            }}
-          />
-        </Grid>
-        
-         {handleGraphTypeChange && isGraphPage && (
+    <Card sx={{ height: 'auto', padding: 3, borderRadius: 1.5, my: 1.5 }}>
+      <Grid container spacing={2} alignItems="flex-start">
+        {handleGraphTypeChange && isGraphPage && (
           <Grid item xs={12} sm={6} md={3.5}>
             <RHFAutocomplete
               name='logGraphType'
@@ -76,7 +52,7 @@ const LogsTableController = ({
             />
           </Grid>
         )}
-        
+
         {handlePeriodChange && isGraphPage && (
           <Grid item xs={12} sm={4} md={3.5}>
             <RHFAutocomplete
@@ -90,9 +66,32 @@ const LogsTableController = ({
             />
           </Grid>
         )}
-
+        <Grid item xs={12} sm={isGraphPage ? 4 : 6} md={2}>
+          <RHFDatePickr
+            label='Date From'
+            name='dateFrom'
+            value={dateFrom}
+            size='small'
+            onChange={(value) => {
+              setValue('dateFrom', value, { shouldValidate: true });
+              trigger('dateFrom');
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={isGraphPage ? 4 : 6} md={2}>
+          <RHFDatePickr
+            label='Date To'
+            name='dateTo'
+            value={dateTo}
+            size='small'
+            onChange={(value) => {
+              setValue('dateTo', value, { shouldValidate: true });
+              trigger('dateTo');
+            }}
+          />
+        </Grid>
         {isGraphPage && (
-          <Grid item xs={12} sm={2} md={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+          <Grid item xs={12} sm={2} md={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', mt: 0.5 }}>
             <IconTooltip
               title={t('log.button_graph.get_graph').toUpperCase()}
               icon={ICON_NAME.SEARCH}
@@ -139,7 +138,7 @@ const LogsTableController = ({
           </Grid>
         )}
       </Grid>
-    </GStyledControllerCardContainer>
+    </Card>
   )
 }
 
