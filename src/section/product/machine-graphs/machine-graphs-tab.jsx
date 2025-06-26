@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import { useSettingContext } from 'hook'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { getLogGraphData, setSelectedSearchFilter } from 'store/slice/log/machineLog'
-import { erpGraphSchema } from 'schema/graph/erp-graph-schema'
+import { fetchIndMachineGraphSchema } from 'schema/graph/erp-graph-schema'
 import { LogsTableController, useLogDefaultValues } from 'section/log/logs'
 import { ERPProductionTotal, ERPProductionRate } from 'section/log'
 import { Grid } from '@mui/material'
@@ -24,15 +24,59 @@ const MachineGraphsTab = () => {
   const { machineId } = useParams()
 
   const methods = useForm({
-    resolver: yupResolver(erpGraphSchema),
+    resolver: yupResolver(fetchIndMachineGraphSchema),
+    mode: 'onBlur',
     defaultValues
   })
 
-  const { setValue, handleSubmit, getValues } = methods
+  const { setValue, handleSubmit, getValues, watch, trigger } = methods
+
+  const logPeriodWatched = watch('logPeriod');
+
   const [graphLabels, setGraphLabels] = useState({
-    yaxis: 'Produced Length and Waste (m)',
+    yaxis: 'Meterage Produced Graph',
     xaxis: defaultValues.logPeriod || 'Daily'
   })
+  
+  useEffect(() => {
+      const now = new Date();
+      const newDateFrom = new Date(now);
+      
+      newDateFrom.setHours(0, 0, 0, 0);
+      now.setHours(23, 59, 59, 999);
+    
+      switch (logPeriodWatched) {
+        case 'Hourly':
+          break;
+    
+        case 'Daily':
+          newDateFrom.setDate(newDateFrom.getDate() - 30);
+          break;
+    
+        case 'Monthly':
+          newDateFrom.setMonth(newDateFrom.getMonth() - 11);
+          newDateFrom.setDate(1);
+          break;
+    
+        case 'Quarterly':
+          newDateFrom.setMonth(newDateFrom.getMonth() - 35);
+          newDateFrom.setMonth(Math.floor(newDateFrom.getMonth() / 3) * 3, 1);
+          break;
+    
+        case 'Yearly':
+          newDateFrom.setFullYear(newDateFrom.getFullYear() - 9);
+          newDateFrom.setMonth(0, 1);
+          break;
+    
+        default:
+          newDateFrom.setDate(newDateFrom.getDate() - 30);
+          break;
+      }
+    
+      setValue('dateTo', now);
+      setValue('dateFrom', newDateFrom);
+      trigger(['dateFrom', 'dateTo']);
+    }, [logPeriodWatched, setValue, trigger]);
 
   const [submittedValues, setSubmittedValues] = useState(null)
 
@@ -49,7 +93,7 @@ const MachineGraphsTab = () => {
     setGraphLabels({
       yaxis: logGraphType.key === 'productionRate'
         ? 'Production Rate (m/hr)'
-        : 'Produced Length and Waste (m)',
+        : 'Meterage Produced Graph',
       xaxis: logPeriod
     })
   }, [getValues, machine?.customer?._id, machineId])
@@ -67,7 +111,7 @@ const MachineGraphsTab = () => {
       setGraphLabels({
         yaxis: logGraphType.key === 'productionRate'
           ? 'Production Rate (m/hr)'
-          : 'Produced Length and Waste (m)',
+          : 'Meterage Produced Graph',
         xaxis: logPeriod
       })
     }
@@ -96,7 +140,7 @@ const MachineGraphsTab = () => {
                 setSelectedFilter={setSelectedSearchFilter}
                 isGraphPage
                 methods={methods}
-                onGetGraph={handleFormSubmit}
+                onGetGraph={handleSubmit(handleFormSubmit)}
               />
             </Grid>
           </Grid>

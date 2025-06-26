@@ -58,12 +58,12 @@ const _GEN5_LOG_TYPES = {
             { id: '_id', label: 'ID', searchable: true },
             { id: 'componentLabel', label: 'Component Label', defaultShow: true, searchable: true },
             { id: 'frameSet', label: 'Frame Set', defaultShow: true, searchable: true },
-            { id: 'componentLength', label: 'Length (m)', alwaysShow: true, defaultShow: true, searchable: true, numerical: true, convertToM: true },
+            { id: 'componentLength', label: 'Length (m)', fullLabel: 'Produced Length', alwaysShow: true, defaultShow: true, tooltip: true, searchable: true, numerical: true, convertToM: true },
             { id: 'waste', label: 'Waste (m)', alwaysShow: true, defaultShow: true, searchable: true, numerical: true, convertToM: true },
-            { id: 'coilLength', label: 'C (m)', fullLabel: 'Coil Length (m)', defaultShow: true, searchable: true, numerical: true, tooltip: true, convertToM: true },
-            { id: 'flangeHeight', label: 'F (m)', fullLabel: 'Flange Height (m)', defaultShow: true, searchable: true, numerical: true, tooltip: true, convertToM: true },
-            { id: 'webWidth', label: 'W (m)', fullLabel: 'Web Width (m)', defaultShow: true, searchable: true, numerical: true, tooltip: true, convertToM: true },
-            { id: 'profileShape', label: 'P', fullLabel: 'Profile Shape', defaultShow: true, searchable: true, tooltip: true },
+            { id: 'coilLength', label: 'Rem.Coil (m)', fullLabel: 'Remaining Coil Length', defaultShow: true, searchable: true, numerical: true, tooltip: true, convertToM: true },
+            { id: 'flangeHeight', label: 'Flange (mm)', fullLabel: 'Flange Height', defaultShow: true, searchable: true, numerical: true, tooltip: true },
+            { id: 'webWidth', label: 'Web (mm)', fullLabel: 'Web Width', defaultShow: true, searchable: true, numerical: true, tooltip: true },
+            { id: 'profileShape', label: 'P.S', fullLabel: 'Profile Shape', defaultShow: true, searchable: true, tooltip: true },
             { id: 'componentWeight', label: 'Weight', fullLabel: 'Component Weight', searchable: true, numerical: true, tooltip: true },
             { id: 'coilBatchName', label: 'Coil Batch Name', searchable: true },
             { id: 'coilThickness', label: 'C.T (m)', fullLabel: 'Coil Thickness', searchable: true, numerical: true, tooltip: true, convertToM: true },
@@ -130,7 +130,7 @@ export const getLogTypeConfigForGenerationAndType = (generation, type) => {
 
 export const logGraphTypes = [
     {
-        name: 'Production (m)',
+        name: 'Meterage Produced Graph',
         key: 'production_total'
     },
     // {
