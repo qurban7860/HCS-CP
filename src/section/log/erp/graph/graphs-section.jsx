@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuthContext } from 'auth/use-auth-context'
 import { HowickLoader, IconTooltip, TableTitleBox } from 'component'
-import { RHFAutocomplete, RHFDatePickr} from 'component/hook-form'
+import { RHFAutocomplete, RHFDatePickr } from 'component/hook-form'
 // import RHFDateTimePicker from 'component/hook-form/rhf-dateTime-picker'  
 
 import { FLEX, FLEX_DIR, KEY, TYPOGRAPHY } from 'constant'
@@ -36,7 +36,7 @@ const GraphsSection = () => {
       dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
       dateTo: new Date()
       // dateFrom: new Date(new Date().setHours(0, 0, 0, 0)),
-     // dateTo: new Date(new Date().setHours(23, 59, 59, 0)),
+      // dateTo: new Date(new Date().setHours(23, 59, 59, 0)),
     }),
     [user]
   )
@@ -99,100 +99,99 @@ const GraphsSection = () => {
         </Grid>
       </GStyledStickyDiv>
 
-      <GStyledStickyDiv top={NAV.T_STICKY_NAV_LOGS_CONTROLLER} zIndex={11}>
-        <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Grid container spacing={2} mt={3}>
-              <Grid item xs={12} sm={12}>
-                <GStyledControllerCardContainer height={'auto'} sx={{ display: FLEX.FLEX, flexDirection: FLEX_DIR.COLUMN, gap: 2 }}>
-                  <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>
-                    <RHFAutocomplete
-                      name='machine'
-                      label={t('machine.label')}
-                      options={(Array.isArray(machines) && machines?.filter(ma => ma?.machineModel?.category?.name?.toLowerCase()?.includes('frama'))) || []}
-                      isOptionEqualToValue={(option, value) => option._id === value._id}
-                      getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
-                      renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
-                      size='small'
-                    />
+      {/* <GStyledStickyDiv top={NAV.T_STICKY_NAV_LOGS_CONTROLLER} zIndex={11}> */}
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={2} mt={3}>
+            <Grid item xs={12} sm={12}>
+              <GStyledControllerCardContainer height={'auto'} sx={{ display: FLEX.FLEX, flexDirection: FLEX_DIR.COLUMN, gap: 2 }}>
+                <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>
+                  <RHFAutocomplete
+                    name='machine'
+                    label={t('machine.label')}
+                    options={(Array.isArray(machines) && machines?.filter(ma => ma?.machineModel?.category?.name?.toLowerCase()?.includes('frama'))) || []}
+                    isOptionEqualToValue={(option, value) => option._id === value._id}
+                    getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
+                    renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
+                    size='small'
+                  />
 
-                    <RHFDatePickr
-                      label='From Date'
-                      name='dateFrom'
+                  <RHFDatePickr
+                    label='From Date'
+                    name='dateFrom'
+                    size='small'
+                    onChange={newValue => {
+                      setValue('dateFrom', newValue)
+                      trigger(['dateFrom', 'dateTo'])
+                    }}
+                  />
+                  <RHFDatePickr
+                    label='To Date'
+                    name='dateTo'
+                    size='small'
+                    onChange={newValue => {
+                      setValue('dateTo', newValue)
+                      trigger(['dateFrom', 'dateTo'])
+                    }}
+                  />
+                </Box>
+
+                <Box display='flex' gap={2} alignItems='center'>
+
+                  <Box flexGrow={1}>
+                    <RHFAutocomplete
+                      name='logGraphType'
+                      label={t('graph_type.label')}
+                      options={logGraphTypes}
+                      getOptionLabel={option => option?.name || ''}
+                      isOptionEqualToValue={(option, value) => option?.key === value?.key}
+                      renderOption={(props, option) => (
+                        <li {...props} key={option.key}>
+                          {option.name}
+                        </li>
+                      )}
+                      disableClearable
                       size='small'
-                      onChange={newValue => {
-                        setValue('dateFrom', newValue)
-                        trigger(['dateFrom', 'dateTo'])
-                      }}
+                      fullWidth
                     />
-                    <RHFDatePickr
-                      label='To Date'
-                      name='dateTo'
+                  </Box>
+                  <Box flexGrow={1}>
+                    <RHFAutocomplete
+                      name='logPeriod'
+                      label={t('log.period.label')}
+                      options={['Hourly', 'Daily', 'Monthly', 'Quarterly', 'Yearly']}
+                      onChange={(e, newVal) => handlePeriodChange(newVal)}
                       size='small'
-                      onChange={newValue => {
-                        setValue('dateTo', newValue)
-                        trigger(['dateFrom', 'dateTo'])
-                      }}
+                      disableClearable
+                      required
+                      fullWidth
                     />
                   </Box>
 
-                  <Box display='flex' gap={2} alignItems='center'>
-                    
-                    <Box flexGrow={1}>
-                      <RHFAutocomplete
-                        name='logGraphType'
-                        label={t('graph_type.label')}
-                        options={logGraphTypes}
-                        getOptionLabel={option => option?.name || ''}
-                        isOptionEqualToValue={(option, value) => option?.key === value?.key}
-                        renderOption={(props, option) => (
-                          <li {...props} key={option.key}>
-                            {option.name}
-                          </li>
-                        )}
-                        disableClearable
-                        size='small'
-                        fullWidth
-                      />
-                    </Box>
-                    <Box flexGrow={1}>
-                      <RHFAutocomplete
-                        name='logPeriod'
-                        label={t('log.period.label')}
-                        options={['Hourly', 'Daily', 'Monthly', 'Quarterly', 'Yearly']}
-                        onChange={(e, newVal) => handlePeriodChange(newVal)}
-                        size='small'
-                        disableClearable
-                        required
-                        fullWidth
-                      />
-                    </Box>
 
-                   
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                      <IconTooltip
-                        title={t('log.button_graph.get_graph').toUpperCase()}
-                        icon={ICON_NAME.SEARCH}
-                        color={theme.palette.common.white}
-                        tooltipColor={theme.palette.primary.main}
-                        buttonColor={theme.palette.howick.darkBlue}
-                        variant="contained"
-                        size="small"
-                        type="submit"
-                        onClick={() => { }}
-                      />
-                      {/* <GStyledLoadingButton mode={themeMode} type='submit' variant='contained' size='large' startIcon={<Icon icon={ICON_NAME.SEARCH} />}>
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <IconTooltip
+                      title={t('log.button_graph.get_graph').toUpperCase()}
+                      icon={ICON_NAME.SEARCH}
+                      color={theme.palette.common.white}
+                      tooltipColor={theme.palette.primary.main}
+                      buttonColor={theme.palette.howick.darkBlue}
+                      variant="contained"
+                      size="small"
+                      type="submit"
+                      onClick={() => { }}
+                    />
+                    {/* <GStyledLoadingButton mode={themeMode} type='submit' variant='contained' size='large' startIcon={<Icon icon={ICON_NAME.SEARCH} />}>
                         {t('log.button_graph.get_graph').toUpperCase()}
                       </GStyledLoadingButton> */}
-                    </Box>
                   </Box>
-                </GStyledControllerCardContainer>
-              </Grid>
+                </Box>
+              </GStyledControllerCardContainer>
             </Grid>
-          </form>
-        </FormProvider>
-      </GStyledStickyDiv>
-
+          </Grid>
+        </form>
+      </FormProvider>
+      {/* </GStyledStickyDiv> */}
       {isLoading ? (
         <HowickLoader height={300} width={303} mode={themeMode} />
       ) : getValues('logGraphType')?.key === 'production_total' ? (
@@ -214,6 +213,7 @@ const GraphsSection = () => {
           dateTo={getValues('dateTo')}
         />
       )}
+
     </Grid>
   )
 }

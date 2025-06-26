@@ -78,7 +78,7 @@ const LogsTable = ({ logType, isLogsPage }) => {
                                     handleColumnButtonClick={handleColumnButtonClick}
                                 />
                             </GStyledStickyDiv>
-                            <TableContainer sx={{ height: NAV.H_LOG_TABLE, overflow: 'auto' }}>
+                            <TableContainer sx={{ height: 'calc(100vh - 470px)', overflow: 'auto' }}>
                                 <Table>
                                     <LogsHeader columns={tableColumns} dataFiltered={dataFiltered} orderBy={orderBy} order={order} onSort={onSort} />
                                     {(isLoading ? [...Array(logRowsPerPage)] : dataFiltered).map((row, index) =>
