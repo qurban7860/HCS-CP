@@ -1050,9 +1050,9 @@ export const GStyledHeaderCardContainer = styled(Card)(({ theme, height = 180 })
   marginBottom: MARGIN.NAV_HEADER_TO_PAGE.marginBottom,
   backgroundColor: theme.palette.background.paper,
   height,
-  position: 'sticky',
-  top: NAV.T_STICKY_NAV,
-  zIndex: 10,
+  // position: 'sticky',
+  // top: NAV.T_STICKY_NAV,
+  // zIndex: 10,
   borderRadius: RADIUS.BORDER.borderRadius
 }))
 
