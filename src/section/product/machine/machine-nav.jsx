@@ -2,7 +2,7 @@ import { Fragment, useState, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import { useParams } from 'react-router-dom'
-import { Grid, Typography, Box } from '@mui/material'
+import { Grid, Typography, Box, Card } from '@mui/material'
 import { IconTooltip, PopoverCombo } from 'component'
 import TabContainer from 'component/tab/TabContainer'
 import { useTheme } from '@mui/material/styles'
@@ -80,7 +80,14 @@ const MachineNav = ({ machineData }) => {
 
     return (
         <Fragment>
-            <GStyledHeaderCardContainer height={NAV.H_NAV_DEFAULT}>
+            <Card
+                sx={(theme) => ({
+                    borderRadius: 1.5,
+                    height: NAV.H_NAV_DEFAULT,
+                    backgroundColor: theme.palette.background.paper,
+                    marginBottom: 2
+                })}
+            >
                 <GStyledTopBorderDivider mode={themeMode} />
                 <Grid container spacing={2} flexDirection={FLEX_DIR.COLUMN} px={isMobile ? 1 : 1.5}>
                     <Grid container flexDirection={FLEX_DIR.ROW} p={2}>
@@ -114,7 +121,7 @@ const MachineNav = ({ machineData }) => {
                         </Grid>
                     </Grid>
                 </Grid>
-            </GStyledHeaderCardContainer>
+            </Card>
         </Fragment>
     )
 }

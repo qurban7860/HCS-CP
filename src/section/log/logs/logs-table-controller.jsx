@@ -3,7 +3,7 @@ import { t } from 'i18next'
 import { useSelector } from 'react-redux'
 import { ICON_NAME } from 'hook'
 import { setSelectedSearchFilter } from 'store/slice'
-import { Box, Grid } from '@mui/material'
+import { Box, Card, Grid } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
 import { RHFAutocomplete, RHFDatePickr, RHFFilteredSearchBar } from 'component/hook-form'
 import { GStyledControllerCardContainer } from 'theme/style'
@@ -22,6 +22,7 @@ const LogsTableController = ({
   onGetGraph,
   dataForApi
 }) => {
+
   const { selectedSearchFilter } = useSelector(state => state.log)
   const theme = useTheme()
 
@@ -30,9 +31,9 @@ const LogsTableController = ({
   const { dateFrom, dateTo, logType } = watch()
 
   return (
-    <GStyledControllerCardContainer height='auto'>
-      <Grid container spacing={2} alignItems="flex-start">    
-         {handleGraphTypeChange && isGraphPage && (
+    <Card sx={{ height: 'auto', padding: 3, borderRadius: 1.5, my: 1.5 }}>
+      <Grid container spacing={2} alignItems="flex-start">
+        {handleGraphTypeChange && isGraphPage && (
           <Grid item xs={12} sm={6} md={3.5}>
             <RHFAutocomplete
               name='logGraphType'
@@ -51,7 +52,7 @@ const LogsTableController = ({
             />
           </Grid>
         )}
-        
+
         {handlePeriodChange && isGraphPage && (
           <Grid item xs={12} sm={4} md={3.5}>
             <RHFAutocomplete
@@ -137,7 +138,7 @@ const LogsTableController = ({
           </Grid>
         )}
       </Grid>
-    </GStyledControllerCardContainer>
+    </Card>
   )
 }
 

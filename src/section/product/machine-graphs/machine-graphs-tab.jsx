@@ -37,46 +37,46 @@ const MachineGraphsTab = () => {
     yaxis: 'Meterage Produced Graph',
     xaxis: defaultValues.logPeriod || 'Daily'
   })
-  
+
   useEffect(() => {
-      const now = new Date();
-      const newDateFrom = new Date(now);
-      
-      newDateFrom.setHours(0, 0, 0, 0);
-      now.setHours(23, 59, 59, 999);
-    
-      switch (logPeriodWatched) {
-        case 'Hourly':
-          break;
-    
-        case 'Daily':
-          newDateFrom.setDate(newDateFrom.getDate() - 30);
-          break;
-    
-        case 'Monthly':
-          newDateFrom.setMonth(newDateFrom.getMonth() - 11);
-          newDateFrom.setDate(1);
-          break;
-    
-        case 'Quarterly':
-          newDateFrom.setMonth(newDateFrom.getMonth() - 35);
-          newDateFrom.setMonth(Math.floor(newDateFrom.getMonth() / 3) * 3, 1);
-          break;
-    
-        case 'Yearly':
-          newDateFrom.setFullYear(newDateFrom.getFullYear() - 9);
-          newDateFrom.setMonth(0, 1);
-          break;
-    
-        default:
-          newDateFrom.setDate(newDateFrom.getDate() - 30);
-          break;
-      }
-    
-      setValue('dateTo', now);
-      setValue('dateFrom', newDateFrom);
-      trigger(['dateFrom', 'dateTo']);
-    }, [logPeriodWatched, setValue, trigger]);
+    const now = new Date();
+    const newDateFrom = new Date(now);
+
+    newDateFrom.setHours(0, 0, 0, 0);
+    now.setHours(23, 59, 59, 999);
+
+    switch (logPeriodWatched) {
+      case 'Hourly':
+        break;
+
+      case 'Daily':
+        newDateFrom.setDate(newDateFrom.getDate() - 30);
+        break;
+
+      case 'Monthly':
+        newDateFrom.setMonth(newDateFrom.getMonth() - 11);
+        newDateFrom.setDate(1);
+        break;
+
+      case 'Quarterly':
+        newDateFrom.setMonth(newDateFrom.getMonth() - 35);
+        newDateFrom.setMonth(Math.floor(newDateFrom.getMonth() / 3) * 3, 1);
+        break;
+
+      case 'Yearly':
+        newDateFrom.setFullYear(newDateFrom.getFullYear() - 9);
+        newDateFrom.setMonth(0, 1);
+        break;
+
+      default:
+        newDateFrom.setDate(newDateFrom.getDate() - 30);
+        break;
+    }
+
+    setValue('dateTo', now);
+    setValue('dateFrom', newDateFrom);
+    trigger(['dateFrom', 'dateTo']);
+  }, [logPeriodWatched, setValue, trigger]);
 
   const [submittedValues, setSubmittedValues] = useState(null)
 
@@ -129,32 +129,28 @@ const MachineGraphsTab = () => {
   const shouldShowLoader = isLoading || !submittedValues || !logsGraphData
 
   return (
-    <Fragment>
-      <GStyledStickyDiv top={NAV.T_STICKY_NAV_MACH_GRAPG_CONTROLLER} zIndex={7}  >
-        <FormProvider methods={methods} onSubmit={handleSubmit(handleFormSubmit)}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <LogsTableController
-                handlePeriodChange={handlePeriodChange}
-                handleGraphTypeChange={handleGraphTypeChange}
-                setSelectedFilter={setSelectedSearchFilter}
-                isGraphPage
-                methods={methods}
-                onGetGraph={handleSubmit(handleFormSubmit)}
-              />
-            </Grid>
-          </Grid>
-        </FormProvider>
-      </GStyledStickyDiv>
+    <Grid item xs={12} sx={{ mb: 3, height: '100%' }} >
+      <FormProvider methods={methods} onSubmit={handleSubmit(handleFormSubmit)}>
+        <LogsTableController
+          handlePeriodChange={handlePeriodChange}
+          handleGraphTypeChange={handleGraphTypeChange}
+          setSelectedFilter={setSelectedSearchFilter}
+          isGraphPage
+          methods={methods}
+          onGetGraph={handleSubmit(handleFormSubmit)}
+        />
+      </FormProvider>
 
-      {shouldShowLoader ? (
-        <HowickLoader height={300} width={303} mode={themeMode} />
-      ) : submittedValues?.logGraphType?.key === 'production_total' ? (
-        <ERPProductionTotal timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} />
-      ) : (
-        <ERPProductionRate timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} />
-      )}
-    </Fragment>
+      {
+        shouldShowLoader ? (
+          <HowickLoader height={300} width={303} mode={themeMode} />
+        ) : submittedValues?.logGraphType?.key === 'production_total' ? (
+          <ERPProductionTotal timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} />
+        ) : (
+          <ERPProductionRate timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} />
+        )
+      }
+    </Grid >
   )
 }
 
