@@ -17,7 +17,7 @@ import { TYPOGRAPHY, KEY, FLEX } from 'constant'
 import { TableNoData } from 'component'
 import { processGraphData } from './utils/utils'
 
-const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, isDashboard, graphHeight = 500, dateFrom, dateTo }) => {
+const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, isDashboard, graphHeight = 500, dateFrom, dateTo, machineSerialNo }) => {
   const [graphData, setGraphData] = useState([])
   const { isLoading } = useSelector(state => state.log)
   const { themeMode } = useSettingContext()
@@ -68,6 +68,32 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
       });
     }
   };
+  
+  const producedData = `Meterage Production: ${getTotalProduction()} m for Period (${dateFrom.toLocaleDateString('en-GB')} – ${dateTo.toLocaleDateString('en-GB')})`;
+
+  const getGraphTitle = () => {
+    let titlePrefix = '';
+    switch (timePeriod) {
+      case 'Hourly':
+        titlePrefix = 'Hourly Production Graph';
+        break;
+      case 'Daily':
+        titlePrefix = 'Daily Production Graph';
+        break;
+      case 'Monthly':
+        titlePrefix = 'Monthly Production Graph';
+        break;
+      case 'Quarterly':
+        titlePrefix = 'Quarterly Production Graph';
+        break;
+      case 'Yearly':
+        titlePrefix = 'Yearly Production Graph';
+        break;
+      default:
+        titlePrefix = 'Production Graph';
+    }
+    return `${titlePrefix} for Machine ${machineSerialNo || ''}`;
+  };
 
   return (
     <Grid item xs={12} sm={12} md={12} xl={isDashboard ? 12 : 12}>
@@ -96,20 +122,11 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
         )}
         {!isLoading && (
           <Fragment>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
-          <Typography variant="h6" color="primary" gutterBottom>
-            Meterage Production Over Time
-          </Typography>
-
-          <Typography variant="subtitle1" > 
-            <strong>Meterage Production:</strong> {getTotalProduction()} m {' '}
-              <span style={{ color: '#666' }}>
-                ({dateFrom.toLocaleDateString('en-GB')} – {dateTo.toLocaleDateString('en-GB')})
-              </span>
-          </Typography>
-        </Box>
-            
-
+            <Box sx={{ display: 'flex', mt: -1 }}>
+              <Typography variant="h6" color="primary" gutterBottom>
+                 Meterage Production
+              </Typography>
+            </Box>
             {graphData?.length > 0 && (
               <Fragment>
                 <LogStackedChart
@@ -117,6 +134,8 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
                   graphLabels={graphLabels}
                   graphHeight={graphHeight}
                   onExpand={handleExpandGraph}
+                  producedData={producedData} 
+                  machineSerialNo={getGraphTitle()}
                 />
               </Fragment>
             )}
@@ -141,7 +160,8 @@ ERPProductionTotal.propTypes = {
   isDashboard: PropTypes.bool,
   graphHeight: PropTypes.number,
   dateFrom: PropTypes.instanceOf(Date),
-  dateTo: PropTypes.instanceOf(Date)
+  dateTo: PropTypes.instanceOf(Date),
+  machineSerialNo: PropTypes.string, 
 }
 
 export default ERPProductionTotal;

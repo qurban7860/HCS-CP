@@ -25,7 +25,8 @@ const MachineGraphsTab = () => {
 
   const methods = useForm({
     resolver: yupResolver(fetchIndMachineGraphSchema),
-    mode: 'onBlur',
+    mode: 'onChange',
+    reValidateMode: 'onChange',
     defaultValues
   })
 
@@ -34,7 +35,7 @@ const MachineGraphsTab = () => {
   const logPeriodWatched = watch('logPeriod');
 
   const [graphLabels, setGraphLabels] = useState({
-    yaxis: 'Meterage Produced Graph',
+    yaxis: 'Meterage Produced',
     xaxis: defaultValues.logPeriod || 'Daily'
   })
 
@@ -93,7 +94,7 @@ const MachineGraphsTab = () => {
     setGraphLabels({
       yaxis: logGraphType.key === 'productionRate'
         ? 'Production Rate (m/hr)'
-        : 'Meterage Produced Graph',
+        : 'Meterage Produced',
       xaxis: logPeriod
     })
   }, [getValues, machine?.customer?._id, machineId])
@@ -111,7 +112,7 @@ const MachineGraphsTab = () => {
       setGraphLabels({
         yaxis: logGraphType.key === 'productionRate'
           ? 'Production Rate (m/hr)'
-          : 'Meterage Produced Graph',
+          : 'Meterage Produced',
         xaxis: logPeriod
       })
     }
@@ -145,9 +146,9 @@ const MachineGraphsTab = () => {
         shouldShowLoader ? (
           <HowickLoader height={300} width={303} mode={themeMode} />
         ) : submittedValues?.logGraphType?.key === 'production_total' ? (
-          <ERPProductionTotal timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} />
+          <ERPProductionTotal timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} machineSerialNo={machine?.serialNo} />
         ) : (
-          <ERPProductionRate timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} />
+          <ERPProductionRate timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} machineSerialNo={machine?.serialNo} />
         )
       }
     </Grid >

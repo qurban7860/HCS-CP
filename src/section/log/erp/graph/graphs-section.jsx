@@ -17,6 +17,7 @@ import { getLogGraphData, resetLogsGraphData, getMachines, resetMachines } from 
 import { GStyledControllerCardContainer, GStyledStickyDiv } from 'theme/style'
 import { NAV } from 'config'
 import { logGraphTypes } from 'config'
+import { TableNoData } from 'component'
 import ERPProductionTotal from './production-total'
 import ERPProductionRate from './production-rate'
 
@@ -45,7 +46,8 @@ const GraphsSection = () => {
   )
   const methods = useForm({
     resolver: yupResolver(erpGraphSchema),
-    mode: 'onBlur',
+    mode: 'onChange',
+    reValidateMode: 'onChange',
     defaultValues,
   })
 
@@ -53,7 +55,7 @@ const GraphsSection = () => {
   const { logPeriod } = watch();
 
   const [graphLabels, setGraphLabels] = useState({
-    yaxis: 'Meterage Produced Graph',
+    yaxis: 'Meterage Produced',
     xaxis: 'Daily',
   });
 
@@ -109,19 +111,20 @@ const GraphsSection = () => {
 
     const yLabel = logGraphType?.key === 'productionRate'
       ? 'Production Rate (m/hr)'
-      : 'Meterage Produced Graph';
+      : 'Meterage Produced';
 
     setGraphLabels({
       yaxis: yLabel,
       xaxis: logPeriod,
     });
-
+    
     graphDataRef.current = {
       ...data,
       graphLabels: {
         yaxis: yLabel,
         xaxis: logPeriod,
-      }
+      },
+      machineSerialNo: data.machine?.serialNo,
     };
 
     dispatch(getLogGraphData(
@@ -141,6 +144,7 @@ const GraphsSection = () => {
   }
 
   const graphData = graphDataRef.current;
+  const isNotFound = !isLoading && (!graphData || !logsGraphData?.length);
 
   return (
     <Grid container rowGap={2} flexDirection={FLEX_DIR.COLUMN}>
@@ -159,7 +163,7 @@ const GraphsSection = () => {
                 <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }}>
                   <RHFAutocomplete
                     name='machine'
-                    label={t('machine.label')}
+                    label='Machine*'
                     options={(Array.isArray(machines) && machines?.filter(ma => ma?.machineModel?.category?.name?.toLowerCase()?.includes('frama'))) || []}
                     isOptionEqualToValue={(option, value) => option._id === value._id}
                     getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
@@ -253,6 +257,7 @@ const GraphsSection = () => {
             logsGraphData={logsGraphData}
             dateFrom={graphData.dateFrom}
             dateTo={graphData.dateTo}
+            machineSerialNo={graphData.machineSerialNo} 
           />
         ) : (
           <ERPProductionRate
@@ -262,9 +267,12 @@ const GraphsSection = () => {
             logsGraphData={logsGraphData}
             dateFrom={graphData.dateFrom}
             dateTo={graphData.dateTo}
+            machineSerialNo={graphData.machineSerialNo} 
           />
         )
-      ) : null}
+      ) : <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 350 }} >
+            <TableNoData graphNotFound={isNotFound} />
+          </Box>}
     </Grid>
   )
 }
