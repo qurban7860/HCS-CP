@@ -27,7 +27,6 @@ const _GEN5_LOG_TYPES = {
                 'componentLength',
                 'waste',
                 'time',
-                'componentWeight',
                 'componentType',
             ],
             'v1.5.X': [
@@ -47,9 +46,7 @@ const _GEN5_LOG_TYPES = {
                 'time',
                 'mode',
                 'measurementUnit',
-                'componentWeight',
                 'lineSpeed',
-                'componentGUID',
                 'componentType',
             ]
         },
@@ -64,10 +61,8 @@ const _GEN5_LOG_TYPES = {
             { id: 'flangeHeight', label: 'Flange', unit: 'mm', fullLabel: 'Flange Height', defaultShow: true, searchable: true, numerical: true, tooltip: true },
             { id: 'webWidth', label: 'Web', unit: 'mm', fullLabel: 'Web Width', defaultShow: true, searchable: true, numerical: true, tooltip: true },
             { id: 'profileShape', label: 'P.S', fullLabel: 'Profile Shape', defaultShow: true, searchable: true, tooltip: true },
-            { id: 'componentWeight', label: 'Weight', fullLabel: 'Component Weight', searchable: true, numerical: true, tooltip: true },
             { id: 'coilBatchName', label: 'Coil Batch Name', searchable: true },
             { id: 'coilThickness', label: 'C.T', unit: 'm', fullLabel: 'Coil Thickness', searchable: true, numerical: true, tooltip: true, convertToM: true },
-            { id: 'componentGUID', label: 'Component GUID', searchable: true },
             { id: 'componentType', label: 'Type', fullLabel: 'Component Type', defaultShow: true, searchable: true, tooltip: true },
             { id: 'machineSerialNo', label: 'Machine', alwaysShow: true, defaultShow: true, page: 'logsPage' },
             { id: 'coilWidth', label: 'C.W', unit: 'm', fullLabel: 'Coil Width', searchable: true, numerical: true, tooltip: true, convertToM: true },
