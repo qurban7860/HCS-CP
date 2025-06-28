@@ -27,9 +27,9 @@ const MachineGraphsTab = () => {
 
   const methods = useForm({
     resolver: yupResolver(erpGraphSchema),
-    mode: 'onChange',
+    defaultValues,
+    mode: 'all',
     reValidateMode: 'onChange',
-    defaultValues
   })
 
   const { setValue, handleSubmit, getValues, watch, trigger } = methods

@@ -44,9 +44,9 @@ const GraphsSection = () => {
   )
   const methods = useForm({
     resolver: yupResolver(erpGraphSchema),
-    mode: 'onChange',
-    reValidateMode: 'onChange',
     defaultValues,
+    mode: 'all',
+    reValidateMode: 'onChange',
   })
 
   const { handleSubmit, setValue, trigger, watch } = methods;
@@ -115,7 +115,7 @@ const GraphsSection = () => {
       yaxis: yLabel,
       xaxis: logPeriod,
     });
-    
+
     graphDataRef.current = {
       ...data,
       graphLabels: {
@@ -255,7 +255,7 @@ const GraphsSection = () => {
             logsGraphData={logsGraphData}
             dateFrom={graphData.dateFrom}
             dateTo={graphData.dateTo}
-            machineSerialNo={graphData.machineSerialNo} 
+            machineSerialNo={graphData.machineSerialNo}
           />
         ) : (
           <ERPProductionRate
@@ -265,12 +265,12 @@ const GraphsSection = () => {
             logsGraphData={logsGraphData}
             dateFrom={graphData.dateFrom}
             dateTo={graphData.dateTo}
-            machineSerialNo={graphData.machineSerialNo} 
+            machineSerialNo={graphData.machineSerialNo}
           />
         )
       ) : <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 350 }} >
-            <TableNoData graphNotFound={isNotFound} />
-          </Box>}
+        <TableNoData graphNotFound={isNotFound} />
+      </Box>}
     </Grid>
   )
 }

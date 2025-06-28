@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useLayoutEffect, useMemo, memo, useCallback } from 'react'
+import { Fragment, useState, useLayoutEffect, useMemo, memo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import { useNavigate } from 'react-router-dom'
@@ -21,6 +21,7 @@ import { getLogTypeConfigForGenerationAndType, logGraphTypes } from 'config/log-
 const LogsSection = ({ isArchived }) => {
   const { user } = useAuthContext()
   const { machines } = useSelector(state => state.machine)
+  const [unit, setUnit] = useState('Metric')
   const { logPage, isLoading, logRowsPerPage, selectedSearchFilter } = useSelector(state => state.log)
   const { themeMode } = useSettingContext()
   const theme = useTheme()
@@ -33,6 +34,7 @@ const LogsSection = ({ isArchived }) => {
       dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
       dateTo: new Date(),
       logPeriod: 'Daily',
+      unitType: 'Metric',
       logGraphType: logGraphTypes[0]
     }
     ), []
@@ -41,12 +43,12 @@ const LogsSection = ({ isArchived }) => {
   const methods = useForm({
     resolver: yupResolver(addLogSchema),
     defaultValues,
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange'
   })
 
   const { watch, setValue, handleSubmit } = methods
-  const { machine, dateFrom, dateTo, logType, filteredSearchKey } = watch()
+  const { machine, dateFrom, dateTo, logType, filteredSearchKey, unitType } = watch()
 
   useLayoutEffect(() => {
     dispatch(getMachines(null, null, false, null, user?.customer))
@@ -75,6 +77,7 @@ const LogsSection = ({ isArchived }) => {
   }, [logPage, logRowsPerPage])
 
   const handleFormSubmit = async () => {
+    setUnit(unitType)
     if (logPage == 0) {
       await dispatch(getLogs({
         customerId: user?.customer,
@@ -195,10 +198,21 @@ const LogsSection = ({ isArchived }) => {
                           fullWidth
                         />
                       </Box>
-                      <Box sx={{ justifyContent: 'flex-end', display: 'flex', gap: 1, pt: 0.7 }}>
+                      <Box sx={{ justifyContent: 'flex-end', display: 'flex', gap: 1 }}>
                         {/* <GStyledLoadingButton mode={themeMode} type={'submit'} variant='contained' size='large' sx={{ mt: 0.7 }}>
                           {t('log.button.get_logs').toUpperCase()}
                         </GStyledLoadingButton> */}
+                        <Box sx={{ width: '160px' }}>
+                          <RHFAutocomplete
+                            name='unitType'
+                            size='small'
+                            label='Unit*'
+                            options={['Metric', 'Imperial']}
+                            disableClearable
+                            autoSelect
+                            openOnFocus
+                          />
+                        </Box>
                         <IconTooltip
                           title="Fetch Logs"
                           icon={ICON_NAME.TEXT_SEARCH}
@@ -220,7 +234,7 @@ const LogsSection = ({ isArchived }) => {
           </Grid>
         </FormProvider>
       </GStyledStickyDiv>
-      {isLoading ? <HowickLoader height={300} width={303} mode={themeMode} /> : <LogsTable isLogsPage logType={logType} />}
+      {isLoading ? <HowickLoader height={300} width={303} mode={themeMode} /> : <LogsTable isLogsPage logType={logType} unitType={unit} />}
     </Grid>
   )
 }

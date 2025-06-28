@@ -68,7 +68,7 @@ const _GEN5_LOG_TYPES = {
             { id: 'coilWidth', label: 'C.W', unit: 'm', fullLabel: 'Coil Width', searchable: true, numerical: true, tooltip: true, convertToM: true },
             { id: 'lineSpeed', label: 'L.S', unit: '%', fullLabel: 'Line Speed', searchable: true, tooltip: true },
             { id: 'mode', label: 'Mode', searchable: true },
-            { id: 'time', label: 'Time (s)', numerical: true, convertToM: true },
+            { id: 'time', label: 'Time', unit: 's', numerical: true, convertToM: true },
             { id: 'operator', label: 'Operator', searchable: true }
         ],
         numericalLengthValues: ['coilLength', 'coilWidth', 'coilThickness', 'flangeHeight', 'webWidth', 'componentLength', 'waste']

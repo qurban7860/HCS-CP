@@ -121,6 +121,17 @@ const LogsTableController = ({
                 />
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', mt: -3.5, gap: 1 }}>
+                <Box sx={{ width: '160px' }}>
+                  <RHFAutocomplete
+                    name='unitType'
+                    size='small'
+                    label='Unit*'
+                    options={['Metric', 'Imperial']}
+                    disableClearable
+                    autoSelect
+                    openOnFocus
+                  />
+                </Box>
                 <IconTooltip
                   title="Fetch Logs"
                   icon={ICON_NAME.TEXT_SEARCH}

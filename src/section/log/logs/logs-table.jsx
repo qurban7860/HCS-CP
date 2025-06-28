@@ -13,7 +13,7 @@ import { MARGIN, NAV } from 'config/layout'
 import { FLEX_DIR, KEY } from 'constant'
 import { applySort } from 'util'
 
-const LogsTable = ({ logType, isLogsPage }) => {
+const LogsTable = ({ logType, isLogsPage, unitType }) => {
     const [tableData, setTableData] = useState([])
     const { logs, logPage, logsTotalCount, isLoading, logRowsPerPage } = useSelector(state => state.log)
     const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, getLogTypeConfigForGenerationAndType(5, 'ERP').tableColumns)
@@ -80,7 +80,7 @@ const LogsTable = ({ logType, isLogsPage }) => {
                             </GStyledStickyDiv>
                             <TableContainer sx={{ height: 'calc(100vh - 470px)', overflow: 'auto' }}>
                                 <Table>
-                                    <LogsHeader columns={tableColumns} dataFiltered={dataFiltered} orderBy={orderBy} order={order} onSort={onSort} />
+                                    <LogsHeader columns={tableColumns} dataFiltered={dataFiltered} orderBy={orderBy} order={order} onSort={onSort} unitType={unitType} />
                                     {(isLoading ? [...Array(logRowsPerPage)] : dataFiltered).map((row, index) =>
                                         row ? (
                                             <LogsRow
@@ -95,6 +95,7 @@ const LogsTable = ({ logType, isLogsPage }) => {
                                                 order={order}
                                                 orderBy={orderBy}
                                                 selected={selected.includes(row._id)}
+                                                unit={unitType}
                                             />
                                         ) : (
                                             !isNotFound && <SkeletonTable key={index} sx={{ height: 60 }} />
@@ -115,6 +116,7 @@ LogsTable.propTypes = {
     logType: PropTypes.object,
     dataForApi: PropTypes.object,
     isLogsPage: PropTypes.bool,
+    unitType: PropTypes.string
 }
 
 export default LogsTable
