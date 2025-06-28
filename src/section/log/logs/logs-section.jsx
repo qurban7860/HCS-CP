@@ -57,19 +57,21 @@ const LogsSection = ({ isArchived }) => {
   }, [])
 
   useLayoutEffect(() => {
-    dispatch(getLogs({
-      customerId: user?.customer,
-      machineId: machine?._id || undefined,
-      page: logPage,
-      pageSize: logRowsPerPage,
-      fromDate: dateFrom,
-      toDate: dateTo,
-      isArchived: false,
-      isMachineArchived: machine?.isArchived,
-      selectedLogType: logType?.type,
-      searchKey: filteredSearchKey,
-      searchColumn: selectedSearchFilter
-    }))
+    if (machine?._id) {
+      dispatch(getLogs({
+        customerId: user?.customer,
+        machineId: machine?._id || undefined,
+        page: logPage,
+        pageSize: logRowsPerPage,
+        fromDate: dateFrom,
+        toDate: dateTo,
+        isArchived: false,
+        isMachineArchived: machine?.isArchived,
+        selectedLogType: logType?.type,
+        searchKey: filteredSearchKey,
+        searchColumn: selectedSearchFilter
+      }))
+    }
   }, [logPage, logRowsPerPage])
 
   const handleFormSubmit = async () => {
@@ -127,7 +129,7 @@ const LogsSection = ({ isArchived }) => {
             <Grid item xs={12} sm={12}>
               <GStyledControllerCardContainer height={'auto'}>
                 <Stack spacing={2}>
-                  <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>      
+                  <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>
                     <RHFAutocomplete
                       name='machine'
                       label={t('machine.label')}

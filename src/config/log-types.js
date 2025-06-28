@@ -66,7 +66,7 @@ const _GEN5_LOG_TYPES = {
             { id: 'componentType', label: 'Type', fullLabel: 'Component Type', defaultShow: true, searchable: true, tooltip: true },
             { id: 'machineSerialNo', label: 'Machine', alwaysShow: true, defaultShow: true, page: 'logsPage' },
             { id: 'coilWidth', label: 'C.W', unit: 'm', fullLabel: 'Coil Width', searchable: true, numerical: true, tooltip: true, convertToM: true },
-            { id: 'lineSpeed', label: 'L.S', fullLabel: 'Line Speed', searchable: true, tooltip: true },
+            { id: 'lineSpeed', label: 'L.S', unit: '%', fullLabel: 'Line Speed', searchable: true, tooltip: true },
             { id: 'mode', label: 'Mode', searchable: true },
             { id: 'time', label: 'Time (s)', numerical: true, convertToM: true },
             { id: 'operator', label: 'Operator', searchable: true }

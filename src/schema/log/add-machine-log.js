@@ -2,7 +2,7 @@ import * as Yup from 'yup'
 
 export const addLogSchema = Yup.object().shape({
   customer: Yup.string().label('Customer').required(),
-  machine: Yup.object().nullable(),
+  machine: Yup.object().nullable().required(),
   logType: Yup.object()
     .nullable()
     .required('Log Type is required')
