@@ -6,9 +6,8 @@ import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
 import { useSettingContext } from 'hook'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useAuthContext } from 'auth/use-auth-context'
 import { getLogGraphData, setSelectedSearchFilter } from 'store/slice/log/machineLog'
-import { erpGraphSchema } from 'schema/graph/erp-graph-schema'
+import { fetchIndMachineGraphSchema } from 'schema/graph/erp-graph-schema'
 import { LogsTableController, useLogDefaultValues } from 'section/log/logs'
 import { ERPProductionTotal, ERPProductionRate } from 'section/log'
 import { Grid } from '@mui/material'
@@ -21,22 +20,22 @@ const MachineGraphsTab = () => {
   const { isLoading, logsGraphData } = useSelector(state => state.machineLog)
   const { machine } = useSelector(state => state.machine)
   const { themeMode } = useSettingContext()
-  const { user } = useAuthContext()
-  const defaultValues = useLogDefaultValues(user?.customer, machine)
+  const defaultValues = useLogDefaultValues()
   const { machineId } = useParams()
 
   const methods = useForm({
-    resolver: yupResolver(erpGraphSchema),
-    mode: 'onBlur',
-    defaultValues,
-    reValidateMode: 'onChange'
+    resolver: yupResolver(fetchIndMachineGraphSchema),
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    defaultValues
   })
 
   const { setValue, handleSubmit, getValues, watch, trigger } = methods
+
   const logPeriodWatched = watch('logPeriod');
 
   const [graphLabels, setGraphLabels] = useState({
-    yaxis: 'Meterage Produced Graph',
+    yaxis: 'Meterage Produced',
     xaxis: defaultValues.logPeriod || 'Daily'
   })
 
@@ -95,7 +94,7 @@ const MachineGraphsTab = () => {
     setGraphLabels({
       yaxis: logGraphType.key === 'productionRate'
         ? 'Production Rate (m/hr)'
-        : 'Meterage Produced Graph',
+        : 'Meterage Produced',
       xaxis: logPeriod
     })
   }, [getValues, machine?.customer?._id, machineId])
@@ -113,7 +112,7 @@ const MachineGraphsTab = () => {
       setGraphLabels({
         yaxis: logGraphType.key === 'productionRate'
           ? 'Production Rate (m/hr)'
-          : 'Meterage Produced Graph',
+          : 'Meterage Produced',
         xaxis: logPeriod
       })
     }
@@ -147,9 +146,9 @@ const MachineGraphsTab = () => {
         shouldShowLoader ? (
           <HowickLoader height={300} width={303} mode={themeMode} />
         ) : submittedValues?.logGraphType?.key === 'production_total' ? (
-          <ERPProductionTotal timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} />
+          <ERPProductionTotal timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} machineSerialNo={machine?.serialNo} />
         ) : (
-          <ERPProductionRate timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} />
+          <ERPProductionRate timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} machineSerialNo={machine?.serialNo} />
         )
       }
     </Grid >
