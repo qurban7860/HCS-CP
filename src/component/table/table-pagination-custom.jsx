@@ -109,7 +109,7 @@ function TablePaginationCustom({
                             }}>
                             <Typography variant={TYPOGRAPHY.BODY2}>{t('column.columns.label')}</Typography>
                         </Button>
-                        <Menu id='column-menu' anchorEl={anchorEl} open={!!anchorEl} onClose={handleClose} PaperProps={{ style: { width: isDesktop ? '25ch' : '100%', maxHeight: 300, overflowY: 'auto' } }}>
+                        <Menu id='column-menu' anchorEl={anchorEl} open={!!anchorEl} onClose={handleClose} PaperProps={{ style: { width: isDesktop ? '27ch' : '100%', maxHeight: 300, overflowY: 'auto' } }}>
                             {columnFilterButtonData?.map(column => (
                                 <MenuItem dense sx={{ p: 0 }} key={column.id} onClick={() => handleColumnClick(column)}>
                                     <Checkbox checked={column.checked} disabled={column?.alwaysShow} />
@@ -130,7 +130,7 @@ function TablePaginationCustom({
                                         />
                                     )}
                                     &nbsp;
-                                    {column.fullLabel || column.label}
+                                    {column.fullLabel || column.label} {column?.unit ? ` (${column?.unit})` : ''}
                                 </MenuItem>
                             ))}
                         </Menu>

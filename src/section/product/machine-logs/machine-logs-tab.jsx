@@ -19,6 +19,7 @@ import { getLogTypeConfigForGenerationAndType, logGraphTypes } from 'config/log-
 const MachineLogsTab = () => {
   const { user } = useAuthContext()
   const [selectedSearchFilter] = useState('');
+  const [unit, setUnit] = useState('Metric')
   const { logPage, logRowsPerPage } = useSelector(state => state.machineLog)
   const { machine } = useSelector(state => state.machine)
   const { machineId } = useParams()
@@ -30,6 +31,7 @@ const MachineLogsTab = () => {
       logType: getLogTypeConfigForGenerationAndType(5, 'ERP') || null,
       dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
       dateTo: new Date(),
+      unitType: 'Metric',
       logPeriod: 'Monthly',
       logGraphType: logGraphTypes[0]
     }
@@ -39,14 +41,15 @@ const MachineLogsTab = () => {
   const methods = useForm({
     resolver: yupResolver(addLogSchema),
     defaultValues,
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange'
   })
 
   const { watch, setValue, handleSubmit } = methods
-  const { dateFrom, dateTo, logType, filteredSearchKey } = watch()
+  const { dateFrom, dateTo, logType, filteredSearchKey, unitType } = watch()
 
   useEffect(() => {
+    setUnit(unitType)
     dispatch(getLogs({
       customerId: user?.customer,
       machineId,
@@ -63,6 +66,7 @@ const MachineLogsTab = () => {
   }, [logPage, logRowsPerPage])
 
   const handleFormSubmit = async (data) => {
+    setUnit(unitType)
     if (logPage == 0) {
       await dispatch(getLogs({
         customerId: user?.customer,
@@ -128,7 +132,7 @@ const MachineLogsTab = () => {
             </Grid>
           </Grid>
         </FormProvider>
-        <MachineLogsTable logType={logType} />
+        <MachineLogsTable logType={logType} unitType={unit} />
       </GStyledStickyDiv>
     </Fragment>
   )

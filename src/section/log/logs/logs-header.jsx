@@ -8,9 +8,22 @@ import { normalizer } from 'util'
 import { KEY, TYPOGRAPHY } from 'constant'
 import { StyledHeaderTableCell } from './style'
 
-const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
+const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort, unitType }) => {
   const { themeMode } = useSettingContext()
   const theme = useTheme()
+
+  const getFormattedLabel = (cellVal, activeUnit) => {
+    // Imperial Length
+    if (activeUnit === 'Imperial' && (cellVal?.unit === 'mm' || cellVal?.unit === 'm')) {
+      return 'in';
+    }
+    // Imperial Weight
+    if (activeUnit === 'Imperial' && cellVal?.unit === 'kg') {
+      return 'pound';
+    }
+    // Fallback to baseUnit or just label
+    return cellVal?.unit || '';
+  };
 
   return (
     <TableHead>
@@ -46,17 +59,17 @@ const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort }) => {
                             {headCell.label}
                           </Typography>
                           {headCell?.unit && <Typography variant={TYPOGRAPHY.OVERLINE0} p={0} sx={{ textTransform: 'none', ml: 0.5 }}>
-                            {` (${headCell?.unit})`}
+                            {` (${getFormattedLabel(headCell, unitType)})`}
                           </Typography>}
                         </span>
                       </Tooltip>
                     ) : (
                       <span style={{ display: 'flex' }}>
                         <Typography variant={TYPOGRAPHY.OVERLINE0} p={0}>
-                          {headCell.label}
+                          {headCell?.label || ''}
                         </Typography>
                         {headCell?.unit && <Typography variant={TYPOGRAPHY.OVERLINE0} p={0} sx={{ textTransform: 'none', ml: 0.5 }}>
-                          {` (${headCell?.unit})`}
+                          {` (${getFormattedLabel(headCell, unitType)})`}
                         </Typography>}
                       </span>
                     )}
