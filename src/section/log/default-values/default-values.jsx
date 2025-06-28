@@ -10,7 +10,7 @@ export function useLogDefaultValues(customer, machine) {
 
         return {
             customer: customer || null,
-            machine: machine && machine?._id || null,
+            machine: machine || null,
             logType: getLogTypeConfigForGenerationAndType(5, 'ERP') || null,
             dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
             dateTo: today,

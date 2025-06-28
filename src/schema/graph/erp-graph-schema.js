@@ -4,7 +4,7 @@ import { validateGraphDateRange } from 'section/log/erp/graph/utils/validateGrap
 export const erpGraphSchema = Yup.object().shape({
   customer: Yup.string().label('Customer'),
 
-  machine: Yup.object().nullable(),
+  machine: Yup.object().nullable().required(),
 
   logPeriod: Yup.string()
     .oneOf(['Hourly', 'Daily', 'Monthly', 'Quarterly', 'Yearly'])
@@ -32,7 +32,7 @@ export const erpGraphSchema = Yup.object().shape({
     })
 });
 
-export const fetchIndMachineGraphSchema = Yup.object().shape({ 
+export const fetchIndMachineGraphSchema = Yup.object().shape({
   logGraphType: Yup.object().nullable().required('Graph Type is required'),
   logPeriod: Yup.string().required('Log Period is required'),
 

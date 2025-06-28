@@ -6,8 +6,9 @@ import { dispatch } from 'store'
 import { useForm } from 'react-hook-form'
 import { useSettingContext } from 'hook'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useAuthContext } from 'auth/use-auth-context'
 import { getLogGraphData, setSelectedSearchFilter } from 'store/slice/log/machineLog'
-import { fetchIndMachineGraphSchema } from 'schema/graph/erp-graph-schema'
+import { erpGraphSchema } from 'schema/graph/erp-graph-schema'
 import { LogsTableController, useLogDefaultValues } from 'section/log/logs'
 import { ERPProductionTotal, ERPProductionRate } from 'section/log'
 import { Grid } from '@mui/material'
@@ -20,17 +21,18 @@ const MachineGraphsTab = () => {
   const { isLoading, logsGraphData } = useSelector(state => state.machineLog)
   const { machine } = useSelector(state => state.machine)
   const { themeMode } = useSettingContext()
-  const defaultValues = useLogDefaultValues()
+  const { user } = useAuthContext()
+  const defaultValues = useLogDefaultValues(user?.customer, machine)
   const { machineId } = useParams()
 
   const methods = useForm({
-    resolver: yupResolver(fetchIndMachineGraphSchema),
+    resolver: yupResolver(erpGraphSchema),
     mode: 'onBlur',
-    defaultValues
+    defaultValues,
+    reValidateMode: 'onChange'
   })
 
   const { setValue, handleSubmit, getValues, watch, trigger } = methods
-
   const logPeriodWatched = watch('logPeriod');
 
   const [graphLabels, setGraphLabels] = useState({

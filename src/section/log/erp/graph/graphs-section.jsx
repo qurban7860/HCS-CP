@@ -38,8 +38,6 @@ const GraphsSection = () => {
       logGraphType: logGraphTypes[0],
       dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
       dateTo: new Date()
-      // dateFrom: new Date(new Date().setHours(0, 0, 0, 0)),
-      // dateTo: new Date(new Date().setHours(23, 59, 59, 0)),
     }),
     [user]
   )
