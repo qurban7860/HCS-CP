@@ -291,7 +291,7 @@ export function getLogs({ customerId = undefined, machineId, page, pageSize, fro
                 ...(isMachineArchived && { archivedByMachine: true }),
                 ...(!!isCreatedAt && { isCreatedAt }),
                 ...(searchKey?.length > 0 && { searchKey, searchColumn }),
-                ...(Array.isArray(searchColumn) && searchColumn.length > 0 && { multiColumnSearch: true })
+                ...(searchKey?.length > 0 && Array.isArray(searchColumn) && searchColumn.length > 0 && { multiColumnSearch: true })
             }
             const response = await axios.get(PATH_SERVER.LOG.list, { params })
             dispatch(logSlice.actions.getLogsSuccess(response.data))
