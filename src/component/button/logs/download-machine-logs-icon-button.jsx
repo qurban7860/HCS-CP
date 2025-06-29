@@ -9,6 +9,7 @@ import { FLEX, KEY, TYPOGRAPHY } from 'constant'
 import { useSettingContext, snack, ICON_NAME, Icon } from 'hook'
 import { dispatch } from 'store'
 import { getLogs } from 'store/slice'
+import { convertValue } from 'util/convertUnits';
 import { GStyledCloseButton, GStyledSpanBox, GStyledTopBorderDivider } from 'theme/style'
 import { IconTooltip } from 'component'
 
@@ -16,7 +17,8 @@ function DownloadMachineLogsIconButton({ dataForApi, unit }) {
   const [openLogsDownloadDialog, setOpenLogsDownloadDialog] = useState(false)
   const [dataForDownload, setDataForDownload] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const defaultLogHeaders = getLogTypeConfigForGenerationAndType(5, 'ERP').formats['v1.5.X']
+  const defaultLogHeaders = getLogTypeConfigForGenerationAndType(5, 'ERP').formats['v1.5.X'];
+  const tableColumns = getLogTypeConfigForGenerationAndType(5, 'ERP').tableColumns;
 
   const { themeMode } = useSettingContext()
   const theme = useTheme()
@@ -65,9 +67,22 @@ function DownloadMachineLogsIconButton({ dataForApi, unit }) {
 
       dataForDownload.forEach(row => {
         const values = headers.map(header => {
-          let value = row[header] !== undefined ? row[header] : ''
+          let value = ''
+          if (row[header]) {
+            value = row[header]
+          }
+          let columnVal = tableColumns?.find(c => c?.id === header);
+          if (columnVal?.unit && !isNaN(parseFloat(value))) {
+            const converted = convertValue(
+              parseFloat(value),
+              columnVal?.unit,
+              unit,
+              false
+            );
+            value = converted.convertedValue;
+          }
           if (header === 'timestamp') value = row.timestamp || row.date
-          if (header === 'measurementUnit') value = unit === 'Metric' ? 'mm' : 'in'
+          if (header === 'measurementUnit') value = unit === 'Imperial' ? 'in' : 'mm';
           if (header === 'logId') value = row._id
           const escaped = String(value).replace(/"/g, '""')
           return escaped
@@ -82,8 +97,21 @@ function DownloadMachineLogsIconButton({ dataForApi, unit }) {
       const jsonArray = dataForDownload.map(row => {
         const jsonObj = {}
         headers.forEach(header => {
-          let value = row[header] !== undefined ? row[header] : ''
-          if (header === 'timestamp') value = row.timestamp || row.date
+          let value = ''
+          if (row[header]) {
+            value = row[header]
+          }
+          let columnVal = tableColumns?.find(c => c?.id === header);
+          if (columnVal?.unit && !isNaN(parseFloat(value))) {
+            const converted = convertValue(
+              parseFloat(value),
+              columnVal?.unit,
+              unit,
+              false
+            );
+            value = converted.convertedValue;
+          }
+          if (header === 'timestamp') value = unit === 'Imperial' ? 'in' : 'mm';
           if (header === 'measurementUnit') value = 'mm'
           if (header === 'logId') value = row._id
           jsonObj[header] = value
