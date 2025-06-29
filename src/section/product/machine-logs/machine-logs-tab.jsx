@@ -18,7 +18,6 @@ import { getLogTypeConfigForGenerationAndType, logGraphTypes } from 'config/log-
 
 const MachineLogsTab = () => {
   const { user } = useAuthContext()
-  const [selectedSearchFilter] = useState('');
   const [unit, setUnit] = useState('Metric')
   const [selectedMultiSearchFilter, setSelectedMultiSearchFilter] = useState([])
   const { logPage, logRowsPerPage } = useSelector(state => state.machineLog)
@@ -49,6 +48,13 @@ const MachineLogsTab = () => {
   const { watch, setValue, handleSubmit } = methods
   const { dateFrom, dateTo, logType, filteredSearchKey, unitType } = watch()
 
+  const convertToMmForSendingData = (data, columnsSelected) => {
+    if (!isNaN(data) && columnsSelected.every(col => logType?.tableColumns?.some(c => c.id === col && c.convertToM))) {
+      return (data * 1000).toString()
+    }
+    return data
+  }
+
   useEffect(() => {
     setUnit(unitType)
     dispatch(getLogs({
@@ -61,7 +67,7 @@ const MachineLogsTab = () => {
       isArchived: false,
       isMachineArchived: machine?.isArchived,
       selectedLogType: logType?.type,
-      searchKey: filteredSearchKey,
+      searchKey: convertToMmForSendingData(filteredSearchKey, selectedMultiSearchFilter),
       searchColumn: selectedMultiSearchFilter
     }))
   }, [logPage, logRowsPerPage])
@@ -79,7 +85,7 @@ const MachineLogsTab = () => {
         isArchived: false,
         isMachineArchived: machine?.isArchived,
         selectedLogType: logType?.type,
-        searchKey: filteredSearchKey,
+        searchKey: convertToMmForSendingData(filteredSearchKey, selectedMultiSearchFilter),
         searchColumn: selectedMultiSearchFilter
       }))
     } else {
@@ -112,7 +118,7 @@ const MachineLogsTab = () => {
     isArchived: false,
     isMachineArchived: machine?.isArchived,
     selectedLogType: logType?.type,
-    searchKey: filteredSearchKey,
+    searchKey: convertToMmForSendingData(filteredSearchKey, selectedMultiSearchFilter),
     searchColumn: selectedMultiSearchFilter
   }
 
