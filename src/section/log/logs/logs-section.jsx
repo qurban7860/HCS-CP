@@ -213,6 +213,7 @@ const LogsSection = ({ isArchived }) => {
                           maxSelectedDisplay={2}
                           autoSelectFirst={false}
                           placeholder="Search across selected columns..."
+                          helperText="In case of number values, please input whole values and use same unit columns for search."
                         />
                       </Box>
                       <Box sx={{ justifyContent: 'flex-end', display: 'flex', gap: 1 }}>
