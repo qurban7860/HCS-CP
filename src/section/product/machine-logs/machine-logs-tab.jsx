@@ -128,6 +128,7 @@ const MachineLogsTab = () => {
                 methods={methods}
                 onGetLogs={handleFormSubmit}
                 dataForApi={dataForApi}
+                unit={unit}
               />
             </Grid>
           </Grid>

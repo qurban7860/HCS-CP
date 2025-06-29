@@ -4,6 +4,7 @@ import { useSettingContext } from 'hook'
 import { TableBody, TableCell } from '@mui/material'
 import { LinkTableCell } from 'component'
 import { fDateTime } from 'util'
+import { convertValue } from 'util/convertUnits'
 import { StyledTableRow } from './style'
 
 const LogsRow = ({ index, onViewRow, columns, row, selected, order, onSort, unit }) => {
@@ -24,41 +25,19 @@ const LogsRow = ({ index, onViewRow, columns, row, selected, order, onSort, unit
           <TableCell align='left'>{fDateTime(date)}</TableCell>
           {columns?.map((column, index) => {
             if (['date', 'createdBy.name', 'createdAt'].includes(column.id) || !column?.checked) return null
-            const columnValue = lowercaseRow?.[column.id.toLocaleLowerCase()]
-            const isMeter = column?.unit === 'm';
-            const isMiliMeter = column?.unit === 'mm';
-            const isKg = column?.unit === 'kg';
-            const isNumerical = column?.numerical
-            let cellValue = columnValue || '';
-            const value = parseFloat(columnValue);
+            const rawValue = lowercaseRow?.[column.id.toLocaleLowerCase()]
+            let cellValue = rawValue;
 
-            if (columnValue && !isNaN(columnValue)) {
-              if (unit === 'Imperial' && (isMeter || isMiliMeter)) {
-                // Convert mm to inches
-                cellValue = (value / 25.4).toLocaleString(undefined, {
-                  minimumFractionDigits: 3,
-                  maximumFractionDigits: 3,
-                });
-              } else if (unit === 'Metric' && isMeter) {
-                // Convert mm to meters
-                cellValue = (value / 1000).toLocaleString(undefined, {
-                  minimumFractionDigits: 3,
-                  maximumFractionDigits: 3,
-                });
-              } else if (unit === 'Imperial' && isKg) {
-                // Convert kg to pounds
-                cellValue = (value * 2.20462).toLocaleString(undefined, {
-                  minimumFractionDigits: 3,
-                  maximumFractionDigits: 3,
-                });
-              } else if (isNumerical) {
-                // Keep as-is with formatting
-                cellValue = value.toLocaleString(undefined, {
-                  minimumFractionDigits: 3,
-                  maximumFractionDigits: 3,
-                });
-              }
+            if (rawValue && column?.unit && !isNaN(rawValue)) {
+              const { formattedValue } = convertValue(
+                parseFloat(rawValue),
+                column?.unit,
+                unit,
+                true
+              );
+              cellValue = formattedValue;
             }
+
             return (
               <TableCell
                 key={index}

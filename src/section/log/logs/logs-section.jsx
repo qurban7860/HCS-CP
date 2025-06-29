@@ -224,7 +224,7 @@ const LogsSection = ({ isArchived }) => {
                           type={'submit'}
                           onClick={() => { }}
                         />
-                        <DownloadMachineLogsIconButton dataForApi={dataForApi} />
+                        <DownloadMachineLogsIconButton dataForApi={dataForApi} unit={unitType} />
                       </Box>
                     </Stack>
                   </Fragment>
