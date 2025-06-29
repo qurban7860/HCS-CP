@@ -12,7 +12,7 @@ import { getLogs } from 'store/slice'
 import { GStyledCloseButton, GStyledSpanBox, GStyledTopBorderDivider } from 'theme/style'
 import { IconTooltip } from 'component'
 
-function DownloadMachineLogsIconButton({ dataForApi }) {
+function DownloadMachineLogsIconButton({ dataForApi, unit }) {
   const [openLogsDownloadDialog, setOpenLogsDownloadDialog] = useState(false)
   const [dataForDownload, setDataForDownload] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -67,7 +67,7 @@ function DownloadMachineLogsIconButton({ dataForApi }) {
         const values = headers.map(header => {
           let value = row[header] !== undefined ? row[header] : ''
           if (header === 'timestamp') value = row.timestamp || row.date
-          if (header === 'measurementUnit') value = 'mm'
+          if (header === 'measurementUnit') value = unit === 'Metric' ? 'mm' : 'in'
           if (header === 'logId') value = row._id
           const escaped = String(value).replace(/"/g, '""')
           return escaped
@@ -139,7 +139,7 @@ function DownloadMachineLogsIconButton({ dataForApi }) {
         </DialogTitle>
         <Divider orientation={KEY.HORIZONTAL} flexItem sx={{ mb: 2 }} />
         <DialogContent>
-          <Box sx={{ display: 'flex', justifyContent: 'center' , gap: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
             <Button
               variant='outlined'
               size='large'
@@ -186,5 +186,6 @@ function DownloadMachineLogsIconButton({ dataForApi }) {
 export default DownloadMachineLogsIconButton
 
 DownloadMachineLogsIconButton.propTypes = {
-  dataForApi: PropTypes.object
+  dataForApi: PropTypes.object,
+  unit: PropTypes.string
 }

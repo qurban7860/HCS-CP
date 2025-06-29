@@ -17,10 +17,10 @@ const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort, unitType })
     if (activeUnit === 'Imperial' && (cellVal?.unit === 'mm' || cellVal?.unit === 'm')) {
       return 'in';
     }
-    // Imperial Weight
-    if (activeUnit === 'Imperial' && cellVal?.unit === 'kg') {
-      return 'pound';
-    }
+    // // Imperial Weight
+    // if (activeUnit === 'Imperial' && cellVal?.unit === 'kg') {
+    //   return 'lbs';
+    // }
     // Fallback to baseUnit or just label
     return cellVal?.unit || '';
   };

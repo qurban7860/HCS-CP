@@ -20,7 +20,7 @@ const LogsTableController = ({
   mode,
   onGetLogs,
   onGetGraph,
-  dataForApi
+  dataForApi,
 }) => {
 
   const { selectedSearchFilter } = useSelector(state => state.log)
@@ -28,7 +28,7 @@ const LogsTableController = ({
 
   const methods = useFormContext()
   const { watch, setValue, trigger } = methods
-  const { dateFrom, dateTo, logType } = watch()
+  const { dateFrom, dateTo, logType, unitType } = watch()
 
   return (
     <Card sx={{ height: 'auto', padding: 3, borderRadius: 1.5, my: 1.5 }}>
@@ -143,7 +143,7 @@ const LogsTableController = ({
                   size="small"
                   type="submit"
                 />
-                <DownloadMachineLogsIconButton dataForApi={dataForApi} />
+                <DownloadMachineLogsIconButton dataForApi={dataForApi} unit={unitType} />
               </Box>
             </Box>
           </Grid>
@@ -164,7 +164,7 @@ LogsTableController.propTypes = {
   methods: PropTypes.object,
   dataForApi: PropTypes.object,
   onGetLogs: PropTypes.func,
-  onGetGraph: PropTypes.func
+  onGetGraph: PropTypes.func,
 }
 
 export default LogsTableController
