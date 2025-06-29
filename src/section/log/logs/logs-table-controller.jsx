@@ -140,6 +140,7 @@ const LogsTableController = ({
                   maxSelectedDisplay={1}
                   autoSelectFirst={false}
                   placeholder="Search across selected columns..."
+                  helperText="In case of number values, please input whole values and use same unit columns for search."
                 />
               </Box>
               <Box sx={{ display: 'flex', mt: -3.5, gap: 1 }}>
