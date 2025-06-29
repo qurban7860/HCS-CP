@@ -4,9 +4,10 @@ import { useSettingContext } from 'hook'
 import { TableBody, TableCell } from '@mui/material'
 import { LinkTableCell } from 'component'
 import { fDateTime } from 'util'
+import { convertValue } from 'util/convertUnits'
 import { StyledTableRow } from './style'
 
-const LogsRow = ({ index, onViewRow, columns, row, selected, order, onSort }) => {
+const LogsRow = ({ index, onViewRow, columns, row, selected, order, onSort, unit }) => {
   const { themeMode } = useSettingContext()
 
   row = { ...row, machineSerialNo: row?.machine?.serialNo }
@@ -19,22 +20,24 @@ const LogsRow = ({ index, onViewRow, columns, row, selected, order, onSort }) =>
   return (
     <Fragment>
       <TableBody>
-        <StyledTableRow index={index} mode={themeMode} selected={selected} sx={{cursor: 'unset'}}>
+        <StyledTableRow index={index} mode={themeMode} selected={selected} sx={{ cursor: 'unset' }}>
           {/* <LinkTableCell align='left' onClick={onViewRow} param={fDateTime(date)} /> */}
           <TableCell align='left'>{fDateTime(date)}</TableCell>
           {columns?.map((column, index) => {
             if (['date', 'createdBy.name', 'createdAt'].includes(column.id) || !column?.checked) return null
-            const columnValue = lowercaseRow?.[column.id.toLocaleLowerCase()]
-            const convertToM = column?.convertToM
-            const isNumerical = column?.numerical
-            let cellValue = columnValue || ''
-            if (convertToM) {
-                cellValue = columnValue !== null && columnValue !== '' && !isNaN(columnValue)
-                ? (Number(columnValue) / 1000).toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 }) : columnValue || ''
-            } else if (isNumerical) {
-                cellValue = columnValue !== null && columnValue !== '' && !isNaN(columnValue) ? Number(columnValue).toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 })
-                : columnValue || ''
+            const rawValue = lowercaseRow?.[column.id.toLocaleLowerCase()]
+            let cellValue = rawValue;
+
+            if (rawValue && column?.unit && !isNaN(rawValue)) {
+              const { formattedValue } = convertValue(
+                parseFloat(rawValue),
+                column?.unit,
+                unit,
+                true
+              );
+              cellValue = formattedValue;
             }
+
             return (
               <TableCell
                 key={index}
@@ -60,7 +63,8 @@ LogsRow.propTypes = {
   order: PropTypes.string,
   onSort: PropTypes.func,
   row: PropTypes.object,
-  selected: PropTypes.bool
+  selected: PropTypes.bool,
+  unit: PropTypes.string,
 }
 
 export default LogsRow

@@ -23,6 +23,7 @@ export { default as RHFPasswordField } from './rhf-password-field'
 export { default as RHFTimePicker } from './rhf-time-picker'
 export { default as RHFCountryAutocomplete } from './rhf-country-autocomplete'
 export { default as RHFFilteredSearchBar } from './rhf-filtered-searchbar'
+export { default as RHFMultiFilteredSearchBar } from './rhf-multi-filtered-searchbar'
 export { default as RHFReCaptchaV2 } from './rhf-reCaptcha-v2'
 
 export { default as RHFRequiredTextFieldWrapper } from './rhf-required-textfield-wrapper'

@@ -9,7 +9,7 @@ import { Chart } from 'component'
 import { fShortenNumber } from 'util/format'
 import { KEY } from 'constant'
 
-function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onExpand }) {
+function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onExpand, producedData = '', machineSerialNo }) {
   const { themeMode } = useSettingContext()
   const theme = useTheme()
   const [skipZero, setSkipZero] = useState(true);
@@ -101,7 +101,7 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
         const total = Number(val) + Number(w.config.series[1].data[dataPointIndex])
         return total === 0 ? '' : total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
       },
-      offsetY: -25,
+      offsetY: -35,
       style: {
         fontSize: '12px',
         colors: [themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400]]
@@ -119,9 +119,9 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
       axisBorder: { show: false, color: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[700] },
       axisTicks: { show: false, color: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[700] },
       title: {
-        text: graphLabels?.xaxis,
+        text: `${machineSerialNo}${producedData ? `, ${producedData}` : ''}`,
         offsetX: 0,
-        offsetY: 0,
+        offsetY: -5,
         style: {
           fontSize: '12px',
           fontWeight: 600,
@@ -133,8 +133,10 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
       axisBorder: { show: false },
       axisTicks: { show: false },
       labels: {
-        formatter: value => value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-        style: { fontSize: '10px', color: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[400] }
+        formatter: (value) => fShortenNumber(value),
+        // formatter: value => value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+        style: { fontSize: '10px', color: themeMode === KEY.LIGHT ? theme.palette.grey[500] : theme.palette.grey[400] },
+        offsetX: 10
       },
       title: {
         text: graphLabels?.yaxis,
@@ -212,12 +214,15 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
           border: 1px solid ${menuBackgroundColor};
         }
       `}</style>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', mt: -5 }}>
+        <Box sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
         <FormControlLabel
           control={<Checkbox checked={skipZero} onChange={() => setSkipZero((prev) => !prev)} />}
           label="Empty or zero values skipped"
         />
+        </Box>
         {onExpand && (
+          <Box sx={{ ml: 'auto' }}>
           <GStyledTooltip
             placement="top"
             title="Full Screen"
@@ -226,6 +231,7 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
               <Iconify icon="fluent:expand-up-right-20-filled" />
             </IconButton>
           </GStyledTooltip>
+          </Box>
         )}
       </Box>
       <Chart type='bar' series={series} options={chartOptions} height={chartOptions.chart.height} />
@@ -233,6 +239,6 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
   )
 }
 
-LogStackedChart.propTypes = { processGraphData: PropTypes.func, graphLabels: PropTypes.object, graphHeight: PropTypes.number, onExpand: PropTypes.func }
+LogStackedChart.propTypes = { processGraphData: PropTypes.func, graphLabels: PropTypes.object, graphHeight: PropTypes.number, onExpand: PropTypes.func, producedData: PropTypes.string, machineSerialNo: PropTypes.string, }
 
 export default LogStackedChart

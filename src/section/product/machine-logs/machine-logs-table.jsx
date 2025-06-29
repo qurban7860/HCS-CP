@@ -13,7 +13,7 @@ import { MARGIN, NAV } from 'config/layout'
 import { FLEX_DIR, KEY } from 'constant'
 import { applySort } from 'util'
 
-const MachineLogsTable = ({ logType, isLogsPage }) => {
+const MachineLogsTable = ({ logType, isLogsPage, unitType }) => {
     const [tableData, setTableData] = useState([])
     const { logs, logPage, logsTotalCount, isLoading, logRowsPerPage } = useSelector(state => state.machineLog)
     const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, getLogTypeConfigForGenerationAndType(5, 'ERP').tableColumns)
@@ -83,7 +83,7 @@ const MachineLogsTable = ({ logType, isLogsPage }) => {
                                 height: `calc(100vh - 470px)`, overflow: 'auto'
                             }}>
                                 <Table>
-                                    <LogsHeader columns={tableColumns} dataFiltered={dataFiltered} orderBy={orderBy} order={order} onSort={onSort} />
+                                    <LogsHeader columns={tableColumns} dataFiltered={dataFiltered} orderBy={orderBy} order={order} onSort={onSort} unitType={unitType} />
                                     {(isLoading ? [...Array(logRowsPerPage)] : dataFiltered).map((row, index) =>
                                         row ? (
                                             <LogsRow
@@ -98,6 +98,7 @@ const MachineLogsTable = ({ logType, isLogsPage }) => {
                                                 order={order}
                                                 orderBy={orderBy}
                                                 selected={selected.includes(row._id)}
+                                                unit={unitType}
                                             />
                                         ) : (
                                             !isNotFound && <SkeletonTable key={index} sx={{ height: 60 }} />
@@ -116,7 +117,8 @@ const MachineLogsTable = ({ logType, isLogsPage }) => {
 
 MachineLogsTable.propTypes = {
     logType: PropTypes.object,
-    isLogsPage: PropTypes.bool
+    isLogsPage: PropTypes.bool,
+    unitType: PropTypes.string,
 }
 
 export default MachineLogsTable

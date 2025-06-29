@@ -2,14 +2,11 @@ import PropTypes from 'prop-types'
 import { t } from 'i18next'
 import { useSelector } from 'react-redux'
 import { ICON_NAME } from 'hook'
-import { setSelectedSearchFilter } from 'store/slice'
 import { Box, Card, Grid } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
-import { RHFAutocomplete, RHFDatePickr, RHFFilteredSearchBar } from 'component/hook-form'
-import { GStyledControllerCardContainer } from 'theme/style'
+import { RHFAutocomplete, RHFDatePickr, RHFMultiFilteredSearchBar } from 'component/hook-form'
 import { logGraphTypes } from 'config'
 import { DownloadMachineLogsIconButton, IconTooltip } from 'component'
-import { KEY } from 'constant'
 import { useTheme } from '@mui/material/styles'
 
 const LogsTableController = ({
@@ -20,15 +17,17 @@ const LogsTableController = ({
   mode,
   onGetLogs,
   onGetGraph,
-  dataForApi
+  dataForApi,
+  selectedMultiSearchFilter,
+  setSelectedMultiSearchFilter,
+
 }) => {
 
-  const { selectedSearchFilter } = useSelector(state => state.log)
   const theme = useTheme()
 
   const methods = useFormContext()
   const { watch, setValue, trigger } = methods
-  const { dateFrom, dateTo, logType } = watch()
+  const { dateFrom, dateTo, logType, unitType } = watch()
 
   return (
     <Card sx={{ height: 'auto', padding: 3, borderRadius: 1.5, my: 1.5 }}>
@@ -90,6 +89,19 @@ const LogsTableController = ({
             }}
           />
         </Grid>
+        {!isGraphPage && (
+        <Grid item xs={12} md={1.5}>
+          <RHFAutocomplete
+            name='unitType'
+            size='small'
+            label='Unit*'
+            options={['Metric', 'Imperial']}
+            disableClearable
+            autoSelect
+            openOnFocus
+          />
+        </Grid>
+        )}
         {isGraphPage && (
           <Grid item xs={12} sm={2} md={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', mt: 0.5 }}>
             <IconTooltip
@@ -107,10 +119,10 @@ const LogsTableController = ({
         )}
 
         {!isGraphPage && (
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={6.5}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Box sx={{ flexGrow: 1 }}>
-                <RHFFilteredSearchBar
+                {/* <RHFFilteredSearchBar
                   name='filteredSearchKey'
                   filterOptions={logType?.tableColumns.filter(col => col.searchable)}
                   setSelectedFilter={setSelectedSearchFilter}
@@ -118,9 +130,20 @@ const LogsTableController = ({
                   placeholder='Looking for something?...'
                   helperText={selectedSearchFilter === '_id' ? 'To search by ID, you must enter the complete Log ID' : ''}
                   fullWidth
+                /> */}
+                <RHFMultiFilteredSearchBar
+                  name="filteredSearchKey"
+                  filterOptions={logType?.tableColumns.filter(col => col.searchable)}
+                  setSelectedFilters={setSelectedMultiSearchFilter}
+                  selectedFilters={selectedMultiSearchFilter}
+                  maxSelections={5}
+                  maxSelectedDisplay={1}
+                  autoSelectFirst={false}
+                  placeholder="Search across selected columns..."
+                  helperText="In case of number values, please input whole values and use same unit columns for search."
                 />
               </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', mt: -3.5, gap: 1 }}>
+              <Box sx={{ display: 'flex', mt: -3.5, gap: 1 }}>
                 <IconTooltip
                   title="Fetch Logs"
                   icon={ICON_NAME.TEXT_SEARCH}
@@ -132,7 +155,7 @@ const LogsTableController = ({
                   size="small"
                   type="submit"
                 />
-                <DownloadMachineLogsIconButton dataForApi={dataForApi} />
+                <DownloadMachineLogsIconButton dataForApi={dataForApi} unit={unitType} />
               </Box>
             </Box>
           </Grid>
@@ -153,7 +176,9 @@ LogsTableController.propTypes = {
   methods: PropTypes.object,
   dataForApi: PropTypes.object,
   onGetLogs: PropTypes.func,
-  onGetGraph: PropTypes.func
+  onGetGraph: PropTypes.func,
+  selectedMultiSearchFilter: PropTypes.array,
+  setSelectedMultiSearchFilter: PropTypes.func,
 }
 
 export default LogsTableController

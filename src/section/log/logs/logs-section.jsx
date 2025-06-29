@@ -1,18 +1,17 @@
-import { Fragment, useEffect, useLayoutEffect, useMemo, memo, useCallback } from 'react'
+import { Fragment, useState, useLayoutEffect, useMemo, memo } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
-import { useNavigate } from 'react-router-dom'
-import { ICON_NAME, useResponsive, useSettingContext } from 'hook'
+import { ICON_NAME, useSettingContext } from 'hook'
 import { useAuthContext } from 'auth/use-auth-context'
 import { useSelector, dispatch } from 'store'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { addLogSchema } from 'schema'
-import { getMachines, getLogs, resetLogs, ChangeLogPage, setSelectedSearchFilter, resetMachines } from 'store/slice'
+import { getMachines, getLogs, resetLogs, ChangeLogPage, resetMachines } from 'store/slice'
 import { LogsTable } from './'
-import { useMediaQuery, useTheme, Grid, Stack, Box } from '@mui/material'
+import { useTheme, Grid, Stack, Box } from '@mui/material'
 import { HowickLoader, IconTooltip, TableTitleBox, DownloadMachineLogsIconButton } from 'component'
-import FormProvider, { RHFAutocomplete, RHFDatePickr, RHFFilteredSearchBar } from 'component/hook-form'
+import FormProvider, { RHFAutocomplete, RHFDatePickr, RHFMultiFilteredSearchBar } from 'component/hook-form'
 import { GStyledControllerCardContainer, GStyledStickyDiv } from 'theme/style'
 import { NAV } from 'config/layout'
 import { FLEX, FLEX_DIR } from 'constant'
@@ -21,7 +20,9 @@ import { getLogTypeConfigForGenerationAndType, logGraphTypes } from 'config/log-
 const LogsSection = ({ isArchived }) => {
   const { user } = useAuthContext()
   const { machines } = useSelector(state => state.machine)
-  const { logPage, isLoading, logRowsPerPage, selectedSearchFilter } = useSelector(state => state.log)
+  const [unit, setUnit] = useState('Metric')
+  const [selectedMultiSearchFilter, setSelectedMultiSearchFilter] = useState([])
+  const { logPage, isLoading, logRowsPerPage } = useSelector(state => state.log)
   const { themeMode } = useSettingContext()
   const theme = useTheme()
 
@@ -33,6 +34,7 @@ const LogsSection = ({ isArchived }) => {
       dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
       dateTo: new Date(),
       logPeriod: 'Daily',
+      unitType: 'Metric',
       logGraphType: logGraphTypes[0]
     }
     ), []
@@ -41,12 +43,12 @@ const LogsSection = ({ isArchived }) => {
   const methods = useForm({
     resolver: yupResolver(addLogSchema),
     defaultValues,
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange'
   })
 
   const { watch, setValue, handleSubmit } = methods
-  const { machine, dateFrom, dateTo, logType, filteredSearchKey } = watch()
+  const { machine, dateFrom, dateTo, logType, filteredSearchKey, unitType } = watch()
 
   useLayoutEffect(() => {
     dispatch(getMachines(null, null, false, null, user?.customer))
@@ -56,23 +58,33 @@ const LogsSection = ({ isArchived }) => {
     }
   }, [])
 
+  const convertToMmForSendingData = (data, columnsSelected) => {
+    if (!isNaN(data) && columnsSelected.every(col => logType?.tableColumns?.some(c => c.id === col && c.convertToM))) {
+      return (data * 1000).toString()
+    }
+    return data
+  }
+
   useLayoutEffect(() => {
-    dispatch(getLogs({
-      customerId: user?.customer,
-      machineId: machine?._id || undefined,
-      page: logPage,
-      pageSize: logRowsPerPage,
-      fromDate: dateFrom,
-      toDate: dateTo,
-      isArchived: false,
-      isMachineArchived: machine?.isArchived,
-      selectedLogType: logType?.type,
-      searchKey: filteredSearchKey,
-      searchColumn: selectedSearchFilter
-    }))
+    if (machine?._id) {
+      dispatch(getLogs({
+        customerId: user?.customer,
+        machineId: machine?._id || undefined,
+        page: logPage,
+        pageSize: logRowsPerPage,
+        fromDate: dateFrom,
+        toDate: dateTo,
+        isArchived: false,
+        isMachineArchived: machine?.isArchived,
+        selectedLogType: logType?.type,
+        searchKey: convertToMmForSendingData(filteredSearchKey, selectedMultiSearchFilter),
+        searchColumn: selectedMultiSearchFilter
+      }))
+    }
   }, [logPage, logRowsPerPage])
 
   const handleFormSubmit = async () => {
+    setUnit(unitType)
     if (logPage == 0) {
       await dispatch(getLogs({
         customerId: user?.customer,
@@ -84,8 +96,8 @@ const LogsSection = ({ isArchived }) => {
         isArchived: false,
         isMachineArchived: machine?.isArchived,
         selectedLogType: logType?.type,
-        searchKey: filteredSearchKey,
-        searchColumn: selectedSearchFilter
+        searchKey: convertToMmForSendingData(filteredSearchKey, selectedMultiSearchFilter),
+        searchColumn: selectedMultiSearchFilter
       }))
     } else {
       await dispatch(ChangeLogPage(0))
@@ -110,8 +122,8 @@ const LogsSection = ({ isArchived }) => {
     isArchived: false,
     isMachineArchived: machine?.isArchived,
     selectedLogType: logType?.type,
-    searchKey: filteredSearchKey,
-    searchColumn: selectedSearchFilter
+    searchKey: convertToMmForSendingData(filteredSearchKey, selectedMultiSearchFilter),
+    searchColumn: selectedMultiSearchFilter
   }
 
   return (
@@ -127,7 +139,7 @@ const LogsSection = ({ isArchived }) => {
             <Grid item xs={12} sm={12}>
               <GStyledControllerCardContainer height={'auto'}>
                 <Stack spacing={2}>
-                  <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>      
+                  <Box rowGap={2} columnGap={2} display='grid' gridTemplateColumns={{ xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>
                     <RHFAutocomplete
                       name='machine'
                       label={t('machine.label')}
@@ -183,7 +195,7 @@ const LogsSection = ({ isArchived }) => {
                         alignItems: 'flex-start'
                       }}>
                       <Box sx={{ flexGrow: 1, width: { xs: '100%', sm: 'auto' } }}>
-                        <RHFFilteredSearchBar
+                        {/* <RHFFilteredSearchBar
                           name='filteredSearchKey'
                           filterOptions={logType?.tableColumns.filter(col => col.searchable)}
                           setSelectedFilter={setSelectedSearchFilter}
@@ -191,12 +203,34 @@ const LogsSection = ({ isArchived }) => {
                           placeholder='Looking for something?...'
                           helperText={selectedSearchFilter === '_id' ? 'To search by ID, you must enter the complete Log ID' : ''}
                           fullWidth
+                        /> */}
+                        <RHFMultiFilteredSearchBar
+                          name="filteredSearchKey"
+                          filterOptions={logType?.tableColumns.filter(col => col.searchable)}
+                          setSelectedFilters={setSelectedMultiSearchFilter}
+                          selectedFilters={selectedMultiSearchFilter}
+                          maxSelections={5}
+                          maxSelectedDisplay={2}
+                          autoSelectFirst={false}
+                          placeholder="Search across selected columns..."
+                          helperText="In case of number values, please input whole values and use same unit columns for search."
                         />
                       </Box>
-                      <Box sx={{ justifyContent: 'flex-end', display: 'flex', gap: 1, pt: 0.7 }}>
+                      <Box sx={{ justifyContent: 'flex-end', display: 'flex', gap: 1 }}>
                         {/* <GStyledLoadingButton mode={themeMode} type={'submit'} variant='contained' size='large' sx={{ mt: 0.7 }}>
                           {t('log.button.get_logs').toUpperCase()}
                         </GStyledLoadingButton> */}
+                        <Box sx={{ width: '160px' }}>
+                          <RHFAutocomplete
+                            name='unitType'
+                            size='small'
+                            label='Unit*'
+                            options={['Metric', 'Imperial']}
+                            disableClearable
+                            autoSelect
+                            openOnFocus
+                          />
+                        </Box>
                         <IconTooltip
                           title="Fetch Logs"
                           icon={ICON_NAME.TEXT_SEARCH}
@@ -208,7 +242,7 @@ const LogsSection = ({ isArchived }) => {
                           type={'submit'}
                           onClick={() => { }}
                         />
-                        <DownloadMachineLogsIconButton dataForApi={dataForApi} />
+                        <DownloadMachineLogsIconButton dataForApi={dataForApi} unit={unitType} />
                       </Box>
                     </Stack>
                   </Fragment>
@@ -218,7 +252,7 @@ const LogsSection = ({ isArchived }) => {
           </Grid>
         </FormProvider>
       </GStyledStickyDiv>
-      {isLoading ? <HowickLoader height={300} width={303} mode={themeMode} /> : <LogsTable isLogsPage logType={logType} />}
+      {isLoading ? <HowickLoader height={300} width={303} mode={themeMode} /> : <LogsTable isLogsPage logType={logType} unitType={unit} />}
     </Grid>
   )
 }

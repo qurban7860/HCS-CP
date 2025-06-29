@@ -301,7 +301,8 @@ export function getLogs({ customerId = undefined, machineId, page, pageSize, fro
                 ...(!returnResponse && { pagination: { page, pageSize } }),
                 ...(isMachineArchived && { archivedByMachine: true }),
                 ...(!!isCreatedAt && { isCreatedAt }),
-                ...(searchKey?.length > 0 && { searchKey, searchColumn })
+                ...(searchKey?.length > 0 && searchColumn.length > 0 && { searchKey, searchColumn }),
+                ...(searchKey?.length > 0 && Array.isArray(searchColumn) && searchColumn.length > 1 && { multiColumnSearch: true })
             }
             const response = await axios.get(PATH_SERVER.LOG.list, { params })
             if (!returnResponse) {

@@ -18,7 +18,8 @@ import { getLogTypeConfigForGenerationAndType, logGraphTypes } from 'config/log-
 
 const MachineLogsTab = () => {
   const { user } = useAuthContext()
-  const [selectedSearchFilter] = useState('');
+  const [unit, setUnit] = useState('Metric')
+  const [selectedMultiSearchFilter, setSelectedMultiSearchFilter] = useState([])
   const { logPage, logRowsPerPage } = useSelector(state => state.machineLog)
   const { machine } = useSelector(state => state.machine)
   const { machineId } = useParams()
@@ -30,6 +31,7 @@ const MachineLogsTab = () => {
       logType: getLogTypeConfigForGenerationAndType(5, 'ERP') || null,
       dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
       dateTo: new Date(),
+      unitType: 'Metric',
       logPeriod: 'Monthly',
       logGraphType: logGraphTypes[0]
     }
@@ -39,14 +41,22 @@ const MachineLogsTab = () => {
   const methods = useForm({
     resolver: yupResolver(addLogSchema),
     defaultValues,
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange'
   })
 
   const { watch, setValue, handleSubmit } = methods
-  const { dateFrom, dateTo, logType, filteredSearchKey } = watch()
+  const { dateFrom, dateTo, logType, filteredSearchKey, unitType } = watch()
+
+  const convertToMmForSendingData = (data, columnsSelected) => {
+    if (!isNaN(data) && columnsSelected.every(col => logType?.tableColumns?.some(c => c.id === col && c.convertToM))) {
+      return (data * 1000).toString()
+    }
+    return data
+  }
 
   useEffect(() => {
+    setUnit(unitType)
     dispatch(getLogs({
       customerId: user?.customer,
       machineId,
@@ -57,12 +67,13 @@ const MachineLogsTab = () => {
       isArchived: false,
       isMachineArchived: machine?.isArchived,
       selectedLogType: logType?.type,
-      searchKey: filteredSearchKey,
-      searchColumn: selectedSearchFilter
+      searchKey: convertToMmForSendingData(filteredSearchKey, selectedMultiSearchFilter),
+      searchColumn: selectedMultiSearchFilter
     }))
   }, [logPage, logRowsPerPage])
 
   const handleFormSubmit = async (data) => {
+    setUnit(unitType)
     if (logPage == 0) {
       await dispatch(getLogs({
         customerId: user?.customer,
@@ -74,8 +85,8 @@ const MachineLogsTab = () => {
         isArchived: false,
         isMachineArchived: machine?.isArchived,
         selectedLogType: logType?.type,
-        searchKey: filteredSearchKey,
-        searchColumn: selectedSearchFilter
+        searchKey: convertToMmForSendingData(filteredSearchKey, selectedMultiSearchFilter),
+        searchColumn: selectedMultiSearchFilter
       }))
     } else {
       await dispatch(ChangeLogPage(0))
@@ -107,8 +118,8 @@ const MachineLogsTab = () => {
     isArchived: false,
     isMachineArchived: machine?.isArchived,
     selectedLogType: logType?.type,
-    searchKey: filteredSearchKey,
-    searchColumn: selectedSearchFilter
+    searchKey: convertToMmForSendingData(filteredSearchKey, selectedMultiSearchFilter),
+    searchColumn: selectedMultiSearchFilter
   }
 
   return (
@@ -124,11 +135,14 @@ const MachineLogsTab = () => {
                 methods={methods}
                 onGetLogs={handleFormSubmit}
                 dataForApi={dataForApi}
+                unit={unit}
+                selectedMultiSearchFilter={selectedMultiSearchFilter}
+                setSelectedMultiSearchFilter={setSelectedMultiSearchFilter}
               />
             </Grid>
           </Grid>
         </FormProvider>
-        <MachineLogsTable logType={logType} />
+        <MachineLogsTable logType={logType} unitType={unit} />
       </GStyledStickyDiv>
     </Fragment>
   )
