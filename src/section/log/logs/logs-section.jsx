@@ -1,18 +1,17 @@
-import { Fragment, useState, useLayoutEffect, useMemo, memo, useCallback } from 'react'
+import { Fragment, useState, useLayoutEffect, useMemo, memo } from 'react'
 import PropTypes from 'prop-types'
 import { t } from 'i18next'
-import { useNavigate } from 'react-router-dom'
-import { ICON_NAME, useResponsive, useSettingContext } from 'hook'
+import { ICON_NAME, useSettingContext } from 'hook'
 import { useAuthContext } from 'auth/use-auth-context'
 import { useSelector, dispatch } from 'store'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { addLogSchema } from 'schema'
-import { getMachines, getLogs, resetLogs, ChangeLogPage, setSelectedSearchFilter, resetMachines } from 'store/slice'
+import { getMachines, getLogs, resetLogs, ChangeLogPage, resetMachines } from 'store/slice'
 import { LogsTable } from './'
-import { useMediaQuery, useTheme, Grid, Stack, Box } from '@mui/material'
+import { useTheme, Grid, Stack, Box } from '@mui/material'
 import { HowickLoader, IconTooltip, TableTitleBox, DownloadMachineLogsIconButton } from 'component'
-import FormProvider, { RHFAutocomplete, RHFDatePickr, RHFFilteredSearchBar } from 'component/hook-form'
+import FormProvider, { RHFAutocomplete, RHFDatePickr, RHFMultiFilteredSearchBar } from 'component/hook-form'
 import { GStyledControllerCardContainer, GStyledStickyDiv } from 'theme/style'
 import { NAV } from 'config/layout'
 import { FLEX, FLEX_DIR } from 'constant'
@@ -22,7 +21,8 @@ const LogsSection = ({ isArchived }) => {
   const { user } = useAuthContext()
   const { machines } = useSelector(state => state.machine)
   const [unit, setUnit] = useState('Metric')
-  const { logPage, isLoading, logRowsPerPage, selectedSearchFilter } = useSelector(state => state.log)
+  const [selectedMultiSearchFilter, setSelectedMultiSearchFilter] = useState([])
+  const { logPage, isLoading, logRowsPerPage } = useSelector(state => state.log)
   const { themeMode } = useSettingContext()
   const theme = useTheme()
 
@@ -71,7 +71,7 @@ const LogsSection = ({ isArchived }) => {
         isMachineArchived: machine?.isArchived,
         selectedLogType: logType?.type,
         searchKey: filteredSearchKey,
-        searchColumn: selectedSearchFilter
+        searchColumn: selectedMultiSearchFilter
       }))
     }
   }, [logPage, logRowsPerPage])
@@ -90,7 +90,7 @@ const LogsSection = ({ isArchived }) => {
         isMachineArchived: machine?.isArchived,
         selectedLogType: logType?.type,
         searchKey: filteredSearchKey,
-        searchColumn: selectedSearchFilter
+        searchColumn: selectedMultiSearchFilter
       }))
     } else {
       await dispatch(ChangeLogPage(0))
@@ -116,7 +116,7 @@ const LogsSection = ({ isArchived }) => {
     isMachineArchived: machine?.isArchived,
     selectedLogType: logType?.type,
     searchKey: filteredSearchKey,
-    searchColumn: selectedSearchFilter
+    searchColumn: selectedMultiSearchFilter
   }
 
   return (
@@ -188,7 +188,7 @@ const LogsSection = ({ isArchived }) => {
                         alignItems: 'flex-start'
                       }}>
                       <Box sx={{ flexGrow: 1, width: { xs: '100%', sm: 'auto' } }}>
-                        <RHFFilteredSearchBar
+                        {/* <RHFFilteredSearchBar
                           name='filteredSearchKey'
                           filterOptions={logType?.tableColumns.filter(col => col.searchable)}
                           setSelectedFilter={setSelectedSearchFilter}
@@ -196,6 +196,16 @@ const LogsSection = ({ isArchived }) => {
                           placeholder='Looking for something?...'
                           helperText={selectedSearchFilter === '_id' ? 'To search by ID, you must enter the complete Log ID' : ''}
                           fullWidth
+                        /> */}
+                        <RHFMultiFilteredSearchBar
+                          name="filteredSearchKey"
+                          filterOptions={logType?.tableColumns.filter(col => col.searchable)}
+                          setSelectedFilters={setSelectedMultiSearchFilter}
+                          selectedFilters={selectedMultiSearchFilter}
+                          maxSelections={5}
+                          maxSelectedDisplay={2}
+                          autoSelectFirst={false}
+                          placeholder="Search across selected columns..."
                         />
                       </Box>
                       <Box sx={{ justifyContent: 'flex-end', display: 'flex', gap: 1 }}>

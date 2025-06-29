@@ -20,6 +20,7 @@ const MachineLogsTab = () => {
   const { user } = useAuthContext()
   const [selectedSearchFilter] = useState('');
   const [unit, setUnit] = useState('Metric')
+  const [selectedMultiSearchFilter, setSelectedMultiSearchFilter] = useState([])
   const { logPage, logRowsPerPage } = useSelector(state => state.machineLog)
   const { machine } = useSelector(state => state.machine)
   const { machineId } = useParams()
@@ -61,7 +62,7 @@ const MachineLogsTab = () => {
       isMachineArchived: machine?.isArchived,
       selectedLogType: logType?.type,
       searchKey: filteredSearchKey,
-      searchColumn: selectedSearchFilter
+      searchColumn: selectedMultiSearchFilter
     }))
   }, [logPage, logRowsPerPage])
 
@@ -79,7 +80,7 @@ const MachineLogsTab = () => {
         isMachineArchived: machine?.isArchived,
         selectedLogType: logType?.type,
         searchKey: filteredSearchKey,
-        searchColumn: selectedSearchFilter
+        searchColumn: selectedMultiSearchFilter
       }))
     } else {
       await dispatch(ChangeLogPage(0))
@@ -112,7 +113,7 @@ const MachineLogsTab = () => {
     isMachineArchived: machine?.isArchived,
     selectedLogType: logType?.type,
     searchKey: filteredSearchKey,
-    searchColumn: selectedSearchFilter
+    searchColumn: selectedMultiSearchFilter
   }
 
   return (
@@ -129,6 +130,8 @@ const MachineLogsTab = () => {
                 onGetLogs={handleFormSubmit}
                 dataForApi={dataForApi}
                 unit={unit}
+                selectedMultiSearchFilter={selectedMultiSearchFilter}
+                setSelectedMultiSearchFilter={setSelectedMultiSearchFilter}
               />
             </Grid>
           </Grid>
