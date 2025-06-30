@@ -27,7 +27,7 @@ const LogsTableController = ({
 
   const methods = useFormContext()
   const { watch, setValue, trigger } = methods
-  const { dateFrom, dateTo, logType, unitType } = watch()
+  const { dateFrom, dateTo, logType, unitType, logPeriod } = watch()
 
   return (
     <Card sx={{ height: 'auto', padding: 3, borderRadius: 1.5, my: 1.5 }}>
@@ -71,9 +71,12 @@ const LogsTableController = ({
             name='dateFrom'
             value={dateFrom}
             size='small'
-            onChange={(value) => {
-              setValue('dateFrom', value, { shouldValidate: true });
-              trigger('dateFrom');
+            onCustomChange={(value) => {
+              setValue('dateFrom', value, { shouldValidate: true, shouldDirty: true });
+              if(logPeriod==='Hourly'){
+                setValue('dateTo', value, { shouldValidate: true, shouldDirty: true });
+              }
+              trigger(['dateFrom', 'dateTo']);   
             }}
           />
         </Grid>
@@ -83,9 +86,12 @@ const LogsTableController = ({
             name='dateTo'
             value={dateTo}
             size='small'
-            onChange={(value) => {
-              setValue('dateTo', value, { shouldValidate: true });
-              trigger('dateTo');
+            onCustomChange={(value) => {
+              setValue('dateTo', value, { shouldValidate: true, shouldDirty: true });
+              if(logPeriod==='Hourly'){
+                setValue('dateFrom', value, { shouldValidate: true, shouldDirty: true });
+              }
+              trigger(['dateFrom', 'dateTo']);   
             }}
           />
         </Grid>

@@ -203,9 +203,12 @@ const GraphsSection = () => {
                       label='From Date'
                       name='dateFrom'
                       size='small'
-                      onChange={(value) => {
-                        setValue('dateFrom', value, { shouldValidate: true });
-                        trigger('dateFrom');
+                      onCustomChange={(value) => {
+                        setValue('dateFrom', value, { shouldValidate: true, shouldDirty: true });
+                        if(logPeriod==='Hourly'){
+                          setValue('dateTo', value, { shouldValidate: true, shouldDirty: true });
+                        }
+                        trigger(['dateFrom', 'dateTo']);   
                       }}
                     />
                   </Grid>
@@ -214,9 +217,12 @@ const GraphsSection = () => {
                       label='To Date'
                       name='dateTo'
                       size='small'
-                      onChange={(value) => {
-                        setValue('dateTo', value, { shouldValidate: true });
-                        trigger('dateTo');
+                      onCustomChange={(value) => {
+                        setValue('dateTo', value, { shouldValidate: true, shouldDirty: true });
+                        if(logPeriod==='Hourly'){
+                          setValue('dateFrom', value, { shouldValidate: true, shouldDirty: true });
+                        }
+                        trigger(['dateFrom', 'dateTo']);   
                       }}
                     />
                   </Grid>
