@@ -12,6 +12,7 @@ import FormProvider, { RHFTextField, RHFPasswordField, RHFCheckbox, RHFReCaptcha
 import { RADIUS } from 'config'
 import { PATH_AUTH } from 'route/path'
 import { BUTTON, REGEX, LOCAL_STORAGE_KEY, RESPONSE, KEY, LABEL, FLEX, VARIANT, SNACK, SIZE, COLOR, DEBUG } from 'constant'
+import { GLOBAL } from 'config'
 
 const { TYPOGRAPHY } = VARIANT
 
@@ -25,7 +26,7 @@ function LoginForm() {
         email: '',
         password: '',
         remember: false,
-        recaptchaToken: ''
+        recaptchaToken: '',
     }
 
     const methods = useForm({
@@ -57,7 +58,7 @@ function LoginForm() {
 
     const onSubmit = async data => {
         try {
-            if (!data.recaptchaToken) {
+            if (GLOBAL?.RECAPTCHA_KEY && !data.recaptchaToken) {
                 snack('Please complete the reCAPTCHA', { variant: COLOR.ERROR })
                 return
             }
@@ -114,7 +115,7 @@ function LoginForm() {
 
                 <RHFCheckbox name={KEY.REMEMBER} label={t('remember_me.label')} />
 
-                {email.trim() && password.trim().length >= 6 && (
+                {email.trim() && password.trim().length >= 6 && GLOBAL?.RECAPTCHA_KEY && (
                     <RHFReCaptchaV2
                         name='recaptchaToken'
                     />
@@ -128,7 +129,7 @@ function LoginForm() {
                     type={KEY.SUBMIT}
                     mode={themeMode}
                     loading={isSubmitSuccessful || isSubmitting}
-                    disabled={!email.trim() || password.trim().length < 6 || !recaptchaToken}
+                    disabled={GLOBAL?.RECAPTCHA_KEY && (!email.trim() || password.trim().length < 6 || !recaptchaToken)}
                     sx={{
                         ...RADIUS.BORDER,
                         width: '115px',
