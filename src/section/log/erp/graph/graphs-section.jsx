@@ -50,7 +50,7 @@ const GraphsSection = () => {
   })
 
   const { handleSubmit, setValue, trigger, watch } = methods;
-  const { logPeriod } = watch();
+  const { machine, logGraphType, logPeriod, dateFrom, dateTo } = watch();
 
   const [graphLabels, setGraphLabels] = useState({
     yaxis: 'Meterage Produced',
@@ -64,6 +64,11 @@ const GraphsSection = () => {
       dispatch(resetLogsGraphData())
     }
   }, [user?.customer]);
+  
+  useEffect(() => {
+    graphDataRef.current = null;
+    dispatch(resetLogsGraphData());
+  }, [machine, logGraphType, logPeriod, dateFrom, dateTo]);
 
   useEffect(() => {
     const now = new Date();
@@ -203,9 +208,12 @@ const GraphsSection = () => {
                       label='From Date'
                       name='dateFrom'
                       size='small'
-                      onChange={(value) => {
-                        setValue('dateFrom', value, { shouldValidate: true });
-                        trigger('dateFrom');
+                      onCustomChange={(value) => {
+                        setValue('dateFrom', value, { shouldValidate: true, shouldDirty: true });
+                        if(logPeriod==='Hourly'){
+                          setValue('dateTo', value, { shouldValidate: true, shouldDirty: true });
+                        }
+                        trigger(['dateFrom', 'dateTo']);   
                       }}
                     />
                   </Grid>
@@ -214,9 +222,12 @@ const GraphsSection = () => {
                       label='To Date'
                       name='dateTo'
                       size='small'
-                      onChange={(value) => {
-                        setValue('dateTo', value, { shouldValidate: true });
-                        trigger('dateTo');
+                      onCustomChange={(value) => {
+                        setValue('dateTo', value, { shouldValidate: true, shouldDirty: true });
+                        if(logPeriod==='Hourly'){
+                          setValue('dateFrom', value, { shouldValidate: true, shouldDirty: true });
+                        }
+                        trigger(['dateFrom', 'dateTo']);   
                       }}
                     />
                   </Grid>
@@ -269,7 +280,7 @@ const GraphsSection = () => {
           />
         )
       ) : <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 350 }} >
-        <TableNoData graphNotFound={isNotFound} />
+        <TableNoData clickButton={isNotFound} />
       </Box>}
     </Grid>
   )

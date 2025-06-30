@@ -8,41 +8,46 @@ RHFDatePickr.propTypes = {
     label: PropTypes.string,
     size: PropTypes.string,
     helperText: PropTypes.node,
-    Error: PropTypes.bool
+    Error: PropTypes.bool,
+    onCustomChange: PropTypes.func,
 }
 
-export default function RHFDatePickr({ name, label, size, helperText, Error, ...other }) {
-    const { control } = useFormContext()
-    const FORMAT = 'DD/MM/YYYY'
+export default function RHFDatePickr({ name, label, size, helperText, Error, onCustomChange, ...other }) {
+  const { control } = useFormContext()
+  const FORMAT = 'DD/MM/YYYY'
 
-    return (
-        <Controller
-            name={name}
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-                <DatePicker
-                    {...field}
-                    // remove the shadow of the calendar
-                    sx={{ '& .MuiPopper-paper': { boxShadow: 'none' } }}
-                    name={name}
-                    inputFormat={FORMAT}
-                    label={label}
-                    onChange={newValue => {
-                        const nativeDate = newValue?.toDate?.() || null
-                        field.onChange(nativeDate)
-                    }}
-                    renderInput={params => (
-                        <TextField
-                            {...params}
-                            size={size}
-                            inputProps={{ ...params.inputProps, readOnly: false }}
-                            error={!!error || !!Error}
-                            helperText={error ? error?.message : helperText}
-                            {...other}
-                        />
-                    )}
-                />
-            )}
+  return (
+    <Controller
+      name={name}
+      control={control}
+      render={({ field, fieldState: { error } }) => (
+        <DatePicker
+          {...field}
+          // remove the shadow of the calendar
+          sx={{ '& .MuiPopper-paper': { boxShadow: 'none' } }}
+          name={name}
+          inputFormat={FORMAT}
+          label={label}
+          onChange={newValue => {
+            const nativeDate = newValue?.toDate?.() || null
+            if (onCustomChange) {
+              onCustomChange(nativeDate)
+            } else {
+              field.onChange(nativeDate)
+            }
+          }}
+          renderInput={params => (
+            <TextField
+              {...params}
+              size={size}
+              inputProps={{ ...params.inputProps, readOnly: false }}
+              error={!!error || !!Error}
+              helperText={error ? error?.message : helperText}
+              {...other}
+            />
+          )}
         />
-    )
+      )}
+    />
+  )
 }

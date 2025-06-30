@@ -11,11 +11,12 @@ import { getLogGraphData, setSelectedSearchFilter } from 'store/slice/log/machin
 import { erpGraphSchema } from 'schema/graph/erp-graph-schema'
 import { LogsTableController, useLogDefaultValues } from 'section/log/logs'
 import { ERPProductionTotal, ERPProductionRate } from 'section/log'
-import { Grid } from '@mui/material'
+import { Grid, Box } from '@mui/material'
 import { HowickLoader } from 'component'
 import FormProvider from 'component/hook-form'
 import { GStyledStickyDiv } from 'theme/style'
 import { NAV } from 'config/layout'
+import { TableNoData } from 'component'
 
 const MachineGraphsTab = () => {
   const { isLoading, logsGraphData } = useSelector(state => state.machineLog)
@@ -24,6 +25,8 @@ const MachineGraphsTab = () => {
   const { user } = useAuthContext()
   const defaultValues = useLogDefaultValues(user?.customer, machine)
   const { machineId } = useParams()
+  const [submittedValues, setSubmittedValues] = useState(null)
+  const [hasFetchedInitially, setHasFetchedInitially] = useState(false);
 
   const methods = useForm({
     resolver: yupResolver(erpGraphSchema),
@@ -34,12 +37,21 @@ const MachineGraphsTab = () => {
 
   const { setValue, handleSubmit, getValues, watch, trigger } = methods
 
-  const logPeriodWatched = watch('logPeriod');
+  const logPeriodData = watch('logPeriod');
+  const logGraphTypeData = watch('logGraphType');
+  const dateFromData = watch('dateFrom');
+  const dateToData = watch('dateTo');
 
   const [graphLabels, setGraphLabels] = useState({
     yaxis: 'Meterage Produced',
     xaxis: defaultValues.logPeriod || 'Daily'
   })
+
+  useEffect(() => {
+    if (hasFetchedInitially) {
+      setSubmittedValues(null);
+    }
+  }, [logGraphTypeData, logPeriodData, dateFromData, dateToData]);
 
   useEffect(() => {
     const now = new Date();
@@ -48,7 +60,7 @@ const MachineGraphsTab = () => {
     newDateFrom.setHours(0, 0, 0, 0);
     now.setHours(23, 59, 59, 999);
 
-    switch (logPeriodWatched) {
+    switch (logPeriodData) {
       case 'Hourly':
         break;
 
@@ -79,9 +91,7 @@ const MachineGraphsTab = () => {
     setValue('dateTo', now);
     setValue('dateFrom', newDateFrom);
     trigger(['dateFrom', 'dateTo']);
-  }, [logPeriodWatched, setValue, trigger]);
-
-  const [submittedValues, setSubmittedValues] = useState(null)
+  }, [logPeriodData, setValue, trigger]);
 
   const handleFormSubmit = useCallback(() => {
     const { logPeriod, logGraphType, dateFrom, dateTo } = getValues()
@@ -102,24 +112,17 @@ const MachineGraphsTab = () => {
   }, [getValues, machine?.customer?._id, machineId])
 
   useEffect(() => {
-    if (defaultValues?.logGraphType && defaultValues?.logPeriod && defaultValues?.dateFrom && defaultValues?.dateTo && machine?.customer?._id) {
-      const { logPeriod, logGraphType, dateFrom, dateTo } = defaultValues
-      const customerId = machine?.customer?._id
-
-      const payload = { logPeriod, logGraphType, dateFrom, dateTo }
-      setSubmittedValues(payload)
-
-      dispatch(getLogGraphData(customerId, machineId, 'erp', logPeriod, logGraphType.key, dateFrom, dateTo))
-
-      setGraphLabels({
-        yaxis: logGraphType.key === 'productionRate'
-          ? 'Production Rate (m/hr)'
-          : 'Meterage Produced',
-        xaxis: logPeriod
-      })
+    if (
+      defaultValues?.logGraphType &&
+      defaultValues?.logPeriod &&
+      defaultValues?.dateFrom &&
+      defaultValues?.dateTo &&
+      machine?.customer?._id
+    ) {
+      handleFormSubmit();
+      setHasFetchedInitially(true);
     }
-
-  }, [defaultValues, machine?.customer?._id, machineId])
+  }, [defaultValues, machine?.customer?._id, machineId]);
 
   const handlePeriodChange = useCallback((newPeriod) => {
     setValue('logPeriod', newPeriod)
@@ -129,7 +132,8 @@ const MachineGraphsTab = () => {
     setValue('logGraphType', newGraphType)
   }, [setValue])
 
-  const shouldShowLoader = isLoading || !submittedValues || !logsGraphData
+
+  const isNotFound = !submittedValues && !isLoading;
 
   return (
     <Grid item xs={12} sx={{ mb: 3, height: '100%' }} >
@@ -144,16 +148,20 @@ const MachineGraphsTab = () => {
         />
       </FormProvider>
 
-      {
-        shouldShowLoader ? (
-          <HowickLoader height={300} width={303} mode={themeMode} />
-        ) : submittedValues?.logGraphType?.key === 'production_total' ? (
+      {isLoading ? (
+        <HowickLoader height={300} width={303} mode={themeMode} />
+      ) : submittedValues ? (
+        submittedValues?.logGraphType?.key === 'production_total' ? (
           <ERPProductionTotal timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} machineSerialNo={machine?.serialNo} />
         ) : (
           <ERPProductionRate timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} machineSerialNo={machine?.serialNo} />
         )
-      }
-    </Grid >
+      ) : (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 350 }} >
+          <TableNoData clickButton={isNotFound} />
+        </Box>
+      )}
+    </Grid>
   )
 }
 

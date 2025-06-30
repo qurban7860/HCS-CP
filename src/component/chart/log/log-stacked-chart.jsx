@@ -121,7 +121,7 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
       title: {
         text: `${machineSerialNo}${producedData ? `, ${producedData}` : ''}`,
         offsetX: 0,
-        offsetY: -5,
+        offsetY: 10,
         style: {
           fontSize: '12px',
           fontWeight: 600,
@@ -153,6 +153,10 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
     legend: {
       onItemClick: {
         toggleDataSeries: false
+      },
+      offsetY: 15,
+      itemMargin: {
+        vertical: 5 
       }
     },
     tooltip: {
