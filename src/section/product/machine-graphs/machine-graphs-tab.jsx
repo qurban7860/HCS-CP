@@ -26,6 +26,7 @@ const MachineGraphsTab = () => {
   const defaultValues = useLogDefaultValues(user?.customer, machine)
   const { machineId } = useParams()
   const [submittedValues, setSubmittedValues] = useState(null)
+  const [hasFetchedInitially, setHasFetchedInitially] = useState(false);
 
   const methods = useForm({
     resolver: yupResolver(erpGraphSchema),
@@ -45,9 +46,11 @@ const MachineGraphsTab = () => {
     yaxis: 'Meterage Produced',
     xaxis: defaultValues.logPeriod || 'Daily'
   })
-  
+
   useEffect(() => {
-    setSubmittedValues(null);
+    if (hasFetchedInitially) {
+      setSubmittedValues(null);
+    }
   }, [logGraphTypeData, logPeriodData, dateFromData, dateToData]);
 
   useEffect(() => {
@@ -109,24 +112,17 @@ const MachineGraphsTab = () => {
   }, [getValues, machine?.customer?._id, machineId])
 
   useEffect(() => {
-    if (defaultValues?.logGraphType && defaultValues?.logPeriod && defaultValues?.dateFrom && defaultValues?.dateTo && machine?.customer?._id) {
-      const { logPeriod, logGraphType, dateFrom, dateTo } = defaultValues
-      const customerId = machine?.customer?._id
-
-      const payload = { logPeriod, logGraphType, dateFrom, dateTo }
-      setSubmittedValues(payload)
-
-      dispatch(getLogGraphData(customerId, machineId, 'erp', logPeriod, logGraphType.key, dateFrom, dateTo))
-
-      setGraphLabels({
-        yaxis: logGraphType.key === 'productionRate'
-          ? 'Production Rate (m/hr)'
-          : 'Meterage Produced',
-        xaxis: logPeriod
-      })
+    if (
+      defaultValues?.logGraphType &&
+      defaultValues?.logPeriod &&
+      defaultValues?.dateFrom &&
+      defaultValues?.dateTo &&
+      machine?.customer?._id
+    ) {
+      handleFormSubmit();
+      setHasFetchedInitially(true);
     }
-
-  }, [defaultValues, machine?.customer?._id, machineId])
+  }, [defaultValues, machine?.customer?._id, machineId]);
 
   const handlePeriodChange = useCallback((newPeriod) => {
     setValue('logPeriod', newPeriod)
@@ -136,7 +132,8 @@ const MachineGraphsTab = () => {
     setValue('logGraphType', newGraphType)
   }, [setValue])
 
-  const isNotFound = isLoading || !submittedValues || !logsGraphData
+
+  const isNotFound = !submittedValues && !isLoading;
 
   return (
     <Grid item xs={12} sx={{ mb: 3, height: '100%' }} >
@@ -151,18 +148,20 @@ const MachineGraphsTab = () => {
         />
       </FormProvider>
 
-      {
-        isLoading ? (
-          <HowickLoader height={300} width={303} mode={themeMode} />
-        ) : submittedValues ? ( 
-            submittedValues?.logGraphType?.key === 'production_total' ? (
+      {isLoading ? (
+        <HowickLoader height={300} width={303} mode={themeMode} />
+      ) : submittedValues ? (
+        submittedValues?.logGraphType?.key === 'production_total' ? (
           <ERPProductionTotal timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} machineSerialNo={machine?.serialNo} />
         ) : (
           <ERPProductionRate timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} machineSerialNo={machine?.serialNo} />
-        ) ) :<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 350 }} >
-        <TableNoData clickButton={isNotFound} />
-      </Box>}
-    </Grid >
+        )
+      ) : (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 350 }} >
+          <TableNoData clickButton={isNotFound} />
+        </Box>
+      )}
+    </Grid>
   )
 }
 
