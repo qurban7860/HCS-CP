@@ -159,7 +159,7 @@ export function getDocument({ id, machine, isActive }) {
   return async (dispatch) => {
     dispatch(documentSlice.actions.startLoading())
     try {
-      const params = { customerAccess: true, machine }
+      const params = { machine }
       const response = await axios.get(PATH_SERVER.DOCUMENT.detail(id), { params })
       if (regEx.test(response.status)) {
         dispatch(documentSlice.actions.getDocumentSuccess(response.data))
