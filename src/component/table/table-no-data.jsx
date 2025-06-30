@@ -5,7 +5,7 @@ import { TableBody, TableCell, TableRow } from '@mui/material'
 import { EmptyContent } from 'component'
 import { FALLBACK } from 'constant'
 
-const TableNoData = ({ isNotFound, ticketNotFound, logNotFound, graphNotFound }) => {
+const TableNoData = ({ isNotFound, ticketNotFound, logNotFound, graphNotFound, clickButton }) => {
  const { themeMode } = useSettingContext()
  return (
   <Fragment>
@@ -48,6 +48,19 @@ const TableNoData = ({ isNotFound, ticketNotFound, logNotFound, graphNotFound })
       </TableCell>
      </TableRow>
     </TableBody>
+   ) : clickButton ? (
+    <TableBody>
+     <TableRow>
+      <TableCell colSpan={12}>
+       <EmptyContent
+        {...FALLBACK.CLICK_BUTTON}
+        sx={{
+         color: themeMode === 'dark' ? 'text.secondary' : 'grey.700'
+        }}
+       />
+      </TableCell>
+     </TableRow>
+    </TableBody>
    ) : (
     ticketNotFound && (
      <TableBody>
@@ -72,7 +85,8 @@ TableNoData.propTypes = {
  isNotFound: PropTypes.bool,
  ticketNotFound: PropTypes.bool,
  logNotFound: PropTypes.bool,
- graphNotFound: PropTypes.bool
+ graphNotFound: PropTypes.bool,
+ clickButton: PropTypes.bool
 }
 
 export default TableNoData
