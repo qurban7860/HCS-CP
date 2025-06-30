@@ -28,6 +28,11 @@ const FALLBACK = {
   title: 'Under Development',
   message: 'This feature is under development. Please check back later'
  },
+ CLICK_BUTTON: {
+  code: HTTP_CODE.CLICK_BUTTON,
+  title: 'Click Button',
+  description: 'Please Click the button to fetch results'
+ },
  NO_DATA: {
   code: HTTP_CODE.NO_DATA,
   title: 'No Data Found',

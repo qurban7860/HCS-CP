@@ -50,7 +50,7 @@ const GraphsSection = () => {
   })
 
   const { handleSubmit, setValue, trigger, watch } = methods;
-  const { logPeriod } = watch();
+  const { machine, logGraphType, logPeriod, dateFrom, dateTo } = watch();
 
   const [graphLabels, setGraphLabels] = useState({
     yaxis: 'Meterage Produced',
@@ -64,6 +64,11 @@ const GraphsSection = () => {
       dispatch(resetLogsGraphData())
     }
   }, [user?.customer]);
+  
+  useEffect(() => {
+    graphDataRef.current = null;
+    dispatch(resetLogsGraphData());
+  }, [machine, logGraphType, logPeriod, dateFrom, dateTo]);
 
   useEffect(() => {
     const now = new Date();
@@ -275,7 +280,7 @@ const GraphsSection = () => {
           />
         )
       ) : <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 350 }} >
-        <TableNoData graphNotFound={isNotFound} />
+        <TableNoData clickButton={isNotFound} />
       </Box>}
     </Grid>
   )
