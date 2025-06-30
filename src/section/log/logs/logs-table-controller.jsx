@@ -65,12 +65,13 @@ const LogsTableController = ({
             />
           </Grid>
         )}
-        <Grid item xs={12} sm={isGraphPage ? 4 : 6} md={2}>
+        <Grid item xs={12} sm={4} md={isGraphPage ? 2 : 4}>
           <RHFDatePickr
             label='Date From'
             name='dateFrom'
             value={dateFrom}
             size='small'
+            sx={{ width: '100%'}}
             onCustomChange={(value) => {
               setValue('dateFrom', value, { shouldValidate: true, shouldDirty: true });
               if(logPeriod==='Hourly'){
@@ -80,12 +81,13 @@ const LogsTableController = ({
             }}
           />
         </Grid>
-        <Grid item xs={12} sm={isGraphPage ? 4 : 6} md={2}>
+        <Grid item xs={12} sm={4} md={isGraphPage ? 2 : 4}>
           <RHFDatePickr
             label='Date To'
             name='dateTo'
             value={dateTo}
             size='small'
+            sx={{ width: '100%'}}
             onCustomChange={(value) => {
               setValue('dateTo', value, { shouldValidate: true, shouldDirty: true });
               if(logPeriod==='Hourly'){
@@ -96,7 +98,7 @@ const LogsTableController = ({
           />
         </Grid>
         {!isGraphPage && (
-        <Grid item xs={12} md={1.5}>
+        <Grid item xs={12} md={4}>
           <RHFAutocomplete
             name='unitType'
             size='small'
@@ -125,18 +127,9 @@ const LogsTableController = ({
         )}
 
         {!isGraphPage && (
-          <Grid item xs={12} md={6.5}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Grid item xs={12} md={12}>
+            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
               <Box sx={{ flexGrow: 1 }}>
-                {/* <RHFFilteredSearchBar
-                  name='filteredSearchKey'
-                  filterOptions={logType?.tableColumns.filter(col => col.searchable)}
-                  setSelectedFilter={setSelectedSearchFilter}
-                  selectedFilter={selectedSearchFilter}
-                  placeholder='Looking for something?...'
-                  helperText={selectedSearchFilter === '_id' ? 'To search by ID, you must enter the complete Log ID' : ''}
-                  fullWidth
-                /> */}
                 <RHFMultiFilteredSearchBar
                   name="filteredSearchKey"
                   filterOptions={logType?.tableColumns.filter(col => col.searchable)}
@@ -148,7 +141,7 @@ const LogsTableController = ({
                   placeholder="Search across selected columns..."
                 />
               </Box>
-              <Box sx={{ display: 'flex', mt: -3.5, gap: 1 }}>
+              <Box sx={{ display: 'flex', mt: 0.5, gap: 1 }}>
                 <IconTooltip
                   title="Fetch Logs"
                   icon={ICON_NAME.TEXT_SEARCH}
