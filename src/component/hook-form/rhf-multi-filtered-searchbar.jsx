@@ -346,63 +346,69 @@ export default function RHFMultiFilteredSearchBar({
           </Collapse>
           
           {/* Selected filters chips */}
-          {showChips && selectedFilters.length > 0 && (
-            <Box sx={{ 
-              display: 'flex', 
-              flexWrap: 'wrap', 
-              gap: 0.5,
-              maxHeight: 100,
-              overflowY: 'auto',
-              bgcolor: 'background.paper',
-            }}>
-              {selectedFilterOptions.map((option) => (
-                <Chip
-                  key={option.id}
-                  label={option.label}
-                  size="small"
-                  onDelete={() => removeFilter(option.id)}
-                  color="primary"
-                  variant="outlined"
-                  sx={{
-                    '& .MuiChip-deleteIcon': {
-                      '&:hover': {
-                        color: 'error.main',
-                      },
-                    },
-                  }}
-                />
-              ))}
-              
-              {selectedFilters.length > 1 && (
-                <Chip
-                  label="Clear All"
-                  size="small"
-                  onClick={() => {
-                    setSelectedFilters([]);
-                    setValue(name, '');
-                    afterClearHandler();
-                  }}
-                  color="error"
-                  variant="outlined"
-                  icon={<Iconify icon="mdi:trash-can-outline" />}
-                />
+          {showChips && (
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: 0.5,
+                maxHeight: 100,
+                minHeight: '25px',
+                overflowY: 'auto',
+                bgcolor: 'background.paper'
+              }}>
+              {selectedFilters.length > 0 && (
+                <>
+                  {selectedFilterOptions.map(option => (
+                    <Chip
+                      key={option.id}
+                      label={option.label}
+                      size='small'
+                      onDelete={() => removeFilter(option.id)}
+                      color='primary'
+                      variant='outlined'
+                      sx={{
+                        '& .MuiChip-deleteIcon': {
+                          '&:hover': {
+                            color: 'error.main'
+                          }
+                        }
+                      }}
+                    />
+                  ))}
+
+                  {selectedFilters.length > 1 && (
+                    <Chip
+                      label='Clear All'
+                      size='small'
+                      onClick={() => {
+                        setSelectedFilters([])
+                        setValue(name, '')
+                        afterClearHandler()
+                      }}
+                      color='error'
+                      variant='outlined'
+                      icon={<Iconify icon='mdi:trash-can-outline' />}
+                    />
+                  )}
+                </>
               )}
             </Box>
           )}
 
-          <Box sx={{ minHeight: '20px' }}>
-            {(fieldError || error || helperText) && (
-              <Typography variant="caption" color="text.disabled" sx={{ ml: 1 }}>
+          {(fieldError || error || helperText) && (
+            <Box sx={{ minHeight: '20px' }}>
+              <Typography variant='caption' color='text.disabled' sx={{ ml: 1 }}>
                 {fieldError ? fieldError.message : error || helperText}
               </Typography>
-            )}
+            </Box>
+          )}
             
             {/* {maxSelections && (
               <Typography variant="caption" color="text.secondary" sx={{ ml: 1, display: 'block' }}>
                 {selectedFilters.length}/{maxSelections} columns selected
               </Typography>
             )} */}
-          </Box>
         </Stack>
       )}
     />
