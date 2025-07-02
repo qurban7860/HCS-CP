@@ -105,7 +105,7 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
       },
       offsetY: -35,
       style: {
-        fontSize: '12px',
+        fontSize: '10px',
         colors: [themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400]]
       }
     },
