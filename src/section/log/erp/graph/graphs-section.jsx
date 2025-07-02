@@ -38,7 +38,8 @@ const GraphsSection = () => {
       logPeriod: 'Daily',
       logGraphType: logGraphTypes[0],
       dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-      dateTo: new Date()
+      dateTo: new Date(),
+      unitType: 'Metric',
     }),
     [user]
   )
@@ -50,7 +51,7 @@ const GraphsSection = () => {
   })
 
   const { handleSubmit, setValue, trigger, watch } = methods;
-  const { machine, logGraphType, logPeriod, dateFrom, dateTo } = watch();
+  const { machine, logGraphType, logPeriod, dateFrom, dateTo, unitType } = watch();
 
   const [graphLabels, setGraphLabels] = useState({
     yaxis: 'Meterage Produced',
@@ -68,7 +69,7 @@ const GraphsSection = () => {
   useEffect(() => {
     graphDataRef.current = null;
     dispatch(resetLogsGraphData());
-  }, [machine, logGraphType, logPeriod, dateFrom, dateTo]);
+  }, [machine, logGraphType, logPeriod, dateFrom, dateTo, unitType]);
 
   useEffect(() => {
     const now = new Date();
@@ -112,9 +113,11 @@ const GraphsSection = () => {
   const onSubmit = (data) => {
     const { logGraphType, logPeriod } = data;
 
+    const unitLabel = data.unitType === 'Imperial' ? 'in' : 'm';
+
     const yLabel = logGraphType?.key === 'productionRate'
-      ? 'Production Rate (m/hr)'
-      : 'Meterage Produced';
+      ? `Production Rate (${unitLabel}/hr)`
+      : `Meterage Produced (${unitLabel})`;
 
     setGraphLabels({
       yaxis: yLabel,
@@ -203,7 +206,7 @@ const GraphsSection = () => {
                       fullWidth
                     />
                   </Grid>
-                  <Grid item xs={12} sm={12} md={2} xl={2}>
+                  <Grid item xs={12} sm={12} md={2} xl={1.5}>
                     <RHFDatePickr
                       label='From Date'
                       name='dateFrom'
@@ -217,7 +220,7 @@ const GraphsSection = () => {
                       }}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={12} md={2} xl={2}>
+                  <Grid item xs={12} sm={12} md={2} xl={1.5}>
                     <RHFDatePickr
                       label='To Date'
                       name='dateTo'
@@ -231,6 +234,17 @@ const GraphsSection = () => {
                       }}
                     />
                   </Grid>
+                  <Box sx={{ width: '160px' }}>
+                      <RHFAutocomplete
+                        name="unitType"
+                        size="small"
+                        label="Unit*"
+                        options={['Metric', 'Imperial']}
+                        disableClearable
+                        autoSelect
+                        openOnFocus
+                      />
+                  </Box>
                   <Grid item md={1} sx={{ display: 'flex', justifyContent: 'flex-end', mt: 0.5 }} >
                     <IconTooltip
                       title={t('log.button_graph.get_graph').toUpperCase()}
@@ -267,6 +281,7 @@ const GraphsSection = () => {
             dateFrom={graphData.dateFrom}
             dateTo={graphData.dateTo}
             machineSerialNo={graphData.machineSerialNo}
+            unitType={graphData.unitType}
           />
         ) : (
           <ERPProductionRate
@@ -277,6 +292,7 @@ const GraphsSection = () => {
             dateFrom={graphData.dateFrom}
             dateTo={graphData.dateTo}
             machineSerialNo={graphData.machineSerialNo}
+            unitType={graphData.unitType}
           />
         )
       ) : <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 350 }} >

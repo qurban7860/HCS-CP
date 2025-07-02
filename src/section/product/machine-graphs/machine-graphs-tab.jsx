@@ -41,6 +41,7 @@ const MachineGraphsTab = () => {
   const logGraphTypeData = watch('logGraphType');
   const dateFromData = watch('dateFrom');
   const dateToData = watch('dateTo');
+  const unitTypeData = watch('unitType');
 
   const [graphLabels, setGraphLabels] = useState({
     yaxis: 'Meterage Produced',
@@ -51,7 +52,8 @@ const MachineGraphsTab = () => {
     if (hasFetchedInitially) {
       setSubmittedValues(null);
     }
-  }, [logGraphTypeData, logPeriodData, dateFromData, dateToData]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [logGraphTypeData, logPeriodData, dateFromData, dateToData, unitTypeData]);
 
   useEffect(() => {
     const now = new Date();
@@ -94,20 +96,23 @@ const MachineGraphsTab = () => {
   }, [logPeriodData, setValue, trigger]);
 
   const handleFormSubmit = useCallback(() => {
-    const { logPeriod, logGraphType, dateFrom, dateTo } = getValues()
+    const { logPeriod, logGraphType, dateFrom, dateTo, unitType } = getValues()
     const customerId = machine?.customer?._id
     if (!customerId || !logGraphType?.key) return
 
-    const payload = { logPeriod, logGraphType, dateFrom, dateTo }
+    const payload = { logPeriod, logGraphType, dateFrom, dateTo, unitType }
     setSubmittedValues(payload)
 
     dispatch(getLogGraphData(customerId, machineId, 'erp', logPeriod, logGraphType.key, dateFrom, dateTo))
+    
+    const unitLabel = unitType === 'Imperial' ? 'in' : 'm';
 
     setGraphLabels({
-      yaxis: logGraphType.key === 'productionRate'
-        ? 'Production Rate (m/hr)'
-        : 'Meterage Produced',
-      xaxis: logPeriod
+      yaxis:
+        logGraphType.key === 'productionRate'
+          ? `Production Rate (${unitLabel}/hr)`
+          : `Meterage Produced (${unitLabel})`,
+      xaxis: logPeriod,
     })
   }, [getValues, machine?.customer?._id, machineId])
 
@@ -117,11 +122,13 @@ const MachineGraphsTab = () => {
       defaultValues?.logPeriod &&
       defaultValues?.dateFrom &&
       defaultValues?.dateTo &&
-      machine?.customer?._id
+      machine?.customer?._id &&
+      defaultValues?.unitType 
     ) {
       handleFormSubmit();
       setHasFetchedInitially(true);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues, machine?.customer?._id, machineId]);
 
   const handlePeriodChange = useCallback((newPeriod) => {
@@ -152,9 +159,9 @@ const MachineGraphsTab = () => {
         <HowickLoader height={300} width={303} mode={themeMode} />
       ) : submittedValues ? (
         submittedValues?.logGraphType?.key === 'production_total' ? (
-          <ERPProductionTotal timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} machineSerialNo={machine?.serialNo} />
+          <ERPProductionTotal timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} machineSerialNo={machine?.serialNo} unitType={submittedValues.unitType}/>
         ) : (
-          <ERPProductionRate timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} machineSerialNo={machine?.serialNo} />
+          <ERPProductionRate timePeriod={graphLabels.xaxis} customer={machine?.customer} graphLabels={graphLabels} logsGraphData={logsGraphData} isDashboard dateFrom={submittedValues.dateFrom} dateTo={submittedValues.dateTo} machineSerialNo={machine?.serialNo} unitType={submittedValues.unitType}/>
         )
       ) : (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 350 }} >
