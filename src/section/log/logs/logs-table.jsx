@@ -76,6 +76,7 @@ const LogsTable = ({ logType, isLogsPage, unitType }) => {
                                     handleChangeRowsPerPage={handleChangeRowsPerPage}
                                     columnFilterButtonData={tableColumns}
                                     handleColumnButtonClick={handleColumnButtonClick}
+                                    unitType={unitType}
                                 />
                             </GStyledStickyDiv>
                             <TableContainer sx={{ height: 'calc(100vh - 470px)', overflow: 'auto' }}>

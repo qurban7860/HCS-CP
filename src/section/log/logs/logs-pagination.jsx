@@ -14,6 +14,7 @@ const LogsPagination = ({
     handleChangeRowsPerPage,
     columnFilterButtonData,
     handleColumnButtonClick,
+    unitType,
     ...other
 }) => {
     return (
@@ -33,6 +34,8 @@ const LogsPagination = ({
                 columnButtonClickHandler={handleColumnButtonClick}
                 showLastButton
                 showFirstButton
+                isLogsPage
+                unitType={unitType}
                 {...other}
             />
         </Box>
@@ -47,7 +50,8 @@ LogsPagination.propTypes = {
     handleChangePage: PropTypes.func,
     handleChangeRowsPerPage: PropTypes.func,
     columnFilterButtonData: PropTypes.array,
-    handleColumnButtonClick: PropTypes.func
+    handleColumnButtonClick: PropTypes.func,
+    unitType: PropTypes.string
 }
 
 export default memo(LogsPagination)
