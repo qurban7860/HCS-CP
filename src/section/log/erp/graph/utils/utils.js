@@ -3,14 +3,21 @@ export const processGraphData = (logsGraphData, timePeriod, dateFrom, dateTo, sk
 
   const dataMap = new Map();
 
+  const convert = (value) => {
+    if (unitType === 'Imperial') {
+      return value / 25.4; 
+    }
+    return value / 1000; 
+  };
+
   logsGraphData.forEach((item) => {
     const id =
       timePeriod === 'Monthly' ? item._id.replace(/^Sep /, 'Sept ') : item._id;
 
     dataMap.set(id, {
       ...item,
-      componentLength: (item?.componentLength || 0) / 1000,
-      waste: (item?.waste || 0) / 1000,
+      componentLength: convert(item?.componentLength || 0),
+      waste: convert(item?.waste || 0)
     });
   });
 
