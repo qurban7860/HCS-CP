@@ -65,13 +65,13 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
     if (machineId) {
       navigate(PATH_MACHINE.machines.fullScreen.view(machineId), {
         state: {
-          logsGraphData: logsGraphData, graphLabels, timePeriod, dateFrom, dateTo, unitType
+          logsGraphData: logsGraphData, graphLabels, timePeriod, dateFrom, dateTo, unitType, producedData, machineSerialNo
         }
       });
     } else {
       navigate(PATH_LOGS.fullScreen, {
         state: {
-          logsGraphData: logsGraphData, graphLabels, timePeriod, dateFrom, dateTo, unitType
+          logsGraphData: logsGraphData, graphLabels, timePeriod, dateFrom, dateTo, unitType, producedData, machineSerialNo
         }
       });
     }

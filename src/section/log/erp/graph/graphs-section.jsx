@@ -206,7 +206,7 @@ const GraphsSection = () => {
                       fullWidth
                     />
                   </Grid>
-                  <Grid item xs={12} sm={12} md={2} xl={1.5}>
+                  <Grid item xs={12} sm={12} md={1.5} xl={1.5}>
                     <RHFDatePickr
                       label='From Date'
                       name='dateFrom'
@@ -220,7 +220,7 @@ const GraphsSection = () => {
                       }}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={12} md={2} xl={1.5}>
+                  <Grid item xs={12} sm={12} md={1.5} xl={1.5}>
                     <RHFDatePickr
                       label='To Date'
                       name='dateTo'
@@ -234,17 +234,17 @@ const GraphsSection = () => {
                       }}
                     />
                   </Grid>
-                  <Box sx={{ width: '160px' }}>
-                      <RHFAutocomplete
-                        name="unitType"
-                        size="small"
-                        label="Unit*"
-                        options={['Metric', 'Imperial']}
-                        disableClearable
-                        autoSelect
-                        openOnFocus
-                      />
-                  </Box>
+                  <Grid item xs={12} sm={6} md={1.5}>
+                    <RHFAutocomplete
+                      name="unitType"
+                      size="small"
+                      label="Unit*"
+                      options={['Metric', 'Imperial']}
+                      disableClearable
+                      autoSelect
+                      openOnFocus
+                    />
+                  </Grid>
                   <Grid item md={1} sx={{ display: 'flex', justifyContent: 'flex-end', mt: 0.5 }} >
                     <IconTooltip
                       title={t('log.button_graph.get_graph').toUpperCase()}

@@ -16,7 +16,7 @@ export default function FullScreenGraph() {
   const { themeMode } = useSettingContext()
   const { machineId } = useParams();
 
-  const { logsGraphData, graphLabels, timePeriod, dateFrom, dateTo, unitType } = location.state || {};
+  const { logsGraphData, graphLabels, timePeriod, dateFrom, dateTo, unitType, producedData, machineSerialNo } = location.state || {};
 
   const handleBackAction = () => {
     if (machineId) {
@@ -39,10 +39,12 @@ export default function FullScreenGraph() {
           <Grid item xs={12}>
             {logsGraphData && (
               <LogStackedChart
-                processGraphData={(skipZero) => processGraphData(logsGraphData, timePeriod, dateFrom, dateTo, skipZero)}
+                processGraphData={(skipZero) => processGraphData(logsGraphData, timePeriod, dateFrom, dateTo, skipZero, unitType)}
                 graphLabels={graphLabels}
                 graphHeight={700}
                 unitType={unitType}
+                producedData={producedData} 
+                machineSerialNo={machineSerialNo}
               />
             )}
           </Grid>
