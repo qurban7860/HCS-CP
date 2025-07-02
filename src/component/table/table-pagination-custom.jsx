@@ -71,6 +71,9 @@ function TablePaginationCustom({
     const getFormattedLabel = (column, activeUnit) => {
       const { fullLabel, label, unit } = column;
       // If the column is not a numerical length, return label as-is
+      if (unit === '%') {
+        return `${fullLabel || label} (${unit})`;
+      }
       if (!column.numerical) return fullLabel || label;
       // Metric Length
       if (activeUnit === 'Metric' && 'mm'.includes(unit?.toLowerCase())) {
@@ -83,9 +86,6 @@ function TablePaginationCustom({
       // // Imperial Weight
       if (activeUnit === 'Imperial' && unit?.toLowerCase() === 'kg') {
         return `${fullLabel || label} (lbs)`;
-      }
-      if (unit === '%') {
-        return `${fullLabel || label} (${unit})`;
       }
       // Fallback to baseUnit or just label
       return unit ? `${fullLabel || label} (${unit})` : (fullLabel || label);
