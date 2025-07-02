@@ -97,7 +97,8 @@ function DownloadMachineLogsIconButton({ dataForApi, unit }) {
       })
 
       const csvString = csvRows.join('\n')
-      blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' })
+      const finalcsvString = csvString.replace("lineSpeed", "lineSpeed (%)") // replace lineSpeed with lineSpeed (%)
+      blob = new Blob([finalcsvString], { type: 'text/csv;charset=utf-8;' })
       filename = 'csv_logs.csv'
     } else if (format === 'json') {
       const jsonArray = dataForDownload.map(row => {

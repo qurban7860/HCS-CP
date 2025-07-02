@@ -76,6 +76,7 @@ const MachineLogsTable = ({ logType, isLogsPage, unitType }) => {
                                 handleChangeRowsPerPage={handleChangeRowsPerPage}
                                 columnFilterButtonData={tableColumns}
                                 handleColumnButtonClick={handleColumnButtonClick}
+                                unitType={unitType}
                             />
                             {/* </GStyledStickyDiv> */}
                             <TableContainer sx={{

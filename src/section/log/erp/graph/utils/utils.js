@@ -1,4 +1,4 @@
-export const processGraphData = (logsGraphData, timePeriod, dateFrom, dateTo, skipZeroValues) => {
+export const processGraphData = (logsGraphData, timePeriod, dateFrom, dateTo, skipZeroValues, unitType) => {
   if (!logsGraphData || logsGraphData.length === 0) return null;
 
   const dataMap = new Map();
@@ -87,12 +87,13 @@ export const processGraphData = (logsGraphData, timePeriod, dateFrom, dateTo, sk
 
   const producedLength = labels.map((label) => dataMap.get(label)?.componentLength || 0);
   const wasteLength = labels.map((label) => dataMap.get(label)?.waste || 0);
+  const unitLabel = unitType === 'Imperial' ? 'in' : 'm';
 
   return {
     categories: labels,
     series: [
-      { name: 'Produced Length (m)', data: producedLength },
-      { name: 'Waste Length (m)', data: wasteLength },
+      { name: `Produced Length (${unitLabel})`, data: producedLength },
+      { name: `Waste Length (${unitLabel})`, data: wasteLength },
     ],
   };
 };

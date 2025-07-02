@@ -9,10 +9,10 @@ import { Chart } from 'component'
 import { fShortenNumber } from 'util/format'
 import { KEY } from 'constant'
 
-function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onExpand, producedData = '', machineSerialNo }) {
+function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onExpand, producedData = '', machineSerialNo, unitType = 'Metric' }) {
   const { themeMode } = useSettingContext()
   const theme = useTheme()
-  const [skipZero, setSkipZero] = useState(true);
+  const [skipZero, setSkipZero] = useState(false);
   const [chart, setChart] = useState({ categories: [], series: [] });
 
   const { categories, series } = chart
@@ -29,7 +29,9 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
     } else {
       setChart({ categories: [], series: [] });
     }
-  }, [skipZero, processGraphData]);
+  }, [skipZero, processGraphData, unitType]);
+
+  const unitLabel = unitType === 'Imperial' ? 'in' : 'm';
 
   const chartOptions = {
     chart: {
@@ -54,7 +56,7 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
         dataPointSelection: true
       },
       padding: {
-        bottom: -65 // ✅ fixes large gap below x-axis title
+        bottom: -65 
       }
     },
     colors: themeMode === KEY.LIGHT ? colors : colorsDarkMode,
@@ -96,14 +98,17 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
     },
     dataLabels: {
       enabled: true,
+      orientation: "vertical",
       formatter(val, { seriesIndex, dataPointIndex, w }) {
         if (seriesIndex === 1) return ''
         const total = Number(val) + Number(w.config.series[1].data[dataPointIndex])
-        return total === 0 ? '' : total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+        return total === 0
+          ? ''
+          : fShortenNumber(total);
       },
       offsetY: -35,
       style: {
-        fontSize: '12px',
+        fontSize: '10px',
         colors: [themeMode === KEY.LIGHT ? theme.palette.grey[800] : theme.palette.grey[400]]
       }
     },
@@ -174,10 +179,10 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
           const valueText =
             value === 0
               ? ''
-              : value.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              });
+              : `${value.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })} ${unitLabel}`;
 
           tooltipContent += `
         <div class="apexcharts-tooltip-series-group apexcharts-active" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
@@ -197,7 +202,7 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
         tooltipContent += `
       <div class="apexcharts-tooltip-series-group apexcharts-active" style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #e0e0e0; padding-top: 4px; margin-top: 4px;">
         <div style="width: 100%; display: flex; justify-content: space-between;">
-          <span class="apexcharts-tooltip-text-y-label" style="font-weight: bold;">Total Length (m):</span>
+          <span class="apexcharts-tooltip-text-y-label" style="font-weight: bold;">Total Length (${unitLabel}):</span>
           <span class="apexcharts-tooltip-text-y-value" style="font-weight: bold;">${totalText}</span>
         </div>
       </div>`
@@ -243,6 +248,6 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
   )
 }
 
-LogStackedChart.propTypes = { processGraphData: PropTypes.func, graphLabels: PropTypes.object, graphHeight: PropTypes.number, onExpand: PropTypes.func, producedData: PropTypes.string, machineSerialNo: PropTypes.string, }
+LogStackedChart.propTypes = { processGraphData: PropTypes.func, graphLabels: PropTypes.object, graphHeight: PropTypes.number, onExpand: PropTypes.func, producedData: PropTypes.string, machineSerialNo: PropTypes.string, unitType: PropTypes.oneOf(['Metric', 'Imperial']) }
 
 export default LogStackedChart

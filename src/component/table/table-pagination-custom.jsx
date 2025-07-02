@@ -32,6 +32,8 @@ function TablePaginationCustom({
     columnFilterButtonData = [],
     columnButtonClickHandler = () => { },
     noPaginationToolbar = false,
+    isLogsPage = false,
+    unitType = 'Metric',
     sx,
     ...other
 }) {
@@ -65,6 +67,29 @@ function TablePaginationCustom({
     const handleFilterCategoryClose = () => {
         setFilterCategoryAnchorEl(null)
     }
+
+    const getFormattedLabel = (column, activeUnit) => {
+      const { fullLabel, label, unit } = column;
+      // If the column is not a numerical length, return label as-is
+      if (unit === '%') {
+        return `${fullLabel || label} (${unit})`;
+      }
+      if (!column.numerical) return fullLabel || label;
+      // Metric Length
+      if (activeUnit === 'Metric' && 'mm'.includes(unit?.toLowerCase())) {
+        return `${fullLabel || label} (${unit})`;
+      }
+      // Imperial Length
+      if (activeUnit === 'Imperial' && 'mm'.includes(unit?.toLowerCase())) {
+        return `${fullLabel || label} (in)`;
+      }
+      // // Imperial Weight
+      if (activeUnit === 'Imperial' && unit?.toLowerCase() === 'kg') {
+        return `${fullLabel || label} (lbs)`;
+      }
+      // Fallback to baseUnit or just label
+      return unit ? `${fullLabel || label} (${unit})` : (fullLabel || label);
+    };
 
     const filteredRowsPerPageOptions = rowsPerPageOptions.filter(option => option <= data?.length)
     const isPaginationDisabled = data?.length <= rowsPerPage
@@ -130,7 +155,11 @@ function TablePaginationCustom({
                                         />
                                     )}
                                     &nbsp;
-                                    {column.fullLabel || column.label} {column?.unit ? ` (${column?.unit})` : ''}
+                                    {isLogsPage ? getFormattedLabel(column, unitType) : (
+                                        <>
+                                            {column.fullLabel || column.label} {column?.unit ? ` (${column?.unit})` : ''}
+                                        </>
+                                    )}
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -313,7 +342,9 @@ TablePaginationCustom.propTypes = {
     rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),
     columnFilterButtonData: PropTypes.array,
     columnButtonClickHandler: PropTypes.func,
-    noPaginationToolbar: PropTypes.bool
+    noPaginationToolbar: PropTypes.bool,
+    isLogsPage: PropTypes.bool,
+    unitType: PropTypes.string
 }
 
 export default memo(TablePaginationCustom)
