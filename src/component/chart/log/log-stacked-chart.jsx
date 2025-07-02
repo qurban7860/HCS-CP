@@ -98,10 +98,13 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
     },
     dataLabels: {
       enabled: true,
+      orientation: "vertical",
       formatter(val, { seriesIndex, dataPointIndex, w }) {
         if (seriesIndex === 1) return ''
         const total = Number(val) + Number(w.config.series[1].data[dataPointIndex])
-        return total === 0 ? '' : total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+        return total === 0
+          ? ''
+          : fShortenNumber(total);
       },
       offsetY: -35,
       style: {
