@@ -23,7 +23,7 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
   const menuTextColor = themeMode === KEY.LIGHT ? theme.palette.common.black : theme.palette.common.white
 
   useEffect(() => {
-    const processedChartData = processGraphData(skipZero);
+    const processedChartData = processGraphData(skipZero, unitType);
     if (processedChartData) {
       setChart(processedChartData);
     } else {
