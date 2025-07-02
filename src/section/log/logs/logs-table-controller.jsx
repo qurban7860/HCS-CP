@@ -33,7 +33,7 @@ const LogsTableController = ({
     <Card sx={{ height: 'auto', padding: 3, borderRadius: 1.5, my: 1.5 }}>
       <Grid container spacing={2} alignItems="flex-start">
         {handleGraphTypeChange && isGraphPage && (
-          <Grid item xs={12} sm={6} md={3.5}>
+          <Grid item xs={12} sm={6} md={2.5}>
             <RHFAutocomplete
               name='logGraphType'
               label={t('graph_type.label')}
@@ -53,7 +53,7 @@ const LogsTableController = ({
         )}
 
         {handlePeriodChange && isGraphPage && (
-          <Grid item xs={12} sm={4} md={3.5}>
+          <Grid item xs={12} sm={4} md={2.5}>
             <RHFAutocomplete
               name='logPeriod'
               label={t('log.period.label')}
@@ -97,8 +97,7 @@ const LogsTableController = ({
             }}
           />
         </Grid>
-        {!isGraphPage && (
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={1.5}>
           <RHFAutocomplete
             name='unitType'
             size='small'
@@ -109,7 +108,6 @@ const LogsTableController = ({
             openOnFocus
           />
         </Grid>
-        )}
         {isGraphPage && (
           <Grid item xs={12} sm={2} md={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', mt: 0.5 }}>
             <IconTooltip

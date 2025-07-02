@@ -16,8 +16,9 @@ import { GStyledSpanBox, GStyledCenterBox } from 'theme/style'
 import { TYPOGRAPHY, KEY, FLEX } from 'constant'
 import { TableNoData } from 'component'
 import { processGraphData } from './utils/utils'
+import { convertValue } from 'util/convertUnits'
 
-const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, isDashboard, graphHeight = 500, dateFrom, dateTo, machineSerialNo }) => {
+const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, isDashboard, graphHeight = 500, dateFrom, dateTo, machineSerialNo, unitType = 'Metric' }) => {
   const [graphData, setGraphData] = useState([])
   const { isLoading } = useSelector(state => state.log)
   const { themeMode } = useSettingContext()
@@ -32,15 +33,22 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
 
   useEffect(() => {
     if (logsGraphData) {
-      const convertedDataToMeters = logsGraphData.map(item => ({
-        ...item,
-        componentLength: item.componentLength / 1000,
-        waste: item.waste / 1000,
-        _id: timePeriod === 'Monthly' ? item._id.replace(/^Sep /, 'Sept ') : item._id,
-      }))
-      setGraphData(convertedDataToMeters)
+      const convertedData = logsGraphData.map((item) => {
+        const componentLength = parseFloat(convertValue(item.componentLength, 'mm', unitType)?.convertedValue || 0);
+        const waste = parseFloat(convertValue(item.waste, 'mm', unitType)?.convertedValue || 0);
+        return {
+          ...item,
+          componentLength,
+          waste,
+          _id: timePeriod === 'Monthly' ? item._id.replace(/^Sep /, 'Sept ') : item._id,
+        };
+      });
+
+      setGraphData(convertedData);
+    } else {
+      setGraphData([]);
     }
-  }, [logsGraphData, timePeriod])
+  }, [logsGraphData, timePeriod, unitType]);
 
   const isNotFound = !isLoading && !graphData.length;
 
@@ -57,13 +65,13 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
     if (machineId) {
       navigate(PATH_MACHINE.machines.fullScreen.view(machineId), {
         state: {
-          logsGraphData: logsGraphData, graphLabels, timePeriod, dateFrom, dateTo
+          logsGraphData: logsGraphData, graphLabels, timePeriod, dateFrom, dateTo, unitType
         }
       });
     } else {
       navigate(PATH_LOGS.fullScreen, {
         state: {
-          logsGraphData: logsGraphData, graphLabels, timePeriod, dateFrom, dateTo
+          logsGraphData: logsGraphData, graphLabels, timePeriod, dateFrom, dateTo, unitType
         }
       });
     }
@@ -130,12 +138,13 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
             {graphData?.length > 0 && (
               <Fragment>
                 <LogStackedChart
-                  processGraphData={(skipZeroValues) => processGraphData(logsGraphData, timePeriod, dateFrom, dateTo, skipZeroValues)}
+                  processGraphData={(skipZeroValues) => processGraphData(logsGraphData, timePeriod, dateFrom, dateTo, skipZeroValues, unitType)}
                   graphLabels={graphLabels}
                   graphHeight={graphHeight}
                   onExpand={handleExpandGraph}
                   producedData={producedData} 
                   machineSerialNo={getGraphTitle()}
+                  unitType={unitType}
                 />
               </Fragment>
             )}
@@ -162,6 +171,7 @@ ERPProductionTotal.propTypes = {
   dateFrom: PropTypes.instanceOf(Date),
   dateTo: PropTypes.instanceOf(Date),
   machineSerialNo: PropTypes.string, 
+  unitType: PropTypes.oneOf(['Metric', 'Imperial']),
 }
 
 export default ERPProductionTotal;
