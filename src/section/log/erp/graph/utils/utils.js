@@ -1,14 +1,10 @@
+
+import { convertValue } from "util/convertUnits";
+
 export const processGraphData = (logsGraphData, timePeriod, dateFrom, dateTo, skipZeroValues, unitType) => {
   if (!logsGraphData || logsGraphData.length === 0) return null;
 
   const dataMap = new Map();
-
-  const convert = (value) => {
-    if (unitType === 'Imperial') {
-      return value / 25.4; 
-    }
-    return value / 1000; 
-  };
 
   logsGraphData.forEach((item) => {
     const id =
@@ -16,8 +12,8 @@ export const processGraphData = (logsGraphData, timePeriod, dateFrom, dateTo, sk
 
     dataMap.set(id, {
       ...item,
-      componentLength: convert(item?.componentLength || 0),
-      waste: convert(item?.waste || 0)
+      componentLength: (item?.componentLength || 0) / 1000,
+      waste: (item?.waste || 0) / 1000,
     });
   });
 
@@ -91,10 +87,18 @@ export const processGraphData = (logsGraphData, timePeriod, dateFrom, dateTo, sk
     default:
       return null;
   }
-
-  const producedLength = labels.map((label) => dataMap.get(label)?.componentLength || 0);
-  const wasteLength = labels.map((label) => dataMap.get(label)?.waste || 0);
-  const unitLabel = unitType === 'Imperial' ? 'in' : 'm';
+  
+  const producedLength = labels.map((label) => {
+    const val = dataMap.get(label)?.componentLength || 0;
+    return Number(convertValue(val, 'm', unitType).convertedValue);
+  });
+    
+  const wasteLength = labels.map((label) => {
+    const val = dataMap.get(label)?.waste || 0;
+    return Number(convertValue(val, 'm', unitType).convertedValue);
+  });
+    
+  const unitLabel = convertValue(0, 'm', unitType).measurementUnit;
 
   return {
     categories: labels,

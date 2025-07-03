@@ -33,32 +33,26 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
 
   useEffect(() => {
     if (logsGraphData) {
-      const convertedData = logsGraphData.map((item) => {
-        const componentLength = parseFloat(convertValue(item.componentLength, 'mm', unitType)?.convertedValue || 0);
-        const waste = parseFloat(convertValue(item.waste, 'mm', unitType)?.convertedValue || 0);
-        return {
-          ...item,
-          componentLength,
-          waste,
-          _id: timePeriod === 'Monthly' ? item._id.replace(/^Sep /, 'Sept ') : item._id,
-        };
-      });
-
-      setGraphData(convertedData);
-    } else {
-      setGraphData([]);
+      const convertedDataToMeters = logsGraphData.map(item => ({
+        ...item,
+        componentLength: item.componentLength / 1000,
+        waste: item.waste / 1000,
+        _id: timePeriod === 'Monthly' ? item._id.replace(/^Sep /, 'Sept ') : item._id,
+      }))
+      setGraphData(convertedDataToMeters)
     }
-  }, [logsGraphData, timePeriod, unitType]);
+  }, [logsGraphData, timePeriod])
 
   const isNotFound = !isLoading && !graphData.length;
 
   const getTotalProduction = () => {
     if (!graphData || graphData.length === 0) return '0';
-    const totalProduced = graphData.reduce(
-      (sum, item) => sum + (item.componentLength || 0) + (item.waste || 0),
-      0
-    );
-    return totalProduced.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      const totalProduced = graphData.reduce(
+        (sum, item) => sum + (item.componentLength || 0) + (item.waste || 0),
+        0
+      );
+      const { formattedValue, measurementUnit } = convertValue(totalProduced, 'm', unitType, true);
+    return `${formattedValue} ${measurementUnit}`;
   };
 
   const handleExpandGraph = () => {
@@ -77,7 +71,7 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
     }
   };
   
-  const producedData = `Meterage Production: ${getTotalProduction()} m for Period (${dateFrom.toLocaleDateString('en-GB')} – ${dateTo.toLocaleDateString('en-GB')})`;
+  const producedData = `Meterage Production: ${getTotalProduction()} for Period (${dateFrom.toLocaleDateString('en-GB')} – ${dateTo.toLocaleDateString('en-GB')})`;
 
   const getGraphTitle = () => {
     let titlePrefix = '';
