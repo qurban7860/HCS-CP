@@ -161,7 +161,7 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
       },
       offsetY: 15,
       itemMargin: {
-        vertical: 5 
+        vertical: 8, 
       }
     },
     tooltip: {
@@ -179,11 +179,11 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
           const valueText =
             value === 0
               ? ''
-              : `${value.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })} ${unitLabel}`;
-
+              : value.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              });
+              
           tooltipContent += `
         <div class="apexcharts-tooltip-series-group apexcharts-active" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
           <span class="apexcharts-tooltip-marker" style="background-color: ${color}; margin-right: 8px;"></span>
@@ -221,6 +221,9 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
           color: ${menuTextColor} !important;
           border-radius: 2px;
           border: 1px solid ${menuBackgroundColor};
+        }
+        .apexcharts-legend-text {
+          text-transform: lowercase !important;
         }
       `}</style>
       <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', mt: -5 }}>
