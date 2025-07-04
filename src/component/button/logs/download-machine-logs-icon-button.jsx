@@ -90,6 +90,9 @@ function DownloadMachineLogsIconButton({ dataForApi, unit }) {
           if (header === 'logId') {
             value = row._id
           }
+          if (header === 'time') {
+            value = row.time || '';
+          }
           const escaped = String(value).replace(/"/g, '""')
           return escaped
         })
@@ -97,7 +100,9 @@ function DownloadMachineLogsIconButton({ dataForApi, unit }) {
       })
 
       const csvString = csvRows.join('\n')
-      const finalcsvString = csvString.replace("lineSpeed", "lineSpeed (%)") // replace lineSpeed with lineSpeed (%)
+      const finalcsvString = csvString
+        .replace(/\blineSpeed\b/, 'lineSpeed (%)')
+        .replace(/\btime\b/, 'time (msec)');
       blob = new Blob([finalcsvString], { type: 'text/csv;charset=utf-8;' })
       filename = 'csv_logs.csv'
     } else if (format === 'json') {

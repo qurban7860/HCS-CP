@@ -68,28 +68,27 @@ function TablePaginationCustom({
         setFilterCategoryAnchorEl(null)
     }
 
-    const getFormattedLabel = (column, activeUnit) => {
-      const { fullLabel, label, unit } = column;
-      // If the column is not a numerical length, return label as-is
-      if (unit === '%') {
-        return `${fullLabel || label} (${unit})`;
-      }
-      if (!column.numerical) return fullLabel || label;
+    const getLogsFormattedLabel = (column, activeUnit) => {
+      const { fullLabel, label, unit } = column
+      if (!column.convertable) return fullLabel || label
       // Metric Length
-      if (activeUnit === 'Metric' && 'mm'.includes(unit?.toLowerCase())) {
-        return `${fullLabel || label} (${unit})`;
+      if (activeUnit === 'Metric' && ['m', 'mm'].includes(unit?.toLowerCase())) {
+        return `${fullLabel || label} (${unit})`
       }
       // Imperial Length
-      if (activeUnit === 'Imperial' && 'mm'.includes(unit?.toLowerCase())) {
-        return `${fullLabel || label} (in)`;
+      if (activeUnit === 'Imperial' && ['m', 'mm'].includes(unit?.toLowerCase())) {
+        return `${fullLabel || label} (in)`
       }
       // // Imperial Weight
       if (activeUnit === 'Imperial' && unit?.toLowerCase() === 'kg') {
-        return `${fullLabel || label} (lbs)`;
+        return `${fullLabel || label} (lbs)`
+      }
+      if (unit?.toLowerCase() === 'msec') {
+        return `${label} (s)`
       }
       // Fallback to baseUnit or just label
-      return unit ? `${fullLabel || label} (${unit})` : (fullLabel || label);
-    };
+      return unit ? `${fullLabel || label} (${unit})` : fullLabel || label
+    }
 
     const filteredRowsPerPageOptions = rowsPerPageOptions.filter(option => option <= data?.length)
     const isPaginationDisabled = data?.length <= rowsPerPage
@@ -155,7 +154,7 @@ function TablePaginationCustom({
                                         />
                                     )}
                                     &nbsp;
-                                    {isLogsPage ? getFormattedLabel(column, unitType) : (
+                                    {isLogsPage ? getLogsFormattedLabel(column, unitType) : (
                                         <>
                                             {column.fullLabel || column.label} {column?.unit ? ` (${column?.unit})` : ''}
                                         </>
