@@ -1,6 +1,3 @@
-
-import { convertValue } from "util/convertUnits";
-
 export const processGraphData = (logsGraphData, timePeriod, dateFrom, dateTo, skipZeroValues, unitType) => {
   if (!logsGraphData || logsGraphData.length === 0) return null;
 
@@ -90,15 +87,15 @@ export const processGraphData = (logsGraphData, timePeriod, dateFrom, dateTo, sk
   
   const producedLength = labels.map((label) => {
     const val = dataMap.get(label)?.componentLength || 0;
-    return Number(convertValue(val, 'm', unitType).convertedValue);
+    return Number((unitType === 'Imperial' ? val * 39.37 : val).toFixed(2));
   });
     
   const wasteLength = labels.map((label) => {
     const val = dataMap.get(label)?.waste || 0;
-    return Number(convertValue(val, 'm', unitType).convertedValue);
+    return Number((unitType === 'Imperial' ? val * 39.37 : val).toFixed(2));
   });
     
-  const unitLabel = convertValue(0, 'm', unitType).measurementUnit;
+  const unitLabel = unitType === 'Imperial' ? 'in' : 'm';
 
   return {
     categories: labels,
