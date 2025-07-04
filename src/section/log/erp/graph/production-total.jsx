@@ -2,30 +2,24 @@
 import PropTypes from 'prop-types'
 import { useState, useEffect, Fragment } from 'react'
 import { useSelector } from 'react-redux'
-import { t } from 'i18next'
-import { dispatch } from 'store'
 import { useSettingContext } from 'hook'
-import { resetLogsGraphData } from 'store/slice'
 import { PATH_LOGS, PATH_MACHINE } from 'route/path';
 import { useNavigate, useParams } from 'react-router-dom'
-import { useMediaQuery, Typography, Card, Grid, Box } from '@mui/material'
+import { Typography, Card, Grid, Box } from '@mui/material'
 import { LogStackedChart, HowickLoader } from 'component'
 import { useTheme } from '@mui/material/styles'
-import { getTimePeriodDesc } from 'section/log'
 import { GStyledSpanBox, GStyledCenterBox } from 'theme/style'
-import { TYPOGRAPHY, KEY, FLEX } from 'constant'
+import { KEY, FLEX } from 'constant'
 import { TableNoData } from 'component'
 import { processGraphData } from './utils/utils'
-import { convertValue } from 'util/convertUnits'
 
-const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, isDashboard, graphHeight = 500, dateFrom, dateTo, machineSerialNo, unitType = 'Metric' }) => {
+const ERPProductionTotal = ({ timePeriod, graphLabels, logsGraphData, isDashboard, graphHeight = 500, dateFrom, dateTo, machineSerialNo, unitType = 'Metric' }) => {
   const [graphData, setGraphData] = useState([])
   const { isLoading } = useSelector(state => state.log)
   const { themeMode } = useSettingContext()
   const { machineId } = useParams()
   const navigate = useNavigate();
   const theme = useTheme()
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
   //  useEffect(() => {
   //   if (!isDashboard) dispatch(resetLogsGraphData())
@@ -46,14 +40,14 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
   const isNotFound = !isLoading && !graphData.length;
 
   const getTotalProduction = () => {
-    if (!graphData || graphData.length === 0) return '0';
-      const totalProduced = graphData.reduce(
-        (sum, item) => sum + (item.componentLength || 0) + (item.waste || 0),
-        0
-      );
-      const { formattedValue, measurementUnit } = convertValue(totalProduced, 'm', unitType, true);
-    return `${formattedValue} ${measurementUnit}`;
-  };
+    if (!graphData || graphData.length === 0) return '0'
+    const totalProduced = graphData.reduce((sum, item) => sum + (item.componentLength || 0) + (item.waste || 0), 0)
+    const toDisplay = unitConvertedValues(totalProduced, unitType).toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 3
+    })
+    return `${toDisplay} (${unitType === 'Imperial' ? 'in' : 'm'})`
+  }
 
   const handleExpandGraph = () => {
     if (machineId) {
@@ -153,6 +147,14 @@ const ERPProductionTotal = ({ timePeriod, customer, graphLabels, logsGraphData, 
       </Card>
     </Grid>
   )
+}
+
+const unitConvertedValues = (valueInMeters, selectedSystem) => {
+  if (selectedSystem === 'Imperial') {
+    const convertedValue = valueInMeters * 39.37;
+    return Number(convertedValue.toFixed(2));
+  }
+  return Number(valueInMeters.toFixed(2));
 }
 
 ERPProductionTotal.propTypes = {
