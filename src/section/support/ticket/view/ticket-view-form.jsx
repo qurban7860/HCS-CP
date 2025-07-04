@@ -482,7 +482,7 @@ function TicketViewForm() {
                       <GridViewField heading={t('root_cause.label')} isLoading={isLoading} multiline isEditor >
                         {defaultValues?.rootCause}
                       </GridViewField>
-                      <GridViewField heading={t('workaround.label')} isLoading={isLoading} multiline isEditor >
+                      <GridViewField heading={t('Resolution')} isLoading={isLoading} multiline isEditor >
                         {defaultValues?.workaround}
                       </GridViewField>
                     </Fragment>
