@@ -70,6 +70,7 @@ function TablePaginationCustom({
 
     const getLogsFormattedLabel = (column, activeUnit) => {
       const { fullLabel, label, unit } = column
+      if (unit === "%") return `${fullLabel || label} (%)`;
       if (!column.convertable) return fullLabel || label
       // Metric Length
       if (activeUnit === 'Metric' && ['m', 'mm'].includes(unit?.toLowerCase())) {
