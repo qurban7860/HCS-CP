@@ -48,13 +48,6 @@ const MachineLogsTab = () => {
   const { watch, setValue, handleSubmit } = methods
   const { dateFrom, dateTo, logType, filteredSearchKey, unitType } = watch()
 
-  const convertToMmForSendingData = (data, columnsSelected) => {
-    if (!isNaN(data) && columnsSelected.every(col => logType?.tableColumns?.some(c => c.id === col && c.convertToM))) {
-      return (data * 1000).toString()
-    }
-    return data
-  }
-
   useEffect(() => {
     setUnit(unitType)
     dispatch(getLogs({
@@ -67,7 +60,7 @@ const MachineLogsTab = () => {
       isArchived: false,
       isMachineArchived: machine?.isArchived,
       selectedLogType: logType?.type,
-      searchKey: convertToMmForSendingData(filteredSearchKey, selectedMultiSearchFilter),
+      searchKey: filteredSearchKey,
       searchColumn: selectedMultiSearchFilter
     }))
   }, [logPage, logRowsPerPage])
@@ -85,7 +78,7 @@ const MachineLogsTab = () => {
         isArchived: false,
         isMachineArchived: machine?.isArchived,
         selectedLogType: logType?.type,
-        searchKey: convertToMmForSendingData(filteredSearchKey, selectedMultiSearchFilter),
+        searchKey: filteredSearchKey,
         searchColumn: selectedMultiSearchFilter
       }))
     } else {
@@ -118,7 +111,7 @@ const MachineLogsTab = () => {
     isArchived: false,
     isMachineArchived: machine?.isArchived,
     selectedLogType: logType?.type,
-    searchKey: convertToMmForSendingData(filteredSearchKey, selectedMultiSearchFilter),
+    searchKey: filteredSearchKey,
     searchColumn: selectedMultiSearchFilter
   }
 

@@ -1,59 +1,61 @@
-
 export function convertValue(value, baseUnit, unitSystem, forDisplay = false) {
-    let convertedValue = value;
-    let measurementUnit = baseUnit;
+  // Early return for percentage - same for both systems
+  if (baseUnit === '%') {
+    return { convertedValue: value, formattedValue: value, measurementUnit: '%' };
+  }
 
-    if (unitSystem === 'Imperial') {
-        if (baseUnit === 'mm' || baseUnit === 'm') {
-            // convert everything to inches
-            convertedValue = (value / 25.4).toFixed(3);
-            measurementUnit = 'in';
-
-            if (forDisplay) {
-                // architectural format: e.g. 4' 5 3/8"
-                return {
-                    convertedValue,
-                    formattedValue: formatArchitecturalInches(convertedValue),
-                    measurementUnit
-                };
-            }
-        }
-        // else if (baseUnit === 'kg') {
-        //     convertedValue = value * 2.20462;
-        //     measurementUnit = 'lbs';
-
-        //     if (forDisplay) {
-        //         return {
-        //             convertedValue,
-        //             formattedValue: convertedValue.toLocaleString(undefined, {
-        //                 minimumFractionDigits: 3,
-        //                 maximumFractionDigits: 3
-        //             }),
-        //             measurementUnit
-        //         };
-        //     }
-        // }
-    } else if (unitSystem === 'Metric') {
-        if (baseUnit === 'm') {
-            if (forDisplay) {
-                convertedValue = value / 1000;
-            }
-            measurementUnit = 'm';
-        }
-        // mm stays mm
-        // kg stays kg
+  // Conversion configurations
+  const conversions = {
+    Imperial: {
+      mm: { factor: 1/25.4, unit: 'in', hasArchitectural: true },
+      m: { factor: 1/25.4, unit: 'in', hasArchitectural: true },
+      msec: { factor: 1/1000, unit: 's' }
+    },
+    Metric: {
+      m: { factor: forDisplay ? 1/1000 : 1, unit: 'm' },
+      msec: { factor: 1/1000, unit: 's' }
     }
+  };
 
+  const conversion = conversions[unitSystem]?.[baseUnit];
+  
+  if (!conversion) {
+    // No conversion needed, return original values
     return {
-        convertedValue,
-        formattedValue: convertedValue.toLocaleString(undefined, {
-            minimumFractionDigits: 3,
-            maximumFractionDigits: 3
-        }),
-        measurementUnit
+      convertedValue: value,
+      formattedValue: value.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 3
+      }),
+      measurementUnit: baseUnit
     };
-}
+  }
 
+  const convertedValue = (value * conversion.factor).toFixed(3);
+  const result = {
+    convertedValue,
+    measurementUnit: conversion.unit
+  };
+
+  // Handle display formatting
+  if (forDisplay) {
+    if (conversion.hasArchitectural) {
+      result.formattedValue = formatArchitecturalInches(convertedValue);
+    } else {
+      result.formattedValue = convertedValue.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 3
+      });
+    }
+  } else {
+    result.formattedValue = convertedValue.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 3
+    });
+  }
+
+  return result;
+}
 /**
  * Converts a decimal inches value to architectural feet/inches string.
  * Example: 53.375 → "4' 5 3/8\""
@@ -75,7 +77,7 @@ function formatArchitecturalInches(decimalInches) {
 
     let inchesStr = '';
     if (wholeInches > 0 || fractionStr) {
-        inchesStr = `${wholeInches}${fractionStr}"`;
+        inchesStr = `${wholeInches || ''}${fractionStr}"`;
     }
 
     let result = '0"';

@@ -12,17 +12,43 @@ const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort, unitType })
   const { themeMode } = useSettingContext()
   const theme = useTheme()
 
-  const getFormattedLabel = (cellVal, activeUnit) => {
-    // Imperial Length
-    if (activeUnit === 'Imperial' && (cellVal?.unit === 'mm' || cellVal?.unit === 'm')) {
-      return 'in';
+  const getLogsFormattedLabel = (column, activeUnitSystem) => {
+    const { label, unit } = column;
+    if (!column.convertable) return label;
+
+    let displayLabel = label;
+    let displayUnit = null;
+
+    // Metric Length
+    if (activeUnitSystem === 'Metric' && ['m', 'mm'].includes(unit?.toLowerCase())) {
+      displayUnit = unit;
     }
-    // // Imperial Weight
-    // if (activeUnit === 'Imperial' && cellVal?.unit === 'kg') {
-    //   return 'lbs';
-    // }
-    // Fallback to baseUnit or just label
-    return cellVal?.unit || '';
+    // Imperial Length
+    else if (activeUnitSystem === 'Imperial' && ['m', 'mm'].includes(unit?.toLowerCase())) {
+      displayUnit = 'in';
+    }
+    // Imperial Weight
+    else if (activeUnitSystem === 'Imperial' && unit?.toLowerCase() === 'kg') {
+      displayUnit = 'lbs';
+    }
+    else if (unit?.toLowerCase() === 'msec') {
+      displayUnit = 's';
+    }
+    else if (unit) {
+      displayUnit = unit;
+    }
+
+    if (displayUnit) {
+      return (
+      <span style={{ display: 'flex', alignItems: 'center' }}>
+        {displayLabel}
+        <Typography variant={TYPOGRAPHY.OVERLINE0} p={0} sx={{ textTransform: 'none', ml: 0.5 }}>
+        ({displayUnit})
+        </Typography>
+      </span>
+      );
+    }
+    return displayLabel;
   };
 
   return (
@@ -56,21 +82,21 @@ const LogsHeader = ({ dataFiltered, columns, orderBy, order, onSort, unitType })
                       >
                         <span style={{ display: 'flex' }}>
                           <Typography variant={TYPOGRAPHY.OVERLINE0} p={0}>
-                            {headCell.label}
+                            {getLogsFormattedLabel(headCell, unitType)}
                           </Typography>
-                          {headCell?.unit && <Typography variant={TYPOGRAPHY.OVERLINE0} p={0} sx={{ textTransform: 'none', ml: 0.5 }}>
-                            {` (${getFormattedLabel(headCell, unitType)})`}
-                          </Typography>}
+                          {/* {headCell?.unit && <Typography variant={TYPOGRAPHY.OVERLINE0} p={0} sx={{ textTransform: 'none', ml: 0.5 }}>
+                            {` (${getLogsFormattedLabel(headCell, unitType)})`}
+                          </Typography>} */}
                         </span>
                       </Tooltip>
                     ) : (
                       <span style={{ display: 'flex' }}>
                         <Typography variant={TYPOGRAPHY.OVERLINE0} p={0}>
-                          {headCell?.label || ''}
+                          {getLogsFormattedLabel(headCell, unitType)}
                         </Typography>
-                        {headCell?.unit && <Typography variant={TYPOGRAPHY.OVERLINE0} p={0} sx={{ textTransform: 'none', ml: 0.5 }}>
-                          {` (${getFormattedLabel(headCell, unitType)})`}
-                        </Typography>}
+                        {/* {headCell?.unit && <Typography variant={TYPOGRAPHY.OVERLINE0} p={0} sx={{ textTransform: 'none', ml: 0.5 }}>
+                          {` (${getLogsFormattedLabel(headCell, unitType)})`}
+                        </Typography>} */}
                       </span>
                     )}
                   </TableSortLabel>
@@ -91,6 +117,7 @@ LogsHeader.propTypes = {
   columns: PropTypes.array,
   orderBy: PropTypes.string,
   order: PropTypes.string,
+  unitType: PropTypes.string,
   onSort: PropTypes.func
 }
 

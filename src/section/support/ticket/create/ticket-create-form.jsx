@@ -602,7 +602,7 @@ function TicketCreateForm() {
                         <RHFEditor name='rootCause' label={t('root_cause.label')} minRows={4} multiline />
                       </Grid>
                       <Grid item xs={12} sm={12} md={12}>
-                        <RHFEditor name='workaround' label={t('workaround.label')} minRows={4} multiline />
+                        <RHFEditor name='workaround' label={t('Resolution')} minRows={4} multiline />
                       </Grid>
                     </Grid>
                   )}
