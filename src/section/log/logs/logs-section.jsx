@@ -58,13 +58,6 @@ const LogsSection = ({ isArchived }) => {
     }
   }, [])
 
-  const convertToMmForSendingData = (data, columnsSelected) => {
-    if (!isNaN(data) && columnsSelected.every(col => logType?.tableColumns?.some(c => c.id === col && c.convertToM))) {
-      return (data * 1000).toString()
-    }
-    return data
-  }
-
   useLayoutEffect(() => {
     if (machine?._id) {
       dispatch(getLogs({
@@ -77,7 +70,7 @@ const LogsSection = ({ isArchived }) => {
         isArchived: false,
         isMachineArchived: machine?.isArchived,
         selectedLogType: logType?.type,
-        searchKey: convertToMmForSendingData(filteredSearchKey, selectedMultiSearchFilter),
+        searchKey: filteredSearchKey,
         searchColumn: selectedMultiSearchFilter
       }))
     }
@@ -96,7 +89,7 @@ const LogsSection = ({ isArchived }) => {
         isArchived: false,
         isMachineArchived: machine?.isArchived,
         selectedLogType: logType?.type,
-        searchKey: convertToMmForSendingData(filteredSearchKey, selectedMultiSearchFilter),
+        searchKey: filteredSearchKey,
         searchColumn: selectedMultiSearchFilter
       }))
     } else {
@@ -122,7 +115,7 @@ const LogsSection = ({ isArchived }) => {
     isArchived: false,
     isMachineArchived: machine?.isArchived,
     selectedLogType: logType?.type,
-    searchKey: convertToMmForSendingData(filteredSearchKey, selectedMultiSearchFilter),
+    searchKey: filteredSearchKey,
     searchColumn: selectedMultiSearchFilter
   }
 

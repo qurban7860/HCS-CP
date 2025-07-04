@@ -251,6 +251,14 @@ function LogStackedChart({ processGraphData, graphLabels, graphHeight = 500, onE
   )
 }
 
-LogStackedChart.propTypes = { processGraphData: PropTypes.func, graphLabels: PropTypes.object, graphHeight: PropTypes.number, onExpand: PropTypes.func, producedData: PropTypes.string, machineSerialNo: PropTypes.string, unitType: PropTypes.oneOf(['Metric', 'Imperial']) }
+LogStackedChart.propTypes = {
+  processGraphData: PropTypes.func,
+  graphLabels: PropTypes.object,
+  graphHeight: PropTypes.number,
+  onExpand: PropTypes.func,
+  producedData: PropTypes.string,
+  machineSerialNo: PropTypes.string,
+  unitType: PropTypes.oneOf(['Metric', 'Imperial'])
+}
 
 export default LogStackedChart

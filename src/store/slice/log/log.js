@@ -285,11 +285,6 @@ export function getLog(machineId, id, logType) {
 export function getLogs({ customerId = undefined, machineId, page, pageSize, fromDate, toDate, isCreatedAt, isMachineArchived, selectedLogType, isArchived, searchKey, searchColumn, returnResponse = false }) {
     return async dispatch => {
         if (!returnResponse) dispatch(logSlice.actions.startLoading())
-        if (searchColumn) {
-            const convertedColumns = getLogTypeConfigForGenerationAndType(5, 'ERP').tableColumns.filter(col => col.convertToM)
-            if (convertedColumns.some(col => col.id === searchColumn)) {
-                searchKey = String(searchKey * 1000)            }
-        } 
         try {
             const params = {
                 customer: customerId,
