@@ -109,6 +109,9 @@ const UserDialog = () => {
               <GridViewField heading={t('full_name.label')} isLoading={isLoadingUser}>
                 {defaultValues?.name}
               </GridViewField>
+              <GridViewField heading={t('login.login_email.label')} isLoading={isLoadingUser}>
+                {defaultValues?.loginEmail}
+              </GridViewField>
               <GridViewField heading={t('email.label')} isLoading={isLoadingUser}>
                 {defaultValues?.email}
               </GridViewField>

@@ -57,7 +57,9 @@ const LABEL = {
     // @audit
     AUDIT: {
         CREATED_BY: 'Created By: ',
-        UPDATED_BY: 'Updated By: '
+        UPDATED_BY: 'Updated By: ',
+        CREATED_AT: 'Created At: ',
+        UPDATED_AT: 'Updated At: '
     },
     // CONNECTED_MACHINE: 'Connected Machine List',
     CONNECTED_MACHINE: arr => (arr > 1 ? 'Connected Machines' : 'Connected Machine'),
