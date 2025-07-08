@@ -143,7 +143,12 @@ const LogsSection = ({ isArchived }) => {
                       isOptionEqualToValue={(option, value) => option._id === value._id}
                       getOptionLabel={option => `${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}
                       renderOption={(props, option) => <li {...props} key={option?._id}>{`${option.serialNo || ''} ${option?.name ? '-' : ''} ${option?.name || ''}`}</li>}
-                      onChange={(e, newValue) => handleMachineChange(newValue)}
+                      onChange={(e, newValue) => {
+                        if (newValue) {
+                          handleMachineChange(newValue);
+                          methods.clearErrors('machine');
+                        }
+                      }}
                       size='small'
                     />
 

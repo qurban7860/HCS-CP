@@ -33,8 +33,12 @@ import { delay } from 'util'
 import { ICON, MARGIN, NAV, SPACING } from 'config/layout'
 import { KEY, TYPOGRAPHY, FLEX_DIR, INVITATION_STATUS } from 'constant'
 import ContactAddForm from './contact-add-form'
+import { useAuthContext } from 'auth/use-auth-context'
+import { isCustomerAdmin } from 'util'
+import { isSuperAdmin } from 'util'
 
 const ContactTab = () => {
+  const { user } = useAuthContext()
   const [isConfirming, setIsConfirming] = useState(false)
   const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false)
   const { contact, contacts, initial, isLoading, selectedContactCard, fromDialog, contactFormVisibility } = useSelector(state => state.contact)
@@ -221,7 +225,7 @@ const ContactTab = () => {
                 {renderList()}
               </Grid>
             </GStyledScrollableHeightLockGrid>
-            {!contactFormVisibility && (
+            {(isCustomerAdmin(user) || isSuperAdmin(user)) && !contactFormVisibility && (
               <Grid item xs={12} display={'flex'} justifyContent={'right'} mt={2}>
                 <GStyledIconLoadingButton
                   loading={isLoading}
@@ -258,7 +262,7 @@ const ContactTab = () => {
             )}
           </Grid>
         </Grid>
-        {!contactFormVisibility && <AuditBox value={defaultValues} />}
+        {!contactFormVisibility && <AuditBox value={defaultValues} showOnlyDate />}
       </Fragment>
       {customerDialog && <CustomerDialog />}
       {userInviteDialog && (

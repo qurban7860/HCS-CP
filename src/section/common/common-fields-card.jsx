@@ -78,7 +78,7 @@ const CommonFieldsCard = ({
         <GStyledTopBorderDivider mode={themeMode} />
         <Grid container spacing={1} px={1.5}>
           {withStatusIcon && (
-            <Grid item xs={12} sm={12} mt={1} mb={-3}>
+            <Grid item xs={12} sm={12} mt={1}>
               <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1.5}>
                 {/* disable for now */}
                 {/* {isContactsPage && isUserAdmin && (
@@ -131,7 +131,7 @@ const CommonFieldsCard = ({
 
           <GridViewTitle title={t(i18nKey)} />
           <Grid item lg={12} sm={12}>
-            <Grid container spacing={2} p={1} pb={5}>
+            <Grid container spacing={2} p={1} pb={5} mt={-3}>
               {isChildren ? children : renderFields(fieldsConfig)}
             </Grid>
           </Grid>

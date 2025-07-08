@@ -79,7 +79,7 @@ const ContactListWidget = ({ value, handleContactDialog }) => {
          <GStyledSpanBox justifyContent={FLEX.FLEX_END} gap={1}>
           <IconTooltip
            title={LABEL.CONTACT_THIS(c.firstName, c.phone)}
-           icon={ICON_NAME.PHONE}
+           icon={ICON_NAME.PHONE}dvsvs
            color={themeMode === KEY.LIGHT ? theme.palette.howick.blue : theme.palette.howick.orange}
            dimension={18}
            disabled={!c.phone}
