@@ -685,7 +685,7 @@ const en = {
     label: `Responses`,
     messages: {
       pre_reset: 'Enter your email address below and we will send you instructions on how to reset your password.',
-      check_email: `Check your E-mail for the password reset link.`,
+      check_email: `Check your email for the password reset link.`,
       form_dirty: `The form has unsaved changes. Are you sure you want to leave?`,
       crud_default: {
         added: `{{value}} added`,
