@@ -6,7 +6,7 @@ import { dispatch } from 'store'
 import { snack, useSettingContext } from 'hook'
 import { resetUserPassword } from 'store/slice'
 import { ResetPasswordSchema } from 'schema'
-import { Alert, Typography } from '@mui/material'
+import { Alert, Typography, Box } from '@mui/material'
 import FormProvider, { RHFTextField, RHFRequiredTextFieldWrapper } from 'component/hook-form'
 import { GStyledLoadingButton, GStyledCenteredTextBox, GStyledCenteredTextHeightBox, GStyledBackButton } from 'theme/style'
 import { KEY, REGEX, SIZE } from 'constant'
@@ -56,16 +56,20 @@ export default function ResetPasswordForm() {
 
  return (
   <Fragment>
+   <Box mt={-2}>
    <GStyledCenteredTextBox>
-    <Typography sx={{ color: 'grey.400', mb: 5 }} variant='h4'>
+    <Typography sx={{ color: 'grey.400' }} variant='h4'>
      {t('reset_password.label').toUpperCase()}
     </Typography>
    </GStyledCenteredTextBox>
+   </Box>
+   <Box mb={2}>
    <GStyledCenteredTextHeightBox>
-    <Typography sx={{ color: 'text.secondary' }} paragraph>
+    <Typography sx={{ color: 'text.secondary' }}>
      {isSubmitSuccessful ? t('responses.messages.check_email') : t('responses.messages.pre_reset')}
     </Typography>
    </GStyledCenteredTextHeightBox>
+   </Box>
 
    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
     {!!errors.afterSubmit && (
@@ -85,6 +89,7 @@ export default function ResetPasswordForm() {
       required
      />
     </RHFRequiredTextFieldWrapper>
+    {!isSubmitSuccessful && (
     <GStyledLoadingButton
      fullWidth
      mode={themeMode}
@@ -92,10 +97,11 @@ export default function ResetPasswordForm() {
      type={KEY.SUBMIT}
      variant='contained'
      loading={isSubmitting}
-     disabled={disable || Object.keys(errors).length > 0}
+     disabled={disable || !REGEX.EMAIL.test(email) || !!errors.email}
      sx={{ mt: 3 }}>
-     {disable ? t('responses.messages.check_email') : t('send_reset_password_request.label')}
-    </GStyledLoadingButton>
+     {t('send_reset_password_request.label')}
+    </GStyledLoadingButton> 
+    )}
     <GStyledBackButton fullWidth mode={themeMode} size={SIZE.LARGE} variant='text' sx={{ mt: 1 }} onClick={() => window.history.back()}>
      {t('go_back.label')}
     </GStyledBackButton>
