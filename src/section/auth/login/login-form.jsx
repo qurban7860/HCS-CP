@@ -81,7 +81,7 @@ function LoginForm() {
 
             reset()
         } catch (error) {
-            const message = regEx.test(error.MessageCode) ? error.Message : error
+            const message = regEx.test(error.messageCode) ? error.message : error
             console.error(DEBUG.AUTH_LOGIN_ERROR, message || '')
             snack(RESPONSE.error.INVALID_CREDENTIALS, { variant: COLOR.ERROR })
             setError(LOCAL_STORAGE_KEY.AFTER_SUBMIT, {
